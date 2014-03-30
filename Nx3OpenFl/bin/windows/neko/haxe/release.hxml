@@ -1,0 +1,16 @@
+-main ApplicationMain 
+-lib openfl
+-lib openfl-native
+-lib actuate
+-cp ../../_cx/src
+-cp ../../_nx3/src
+-cp src
+-D tools=1.3.2
+-D lime_native
+-D no-compilation
+-D windows
+-D desktop
+--macro allowPackage('flash')
+-cp bin/windows/neko/haxe
+-neko bin/windows/neko/obj/ApplicationMain.n
+--macro keep("Main")

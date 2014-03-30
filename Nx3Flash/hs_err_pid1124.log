@@ -1,0 +1,83 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (0xc0020001), pid=1124, tid=7160
+#
+# JRE version: 7.0_17-b02
+# Java VM: Java HotSpot(TM) Client VM (23.7-b01 mixed mode, sharing windows-x86 )
+# Problematic frame:
+# C  [KERNELBASE.dll+0xc41f]  RaiseException+0x58
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0d287000):  JavaThread "Thread-2" daemon [_thread_in_native, id=7160, stack(0x086b0000,0x087b0000)]
+
+siginfo: ExceptionCode=0xc0020001, ExceptionInformation=0x8007042b 
+
+Registers:
+EAX=0x087aeecc, EBX=0x34049a58, ECX=0x00000001, EDX=0x00000000
+ESP=0x087aeecc, EBP=0x087aef1c, ESI=0x076b83d8, EDI=0x0d287000
+EIP=0x76c2c41f, EFLAGS=0x00000206
+
+Top of Stack: (sp=0x087aeecc)
+0x087aeecc:   c0020001 00000001 00000000 76c2c41f
+0x087aeedc:   00000001 8007042b 6305f4f4 087aef30
+0x087aeeec:   0d287000 087aef48 63091cf1 3405cf6e
+0x087aeefc:   3405cf6e 04e113c0 00000051 0d287000
+0x087aef0c:   00000000 34059eb8 087aef44 630dcee7
+0x087aef1c:   087aef38 71bae96b c0020001 00000001
+0x087aef2c:   00000001 087aef34 8007042b 087aef48
+0x087aef3c:   71b3d984 8007042b 34049a58 087aef68 
+
+Instructions: (pc=0x76c2c41f)
+0x76c2c3ff:   02 50 ff 75 14 8d 45 c4 50 e8 55 ad 02 00 83 c4
+0x76c2c40f:   0c eb 03 89 45 c0 8d 45 b0 50 ff 15 5c 11 c2 76
+0x76c2c41f:   c9 c2 10 00 cc cc cc cc cc 8b ff 55 8b ec 56 8b
+0x76c2c42f:   75 08 83 fe f4 72 18 83 fe f6 77 13 8d 45 08 50 
+
+
+Register to memory mapping:
+
+EAX=0x087aeecc is pointing into the stack for thread: 0x0d287000
+EBX=0x34049a58 is an oop
+{method} 
+ - klass: {other class}
+ECX=0x00000001 is an unknown value
+EDX=0x00000000 is an unknown value
+ESP=0x087aeecc is pointing into the stack for thread: 0x0d287000
+EBP=0x087aef1c is pointing into the stack for thread: 0x0d287000
+ESI=0x076b83d8 is an unknown value
+EDI=0x0d287000 is a thread
+
+
+Stack: [0x086b0000,0x087b0000],  sp=0x087aeecc,  free space=1019k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [KERNELBASE.dll+0xc41f]  RaiseException+0x58
+C  [mscorwks.dll+0x24e96b]  GetAddrOfContractShutoffFlag+0x960f
+C  [mscorwks.dll+0x1dd984]  DllUnregisterServerInternal+0x1db93
+C  [mscorwks.dll+0x1e6d]
+j  flash.tools.debugger.__IProgress.setProgress(II)V+0
+j  flash.tools.debugger.concrete.PlayerSessionManager.accept(Lflash/tools/debugger/concrete/ProcessListener;Lflash/tools/debugger/IProgress;)Lflash/tools/debugger/Session;+96
+j  flash.tools.debugger.concrete.PlayerSessionManager.accept(Lflash/tools/debugger/IProgress;)Lflash/tools/debugger/Session;+3
+v  ~StubRoutines::call_stub
+C  0x6316a34a  JVM_Clone+0x498aa
+C  0x6321968e  JVM_FindSignal+0x602de
+C  0x6316a3cd  JVM_Clone+0x4992d
+C  0x630ef07a  JNI_CreateJavaVM+0x57ea
+C  0x630f1033  JNI_CreateJavaVM+0x77a3
+C  [mscorwks.dll+0x1d19]
+C  0x055d012f
+C  0x061b124f
+C  0x06235e42
+C  0x06234748
+C  0x06234535
+C  [System.ni.dll+0x4a04ed]
+C
