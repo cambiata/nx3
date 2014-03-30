@@ -89,7 +89,7 @@ class Main
 		
 		var xmlStr = svg.toString();		
 		var filename = 'svg/$name.svg';
-		
+		trace('creating $filename...');
 		FileTools.putContent(filename, xmlStr);		
 	}
 	
