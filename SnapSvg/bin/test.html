@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>_nx3-examples</title>
+	<meta name="description" content="" />
+	<script src="snap.svg.js"></script>
+</head>
+<body>
+	
+	<svg id="svg" width="800px" height="800px">
+		
+		
+	</svg>
+	
+	<script src="nx3examples.js"></script>
+	
+	
+	
+	<script>
+	window.onload = function () {
+		var s = Snap("#svg");
+		var bigCircle = s.circle(150, 150, 100);
+		Snap.load("clefG.svg", function (f) {
+			f.selectAll("polygon[fill='#09B39C']").attr({fill: "#bada55"});
+			g = f.select("g");
+			s.append(g);
+		});		
+		
+	}
+	</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+-main ApplicationMain 
+-lib openfl
+-lib openfl-html5
+-lib actuate
+-lib svg
+-cp ../../_cx/src
+-cp ../../_nx3/src
+-cp src
+-D tools=1.3.2
+-D html5
+-D web
+-js bin/html5/bin/OpenFLSvg.js
+-cp bin/html5/haxe
+-D html5
+--macro allowPackage("flash")

@@ -81,7 +81,11 @@ class Main
 		var svg = Xml.createElement('svg');
 		
 		var g = Xml.createElement('g');
-		g.set('transform', 'scale(0.5,-0.5)');
+		
+		var transformPar = 'matrix(0.5,0,0,-0.5,0,442)';
+		//var transformPar = 'scale(0.5,-0.5)';
+		
+		g.set('transform', transformPar);
 		var path = Xml.createElement('path');
 		path.set('d', pathdata);
 		g.addChild(path);
