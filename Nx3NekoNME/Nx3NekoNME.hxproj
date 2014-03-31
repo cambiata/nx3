@@ -17,7 +17,7 @@
   <classpaths>
     <class path="src" />
     <class path="..\..\_cx\src" />
-    <class path="..\..\_nx3\src" />
+    <class path="..\nx3-src" />
   </classpaths>
   <!-- Build options -->
   <build>

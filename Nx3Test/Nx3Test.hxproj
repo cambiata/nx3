@@ -16,8 +16,8 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="..\..\_cx\src" />
-    <class path="..\..\_nx3\src" />
     <class path="src" />
+    <class path="..\nx3-src" />
   </classpaths>
   <!-- Build options -->
   <build>

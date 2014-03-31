@@ -1,5 +1,5 @@
 -cp ../../_cx/src
--cp ../../_nx3/src
+-cp ../nx3-src
 -cp src
 --no-output
 --macro Main.main()
