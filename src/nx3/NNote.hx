@@ -1,5 +1,5 @@
 package nx3;
-import jasononeil.CleverSort;
+//import jasononeil.CleverSort;
 
 
 //import nx3.tools.ENoteTypeTools;
@@ -39,7 +39,9 @@ class NNote
 		switch(this.type) 
 		{
 			case ENoteType.Note(nheads, variant, articulations, attributes):
-				CleverSort.cleverSort(nheads, _.level);
+				//CleverSort.cleverSort(nheads, _.level);
+				nheads.sort(function(a, b) { return Reflect.compare(a.level, b.level); } );
+				
 				//nheads.cleverSort(_.level);
 				this.nheads_ = nheads;
 			default:

@@ -1,5 +1,4 @@
 package nx3;
-import cx.EncodeTools;
 import cx.EnumTools;
 import nx3.VSystemGenerator.IBarWidthCalculator;
 import nx3.VSystemGenerator.Pagesize;

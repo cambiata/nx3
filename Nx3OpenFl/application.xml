@@ -13,12 +13,9 @@
 	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
 	
 	<!-- classpath, haxe libs -->
-	<source path="../../_cx/src" />
-	<source path="../../_nx3/src" />
+	<source path="../src" />
 	<source path="src" />
 	<haxelib name="openfl" />
-	<haxelib name="actuate" />
-	<haxelib name="svg" />
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />

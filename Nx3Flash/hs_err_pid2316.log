@@ -1,0 +1,64 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (0xc0020001), pid=2316, tid=3944
+#
+# JRE version: 7.0_17-b02
+# Java VM: Java HotSpot(TM) Client VM (23.7-b01 mixed mode, sharing windows-x86 )
+# Problematic frame:
+# C  [KERNELBASE.dll+0xc41f]  RaiseException+0x58
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0a38b000):  JavaThread "Thread-0" daemon [_thread_in_native, id=3944, stack(0x06040000,0x06140000)]
+
+siginfo: ExceptionCode=0xc0020001, ExceptionInformation=0x8007042b 
+
+Registers:
+EAX=0x0613e4ec, EBX=0x34049a48, ECX=0x00000001, EDX=0x00000000
+ESP=0x0613e4ec, EBP=0x0613e53c, ESI=0x07441650, EDI=0x0a38b000
+EIP=0x76c2c41f, EFLAGS=0x00000202
+
+Top of Stack: (sp=0x0613e4ec)
+0x0613e4ec:   c0020001 00000001 00000000 76c2c41f
+0x0613e4fc:   00000001 8007042b 620ff4f4 0613e550
+0x0613e50c:   0a38b000 0613e568 62131cf1 3405cf5e
+0x0613e51c:   3405cf5e 062308b8 00000051 0a38b000
+0x0613e52c:   00000000 34059ea8 0613e564 6217cee7
+0x0613e53c:   0613e558 71bae96b c0020001 00000001
+0x0613e54c:   00000001 0613e554 8007042b 0613e568
+0x0613e55c:   71b3d984 8007042b 34049a48 0613e588 
+
+Instructions: (pc=0x76c2c41f)
+0x76c2c3ff:   02 50 ff 75 14 8d 45 c4 50 e8 55 ad 02 00 83 c4
+0x76c2c40f:   0c eb 03 89 45 c0 8d 45 b0 50 ff 15 5c 11 c2 76
+0x76c2c41f:   c9 c2 10 00 cc cc cc cc cc 8b ff 55 8b ec 56 8b
+0x76c2c42f:   75 08 83 fe f4 72 18 83 fe f6 77 13 8d 45 08 50 
+
+
+Register to memory mapping:
+
+EAX=0x0613e4ec is pointing into the stack for thread: 0x0a38b000
+EBX=0x34049a48 is an oop
+{method} 
+ - klass: {other class}
+ECX=0x00000001 is an unknown value
+EDX=0x00000000 is an unknown value
+ESP=0x0613e4ec is pointing into the stack for thread: 0x0a38b000
+EBP=0x0613e53c is pointing into the stack for thread: 0x0a38b000
+ESI=0x07441650 is an unknown value
+EDI=0x0a38b000 is a thread
+
+
+Stack: [0x06040000,0x06140000],  sp=0x0613e4ec,  free space=1017k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [KERNELBASE.dll+0xc41f]  RaiseException+0x58
+C  [mscorwks.dll+0x24e96b]  GetAddrOfContractShutoffFlag+0x960f
