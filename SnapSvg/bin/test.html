@@ -8,26 +8,16 @@
 </head>
 <body>
 	
-	<svg id="svg" width="800px" height="800px">
-		
-		
-	</svg>
+	  <svg id="main" style="width:500px;height:500px;background:green;"></svg>
+	  <svg width="0" height="0">
+		<pattern id="pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="10" height="10" viewBox="0 0 10 10">
+			<path d="M-5,0,10,15M0-5,15,10" stroke="white" stroke-width="5"/>
+		</pattern>
+	  </svg>
 	
 	<script src="nx3examples.js"></script>
-	
-	
-	
 	<script>
-	window.onload = function () {
-		var s = Snap("#svg");
-		var bigCircle = s.circle(150, 150, 100);
-		Snap.load("clefG.svg", function (f) {
-			f.selectAll("polygon[fill='#09B39C']").attr({fill: "#bada55"});
-			g = f.select("g");
-			s.append(g);
-		});		
-		
-	}
+
 	</script>
 </body>
 </html>
