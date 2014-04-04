@@ -1,0 +1,12 @@
+-main ApplicationMain 
+-lib openfl
+-lib actuate
+-cp ../src
+-cp src
+-D tools=1.3.2
+-D web
+-swf-version 11.2
+-swf bin/flash/bin/RenderTargets.swf
+-swf-header 800:480:60:FFFFFF
+-cp bin/flash/haxe
+#--remap nme:flash
