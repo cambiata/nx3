@@ -25,7 +25,22 @@ class TargetSpriteBase  implements ITarget
 	public function test() 
 	{
 		this.graphics.beginFill(0xFF0000);
-		this.graphics.drawRect(0, 0, 100, 100);
+		this.graphics.drawRect(10, 10, 100, 100);
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function testLines(x:Float, y:Float, width:Float):Void 
+	{
+		this.target.graphics.lineStyle(this.scaling.linesWidth, 0xAAAAAA);	
+		
+		for (i in -2...3)
+		{
+			var cy = y + i * scaling.space;
+			this.target.graphics.moveTo(x, cy);
+			this.target.graphics.lineTo(x + width, cy);			
+		}		
+		
 	}
 	
 }

@@ -634,11 +634,17 @@ Main.prototype = $extend(flash.display.Sprite.prototype,{
 	,init: function() {
 		if(this.inited) return;
 		this.inited = true;
-		var r1 = new nx3.render.TargetOpenFl(null,null);
-		r1.test();
-		this.stage.addChild(r1.getTarget());
-		var r2 = new nx3.render.TargetSvg("test","index.html");
-		r2.test();
+		var scaling = nx3.render.scaling.Scaling.BIG;
+		var render;
+		render = new nx3.render.TargetSvg("#main",scaling);
+		this.test(render);
+		render = new nx3.render.TargetOpenFl(null,scaling);
+		this.stage.addChild((js.Boot.__cast(render , nx3.render.TargetOpenFl)).getTarget());
+		this.test(render);
+	}
+	,test: function(render) {
+		render.test();
+		render.testLines(10,100,500);
 	}
 	,added: function(e) {
 		this.removeEventListener(flash.events.Event.ADDED_TO_STAGE,$bind(this,this.added));
@@ -1043,6 +1049,9 @@ StringTools.urlEncode = function(s) {
 StringTools.urlDecode = function(s) {
 	return decodeURIComponent(s.split("+").join(" "));
 };
+StringTools.replace = function(s,sub,by) {
+	return s.split(sub).join(by);
+};
 StringTools.hex = function(n,digits) {
 	var s = "";
 	var hexChars = "0123456789ABCDEF";
@@ -1121,6 +1130,57 @@ Type.getClassFields = function(c) {
 Type.getEnumConstructs = function(e) {
 	var a = e.__constructs__;
 	return a.slice();
+};
+var cx = {};
+cx.MathTools = function() { };
+$hxClasses["cx.MathTools"] = cx.MathTools;
+cx.MathTools.__name__ = true;
+cx.MathTools.floatFromString = function(str,comma) {
+	if(comma == null) comma = ",";
+	str = StringTools.replace(str,",",".");
+	return Std.parseFloat(str);
+};
+cx.MathTools.floatToString = function(val,comma) {
+	if(comma == null) comma = ",";
+	var result;
+	if(val == null) result = "null"; else result = "" + val;
+	if(comma != ".") result = StringTools.replace(result,".",comma);
+	return result;
+};
+cx.MathTools.floatEquals = function(a,b) {
+	return Math.abs(a - b) <= 0.00001;
+};
+cx.MathTools.inRange = function(min,value,max) {
+	if(value < min) return false;
+	if(value > max) return false;
+	return true;
+};
+cx.MathTools.floatRange = function(min,value,max) {
+	if(value < min) return min;
+	if(value > max) return max;
+	return value;
+};
+cx.MathTools.round2 = function(number,precision) {
+	if(precision == null) precision = 8;
+	number = number * Math.pow(10,precision);
+	number = Math.round(number) / Math.pow(10,precision);
+	return number;
+};
+cx.MathTools.intRange = function(min,value,max) {
+	if(value < min) return min;
+	if(value > max) return max;
+	return value;
+};
+cx.MathTools.intMin = function(a,b) {
+	if(a < b) return a;
+	return b;
+};
+cx.MathTools.intMax = function(a,b) {
+	if(a > b) return a;
+	return b;
+};
+cx.MathTools.ipol = function(a,b,delta) {
+	return delta * (b - a) + a;
 };
 var haxe = {};
 haxe.Timer = function() { };
@@ -5186,6 +5246,12 @@ js.Boot.__cast = function(o,t) {
 };
 var nx3 = {};
 nx3.render = {};
+nx3.render.IRenderer = function() { };
+$hxClasses["nx3.render.IRenderer"] = nx3.render.IRenderer;
+nx3.render.IRenderer.__name__ = true;
+nx3.render.IRenderer.prototype = {
+	__class__: nx3.render.IRenderer
+};
 nx3.render.ITarget = function() { };
 $hxClasses["nx3.render.ITarget"] = nx3.render.ITarget;
 nx3.render.ITarget.__name__ = true;
@@ -5205,6 +5271,16 @@ nx3.render.TargetSpriteBase.prototype = {
 		this.graphics.beginFill(16711680);
 		this.graphics.drawRect(0,0,100,100);
 	}
+	,testLines: function(x,y,width) {
+		this.target.get_graphics().lineStyle(this.scaling.linesWidth,11184810);
+		var _g = -2;
+		while(_g < 3) {
+			var i = _g++;
+			var cy = y + i * this.scaling.space;
+			this.target.get_graphics().moveTo(x,cy);
+			this.target.get_graphics().lineTo(x + width,cy);
+		}
+	}
 	,__class__: nx3.render.TargetSpriteBase
 };
 nx3.render.TargetOpenFl = function(target,scaling) {
@@ -5221,17 +5297,41 @@ nx3.render.TargetOpenFl.prototype = $extend(nx3.render.TargetSpriteBase.prototyp
 	}
 	,__class__: nx3.render.TargetOpenFl
 });
-nx3.render.TargetSvg = function(targetDivId,indexHtmlFilename) {
+nx3.render.TargetSvg = function(targetDivId,scaling,jsFileName) {
 	this.targetDivId = targetDivId;
-	this.indexHtmlFilename = indexHtmlFilename;
+	this.scaling = scaling;
+	this.jsFileName = jsFileName;
+	this.snap = new Snap(targetDivId);
 };
 $hxClasses["nx3.render.TargetSvg"] = nx3.render.TargetSvg;
 nx3.render.TargetSvg.__name__ = true;
 nx3.render.TargetSvg.__interfaces__ = [nx3.render.ITarget];
 nx3.render.TargetSvg.prototype = {
 	test: function() {
+		var bigCircle = this.snap.circle(150,150,100);
+		bigCircle.attr({ fill : "#bada55", stroke : "#000", strokeWidth : 5});
+	}
+	,test2: function() {
+		var c = this.snap.circle(250,250,100);
+		c.attr({ fill : "#ff0000", stroke : "#000", strokeWidth : 3});
+	}
+	,testLines: function(x,y,width) {
+		var _g = -2;
+		while(_g < 3) {
+			var i = _g++;
+			var cy = y + i * this.scaling.space;
+			var line = this.snap.line(x,cy,x + width,cy);
+			line.attr({ stroke : "#000", strokeWidth : this.scaling.linesWidth});
+		}
 	}
 	,__class__: nx3.render.TargetSvg
+};
+nx3.render.scaling = {};
+nx3.render.scaling.Scaling = function() { };
+$hxClasses["nx3.render.scaling.Scaling"] = nx3.render.scaling.Scaling;
+nx3.render.scaling.Scaling.__name__ = true;
+nx3.render.scaling.Scaling.scaleRect = function(scaling,rect) {
+	return new flash.geom.Rectangle(rect.x * scaling.halfNoteWidth,rect.y * scaling.halfSpace,rect.width * scaling.halfNoteWidth,rect.height * scaling.halfSpace);
 };
 openfl.AssetCache = function() {
 	this.enabled = true;
@@ -6052,6 +6152,11 @@ haxe.Unserializer.DEFAULT_RESOLVER = Type;
 haxe.Unserializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
 haxe.Unserializer.CODES = null;
 haxe.ds.ObjectMap.count = 0;
+nx3.render.scaling.Scaling.MID = { linesWidth : 0.8, space : 12.0, halfSpace : 6.0, noteWidth : 10, halfNoteWidth : 5, quarterNoteWidth : 2.5, signPosWidth : 14.0, svgScale : .27, svgX : 0, svgY : -55.0, fontScaling : 6.0};
+nx3.render.scaling.Scaling.NORMAL = { linesWidth : .5, space : 8.0, halfSpace : 4.0, noteWidth : 7.0, halfNoteWidth : 3.5, quarterNoteWidth : 1.75, signPosWidth : 9.5, svgScale : .175, svgX : 0, svgY : -36.0, fontScaling : 4.0};
+nx3.render.scaling.Scaling.SMALL = { linesWidth : .5, space : 6.0, halfSpace : 3.0, noteWidth : 5.0, halfNoteWidth : 2.5, quarterNoteWidth : 1.25, signPosWidth : 7.0, svgScale : .14, svgX : 0, svgY : -28.5, fontScaling : 3.0};
+nx3.render.scaling.Scaling.BIG = { linesWidth : 1.5, space : 16.0, halfSpace : 8.0, noteWidth : 14.0, halfNoteWidth : 7.0, quarterNoteWidth : 5.5, signPosWidth : 19.0, svgScale : .36, svgX : -0.0, svgY : -74.0, fontScaling : 8.0};
+nx3.render.scaling.Scaling.PRINT1 = { linesWidth : 3, space : 32.0, halfSpace : 16.0, noteWidth : 28.0, halfNoteWidth : 14.0, quarterNoteWidth : 11.0, signPosWidth : 38.0, svgScale : .72, svgX : -0.0, svgY : -148.0, fontScaling : 16.0};
 openfl.Assets.cache = new openfl.AssetCache();
 openfl.Assets.libraries = new haxe.ds.StringMap();
 openfl.Assets.initialized = false;

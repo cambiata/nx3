@@ -3,8 +3,16 @@ package ;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
-import nx3.render.TargetOpenFl;
-import nx3.render.TargetSvg;
+import nx3.render.IRenderer;
+import nx3.render.ITarget;
+import nx3.render.scaling.Scaling;
+import nx3.render.scaling.TScaling;
+
+#if (html5)
+	import nx3.render.TargetSvg;
+#else
+	import nx3.render.TargetOpenFl;
+#end
 
 /**
  * ...
@@ -36,13 +44,24 @@ class Main extends Sprite
 		// Assets:
 		// nme.Assets.getBitmapData("img/assetname.jpg");
 		
-		var r1 = new TargetOpenFl(null, null);
-		r1.test();
-		this.stage.addChild(r1.getTarget());
+		var scaling:TScaling = Scaling.BIG;
+		var render:ITarget;
+
+		#if (html5)
+			render = new TargetSvg('#main', scaling);
+			test(render);
+		#else
+			render = new TargetOpenFl(null, scaling);
+			this.stage.addChild(cast(render, TargetOpenFl).getTarget());
+			test(render);
+		#end
 		
-		var r2 = new TargetSvg('test', 'index.html');
-		r2.test();
-		
+	}
+	
+	public function test(render:ITarget)
+	{
+		render.test();
+		//render.testLines(10, 100, 500);
 	}
 
 	/* SETUP */
