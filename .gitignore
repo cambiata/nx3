@@ -1,4 +1,7 @@
 *.dll
 *.ndll
 *.exe
+*.obj
+*.h
+*.cpp
 
