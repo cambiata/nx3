@@ -1,7 +1,10 @@
 package nx3.render;
 import flash.display.Graphics;
+import flash.display.Shape;
 import flash.display.Sprite;
 import nx3.render.scaling.TScaling;
+import nx3.render.svg.Elements;
+import nx3.render.svg.ShapeTools;
 
 /**
  * ...
@@ -41,6 +44,17 @@ class TargetSpriteBase  implements ITarget
 			this.target.graphics.lineTo(x + width, cy);			
 		}		
 		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function testSymbol(x:Float, y:Float, xmlStr:String=null):Void 
+	{
+		if (xmlStr == null) xmlStr = Elements.noteWhite;
+		var shape:Shape = ShapeTools.getShape(xmlStr, this.scaling);
+		shape.x = x + /*rect.x * scaling.halfNoteWidth +*/ scaling.svgX;
+		shape.y = y + /*rect.y * scaling.halfSpace +*/ scaling.svgY;	
+		this.target.addChild(shape);		
 	}
 	
 }

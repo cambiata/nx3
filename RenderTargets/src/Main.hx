@@ -44,24 +44,34 @@ class Main extends Sprite
 		// Assets:
 		// nme.Assets.getBitmapData("img/assetname.jpg");
 		
-		var scaling:TScaling = Scaling.BIG;
 		var render:ITarget;
-
+		var renderBig:ITarget;
+	
 		#if (html5)
-			render = new TargetSvg('#main', scaling);
+			render = new TargetSvg('#main', Scaling.NORMAL);
 			test(render);
+			renderBig = new  TargetSvg('#big', Scaling.BIG);
+			test(renderBig);
 		#else
-			render = new TargetOpenFl(null, scaling);
-			this.stage.addChild(cast(render, TargetOpenFl).getTarget());
+			render = new TargetOpenFl(null, Scaling.NORMAL);
 			test(render);
+			renderBig = new TargetOpenFl(null, Scaling.BIG);
+			test(renderBig);
+			this.stage.addChild(cast(render, TargetOpenFl).getTarget());
+			var sBig  = cast(renderBig, TargetOpenFl).getTarget();
+			sBig.x = 400;
+			this.stage.addChild(sBig);
 		#end
 		
 	}
 	
 	public function test(render:ITarget)
 	{
-		render.test();
-		//render.testLines(10, 100, 500);
+		render.testLines(0, 0, 200);
+		render.testSymbol(20,0);
+		
+		render.testLines(0, 100, 200);
+		render.testSymbol(20, 100);		
 	}
 
 	/* SETUP */

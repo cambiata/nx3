@@ -1,5 +1,7 @@
 package nx3.render;
+
 import nx3.render.scaling.TScaling;
+import nx3.render.svg.Elements;
 import snap.Snap;
 
 /**
@@ -59,10 +61,58 @@ class TargetSvg implements ITarget
 				strokeWidth: scaling.linesWidth,
 			});
 		}		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function testSymbol(x:Float, y:Float, xmlStr:String=null):Void 
+	{
+		if (xmlStr == null) xmlStr = Elements.noteWhite;
+		var xml = Xml.parse(xmlStr);
+		var gPathD = xml.firstElement().firstChild().firstChild().get('d');
+		trace(gPathD);		
 		
 		
+		var p:SnapElement = this.snap.path(gPathD).attr({
+	        fill: "#000000",
+	        stroke: "none",
+    	});		
+
+		y = y  + this.scaling.svgY; // * this.scaling.svgScale;
+		x = x + this.scaling.svgX; // * 1; // + this.scaling.svgX * this.scaling.svgScale;
+
+		var g:SnapElement = this.snap.el('svg', {
+			x:x,
+			y:y,
+			});
+		g.append(p);
+		
+		var sc =  this.scaling.svgScale;
+		p.transform('matrix($sc,0,0,$sc,0,0)');
+		//p.transform('matrix(1, .5, 2, .5, .5)');
+		
+		
+		
+		
+		//trace(xmlStr);
 	}
 
+	/*
+	public function testSymbol(x:Float, y:Float)
+	{
+		
+	}
+	*/
+
+	/*
+	function drawShape(shape:Shape, x:Float, y:Float, rect:Rectangle)
+	{
+		if (shape == null) return;
+		shape.x = x + rect.x * scaling.halfNoteWidth + scaling.svgX;
+		shape.y = y + rect.y * scaling.halfSpace + scaling.svgY;
+		this.target.addChild(shape);
+	}	
+	*/
 	
 	
 	/*
@@ -72,4 +122,5 @@ class TargetSvg implements ITarget
 		return html;
 	}
 	*/
+	
 }
