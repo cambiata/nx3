@@ -1,0 +1,17 @@
+-main ApplicationMain 
+-lib openfl
+-lib openfl-native
+-lib hxlibc
+-lib actuate
+-cp ../src
+-cp src
+-D tools=1.3.2
+-D lime_native
+-D no-compilation
+-D windows
+-D desktop
+--macro allowPackage('flash')
+-cpp bin/windows/cpp/obj
+-cp bin/windows/cpp/haxe
+--macro keep("Main")
+-debug

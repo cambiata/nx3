@@ -1,10 +1,26 @@
 package nx3.render;
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.display.Sprite;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.Elements;
 import nx3.render.svg.ShapeTools;
+
+
+#if (nme)
+import nme.text.TextFormat;
+import nme.text.TextField;
+import nme.display.Shape;
+import nme.display.Sprite;
+import nme.display.Graphics;
+import nme.Lib;
+#else
+import flash.text.TextFormat;
+import flash.text.TextField;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.display.Graphics;
+import flash.Lib;
+#end
+
+
 
 /**
  * ...

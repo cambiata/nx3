@@ -232,11 +232,8 @@ class VComplex
 	
 	public function getStaveBasicRects(directions:EDirectionUDs/*, beamgroups:VBeamgroups=null*/):Rectangles
 	{
-		
-		if (directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
-		
-		var firstnote = this.getVNotes().first();
-		
+		if (directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";		
+		var firstnote = this.getVNotes().first();		
 		var result = new Rectangles();
 		for (i in 0...this.getVNotes().length)
 		{
@@ -273,8 +270,8 @@ class VComplex
 			}
 			result.push(rect);
 			
+			//-----------------------------------------------------------------------------------------
 			// flag rect
-			
 			if (vnote.nnote.value.beaminglevel() > 0 ) 
 			{
 				var flagrect:Rectangle = null; 
@@ -291,11 +288,61 @@ class VComplex
 				{
 						var offset = getHeadsCollisionOffsetX(vnote, direction);			
 						flagrect.offset(offset, 0);
-				}				
-				
+				}								
 				result.push(flagrect);
+				//-----------------------------------------------------------------------------------------
 				
 			}		
+		}
+		
+		return result;
+	}
+	
+	public function getStavesBasicX(directions:EDirectionUDs):TPoints
+	{
+		if (directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";		
+		var firstnote = this.getVNotes().first();		
+		
+		var result = new  TPoints();
+		
+		for (i in 0...this.getVNotes().length)
+		{
+			var vnote = this.getVNotes()[i];
+			
+			//if (vnote.nnote.value.stavinglevel() == 0) continue;
+				
+			var direction:EDirectionUD = directions[i];
+
+			var rect:Rectangle = null;
+			var headw:Float = switch vnote.nnote.value.head()
+			{
+				case EHeadValueType.HVT1: Constants.HEAD_HALFWIDTH_WIDE;
+				default: Constants.HEAD_HALFWIDTH_NORMAL;
+			}
+			
+			// stave rect
+			var x:Float = 0;
+			var y:Float = 0;
+			if (direction == EDirectionUD.Up) 
+			{
+				rect = new Rectangle( 0, vnote.nnote.getBottomLevel() - Constants.STAVE_BASIC_LENGTH, headw, Constants.STAVE_BASIC_LENGTH);
+				x = headw;
+				y = vnote.nnote.getBottomLevel();
+			}
+			else
+			{
+				rect = new Rectangle( -headw, vnote.nnote.getTopLevel(), headw, Constants.STAVE_BASIC_LENGTH);
+				x = -headw;
+				y = vnote.nnote.getTopLevel();
+			}
+
+			if (vnote != firstnote) 
+			{
+					var offset = getHeadsCollisionOffsetX(vnote, direction);			
+					x += offset;
+			}
+			
+			result.push({x:x, y:y});
 		}
 		
 		return result;

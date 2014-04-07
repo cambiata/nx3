@@ -24,8 +24,6 @@ class VPart
 	var vcomplexesPositions:Map<VComplex,Int>;
 	var positionsVComplexes:IntMap<VComplex>;
 	
-	
-	
 	var generator: VPartComplexesGenerator;
 	public function getVComplexes():VComplexes
 	{
@@ -35,6 +33,22 @@ class VPart
 		this.vcomplexesPositions = generator.getComplexesPositions();
 		this.positionsVComplexes = generator.getPositionsComplexes();
 		return this.vcomplexes;
+	}
+	
+	var vnotesVComplexes:Map<VNote, VComplex>;
+	public function getVNotesVComplexes():Map<VNote, VComplex>
+	{
+		if (this.vnotesVComplexes != null) return this.vnotesVComplexes;
+		if (this.vcomplexes == null) this.getVComplexes();
+		this.vnotesVComplexes = new Map<VNote, VComplex>();
+		for (vcomplex in this.vcomplexes)
+		{
+			for (vnote in vcomplex.getVNotes())
+			{
+				this.vnotesVComplexes.set(vnote, vcomplex);
+			}			
+		}
+		return this.vnotesVComplexes;
 	}
 
 	public function getPositionsVComplexes():IntMap<VComplex>
@@ -49,7 +63,7 @@ class VPart
 		return this.vcomplexesPositions;
 	}
 	
-	public var vcomplexesMinDistances:Map<VComplex, Float>;
+	var vcomplexesMinDistances:Map<VComplex, Float>;
 	public function getVComplexesMinDistances():Map<VComplex, Float>
 	{
 		if (this.vcomplexesMinDistances != null) return this.vcomplexesMinDistances;		

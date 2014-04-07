@@ -6,9 +6,13 @@ import nx3.EDirectionUDs;
 import nx3.EHeadValueType;
 import nx3.ESign;
 import nx3.geom.Rectangles;
+import nx3.QVoice;
 import nx3.render.svg.Elements;
 import nx3.render.svg.ShapeTools;
 import nx3.QNote;
+import nx3.TPoint;
+import nx3.TPoints;
+import nx3.VBeamgroup;
 
 import nx3.EDirectionUAD;
 import nx3.EDirectionUD;
@@ -76,11 +80,15 @@ class TestVRender extends  TestCase
 			//new NPart([new QVoice([4, 2, 4, 8, 8, 8], [1, -3, 0], '#b......'), ]),
 			//new NPart([new QVoice([2, 8,8,4], [0, 0, 1, -1], '...b'),]),
 			//new NPart([new QVoice([4], [ -1]), new QVoice([4], [0])]),
-			new NPart([new QVoice([4], [0]), new QVoice([8, .8, 8], [1, 1, 5], '..#')]),
-			new NPart([new QVoice([8, 8, 8, 8], [0])]),
+			//new NPart([new QVoice([8], [-1, -1, 0, 0]), new QVoice([4], [0])]),
+			
+			new NPart([new QVoice([8, 8], [-1, 2])]),
+
+			//new NPart([new QVoice([4], [0]) , new QVoice([8, 8, 8], [1, 1, 5], '..#')]),
+			//new NPart([new QVoice([8, 8, 8, 8], [0, 1, 2, 3])]),
 		]));
 		
-		this.renderer.setDefaultXY(200, 80);
+		this.renderer.setDefaultXY(500, 80);
 		this.renderer.drawVBarNotelines(vbar, 800, 50);
 		//this.renderer.drawVBarColumns(vbar);
 		this.renderer.drawVBarComplexes(vbar);
@@ -254,24 +262,18 @@ class DevRenderer extends FrameRenderer
 		this.drawRectangleScaled(this.target.graphics,  this.defaultX,  this.defaultY, new Rectangle(0, -7, barMinWidth, 30));
 		
 		var columnsMinPositions  = vbar.getVColumnsMinPositions();
-
 		var party = this.defaultY;
+		
 		for (vpart in vbar.getVParts())
 		{
 			var beamgroupsDirections = vpart.getBeamgroupsDirections();
-			//var complexMinDistances = vpart.getVComplexesMinDistances();
-			
+			//var complexMinDistances = vpart.getVComplexesMinDistances();			
 			//var pos = 0.0;
 			for (vcomplex in vpart.getVComplexes())
 			{
-				var vcolumn = vbar.getVComplexesVColumns().get(vcomplex);
-				
+				var vcolumn = vbar.getVComplexesVColumns().get(vcomplex);				
 				var pos = columnsMinPositions.get(vcolumn);				
 				var colx = this.defaultX + pos * scaling.halfNoteWidth;
-				
-				this.target.graphics.endFill();
-				this.target.graphics.lineStyle(1, 0xFF0000);
-				this.target.graphics.drawRect(colx - 5, party - 5, 10, 10); 
 				
 				for (vnote in vcomplex.getVNotes())
 				{
@@ -281,55 +283,20 @@ class DevRenderer extends FrameRenderer
 					var direction = beamgroupsDirections.get(beamgroup);
 					var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * scaling.halfNoteWidth;
 					this.heads(colx+headsXOffset, party, vnote, direction);
-
-					//var headsRects = vnote.getVHeadsRectanglesDir(direction);
-					//this.drawRectanglesScaled(this.target.graphics, colx+headsXOffset, party, headsRects);
-					
-					/*
-					// text
-					var vvoiceIdx = vpart.getVVoices().index(vvoice);
-					var txtY = party + (vvoiceIdx * 10)-14;
-					var txtX = colx+headsXOffset + 10;
-					this.addText(txtX, txtY, direction.getName());
-					*/
 				}
 				
 				var directions = vpart.getVComplexDirections().get(vcomplex);
 				var noterects = vcomplex.getNotesRects(directions);
-				this.drawRectanglesScaled(this.target.graphics, colx, party, noterects);
-				
+				this.target.graphics.lineStyle(1, 0xaaaaaa);
+				this.drawRectanglesScaled(this.target.graphics, colx, party, noterects);				
 				var staverects = vcomplex.getStaveBasicRects(directions);
 				this.drawRectanglesScaled(this.target.graphics, colx, party, staverects);
 				
-				
 				var signsrects = vcomplex.getSignsRects(noterects);
-				this.drawRectanglesScaled(this.target.graphics, colx, party, signsrects);
-				//var ttrects = vcomplex.getTiestoRects(noterects);				
+				//this.drawRectanglesScaled(this.target.graphics, colx, party, signsrects);
 				var dotrects = vcomplex.getDotsRects(noterects, directions);				
-				this.drawRectanglesScaled(this.target.graphics, colx, party, dotrects);
-								
-				/*
-				var directions = vpart.getVComplexDirections().get(vcomplex);
-				var firstnote = vcomplex.getVNotes().first();
-				var firstdirection = directions.first();
-				var headsRects = firstnote.getVHeadsRectanglesDir(firstdirection);
-				this.drawRectanglesScaled(this.target.graphics, colx, party, headsRects);
-				
-				if (vcomplex.getVNotes().length > 1)
-				{
-					var secondnote = vcomplex.getVNotes().second();
-					var offsetX = vcomplex.getHeadsCollisionOffsetX(secondnote);
-					var secondirection = directions.second();					
-					var headsRects = secondnote.getVHeadsRectanglesDir(secondirection);
-					this.drawRectanglesScaled(this.target.graphics, colx, party, headsRects);
-				}
-				*/				
-				
-				//pos += complexMinDistances.get(vcomplex) * scaling.halfNoteWidth;
-				
+				//this.drawRectanglesScaled(this.target.graphics, colx, party, dotrects);
 			}
-
-			
 			
 			party += this.partdistance;
 		}
@@ -339,28 +306,45 @@ class DevRenderer extends FrameRenderer
 	
 	public function drawVBarVoices(vbar:VBar)
 	{
-		var party = this.defaultY;
+		var party = this.defaultY;		
+		var columnsMinPositions  = vbar.getVColumnsMinPositions();		
+		var vpartIdx = 0;
 		for (vpart in vbar.getVParts())
 		{
+			var beamgroupsDirections = vpart.getBeamgroupsDirections();			
+			var vnotesVComplexes = vpart.getVNotesVComplexes();
+			//var vcomplexes = vpart.getVComplexes();
 			for (beamgroups in vpart.getPartbeamgroups())
 			{
 				var vvoiceIdx = vpart.getPartbeamgroups().index(beamgroups);
-	
 				for (beamgroup in beamgroups)
 				{
-					var beamgroupIdx =beamgroups.index(beamgroup);
+					var beamgroupIdx = beamgroups.index(beamgroup);					
+					//var direction = beamgroupsDirections.get(beamgroup);					
+					var beamgroupPoints = new TPoints();
+					var direction:EDirectionUD = null;
 					for (vnote in beamgroup.vnotes)
 					{
 						var vnoteIdx = beamgroup.vnotes.index(vnote);
 						var vcolumn = vbar.getVNotesVColumns().get(vnote);
-						var pos = vbar.getVColumnsPositions().get(vcolumn);
-						var colx = this.defaultX + pos  * posfactor;			
-						var textY = party + ((vvoiceIdx == 0) ? this.scaling.space * -3 :  this.scaling.space * 3)-this.scaling.halfSpace;
-						this.addText(colx, textY,  '$beamgroupIdx');
+						var pos = columnsMinPositions.get(vcolumn);				
+						var colx = this.defaultX + pos * scaling.halfNoteWidth;												
+						var vvoice = vpart.getVVoices()[vvoiceIdx];
+						var vcomplex = vnotesVComplexes.get(vnote);
+						var directions = vpart.getVComplexDirections().get(vcomplex);
+						var noteComplexIdx = vcomplex.getVNotes().indexOf(vnote);
+						direction = directions[noteComplexIdx];
+						var stavesPos = vcomplex.getStavesBasicX(directions);
+						var stavePos = stavesPos[noteComplexIdx];
+						var point:TPoint = null;
+						point = { x:colx + stavePos.x*scaling.halfNoteWidth , y:party};
+						beamgroupPoints.push(point);
 					}
+					this.drawBeamgroup(this.target.graphics, beamgroup, beamgroupPoints, direction);
 				}
 			}
 			party += this.partdistance;
+			vpartIdx++;
 		}
 	}
 	
@@ -416,14 +400,41 @@ class DevRenderer extends FrameRenderer
 			graphics.drawRect(x+ rect.x*scaling.halfNoteWidth, y+rect.y*scaling.halfSpace, rect.width*scaling.halfNoteWidth, rect.height*scaling.halfSpace);
 	}		
 	
-	
 	public function drawRectanglesScaled(graphics:Graphics, x:Float, y:Float, rects:Rectangles)
 	{
 		if (rects == null) return;
 		for (rect in rects)
 			drawRectangleScaled(graphics, x, y, rect);
-			//graphics.drawRect(x+ rect.x*scaling.halfNoteWidth, y+rect.y*scaling.halfSpace, rect.width*scaling.halfNoteWidth, rect.height*scaling.halfSpace);
 	}		
+	
+	public function drawStaves(graphics:Graphics, x:Float, y:Float, rects:Rectangles)
+	{
+		drawRectanglesScaled(graphics, x, y, rects);
+	}
+	
+	public function drawBeamgroup(graphics:Graphics, beamgroup:VBeamgroup, points:TPoints, direction:EDirectionUD)
+	{
+		this.target.graphics.lineStyle(1, 0xFF00FF);
+		for (point in points)
+		{
+			drawRectangleScaled(graphics, point.x, point.y, new Rectangle( -.5, -.5, 1, 1));
+		}
+		var frame = beamgroup.getFrame();
+		
+		if (beamgroup.vnotes.length < 2) return;
+		
+		this.target.graphics.lineStyle(4, 0xFF00FF);
+
+		var leftPoint = points.first();
+		var rightPoint = points.last();
+		var leftOuterY = /* firstPoint.y +*/ frame.leftOuterY * scaling.halfSpace;
+		var rightOuterY  = /*lastPoint.y +*/ frame.rightOuterY * scaling.halfSpace;		
+		
+		this.target.graphics.moveTo(leftPoint.x, leftPoint.y + leftOuterY);
+		this.target.graphics.lineTo(rightPoint.x, rightPoint.y + rightOuterY);
+
+		this.target.graphics.lineStyle(1, 0xdddddd);
+	}
 	
 }
 

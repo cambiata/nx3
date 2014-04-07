@@ -1,4 +1,5 @@
 package nx3;
+import nx3.VBeamFrame.VBeamframe;
 
 /**
  * ...
