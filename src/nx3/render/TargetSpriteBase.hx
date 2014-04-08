@@ -73,4 +73,11 @@ class TargetSpriteBase  implements ITarget
 		this.target.addChild(shape);		
 	}
 	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function getScaling():TScaling 
+	{
+		return this.scaling;
+	}
+	
 }
