@@ -28,13 +28,30 @@ using nx3.VMapTools;
 		 return this.direction = val;
 	 }
 	 
+	 var calculatedDirection:EDirectionUD;
+	 public function getCalculatedDirection():EDirectionUD
+	 {
+		 if (this.calculatedDirection == null) throw "direction is not calculated";
+		 return this.calculatedDirection;		 
+	 }
+	 
+	 public function setCalculatedDirection(direction:EDirectionUD)
+	 {
+		 this.calculatedDirection = direction;
+	 }
+	 
 	 
 	 var calculator :VBeamgroupFrameCalculator;
 	 var frame:VBeamframe;
 	 public function getFrame():VBeamframe
 	 {
 		 if (this.frame != null) return this.frame;
-		 if (this.direction == null) this.getDirection();
+		 if (this.calculatedDirection == null)
+		 {
+			 throw 'error';
+			 trace('direction should be calculated befor getting frame');
+			 this.calculatedDirection = this.getDirection();
+		 }
 		
 		 this.calculator = new VBeamgroupFrameCalculator(this);
 		 this.frame = calculator.getFrame();

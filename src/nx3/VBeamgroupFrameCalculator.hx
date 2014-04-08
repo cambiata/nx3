@@ -1,6 +1,7 @@
 package nx3;
+import nx3.EDirectionUD;
 import nx3.VBeamFrame.VBeamframe;
-
+using cx.ArrayTools;
 /**
  * ...
  * @author Jonas Nyström
@@ -28,18 +29,24 @@ import nx3.VBeamFrame.VBeamframe;
 	 {
 		 // TODO!
 		 var count = this.innerLevels.length;
+		 var tips = this.calcTips();
+		 
 		return {
 			leftInnerY : this.innerLevels[0],
 			leftOuterY : this.outerLevels[0],
 			rightInnerY : this.innerLevels[count - 1],
 			rightOuterY : this.outerLevels[count - 1],
+			leftTipY: tips.leftTip,
+			rightTipY: tips.rightTip,
+			outerLevels: this.outerLevels,
+			innerLevels: this.innerLevels,
 		}
 	 }
 
 	 function getTopLevels():Array<Int>
 	 {
 		 var levels:Array<Int> = [];
-		 for (vnote in this.beamgroup.vnotes) levels.push(vnote.nnote.getTopLevel());
+		 for (vnote in this.beamgroup.vnotes) levels.push( vnote.nnote.getTopLevel());
 		 return levels;
 	 }
 	 
@@ -52,16 +59,44 @@ import nx3.VBeamFrame.VBeamframe;
 	 
 	 function calcLevelArrays()
 	 {
-		 if (this.beamgroup.getDirection() == EDirectionUD.Up)
+		 switch this.beamgroup.getCalculatedDirection()
 		 {
-			 this.outerLevels = getTopLevels();
-			 this.innerLevels = getBottomLevels();
-		 } 
-		 else
-		 {
-			 this.outerLevels = getBottomLevels();
-			 this.innerLevels = getTopLevels();
+			 case EDirectionUD.Up:
+				 this.outerLevels = getTopLevels();
+				 this.innerLevels = getBottomLevels();				 
+			case EDirectionUD.Down:
+				 this.outerLevels = getBottomLevels();
+				 this.innerLevels = getTopLevels();			 
+			default:
+				throw "Shouldn happen";
 		 }
 	 }
 	 
+	 function calcTips():VFrameTips
+	 {
+		 var stemLenght = 7;
+		 var direction = this.beamgroup.getCalculatedDirection();
+		 var calculator = new VBamegroupFrameTipCalculator(this.outerLevels, direction);
+		 var tips = calculator.getTips();
+		 
+		 tips.leftTip = (direction == EDirectionUD.Up) ? tips.leftTip - stemLenght : tips.leftTip + stemLenght;
+		 tips.rightTip = (direction == EDirectionUD.Up) ? tips.rightTip - stemLenght : tips.rightTip + stemLenght;
+		 
+		 return tips;
+		 
+		 
+		 /*
+		 switch (this.beamgroup.getCalculatedDirection())
+		 {
+			 case EDirectionUD.Up:
+				 return { leftTip: this.outerLevels.first()- stemLenght, rightTip: this.outerLevels.last() -stemLenght } ;
+			case EDirectionUD.Down:
+				return { leftTip: this.outerLevels.first()+stemLenght, rightTip: this.outerLevels.last() +stemLenght } ;
+			default: throw "Should not happen";
+		 }
+		 */
+	 }
+	 
  }
+ 
+ 

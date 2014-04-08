@@ -4,4 +4,5 @@
 *.obj
 *.h
 *.cpp
+*.pdb
 

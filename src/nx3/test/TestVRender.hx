@@ -70,7 +70,6 @@ class TestVRender extends  TestCase
 	public function test0()
 	{
 		this.assertEquals(1, 1);
-		//this.renderer.notelines(10, 50, 300);
 	}
 	
 	
@@ -82,7 +81,14 @@ class TestVRender extends  TestCase
 			//new NPart([new QVoice([4], [ -1]), new QVoice([4], [0])]),
 			//new NPart([new QVoice([8], [-1, -1, 0, 0]), new QVoice([4], [0])]),
 			
-			new NPart([new QVoice([8, 8], [-1, 2])]),
+			new NPart([new QVoice([8, 8, 8, 8], [ -1, -1, 1, 1])]),
+			new NPart([	
+				new NVoice([
+					new QNote16([ -1, 0]), new QNote16([ 0, 1 ]),  new QNote16([ 1, 2 ]),  new QNote16([ 5, 7 ]),
+					new QNote16([ 0, 1]), new QNote16([ 0, 2 ]),  new QNote16([ 0, 3 ]),  new QNote16([ 0, 2 ]),
+					
+					])
+			]),
 
 			//new NPart([new QVoice([4], [0]) , new QVoice([8, 8, 8], [1, 1, 5], '..#')]),
 			//new NPart([new QVoice([8, 8, 8, 8], [0, 1, 2, 3])]),
@@ -314,15 +320,15 @@ class DevRenderer extends FrameRenderer
 			var beamgroupsDirections = vpart.getBeamgroupsDirections();			
 			var vnotesVComplexes = vpart.getVNotesVComplexes();
 			//var vcomplexes = vpart.getVComplexes();
-			for (beamgroups in vpart.getPartbeamgroups())
+			for (beamgroups in vpart.getVoicesBeamgroups())
 			{
-				var vvoiceIdx = vpart.getPartbeamgroups().index(beamgroups);
+				var vvoiceIdx = vpart.getVoicesBeamgroups().index(beamgroups);
 				for (beamgroup in beamgroups)
 				{
 					var beamgroupIdx = beamgroups.index(beamgroup);					
 					//var direction = beamgroupsDirections.get(beamgroup);					
 					var beamgroupPoints = new TPoints();
-					var direction:EDirectionUD = null;
+					var direction:EDirectionUD = beamgroup.getCalculatedDirection();
 					for (vnote in beamgroup.vnotes)
 					{
 						var vnoteIdx = beamgroup.vnotes.index(vnote);
@@ -331,16 +337,14 @@ class DevRenderer extends FrameRenderer
 						var colx = this.defaultX + pos * scaling.halfNoteWidth;												
 						var vvoice = vpart.getVVoices()[vvoiceIdx];
 						var vcomplex = vnotesVComplexes.get(vnote);
-						var directions = vpart.getVComplexDirections().get(vcomplex);
 						var noteComplexIdx = vcomplex.getVNotes().indexOf(vnote);
-						direction = directions[noteComplexIdx];
-						var stavesPos = vcomplex.getStavesBasicX(directions);
+						var stavesPos = vcomplex.getStavesBasicX(vpart.getVComplexDirections().get(vcomplex));
 						var stavePos = stavesPos[noteComplexIdx];
 						var point:TPoint = null;
 						point = { x:colx + stavePos.x*scaling.halfNoteWidth , y:party};
 						beamgroupPoints.push(point);
 					}
-					this.drawBeamgroup(this.target.graphics, beamgroup, beamgroupPoints, direction);
+					this.drawBeamgroup(this.target.graphics, beamgroup, beamgroupPoints, beamgroup.getCalculatedDirection());
 				}
 			}
 			party += this.partdistance;
@@ -419,21 +423,62 @@ class DevRenderer extends FrameRenderer
 		{
 			drawRectangleScaled(graphics, point.x, point.y, new Rectangle( -.5, -.5, 1, 1));
 		}
+		
 		var frame = beamgroup.getFrame();
+
+		var leftPoint = points.first();		
+		
+		var leftOuterY =  frame.leftOuterY * scaling.halfSpace;
+		var leftInnerY =  frame.leftInnerY * scaling.halfSpace;
+		var leftTipY =  frame.leftTipY * scaling.halfSpace;
+		
+		// left stave
+		this.target.graphics.lineStyle(2, 0x000000);
+		this.target.graphics.moveTo(leftPoint.x, leftPoint.y + leftInnerY);
+		this.target.graphics.lineTo(leftPoint.x, leftPoint.y + leftTipY);
 		
 		if (beamgroup.vnotes.length < 2) return;
-		
-		this.target.graphics.lineStyle(4, 0xFF00FF);
 
-		var leftPoint = points.first();
 		var rightPoint = points.last();
-		var leftOuterY = /* firstPoint.y +*/ frame.leftOuterY * scaling.halfSpace;
-		var rightOuterY  = /*lastPoint.y +*/ frame.rightOuterY * scaling.halfSpace;		
+		var rightOuterY  =  frame.rightOuterY * scaling.halfSpace;
+		var rightInnerY  =  frame.rightInnerY * scaling.halfSpace;
+		var rightTipY  =  frame.rightTipY * scaling.halfSpace;
+
+		// left stave
+		this.target.graphics.lineStyle(2, 0x000000);
+		this.target.graphics.moveTo(rightPoint.x, rightPoint.y + rightInnerY);
+		this.target.graphics.lineTo(rightPoint.x, rightPoint.y + rightTipY);
 		
+		// Outire
+		this.target.graphics.lineStyle(4, 0xFF00FF);
 		this.target.graphics.moveTo(leftPoint.x, leftPoint.y + leftOuterY);
 		this.target.graphics.lineTo(rightPoint.x, rightPoint.y + rightOuterY);
 
-		this.target.graphics.lineStyle(1, 0xdddddd);
+		// Inner
+		this.target.graphics.lineStyle(2, 0x00FFFF);		
+		this.target.graphics.moveTo(leftPoint.x, leftPoint.y + leftInnerY);
+		this.target.graphics.lineTo(rightPoint.x, rightPoint.y + rightInnerY);
+
+		this.target.graphics.lineStyle(2, 0xFF0000);		
+		this.target.graphics.moveTo(leftPoint.x, leftPoint.y + leftTipY);
+		this.target.graphics.lineTo(rightPoint.x, rightPoint.y + rightTipY);	
+		
+		if (beamgroup.vnotes.length < 3) return;
+		
+		for (i in 1...frame.outerLevels.length - 1)
+		{
+			var midPoint = points[i];
+			var midInnerY = frame.innerLevels[i] * scaling.halfSpace;
+			this.target.graphics.lineStyle(2, 0x000000);
+			this.target.graphics.moveTo(midPoint.x, midPoint.y + midInnerY);
+			
+			var delta:Float = (midPoint.x - leftPoint.x) / (rightPoint.x - leftPoint.x);
+			
+			var midTipY = leftTipY + (rightTipY - leftTipY) * delta;
+			
+			this.target.graphics.lineTo(midPoint.x, midPoint.y + midTipY);
+		}
+		
 	}
 	
 }

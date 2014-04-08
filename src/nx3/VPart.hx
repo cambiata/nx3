@@ -103,28 +103,50 @@ class VPart
 		return this.value;
 	}
 	
-	var partbeamgroups:VPartbeamgroups;
-	public function getPartbeamgroups(): VPartbeamgroups
+	var voicesbeamgroups:VoicesBeamgroups;
+	public function getVoicesBeamgroups(): VoicesBeamgroups
 	{
-		if (this.partbeamgroups != null) return this.partbeamgroups;
-		this.partbeamgroups = new VPartbeamgroups();
+		if (this.voicesbeamgroups != null) return this.voicesbeamgroups;
+		this.voicesbeamgroups = new VoicesBeamgroups();
 		for (vvoice in this.getVVoices())
 		{
-			this.partbeamgroups.push(vvoice.getBeamgroups());
+			this.voicesbeamgroups.push(vvoice.getBeamgroups());
 		}
-		return this.partbeamgroups;
+		
+		this.calculateBeamgropusDirections();
+		
+		return this.voicesbeamgroups;
 	}
+	
+	public function getVoiceBeamgroups(vvoice:VVoice)
+	{
+		if (this.voicesbeamgroups == null) this.getVoicesBeamgroups();
+		var voiceIdx = this.getVVoices().indexOf(vvoice);
+		return this.voicesbeamgroups[voiceIdx];		
+	}
+	
 	
 	var beamgroupsDirections:Map<VBeamgroup, EDirectionUD>;
 	public function getBeamgroupsDirections():Map<VBeamgroup, EDirectionUD>
 	{
 		if (this.beamgroupsDirections != null) return this.beamgroupsDirections;
-		if (this.partbeamgroups == null) this.getPartbeamgroups();
+		if (this.voicesbeamgroups == null) this.getVoicesBeamgroups();
 		
 		var calculator = new VPartbeamgroupsDirectionCalculator(this);
 		this.beamgroupsDirections = calculator.getBeamgroupsDirections();
 		return this.beamgroupsDirections;
 	}
+	
+	var caluclateBeamgropuDirectionsFlag:Bool = false;
+	public function calculateBeamgropusDirections(force:Bool=false):Void
+	{
+		if (this.caluclateBeamgropuDirectionsFlag == true && force == false) return;
+		var calculator = new VPartbeamgroupsDirectionCalculator(this);
+		calculator.calculateBeamgroupsDirections();		
+		this.caluclateBeamgropuDirectionsFlag = true;
+	}
+	
+	
 	
 	var vnotesVVoices:Map<VNote, VVoice>;
 	public function getVNotesVVoices():Map<VNote, VVoice>

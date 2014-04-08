@@ -4,6 +4,8 @@ import cx.ArrayTools;
 import cx.MathTools;
 import haxe.ds.IntMap.IntMap;
 import nx3.Constants;
+import nx3.QVoice;
+import nx3.VBamegroupFrameTipCalculator;
 import nx3.VBarColumnsGenerator;
 import nx3.EDirectionUAD;
 import nx3.EClef;
@@ -14,6 +16,12 @@ import nx3.EKey;
 import nx3.ENoteType;
 import nx3.ENoteVal;
 import nx3.ETime;
+import nx3.VBeamgroup;
+import nx3.VBeamgroupDirectionCalculator;
+import nx3.VBeamgroupFrameCalculator;
+import nx3.VNote;
+import nx3.VPart;
+import nx3.VPartComplexesGenerator;
 import nx3.VSystemGenerator;
 import nx3.ESign;
 import nx3.NHead;
@@ -24,6 +32,7 @@ import nx3.NVoice;
 import nx3.VBar;
 import nx3.geom.Rectangle;
 import nx3.QNote;
+import nx3.VVoice;
 
 using nx3.VMapTools;
 using cx.ArrayTools; 
@@ -45,6 +54,7 @@ using nx3.ENoteValTools;
 
 class TestV extends  haxe.unit.TestCase 
 {
+
 	public function testVNote1() 
 	{
 		var vnote = new VNote(new QNote([ 1, -2]));
@@ -422,6 +432,7 @@ class TestV extends  haxe.unit.TestCase
 		this.assertEquals(beamgroups.length, 6);
 		
 	}
+
 	
 	public function testBeamgroupDirection()
 	{
@@ -481,25 +492,55 @@ class TestV extends  haxe.unit.TestCase
 	
 	public function testBeamgroupCalculator()
 	{
-		var vnotes = [new VNote(new QNote8([-2, 2]))];
-		var calc = new VBeamgroupFrameCalculator(new VBeamgroup(vnotes));
+		//var vnotes = [new VNote(new QNote8([ -2, 2]))];
+		var vpart  = new VPart(new NPart([new NVoice([new QNote8([ -2, 2])   ])]));
+		var beamgroup = vpart.getVoiceBeamgroups(vpart.getVVoices().first()).first();		
+		var calc = new VBeamgroupFrameCalculator(beamgroup);
 		var frame = calc.getFrame();
 		this.assertEquals([-2].toString(), calc.getTopLevels().toString());
 		this.assertEquals([2].toString(), calc.getBottomLevels().toString());
-
-		var vnotes = [new VNote(new QNote8([-2, 4])), new VNote(new QNote8([5, -3]))];
-		var calc = new VBeamgroupFrameCalculator(new VBeamgroup(vnotes));
+		
+		//var vnotes = [new VNote(new QNote8([-2, 4])), new VNote(new QNote8([5, -3]))];
+		var vpart  = new VPart(new NPart([new NVoice([  new QNote8([-2, 4]), new QNote8([5, -3])   ])]));
+		var beamgroup = vpart.getVoiceBeamgroups(vpart.getVVoices().first()).first();		
+		var calc = new VBeamgroupFrameCalculator(beamgroup);
 		var frame = calc.getFrame();
 		this.assertEquals([-2, -3].toString(), calc.getTopLevels().toString());
 		this.assertEquals([4, 5].toString(), calc.getBottomLevels().toString());
 		
-		var vnotes = [new VNote(new QNote8([-2, 4])), new VNote(new QNote8([6])), new VNote(new QNote8([-4])), new VNote(new QNote8([-3, 5])), new VNote(new QNote8([0]))];
-		var calc = new VBeamgroupFrameCalculator(new VBeamgroup(vnotes));
-		var frame = calc.getFrame();
+		//var vnotes = [new VNote(new QNote8([ -2, 4])), new VNote(new QNote8([6])), new VNote(new QNote8([ -4])), new VNote(new QNote8([ -3, 5])), new VNote(new QNote8([0]))];		
+		var vpart  = new VPart(new NPart([new NVoice([  
+			new QNote8([ -2, 4]), 
+			new QNote8([6]),
+			new QNote8([ -4]),
+			new QNote8([ -3, 5]),
+			new QNote8([0]),
+		])]));
+		
+		var vnotes = vpart.getVVoices().first().getVNotes();
+		var beamgroup = new VBeamgroup(vnotes);
+		//var beamgroup = vpart.getVoiceBeamgroups(vpart.getVVoices().first()).first();		
+		beamgroup.setCalculatedDirection(EDirectionUD.Down);
+		var calc = new VBeamgroupFrameCalculator(beamgroup);
+		var frame = calc.getFrame();		
 		this.assertEquals([-2, 6, -4, -3, 0].toString(), calc.getTopLevels().toString());
 		this.assertEquals([4, 6, -4, 5, 0].toString(), calc.getBottomLevels().toString());
-
+		
 	}
+	
+	public function testPartBeamgroupCalculator()
+	{
+		var vpart = new VPart(new NPart([new QVoice([8, 8], [ 1, 1])]));
+		var beamgroups = vpart.getVoiceBeamgroups(vpart.getVVoices().first());
+		this.assertEquals(beamgroups.length, 1);
+		var beamgroup1 = beamgroups.first();
+		this.assertEquals(beamgroup1.getCalculatedDirection(), EDirectionUD.Up);
+		//var frame1 = beamgroup1.getFrame();
+		//trace(frame1);
+		
+		
+	}
+	
 	
 	public function testBeamgroupValue()
 	{
@@ -511,14 +552,21 @@ class TestV extends  haxe.unit.TestCase
 	
 	public function testBeamgroupFrame() 
 	{
-		var vnotes = [new VNote(new QNote8([ -2, 1])), new VNote(new QNote8([ -4, 3]))];
-		var beamgroup = new VBeamgroup(vnotes);
+		//var vnotes = [new VNote(new QNote8([ -2, 1])), new VNote(new QNote8([ -4, 3]))];
+		//var npart = new NPart([new NVoice([new QNote8([ -2, 1]), new QNote8([ -4, 3])]);
+		var vpart  = new VPart(new NPart([new NVoice([new QNote8([ -2, 1]), new QNote8([ -4, 3])   ])]));
+		//vpart.calculateBeamgropusDirections();
+		var voice0 = vpart.getVVoices().first();
+		var beamgroup = vpart.getVoiceBeamgroups(voice0).first();
 		var frame = beamgroup.getFrame();
 		this.assertEquals(EDirectionUD.Down, beamgroup.getDirection());
-		beamgroup.getFrame();
+		var frame = beamgroup.getFrame();
+		this.assertEquals(beamgroup.getCalculatedDirection(), EDirectionUD.Down);
 		this.assertEquals([1, 3].toString(), beamgroup.calculator.outerLevels.toString());
-		this.assertEquals([-2, -4].toString(), beamgroup.calculator.innerLevels.toString());
+		this.assertEquals([ -2, -4].toString(), beamgroup.calculator.innerLevels.toString());
+		//this.assertEquals(frame.
 
+		/*
 		// OBS TODO!
 		this.assertEquals(-2, frame.leftInnerY);
 		this.assertEquals(1, frame.leftOuterY);
@@ -538,7 +586,100 @@ class TestV extends  haxe.unit.TestCase
 		this.assertEquals(-2, frame.leftOuterY);
 		this.assertEquals(3, frame.rightInnerY);
 		this.assertEquals(-4, frame.rightOuterY);
+		*/
 	}
+	
+	public function testFrameTipCalculator()
+	{
+		
+		var tips = new VBamegroupFrameTipCalculator( [0,0], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 0);
+		
+		var tips = new VBamegroupFrameTipCalculator( [8, 0], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 2);
+		this.assertEquals(tips.rightTip, 0);
+		
+		var tips = new VBamegroupFrameTipCalculator( [0, 8], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 2);
+		
+		
+		var tips = new VBamegroupFrameTipCalculator( [0, 0, 0], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 0);		
+		
+		var tips = new VBamegroupFrameTipCalculator( [8, 0, 0], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 0);				
+		
+		var tips = new VBamegroupFrameTipCalculator( [0, 0, 8], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 0);						
+		
+		var tips = new VBamegroupFrameTipCalculator( [8, 0, 8], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 0);			
+		
+		var tips = new VBamegroupFrameTipCalculator( [3, 3, 0], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 2);
+		this.assertEquals(tips.rightTip, 0);				
+
+		var tips = new VBamegroupFrameTipCalculator( [2, 2, 0], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 2);
+		this.assertEquals(tips.rightTip, 0);			
+		
+		var tips = new VBamegroupFrameTipCalculator( [1, 1, 0], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 1);
+		this.assertEquals(tips.rightTip, 0);					
+		
+		var tips = new VBamegroupFrameTipCalculator( [0, 1, 1], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 1);				
+		
+		var tips = new VBamegroupFrameTipCalculator( [0, 2, 2], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 2);			
+		
+		var tips = new VBamegroupFrameTipCalculator( [0, 3, 3], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 2);					
+				
+		var tips = new VBamegroupFrameTipCalculator( [8, 8, 8], EDirectionUD.Up).getTips();
+		this.assertEquals(tips.leftTip, 7);
+		this.assertEquals(tips.rightTip, 7);				
+		
+		//-----------------------------------------------
+		
+		var tips = new VBamegroupFrameTipCalculator( [0, 0, 0], EDirectionUD.Down).getTips();		
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 0);				
+		
+		var tips = new VBamegroupFrameTipCalculator( [-8, -8,  -8], EDirectionUD.Down).getTips();		
+		this.assertEquals(tips.leftTip, -7);
+		this.assertEquals(tips.rightTip, -7);			
+		
+		var tips = new VBamegroupFrameTipCalculator( [0, -2, -2], EDirectionUD.Down).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, -2);				
+		
+		var tips = new VBamegroupFrameTipCalculator( [-8, 0, -8], EDirectionUD.Down).getTips();
+		this.assertEquals(tips.leftTip, 0);
+		this.assertEquals(tips.rightTip, 0);			
+		
+		/*
+		var tips = new VBamegroupFrameTipCalculator( [0, 0, 0, 8], EDirectionUD.Up).getTips();
+		trace(tips);		
+
+		
+		
+		var tips = new VBamegroupFrameTipCalculator( [1, 2, 3, 4], EDirectionUD.Up).getTips();
+		trace(tips);		
+		*/
+		
+	}
+	
+	
 	
 	public function testNotesBeamgroups()
 	{
@@ -939,9 +1080,9 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([.2, 4]),
 		]));
 		
-		this.assertEquals(vpart.getPartbeamgroups().length, 2);
-		this.assertEquals(vpart.getPartbeamgroups().first().length, 3);
-		this.assertEquals(vpart.getPartbeamgroups().second().length, 2);
+		this.assertEquals(vpart.getVoicesBeamgroups().length, 2);
+		this.assertEquals(vpart.getVoicesBeamgroups().first().length, 3);
+		this.assertEquals(vpart.getVoicesBeamgroups().second().length, 2);
 	}
 	
 	public function testPartbeamgroupsDirectionsOneVoice()
@@ -950,7 +1091,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([8,8,8,8,8,8], [0,0,1,1,-2,-2]),
 		]));
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();
+		var partbeamgroups = vpart.getVoicesBeamgroups();
 		this.assertEquals(partbeamgroups.length, 1);
 		this.assertEquals(partbeamgroups.first().length, 3);
 		var beamgroups = partbeamgroups.first();
@@ -962,7 +1103,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([8,8,8,8,8,8], [0,0,1,1,-2,-2], EDirectionUAD.Up),
 		]));
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();
+		var partbeamgroups = vpart.getVoicesBeamgroups();
 		this.assertEquals(partbeamgroups.length, 1);
 		this.assertEquals(partbeamgroups.first().length, 3);
 		var beamgroups = partbeamgroups.first();
@@ -978,7 +1119,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([8,8], [1, 1]),
 		]));	
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();		
+		var partbeamgroups = vpart.getVoicesBeamgroups();		
 		var beamgroups0 = partbeamgroups.first();
 		var beamgroups1 = partbeamgroups.second();
 		this.assertEquals(beamgroups0.length, 2);
@@ -992,7 +1133,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([8, 8, 8, 8], [ 1,1,1,1]),
 		]));	
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();		
+		var partbeamgroups = vpart.getVoicesBeamgroups();		
 		var beamgroups0 = partbeamgroups.first();
 		var beamgroups1 = partbeamgroups.second();
 		this.assertEquals(beamgroups0.length, 1);
@@ -1006,7 +1147,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([4], [1]),
 		]));	
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();		
+		var partbeamgroups = vpart.getVoicesBeamgroups();		
 		var beamgroups0 = partbeamgroups.first();
 		var beamgroups1 = partbeamgroups.second();
 		this.assertEquals(beamgroups0.length, 2);
@@ -1020,7 +1161,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([.4], [1]),
 		]));	
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();		
+		var partbeamgroups = vpart.getVoicesBeamgroups();		
 		var beamgroups0 = partbeamgroups.first();
 		var beamgroups1 = partbeamgroups.second();
 		this.assertEquals(beamgroups0.length, 2);
@@ -1034,7 +1175,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([.4, 8], [1, 1]),
 		]));	
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();		
+		var partbeamgroups = vpart.getVoicesBeamgroups();		
 		var beamgroups0 = partbeamgroups.first();
 		var beamgroups1 = partbeamgroups.second();
 		this.assertEquals(beamgroups0.length, 2);
@@ -1049,7 +1190,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([.4, 8, 8], [1, 1, 1]),
 		]));	
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();		
+		var partbeamgroups = vpart.getVoicesBeamgroups();		
 		var beamgroups0 = partbeamgroups.first();
 		var beamgroups1 = partbeamgroups.second();
 		this.assertEquals(beamgroups0.length, 2);
@@ -1061,7 +1202,7 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([.4, 8, 8], [1, 1, 1]),
 		]));	
 		var beamgroupsDirections = vpart.getBeamgroupsDirections();
-		var partbeamgroups = vpart.getPartbeamgroups();		
+		var partbeamgroups = vpart.getVoicesBeamgroups();		
 		var beamgroups0 = partbeamgroups.first();
 		var beamgroups1 = partbeamgroups.second();
 		this.assertEquals(beamgroups0.length, 3);

@@ -10,4 +10,8 @@ typedef VBeamframe =
 	leftInnerY:Int,
 	rightOuterY:Int,
 	rightInnerY:Int,
+	leftTipY:Int,
+	rightTipY:Int,
+	outerLevels:Array<Int>,
+	innerLevels:Array<Int>,
 }
