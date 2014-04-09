@@ -17,14 +17,11 @@ class TestTarget
 	
 	public function test()
 	{
-		this.target.testLines(0, 0, 200);
-		this.target.testSymbol(20, 0);		
-		this.target.testSymbol(60,0, Elements.clefG);		
-		this.target.testSymbol(120,0, Elements.clefC);		
-		this.target.testLines(0, 100, 200);
-		this.target.testSymbol(20, 100);		
-		this.target.testSymbol(60,100, Elements.clefG);		
-		this.target.testSymbol(120,100, Elements.clefC);		
+		this.target.testLines(0, 80, 240);
+		this.target.testSymbol(20, 80);		
+		this.target.testSymbol(60,80, Elements.clefG);		
+		this.target.testSymbol(120,80, Elements.clefC);		
+		this.target.testSymbol(180,80, Elements.clefF);		
 	}	
 	
 	

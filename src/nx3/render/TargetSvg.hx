@@ -1,13 +1,15 @@
 package nx3.render;
 import nx3.EDirectionUD;
+import nx3.TPoints;
+import nx3.VBeamgroup;
 import nx3.VNote;
 import nx3.geom.Rectangles;
 
-import flash.geom.Rectangle;
+import nx3.geom.Rectangle;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.Elements;
 import snap.Snap;
-
+using nx3.ENoteValTools;
 /**
  * ...
  * @author Jonas Nyström
@@ -82,7 +84,7 @@ class TargetSvg implements ITarget
 	        stroke: "none",
     	});		
 
-		y = y  + this.scaling.svgY; // * this.scaling.svgScale;
+		y = y  + this.scaling.svgY + 1+scaling.halfSpace; // * this.scaling.svgScale;
 		x = x + this.scaling.svgX; // * 1; // + this.scaling.svgX * this.scaling.svgScale;
 
 		var g:SnapElement = this.snap.el('svg', {
@@ -94,11 +96,6 @@ class TargetSvg implements ITarget
 		var sc =  this.scaling.svgScale;
 		p.transform('matrix($sc,0,0,$sc,0,0)');
 		//p.transform('matrix(1, .5, 2, .5, .5)');
-		
-		
-		
-		
-		//trace(xmlStr);
 	}
 	
 	/* INTERFACE nx3.render.ITarget */
@@ -108,12 +105,24 @@ class TargetSvg implements ITarget
 		return this.scaling;
 	}
 	
-	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int):Void 
+	public function rect(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int):Void 
+	{
+		var r:SnapElement = this.snap.rect(x + rect.x , y + rect.y, rect.width, rect.height);
+		r.attr( {
+				fill: 'none',
+				stroke: "#000",
+				strokeWidth: lineWidth,
+			});				
+	}	
+	
+	
+	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
 	{
 		var r:SnapElement = this.snap.rect(x + rect.x * scaling.halfNoteWidth, y + rect.y * scaling.halfSpace, rect.width * scaling.halfNoteWidth, rect.height * scaling.halfSpace);
 		r.attr( {
+				fill: 'none',
 				stroke: "#000",
-				strokeWidth: scaling.linesWidth,
+				strokeWidth: lineWidth * scaling.linesWidth,
 			});		
 	}
 	
@@ -121,36 +130,46 @@ class TargetSvg implements ITarget
 	{
 		for (rect in rects) this.rectangle(x, y, rect, lineWidth, lineColor);
 	}
-	
-	public function heads(x:Float, y:Float, vnote:VNote, direction:EDirectionUD):Void 
+
+	public function line(x:Float, y:Float, x2:Float, y2:Float, ?lineWidth:Float, ?lineColor:Int):Void 
 	{
+		this.snap.line(x, y, x2, y2).attr( {
+				stroke: "#000",
+				strokeWidth: lineWidth * scaling.linesWidth,			
+		});
 		
 	}
+	
 
-	/*
-	public function testSymbol(x:Float, y:Float)
+	
+	public function shape(x, y, xmlStr:String):Void 
 	{
+		var xml = Xml.parse(xmlStr);
+		var gPathD = xml.firstElement().firstChild().firstChild().get('d');
+		trace(gPathD);		
 		
-	}
-	*/
+		
+		var p:SnapElement = this.snap.path(gPathD).attr({
+	        fill: "#000000",
+	        stroke: "none",
+    	});		
 
-	/*
-	function drawShape(shape:Shape, x:Float, y:Float, rect:Rectangle)
-	{
-		if (shape == null) return;
-		shape.x = x + rect.x * scaling.halfNoteWidth + scaling.svgX;
-		shape.y = y + rect.y * scaling.halfSpace + scaling.svgY;
-		this.target.addChild(shape);
-	}	
-	*/
-	
-	
-	/*
-	public function getHtml():String
-	{
-		var html = '<!DOCTYPE html><html lang="en"><head>	<meta charset="utf-8"/>	<title>_nx3-examples</title>	<meta name="description" content="" />	<script src="snap.svg.js"></script></head><body>		  <svg id="{$this.targetDivId}" style="width:500px;height:500px;background:green;">	  </svg>		<script src="{this.jsFileName}"></script>	<script>	</script></body></html>';
-		return html;
+		y = y  + this.scaling.svgY; // * this.scaling.svgScale;
+		x = x + this.scaling.svgX; // * 1; // + this.scaling.svgX * this.scaling.svgScale;
+
+		var g:SnapElement = this.snap.el('svg', {
+			x:x,
+			y:y,
+			});
+		g.append(p);
+		
+		var sc =  this.scaling.svgScale;
+		p.transform('matrix($sc,0,0,$sc,0,0)');		
 	}
-	*/
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+
+
 	
 }

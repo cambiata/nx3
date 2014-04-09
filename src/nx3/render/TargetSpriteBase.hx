@@ -1,10 +1,12 @@
 package nx3.render;
 import nx3.EDirectionUD;
 import nx3.geom.Rectangles;
+import nx3.geom.Rectangle;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.Elements;
 import nx3.render.svg.ShapeTools;
-import nx3.geom.Rectangle;
+import nx3.TPoints;
+import nx3.VBeamgroup;
 import nx3.VNote;
 
 
@@ -25,7 +27,7 @@ import flash.Lib;
 #end
 
 using nx3.ENoteValTools;
-
+using cx.ArrayTools;
 /**
  * ...
  * @author Jonas Nyström
@@ -77,7 +79,7 @@ class TargetSpriteBase  implements ITarget
 		this.target.addChild(shape);		
 	}
 
-	public function rectangle(x:Float, y:Float, rect:Rectangle, lineWidth:Float=1, lineColor:Int=0x000000):Void 
+	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
 	{ 
 		this.target.graphics.lineStyle(lineWidth, lineColor);
 		this.target.graphics.drawRect(x+ rect.x*scaling.halfNoteWidth, y+rect.y*scaling.halfSpace, rect.width*scaling.halfNoteWidth, rect.height*scaling.halfSpace);
@@ -97,6 +99,7 @@ class TargetSpriteBase  implements ITarget
 	
 	/* INTERFACE nx3.render.ITarget */
 	
+	/*
 	public function heads(x:Float, y:Float, vnote:VNote, direction:EDirectionUD):Void 
 	{
 		var xmlStr:String = null;
@@ -110,9 +113,27 @@ class TargetSpriteBase  implements ITarget
 		
 		for (rect in vnote.getVHeadsRectanglesDir(direction))
 		{
-			var shape:Shape = ShapeTools.getShape(xmlStr, this.scaling);
+			
 			drawShape(shape, x, y, rect);
 		}				
+	}
+	*/
+	
+	public function line(x:Float, y:Float, x2:Float, y2:Float, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
+	{
+		this.target.graphics.lineStyle(lineWidth*scaling.linesWidth, lineColor);
+		this.target.graphics.moveTo(x, y);
+		this.target.graphics.lineTo(x2, y2);
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function shape(x:Float, y:Float, xmlStr:String):Void 
+	{
+		var shape:Shape = ShapeTools.getShape(xmlStr, this.scaling);
+		shape.x = x;
+		shape.y = y + scaling.svgY;
+		this.target.addChild(shape);		
 	}
 	
 	function drawShape(shape:Shape, x:Float, y:Float, rect:Rectangle)
