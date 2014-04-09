@@ -29,6 +29,9 @@ package nx3.render;
 	
 	/* INTERFACE nx3.render.ITarget */
 	
+	
+	/* INTERFACE nx3.render.ITarget */
+	
 
 	
 	/* INTERFACE nx3.render.ITarget */

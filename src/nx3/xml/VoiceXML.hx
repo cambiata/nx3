@@ -1,10 +1,10 @@
 package nx3.xml;
 import cx.EnumTools;
-import nx3.elements.EDirectionUAD;
-import nx3.elements.NNote;
-import nx3.elements.NVoice;
-import nx3.elements.EDirectionUD;
-import nx3.elements.EVoiceType;
+import nx3.EDirectionUAD;
+import nx3.NNote;
+import nx3.NVoice;
+import nx3.EDirectionUD;
+import nx3.EVoiceType;
 
 /**
  * ...

@@ -49,16 +49,17 @@ class Main extends Sprite
 		testTarget.test();		
 		var s = target.getTarget();
 		this.stage.addChild(s);
-
+		var r = new Renderer(target, 10, 200);
+		r.renderBar(TestTarget.testBar1());	
+		
 		var target = new TargetOpenFl(null, Scaling.BIG);
 		var testTarget = new TestTarget(target);
 		testTarget.test();		
 		var s = target.getTarget();
 		s.x = 300;
 		this.stage.addChild(s);		
-		
-			var r = new Renderer(target, 200, 200);
-		r.renderBar(r.getTestVBar());	
+		var r = new Renderer(target, 200, 200);
+		r.renderBar(TestTarget.testBar1());	
 
 	}
 

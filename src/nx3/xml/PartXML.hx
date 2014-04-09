@@ -1,12 +1,12 @@
 package nx3.xml;
 import cx.EnumTools;
-import nx3.elements.EClef;
-import nx3.elements.EDisplayALN;
-import nx3.elements.EKey;
-import nx3.elements.EKey.EKey;
-import nx3.elements.EPartType;
-import nx3.elements.NPart;
-import nx3.elements.NVoice;
+import nx3.EClef;
+import nx3.EDisplayALN;
+import nx3.EKey;
+import nx3.EKey.EKey;
+import nx3.EPartType;
+import nx3.NPart;
+import nx3.NVoice;
 
 /**
  * ...
@@ -61,15 +61,19 @@ class PartXML
 				xml.set(XPART_CLEFDISPLAY, Std.string(part.clefDisplay));			
 		}
 		
+		
 		// key
+		trace('levelshift');
+		/*
 		switch(part.key.levelShift)
 		{
 			case 0:
 				// Nothing for Natural
 			default:
-				xml.set(XPART_KEY, Std.string(part.key.levelShift));			
+				
+				//xml.set(XPART_KEY, Std.string(part.key.levelShift));			
 		}
-		
+		*/
 		// key display
 		switch(part.keyDisplay)
 		{
@@ -107,7 +111,9 @@ class PartXML
 		
 		// key
 		var str = xml.get(XPART_KEY);
-		var key:EKey = (str == null) ? EKey.Natural : new EKey(Std.parseInt(str));
+		trace('part key');
+		var key = EKey.Natural;
+		//var key:EKey = (str == null) ? EKey.Natural : new EKey(Std.parseInt(str));
 		
 		// keyDisplay
 		var keyDisplayStr = xml.get(XPART_KEYDISPLAY);

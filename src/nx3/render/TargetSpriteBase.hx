@@ -79,6 +79,13 @@ class TargetSpriteBase  implements ITarget
 		this.target.addChild(shape);		
 	}
 
+	public function rect(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int):Void 
+	{
+		this.target.graphics.lineStyle(lineWidth, lineColor);
+		this.target.graphics.drawRect(x+ rect.x, y+rect.y, rect.width, rect.height);		
+	}
+	
+	
 	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
 	{ 
 		this.target.graphics.lineStyle(lineWidth, lineColor);

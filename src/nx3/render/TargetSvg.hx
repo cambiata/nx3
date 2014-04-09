@@ -76,7 +76,6 @@ class TargetSvg implements ITarget
 		if (xmlStr == null) xmlStr = Elements.noteWhite;
 		var xml = Xml.parse(xmlStr);
 		var gPathD = xml.firstElement().firstChild().firstChild().get('d');
-		trace(gPathD);		
 		
 		
 		var p:SnapElement = this.snap.path(gPathD).attr({
@@ -146,7 +145,6 @@ class TargetSvg implements ITarget
 	{
 		var xml = Xml.parse(xmlStr);
 		var gPathD = xml.firstElement().firstChild().firstChild().get('d');
-		trace(gPathD);		
 		
 		
 		var p:SnapElement = this.snap.path(gPathD).attr({

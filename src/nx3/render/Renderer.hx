@@ -143,21 +143,8 @@ class Renderer
 			}
 			party += this.partDistance;
 			vpartIdx++;
+			vpartIdx++;
 		}		
-	}
-	
-	public function getTestVBar():VBar
-	{
-		var vbar = new VBar(new NBar([
-			new NPart([new QVoice([8, 8, 8, 8], [ -1, -2, 1, 1])]),
-			new NPart([	
-				new NVoice([
-					new QNote16([ -1, 0]), new QNote16([ 0, 1 ]),  new QNote16([ 1, 2 ]),  new QNote16([ 5, 7 ]),
-					new QNote16([ 0, 1]), new QNote16([ 0, 2 ]),  new QNote16([ 0, 3 ]),  new QNote16([ 0, 2 ]),
-					])
-			]),
-		]));				
-		return vbar;
 	}
 	
 	public function heads(x:Float, y:Float, vnote:VNote, direction:EDirectionUD):Void 

@@ -1,17 +1,17 @@
 package nx3.xml;
 import cx.EnumTools;
-import nx3.elements.ETime;
-import nx3.elements.NBar;
-import nx3.elements.EDisplayALN;
-import nx3.elements.EBarType;
-import nx3.elements.NPart;
+import nx3.ETime;
+import nx3.NBar;
+import nx3.EDisplayALN;
+import nx3.EBarType;
+import nx3.NPart;
 
 /**
  * ...
  * @author Jonas Nyström
  */
-using nx3.io.PartXML;
-using nx3.elements.ETime.ETimeUtils;
+using nx3.xml.PartXML;
+using nx3.ETime.ETimeUtils;
  
 class BarXML
 {

@@ -80,7 +80,7 @@ class TestVRender extends  TestCase
 			//new NPart([new QVoice([2, 8,8,4], [0, 0, 1, -1], '...b'),]),
 			//new NPart([new QVoice([4], [ -1]), new QVoice([4], [0])]),
 			//new NPart([new QVoice([8], [-1, -1, 0, 0]), new QVoice([4], [0])]),
-			
+			/*
 			new NPart([new QVoice([8, 8, 8, 8], [ -1, -1, 1, 1])]),
 			new NPart([	
 				new NVoice([
@@ -89,9 +89,9 @@ class TestVRender extends  TestCase
 					
 					])
 			]),
-
-			//new NPart([new QVoice([4], [0]) , new QVoice([8, 8, 8], [1, 1, 5], '..#')]),
-			//new NPart([new QVoice([8, 8, 8, 8], [0, 1, 2, 3])]),
+			*/
+			new NPart([new QVoice([4], [0]) , new QVoice([8, 8, 8], [1, 1, 4], '..#')]),
+			new NPart([new QVoice([8, 8, 8, 8], [0, 1, 2, 3], 'b')]),
 		]));
 		
 		this.renderer.setDefaultXY(500, 80);
@@ -299,9 +299,9 @@ class DevRenderer extends FrameRenderer
 				this.drawRectanglesScaled(this.target.graphics, colx, party, staverects);
 				
 				var signsrects = vcomplex.getSignsRects(noterects);
-				//this.drawRectanglesScaled(this.target.graphics, colx, party, signsrects);
+				this.drawRectanglesScaled(this.target.graphics, colx, party, signsrects);
 				var dotrects = vcomplex.getDotsRects(noterects, directions);				
-				//this.drawRectanglesScaled(this.target.graphics, colx, party, dotrects);
+				this.drawRectanglesScaled(this.target.graphics, colx, party, dotrects);
 			}
 			
 			party += this.partdistance;
