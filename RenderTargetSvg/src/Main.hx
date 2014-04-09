@@ -22,9 +22,9 @@ class Main
 			var r = new Renderer(target, 10, 240);
 			r.renderBar(TestTarget.testBar1());				
 			
-			var vbar = TestTarget.testBar1();
-			var barxml = BarXML.toXml(vbar.nbar).toString();
-			trace(barxml);
+			//var vbar = TestTarget.testBar1();
+			//var barxml = BarXML.toXml(vbar.nbar).toString();
+			//trace(barxml);
 		
 			var target = new TargetSvg('#normal', Scaling.NORMAL);
 			var testTarget = new TestTarget(target);

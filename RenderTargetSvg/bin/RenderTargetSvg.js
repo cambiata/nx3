@@ -84,9 +84,6 @@ Main.main = function() {
 	testTarget.test();
 	var r = new nx3.render.Renderer(target,10,240);
 	r.renderBar(nx3.render.TestTarget.testBar1());
-	var vbar = nx3.render.TestTarget.testBar1();
-	var barxml = nx3.xml.BarXML.toXml(vbar.nbar).toString();
-	console.log(barxml);
 	var target1 = new nx3.render.TargetSvg("#normal",nx3.render.scaling.Scaling.NORMAL);
 	var testTarget1 = new nx3.render.TestTarget(target1);
 	testTarget1.test();
@@ -5157,3 +5154,5 @@ nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
 nx3.xml.VoiceXML.XVOICE_DIRECTION = "direction";
 Main.main();
 })();
+
+//# sourceMappingURL=RenderTargetSvg.js.map

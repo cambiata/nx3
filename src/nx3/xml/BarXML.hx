@@ -24,7 +24,7 @@ class BarXML
 	{
 		var xml:Xml = Xml.createElement(XBAR);		
 		
-		trace(bar.nparts.length);
+		//trace(bar.nparts.length);
 		
 		// parts
 		for (part in bar.nparts)
@@ -43,6 +43,7 @@ class BarXML
 		}
 		
 		// time
+		if (bar.time != null)
 		switch (bar.time)
 		{
 			case ETime.Time4_4:

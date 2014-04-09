@@ -59,7 +59,7 @@ class HeadXML
 		return xml;
 	}
 	
-	static public var XHEAD  = 'head';
+	static public var XHEAD  = 'headx';
 	static public var XHEAD_TYPE = 'type';
 	static public var XHEAD_LEVEL = 'level';
 	static public var XHEAD_SIGN = 'sign';

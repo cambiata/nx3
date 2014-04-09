@@ -43,7 +43,8 @@ class PartXML
 				xml.set(XPART_TYPE, Std.string(part.type));				
 		}
 		
-		// clef
+		// clef		
+		if (part.clef != null)
 		switch(part.clef)
 		{			
 			case EClef.ClefG:
@@ -63,7 +64,7 @@ class PartXML
 		
 		
 		// key
-		trace('levelshift');
+		//trace('levelshift');
 		/*
 		switch(part.key.levelShift)
 		{
@@ -111,7 +112,7 @@ class PartXML
 		
 		// key
 		var str = xml.get(XPART_KEY);
-		trace('part key');
+		//trace('part key');
 		var key = EKey.Natural;
 		//var key:EKey = (str == null) ? EKey.Natural : new EKey(Std.parseInt(str));
 		
