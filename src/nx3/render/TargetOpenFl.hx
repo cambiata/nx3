@@ -7,6 +7,8 @@ package nx3.render;
 
  import flash.display.Graphics;
  import flash.display.Sprite;
+ import flash.geom.Rectangle;
+ import nx3.geom.Rectangles;
  import nx3.render.scaling.TScaling;
 
  class TargetOpenFl extends TargetSpriteBase implements ITarget
@@ -24,6 +26,14 @@ package nx3.render;
 	{
 		return this.scaling;
 	}	
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+
 	
 	
 }

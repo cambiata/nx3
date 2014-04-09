@@ -57,9 +57,9 @@ class Main extends Sprite
 		s.x = 300;
 		this.stage.addChild(s);		
 		
-		
-		var r = new Renderer(target, 200, 200);
-		r.renderBar(r.getTestVBar());
+			var r = new Renderer(target, 200, 200);
+		r.renderBar(r.getTestVBar());	
+
 	}
 
 	/* SETUP */

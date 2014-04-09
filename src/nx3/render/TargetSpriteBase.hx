@@ -1,7 +1,11 @@
 package nx3.render;
+import nx3.EDirectionUD;
+import nx3.geom.Rectangles;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.Elements;
 import nx3.render.svg.ShapeTools;
+import nx3.geom.Rectangle;
+import nx3.VNote;
 
 
 #if (nme)
@@ -20,7 +24,7 @@ import flash.display.Graphics;
 import flash.Lib;
 #end
 
-
+using nx3.ENoteValTools;
 
 /**
  * ...
@@ -72,6 +76,17 @@ class TargetSpriteBase  implements ITarget
 		shape.y = y + /*rect.y * scaling.halfSpace +*/ scaling.svgY;	
 		this.target.addChild(shape);		
 	}
+
+	public function rectangle(x:Float, y:Float, rect:Rectangle, lineWidth:Float=1, lineColor:Int=0x000000):Void 
+	{ 
+		this.target.graphics.lineStyle(lineWidth, lineColor);
+		this.target.graphics.drawRect(x+ rect.x*scaling.halfNoteWidth, y+rect.y*scaling.halfSpace, rect.width*scaling.halfNoteWidth, rect.height*scaling.halfSpace);
+	}	
+
+	public function rectangles(x:Float, y:Float, rects:Rectangles, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
+	{
+			for (rect in rects) this.rectangle(x, y, rect, lineWidth, lineColor);
+	}	
 	
 	/* INTERFACE nx3.render.ITarget */
 	
@@ -79,5 +94,33 @@ class TargetSpriteBase  implements ITarget
 	{
 		return this.scaling;
 	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function heads(x:Float, y:Float, vnote:VNote, direction:EDirectionUD):Void 
+	{
+		var xmlStr:String = null;
+
+		switch (vnote.nnote.value.head())
+		{
+			case EHeadValueType.HVT1: xmlStr = Elements.noteWhole;
+			case EHeadValueType.HVT2: xmlStr = Elements.noteWhite;
+			default: xmlStr = Elements.noteBlack;
+		}
+		
+		for (rect in vnote.getVHeadsRectanglesDir(direction))
+		{
+			var shape:Shape = ShapeTools.getShape(xmlStr, this.scaling);
+			drawShape(shape, x, y, rect);
+		}				
+	}
+	
+	function drawShape(shape:Shape, x:Float, y:Float, rect:Rectangle)
+	{
+		if (shape == null) return;
+		shape.x = x + rect.x * scaling.halfNoteWidth + scaling.svgX;
+		shape.y = y + rect.y * scaling.halfSpace + scaling.svgY;
+		this.target.addChild(shape);
+	}		
 	
 }

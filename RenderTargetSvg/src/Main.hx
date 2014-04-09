@@ -21,5 +21,8 @@ class Main
 			var target = new TargetSvg('#big', Scaling.BIG);
 			var testTarget = new TestTarget(target);
 			testTarget.test();					
+			
+			var r = new Renderer(target, 200, 200);
+			r.renderBar(r.getTestVBar());			
 	}	
 }

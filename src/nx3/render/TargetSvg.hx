@@ -1,5 +1,9 @@
 package nx3.render;
+import nx3.EDirectionUD;
+import nx3.VNote;
+import nx3.geom.Rectangles;
 
+import flash.geom.Rectangle;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.Elements;
 import snap.Snap;
@@ -95,6 +99,32 @@ class TargetSvg implements ITarget
 		
 		
 		//trace(xmlStr);
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function getScaling():TScaling 
+	{
+		return this.scaling;
+	}
+	
+	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int):Void 
+	{
+		var r:SnapElement = this.snap.rect(x + rect.x * scaling.halfNoteWidth, y + rect.y * scaling.halfSpace, rect.width * scaling.halfNoteWidth, rect.height * scaling.halfSpace);
+		r.attr( {
+				stroke: "#000",
+				strokeWidth: scaling.linesWidth,
+			});		
+	}
+	
+	public function rectangles(x:Float, y:Float, rects:Rectangles, ?lineWidth:Float, ?lineColor:Int):Void 
+	{
+		for (rect in rects) this.rectangle(x, y, rect, lineWidth, lineColor);
+	}
+	
+	public function heads(x:Float, y:Float, vnote:VNote, direction:EDirectionUD):Void 
+	{
+		
 	}
 
 	/*
