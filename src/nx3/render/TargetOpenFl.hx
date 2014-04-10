@@ -20,7 +20,12 @@ package nx3.render;
 		super(target, scaling);
 	}
 	
-	public function getTarget():Sprite return this.target;
+	public function getTargetSprite(x:Float = 0, y:Float = 0):Sprite 
+	{
+		this.target.x = x;
+		this.target.y = y;
+		return this.target;
+	}
 	
 	override public function getScaling():TScaling 
 	{

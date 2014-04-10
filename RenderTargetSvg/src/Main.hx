@@ -18,19 +18,18 @@ class Main
 	static function main() 
 	{
 			var target = new TargetSvg('#small', Scaling.SMALL);
-			var r = new Renderer(target, 10, 240);
-			r.renderBar(TestBars.testBar1());				
+			var r = new Renderer(target, 10, 80);
+			r.renderBar(TestBars.testBar1(), 10, 80);				
+			r.renderBar(TestBars.testBarSigns(), 10, 400);				
 			
-			//var vbar = TestTarget.testBar1();
-			//var barxml = BarXML.toXml(vbar.nbar).toString();
-			//trace(barxml);
-		
 			var target = new TargetSvg('#normal', Scaling.NORMAL);
-			var r = new Renderer(target, 10, 240);
+			var r = new Renderer(target, 10, 80);
 			r.renderBar(TestBars.testBar1());				
+			r.renderBar(TestBars.testBarSigns(), 10, 400);				
 			
 			var target = new TargetSvg('#big', Scaling.BIG);
-			var r = new Renderer(target, 10, 240);
+			var r = new Renderer(target, 10, 80);
 			r.renderBar(TestBars.testBar1());			
+			r.renderBar(TestBars.testBarSigns(), 10, 400);				
 	}	
 }

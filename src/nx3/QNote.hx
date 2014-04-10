@@ -70,7 +70,7 @@ class QNote8 extends QNote
 {
 	public function new(?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
 	{
-		super(headLevel, headLevels, ENoteVal.Nv8);
+		super(headLevel, headLevels, ENoteVal.Nv8, signs);
 	}
 }
 
@@ -78,7 +78,7 @@ class QNote16 extends QNote
 {
 	public function new(?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
 	{
-		super(headLevel, headLevels, ENoteVal.Nv16);
+		super(headLevel, headLevels, ENoteVal.Nv16, signs);
 	}
 }
 
@@ -88,7 +88,7 @@ class QNote2 extends QNote
 {
 	public function new(?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
 	{
-		super(headLevel, headLevels, ENoteVal.Nv2);
+		super(headLevel, headLevels, ENoteVal.Nv2, signs);
 	}
 }
 
@@ -96,6 +96,6 @@ class QNote1 extends QNote
 {
 	public function new(?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
 	{
-		super(headLevel, headLevels, ENoteVal.Nv1);
+		super(headLevel, headLevels, ENoteVal.Nv1, signs);
 	}
 }

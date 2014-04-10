@@ -44,19 +44,24 @@ class Main extends Sprite
 	{
 		if (inited) return;
 		inited = true;
-
-		var target = new TargetOpenFl(null, Scaling.NORMAL);
-		var s = target.getTarget();
-		this.stage.addChild(s);
-		var r = new Renderer(target, 10, 200);
-		r.renderBar(TestBars.testBar1());	
 		
-		var target = new TargetOpenFl(null, Scaling.BIG);
-		var s = target.getTarget();
-		s.x = 300;
-		this.stage.addChild(s);		
-		var r = new Renderer(target, 200, 200);
-		r.renderBar(TestBars.testBar1());	
+		var target = new TargetOpenFl(Scaling.SMALL);
+		var r = new Renderer(target, 10, 80);
+		r.renderBar(TestBars.testBar1(), 10, 80);				
+		r.renderBar(TestBars.testBarSigns(), 10, 400);					
+		this.addChild(target.getTargetSprite(0, 0));
+		
+		var target = new TargetOpenFl(Scaling.NORMAL);
+		var r = new Renderer(target, 10, 80);
+		r.renderBar(TestBars.testBar1());				
+		r.renderBar(TestBars.testBarSigns(), 10, 400);		
+		this.addChild(target.getTargetSprite(300, 0));
+		
+		var target = new TargetOpenFl(Scaling.BIG);
+		var r = new Renderer(target, 10, 80);
+		r.renderBar(TestBars.testBar1());			
+		r.renderBar(TestBars.testBarSigns(), 10, 400);		
+		this.addChild(target.getTargetSprite(600, 0));
 
 	}
 

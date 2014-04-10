@@ -5,8 +5,10 @@ package nx3;
  * @author Jonas Nyström
  */
 
- import nx3.geom.Rectangle;
+import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
+
+
 using cx.ArrayTools;
 using nx3.ENoteValTools;
 
@@ -19,18 +21,6 @@ class VComplex
 		this.vnotes = vnotes;
 		//if (directions != null) this.setDirections( directions);
 	}
-
-	/*
-	var directions(default, null):EDirectionUDs;
-	public function setDirections(directions:EDirectionUDs)
-	{
-		if (directions == null) throw "Can't set directions to null";
-		if (directions.length != this.getVNotes().length) throw "Directions length differ from vnotes length";
-		this.firstNoteRect = null;
-		this.secondNoteRect = null;
-		this.directions = directions;		
-	}	
-	*/
 	
 	var signs:VSigns;
 	var visibleSigns:VSigns;
@@ -64,6 +54,7 @@ class VComplex
 		if (this.getVisibleSigns().length == 0) return [];
 		this.signRects = new VComplexSignsRectsCalculator(this.getVisibleSigns()).getSignRects(headsRects);
 		return this.signRects;
+		//return [];
 	}
 	
 	
@@ -181,6 +172,22 @@ class VComplex
 		return x;		
 	}	
 	
+	
+	public function getNoteHeadsRects(note:VNote, dir:EDirectionUD=null): Rectangles
+	{
+		if (dir == null)  dir = new VNoteInternalDirectionCalculator(note.getVHeads()).getDirection();		
+		if (note == this.vnotes.first())
+		{		
+			return note.getVHeadsRectanglesDir(dir);
+		}		
+		var rects:nx3.geom.Rectangles = note.getVHeadsRectanglesDir(dir);
+		var offsetX = getHeadsCollisionOffsetX(note, dir);
+		for (rect in rects) rect.offset(offsetX, 0);
+		return rects;		
+	}
+	
+	
+	
 	public function getNoteRect(note:VNote, dir:EDirectionUD=null):Rectangle
 	{
 		// TODO: Optimize!
@@ -229,6 +236,28 @@ class VComplex
 		}
 		return result;		
 	}	
+	
+	
+	var notesHeadsRectsDirCheck:EDirectionUDs = null;
+	var notesHeadsRects:nx3.geom.Rectangles = null;
+	public function getNotesHeadsRects(directions:EDirectionUDs):Rectangles
+	{
+		if (notesHeadsRects != null && notesHeadsRectsDirCheck == directions) return this.notesHeadsRects;
+		this.notesHeadsRectsDirCheck = directions;
+		
+		if (directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
+		this.notesHeadsRects = new Rectangles();
+		for (i in 0...this.getVNotes().length)
+		{
+			var vnote = this.getVNotes()[i];
+			var rects = getNoteHeadsRects(vnote, directions[i]);
+			for (rect in rects) this.notesHeadsRects.push(rect);
+		}
+		return this.notesHeadsRects;				
+	}
+	
+	
+	
 	
 	public function getStaveBasicRects(directions:EDirectionUDs/*, beamgroups:VBeamgroups=null*/):Rectangles
 	{

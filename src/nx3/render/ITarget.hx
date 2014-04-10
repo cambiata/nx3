@@ -24,6 +24,6 @@ interface ITarget
 	public function rectangles(x:Float, y:Float, rects:Rectangles, ?lineWidth:Float, ?lineColor:Int):Void;
 	
 	public function line(x:Float, y:Float, x2:Float, y2:Float, ?lineWidth:Float, ?lineColor:Int):Void;
-	public function shape(x:Float, y:Float, xmlStr:String):Void;
+	public function shape(x:Float, y:Float, xmlStr:String, ?fillColor:Int):Void;
 
 }

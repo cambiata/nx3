@@ -34,6 +34,8 @@ import nx3.QNote;
 		this.assertEquals(ESign.Sharp, nnote.nheads[0].sign);
 		this.assertEquals(ESign.None, nnote.nheads[1].sign);
 		this.assertEquals(ESign.Flat, nnote.nheads[2].sign);
+		
+		var nnote = new QNote2(1, 'b');
 	}
 	
 	public function test2()

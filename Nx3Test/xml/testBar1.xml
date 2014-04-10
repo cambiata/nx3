@@ -1,0 +1,67 @@
+<bar>
+	<part>
+		<voice>
+			<note direction="Auto"
+				  value="1512">
+				<headx level="-1" />
+			</note>
+			<note direction="Auto"
+				  value="1512">
+				<headx level="-2" />
+			</note>
+			<note direction="Auto"
+				  value="1512">
+				<headx level="1" />
+			</note>
+			<note direction="Auto"
+				  value="1512">
+				<headx level="1" />
+			</note>
+		</voice>
+	</part>
+	<part>
+		<voice>
+			<note direction="Auto"
+				  value="756">
+				<headx level="-1" />
+				<headx level="0" />
+			</note>
+			<note direction="Auto"
+				  value="756">
+				<headx sign="Sharp"
+					   level="0" />
+				<headx level="1" />
+			</note>
+			<note direction="Auto"
+				  value="756">
+				<headx level="1" />
+				<headx level="2" />
+			</note>
+			<note direction="Auto"
+				  value="756">
+				<headx level="5" />
+				<headx level="7" />
+			</note>
+			<note direction="Auto"
+				  value="756">
+				<headx level="0" />
+				<headx level="1" />
+			</note>
+			<note direction="Auto"
+				  value="756">
+				<headx level="0" />
+				<headx level="2" />
+			</note>
+			<note direction="Auto"
+				  value="756">
+				<headx level="0" />
+				<headx level="3" />
+			</note>
+			<note direction="Auto"
+				  value="756">
+				<headx level="0" />
+				<headx level="2" />
+			</note>
+		</voice>
+	</part>
+</bar>

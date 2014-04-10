@@ -38,7 +38,10 @@ class VPartComplexesMinDistancesCalculator
 		if (complex == null) return  { minrect:new Rectangle(0,0,0,0), rects:[] };
 		
 		var directions = this.vpart.getVComplexDirections().get(complex);
-		var noterects:Rectangles = complex.getNotesRects(directions);
+		
+		//var noterects:Rectangles = complex.getNotesRects(directions);
+		var noterects:nx3.geom.Rectangles = complex.getNotesHeadsRects(directions);
+		
 		var minrect:Rectangle = noterects.unionAll();
 		minrect.y = -5;
 		minrect.height = 10;
@@ -58,7 +61,8 @@ class VPartComplexesMinDistancesCalculator
 		if (complex == null) return  { minrect:new Rectangle(0,0,0,0), rects:[] };
 		
 		var directions = this.vpart.getVComplexDirections().get(complex);
-		var noterects:Rectangles = complex.getNotesRects(directions);
+		//var noterects:Rectangles = complex.getNotesRects(directions);
+		var noterects:nx3.geom.Rectangles = complex.getNotesHeadsRects(directions);
 		var minrect:Rectangle = noterects.unionAll();
 		minrect.y = -5;
 		minrect.height = 10;

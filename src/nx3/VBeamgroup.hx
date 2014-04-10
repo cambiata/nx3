@@ -7,6 +7,7 @@ import nx3.VBeamFrame.VBeamframe;
  */
 using  nx3.ENoteValTools;
 using nx3.VMapTools;
+using cx.ArrayTools;
 
  class VBeamgroup
  {
@@ -46,6 +47,15 @@ using nx3.VMapTools;
 	 public function getFrame():VBeamframe
 	 {
 		 if (this.frame != null) return this.frame;
+		 
+		 // Should this have staves/frame?
+		 if (this.vnotes.length == 1)
+		 {
+			 var stavinglevel = this.vnotes.first().nnote.value.stavinglevel();			
+			 if (stavinglevel <= 0)  return null;
+		 }
+		 
+		 
 		 if (this.calculatedDirection == null)
 		 {
 			 throw 'error';

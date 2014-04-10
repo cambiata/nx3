@@ -18,26 +18,29 @@ class VComplexSignsRectsCalculator
 	public function getSignRects(headsRects:Rectangles=null):Rectangles
 	{		
 		var rects = new Rectangles();
+		
 		if (headsRects == null) headsRects = [];
 		
 		for (vsign in vsigns)
 		{
 			var rect:Rectangle = getSignRect(vsign.sign);			
 			rect.offset( -rect.width, vsign.level);
-
+			//trace(rect);
+			
 			
 			for (hr in headsRects)
 			{
 				var i = rect.intersection(hr);		
-				//i.width = MathTools.round2(i.width, 8);
-				while (i.width > 0 || i.height > 0)
-				{
+				var count = 0;
+				while (i.width >Constants.FLOAT_QUASI_ZERO ) //|| i.height > 0)
+				{					
 					rect.offset( -i.width, 0);
-					i = rect.intersection(hr);			
-				}				
+					i = rect.intersection(hr);								
+					if (count > 5) break;
+					count++;
+				}	
 			}
-			
-			
+
 			for (r in rects)
 			{
 				var i = r.intersection(rect);			
@@ -49,15 +52,10 @@ class VComplexSignsRectsCalculator
 			}
 
 			rects.push(rect);
+			
 		}	
-		/*
-		if (headsRects != null) 
-		{
-			var offsetX = -RectanglesTools.getXIntersection(rects, headsRects);
-			if (offsetX != 0) RectanglesTools.offset(rects, offsetX, 0);
-			trace(offsetX);
-		}
-		*/
+
+		
 		return rects;
 	}
 	

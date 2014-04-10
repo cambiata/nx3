@@ -135,7 +135,7 @@ class TargetSpriteBase  implements ITarget
 	
 	/* INTERFACE nx3.render.ITarget */
 	
-	public function shape(x:Float, y:Float, xmlStr:String):Void 
+	public function shape(x:Float, y:Float, xmlStr:String,  ?fillColor:Int=0x000000):Void 
 	{
 		var shape:Shape = ShapeTools.getShape(xmlStr, this.scaling);
 		shape.x = x;

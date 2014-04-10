@@ -1,4 +1,6 @@
 package nx3.render;
+import nx3.EDirectionUDs;
+import nx3.ESign;
 import nx3.geom.Rectangle;
 import nx3.EDirectionUD;
 import nx3.NBar;
@@ -12,14 +14,12 @@ import nx3.render.svg.Elements;
 import nx3.TPoint;
 import nx3.TPoints;
 import nx3.VBar;
+import nx3.VBeamgroup;
+import nx3.VComplex;
 import nx3.VNote;
-
 
 using cx.ArrayTools;
 using nx3.ENoteValTools;
-
-
-
 
 /**
  * ...
@@ -35,16 +35,19 @@ class Renderer
 
 	public function new(target:ITarget, targetX:Float, targetY:Float) 
 	{
-		this.partDistance = 120;
 		this.target = target;
 		this.targetX = targetX;
 		this.targetY = targetY;
 		this.scaling = this.target.getScaling();
+		this.partDistance = Std.int(20 * scaling.halfSpace);
 	}
 	
-	public function renderBar(vbar:VBar)
+	public function renderBar(vbar:VBar, newX:Float=-1, newY:Float=-1)
 	{
-		this.notlines(vbar,400);
+		if (newX != -1) this.targetX = newX;
+		if (newY != -1) this.targetY = newY;
+		
+		this.notlines(vbar, 80*this.scaling.halfNoteWidth);
 		this.complexes(vbar);
 		this.staves(vbar);
 	}
@@ -78,6 +81,8 @@ class Renderer
 				var pos = columnsMinPositions.get(vcolumn);				
 				var colx = this.targetX + pos * scaling.halfNoteWidth;
 				
+				
+				
 				for (vnote in vcomplex.getVNotes())
 				{
 					var vvoice = vpart.getVNotesVVoices().get(vnote);
@@ -87,20 +92,56 @@ class Renderer
 					var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * scaling.halfNoteWidth;
 					this.heads(colx + headsXOffset, party, vnote, direction);
 				}
-				
+
 				var directions = vpart.getVComplexDirections().get(vcomplex);
-				var noterects = vcomplex.getNotesRects(directions);
-				this.target.rectangles(colx, party, noterects , .2, 0xaaaaaa);
+				//this.complexheads(colx, party, vcomplex, directions);			
+				
+				//var noterects = vcomplex.getNotesRects(directions);
+				//this.target.rectangles(colx, party, noterects , 1, 0x0000ff);				
+				var headrects = vcomplex.getNotesHeadsRects(directions);
+				//this.target.rectangles(colx, party, headrects , 3, 0xff0000);
+				
 				var staverects = vcomplex.getStaveBasicRects(directions);
-				this.target.rectangles(colx, party, staverects , .2, 0xaaaaaa);
+				//this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
+				var signsrects = vcomplex.getSignsRects(headrects);
+				//this.target.rectangles(colx, party, signsrects , 1, 0xff0000);
+				this.signs(colx, party, vcomplex);
 				
-				var signsrects = vcomplex.getSignsRects(noterects);
-				this.target.rectangles(colx, party, staverects , .2, 0xaaaaaa);
-				
-				var dotrects = vcomplex.getDotsRects(noterects, directions);				
+				var dotrects = vcomplex.getDotsRects(headrects, directions);				
 			}
 			
 			party += this.partDistance;
+		}
+	}
+	
+	function complexheads(x:Float, y:Float, vcomplex:VComplex, directions:EDirectionUDs) 
+	{
+		var idx = 0;
+		trace(vcomplex.getNotesRects(directions).length);
+		for (vnote in vcomplex.getVNotes())
+		{		
+			trace(vnote.nnote.nheads.length);
+		}
+	}
+	
+	function signs(x:Float, y:Float, vcomplex:VComplex) 
+	{
+		var signs = vcomplex.getSigns();
+		var rects = vcomplex.getSignsRects();
+		for (i in 0...signs.length)
+		{
+			var sign = signs[i];
+			var rect = rects[i];
+			var xmlStr = switch(sign.sign)
+			{
+				case ESign.Flat: Elements.signFlat;
+				case ESign.Natural: Elements.signNatural;
+				case ESign.Sharp: Elements.signSharp;					
+			default:
+				null;
+			}
+			if (xmlStr != null) this.target.shape(x + (rect.x) * this.scaling.halfNoteWidth, y + (rect.y+2) * this.scaling.halfSpace, xmlStr);
+			
 		}
 	}
 	
@@ -166,12 +207,11 @@ class Renderer
 	
 	public function beamgroup(x:Float, y:Float, beamgroup:VBeamgroup, points:TPoints, direction:EDirectionUD):Void 
 	{
-		for (point in points)
-		{
-			this.target.rectangle(point.x, point.y, new Rectangle( -.5, -.5, 1, 1));
-		}
+		
+		//for (point in points) this.target.rectangle(point.x, point.y, new Rectangle( -.5, -.5, 1, 1));
 		
 		var frame = beamgroup.getFrame();
+		if (frame == null) return;
 
 		var leftPoint = points.first();		
 		var leftOuterY =  frame.leftOuterY * scaling.halfSpace;

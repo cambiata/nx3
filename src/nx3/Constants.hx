@@ -32,4 +32,5 @@ class Constants
 	static public inline var DDOT_WIDTH:Float = 4.0;
 	static public inline var FLAG_HEIGHT:Float = 4.8;
 	static public inline var FLAG_WIDTH:Float = 2.6;
+	static public inline var FLOAT_QUASI_ZERO:Float = 0.0000001;
 } 

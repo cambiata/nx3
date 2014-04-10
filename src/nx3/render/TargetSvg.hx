@@ -1,4 +1,5 @@
 package nx3.render;
+import js.Lib;
 import nx3.EDirectionUD;
 import nx3.TPoints;
 import nx3.VBeamgroup;
@@ -104,12 +105,12 @@ class TargetSvg implements ITarget
 		return this.scaling;
 	}
 	
-	public function rect(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int):Void 
+	public function rect(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int=0x000000):Void 
 	{
 		var r:SnapElement = this.snap.rect(x + rect.x , y + rect.y, rect.width, rect.height);
 		r.attr( {
 				fill: 'none',
-				stroke: "#000",
+				stroke: hex(lineColor),
 				strokeWidth: lineWidth,
 			});				
 	}	
@@ -120,20 +121,20 @@ class TargetSvg implements ITarget
 		var r:SnapElement = this.snap.rect(x + rect.x * scaling.halfNoteWidth, y + rect.y * scaling.halfSpace, rect.width * scaling.halfNoteWidth, rect.height * scaling.halfSpace);
 		r.attr( {
 				fill: 'none',
-				stroke: "#000",
+				stroke: hex(lineColor),
 				strokeWidth: lineWidth * scaling.linesWidth,
 			});		
 	}
 	
-	public function rectangles(x:Float, y:Float, rects:Rectangles, ?lineWidth:Float, ?lineColor:Int):Void 
+	public function rectangles(x:Float, y:Float, rects:Rectangles, ?lineWidth:Float, ?lineColor:Int=0x000000):Void 
 	{
 		for (rect in rects) this.rectangle(x, y, rect, lineWidth, lineColor);
 	}
 
-	public function line(x:Float, y:Float, x2:Float, y2:Float, ?lineWidth:Float, ?lineColor:Int):Void 
-	{
+	public function line(x:Float, y:Float, x2:Float, y2:Float, ?lineWidth:Float, ?lineColor:Int=0x000000):Void 
+	{		
 		this.snap.line(x, y, x2, y2).attr( {
-				stroke: "#000",
+				stroke: hex(lineColor),
 				strokeWidth: lineWidth * scaling.linesWidth,			
 		});
 		
@@ -141,14 +142,14 @@ class TargetSvg implements ITarget
 	
 
 	
-	public function shape(x, y, xmlStr:String):Void 
+	public function shape(x, y, xmlStr:String, ?fillColor:Int=0x000000):Void 
 	{
 		var xml = Xml.parse(xmlStr);
 		var gPathD = xml.firstElement().firstChild().firstChild().get('d');
 		
 		
 		var p:SnapElement = this.snap.path(gPathD).attr({
-	        fill: "#000000",
+			fill: hex(fillColor),
 	        stroke: "none",
     	});		
 
@@ -168,6 +169,7 @@ class TargetSvg implements ITarget
 	/* INTERFACE nx3.render.ITarget */
 	
 
-
+	static inline function hex(int:Int):String	return (int == 0) ? "#000" : "#" + StringTools.hex(int);
+	
 	
 }

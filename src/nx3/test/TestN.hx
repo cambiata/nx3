@@ -2,8 +2,10 @@ package nx3.test;
 //import cx.EnumTools;
 //import nx3.ESign;
 
-
+#if neko
 import cx.FileTools;
+#end
+
 import haxe.unit.TestCase;
 import nx3.NBar;
 import nx3.NPart;
@@ -71,24 +73,37 @@ class TestN extends   TestCase
 	
 	public function testBarXml()
 	{
-		var vbar = new VBar(new NBar([
-			new NPart([new QVoice([8, 8, 8, 8], [ -1, -2, 1, 1])]),
-			new NPart([	
-				new NVoice([
-					new QNote16([ -1, 0]), new QNote16([ 0, 1 ], '#'),  new QNote16([ 1, 2 ]),  new QNote16([ 5, 7 ]),
-					new QNote16([ 0, 1]), new QNote16([ 0, 2 ]),  new QNote16([ 0, 3 ]),  new QNote16([ 0, 2 ]),
-					])
-			]),
-		]));					
-		
+		var vbar = TestBars.testBar1();		
 		var nbar = vbar.nbar;
 		var xmlStr = BarXML.toXml(nbar).toString();
-		FileTools.putContent('bar.xml', xmlStr);
 		var nbar2 = BarXML.fromXmlStr(xmlStr);
 		var xmlStr2 = BarXML.toXml(nbar2).toString();
 		this.assertEquals(xmlStr, xmlStr2);
 		
+		var vbar = TestBars.testBarSigns();		
+		var nbar = vbar.nbar;
+		var xmlStr = BarXML.toXml(nbar).toString();
+		var nbar2 = BarXML.fromXmlStr(xmlStr);
+		var xmlStr2 = BarXML.toXml(nbar2).toString();
+		this.assertEquals(xmlStr, xmlStr2);		
 		
 	}
+	
+#if neko	
+	public function testBarXmlExport()
+	{
+		this.assertTrue(true);
+		
+		var xmlStr = BarXML.toXml(TestBars.testBar1().nbar).toString();
+		FileTools.putContent('xml/testBar1.xml', xmlStr);
+
+		var xmlStr = BarXML.toXml(TestBars.testBarSigns().nbar).toString();
+		FileTools.putContent('xml/testBarSigns.xml', xmlStr);
+		
+		
+	}
+#end	
+	
+	
 		
 }
