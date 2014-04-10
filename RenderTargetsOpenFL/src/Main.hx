@@ -14,6 +14,7 @@ import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 import nx3.render.TestTarget;
+import nx3.test.TestBars;
 import nx3.VBar;
 
 #if (html5)
@@ -45,21 +46,17 @@ class Main extends Sprite
 		inited = true;
 
 		var target = new TargetOpenFl(null, Scaling.NORMAL);
-		var testTarget = new TestTarget(target);
-		testTarget.test();		
 		var s = target.getTarget();
 		this.stage.addChild(s);
 		var r = new Renderer(target, 10, 200);
-		r.renderBar(TestTarget.testBar1());	
+		r.renderBar(TestBars.testBar1());	
 		
 		var target = new TargetOpenFl(null, Scaling.BIG);
-		var testTarget = new TestTarget(target);
-		testTarget.test();		
 		var s = target.getTarget();
 		s.x = 300;
 		this.stage.addChild(s);		
 		var r = new Renderer(target, 200, 200);
-		r.renderBar(TestTarget.testBar1());	
+		r.renderBar(TestBars.testBar1());	
 
 	}
 

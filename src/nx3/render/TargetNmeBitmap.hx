@@ -23,9 +23,5 @@ class TargetNmeBitmap  extends TargetSpriteBase implements ITarget
 		RenderTools.spriteToPng(this.target, filename);
 	}
 	
-	public function getScaling():TScaling 
-	{
-		return this.scaling;
-	}
 	
 }

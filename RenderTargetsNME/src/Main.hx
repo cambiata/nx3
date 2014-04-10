@@ -2,9 +2,11 @@ package ;
 
 import neko.Lib;
 import nx3.render.ITarget;
+import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.TargetNmeBitmap;
 import nx3.render.TestTarget;
+import nx3.test.TestBars;
 
 /**
  * ...
@@ -20,9 +22,14 @@ class Main
 	var testTarget:TestTarget;
 	static function main() 
 	{
-		var render = new TargetNmeBitmap(Scaling.BIG);				
-		var testTarget = new TestTarget(render);
-		testTarget.test();
-		render.saveBitmap('test.png');
+		var target = new TargetNmeBitmap(Scaling.NORMAL);
+		var r = new Renderer(target, 10, 100);
+		r.renderBar(TestBars.testBar1());	
+		target.saveBitmap('test-normal.png');
+		
+		var target = new TargetNmeBitmap(Scaling.BIG);
+		var r = new Renderer(target, 10, 100);
+		r.renderBar(TestBars.testBar1());			
+		target.saveBitmap('test-big.png');
 	}
 }

@@ -18,8 +18,6 @@ class Main
 	static function main() 
 	{
 			var target = new TargetSvg('#small', Scaling.SMALL);
-			var testTarget = new TestTarget(target);
-			testTarget.test();						
 			var r = new Renderer(target, 10, 240);
 			r.renderBar(TestBars.testBar1());				
 			
@@ -28,14 +26,10 @@ class Main
 			//trace(barxml);
 		
 			var target = new TargetSvg('#normal', Scaling.NORMAL);
-			var testTarget = new TestTarget(target);
-			testTarget.test();						
 			var r = new Renderer(target, 10, 240);
 			r.renderBar(TestBars.testBar1());				
 			
 			var target = new TargetSvg('#big', Scaling.BIG);
-			var testTarget = new TestTarget(target);
-			testTarget.test();								
 			var r = new Renderer(target, 10, 240);
 			r.renderBar(TestBars.testBar1());			
 	}	
