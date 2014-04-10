@@ -20,19 +20,16 @@ class Main
 	
 	static function main() 
 	{
-		
 		/*
 		var vbar = TestTarget.testBar1();
 		var xmlStr = BarXML.toXml(vbar.nbar).toString();
 		trace(xmlStr);
 		*/
 		
-		
-		var jq = new JQuery('#test');
-		var xmlStr = jq.html();
-		//trace(xmlStr);
+		//var jq = new JQuery('#test');
+		//var xmlStr = jq.html();
+		var xmlStr = Browser.document.getElementById('test').innerHTML;
 		//Lib.alert(xmlStr);
-		
 		
 		var nbar = BarXML.fromXmlStr(xmlStr);
 		var vbar = new VBar(nbar);

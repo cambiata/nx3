@@ -83,17 +83,17 @@ Main.main = function() {
 	var testTarget = new nx3.render.TestTarget(target);
 	testTarget.test();
 	var r = new nx3.render.Renderer(target,10,240);
-	r.renderBar(nx3.render.TestTarget.testBar1());
+	r.renderBar(nx3.test.TestBars.testBar1());
 	var target1 = new nx3.render.TargetSvg("#normal",nx3.render.scaling.Scaling.NORMAL);
 	var testTarget1 = new nx3.render.TestTarget(target1);
 	testTarget1.test();
 	var r1 = new nx3.render.Renderer(target1,10,240);
-	r1.renderBar(nx3.render.TestTarget.testBar1());
+	r1.renderBar(nx3.test.TestBars.testBar1());
 	var target2 = new nx3.render.TargetSvg("#big",nx3.render.scaling.Scaling.BIG);
 	var testTarget2 = new nx3.render.TestTarget(target2);
 	testTarget2.test();
 	var r2 = new nx3.render.Renderer(target2,10,240);
-	r2.renderBar(nx3.render.TestTarget.testBar1());
+	r2.renderBar(nx3.test.TestBars.testBar1());
 };
 var IMap = function() { };
 IMap.__name__ = true;
@@ -4578,12 +4578,18 @@ nx3.render.scaling.Scaling.scaleRect = function(scaling,rect) {
 nx3.render.svg = {};
 nx3.render.svg.Elements = function() { };
 nx3.render.svg.Elements.__name__ = true;
+nx3.test = {};
+nx3.test.TestBars = function() { };
+nx3.test.TestBars.__name__ = true;
+nx3.test.TestBars.testBar1 = function() {
+	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.QVoice([8,8,8,8],null,[-1,-2,1,1])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote16(null,[-1,0]),new nx3.QNote16(null,[0,1],"#"),new nx3.QNote16(null,[1,2]),new nx3.QNote16(null,[5,7]),new nx3.QNote16(null,[0,1]),new nx3.QNote16(null,[0,2]),new nx3.QNote16(null,[0,3]),new nx3.QNote16(null,[0,2])])])]));
+	return vbar;
+};
 nx3.xml = {};
 nx3.xml.BarXML = function() { };
 nx3.xml.BarXML.__name__ = true;
 nx3.xml.BarXML.toXml = function(bar) {
 	var xml = Xml.createElement("bar");
-	console.log(bar.nparts.length);
 	var _g = 0;
 	var _g1 = bar.nparts;
 	while(_g < _g1.length) {
@@ -4599,12 +4605,14 @@ nx3.xml.BarXML.toXml = function(bar) {
 	default:
 		xml.set("type",Std.string(bar.type));
 	}
-	var _g3 = bar.time;
-	switch(_g3[1]) {
-	case 5:
-		break;
-	default:
-		xml.set("time",Std.string(nx3.ETimeUtils.toString(bar.time)));
+	if(bar.time != null) {
+		var _g3 = bar.time;
+		switch(_g3[1]) {
+		case 5:
+			break;
+		default:
+			xml.set("time",Std.string(nx3.ETimeUtils.toString(bar.time)));
+		}
 	}
 	var _g4 = bar.timeDisplay;
 	switch(_g4[1]) {
@@ -4866,12 +4874,14 @@ nx3.xml.PartXML.toXml = function(part) {
 	default:
 		xml.set("type",Std.string(part.type));
 	}
-	var _g3 = part.clef;
-	switch(_g3[1]) {
-	case 0:
-		break;
-	default:
-		xml.set("clef",Std.string(part.clef));
+	if(part.clef != null) {
+		var _g3 = part.clef;
+		switch(_g3[1]) {
+		case 0:
+			break;
+		default:
+			xml.set("clef",Std.string(part.clef));
+		}
 	}
 	var _g4 = part.clefDisplay;
 	switch(_g4[1]) {
@@ -4880,7 +4890,6 @@ nx3.xml.PartXML.toXml = function(part) {
 	default:
 		xml.set("clefdisplay",Std.string(part.clefDisplay));
 	}
-	console.log("levelshift");
 	var _g5 = part.keyDisplay;
 	switch(_g5[1]) {
 	case 1:
@@ -4908,7 +4917,6 @@ nx3.xml.PartXML.fromXmlStr = function(xmlStr) {
 	var clefDisplay;
 	if(clefDisplayStr == null) clefDisplay = nx3.EDisplayALN.Layout; else clefDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,clefDisplayStr);
 	var str1 = xml.get("key");
-	console.log("part key");
 	var key = nx3.EKey.Natural;
 	var keyDisplayStr = xml.get("keydisplay");
 	var keyDisplay;
@@ -5118,7 +5126,7 @@ nx3.xml.BarXML.XBAR = "bar";
 nx3.xml.BarXML.XBAR_TYPE = "type";
 nx3.xml.BarXML.XBAR_TIME = "time";
 nx3.xml.BarXML.XBAR_TIMEDISPLAY = "timedisplay";
-nx3.xml.HeadXML.XHEAD = "head";
+nx3.xml.HeadXML.XHEAD = "headx";
 nx3.xml.HeadXML.XHEAD_TYPE = "type";
 nx3.xml.HeadXML.XHEAD_LEVEL = "level";
 nx3.xml.HeadXML.XHEAD_SIGN = "sign";
@@ -5154,5 +5162,3 @@ nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
 nx3.xml.VoiceXML.XVOICE_DIRECTION = "direction";
 Main.main();
 })();
-
-//# sourceMappingURL=RenderTargetSvg.js.map

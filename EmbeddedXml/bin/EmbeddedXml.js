@@ -79,8 +79,7 @@ Lambda.indexOf = function(it,v) {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	var jq = new js.JQuery("#test");
-	var xmlStr = jq.html();
+	var xmlStr = window.document.getElementById("test").innerHTML;
 	var nbar = nx3.xml.BarXML.fromXmlStr(xmlStr);
 	var vbar = new nx3.VBar(nbar);
 	var target = new nx3.render.TargetSvg("#normal",nx3.render.scaling.Scaling.BIG);
@@ -5149,5 +5148,3 @@ nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
 nx3.xml.VoiceXML.XVOICE_DIRECTION = "direction";
 Main.main();
 })();
-
-//# sourceMappingURL=EmbeddedXml.js.map
