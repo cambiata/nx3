@@ -7,7 +7,7 @@ import nx3.EHeadValueType;
 import nx3.ESign;
 import nx3.geom.Rectangles;
 import nx3.QVoice;
-import nx3.render.svg.Elements;
+import nx3.render.svg.SvgElements;
 import nx3.render.svg.ShapeTools;
 import nx3.QNote;
 import nx3.TPoint;
@@ -368,9 +368,9 @@ class DevRenderer extends FrameRenderer
 
 		switch (vnote.nnote.value.head())
 		{
-			case EHeadValueType.HVT1: xmlStr = Elements.noteWhole;
-			case EHeadValueType.HVT2: xmlStr = Elements.noteWhite;
-			default: xmlStr = Elements.noteBlack;
+			case EHeadValueType.HVT1: xmlStr = SvgElements.noteWhole;
+			case EHeadValueType.HVT2: xmlStr = SvgElements.noteWhite;
+			default: xmlStr = SvgElements.noteBlack;
 		}
 		
 		for (rect in vnote.getVHeadsRectanglesDir(direction))

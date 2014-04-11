@@ -38,13 +38,13 @@ class ShapeTools
 		//trace(element);
 		try 
 		{
-			var str = Reflect.field(Elements, element);
+			var str = Reflect.field(SvgElements, element);
 			return str;
 			
 		}
 		catch (err:Dynamic)
 		{
-			return Elements.noteBlack;
+			return SvgElements.noteBlack;
 		}
 		return null;
 	}

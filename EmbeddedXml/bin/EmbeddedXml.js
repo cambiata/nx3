@@ -164,6 +164,16 @@ StringTools.trim = function(s) {
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
 };
+StringTools.hex = function(n,digits) {
+	var s = "";
+	var hexChars = "0123456789ABCDEF";
+	do {
+		s = hexChars.charAt(n & 15) + s;
+		n >>>= 4;
+	} while(n > 0);
+	if(digits != null) while(s.length < digits) s = "0" + s;
+	return s;
+};
 StringTools.fastCodeAt = function(s,index) {
 	return s.charCodeAt(index);
 };
@@ -1674,6 +1684,114 @@ nx3.ENoteValTools.getFromValue = function(value) {
 		return null;
 	}
 };
+nx3.ENoteValTools.toValString = function(val) {
+	switch(val[1]) {
+	case 0:
+		return "1";
+	case 1:
+		return "1.";
+	case 2:
+		return "1..";
+	case 3:
+		return "1/3";
+	case 4:
+		return "2";
+	case 5:
+		return "2.";
+	case 6:
+		return "2..";
+	case 7:
+		return "2/3";
+	case 8:
+		return "4";
+	case 9:
+		return "4.";
+	case 10:
+		return "4..";
+	case 11:
+		return "4/3";
+	case 12:
+		return "8";
+	case 13:
+		return "8.";
+	case 14:
+		return "8..";
+	case 15:
+		return "8/3";
+	case 16:
+		return "16";
+	case 17:
+		return "16.";
+	case 18:
+		return "16..";
+	case 19:
+		return "16/3";
+	case 20:
+		return "32";
+	case 21:
+		return "32.";
+	case 22:
+		return "32..";
+	case 23:
+		return "32/3";
+	}
+};
+nx3.ENoteValTools.fromValString = function(valString) {
+	if(valString == null) return nx3.ENoteVal.Nv4; else switch(valString) {
+	case "":
+		return nx3.ENoteVal.Nv4;
+	case "1":
+		return nx3.ENoteVal.Nv1;
+	case "1.":
+		return nx3.ENoteVal.Nv1dot;
+	case "1..":
+		return nx3.ENoteVal.Nv1ddot;
+	case "1/3":
+		return nx3.ENoteVal.Nv1tri;
+	case "2":
+		return nx3.ENoteVal.Nv2;
+	case "2.":
+		return nx3.ENoteVal.Nv2dot;
+	case "2..":
+		return nx3.ENoteVal.Nv2ddot;
+	case "2/3":
+		return nx3.ENoteVal.Nv2tri;
+	case "4":
+		return nx3.ENoteVal.Nv4;
+	case "4.":
+		return nx3.ENoteVal.Nv4dot;
+	case "4..":
+		return nx3.ENoteVal.Nv4ddot;
+	case "4/3":
+		return nx3.ENoteVal.Nv4tri;
+	case "8":
+		return nx3.ENoteVal.Nv8;
+	case "8.":
+		return nx3.ENoteVal.Nv8dot;
+	case "8..":
+		return nx3.ENoteVal.Nv8ddot;
+	case "8/3":
+		return nx3.ENoteVal.Nv8tri;
+	case "16":
+		return nx3.ENoteVal.Nv16;
+	case "16.":
+		return nx3.ENoteVal.Nv16dot;
+	case "16..":
+		return nx3.ENoteVal.Nv16ddot;
+	case "16/3":
+		return nx3.ENoteVal.Nv16tri;
+	case "32":
+		return nx3.ENoteVal.Nv32;
+	case "32.":
+		return nx3.ENoteVal.Nv32dot;
+	case "32..":
+		return nx3.ENoteVal.Nv32ddot;
+	case "32/3":
+		return nx3.ENoteVal.Nv32tri;
+	default:
+		throw "unhandled note value: " + valString;
+	}
+};
 nx3.EPartType = { __ename__ : true, __constructs__ : ["Normal","Lyrics","Tpl","Tplchain","Dynamics","Chords","Ignore","Hidden"] };
 nx3.EPartType.Normal = ["Normal",0];
 nx3.EPartType.Normal.toString = $estr;
@@ -2054,7 +2172,7 @@ nx3.QNote4.prototype = $extend(nx3.QNote.prototype,{
 });
 nx3.QNote8 = function(headLevel,headLevels,signs) {
 	if(signs == null) signs = "";
-	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv8);
+	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv8,signs);
 };
 nx3.QNote8.__name__ = true;
 nx3.QNote8.__super__ = nx3.QNote;
@@ -2062,7 +2180,7 @@ nx3.QNote8.prototype = $extend(nx3.QNote.prototype,{
 });
 nx3.QNote16 = function(headLevel,headLevels,signs) {
 	if(signs == null) signs = "";
-	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv16);
+	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv16,signs);
 };
 nx3.QNote16.__name__ = true;
 nx3.QNote16.__super__ = nx3.QNote;
@@ -2070,7 +2188,7 @@ nx3.QNote16.prototype = $extend(nx3.QNote.prototype,{
 });
 nx3.QNote2 = function(headLevel,headLevels,signs) {
 	if(signs == null) signs = "";
-	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv2);
+	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv2,signs);
 };
 nx3.QNote2.__name__ = true;
 nx3.QNote2.__super__ = nx3.QNote;
@@ -2078,7 +2196,7 @@ nx3.QNote2.prototype = $extend(nx3.QNote.prototype,{
 });
 nx3.QNote1 = function(headLevel,headLevels,signs) {
 	if(signs == null) signs = "";
-	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv1);
+	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv1,signs);
 };
 nx3.QNote1.__name__ = true;
 nx3.QNote1.__super__ = nx3.QNote;
@@ -2598,6 +2716,10 @@ nx3.VBeamgroup.prototype = {
 	}
 	,getFrame: function() {
 		if(this.frame != null) return this.frame;
+		if(this.vnotes.length == 1) {
+			var stavinglevel = nx3.ENoteValTools.stavinglevel(this.vnotes[0].nnote.value);
+			if(stavinglevel <= 0) return null;
+		}
 		if(this.calculatedDirection == null) {
 			throw "error";
 			console.log("direction should be calculated befor getting frame");
@@ -2721,6 +2843,8 @@ nx3.VColumn = function(vcomplexes) {
 };
 nx3.VColumn.__name__ = true;
 nx3.VComplex = function(vnotes,directions) {
+	this.notesHeadsRects = null;
+	this.notesHeadsRectsDirCheck = null;
 	if(vnotes.length > 2) throw "VComplex nr of VNote(s) limited to max 2 - for now";
 	this.vnotes = vnotes;
 };
@@ -2833,6 +2957,19 @@ nx3.VComplex.prototype = {
 		}
 		return x;
 	}
+	,getNoteHeadsRects: function(note,dir) {
+		if(dir == null) dir = new nx3.VNoteInternalDirectionCalculator(note.getVHeads()).getDirection();
+		if(note == this.vnotes[0]) return note.getVHeadsRectanglesDir(dir);
+		var rects = note.getVHeadsRectanglesDir(dir);
+		var offsetX = this.getHeadsCollisionOffsetX(note,dir);
+		var _g = 0;
+		while(_g < rects.length) {
+			var rect = rects[_g];
+			++_g;
+			rect.offset(offsetX,0);
+		}
+		return rects;
+	}
 	,getNoteRect: function(note,dir) {
 		var result = null;
 		if(note == this.vnotes[0]) {
@@ -2872,6 +3009,26 @@ nx3.VComplex.prototype = {
 			result.push(rect);
 		}
 		return result;
+	}
+	,getNotesHeadsRects: function(directions) {
+		if(this.notesHeadsRects != null && this.notesHeadsRectsDirCheck == directions) return this.notesHeadsRects;
+		this.notesHeadsRectsDirCheck = directions;
+		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
+		this.notesHeadsRects = new Array();
+		var _g1 = 0;
+		var _g = this.getVNotes().length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var vnote = this.getVNotes()[i];
+			var rects = this.getNoteHeadsRects(vnote,directions[i]);
+			var _g2 = 0;
+			while(_g2 < rects.length) {
+				var rect = rects[_g2];
+				++_g2;
+				this.notesHeadsRects.push(rect);
+			}
+		}
+		return this.notesHeadsRects;
 	}
 	,getStaveBasicRects: function(directions) {
 		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
@@ -3058,9 +3215,12 @@ nx3.VComplexSignsRectsCalculator.prototype = {
 				var hr = headsRects[_g2];
 				++_g2;
 				var i = rect.intersection(hr);
-				while(i.width > 0 || i.height > 0) {
+				var count = 0;
+				while(i.width > 0.0000001) {
 					rect.offset(-i.width,0);
 					i = rect.intersection(hr);
+					if(count > 5) break;
+					count++;
 				}
 			}
 			var _g21 = 0;
@@ -3719,7 +3879,7 @@ nx3.VPartComplexesMinDistancesCalculator.prototype = {
 		var directions;
 		var this1 = this.vpart.getVComplexDirections();
 		directions = this1.get(complex);
-		var noterects = complex.getNotesRects(directions);
+		var noterects = complex.getNotesHeadsRects(directions);
 		var minrect = nx3.geom.RectanglesTools.unionAll(noterects);
 		minrect.y = -5;
 		minrect.height = 10;
@@ -3734,7 +3894,7 @@ nx3.VPartComplexesMinDistancesCalculator.prototype = {
 		var directions;
 		var this1 = this.vpart.getVComplexDirections();
 		directions = this1.get(complex);
-		var noterects = complex.getNotesRects(directions);
+		var noterects = complex.getNotesHeadsRects(directions);
 		var minrect = nx3.geom.RectanglesTools.unionAll(noterects);
 		minrect.y = -5;
 		minrect.height = 10;
@@ -4281,16 +4441,20 @@ nx3.render = {};
 nx3.render.ITarget = function() { };
 nx3.render.ITarget.__name__ = true;
 nx3.render.Renderer = function(target,targetX,targetY) {
-	this.partDistance = 120;
 	this.target = target;
 	this.targetX = targetX;
 	this.targetY = targetY;
 	this.scaling = this.target.getScaling();
+	this.partDistance = 20 * this.scaling.halfSpace | 0;
 };
 nx3.render.Renderer.__name__ = true;
 nx3.render.Renderer.prototype = {
-	renderBar: function(vbar) {
-		this.notlines(vbar,400);
+	renderBar: function(vbar,newX,newY) {
+		if(newY == null) newY = -1;
+		if(newX == null) newX = -1;
+		if(newX != -1) this.targetX = newX;
+		if(newY != -1) this.targetY = newY;
+		this.notlines(vbar,80 * this.scaling.halfNoteWidth);
 		this.complexes(vbar);
 		this.staves(vbar);
 	}
@@ -4345,15 +4509,51 @@ nx3.render.Renderer.prototype = {
 				var directions;
 				var this4 = vpart.getVComplexDirections();
 				directions = this4.get(vcomplex);
-				var noterects = vcomplex.getNotesRects(directions);
-				this.target.rectangles(colx,party,noterects,.2,11184810);
+				var headrects = vcomplex.getNotesHeadsRects(directions);
 				var staverects = vcomplex.getStaveBasicRects(directions);
-				this.target.rectangles(colx,party,staverects,.2,11184810);
-				var signsrects = vcomplex.getSignsRects(noterects);
-				this.target.rectangles(colx,party,staverects,.2,11184810);
-				var dotrects = vcomplex.getDotsRects(noterects,directions);
+				var signsrects = vcomplex.getSignsRects(headrects);
+				this.signs(colx,party,vcomplex);
+				var dotrects = vcomplex.getDotsRects(headrects,directions);
 			}
 			party += this.partDistance;
+		}
+	}
+	,complexheads: function(x,y,vcomplex,directions) {
+		var idx = 0;
+		console.log(vcomplex.getNotesRects(directions).length);
+		var _g = 0;
+		var _g1 = vcomplex.getVNotes();
+		while(_g < _g1.length) {
+			var vnote = _g1[_g];
+			++_g;
+			console.log(vnote.nnote.get_nheads().length);
+		}
+	}
+	,signs: function(x,y,vcomplex) {
+		var signs = vcomplex.getSigns();
+		var rects = vcomplex.getSignsRects();
+		var _g1 = 0;
+		var _g = signs.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var sign = signs[i];
+			var rect = rects[i];
+			var xmlStr;
+			var _g2 = sign.sign;
+			switch(_g2[1]) {
+			case 2:
+				xmlStr = nx3.render.svg.Elements.signFlat;
+				break;
+			case 1:
+				xmlStr = nx3.render.svg.Elements.signNatural;
+				break;
+			case 3:
+				xmlStr = nx3.render.svg.Elements.signSharp;
+				break;
+			default:
+				xmlStr = null;
+			}
+			if(xmlStr != null) this.target.shape(x + rect.x * this.scaling.halfNoteWidth,y + (rect.y + 2) * this.scaling.halfSpace,xmlStr);
 		}
 	}
 	,staves: function(vbar) {
@@ -4437,13 +4637,8 @@ nx3.render.Renderer.prototype = {
 		}
 	}
 	,beamgroup: function(x,y,beamgroup,points,direction) {
-		var _g = 0;
-		while(_g < points.length) {
-			var point = points[_g];
-			++_g;
-			this.target.rectangle(point.x,point.y,new nx3.geom.Rectangle(-.5,-.5,1,1));
-		}
 		var frame = beamgroup.getFrame();
+		if(frame == null) return;
 		var leftPoint = points[0];
 		var leftOuterY = frame.leftOuterY * this.scaling.halfSpace;
 		var leftInnerY = frame.leftInnerY * this.scaling.halfSpace;
@@ -4458,8 +4653,8 @@ nx3.render.Renderer.prototype = {
 		this.target.line(leftPoint.x,leftPoint.y + leftTipY,rightPoint.x,rightPoint.y + rightTipY,5,0);
 		if(beamgroup.vnotes.length < 3) return;
 		var _g1 = 1;
-		var _g2 = frame.outerLevels.length - 1;
-		while(_g1 < _g2) {
+		var _g = frame.outerLevels.length - 1;
+		while(_g1 < _g) {
 			var i = _g1++;
 			var midPoint = points[i];
 			var midInnerY = frame.innerLevels[i] * this.scaling.halfSpace;
@@ -4477,6 +4672,9 @@ nx3.render.TargetSvg = function(targetDivId,scaling,jsFileName) {
 };
 nx3.render.TargetSvg.__name__ = true;
 nx3.render.TargetSvg.__interfaces__ = [nx3.render.ITarget];
+nx3.render.TargetSvg.hex = function($int) {
+	if($int == 0) return "#000"; else return "#" + StringTools.hex($int);
+};
 nx3.render.TargetSvg.prototype = {
 	test: function() {
 		var bigCircle = this.snap.circle(150,150,100);
@@ -4511,16 +4709,18 @@ nx3.render.TargetSvg.prototype = {
 		return this.scaling;
 	}
 	,rect: function(x,y,rect,lineWidth,lineColor) {
+		if(lineColor == null) lineColor = 0;
 		var r = this.snap.rect(x + rect.x,y + rect.y,rect.width,rect.height);
-		r.attr({ fill : "none", stroke : "#000", strokeWidth : lineWidth});
+		r.attr({ fill : "none", stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth});
 	}
 	,rectangle: function(x,y,rect,lineWidth,lineColor) {
 		if(lineColor == null) lineColor = 0;
 		if(lineWidth == null) lineWidth = 1;
 		var r = this.snap.rect(x + rect.x * this.scaling.halfNoteWidth,y + rect.y * this.scaling.halfSpace,rect.width * this.scaling.halfNoteWidth,rect.height * this.scaling.halfSpace);
-		r.attr({ fill : "none", stroke : "#000", strokeWidth : lineWidth * this.scaling.linesWidth});
+		r.attr({ fill : "none", stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
 	}
 	,rectangles: function(x,y,rects,lineWidth,lineColor) {
+		if(lineColor == null) lineColor = 0;
 		var _g = 0;
 		while(_g < rects.length) {
 			var rect = rects[_g];
@@ -4529,12 +4729,14 @@ nx3.render.TargetSvg.prototype = {
 		}
 	}
 	,line: function(x,y,x2,y2,lineWidth,lineColor) {
-		this.snap.line(x,y,x2,y2).attr({ stroke : "#000", strokeWidth : lineWidth * this.scaling.linesWidth});
+		if(lineColor == null) lineColor = 0;
+		this.snap.line(x,y,x2,y2).attr({ stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
 	}
-	,shape: function(x,y,xmlStr) {
+	,shape: function(x,y,xmlStr,fillColor) {
+		if(fillColor == null) fillColor = 0;
 		var xml = Xml.parse(xmlStr);
 		var gPathD = xml.firstElement().firstChild().firstChild().get("d");
-		var p = this.snap.path(gPathD).attr({ fill : "#000000", stroke : "none"});
+		var p = this.snap.path(gPathD).attr({ fill : fillColor == 0?"#000":"#" + StringTools.hex(fillColor), stroke : "none"});
 		y = y + this.scaling.svgY;
 		x = x + this.scaling.svgX;
 		var g = this.snap.el("svg",{ x : x, y : y});
@@ -4763,8 +4965,8 @@ nx3.xml.NoteXML.toXml = function(note) {
 			xml = Xml.createElement("undefined");
 		}
 	}
-	if(nx3.ENoteValTools.value(note.value) != nx3.ENoteValTools.value(nx3.ENoteVal.Nv4)) xml.set("value",Std.string(nx3.ENoteValTools.value(note.value)));
-	if(note.direction != null) xml.set("direction",Std.string(note.direction));
+	if(nx3.ENoteValTools.value(note.value) != nx3.ENoteValTools.value(nx3.ENoteVal.Nv4)) xml.set("val",Std.string(nx3.ENoteValTools.toValString(note.value)));
+	if(note.direction != nx3.EDirectionUAD.Auto) xml.set("direction",Std.string(note.direction));
 	return xml;
 };
 nx3.xml.NoteXML.fromXmlStr = function(xmlStr) {
@@ -4811,7 +5013,7 @@ nx3.xml.NoteXML.fromXmlStr = function(xmlStr) {
 		var pauseLevelStr = xml.get("level");
 		var levelInt;
 		if(pauseLevelStr == null) levelInt = 0; else levelInt = Std.parseInt(pauseLevelStr);
-		type = nx3.ENoteType.Pause(0);
+		type = nx3.ENoteType.Pause(levelInt);
 		break;
 	case "lyric":
 		var text = xml.get("text");
@@ -4824,10 +5026,8 @@ nx3.xml.NoteXML.fromXmlStr = function(xmlStr) {
 		type = nx3.ENoteType.Lyric(text,offset,continuation,format);
 		break;
 	}
-	var valStr = xml.get("value");
-	var val;
-	if(valStr == null) val = nx3.ENoteValTools.value(nx3.ENoteVal.Nv4); else val = Std.parseInt(xml.get("value"));
-	var value = nx3.ENoteValTools.getFromValue(val);
+	var valStr = xml.get("val");
+	var value = nx3.ENoteValTools.fromValString(valStr);
 	var direction = cx.EnumTools.createFromString(nx3.EDirectionUAD,xml.get("direction"));
 	return new nx3.NNote(type,null,value,direction);
 };
@@ -5027,6 +5227,7 @@ nx3.Constants.DOT_WIDTH = 3.0;
 nx3.Constants.DDOT_WIDTH = 4.0;
 nx3.Constants.FLAG_HEIGHT = 4.8;
 nx3.Constants.FLAG_WIDTH = 2.6;
+nx3.Constants.FLOAT_QUASI_ZERO = 0.0000001;
 nx3.ENoteValTools.DOT = 1.5;
 nx3.ENoteValTools.DOTDOT = 1.75;
 nx3.ENoteValTools.TRI = 0.66666666;
@@ -5128,6 +5329,7 @@ nx3.xml.NoteXML.XNOTE_TYPE = "type";
 nx3.xml.NoteXML.XNOTE_TYPE_NOTE = "note";
 nx3.xml.NoteXML.XNOTE_TYPE_NOTATION_VARIANT = "variant";
 nx3.xml.NoteXML.XNOTE_VALUE = "value";
+nx3.xml.NoteXML.XNOTE_VAL = "val";
 nx3.xml.NoteXML.XNOTE_DIRECTION = "direction";
 nx3.xml.NoteXML.XNOTE_TYPE_PAUSE = "pause";
 nx3.xml.NoteXML.XNOTE_TYPE_NOTE_ARTICULATIONS = "articulations";

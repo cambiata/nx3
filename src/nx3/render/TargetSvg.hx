@@ -8,7 +8,7 @@ import nx3.geom.Rectangles;
 
 import nx3.geom.Rectangle;
 import nx3.render.scaling.TScaling;
-import nx3.render.svg.Elements;
+import nx3.render.svg.SvgElements;
 import snap.Snap;
 using nx3.ENoteValTools;
 /**
@@ -74,11 +74,45 @@ class TargetSvg implements ITarget
 	
 	public function testSymbol(x:Float, y:Float, xmlStr:String=null):Void 
 	{
-		if (xmlStr == null) xmlStr = Elements.noteWhite;
+		if (xmlStr == null) xmlStr = SvgElements.noteWhite;
 		var xml = Xml.parse(xmlStr);
+		
+		var element:SnapElement = null;
+		var elementTag = xml.firstElement().firstChild().firstChild().nodeName.toLowerCase();
+		trace(elementTag);
+		switch elementTag
+		{
+			case 'path':
+				{
+					var pathD = xml.firstElement().firstChild().firstChild().get('d');
+					element = this.snap.path(pathD).attr({
+						fill: "#000000",
+						stroke: "none",
+					});						
+				}
+			case 'rect':
+				{
+					var rectXml = xml.firstElement().firstChild().firstChild();
+					trace(rectXml);
+					element = this.snap.rect(
+						Std.parseFloat(rectXml.get('x')), 
+						Std.parseFloat(rectXml.get('y')), 
+						Std.parseFloat(rectXml.get('width')), 
+						Std.parseFloat(rectXml.get('height'))
+					).attr({
+					//element = this.snap.path(pathD).attr({
+						fill: "#000000",
+						stroke: "none",
+					});							
+					
+				}
+			default:
+				{
+					throw "Invalid svg element type";
+				}
+		}
+		
 		var gPathD = xml.firstElement().firstChild().firstChild().get('d');
-		
-		
 		var p:SnapElement = this.snap.path(gPathD).attr({
 	        fill: "#000000",
 	        stroke: "none",
@@ -95,7 +129,6 @@ class TargetSvg implements ITarget
 		
 		var sc =  this.scaling.svgScale;
 		p.transform('matrix($sc,0,0,$sc,0,0)');
-		//p.transform('matrix(1, .5, 2, .5, .5)');
 	}
 	
 	/* INTERFACE nx3.render.ITarget */
@@ -137,22 +170,45 @@ class TargetSvg implements ITarget
 				stroke: hex(lineColor),
 				strokeWidth: lineWidth * scaling.linesWidth,			
 		});
-		
 	}
-	
-
 	
 	public function shape(x, y, xmlStr:String, ?fillColor:Int=0x000000):Void 
 	{
 		var xml = Xml.parse(xmlStr);
-		var gPathD = xml.firstElement().firstChild().firstChild().get('d');
 		
 		
-		var p:SnapElement = this.snap.path(gPathD).attr({
-			fill: hex(fillColor),
-	        stroke: "none",
-    	});		
-
+		var element:SnapElement = null;
+		var elementTag = xml.firstElement().firstChild().firstChild().nodeName.toLowerCase();
+		
+		switch elementTag
+		{
+			case 'path':
+				{
+					var pathD = xml.firstElement().firstChild().firstChild().get('d');
+					element = this.snap.path(pathD).attr({
+						fill: "#000000",
+						stroke: "none",
+					});						
+				}
+			case 'rect':
+				{
+					var rectXml = xml.firstElement().firstChild().firstChild();
+					element = this.snap.rect(
+						Std.parseFloat(rectXml.get('x')), 
+						Std.parseFloat(rectXml.get('y')), 
+						Std.parseFloat(rectXml.get('width')), 
+						Std.parseFloat(rectXml.get('height'))
+					).attr({
+						fill: "#000000",
+						stroke: "none",
+					});							
+				}
+			default:
+				{
+					
+				}
+		}		
+		
 		y = y  + this.scaling.svgY; // * this.scaling.svgScale;
 		x = x + this.scaling.svgX; // * 1; // + this.scaling.svgX * this.scaling.svgScale;
 
@@ -160,10 +216,10 @@ class TargetSvg implements ITarget
 			x:x,
 			y:y,
 			});
-		g.append(p);
+		g.append(element);
 		
 		var sc =  this.scaling.svgScale;
-		p.transform('matrix($sc,0,0,$sc,0,0)');		
+		element.transform('matrix($sc,0,0,$sc,0,0)');		
 	}
 	
 	/* INTERFACE nx3.render.ITarget */

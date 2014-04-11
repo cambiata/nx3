@@ -14,7 +14,8 @@ import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 import nx3.render.TestTarget;
-import nx3.test.TestBars;
+import nx3.test.BasicTests;
+import nx3.test.TestItems;
 import nx3.VBar;
 
 #if (html5)
@@ -45,22 +46,24 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 		
+		BasicTests.performTests();
+		
 		var target = new TargetOpenFl(Scaling.SMALL);
 		var r = new Renderer(target, 10, 80);
-		r.renderBar(TestBars.testBar1(), 10, 80);				
-		r.renderBar(TestBars.testBarSigns(), 10, 400);					
+		r.renderBar(TestItems.vbar1(), 10, 80);				
+		r.renderBar(TestItems.vbarSigns(), 10, 400);					
 		this.addChild(target.getTargetSprite(0, 0));
 		
 		var target = new TargetOpenFl(Scaling.NORMAL);
 		var r = new Renderer(target, 10, 80);
-		r.renderBar(TestBars.testBar1());				
-		r.renderBar(TestBars.testBarSigns(), 10, 400);		
+		r.renderBar(TestItems.vbar1());				
+		r.renderBar(TestItems.vbarSigns(), 10, 400);		
 		this.addChild(target.getTargetSprite(300, 0));
 		
 		var target = new TargetOpenFl(Scaling.BIG);
 		var r = new Renderer(target, 10, 80);
-		r.renderBar(TestBars.testBar1());			
-		r.renderBar(TestBars.testBarSigns(), 10, 400);		
+		r.renderBar(TestItems.vbarPauses());			
+		r.renderBar(TestItems.vbarSigns(), 10, 400);		
 		this.addChild(target.getTargetSprite(600, 0));
 
 	}

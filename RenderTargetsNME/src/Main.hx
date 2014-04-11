@@ -36,7 +36,7 @@ class Main
 		
 		var target = new TargetNmeBitmap(Scaling.BIG);
 		var r = new Renderer(target, 10, 100);
-		r.renderBar(TestBars.testBar1(), 10, 80);				
+		r.renderBar(TestBars.testBarPauses(), 10, 80);				
 		r.renderBar(TestBars.testBarSigns(), 10, 400);		
 		target.saveBitmap('test-big.png');
 	}

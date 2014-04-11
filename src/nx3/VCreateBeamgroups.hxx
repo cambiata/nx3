@@ -95,6 +95,13 @@ package nx3;
 		
 		for (vnote in this.vnotes)
 		{
+			/*
+			switch(vnote.nnote.type)
+			{
+				case ENoteType.Pause:
+			}
+			*/
+			
 			var vnotePos = vnotePosition.get(vnote);
 			var vnoteEnd = vnotePositionEnd.get(vnote);
 			var groupIdx = -111;

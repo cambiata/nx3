@@ -4,17 +4,19 @@ package nx3.test;
 
 #if neko
 import cx.FileTools;
+import nx3.xml.Nx3XmlTools;
 #end
 
 import haxe.unit.TestCase;
 import nx3.NBar;
 import nx3.NPart;
 import nx3.NVoice;
+import nx3.QNote.QNote4;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
 import nx3.VBar;
 import nx3.xml.BarXML;
-
+import nx3.xml.VoiceXML;
 
 import nx3.EDirectionUAD;
 import nx3.ENoteType;
@@ -34,19 +36,14 @@ import nx3.xml.NoteXML;
 class TestN extends   TestCase 
 {
 
-
 	public function testHeadXml()
 	{
-			
 		var item1 = new NHead(2, ESign.Flat);
-		
-		
 		var xmlstr1= HeadXML.toXml(item1).toString();
 		var item2 = HeadXML.fromXmlStr(xmlstr1);
 		var xmlstr2 = HeadXML.toXml(item2).toString();
 		this.assertEquals(Std.string(item1), Std.string(item2));
-		this.assertEquals(xmlstr1, xmlstr2);
-		
+		this.assertEquals(xmlstr1, xmlstr2);		
 	}
 
 	public function testNoteXml()
@@ -63,6 +60,14 @@ class TestN extends   TestCase
 		this.assertEquals([ -3, -2, 1, 4].toString(), item1.getHeadLevels().toString());
 	}
 	
+	public function testNotePause()
+	{
+		var note = new NNote(ENoteType.Pause(1), ENoteVal.Nv4);
+		var xmlStr = NoteXML.toXml(note).toString();	
+		var note2 = NoteXML.fromXmlStr(xmlStr);		
+		this.assertEquals(Std.string(note), Std.string(note2));
+	}
+	
 	public function testNoteXml2()
 	{
 		var item = new NNote(ENoteType.Pause(0), null, ENoteVal.Nv4);		
@@ -71,36 +76,61 @@ class TestN extends   TestCase
 		this.assertEquals(Type.enumIndex(item.type), Type.enumIndex(ENoteType.Lyric('hello')));
 	}
 	
+	public function testVoiceXml()
+	{
+		var nvoice = new NVoice([
+			new QNote4(1),
+			//new QNote4(1),
+			new NNote(ENoteType.Pause(1), ENoteVal.Nv4),
+		]);
+		
+		var xmlStr = VoiceXML.toXml(nvoice).toString();
+		xmlStrExport('xml/voiceIncludingPause.xml', xmlStr);
+		
+		var nvoice2 = VoiceXML.fromXmlStr(xmlStr);
+		this.assertEquals(Std.string(nvoice), Std.string(nvoice2));		
+	}
+	
+	
+	
 	public function testBarXml()
 	{
-		var vbar = TestBars.testBar1();		
+		var vbar = TestItems.vbar1();		
 		var nbar = vbar.nbar;
 		var xmlStr = BarXML.toXml(nbar).toString();
 		var nbar2 = BarXML.fromXmlStr(xmlStr);
 		var xmlStr2 = BarXML.toXml(nbar2).toString();
 		this.assertEquals(xmlStr, xmlStr2);
 		
-		var vbar = TestBars.testBarSigns();		
+		var vbar = TestItems.vbarSigns();		
 		var nbar = vbar.nbar;
 		var xmlStr = BarXML.toXml(nbar).toString();
 		var nbar2 = BarXML.fromXmlStr(xmlStr);
 		var xmlStr2 = BarXML.toXml(nbar2).toString();
-		this.assertEquals(xmlStr, xmlStr2);		
-		
+		this.assertEquals(xmlStr, xmlStr2);				
 	}
 	
-#if neko	
+
+	public function xmlStrExport(filename:String, xmlStr:String)
+	{
+		#if neko
+			FileTools.putContent(filename, xmlStr);
+		#end	
+	}
+
+
+#if neko
 	public function testBarXmlExport()
 	{
 		this.assertTrue(true);
 		
-		var xmlStr = BarXML.toXml(TestBars.testBar1().nbar).toString();
+		var xmlStr = BarXML.toXml(TestItems.vbar1().nbar).toString();
+		xmlStr = Nx3XmlTools.toBrowserXmlString(xmlStr);
 		FileTools.putContent('xml/testBar1.xml', xmlStr);
 
-		var xmlStr = BarXML.toXml(TestBars.testBarSigns().nbar).toString();
+		var xmlStr = BarXML.toXml(TestItems.vbarSigns().nbar).toString();
+		xmlStr = Nx3XmlTools.toBrowserXmlString(xmlStr);
 		FileTools.putContent('xml/testBarSigns.xml', xmlStr);
-		
-		
 	}
 #end	
 	

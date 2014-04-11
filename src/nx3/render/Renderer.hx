@@ -10,7 +10,7 @@ import nx3.QNote.QNote16;
 import nx3.QVoice;
 import nx3.render.ITarget;
 import nx3.render.scaling.TScaling;
-import nx3.render.svg.Elements;
+import nx3.render.svg.SvgElements;
 import nx3.TPoint;
 import nx3.TPoints;
 import nx3.VBar;
@@ -81,8 +81,6 @@ class Renderer
 				var pos = columnsMinPositions.get(vcolumn);				
 				var colx = this.targetX + pos * scaling.halfNoteWidth;
 				
-				
-				
 				for (vnote in vcomplex.getVNotes())
 				{
 					var vvoice = vpart.getVNotesVVoices().get(vnote);
@@ -99,7 +97,7 @@ class Renderer
 				//var noterects = vcomplex.getNotesRects(directions);
 				//this.target.rectangles(colx, party, noterects , 1, 0x0000ff);				
 				var headrects = vcomplex.getNotesHeadsRects(directions);
-				//this.target.rectangles(colx, party, headrects , 3, 0xff0000);
+				//this.target.rectangles(colx, party, headrects , 1, 0xff0000);
 				
 				var staverects = vcomplex.getStaveBasicRects(directions);
 				//this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
@@ -134,9 +132,9 @@ class Renderer
 			var rect = rects[i];
 			var xmlStr = switch(sign.sign)
 			{
-				case ESign.Flat: Elements.signFlat;
-				case ESign.Natural: Elements.signNatural;
-				case ESign.Sharp: Elements.signSharp;					
+				case ESign.Flat: SvgElements.signFlat;
+				case ESign.Natural: SvgElements.signNatural;
+				case ESign.Sharp: SvgElements.signSharp;					
 			default:
 				null;
 			}
@@ -190,18 +188,10 @@ class Renderer
 	
 	public function heads(x:Float, y:Float, vnote:VNote, direction:EDirectionUD):Void 
 	{
-		var xmlStr:String = null;
-
-		switch (vnote.nnote.value.head())
-		{
-			case EHeadValueType.HVT1: xmlStr = Elements.noteWhole;
-			case EHeadValueType.HVT2: xmlStr = Elements.noteWhite;
-			default: xmlStr = Elements.noteBlack;
-		}
-		
+		var svginfo = RendererTools.getHeadSvgInfo(vnote.nnote);		
 		for (rect in vnote.getVHeadsRectanglesDir(direction))
 		{
-			this.target.shape(x+rect.x *scaling.halfNoteWidth, y+ rect.y * scaling.halfSpace, xmlStr);
+			this.target.shape(x+rect.x *scaling.halfNoteWidth, y + (rect.y + svginfo.y) * scaling.halfSpace, svginfo.xmlStr);
 		}				
 	}	
 	

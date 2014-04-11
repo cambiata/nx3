@@ -5,8 +5,13 @@ package nx3.render.svg;
  * @author 
  */
 
-class Elements
+class SvgElements
 {
+	
+	static public var pauseNv2:String =	'<svg><g><rect height="23" width="50" x="8" y="210" /></g></svg>';	
+	
+	static public var pauseNv1:String =	'<svg><g><rect height="26" width="50" x="8" y="234" /></g></svg>';	
+	
 	
 	static public var clefG:String = 
 		'<svg><g><path style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"

@@ -24,7 +24,7 @@ class Constants
 	static public inline var NOTE_STEM_X_NORMAL					:Float = 1.6;	
 	
 	static public inline var HEAD_HALFWIDTH_NORMAL: Float = 1.6;
-	static public inline var HEAD_HALFWIDTH_WIDE: Float = 2.0;
+	static public inline var HEAD_HALFWIDTH_WIDE: Float = 2.2;
 	static public inline var COMPLEX_COLLISION_CHORD_INTERSECTION:Float = 0.8;
 	static public inline var COMPLEX_COLLISION_NEXTLINEDELTA:Float = 0.7;
 	static public inline var COMPLEX_COLLISION_NEXTLINEDELTA_H1:Float = 0.9;

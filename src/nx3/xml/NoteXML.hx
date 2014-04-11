@@ -34,6 +34,7 @@ class NoteXML
 	static public inline var XNOTE_TYPE_NOTE					:String = "note";
 	static public inline var XNOTE_TYPE_NOTATION_VARIANT		:String = "variant";
 	static public inline var XNOTE_VALUE						:String = "value";
+	static public inline var XNOTE_VAL						:String = "val";
 	static public inline var XNOTE_DIRECTION					:String = "direction";
 	static public inline var XNOTE_TYPE_PAUSE					:String = "pause";
 	static public inline var XNOTE_TYPE_NOTE_ARTICULATIONS		:String = "articulations";
@@ -101,11 +102,12 @@ class NoteXML
 		// value
 		if (note.value.value() != ENoteVal.Nv4.value())
 		{
-			xml.set(XNOTE_VALUE, Std.string(note.value.value()));
+			//xml.set(XNOTE_VALUE, Std.string(note.value.value()));
+			xml.set(XNOTE_VAL, Std.string(note.value.toValString()));			
 		}
 		
-		// direction
-		if (note.direction != null) xml.set(XNOTE_DIRECTION, Std.string(note.direction));
+		// direction		
+		if (note.direction != EDirectionUAD.Auto) xml.set(XNOTE_DIRECTION, Std.string(note.direction));
 		
 		return xml;
 	}
@@ -162,7 +164,7 @@ class NoteXML
 			case XPAUSE:				
 				var pauseLevelStr = xml.get(XPAUSE_LEVEL);
 				var levelInt:Int = (pauseLevelStr == null) ? 0 : Std.parseInt(pauseLevelStr);
-				type = ENoteType.Pause(0);
+				type = ENoteType.Pause(levelInt);
 				
 			//---------------------------------------------------------------------------------------------------------------------------
 			case XLYRIC:
@@ -177,10 +179,15 @@ class NoteXML
 		}
 		
 		// value
-		var valStr = xml.get(XNOTE_VALUE);
-		var val:Int = (valStr == null) ? ENoteVal.Nv4.value() : Std.parseInt(xml.get(XNOTE_VALUE));
+		//var valStr = xml.get(XNOTE_VALUE);
+		//var val:Int = (valStr == null) ? ENoteVal.Nv4.value() : Std.parseInt(xml.get(XNOTE_VALUE));
 		//var value:ENoteVal = ENoteValue.getFromValue(val);
-		var value:ENoteVal = ENoteValTools.getFromValue(val);
+		
+		var valStr = xml.get(XNOTE_VAL);
+		var value:ENoteVal = ENoteValTools.fromValString(valStr);
+		
+		
+		//var value:ENoteVal = ENoteValTools.getFromValue(val);
 		
 		// direction		
 		var direction:EDirectionUAD = EnumTools.createFromString(EDirectionUAD, xml.get(XNOTE_DIRECTION));

@@ -51,9 +51,10 @@ class VVoice
 		return this.value;
 	}
 	
-	var beamgroups:VBeamgroups;
-	var beampattern: ENoteVals;
-	public function getBeamgroups(pattern:ENoteVals=null):VBeamgroups
+	//var beamgroupsX:VBeamgroups;
+	//var beampatternX: ENoteVals;
+	/*
+	public function getBeamgroupsX(pattern:ENoteVals=null):VBeamgroups
 	{
 		// if new pattern, recreate beamgroups
 		if (pattern != null && pattern != this.beampattern) 
@@ -64,6 +65,24 @@ class VVoice
 		
 		if (this.beamgroups != null) return this.beamgroups;
 		this.beamgroups = new VCreateBeamgroups(this.getVNotes(), pattern).getBeamgroups();
+		return this.beamgroups;
+	}
+	*/
+
+	var beamgroups:VBeamgroups;
+	var beampattern: ENoteVals;	
+	
+	public function getBeamgroups(pattern:ENoteVals = null):VBeamgroups
+	{
+		if (pattern != null && pattern != this.beampattern) 
+		{
+			this.beampattern = pattern;
+			this.beamgroups = null;
+		}
+		
+		if (this.beamgroups != null) return this.beamgroups;		
+		
+		this.beamgroups = new VVoiceBeamgroupsGenerator(this.getVNotes(), pattern).getBeamgroups();
 		return this.beamgroups;
 	}
 	

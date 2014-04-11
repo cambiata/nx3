@@ -40,10 +40,12 @@ class NNote
 		{
 			case ENoteType.Note(nheads, variant, articulations, attributes):
 				//CleverSort.cleverSort(nheads, _.level);
-				nheads.sort(function(a, b) { return Reflect.compare(a.level, b.level); } );
-				
+				nheads.sort(function(a, b) { return Reflect.compare(a.level, b.level); } );				
 				//nheads.cleverSort(_.level);
-				this.nheads_ = nheads;
+				this.nheads_ = nheads;				
+			case ENoteType.Pause(level):
+				this.nheads_ = [new NHead(EHeadType.Pause, level)];
+				
 			default:
 				this.nheads_ = [];
 		}

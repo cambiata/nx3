@@ -3,7 +3,7 @@ import nx3.EDirectionUD;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
 import nx3.render.scaling.TScaling;
-import nx3.render.svg.Elements;
+import nx3.render.svg.SvgElements;
 import nx3.render.svg.ShapeTools;
 import nx3.TPoints;
 import nx3.VBeamgroup;
@@ -72,7 +72,7 @@ class TargetSpriteBase  implements ITarget
 	
 	public function testSymbol(x:Float, y:Float, xmlStr:String=null):Void 
 	{
-		if (xmlStr == null) xmlStr = Elements.noteWhite;
+		if (xmlStr == null) xmlStr = SvgElements.noteWhite;
 		var shape:Shape = ShapeTools.getShape(xmlStr, this.scaling);
 		shape.x = x + /*rect.x * scaling.halfNoteWidth +*/ scaling.svgX;
 		shape.y = y + /*rect.y * scaling.halfSpace +*/ scaling.svgY;	

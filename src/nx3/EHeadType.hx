@@ -9,4 +9,5 @@ enum EHeadType
 	Normal;
 	Rythmic;
 	Crossed;
+	Pause;
 }

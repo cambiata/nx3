@@ -13,7 +13,7 @@ import nx3.elements.ENotationVariant;
 import nx3.elements.ESign;
 import nx3.elements.EVoiceType;
 import nx3.render.scaling.TScaling;
-import nx3.render.svg.Elements;
+import nx3.render.svg.SvgElements;
 import nx3.render.svg.ShapeTools;
 import nx3.Constants;
 
@@ -96,9 +96,9 @@ class FontRenderer implements IRenderer
 		var xmlStr:String = null;
 		switch (dnote.value.head)
 		{
-			case EHeadValuetype.HVT1: xmlStr = Elements.noteWhole;
-			case EHeadValuetype.HVT2: xmlStr = Elements.noteWhite;
-			default: xmlStr = Elements.noteBlack;
+			case EHeadValuetype.HVT1: xmlStr = SvgElements.noteWhole;
+			case EHeadValuetype.HVT2: xmlStr = SvgElements.noteWhite;
+			default: xmlStr = SvgElements.noteBlack;
 		}
 		
 		for (rect in dnote.headRects)

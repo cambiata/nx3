@@ -48,13 +48,17 @@ using cx.ArrayTools;
 	 {
 		 if (this.frame != null) return this.frame;
 		 
+		 var firstnote = this.vnotes.first().nnote;
+		 
+		 //-----------------------------------------------------------------------
 		 // Should this have staves/frame?
+		 if (firstnote.type.getName() != 'Note') return null;		 
 		 if (this.vnotes.length == 1)
 		 {
-			 var stavinglevel = this.vnotes.first().nnote.value.stavinglevel();			
+			 var stavinglevel = firstnote.value.stavinglevel();			
 			 if (stavinglevel <= 0)  return null;
 		 }
-		 
+		 //----------------------------------------------------------------------
 		 
 		 if (this.calculatedDirection == null)
 		 {

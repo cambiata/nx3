@@ -56,6 +56,11 @@ class QNote extends NNote
 }
 
 
+class QPause16 extends NNote  { public function new(?level:Int=0) 	super(ENoteType.Pause(level), ENoteVal.Nv16);}
+class QPause8 extends NNote  { public function new(?level:Int=0) 	super(ENoteType.Pause(level), ENoteVal.Nv8);}
+class QPause4 extends NNote  { public function new(?level:Int=0) 	super(ENoteType.Pause(level), ENoteVal.Nv4);}
+class QPause2 extends NNote  { public function new(?level:Int=0) 	super(ENoteType.Pause(level), ENoteVal.Nv2);}
+class QPause1 extends NNote  { public function new(?level:Int=0) 	super(ENoteType.Pause(level), ENoteVal.Nv1);}
 
 
 class QNote4 extends QNote
@@ -65,6 +70,7 @@ class QNote4 extends QNote
 		super(headLevel, headLevels, ENoteVal.Nv4, signs);
 	}
 }
+
 
 class QNote8 extends QNote
 {

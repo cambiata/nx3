@@ -98,7 +98,7 @@ class ENoteValTools
 		 
 	 }
 	 
-	 static public function head(val:ENoteVal)
+	 static public function head(val:ENoteVal):EHeadValueType
 	 {
 		return switch val
 		 {
@@ -185,5 +185,81 @@ class ENoteValTools
 		}
 		
 	}
+	
+	static public function toValString(val:ENoteVal):String
+	{
+		return switch(val)
+		{
+			case ENoteVal.Nv1:  "1";
+			case ENoteVal.Nv1dot:  "1.";
+			case ENoteVal.Nv1ddot:  "1..";
+			case ENoteVal.Nv1tri:  "1-3";
+			case ENoteVal.Nv2:  "2";
+			case ENoteVal.Nv2dot:  "2.";
+			case ENoteVal.Nv2ddot:  "2..";
+			case ENoteVal.Nv2tri:  "2-3";
+			case ENoteVal.Nv4:  "4";
+			case ENoteVal.Nv4dot:  "4.";
+			case ENoteVal.Nv4ddot:  "4..";
+			case ENoteVal.Nv4tri:  "4-3";
+			case ENoteVal.Nv8:  "8";
+			case ENoteVal.Nv8dot:  "8.";
+			case ENoteVal.Nv8ddot:  "8..";
+			case ENoteVal.Nv8tri:  "8-3";
+			case ENoteVal.Nv16:  "16";
+			case ENoteVal.Nv16dot:  "16.";
+			case ENoteVal.Nv16ddot:  "16..";
+			case ENoteVal.Nv16tri:  "16-3";
+			case ENoteVal.Nv32:  "32";
+			case ENoteVal.Nv32dot:  "32.";
+			case ENoteVal.Nv32ddot:  "32..";
+			case ENoteVal.Nv32tri:  "32-3";		
+		default:
+			throw "unhandled note value";
+		}
+	}
+
+	static public function fromValString(valString:String):ENoteVal
+	{
+		return switch (valString)
+		{
+			case null: ENoteVal.Nv4;
+			case "": ENoteVal.Nv4;
+			
+			case "1": ENoteVal.Nv1;
+			case "1.": ENoteVal.Nv1dot;
+			case "1..": ENoteVal.Nv1ddot;
+			case "1-3": ENoteVal.Nv1tri;
+
+			case "2": ENoteVal.Nv2;
+			case "2.": ENoteVal.Nv2dot;
+			case "2..": ENoteVal.Nv2ddot;
+			case "2-3": ENoteVal.Nv2tri;
+
+			case "4": ENoteVal.Nv4;
+			case "4.": ENoteVal.Nv4dot;
+			case "4..": ENoteVal.Nv4ddot;
+			case "4-3": ENoteVal.Nv4tri;
+
+			case "8": ENoteVal.Nv8;
+			case "8.": ENoteVal.Nv8dot;
+			case "8..": ENoteVal.Nv8ddot;
+			case "8-3": ENoteVal.Nv8tri;
+
+			case "16": ENoteVal.Nv16;
+			case "16.": ENoteVal.Nv16dot;
+			case "16..": ENoteVal.Nv16ddot;
+			case "16-3": ENoteVal.Nv16tri;
+
+			case "32": ENoteVal.Nv32;
+			case "32.": ENoteVal.Nv32dot;
+			case "32..": ENoteVal.Nv32ddot;
+			case "32-3": ENoteVal.Nv32tri;			
+		default:	
+			
+			throw 'unhandled note value: $valString';
+		}
+	}
+	
 	
 }
