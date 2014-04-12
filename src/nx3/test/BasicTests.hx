@@ -14,6 +14,7 @@ class BasicTests
 		runner.add(new TestQ());
 		runner.add(new TestN());
 		runner.add(new TestV());
+		runner.add(new TestQuickSyntax());
 		var success = runner.run();		
 	}
 	

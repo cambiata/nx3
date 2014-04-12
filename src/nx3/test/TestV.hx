@@ -210,7 +210,7 @@ class TestV extends  haxe.unit.TestCase
 		var vnote = new VNote(new QNote1([0, 1]));		
 		var rects = vnote.getVHeadsRectanglesDir(EDirectionUD.Down);
 		this.assertEquals(rects.first().x, -Constants.HEAD_HALFWIDTH_WIDE);
-		this.assertEquals(rects.second().x, -Constants.HEAD_HALFWIDTH_WIDE*3);
+		this.assertTrue(floatEquals(rects.second().x, -Constants.HEAD_HALFWIDTH_WIDE*3));
 		
 		var rects = vnote.getVHeadsRectanglesDir(EDirectionUD.Up);
 		this.assertEquals(rects.first().x, Constants.HEAD_HALFWIDTH_WIDE);
@@ -1074,8 +1074,8 @@ class TestV extends  haxe.unit.TestCase
 			new QVoice([4, 1]),
 		]));				
 		var distances = vpart.getVComplexesMinDistances();		
-		this.assertEquals(distances.get(vpart.getVComplexes().first()), 3.6);
-		this.assertEquals(distances.get(vpart.getVComplexes().second()), 2);
+		this.assertTrue(floatEquals(distances.get(vpart.getVComplexes().first()), 3.8));
+		this.assertEquals(distances.get(vpart.getVComplexes().second()), 2.2);
 		
 		var vpart = new VPart(new NPart([
 			new NVoice([
@@ -2087,6 +2087,10 @@ class TestV extends  haxe.unit.TestCase
 		return (a.toString() == b.toString());
 	}
 	
-
+	function floatEquals(a:Float, b:Float)
+	{
+		var diff = Math.abs(a - b);
+		return (diff < 0.0000001);
+	}
 	
 }
