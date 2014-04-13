@@ -83,9 +83,11 @@ Main.main = function() {
 	var r = new nx3.render.Renderer(target,10,80);
 	r.renderBar(nx3.test.TestItems.vbarPauses(),10,80);
 	r.renderBar(nx3.test.TestItems.vbarSigns(),10,400);
+	target.textwidth("Hello");
+	target.text(100,100,"Nisse");
 	var target1 = new nx3.render.TargetSvg("#normal",nx3.render.scaling.Scaling.NORMAL);
 	var r1 = new nx3.render.Renderer(target1,10,80);
-	r1.renderBar(nx3.test.TestItems.vbar1());
+	r1.renderBar(nx3.test.TestItems.vbarPauses());
 	r1.renderBar(nx3.test.TestItems.vbarSigns(),10,400);
 	var target2 = new nx3.render.TargetSvg("#big",nx3.render.scaling.Scaling.BIG);
 	var r2 = new nx3.render.Renderer(target2,10,80);
@@ -1225,6 +1227,11 @@ js.Boot.__string_rec = function(o,s) {
 	default:
 		return String(o);
 	}
+};
+js.Lib = function() { };
+js.Lib.__name__ = true;
+js.Lib.alert = function(v) {
+	alert(js.Boot.__string_rec(v,""));
 };
 var nx3 = {};
 nx3.Constants = function() { };
@@ -4814,6 +4821,7 @@ nx3.render.TargetSvg = function(targetDivId,scaling,jsFileName) {
 	this.scaling = scaling;
 	this.jsFileName = jsFileName;
 	this.snap = new Snap(targetDivId);
+	this.font = nx3.Constants.FONT_LYRICS_DEFAULT;
 };
 nx3.render.TargetSvg.__name__ = true;
 nx3.render.TargetSvg.__interfaces__ = [nx3.render.ITarget];
@@ -4915,6 +4923,28 @@ nx3.render.TargetSvg.prototype = {
 		g.append(element);
 		var sc = this.scaling.svgScale;
 		element.transform("matrix(" + sc + ",0,0," + sc + ",0,0)");
+	}
+	,text: function(x,y,text) {
+		var fontsize = this.font.size * this.scaling.fontScaling;
+		console.log(fontsize);
+		var etext = this.snap.text(x,y,text).attr({ fontSize : "" + fontsize + "px ", fontFamily : this.font.name});
+	}
+	,textwidth: function(text) {
+		if(this.context == null) {
+			var canvas = window.document.getElementById("CanvasTextMeasurement");
+			if(canvas == null) js.Lib.alert("Canvas element " + "CanvasTextMeasurement" + " is missing!");
+			this.context = canvas.getContext("2d");
+		}
+		var fontsize = this.font.size * this.scaling.fontScaling;
+		var fontstr = "" + fontsize + "px " + this.font.name;
+		this.context.font = fontstr;
+		console.log(fontstr);
+		var measure = this.context.measureText(text);
+		console.log(measure.width);
+		return measure.width;
+	}
+	,setFont: function(font) {
+		this.font = font;
 	}
 };
 nx3.render.TestTarget = function(target) {
@@ -5424,6 +5454,8 @@ nx3.Constants.DDOT_WIDTH = 4.0;
 nx3.Constants.FLAG_HEIGHT = 4.8;
 nx3.Constants.FLAG_WIDTH = 2.6;
 nx3.Constants.FLOAT_QUASI_ZERO = 0.0000001;
+nx3.Constants.FONT_LYRICS_DEFAULT = { name : "Georgia", size : 20, bold : false, italic : false};
+nx3.Constants.JS_CANVAS_TEXT_MEASUREMENT = "CanvasTextMeasurement";
 nx3.ENoteValTools.DOT = 1.5;
 nx3.ENoteValTools.DOTDOT = 1.75;
 nx3.ENoteValTools.TRI = 0.66666666;

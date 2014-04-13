@@ -1,16 +1,19 @@
 package nx3.render;
+import nx3.Constants;
 import nx3.EDirectionUD;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
 import nx3.render.svg.ShapeTools;
+import nx3.render.TFontInfo;
 import nx3.TPoints;
 import nx3.VBeamgroup;
 import nx3.VNote;
 
 
 #if (nme)
+import nme.text.TextFieldAutoSize;
 import nme.text.TextFormat;
 import nme.text.TextField;
 import nme.display.Shape;
@@ -18,6 +21,7 @@ import nme.display.Sprite;
 import nme.display.Graphics;
 import nme.Lib;
 #else
+import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 import flash.text.TextField;
 import flash.display.Shape;
@@ -43,6 +47,10 @@ class TargetSpriteBase  implements ITarget
 		this.target = target;
 		this.graphics = target.graphics;
 		this.scaling = scaling;
+		
+		this.textformat = new TextFormat();
+		this.textfield = new TextField();
+		this.setFont(Constants.FONT_LYRICS_DEFAULT);
 	}
 	
 	/* INTERFACE nx3.render.ITarget */
@@ -142,6 +150,48 @@ class TargetSpriteBase  implements ITarget
 		shape.y = y + scaling.svgY;
 		this.target.addChild(shape);		
 	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function text(x:Float, y:Float, text:String):Void 
+	{
+		var textfield = new TextField();
+		textfield.defaultTextFormat = this.textformat;
+		textfield.text = text;
+		textfield.x = x;
+		textfield.y = y;
+		textfield.autoSize = TextFieldAutoSize.LEFT;
+		textfield.selectable = false;
+
+		this.target.addChild(textfield);
+	}
+	
+	var textfield:TextField;
+	var textformat:TextFormat;
+	
+	public function textwidth(text:String):Float 
+	{
+		this.textfield.text = text;
+		var width = this.textfield.textWidth;
+		return width;
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function setFont(font:TFontInfo):Void 
+	{
+		this.textformat.font = font.name;
+		this.textformat.size = font.size * this.scaling.fontScaling;
+		this.textformat.bold = font.bold;
+		this.textformat.italic = font.italic;
+		
+		this.textfield.defaultTextFormat = this.textformat;
+		this.textfield.autoSize = TextFieldAutoSize.LEFT;
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+
 	
 	function drawShape(shape:Shape, x:Float, y:Float, rect:Rectangle)
 	{

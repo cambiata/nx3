@@ -53,6 +53,8 @@ class Main extends Sprite
 		r.renderBar(TestItems.vbar1(), 10, 80);				
 		r.renderBar(TestItems.vbarSigns(), 10, 400);					
 		this.addChild(target.getTargetSprite(0, 0));
+		target.textwidth('Hello');
+		target.text(100, 100, 'Jonas');
 		
 		var target = new TargetOpenFl(Scaling.NORMAL);
 		var r = new Renderer(target, 10, 80);

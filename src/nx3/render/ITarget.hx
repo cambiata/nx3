@@ -4,7 +4,6 @@ import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
 import nx3.render.scaling.TScaling;
 import nx3.TPoints;
-import nx3.VBeamgroup;
 import nx3.VNote;
 
 /**
@@ -25,5 +24,8 @@ interface ITarget
 	
 	public function line(x:Float, y:Float, x2:Float, y2:Float, ?lineWidth:Float, ?lineColor:Int):Void;
 	public function shape(x:Float, y:Float, xmlStr:String, ?fillColor:Int):Void;
+	public function text(x:Float, y:Float, text:String):Void;
+	public function textwidth(text:String): Float;
+	public function setFont(font:TFontInfo):Void;
 
 }

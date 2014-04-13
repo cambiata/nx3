@@ -1,6 +1,11 @@
 package nx3.render;
+import js.Browser;
+import js.html.CanvasElement;
+import js.html.CanvasRenderingContext2D;
 import js.Lib;
+import nx3.Constants;
 import nx3.EDirectionUD;
+import nx3.render.TFontInfo;
 import nx3.TPoints;
 import nx3.VBeamgroup;
 import nx3.VNote;
@@ -28,6 +33,7 @@ class TargetSvg implements ITarget
 		this.scaling = scaling;
 		this.jsFileName = jsFileName;
 		this.snap = new Snap(targetDivId);
+		this.font = Constants.FONT_LYRICS_DEFAULT;
 	}
 		
 	public function test():Void 
@@ -220,6 +226,43 @@ class TargetSvg implements ITarget
 		
 		var sc =  this.scaling.svgScale;
 		element.transform('matrix($sc,0,0,$sc,0,0)');		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	public function text(x:Float, y:Float, text:String):Void 
+	{
+		var fontsize = this.font.size * this.scaling.fontScaling;
+		trace(fontsize);
+		var etext = this.snap.text(x, y, text).attr( {
+			fontSize: '${fontsize}px ',
+			fontFamily: this.font.name,
+			
+		});
+	}
+	
+	var context:CanvasRenderingContext2D;
+	public function textwidth(text:String):Float 
+	{
+		if (this.context == null)
+		{
+			var canvas:CanvasElement = cast Browser.document.getElementById(Constants.JS_CANVAS_TEXT_MEASUREMENT);
+			if (canvas == null) Lib.alert('Canvas element ${Constants.JS_CANVAS_TEXT_MEASUREMENT} is missing!');
+			this.context = canvas.getContext2d();
+		}
+		var fontsize = this.font.size * this.scaling.fontScaling;
+		var fontstr = '${fontsize}px ${this.font.name}';
+		this.context.font = fontstr;
+		trace(fontstr);
+		var measure = context.measureText(text);
+		trace(measure.width);
+		return measure.width;
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	var font:TFontInfo;
+	public function setFont(font:TFontInfo):Void 
+	{
+		this.font = font;
 	}
 	
 	/* INTERFACE nx3.render.ITarget */

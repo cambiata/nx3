@@ -22,11 +22,13 @@ class Main
 			var target = new TargetSvg('#small', Scaling.SMALL);
 			var r = new Renderer(target, 10, 80);
 			r.renderBar(TestItems.vbarPauses(), 10, 80);				
-			r.renderBar(TestItems.vbarSigns(), 10, 400);				
+			r.renderBar(TestItems.vbarSigns(), 10, 400);			
+			target.textwidth('Hello');
+			target.text(100, 100, 'Nisse');
 			
 			var target = new TargetSvg('#normal', Scaling.NORMAL);
 			var r = new Renderer(target, 10, 80);
-			r.renderBar(TestItems.vbar1());				
+			r.renderBar(TestItems.vbarPauses());				
 			r.renderBar(TestItems.vbarSigns(), 10, 400);				
 			
 			var target = new TargetSvg('#big', Scaling.BIG);
