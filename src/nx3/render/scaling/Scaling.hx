@@ -25,7 +25,7 @@ class Scaling
 		svgScale:				.27,
 		svgX:					0,
 		svgY:					-55.0,
-		fontScaling:			6.0,		
+		fontScaling:			1.5,		
 	}
 	
 	static public var NORMAL:TScaling = 
@@ -44,7 +44,7 @@ class Scaling
 		svgScale:				.175,
 		svgX:					0,
 		svgY:					-36.0,
-		fontScaling:			4.0,		
+		fontScaling:			1.0,		
 	}
 	
 	static public var SMALL:TScaling =
@@ -59,7 +59,7 @@ class Scaling
 		svgScale:				.14,
 		svgX:					-0,
 		svgY:					-28.5,
-		fontScaling:			3.0,		
+		fontScaling:			0.75,		
 
 	}
 	
@@ -75,7 +75,7 @@ class Scaling
 			svgScale:				.36,
 			svgX:					-0.0,
 			svgY:					-74.0,
-			fontScaling:			8.0,		
+			fontScaling:			2.0,		
 	}
 	
 	static public var PRINT1:TScaling =
@@ -90,7 +90,7 @@ class Scaling
 			svgScale:				.72,
 			svgX:					-0.0,
 			svgY:					-148.0,
-			fontScaling:			16.0,
+			fontScaling:			4.0,
 	}
 	
 	//--------------------------------------------------------------------------------------------------------

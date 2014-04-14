@@ -218,6 +218,7 @@ class TargetSvg implements ITarget
 		y = y  + this.scaling.svgY; // * this.scaling.svgScale;
 		x = x + this.scaling.svgX; // * 1; // + this.scaling.svgX * this.scaling.svgScale;
 
+		
 		var g:SnapElement = this.snap.el('svg', {
 			x:x,
 			y:y,
@@ -233,6 +234,10 @@ class TargetSvg implements ITarget
 	{
 		var fontsize = this.font.size * this.scaling.fontScaling;
 		trace(fontsize);
+		
+		y = y  + 12.0 * this.scaling.fontScaling; // * this.scaling.svgScale;
+		//x = x + this.scaling.svgX; // * 1; // + this.scaling.svgX * this.scaling.svgScale;
+		
 		var etext = this.snap.text(x, y, text).attr( {
 			fontSize: '${fontsize}px ',
 			fontFamily: this.font.name,

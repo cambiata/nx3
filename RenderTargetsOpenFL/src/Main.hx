@@ -16,6 +16,7 @@ import nx3.render.scaling.TScaling;
 import nx3.render.TestTarget;
 import nx3.test.BasicTests;
 import nx3.test.TestItems;
+import nx3.test.TestRenderer;
 import nx3.VBar;
 
 #if (html5)
@@ -50,22 +51,17 @@ class Main extends Sprite
 		
 		var target = new TargetOpenFl(Scaling.SMALL);
 		var r = new Renderer(target, 10, 80);
-		r.renderBar(TestItems.vbar1(), 10, 80);				
-		r.renderBar(TestItems.vbarSigns(), 10, 400);					
+		TestRenderer.testRenderer(r);
 		this.addChild(target.getTargetSprite(0, 0));
-		target.textwidth('Hello');
-		target.text(100, 100, 'Jonas');
 		
 		var target = new TargetOpenFl(Scaling.NORMAL);
 		var r = new Renderer(target, 10, 80);
-		r.renderBar(TestItems.vbar1());				
-		r.renderBar(TestItems.vbarSigns(), 10, 400);		
-		this.addChild(target.getTargetSprite(300, 0));
-		
+TestRenderer.testRenderer(r);
+		this.addChild(target.getTargetSprite(200, 0));
+
 		var target = new TargetOpenFl(Scaling.BIG);
 		var r = new Renderer(target, 10, 80);
-		r.renderBar(TestItems.vbarPauses());			
-		r.renderBar(TestItems.vbarSigns(), 10, 400);		
+TestRenderer.testRenderer(r);	
 		this.addChild(target.getTargetSprite(600, 0));
 
 	}

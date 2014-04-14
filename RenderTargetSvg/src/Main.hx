@@ -7,6 +7,7 @@ import nx3.render.svg.SvgElements;
 import nx3.render.TargetSvg;
 import nx3.render.TestTarget;
 import nx3.test.TestItems;
+import nx3.test.TestRenderer;
 
 import nx3.xml.BarXML;
 
@@ -21,19 +22,21 @@ class Main
 	{
 			var target = new TargetSvg('#small', Scaling.SMALL);
 			var r = new Renderer(target, 10, 80);
+			
+			TestRenderer.testRenderer(r);
+			/*
 			r.renderBar(TestItems.vbarPauses(), 10, 80);				
 			r.renderBar(TestItems.vbarSigns(), 10, 400);			
-			target.textwidth('Hello');
-			target.text(100, 100, 'Nisse');
+			var text = "Hello world!";
+			target.textwidth(text);
+			target.text(100, 100, text);
+			*/
 			
 			var target = new TargetSvg('#normal', Scaling.NORMAL);
 			var r = new Renderer(target, 10, 80);
-			r.renderBar(TestItems.vbarPauses());				
-			r.renderBar(TestItems.vbarSigns(), 10, 400);				
-			
+TestRenderer.testRenderer(r);
+
 			var target = new TargetSvg('#big', Scaling.BIG);
 			var r = new Renderer(target, 10, 80);
-			r.renderBar(TestItems.vbarPauses());			
-			r.renderBar(TestItems.vbarSigns(), 10, 400);				
-	}	
+TestRenderer.testRenderer(r);	}	
 }

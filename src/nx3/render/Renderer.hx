@@ -252,7 +252,10 @@ class Renderer
 		
 	}	
 	
-	
+	public function getTarget():ITarget
+	{
+		return this.target;
+	}
 	
 	
 }

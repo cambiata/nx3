@@ -34,6 +34,6 @@ class Constants
 	static public inline var FLAG_HEIGHT:Float = 4.8;
 	static public inline var FLAG_WIDTH:Float = 2.6;
 	static public inline var FLOAT_QUASI_ZERO:Float = 0.0000001;
-	static public  var FONT_LYRICS_DEFAULT:TFontInfo = { name:'Georgia', size:20, bold:false, italic:false };
+	static public  var FONT_LYRICS_DEFAULT:TFontInfo = { name:'Open Sans', size:12, bold:false, italic:false };
 	static public inline var JS_CANVAS_TEXT_MEASUREMENT:String = "CanvasTextMeasurement";
 } 
