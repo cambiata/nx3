@@ -1,5 +1,5 @@
 package nx3;
-import nx3.render.TFontInfo;
+
 
 /**
  * ...
@@ -34,6 +34,10 @@ class Constants
 	static public inline var FLAG_HEIGHT:Float = 4.8;
 	static public inline var FLAG_WIDTH:Float = 2.6;
 	static public inline var FLOAT_QUASI_ZERO:Float = 0.0000001;
-	static public  var FONT_LYRICS_DEFAULT:TFontInfo = { name:'Open Sans', size:12, bold:false, italic:false };
+	static public  var FONT_TEXT_DEFAULTFORMAT:TFontInfo = { name:'Georgia', size:12, bold:false, italic:false };
 	static public inline var JS_CANVAS_TEXT_MEASUREMENT:String = "CanvasTextMeasurement";
+	static public inline var FONT_TEXT_X_ADJUST_SVG:Float = -0.2;
+	static public inline var FONT_TEXT_Y_ADJUST_SVG:Float = 9.6;
+	static public inline var FONT_TEXT_Y_ADJUST_FLASH:Float = -1.2;
+	static public inline var FONT_TEXT_X_ADJUST_FLASH:Float = -.3;
 } 

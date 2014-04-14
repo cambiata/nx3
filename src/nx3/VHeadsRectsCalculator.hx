@@ -7,6 +7,7 @@ package nx3;
 import nx3.ENoteType;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
+import nx3.VNote;
 using nx3.ENoteValTools;
 
 class VHeadsRectsCalculator
@@ -16,18 +17,18 @@ class VHeadsRectsCalculator
 	var notevalue:ENoteVal;
 	var notetype:ENoteType;
 	
-	
-	public function new( vheads:VHeads, placements:VHeadPlacements, notevalue:ENoteVal )
+	public function new(vheads:VHeads, placements:VHeadPlacements, notevalue:ENoteVal )
 	{
 		this.vheads = vheads;
 		this.placements = placements;
 		this.notevalue = notevalue;
-		//this.notetype = (notetype != null) ? notetype : ENoteType.Note(;
 	}
 	
 	public function getHeadsRects():Rectangles
 	{
 		var rects = new Rectangles();
+		
+		//-------------------------------------------------------------------------------------------------
 		
 		var i = 0;
 		for (placement in placements)
@@ -37,7 +38,8 @@ class VHeadsRectsCalculator
 			var rect:Rectangle = null;
 			var headw:Float = 0;
 			
-			rect = headRect(headtype, this.notevalue);
+			 headRect(headtype, this.notevalue);
+			
 			
 			switch(this.notevalue.head())
 			{
@@ -46,10 +48,8 @@ class VHeadsRectsCalculator
 				default:
 					headw = Constants.HEAD_HALFWIDTH_NORMAL;
 			}	
-			
-			
-			
-			//rect =  new Rectangle( -headw, -1, 2 * headw, 2);
+
+			var rect = new Rectangle( -headw, -1, 2 * headw, 2);
 			
 			var pos = 0.0;
 			switch placement.pos

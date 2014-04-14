@@ -6,6 +6,7 @@ import nx3.EDirectionUD;
 import nx3.NBar;
 import nx3.NPart;
 import nx3.NVoice;
+import nx3.ENoteType;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
 import nx3.render.ITarget;
@@ -47,7 +48,8 @@ class Renderer
 		if (newX != -1) this.targetX = newX;
 		if (newY != -1) this.targetY = newY;
 		
-		this.notlines(vbar, 80*this.scaling.halfNoteWidth);
+		
+		this.parts(vbar);
 		this.complexes(vbar);
 		this.staves(vbar);
 	}
@@ -62,10 +64,26 @@ class Renderer
 		}
 	}
 	
+	function parts(vbar:VBar)
+	{
+		var barMinWidth = vbar.getVColumnsMinWidth();
+		//this.target.rect(this.targetX, this.targetY, new Rectangle(0, -60, barMinWidth * scaling.halfNoteWidth, 260), .3);
+		
+		var party = this.targetY;
+		for (vpart in vbar.getVParts())
+		{		
+			this.notlines(vbar, barMinWidth*this.scaling.halfNoteWidth);
+			party += this.partDistance;
+		}
+		this.target.rect(this.targetX, this.targetY, new Rectangle(0, -10*this.scaling.halfSpace, barMinWidth * scaling.halfNoteWidth, (party-this.targetY) /*+ 10*this.scaling.halfSpace*/), .3);
+		
+	}
+	
+	
 	function complexes(vbar:VBar)
 	{
 		var barMinWidth = vbar.getVColumnsMinWidth();
-		this.target.rect(this.targetX, this.targetY, new Rectangle(0, -60, barMinWidth*scaling.halfNoteWidth, 260), .3);
+		
 		
 		var columnsMinPositions  = vbar.getVColumnsMinPositions();
 		var party = this.targetY;
@@ -97,7 +115,7 @@ class Renderer
 				//var noterects = vcomplex.getNotesRects(directions);
 				//this.target.rectangles(colx, party, noterects , 1, 0x0000ff);				
 				var headrects = vcomplex.getNotesHeadsRects(directions);
-				//this.target.rectangles(colx, party, headrects , 1, 0xff0000);
+				this.target.rectangles(colx, party, headrects , 1, 0xff0000);
 				
 				var staverects = vcomplex.getStaveBasicRects(directions);
 				//this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
@@ -188,11 +206,27 @@ class Renderer
 	
 	public function heads(x:Float, y:Float, vnote:VNote, direction:EDirectionUD):Void 
 	{
-		var svginfo = RendererTools.getHeadSvgInfo(vnote.nnote);		
-		for (rect in vnote.getVHeadsRectanglesDir(direction))
+		switch vnote.nnote.type
 		{
-			this.target.shape(x+rect.x *scaling.halfNoteWidth, y + (rect.y + svginfo.y) * scaling.halfSpace, svginfo.xmlStr);
-		}				
+			
+			case ENoteType.Lyric(text, o, c, font):
+				var rect = vnote.getVHeadsRectanglesDir(direction).first(); 
+				//this.target.rectangle(x, y, rect);
+				this.target.text(x + rect.x * this.scaling.halfNoteWidth, y + rect.y * scaling.halfSpace, text);
+				
+			case ENoteType.Tpl(level):
+				var rect = vnote.getVHeadsRectanglesDir(direction).first().clone(); 
+				rect.inflate( -0.8, -0.8);
+				this.target.filledellipse(x, y, rect, 6, 0xff0000, 0xffffff);
+				
+			default:
+				var svginfo = RendererTools.getHeadSvgInfo(vnote.nnote);		
+				for (rect in vnote.getVHeadsRectanglesDir(direction))
+				{
+					this.target.shape(x+rect.x *scaling.halfNoteWidth, y + (rect.y + svginfo.y) * scaling.halfSpace, svginfo.xmlStr);
+				}				
+		}
+		
 	}	
 	
 	public function beamgroup(x:Float, y:Float, beamgroup:VBeamgroup, points:TPoints, direction:EDirectionUD):Void 
@@ -220,25 +254,11 @@ class Renderer
 
 		// right stave
 		this.target.line(rightPoint.x, rightPoint.y + rightInnerY, rightPoint.x, rightPoint.y + rightTipY, 1, 0x000000);
-		
-		/*
-		// Outire
-		this.target.graphics.lineStyle(4, 0xFF00FF);
-		this.target.graphics.moveTo(leftPoint.x, leftPoint.y + leftOuterY);
-		this.target.graphics.lineTo(rightPoint.x, rightPoint.y + rightOuterY);
-
-		// Inner
-		this.target.graphics.lineStyle(2, 0x00FFFF);		
-		this.target.graphics.moveTo(leftPoint.x, leftPoint.y + leftInnerY);
-		this.target.graphics.lineTo(rightPoint.x, rightPoint.y + rightInnerY);
-		*/
-		
 
 		// beam
 		this.target.line(leftPoint.x, leftPoint.y + leftTipY, rightPoint.x, rightPoint.y + rightTipY, 5, 0x000000);
 		
 		if (beamgroup.vnotes.length < 3) return;
-		
 		
 		// mid staves
 		for (i in 1...frame.outerLevels.length - 1)

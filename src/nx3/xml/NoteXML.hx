@@ -3,7 +3,6 @@ import cx.EnumTools;
 import nx3.EDirectionUAD;
 import nx3.EDirectionUD;
 import nx3.ELyricContinuation;
-import nx3.ELyricFormat;
 import nx3.ENoteArticulation;
 import nx3.ENoteAttributes;
 import nx3.ENoteVal;
@@ -173,9 +172,11 @@ class NoteXML
 				var offset:EPosition = EnumTools.createFromString(EPosition, offsetStr);
 				var continuationStr = xml.get(XLYRIC_CONTINUATION);				
 				var continuation:ELyricContinuation = EnumTools.createFromString(ELyricContinuation, continuationStr);
-				var formatStr = xml.get(XLYRIC_FORMAT);
-				var format:ELyricFormat = EnumTools.createFromString(ELyricFormat, formatStr);				
-				type = ENoteType.Lyric(text, offset, continuation, format);
+				
+				//var formatStr = xml.get(XLYRIC_FORMAT);
+				//var format:ELyricFormat = EnumTools.createFromString(ELyricFormat, formatStr);				
+				//TODO!
+				type = ENoteType.Lyric(text, offset, continuation);
 		}
 		
 		// value

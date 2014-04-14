@@ -180,7 +180,7 @@ class VComplex
 		{		
 			return note.getVHeadsRectanglesDir(dir);
 		}		
-		var rects:nx3.geom.Rectangles = note.getVHeadsRectanglesDir(dir);
+		var rects:Rectangles = note.getVHeadsRectanglesDir(dir);
 		var offsetX = getHeadsCollisionOffsetX(note, dir);
 		for (rect in rects) rect.offset(offsetX, 0);
 		return rects;		
@@ -249,8 +249,8 @@ class VComplex
 		this.notesHeadsRects = new Rectangles();
 		for (i in 0...this.getVNotes().length)
 		{
-			var vnote = this.getVNotes()[i];
-			var rects = getNoteHeadsRects(vnote, directions[i]);
+			var vnote:VNote = this.getVNotes()[i];
+			var rects = this.getNoteHeadsRects(vnote, directions[i]);
 			for (rect in rects) this.notesHeadsRects.push(rect);
 		}
 		return this.notesHeadsRects;				

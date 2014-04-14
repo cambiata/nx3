@@ -5,7 +5,8 @@ import js.html.CanvasRenderingContext2D;
 import js.Lib;
 import nx3.Constants;
 import nx3.EDirectionUD;
-import nx3.render.TFontInfo;
+import nx3.render.scaling.Scaling;
+import nx3.TFontInfo;
 import nx3.TPoints;
 import nx3.VBeamgroup;
 import nx3.VNote;
@@ -22,20 +23,35 @@ using nx3.ENoteValTools;
  */
 class TargetSvg implements ITarget
 {
-	var targetDivId:String;
+	var svgId:String;
 	var jsFileName:String;
 	var scaling:TScaling;
 	var snap:Snap;
 
-	public function new(targetDivId: String, scaling:TScaling, jsFileName:String=null) 
+	public function new(?svgId: String, ?scaling:TScaling, jsFileName:String=null) 
 	{
-		this.targetDivId = targetDivId;
-		this.scaling = scaling;
+		this.svgId = svgId;
+		this.scaling = (scaling != null) ? scaling : Scaling.NORMAL;
 		this.jsFileName = jsFileName;
-		this.snap = new Snap(targetDivId);
-		this.font = Constants.FONT_LYRICS_DEFAULT;
+		this.snap = new Snap(svgId);
+		this.font = Constants.FONT_TEXT_DEFAULTFORMAT;
 	}
+	
+	public function testLines(x:Float, y:Float, width:Float):Void 
+	{
+		for (i in -2...3)
+		{
+			var cy = y + i * scaling.space;
+			var line = this.snap.line(x, cy, x + width, cy);
+			line.attr( {
+				stroke: "#000",
+				strokeWidth: scaling.linesWidth,
+			});
+		}		
+	}	
+	
 		
+	/*
 	public function test():Void 
 	{
 		var bigCircle = this.snap.circle(150, 150, 100);
@@ -56,27 +72,9 @@ class TargetSvg implements ITarget
 		});
 	}
 	
-	/* INTERFACE nx3.render.ITarget */
 	
-	public function testLines(x:Float, y:Float, width:Float):Void 
-	{
-		//this.snap.line(x, y, x + width, y);
-		//this.target.graphics.lineStyle(this.scaling.linesWidth, 0xAAAAAA);	
-		
-		for (i in -2...3)
-		{
-			var cy = y + i * scaling.space;
-			//this.target.graphics.moveTo(x, cy);
-			//this.target.graphics.lineTo(x + width, cy);			
-			var line = this.snap.line(x, cy, x + width, cy);
-			line.attr( {
-				stroke: "#000",
-				strokeWidth: scaling.linesWidth,
-			});
-		}		
-	}
+
 	
-	/* INTERFACE nx3.render.ITarget */
 	
 	public function testSymbol(x:Float, y:Float, xmlStr:String=null):Void 
 	{
@@ -136,8 +134,7 @@ class TargetSvg implements ITarget
 		var sc =  this.scaling.svgScale;
 		p.transform('matrix($sc,0,0,$sc,0,0)');
 	}
-	
-	/* INTERFACE nx3.render.ITarget */
+	*/
 	
 	public function getScaling():TScaling 
 	{
@@ -235,7 +232,8 @@ class TargetSvg implements ITarget
 		var fontsize = this.font.size * this.scaling.fontScaling;
 		trace(fontsize);
 		
-		y = y  + 12.0 * this.scaling.fontScaling; // * this.scaling.svgScale;
+		x = x  + Constants.FONT_TEXT_X_ADJUST_SVG * this.scaling.fontScaling; // * this.scaling.svgScale;
+		y = y  + Constants.FONT_TEXT_Y_ADJUST_SVG * this.scaling.fontScaling; // * this.scaling.svgScale;
 		//x = x + this.scaling.svgX; // * 1; // + this.scaling.svgX * this.scaling.svgScale;
 		
 		var etext = this.snap.text(x, y, text).attr( {
@@ -260,8 +258,14 @@ class TargetSvg implements ITarget
 		trace(fontstr);
 		var measure = context.measureText(text);
 		trace(measure.width);
-		return measure.width;
+		return measure.width / this.scaling.halfNoteWidth;
 	}
+	
+	public function textheight(text:String):Float 
+	{
+		return this.font.size / 3.8;
+	}
+	
 	
 	/* INTERFACE nx3.render.ITarget */
 	var font:TFontInfo;
@@ -269,6 +273,10 @@ class TargetSvg implements ITarget
 	{
 		this.font = font;
 	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+
 	
 	/* INTERFACE nx3.render.ITarget */
 	

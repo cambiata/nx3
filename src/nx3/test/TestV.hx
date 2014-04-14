@@ -20,7 +20,9 @@ import nx3.VBeamgroup;
 import nx3.VBeamgroupDirectionCalculator;
 import nx3.VBeamgroupFrameCalculator;
 import nx3.VBeamgroups;
+import nx3.VHeadsRectsCalculator;
 import nx3.VNote;
+import nx3.VNoteHeadsRectsCalculator;
 import nx3.VPart;
 import nx3.VPartComplexesGenerator;
 import nx3.VSystemGenerator;
@@ -62,6 +64,18 @@ class TestV extends  haxe.unit.TestCase
 		this.assertEquals(2, vnote.nnote.nheads.length);
 		this.assertEquals([ -2, 1].toString(), vnote.nnote.getHeadLevels().toString());
 		this.assertEquals(ENoteVal.Nv4, vnote.nnote.value);
+	}
+	
+	public function testVNoteLyric()
+	{
+		var nnote = new NNote(ENoteType.Lyric('Hello'));
+		this.assertEquals(nnote.type.getName(), 'Lyric');
+		var text = switch nnote.type
+		{
+			case ENoteType.Lyric(text, o, c, f):  text;
+			default: null;
+		}
+		this.assertEquals(text, 'Hello');
 	}
 
 	public function testVNoteInternalDirection()
@@ -162,12 +176,14 @@ class TestV extends  haxe.unit.TestCase
 	{
 		var vnote = new VNote(new QNote(0));
 		var calculator = new VHeadsRectsCalculator( vnote.getVHeads(), vnote.getVHeadsPlacements(), vnote.nnote.value);
+		var calculator = new VNoteHeadsRectsCalculator(vnote);
 		var rects = calculator.getHeadsRects();
 		assertEquals(rects.length, 1);
 		assertEquals(rects.first().x , -Constants.HEAD_HALFWIDTH_NORMAL);
 
 		var vnote = new VNote(new QNote([0, 1]));
-		var calculator = new VHeadsRectsCalculator( vnote.getVHeads(), vnote.getVHeadsPlacements(),vnote.nnote.value);
+		//var calculator = new VHeadsRectsCalculator( vnote.getVHeads(), vnote.getVHeadsPlacements(), vnote.nnote.value, vnote);
+		var calculator = new VNoteHeadsRectsCalculator(vnote);
 		var rects = calculator.getHeadsRects();
 		assertEquals(rects.length, 2);
 		assertEquals(vnote.getDirection(), EDirectionUD.Up);
@@ -175,7 +191,8 @@ class TestV extends  haxe.unit.TestCase
 		assertEquals(rects.second().x , -Constants.HEAD_HALFWIDTH_NORMAL);
 
 		var vnote = new VNote(new QNote([0, 1],EDirectionUAD.Down));
-		var calculator = new VHeadsRectsCalculator( vnote.getVHeads(), vnote.getVHeadsPlacements(), vnote.nnote.value);
+		//var calculator = new VHeadsRectsCalculator( vnote.getVHeads(), vnote.getVHeadsPlacements(), vnote.nnote.value, vnote);
+		var calculator = new VNoteHeadsRectsCalculator(vnote);
 		var rects = calculator.getHeadsRects();		
 		assertEquals(rects.length, 2);
 		assertEquals(vnote.getDirection(), EDirectionUD.Down);
@@ -184,13 +201,41 @@ class TestV extends  haxe.unit.TestCase
 
 		var vnote = new VNote(new QNote([0, 1]));
 		vnote.setConfig( { direction:EDirectionUD.Down } );
-		var calculator = new VHeadsRectsCalculator( vnote.getVHeads(), vnote.getVHeadsPlacements(), vnote.nnote.value);
+		//var calculator = new VHeadsRectsCalculator( vnote.getVHeads(), vnote.getVHeadsPlacements(), vnote.nnote.value, vnote);
+		var calculator = new VNoteHeadsRectsCalculator(vnote);
 		var rects = calculator.getHeadsRects();		
 		assertEquals(rects.length, 2);
 		assertEquals(vnote.getDirection(), EDirectionUD.Down);
 		assertEquals(rects.first().x , -Constants.HEAD_HALFWIDTH_NORMAL);
-		assertTrue(MathTools.floatEquals(rects.second().x , 3*-Constants.HEAD_HALFWIDTH_NORMAL));				
+		assertTrue(MathTools.floatEquals(rects.second().x , 3 * -Constants.HEAD_HALFWIDTH_NORMAL));				
+		
+		// Pause
+	
+		var vnote = new VNote(new QPause4(0));
+		var calculator = new VNoteHeadsRectsCalculator(vnote);
+		var rects = calculator.getHeadsRects();
+		this.assertTrue(rects.length > 0);
+		//trace(rects);
+		
+		// Lyrics
+		#if (flash || openfl || nme)
+		var vnote = new VNote(new QLyric4('Hello'));
+		var calculator = new VNoteHeadsRectsCalculator(vnote);
+		var rects = calculator.getHeadsRects();		
+		this.assertTrue(rects.length > 0);
+		//trace(rects);
+		#end
+		
+		// TPL
+		var vnote = new VNote(new NNote(ENoteType.Tpl(0)));
+		var calculator = new VNoteHeadsRectsCalculator(vnote);
+		var rects = calculator.getHeadsRects();		
+		this.assertTrue(rects.length > 0);
+		
+		
+		
 	}
+	
 	
 	public function testVNoteHeadRectanglesDir()
 	{
@@ -434,6 +479,11 @@ class TestV extends  haxe.unit.TestCase
 		var beamgroups:Array<VBeamgroup> = vvoice.getBeamgroups([ENoteVal.Nv4]);
 		this.assertEquals(beamgroups.length, 6);
 		
+		//----------
+		// Lyrics
+		var vvoice = TestItems.vvoiceLyrics1();
+		var beamgroups:VBeamgroups = vvoice.getBeamgroups([ENoteVal.Nv4]);
+		this.assertEquals(beamgroups.length, 2);
 	}
 	
 	public function testBeamgroupPause()

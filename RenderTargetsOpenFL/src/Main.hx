@@ -8,22 +8,16 @@ import nx3.NPart;
 import nx3.NVoice;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
-import nx3.render.IRenderer;
 import nx3.render.ITarget;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
-import nx3.render.TestTarget;
-import nx3.test.BasicTests;
+import nx3.render.TargetSprite;
+import nx3.test.Unittests;
 import nx3.test.TestItems;
 import nx3.test.TestRenderer;
 import nx3.VBar;
 
-#if (html5)
-	import nx3.render.TargetSvg;
-#else
-	import nx3.render.TargetOpenFl;
-#end
 
 /**
  * ...
@@ -47,23 +41,19 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 		
-		BasicTests.performTests();
+		Unittests.performTests();
 		
-		var target = new TargetOpenFl(Scaling.SMALL);
-		var r = new Renderer(target, 10, 80);
-		TestRenderer.testRenderer(r);
+		var target = new TargetSprite(Scaling.SMALL);
+		TestRenderer.testRenderer( new Renderer(target, 10, 80));
 		this.addChild(target.getTargetSprite(0, 0));
 		
-		var target = new TargetOpenFl(Scaling.NORMAL);
-		var r = new Renderer(target, 10, 80);
-TestRenderer.testRenderer(r);
+		var target = new TargetSprite(Scaling.NORMAL);
+		TestRenderer.testRenderer( new Renderer(target, 10, 80));
 		this.addChild(target.getTargetSprite(200, 0));
 
-		var target = new TargetOpenFl(Scaling.BIG);
-		var r = new Renderer(target, 10, 80);
-TestRenderer.testRenderer(r);	
+		var target = new TargetSprite(Scaling.BIG);
+		TestRenderer.testRenderer( new Renderer(target, 10, 80));
 		this.addChild(target.getTargetSprite(600, 0));
-
 	}
 
 	/* SETUP */

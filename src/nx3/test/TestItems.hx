@@ -101,6 +101,70 @@ class TestItems
 		
 	}
 	
+	static public function vbarLyrics()
+	{
+		var vbar = new VBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					])
+			]),
+			
+			new NPart([	
+				new NVoice([				
+					new NNote(ENoteType.Lyric('Hello')),
+					new NNote(ENoteType.Lyric('World!')),
+					new NNote(ENoteType.Lyric('Verylongword')),
+					new NNote(ENoteType.Lyric('&')),
+					new NNote(ENoteType.Lyric('&')),
+					])
+			]),						
+		]));				
+		return vbar;						
+	}
+	
+	static public function vbarTpl()
+	{
+		var vbar = new VBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					])
+			]),
+			
+			new NPart([	
+				new NVoice([				
+					new NNote(ENoteType.Tpl(0)),
+					new NNote(ENoteType.Tpl(1)),
+					new NNote(ENoteType.Tpl(2)),
+					new NNote(ENoteType.Tpl(3)),
+					new NNote(ENoteType.Tpl(4)),
+					new NNote(ENoteType.Tpl(5)),
+					new NNote(ENoteType.Tpl(0)),
+					new NNote(ENoteType.Tpl(-1)),
+					new NNote(ENoteType.Tpl(-2)),
+					new NNote(ENoteType.Tpl(-3)),
+					])
+			]),						
+		]));				
+		return vbar;						
+	}	
+	
+	
+	
 	static public function nvoicePause1()
 	{
 		return new NVoice([				
@@ -114,13 +178,20 @@ class TestItems
 	static public function vvoicePausesEights()
 	{
 		return new VVoice(new NVoice([							
-			new NNote(ENoteVal.Nv8),
-			new NNote(ENoteVal.Nv8),
+			new NNote(ENoteType.Pause(0), ENoteVal.Nv8),
+			new NNote(ENoteType.Pause(0), ENoteVal.Nv8),
 		]));		
 		
 	}
 	
-	
+	static public function nvoiceLyrics1()
+	{
+		return new NVoice([				
+			new NNote(ENoteType.Lyric('Hello'), ENoteVal.Nv8),
+			new NNote(ENoteType.Lyric('World!'), ENoteVal.Nv8),
+		]);
+	}	
+	static public function vvoiceLyrics1() return new VVoice(nvoiceLyrics1());
 	
 	
 }

@@ -16,29 +16,21 @@ class QuickSyntaxParser
 	
 	var tokenfunctions:Map < String, String->String > ;
 	
-	
 	public function new(str:String) 
 	{
 		this.str = str.trim().replace('  ', ' ').replace('  ', ' ').replace('  ', ' ');
 		this.tokens = parseTokens(this.str);
-		
 		this.tokenfunctions = new Map < String, String->String> ();
-		
 		this.tokenfunctions.set('test', function (str:String):String { 
 			return str += ' world!'; 
 			this.bi++; 
 		});
-		
-		
-		
 	}
 	
 	public function parse1()
 	{
 		var fn = this.tokenfunctions.get('test');
 		var result = Reflect.callMethod(null, fn, ['Hello']);
-		trace(result);
-		
 		
 		for (token in this.tokens)
 		{
@@ -47,13 +39,8 @@ class QuickSyntaxParser
 				case '|': // new bar
 				case '/': //new part
 				case '%': //new voice
-				
-				
-				
-				
 			}
 		}
-		
 		return null;
 	}
 	

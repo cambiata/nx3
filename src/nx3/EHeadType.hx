@@ -10,4 +10,5 @@ enum EHeadType
 	Rythmic;
 	Crossed;
 	Pause;
+	Other;
 }

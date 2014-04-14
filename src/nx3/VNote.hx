@@ -89,7 +89,10 @@ class VNote
 		if (this.vheads == null) this.getVHeads();
 		
 		var calculator = new VHeadsRectsCalculator(this.getVHeads(), this.getVHeadPlacementsUp(), this.nnote.value);
+		var calculator = new VNoteHeadsRectsCalculator(this, this.getVHeadPlacementsUp());
+		
 		this.vheadsRectanglesUp = calculator.getHeadsRects();
+		
 		return this.vheadsRectanglesUp;		
 	}
 	var vheadsRectanglesDown:Rectangles;
@@ -99,6 +102,9 @@ class VNote
 		if (this.vheads == null) this.getVHeads();
 		
 		var calculator = new VHeadsRectsCalculator(this.getVHeads(), this.getVHeadPlacementsDown(), this.nnote.value);
+		//trace(calculator.getHeadsRects());
+		var calculator = new VNoteHeadsRectsCalculator(this,  this.getVHeadPlacementsDown());
+		//trace(calculator.getHeadsRects());
 		this.vheadsRectanglesDown = calculator.getHeadsRects();
 		return this.vheadsRectanglesDown;		
 	}	

@@ -47,7 +47,7 @@ class NNote
 				this.nheads_ = [new NHead(EHeadType.Pause, level)];
 				
 			default:
-				this.nheads_ = [];
+				this.nheads_ =  [new NHead(EHeadType.Other, 0)];
 		}
 		return this.nheads_;
 		//return null;
