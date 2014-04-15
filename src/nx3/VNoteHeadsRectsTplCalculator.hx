@@ -1,5 +1,5 @@
 package nx3;
-import flash.geom.Rectangle;
+import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
 
 /**

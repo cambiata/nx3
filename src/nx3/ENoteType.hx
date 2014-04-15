@@ -12,5 +12,5 @@ enum ENoteType {
 	Tpl(level:Int);
 	Lyric(?text:String, ?offset:EPosition, ?continuation:ELyricContinuation, ?font:TFontInfo);
 	Chord;
-	Dynam;
+	Dynamics;
 }

@@ -1,0 +1,35 @@
+clefG 
+time4/4 
+key3# 
+
+notes: 
+tpls:
+lyrics:
+
+c4
+d8
+e16
+f2.
+g1
+a8.
+b.
+
+r8 = paus
+
+t0 = tonplats
+
+c4_ = bindebåge
+
+_ = bindebåge
+
+( = legato start
+) = legato end
+
+| = ny takt
+/ = ny part
+/notes
+/tpls
+/lyrics
+/chords
+
+% = ny voice

@@ -11,9 +11,6 @@ import flash.display.Shape;
 
 import format.SVG;
 import format.svg.SVG2Gfx;
-
-
-
 import haxe.macro.Format;
 import nx3.render.scaling.TScaling;
 
