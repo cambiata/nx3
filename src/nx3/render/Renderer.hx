@@ -40,7 +40,7 @@ class Renderer
 		this.targetX = targetX;
 		this.targetY = targetY;
 		this.scaling = this.target.getScaling();
-		this.partDistance = Std.int(20 * scaling.halfSpace);
+		this.partDistance = Std.int(16 * scaling.halfSpace);
 	}
 	
 	public function renderBar(vbar:VBar, newX:Float=-1, newY:Float=-1)
@@ -105,8 +105,8 @@ class Renderer
 					var noteComplexIdx = vcomplex.getVNotes().index(vnote);
 					var beamgroup = vvoice.getNotesBeamgroups().get(vnote);
 					var direction = beamgroupsDirections.get(beamgroup);
-					var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * scaling.halfNoteWidth;
-					this.heads(colx + headsXOffset, party, vnote, direction);
+					//var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * scaling.halfNoteWidth;
+					this.heads(colx, party, vnote, direction);
 				}
 
 				var directions = vpart.getVComplexDirections().get(vcomplex);
@@ -115,7 +115,7 @@ class Renderer
 				//var noterects = vcomplex.getNotesRects(directions);
 				//this.target.rectangles(colx, party, noterects , 1, 0x0000ff);				
 				var headrects = vcomplex.getNotesHeadsRects(directions);
-				this.target.rectangles(colx, party, headrects , 1, 0xff0000);
+				//this.target.rectangles(colx, party, headrects , 1, 0xff0000);
 				
 				var staverects = vcomplex.getStaveBasicRects(directions);
 				//this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
@@ -191,8 +191,15 @@ class Renderer
 						var noteComplexIdx = vcomplex.getVNotes().indexOf(vnote);
 						var stavesPos = vcomplex.getStavesBasicX(vpart.getVComplexDirections().get(vcomplex));
 						var stavePos = stavesPos[noteComplexIdx];
+						var stavePosX = stavePos.x * scaling.halfNoteWidth;
+						var MYSTISK_FAKTOR = 3;
+						var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * MYSTISK_FAKTOR * scaling.halfNoteWidth;
+						
 						var point:TPoint = null;
-						point = { x:colx + stavePos.x*scaling.halfNoteWidth , y:party};
+						
+						
+						
+						point = { x:colx + stavePosX + headsXOffset, y:party};
 						beamgroupPoints.push(point);
 					}
 					this.beamgroup(0, 0, beamgroup, beamgroupPoints, beamgroup.getCalculatedDirection());
@@ -241,9 +248,10 @@ class Renderer
 		var leftOuterY =  frame.leftOuterY * scaling.halfSpace;
 		var leftInnerY =  frame.leftInnerY * scaling.halfSpace;
 		var leftTipY =  frame.leftTipY * scaling.halfSpace;
-		
+		var leftX = leftPoint.x;
 		// left stave
-		this.target.line(leftPoint.x, leftPoint.y + leftInnerY, leftPoint.x, leftPoint.y + leftTipY, 1, 0x000000);
+		//this.target.line(leftPoint.x, leftPoint.y + leftInnerY, leftPoint.x, leftPoint.y + leftTipY, 1, 0x000000);
+		this.target.line(leftX, leftPoint.y + leftInnerY, leftX, leftPoint.y + leftTipY, 1, 0x000000);
 		
 		if (beamgroup.vnotes.length < 2) return;
 

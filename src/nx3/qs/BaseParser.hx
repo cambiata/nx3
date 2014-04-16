@@ -1,4 +1,4 @@
-package nx3.io;
+package nx3.qs;
 import cx.ArrayTools;
 
 /**
@@ -9,11 +9,11 @@ import cx.ArrayTools;
  using StringTools;
 class BaseParser
 {
-	var builder:QuickSyntax;
+	var builder:QuickSyntaxParser;
 
 	public var functions :Map < String, String->String > ;
 	
-	public function new(builder:QuickSyntax)
+	public function new(builder:QuickSyntaxParser)
 	{
 		this.builder = builder;
 		this.functions = new  Map < String, String->String > ();
@@ -36,7 +36,7 @@ class BaseParser
 	}	
 
 	
-	public function parse(token:String, parser:QuickSyntax):String
+	public function parse(token:String, parser:QuickSyntaxParser):String
 	{
 		var originaltoken = token;
 		var func = this.getTokenfunction(this.functions, token);

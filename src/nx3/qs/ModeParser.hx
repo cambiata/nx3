@@ -1,5 +1,5 @@
-package nx3.io;
-import nx3.io.QuickSyntax.ContentMode;
+package nx3.qs;
+import nx3.qs.QuickSyntaxParser.ContentMode;
 
 /**
  * ...
@@ -9,7 +9,7 @@ class ModeParser extends BaseParser
 {
 	public var mode:ContentMode;
 	
-	public function new(parser:QuickSyntax)
+	public function new(parser:QuickSyntaxParser)
 	{
 		super(parser);
 		//super.createFunctions();

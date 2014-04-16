@@ -1815,7 +1815,7 @@ nx3.ENoteArticulation.Marcato.__enum__ = nx3.ENoteArticulation;
 nx3.ENoteAttributes = { __ename__ : true, __constructs__ : ["Arpeggio","Clef"] };
 nx3.ENoteAttributes.Arpeggio = function(top,bottomY) { var $x = ["Arpeggio",0,top,bottomY]; $x.__enum__ = nx3.ENoteAttributes; $x.toString = $estr; return $x; };
 nx3.ENoteAttributes.Clef = function(variant) { var $x = ["Clef",1,variant]; $x.__enum__ = nx3.ENoteAttributes; $x.toString = $estr; return $x; };
-nx3.ENoteType = { __ename__ : true, __constructs__ : ["Note","Pause","BarPause","Tpl","Lyric","Chord","Dynam"] };
+nx3.ENoteType = { __ename__ : true, __constructs__ : ["Note","Pause","BarPause","Tpl","Lyric","Chord","Dynamics"] };
 nx3.ENoteType.Note = function(heads,variant,articulations,attributes) { var $x = ["Note",0,heads,variant,articulations,attributes]; $x.__enum__ = nx3.ENoteType; $x.toString = $estr; return $x; };
 nx3.ENoteType.Pause = function(level) { var $x = ["Pause",1,level]; $x.__enum__ = nx3.ENoteType; $x.toString = $estr; return $x; };
 nx3.ENoteType.BarPause = ["BarPause",2];
@@ -1826,9 +1826,9 @@ nx3.ENoteType.Lyric = function(text,offset,continuation,font) { var $x = ["Lyric
 nx3.ENoteType.Chord = ["Chord",5];
 nx3.ENoteType.Chord.toString = $estr;
 nx3.ENoteType.Chord.__enum__ = nx3.ENoteType;
-nx3.ENoteType.Dynam = ["Dynam",6];
-nx3.ENoteType.Dynam.toString = $estr;
-nx3.ENoteType.Dynam.__enum__ = nx3.ENoteType;
+nx3.ENoteType.Dynamics = ["Dynamics",6];
+nx3.ENoteType.Dynamics.toString = $estr;
+nx3.ENoteType.Dynamics.__enum__ = nx3.ENoteType;
 nx3.ENoteVal = { __ename__ : true, __constructs__ : ["Nv1","Nv1dot","Nv1ddot","Nv1tri","Nv2","Nv2dot","Nv2ddot","Nv2tri","Nv4","Nv4dot","Nv4ddot","Nv4tri","Nv8","Nv8dot","Nv8ddot","Nv8tri","Nv16","Nv16dot","Nv16ddot","Nv16tri","Nv32","Nv32dot","Nv32ddot","Nv32tri"] };
 nx3.ENoteVal.Nv1 = ["Nv1",0];
 nx3.ENoteVal.Nv1.toString = $estr;
@@ -3696,10 +3696,6 @@ nx3.VComplex.prototype = {
 				x = -headw;
 				y = vnote.nnote.getTopLevel();
 			}
-			if(vnote != firstnote) {
-				var offset = this.getHeadsCollisionOffsetX(vnote,direction);
-				x += offset;
-			}
 			result.push({ x : x, y : y});
 		}
 		return result;
@@ -4228,7 +4224,7 @@ nx3.VNoteHeadsRectsTplCalculator.__name__ = ["nx3","VNoteHeadsRectsTplCalculator
 nx3.VNoteHeadsRectsTplCalculator.prototype = {
 	vnote: null
 	,getHeadsRects: function() {
-		return null;
+		return [new nx3.geom.Rectangle(-6,-5.3,12,10.6)];
 	}
 	,__class__: nx3.VNoteHeadsRectsTplCalculator
 };
@@ -5618,55 +5614,502 @@ nx3.geom.RectanglesTools.unionAll = function(rects) {
 	}
 	return r;
 };
-nx3.io = {};
-nx3.io.QuickSyntaxParser = function(str) {
-	this.vi = 0;
-	this.pi = 0;
-	this.bi = 0;
-	var _g = this;
+nx3.qs = {};
+nx3.qs.BaseParser = function(builder) {
+	this.builder = builder;
+	this.functions = new haxe.ds.StringMap();
+	this.createFunctions();
+};
+nx3.qs.BaseParser.__name__ = ["nx3","qs","BaseParser"];
+nx3.qs.BaseParser.prototype = {
+	builder: null
+	,functions: null
+	,getTokenfunction: function(functions,token) {
+		var keys = cx.ArrayTools.fromHashKeys(functions.keys());
+		keys.sort(function(a,b) {
+			return -Reflect.compare(a.length,b.length);
+		});
+		var _g = 0;
+		while(_g < keys.length) {
+			var key = keys[_g];
+			++_g;
+			if(StringTools.startsWith(token,key)) return functions.get(key);
+		}
+		return null;
+	}
+	,parse: function(token,parser) {
+		var originaltoken = token;
+		var func = this.getTokenfunction(this.functions,token);
+		while(func != null) {
+			token = func.apply(null,[token]);
+			if(token == "") {
+				this.tokenFinished();
+				return "";
+			}
+			func = this.getTokenfunction(this.functions,token);
+		}
+		if(originaltoken == token) return token;
+		return "";
+	}
+	,tokenFinished: function() {
+		haxe.Log.trace("all is taken care of",{ fileName : "BaseParser.hx", lineNumber : 66, className : "nx3.qs.BaseParser", methodName : "tokenFinished"});
+	}
+	,createFunctions: function() {
+		haxe.Log.trace("should be overridden",{ fileName : "BaseParser.hx", lineNumber : 71, className : "nx3.qs.BaseParser", methodName : "createFunctions"});
+	}
+	,__class__: nx3.qs.BaseParser
+};
+nx3.qs.BarParser = function(parser) {
+	nx3.qs.BaseParser.call(this,parser);
+	this.barIndex = 0;
+	this.partIndex = 0;
+	this.voiceIndex = 0;
+};
+nx3.qs.BarParser.__name__ = ["nx3","qs","BarParser"];
+nx3.qs.BarParser.__super__ = nx3.qs.BaseParser;
+nx3.qs.BarParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
+	barIndex: null
+	,partIndex: null
+	,voiceIndex: null
+	,createFunctions: function() {
+		var _g = this;
+		this.functions.set(";",function(token) {
+			_g.barIndex++;
+			return HxOverrides.substr(token,1,null);
+		});
+		this.functions.set("|",function(token1) {
+			_g.barIndex++;
+			_g.partIndex = 0;
+			_g.voiceIndex = 0;
+			return HxOverrides.substr(token1,1,null);
+		});
+		this.functions.set("//",function(token2) {
+			_g.partIndex++;
+			_g.barIndex = 0;
+			return HxOverrides.substr(token2,2,null);
+		});
+		this.functions.set("/",function(token3) {
+			_g.partIndex++;
+			_g.voiceIndex = 0;
+			return HxOverrides.substr(token3,1,null);
+		});
+		this.functions.set("%%",function(token4) {
+			_g.voiceIndex++;
+			_g.barIndex = 0;
+			if(_g.voiceIndex > 1) {
+				_g.partIndex++;
+				_g.voiceIndex = 0;
+			}
+			return HxOverrides.substr(token4,2,null);
+		});
+		this.functions.set("%",function(token5) {
+			_g.voiceIndex++;
+			return HxOverrides.substr(token5,1,null);
+		});
+	}
+	,tokenFinished: function() {
+	}
+	,getBpvIndex: function() {
+		var bpvIndex = { barIndex : this.barIndex, partIndex : this.partIndex, voiceIndex : this.voiceIndex};
+		return bpvIndex;
+	}
+	,__class__: nx3.qs.BarParser
+});
+nx3.qs.ModeParser = function(parser) {
+	nx3.qs.BaseParser.call(this,parser);
+	this.mode = nx3.qs.ContentMode.Notes(0);
+};
+nx3.qs.ModeParser.__name__ = ["nx3","qs","ModeParser"];
+nx3.qs.ModeParser.__super__ = nx3.qs.BaseParser;
+nx3.qs.ModeParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
+	mode: null
+	,createFunctions: function() {
+		var _g = this;
+		this.functions.set("notes:",function(token) {
+			_g.mode = nx3.qs.ContentMode.Notes(0);
+			haxe.Log.trace("handle notes...",{ fileName : "ModeParser.hx", lineNumber : 24, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token,6,null);
+		});
+		this.functions.set("tpls:",function(token1) {
+			_g.mode = nx3.qs.ContentMode.Tpls;
+			haxe.Log.trace("handle tpls...",{ fileName : "ModeParser.hx", lineNumber : 30, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token1,5,null);
+		});
+		this.functions.set("lyrics:",function(token2) {
+			_g.mode = nx3.qs.ContentMode.Lyrics;
+			haxe.Log.trace("handle lyrics...",{ fileName : "ModeParser.hx", lineNumber : 36, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token2,7,null);
+		});
+		this.functions.set("xxx",function(token3) {
+			_g.mode = nx3.qs.ContentMode.Lyrics;
+			haxe.Log.trace("handle xxx...",{ fileName : "ModeParser.hx", lineNumber : 42, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token3,3,null);
+		});
+	}
+	,tokenFinished: function() {
+		haxe.Log.trace("mode is taken care of",{ fileName : "ModeParser.hx", lineNumber : 51, className : "nx3.qs.ModeParser", methodName : "tokenFinished"});
+	}
+	,__class__: nx3.qs.ModeParser
+});
+nx3.qs.NoteParser = function(parser) {
+	nx3.qs.BaseParser.call(this,parser);
+	this.notelevels = [];
+	this.notesigns = [];
+	this.notevalue = null;
+	this.prevlevels = [0];
+	this.prevsigns = [nx3.ESign.None];
+	this.prevvalue = nx3.ENoteVal.Nv4;
+};
+nx3.qs.NoteParser.__name__ = ["nx3","qs","NoteParser"];
+nx3.qs.NoteParser.__super__ = nx3.qs.BaseParser;
+nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
+	notelevels: null
+	,notevalue: null
+	,notesigns: null
+	,prevlevels: null
+	,prevvalue: null
+	,prevsigns: null
+	,createFunctions: function() {
+		var _g = this;
+		this.functions.set("ciss",function(token) {
+			_g.notelevels.push(6);
+			_g.notesigns.push(nx3.ESign.Sharp);
+			return HxOverrides.substr(token,4,null);
+		});
+		this.functions.set("cess",function(token1) {
+			_g.notelevels.push(6);
+			_g.notesigns.push(nx3.ESign.Flat);
+			return HxOverrides.substr(token1,4,null);
+		});
+		this.functions.set("cnat",function(token2) {
+			_g.notelevels.push(6);
+			_g.notesigns.push(nx3.ESign.Natural);
+			return HxOverrides.substr(token2,4,null);
+		});
+		this.functions.set("c",function(token3) {
+			_g.notelevels.push(6);
+			_g.notesigns.push(nx3.ESign.None);
+			return HxOverrides.substr(token3,1,null);
+		});
+		this.functions.set("diss",function(token4) {
+			_g.notelevels.push(5);
+			_g.notesigns.push(nx3.ESign.Sharp);
+			return HxOverrides.substr(token4,4,null);
+		});
+		this.functions.set("dess",function(token5) {
+			_g.notelevels.push(5);
+			_g.notesigns.push(nx3.ESign.Flat);
+			return HxOverrides.substr(token5,4,null);
+		});
+		this.functions.set("dnat",function(token6) {
+			_g.notelevels.push(5);
+			_g.notesigns.push(nx3.ESign.Natural);
+			return HxOverrides.substr(token6,4,null);
+		});
+		this.functions.set("d",function(token7) {
+			_g.notelevels.push(5);
+			_g.notesigns.push(nx3.ESign.None);
+			return HxOverrides.substr(token7,1,null);
+		});
+		this.functions.set("eiss",function(token8) {
+			_g.notelevels.push(4);
+			_g.notesigns.push(nx3.ESign.Sharp);
+			return HxOverrides.substr(token8,4,null);
+		});
+		this.functions.set("ess",function(token9) {
+			_g.notelevels.push(4);
+			_g.notesigns.push(nx3.ESign.Flat);
+			return HxOverrides.substr(token9,3,null);
+		});
+		this.functions.set("enat",function(token10) {
+			_g.notelevels.push(4);
+			_g.notesigns.push(nx3.ESign.Natural);
+			return HxOverrides.substr(token10,4,null);
+		});
+		this.functions.set("e",function(token11) {
+			_g.notelevels.push(4);
+			_g.notesigns.push(nx3.ESign.None);
+			return HxOverrides.substr(token11,1,null);
+		});
+		this.functions.set("fiss",function(token12) {
+			_g.notelevels.push(3);
+			_g.notesigns.push(nx3.ESign.Sharp);
+			return HxOverrides.substr(token12,4,null);
+		});
+		this.functions.set("fess",function(token13) {
+			_g.notelevels.push(3);
+			_g.notesigns.push(nx3.ESign.Flat);
+			return HxOverrides.substr(token13,4,null);
+		});
+		this.functions.set("fnat",function(token14) {
+			_g.notelevels.push(3);
+			_g.notesigns.push(nx3.ESign.Natural);
+			return HxOverrides.substr(token14,4,null);
+		});
+		this.functions.set("f",function(token15) {
+			_g.notelevels.push(3);
+			_g.notesigns.push(nx3.ESign.None);
+			return HxOverrides.substr(token15,1,null);
+		});
+		this.functions.set("giss",function(token16) {
+			_g.notelevels.push(2);
+			_g.notesigns.push(nx3.ESign.Sharp);
+			return HxOverrides.substr(token16,4,null);
+		});
+		this.functions.set("gess",function(token17) {
+			_g.notelevels.push(2);
+			_g.notesigns.push(nx3.ESign.Flat);
+			return HxOverrides.substr(token17,4,null);
+		});
+		this.functions.set("gnat",function(token18) {
+			_g.notelevels.push(2);
+			_g.notesigns.push(nx3.ESign.Natural);
+			return HxOverrides.substr(token18,4,null);
+		});
+		this.functions.set("g",function(token19) {
+			_g.notelevels.push(2);
+			_g.notesigns.push(nx3.ESign.None);
+			return HxOverrides.substr(token19,1,null);
+		});
+		this.functions.set("aiss",function(token20) {
+			_g.notelevels.push(1);
+			_g.notesigns.push(nx3.ESign.Sharp);
+			return HxOverrides.substr(token20,4,null);
+		});
+		this.functions.set("ass",function(token21) {
+			_g.notelevels.push(1);
+			_g.notesigns.push(nx3.ESign.Flat);
+			return HxOverrides.substr(token21,3,null);
+		});
+		this.functions.set("anat",function(token22) {
+			_g.notelevels.push(1);
+			_g.notesigns.push(nx3.ESign.Natural);
+			return HxOverrides.substr(token22,4,null);
+		});
+		this.functions.set("a",function(token23) {
+			_g.notelevels.push(1);
+			_g.notesigns.push(nx3.ESign.None);
+			return HxOverrides.substr(token23,1,null);
+		});
+		this.functions.set("biss",function(token24) {
+			_g.notelevels.push(0);
+			_g.notesigns.push(nx3.ESign.Sharp);
+			return HxOverrides.substr(token24,4,null);
+		});
+		this.functions.set("bess",function(token25) {
+			_g.notelevels.push(0);
+			_g.notesigns.push(nx3.ESign.Flat);
+			return HxOverrides.substr(token25,4,null);
+		});
+		this.functions.set("bnat",function(token26) {
+			_g.notelevels.push(0);
+			_g.notesigns.push(nx3.ESign.Natural);
+			return HxOverrides.substr(token26,4,null);
+		});
+		this.functions.set("b",function(token27) {
+			_g.notelevels.push(0);
+			_g.notesigns.push(nx3.ESign.None);
+			return HxOverrides.substr(token27,1,null);
+		});
+		this.functions.set("2.",function(token28) {
+			_g.notevalue = nx3.ENoteVal.Nv2dot;
+			return HxOverrides.substr(token28,2,null);
+		});
+		this.functions.set("2",function(token29) {
+			_g.notevalue = nx3.ENoteVal.Nv2;
+			return HxOverrides.substr(token29,1,null);
+		});
+		this.functions.set("4.",function(token30) {
+			_g.notevalue = nx3.ENoteVal.Nv4dot;
+			return HxOverrides.substr(token30,2,null);
+		});
+		this.functions.set("4",function(token31) {
+			_g.notevalue = nx3.ENoteVal.Nv4;
+			return HxOverrides.substr(token31,1,null);
+		});
+		this.functions.set("8.",function(token32) {
+			_g.notevalue = nx3.ENoteVal.Nv8dot;
+			return HxOverrides.substr(token32,2,null);
+		});
+		this.functions.set("8",function(token33) {
+			_g.notevalue = nx3.ENoteVal.Nv8;
+			return HxOverrides.substr(token33,1,null);
+		});
+		this.functions.set("^",function(token34) {
+			haxe.Log.trace("handle octave up...",{ fileName : "NoteParser.hx", lineNumber : 246, className : "nx3.qs.NoteParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token34,1,null);
+		});
+		this.functions.set("v",function(token35) {
+			haxe.Log.trace("handle octave down...",{ fileName : "NoteParser.hx", lineNumber : 251, className : "nx3.qs.NoteParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token35,1,null);
+		});
+	}
+	,tokenFinished: function() {
+		if(this.notelevels.length < 1) this.notelevels = this.prevlevels.slice();
+		if(this.notesigns.length < 1) this.notesigns = this.prevsigns.slice();
+		if(this.notevalue == null) this.notevalue = this.prevvalue;
+		var val = this.notevalue;
+		var nheads = [];
+		var _g1 = 0;
+		var _g = this.notelevels.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var level = this.notelevels[i];
+			var sign = this.notesigns[i];
+			nheads.push(new nx3.NHead(null,level,sign));
+		}
+		var nnote = new nx3.NNote(null,nheads,val);
+		this.builder.addNote(nnote);
+		this.prevlevels = this.notelevels.slice();
+		this.prevsigns = this.notesigns.slice();
+		this.prevvalue = this.notevalue;
+		this.notelevels = [];
+		this.notesigns = [];
+		this.notevalue = null;
+	}
+	,__class__: nx3.qs.NoteParser
+});
+nx3.qs.QSyntaxTools = function() { };
+nx3.qs.QSyntaxTools.__name__ = ["nx3","qs","QSyntaxTools"];
+nx3.qs.QSyntaxTools.bpvToString = function(val) {
+	return "" + val.barIndex + "-" + val.partIndex + "-" + val.voiceIndex;
+};
+nx3.qs.QSyntaxTools.stringToBpv = function(bpvString) {
+	var segments = bpvString.split("-");
+	var bpv = { barIndex : Std.parseInt(segments[0]), partIndex : Std.parseInt(segments[1]), voiceIndex : Std.parseInt(segments[2])};
+	return bpv;
+};
+nx3.qs.QSyntaxTools.getBpv = function(barIndex,partIndex,voiceIndex) {
+	var bpv = { barIndex : barIndex, partIndex : partIndex, voiceIndex : voiceIndex};
+	return bpv;
+};
+nx3.qs.QSyntaxTools.getBpvString = function(barIndex,partIndex,voiceIndex) {
+	return "" + barIndex + "-" + partIndex + "-" + voiceIndex;
+};
+nx3.qs.QuickSyntaxBuilder = function(qsnotes) {
+	this.qsnotes = qsnotes;
+};
+nx3.qs.QuickSyntaxBuilder.__name__ = ["nx3","qs","QuickSyntaxBuilder"];
+nx3.qs.QuickSyntaxBuilder.prototype = {
+	qsnotes: null
+	,getNBars: function() {
+		var barMax = 0;
+		var partMax = 0;
+		var voiceMax = 0;
+		var $it0 = this.qsnotes.keys();
+		while( $it0.hasNext() ) {
+			var key = $it0.next();
+			var bpv = nx3.qs.QSyntaxTools.stringToBpv(key);
+			barMax = this.max(bpv.barIndex,barMax);
+			partMax = this.max(bpv.partIndex,partMax);
+		}
+		barMax++;
+		partMax++;
+		var nbars = [];
+		var _g = 0;
+		while(_g < barMax) {
+			var barIndex = _g++;
+			var nparts = [];
+			var _g1 = 0;
+			while(_g1 < partMax) {
+				var partIndex = _g1++;
+				var nvoices = [];
+				if((function($this) {
+					var $r;
+					var key1 = nx3.qs.QSyntaxTools.getBpvString(barIndex,partIndex,0);
+					$r = $this.qsnotes.exists(key1);
+					return $r;
+				}(this))) {
+					var nnotes;
+					var key2 = nx3.qs.QSyntaxTools.getBpvString(barIndex,partIndex,0);
+					nnotes = this.qsnotes.get(key2);
+					var nvoice = new nx3.NVoice(nnotes);
+					nvoices.push(nvoice);
+				} else {
+				}
+				if((function($this) {
+					var $r;
+					var key3 = nx3.qs.QSyntaxTools.getBpvString(barIndex,partIndex,1);
+					$r = $this.qsnotes.exists(key3);
+					return $r;
+				}(this))) {
+					var nnotes1;
+					var key4 = nx3.qs.QSyntaxTools.getBpvString(barIndex,partIndex,1);
+					nnotes1 = this.qsnotes.get(key4);
+					var nvoice1 = new nx3.NVoice(nnotes1);
+					nvoices.push(nvoice1);
+				} else {
+				}
+				var npart = new nx3.NPart(nvoices);
+				nparts.push(npart);
+			}
+			var nbar = new nx3.NBar(nparts);
+			nbars.push(nbar);
+		}
+		return nbars;
+	}
+	,max: function(valA,valB) {
+		if(valA > valB) return valA;
+		return valB;
+	}
+	,__class__: nx3.qs.QuickSyntaxBuilder
+};
+nx3.qs.QuickSyntaxParser = function(str) {
 	this.str = StringTools.replace(StringTools.replace(StringTools.replace(StringTools.trim(str),"  "," "),"  "," "),"  "," ");
 	this.tokens = this.parseTokens(this.str);
-	this.tokenfunctions = new haxe.ds.StringMap();
-	this.tokenfunctions.set("test",function(str1) {
-		return str1 += " world!";
-		_g.bi++;
-	});
+	this.qsnotes = new haxe.ds.StringMap();
+	this.modeparser = new nx3.qs.ModeParser(this);
+	this.barparser = new nx3.qs.BarParser(this);
+	this.noteparser = new nx3.qs.NoteParser(this);
 };
-nx3.io.QuickSyntaxParser.__name__ = ["nx3","io","QuickSyntaxParser"];
-nx3.io.QuickSyntaxParser.prototype = {
+nx3.qs.QuickSyntaxParser.__name__ = ["nx3","qs","QuickSyntaxParser"];
+nx3.qs.QuickSyntaxParser.prototype = {
 	str: null
 	,tokens: null
-	,notes: null
-	,bi: null
-	,pi: null
-	,vi: null
-	,tokenfunctions: null
-	,parse1: function() {
-		var fn = this.tokenfunctions.get("test");
-		var result = fn.apply(null,["Hello"]);
+	,qsnotes: null
+	,modeparser: null
+	,barparser: null
+	,noteparser: null
+	,parseToQSyntaxNotes: function() {
 		var _g = 0;
 		var _g1 = this.tokens;
 		while(_g < _g1.length) {
 			var token = _g1[_g];
 			++_g;
-			switch(token) {
-			case "|":
-				break;
-			case "/":
-				break;
-			case "%":
-				break;
-			}
+			var testtoken = token;
+			testtoken = this.modeparser.parse(token,this);
+			if(testtoken == "") continue;
+			testtoken = this.barparser.parse(token,this);
+			if(testtoken == "") continue;
+			testtoken = this.noteparser.parse(token,this);
+			if(testtoken == "") continue;
 		}
-		return null;
+		return this.qsnotes;
 	}
 	,parseTokens: function(str) {
 		var result = [];
 		result = str.split(" ");
 		return result;
 	}
-	,__class__: nx3.io.QuickSyntaxParser
+	,addNote: function(nnote,bpvIndex) {
+		if(bpvIndex == null) bpvIndex = this.barparser.getBpvIndex();
+		var bpvString = nx3.qs.QSyntaxTools.bpvToString(bpvIndex);
+		if(!this.qsnotes.exists(bpvString)) {
+			var value = new Array();
+			this.qsnotes.set(bpvString,value);
+		}
+		this.qsnotes.get(bpvString).push(nnote);
+	}
+	,__class__: nx3.qs.QuickSyntaxParser
 };
+nx3.qs.ContentMode = { __ename__ : true, __constructs__ : ["Notes","Tpls","Lyrics"] };
+nx3.qs.ContentMode.Notes = function(octave) { var $x = ["Notes",0,octave]; $x.__enum__ = nx3.qs.ContentMode; $x.toString = $estr; return $x; };
+nx3.qs.ContentMode.Tpls = ["Tpls",1];
+nx3.qs.ContentMode.Tpls.toString = $estr;
+nx3.qs.ContentMode.Tpls.__enum__ = nx3.qs.ContentMode;
+nx3.qs.ContentMode.Lyrics = ["Lyrics",2];
+nx3.qs.ContentMode.Lyrics.toString = $estr;
+nx3.qs.ContentMode.Lyrics.__enum__ = nx3.qs.ContentMode;
 nx3.render = {};
 nx3.render.ITarget = function() { };
 nx3.render.ITarget.__name__ = ["nx3","render","ITarget"];
@@ -5676,6 +6119,8 @@ nx3.render.ITarget.prototype = {
 	,rect: null
 	,rectangle: null
 	,rectangles: null
+	,filledrectangle: null
+	,filledellipse: null
 	,line: null
 	,shape: null
 	,text: null
@@ -5689,7 +6134,7 @@ nx3.render.Renderer = function(target,targetX,targetY) {
 	this.targetX = targetX;
 	this.targetY = targetY;
 	this.scaling = this.target.getScaling();
-	this.partDistance = 20 * this.scaling.halfSpace | 0;
+	this.partDistance = 16 * this.scaling.halfSpace | 0;
 };
 nx3.render.Renderer.__name__ = ["nx3","render","Renderer"];
 nx3.render.Renderer.prototype = {
@@ -5764,13 +6209,13 @@ nx3.render.Renderer.prototype = {
 					var this3 = vvoice.getNotesBeamgroups();
 					beamgroup = this3.get(vnote);
 					var direction = beamgroupsDirections.h[beamgroup.__id__];
-					var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * this.scaling.halfNoteWidth;
-					this.heads(colx + headsXOffset,party,vnote,direction);
+					this.heads(colx,party,vnote,direction);
 				}
 				var directions;
 				var this4 = vpart.getVComplexDirections();
 				directions = this4.get(vcomplex);
 				var headrects = vcomplex.getNotesHeadsRects(directions);
+				this.target.rectangles(colx,party,headrects,1,16711680);
 				var staverects = vcomplex.getStaveBasicRects(directions);
 				var signsrects = vcomplex.getSignsRects(headrects);
 				this.signs(colx,party,vcomplex);
@@ -5864,8 +6309,11 @@ nx3.render.Renderer.prototype = {
 							return $r;
 						}(this)));
 						var stavePos = stavesPos[noteComplexIdx];
+						var stavePosX = stavePos.x * this.scaling.halfNoteWidth;
+						var MYSTISK_FAKTOR = 3;
+						var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * MYSTISK_FAKTOR * this.scaling.halfNoteWidth;
 						var point = null;
-						point = { x : colx + stavePos.x * this.scaling.halfNoteWidth, y : party};
+						point = { x : colx + stavePosX + headsXOffset, y : party};
 						beamgroupPoints.push(point);
 					}
 					this.beamgroup(0,0,beamgroup,beamgroupPoints,beamgroup.getCalculatedDirection());
@@ -5888,14 +6336,20 @@ nx3.render.Renderer.prototype = {
 				var rect = cx.ArrayTools.first(vnote.getVHeadsRectanglesDir(direction));
 				this.target.text(x + rect.x * this.scaling.halfNoteWidth,y + rect.y * this.scaling.halfSpace,text);
 				break;
+			case 3:
+				var level = _g[2];
+				var rect1 = cx.ArrayTools.first(vnote.getVHeadsRectanglesDir(direction)).clone();
+				rect1.inflate(-0.8,-0.8);
+				this.target.filledellipse(x,y,rect1,6,16711680,16777215);
+				break;
 			default:
 				var svginfo = nx3.render.RendererTools.getHeadSvgInfo(vnote.nnote);
 				var _g1 = 0;
 				var _g2 = vnote.getVHeadsRectanglesDir(direction);
 				while(_g1 < _g2.length) {
-					var rect1 = _g2[_g1];
+					var rect2 = _g2[_g1];
 					++_g1;
-					this.target.shape(x + rect1.x * this.scaling.halfNoteWidth,y + (rect1.y + svginfo.y) * this.scaling.halfSpace,svginfo.xmlStr);
+					this.target.shape(x + rect2.x * this.scaling.halfNoteWidth,y + (rect2.y + svginfo.y) * this.scaling.halfSpace,svginfo.xmlStr);
 				}
 			}
 		}
@@ -5907,7 +6361,8 @@ nx3.render.Renderer.prototype = {
 		var leftOuterY = frame.leftOuterY * this.scaling.halfSpace;
 		var leftInnerY = frame.leftInnerY * this.scaling.halfSpace;
 		var leftTipY = frame.leftTipY * this.scaling.halfSpace;
-		this.target.line(leftPoint.x,leftPoint.y + leftInnerY,leftPoint.x,leftPoint.y + leftTipY,1,0);
+		var leftX = leftPoint.x;
+		this.target.line(leftX,leftPoint.y + leftInnerY,leftX,leftPoint.y + leftTipY,1,0);
 		if(beamgroup.vnotes.length < 2) return;
 		var rightPoint = points[points.length - 1];
 		var rightOuterY = frame.rightOuterY * this.scaling.halfSpace;
@@ -6088,6 +6543,10 @@ nx3.render.TargetSvg.prototype = {
 	,setFont: function(font) {
 		this.font = font;
 	}
+	,filledrectangle: function(x,y,rect,lineWidth,lineColor,fillColor) {
+	}
+	,filledellipse: function(x,y,rect,lineWidth,lineColor,fillColor) {
+	}
 	,__class__: nx3.render.TargetSvg
 };
 nx3.render.scaling = {};
@@ -6120,6 +6579,10 @@ nx3.test.TestItems.vbarLyrics = function() {
 	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0)])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Lyric("Hello")),new nx3.NNote(nx3.ENoteType.Lyric("World!")),new nx3.NNote(nx3.ENoteType.Lyric("Verylongword")),new nx3.NNote(nx3.ENoteType.Lyric("&")),new nx3.NNote(nx3.ENoteType.Lyric("&"))])])]));
 	return vbar;
 };
+nx3.test.TestItems.vbarTpl = function() {
+	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0),new nx3.QNote4(0)])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Tpl(0)),new nx3.NNote(nx3.ENoteType.Tpl(1)),new nx3.NNote(nx3.ENoteType.Tpl(2)),new nx3.NNote(nx3.ENoteType.Tpl(3)),new nx3.NNote(nx3.ENoteType.Tpl(4)),new nx3.NNote(nx3.ENoteType.Tpl(5)),new nx3.NNote(nx3.ENoteType.Tpl(0)),new nx3.NNote(nx3.ENoteType.Tpl(-1)),new nx3.NNote(nx3.ENoteType.Tpl(-2)),new nx3.NNote(nx3.ENoteType.Tpl(-3))])])]));
+	return vbar;
+};
 nx3.test.TestItems.nvoicePause1 = function() {
 	return new nx3.NVoice([new nx3.QNote4(0),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4)]);
 };
@@ -6134,6 +6597,18 @@ nx3.test.TestItems.nvoiceLyrics1 = function() {
 };
 nx3.test.TestItems.vvoiceLyrics1 = function() {
 	return new nx3.VVoice(nx3.test.TestItems.nvoiceLyrics1());
+};
+nx3.test.TestItems.vbarQSyntax1 = function() {
+	var str = " c d e f g a b ";
+	var str1 = " b a8 g f4 ess % a2 d8 c d e ";
+	var str2 = " e8 e e e % d c c d ";
+	var parser = new nx3.qs.QuickSyntaxParser(str2);
+	var qsnotes = parser.parseToQSyntaxNotes();
+	var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
+	var nbars = builder.getNBars();
+	var nbar = nbars[0];
+	var vbar = new nx3.VBar(nbar);
+	return vbar;
 };
 nx3.test.TestN = function() {
 	haxe.unit.TestCase.call(this);
@@ -6233,19 +6708,28 @@ nx3.test.TestQuickSyntax.__name__ = ["nx3","test","TestQuickSyntax"];
 nx3.test.TestQuickSyntax.__super__ = haxe.unit.TestCase;
 nx3.test.TestQuickSyntax.prototype = $extend(haxe.unit.TestCase.prototype,{
 	testQuickNotes: function() {
-		var str = "     c d8 e       f16 g   e  d";
-		var parser = new nx3.io.QuickSyntaxParser(str);
-		parser.parse1();
-		this.assertEquals(parser.tokens.length,7,{ fileName : "TestQuickSyntax.hx", lineNumber : 19, className : "nx3.test.TestQuickSyntax", methodName : "testQuickNotes"});
+		var str = "c c1 c4. ^ c | c d e";
+		var str1 = "d2 ciss dess4 | c4. ";
+		var str2 = " | | |";
+		var str3 = " / | / | / ";
+		var str4 = " c 2 ; c 8 ; c 4. // d c ; d8 ciss ; d c ";
+		var str5 = " ciss d % d  / d ";
+		var parser = new nx3.qs.QuickSyntaxParser(str5);
+		var qsnotes = parser.parseToQSyntaxNotes();
+		var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
+		var nbars = builder.getNBars();
+		this.assertEquals(nbars.length,1,{ fileName : "TestQuickSyntax.hx", lineNumber : 27, className : "nx3.test.TestQuickSyntax", methodName : "testQuickNotes"});
+		this.assertEquals(nbars[0].nparts.length,2,{ fileName : "TestQuickSyntax.hx", lineNumber : 28, className : "nx3.test.TestQuickSyntax", methodName : "testQuickNotes"});
+		this.assertEquals(nbars[0].nparts[0].nvoices[0].nnotes.length,2,{ fileName : "TestQuickSyntax.hx", lineNumber : 29, className : "nx3.test.TestQuickSyntax", methodName : "testQuickNotes"});
 	}
 	,__class__: nx3.test.TestQuickSyntax
 });
 nx3.test.TestRenderer = function() { };
 nx3.test.TestRenderer.__name__ = ["nx3","test","TestRenderer"];
 nx3.test.TestRenderer.testRenderer = function(r) {
-	r.renderBar(nx3.test.TestItems.vbarPauses(),10,80);
-	r.renderBar(nx3.test.TestItems.vbarSigns(),10,200);
-	r.renderBar(nx3.test.TestItems.vbarLyrics(),10,500);
+	r.renderBar(nx3.test.TestItems.vbarQSyntax1(),10,80);
+	r.renderBar(nx3.test.TestItems.vbarSigns(),10,240);
+	r.renderBar(nx3.test.TestItems.vbarTpl(),10,500);
 	var target = r.getTarget();
 };
 nx3.test.TestV = function() {
@@ -8457,3 +8941,5 @@ nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
 nx3.xml.VoiceXML.XVOICE_DIRECTION = "direction";
 Main.main();
 })();
+
+//# sourceMappingURL=RenderTargetSvg.js.map

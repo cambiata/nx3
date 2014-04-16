@@ -365,11 +365,13 @@ class VComplex
 				y = vnote.nnote.getTopLevel();
 			}
 
+			/*
 			if (vnote != firstnote) 
 			{
 					var offset = getHeadsCollisionOffsetX(vnote, direction);			
 					x += offset;
 			}
+			*/
 			
 			result.push({x:x, y:y});
 		}

@@ -16,9 +16,13 @@ import nx3.QNote.QPause16;
 import nx3.QNote.QPause2;
 import nx3.QNote.QPause4;
 import nx3.QNote.QPause8;
+import nx3.qs.QuickSyntaxBuilder;
+import nx3.qs.QuickSyntaxParser;
 import nx3.QVoice;
 import nx3.VBar;
 import nx3.VVoice;
+
+using cx.ArrayTools;
 
 /**
  * ...
@@ -192,6 +196,20 @@ class TestItems
 		]);
 	}	
 	static public function vvoiceLyrics1() return new VVoice(nvoiceLyrics1());
+	
+	static public function vbarQSyntax1()
+	{
+		var str = ' c d e f g a b ';
+		var str = ' b a8 g f4 ess % b2 d8 c d e ';
+		//var str = ' e8 e e e % d c c d ';
+		var parser = new QuickSyntaxParser(str);
+		var qsnotes = parser.parseToQSyntaxNotes();
+		var builder = new QuickSyntaxBuilder(qsnotes);
+		var nbars = builder.getNBars();
+		var nbar:NBar = nbars.first();
+		var vbar = new VBar(nbar);
+		return vbar;
+	}
 	
 	
 }

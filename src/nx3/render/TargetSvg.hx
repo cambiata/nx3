@@ -276,6 +276,18 @@ class TargetSvg implements ITarget
 	
 	/* INTERFACE nx3.render.ITarget */
 	
+	public function filledrectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int):Void 
+	{
+		
+	}
+	
+	public function filledellipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int):Void 
+	{
+		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
 
 	
 	/* INTERFACE nx3.render.ITarget */

@@ -1,5 +1,5 @@
-package nx3.io;
-import nx3.io.QuickSyntax.BPVIndex;
+package nx3.qs;
+
 
 /**
  * ...
@@ -11,7 +11,7 @@ class BarParser extends BaseParser
 	var partIndex:Int;
 	var voiceIndex:Int;	
 	
-	public function new(parser:QuickSyntax) 
+	public function new(parser:QuickSyntaxParser) 
 	{
 		super(parser);
 		this.barIndex = 0;
@@ -42,6 +42,7 @@ class BarParser extends BaseParser
 		
 		this.functions.set('/', function (token:String) {
 			this.partIndex++;
+			this.voiceIndex = 0;
 			//trace('Single part');
 			return token.substr(1);
 		});
@@ -67,9 +68,9 @@ class BarParser extends BaseParser
 		//trace([this.barIndex, this.partIndex, this.voiceIndex]);
 	}
 	
-	public function getBpvIndex():BPVIndex
+	public function getBpvIndex():QSyntaxBPV
 	{
-		 var bpvIndex:BPVIndex = { barIndex:barIndex, partIndex:partIndex, voiceIndex:voiceIndex };
+		 var bpvIndex:QSyntaxBPV = { barIndex:barIndex, partIndex:partIndex, voiceIndex:voiceIndex };
 		 return bpvIndex;
 	}
 }

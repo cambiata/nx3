@@ -1,4 +1,4 @@
-package nx3.io;
+package nx3.qs;
 import nx3.ENoteVal;
 import nx3.ESign;
 import nx3.NHead;
@@ -17,7 +17,7 @@ class NoteParser extends BaseParser
 	var prevvalue:ENoteVal;
 	var prevsigns:Array<ESign>;		
 	
-	public function new(parser:QuickSyntax)
+	public function new(parser:QuickSyntaxParser)
 	{
 		super(parser);
 
@@ -79,6 +79,138 @@ class NoteParser extends BaseParser
 			this.notesigns.push(ESign.None);
 			return token.substr(1);
 		});		
+
+		//-------------------------
+		
+		this.functions.set('eiss', function (token:String) {
+			this.notelevels.push(4);
+			this.notesigns.push(ESign.Sharp);
+			return token.substr(4);
+		});
+
+		this.functions.set('ess', function (token:String) {
+			this.notelevels.push(4);
+			this.notesigns.push(ESign.Flat);
+			return token.substr(3);
+		});
+		
+		this.functions.set('enat', function (token:String) {
+			this.notelevels.push(4);
+			this.notesigns.push(ESign.Natural);
+			return token.substr(4);
+		});
+
+		this.functions.set('e', function (token:String) {
+			this.notelevels.push(4);
+			this.notesigns.push(ESign.None);
+			return token.substr(1);
+		});			
+		
+		//-------------------------
+		
+		this.functions.set('fiss', function (token:String) {
+			this.notelevels.push(3);
+			this.notesigns.push(ESign.Sharp);
+			return token.substr(4);
+		});
+
+		this.functions.set('fess', function (token:String) {
+			this.notelevels.push(3);
+			this.notesigns.push(ESign.Flat);
+			return token.substr(4);
+		});
+		
+		this.functions.set('fnat', function (token:String) {
+			this.notelevels.push(3);
+			this.notesigns.push(ESign.Natural);
+			return token.substr(4);
+		});
+
+		this.functions.set('f', function (token:String) {
+			this.notelevels.push(3);
+			this.notesigns.push(ESign.None);
+			return token.substr(1);
+		});			
+		
+		//-------------------------
+		
+		this.functions.set('giss', function (token:String) {
+			this.notelevels.push(2);
+			this.notesigns.push(ESign.Sharp);
+			return token.substr(4);
+		});
+
+		this.functions.set('gess', function (token:String) {
+			this.notelevels.push(2);
+			this.notesigns.push(ESign.Flat);
+			return token.substr(4);
+		});
+		
+		this.functions.set('gnat', function (token:String) {
+			this.notelevels.push(2);
+			this.notesigns.push(ESign.Natural);
+			return token.substr(4);
+		});
+
+		this.functions.set('g', function (token:String) {
+			this.notelevels.push(2);
+			this.notesigns.push(ESign.None);
+			return token.substr(1);
+		});			
+				
+		//-------------------------
+		
+		this.functions.set('aiss', function (token:String) {
+			this.notelevels.push(1);
+			this.notesigns.push(ESign.Sharp);
+			return token.substr(4);
+		});
+
+		this.functions.set('ass', function (token:String) {
+			this.notelevels.push(1);
+			this.notesigns.push(ESign.Flat);
+			return token.substr(3);
+		});
+		
+		this.functions.set('anat', function (token:String) {
+			this.notelevels.push(1);
+			this.notesigns.push(ESign.Natural);
+			return token.substr(4);
+		});
+
+		this.functions.set('a', function (token:String) {
+			this.notelevels.push(1);
+			this.notesigns.push(ESign.None);
+			return token.substr(1);
+		});			
+				
+		//-------------------------
+		
+		this.functions.set('biss', function (token:String) {
+			this.notelevels.push(0);
+			this.notesigns.push(ESign.Sharp);
+			return token.substr(4);
+		});
+
+		this.functions.set('bess', function (token:String) {
+			this.notelevels.push(0);
+			this.notesigns.push(ESign.Flat);
+			return token.substr(4);
+		});
+		
+		this.functions.set('bnat', function (token:String) {
+			this.notelevels.push(0);
+			this.notesigns.push(ESign.Natural);
+			return token.substr(4);
+		});
+
+		this.functions.set('b', function (token:String) {
+			this.notelevels.push(0);
+			this.notesigns.push(ESign.None);
+			return token.substr(1);
+		});			
+				
+		
 		
 		this.functions.set('2.', function (token:String) {
 			this.notevalue = ENoteVal.Nv2dot;

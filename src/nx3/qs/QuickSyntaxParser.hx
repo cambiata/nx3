@@ -1,24 +1,25 @@
-package nx3.io;
+package nx3.qs;
 
 import nx3.ENoteVal;
 import nx3.ESign;
-import nx3.io.BarParser;
-import nx3.io.QuickSyntax;
-import nx3.io.QuickSyntax.ContentMode;
-import nx3.io.ModeParser;
-import nx3.io.NoteParser;
+import nx3.qs.BarParser;
+import nx3.qs.QuickSyntaxParser;
+import nx3.qs.QuickSyntaxParser.ContentMode;
+import nx3.qs.ModeParser;
+import nx3.qs.NoteParser;
 import nx3.NHead;
 import nx3.NNote;
+import nx3.qs.QSyntaxNotes;
 using StringTools;
 /**
  * ...
  * @author Jonas Nyström
  */
-class QuickSyntax
+class QuickSyntaxParser
 {
 	var str:String;
 	var tokens:Array<String>;
-	var nnotes:Map<BPVIndex, Array<NNote>>;
+	var qsnotes:QSyntaxNotes;
 	
 	/*
 	var barIndex:Int;
@@ -51,7 +52,7 @@ class QuickSyntax
 		this.contentmode = ContentMode.Notes(contentmodeOctave);
 		*/
 		
-		this.nnotes = new Map<BPVIndex, Array<NNote>>();
+		this.qsnotes = new QSyntaxNotes();
 		
 		this.modeparser = new ModeParser(this);
 		this.barparser = new BarParser(this);
@@ -59,7 +60,7 @@ class QuickSyntax
 		
 	}
 	
-	public function parse1()
+	public function parseToQSyntaxNotes():QSyntaxNotes
 	{
 		for (token in this.tokens)
 		{
@@ -71,8 +72,7 @@ class QuickSyntax
 			testtoken = this.noteparser.parse(token, this);
 			if (testtoken == '') continue;
 		}
-		
-		return null;
+		return this.qsnotes;
 	}
 	
 	function parseTokens(str:String) :Array<String>
@@ -82,19 +82,26 @@ class QuickSyntax
 		return result;
 	}
 	
-	public function addNote(nnote:NNote, ?bpvIndex:BPVIndex=null)
+	public function addNote(nnote:NNote, ?bpvIndex:QSyntaxBPV=null)
 	{
 		if (bpvIndex == null)  bpvIndex = this.barparser.getBpvIndex();
-		 if (! this.nnotes.exists(bpvIndex)) this.nnotes.set(bpvIndex, new Array<NNote>());
-		 //this.nnotes.get(bpvIndex).push(nnote);
+		
+		var bpvString = QSyntaxTools.bpvToString(bpvIndex);
+		
+		 if (! this.qsnotes.exists(bpvString)) this.qsnotes.set(bpvString, new NNotes());
+		 this.qsnotes.get(bpvString).push(nnote);
 		 
-		 trace(['Note added to ', bpvIndex.barIndex, bpvIndex.partIndex, bpvIndex.voiceIndex, nnote]);
+		 //trace(['Note added to ', bpvIndex.barIndex, bpvIndex.partIndex, bpvIndex.voiceIndex, nnote]);
 	 }
+	 
+	 
 	 
 	
 }
 
-typedef BPVIndex = { barIndex:Int, partIndex:Int, voiceIndex:Int };
+
+
+//typedef BPVIndex = { barIndex:Int, partIndex:Int, voiceIndex:Int };
 
 enum ContentMode 
 {

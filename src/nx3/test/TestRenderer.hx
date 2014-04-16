@@ -11,8 +11,8 @@ class TestRenderer
 
 	static public function testRenderer(r:Renderer) 
 	{
-			r.renderBar(TestItems.vbarPauses(), 10, 80);				
-			r.renderBar(TestItems.vbarSigns(), 10, 200);	
+			r.renderBar(TestItems.vbarQSyntax1(), 10, 80);				
+			r.renderBar(TestItems.vbarSigns(), 10, 240);	
 			r.renderBar(TestItems.vbarTpl(), 10, 500);
 			var target = r.getTarget();
 			/*
