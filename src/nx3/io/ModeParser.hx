@@ -45,4 +45,9 @@ class ModeParser extends BaseParser
 		
 		
 	}	
+	
+	override private function tokenFinished() 
+	{
+		trace('mode is taken care of');
+	}
 }

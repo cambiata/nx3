@@ -1,4 +1,5 @@
 package nx3.io;
+import cx.ArrayTools;
 
 /**
  * ...
@@ -8,29 +9,29 @@ package nx3.io;
  using StringTools;
 class BaseParser
 {
-	var parser:QuickSyntax;
+	var builder:QuickSyntax;
 
 	public var functions :Map < String, String->String > ;
 	
-	public function new(parser:QuickSyntax)
+	public function new(builder:QuickSyntax)
 	{
-		this.parser = parser;
+		this.builder = builder;
 		this.functions = new  Map < String, String->String > ();
 		this.createFunctions();
 	}
 	
 	function getTokenfunction(functions: Map<String, String->String>, token:String):String->String
 	{
-			trace(' - serach function for token ' + token);
+			var keys:Array<String> = ArrayTools.fromHashKeys(functions.keys());
+			keys.sort(function(a, b)	return -Reflect.compare(a.length, b.length));
 		
-			for (key in functions.keys())
+			for (key in keys)
 			{
 				if (token.startsWith(key))
 				{
 					return functions.get(key);
 				}
 			}
-			trace(' - token not found');
 			return null;
 	}	
 
@@ -42,10 +43,10 @@ class BaseParser
 		while (func != null)
 		{
 			token = Reflect.callMethod(null, func, [token]);
-			trace('Rest1: ' + token);
+			//trace('Rest1: ' + token);
 			if (token == '') 
 			{
-				trace('all is taken care of...');
+				this.tokenFinished();
 				return ''; // klart o betart!
 			}
 			
@@ -54,11 +55,15 @@ class BaseParser
 		
 		if (originaltoken == token)
 		{
-			trace('Nothing is done to token $token in this parser!');
 			return token;
 		}
-		trace('Rest2 - Should not be handled further: ' + token);
+		//trace('Rest2 - Should not be handled further: ' + token);
 		return '';
+	}
+	
+	function tokenFinished()
+	{
+		trace('all is taken care of');
 	}
 
 	public function createFunctions()
