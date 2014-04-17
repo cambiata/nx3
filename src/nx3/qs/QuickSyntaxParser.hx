@@ -41,23 +41,13 @@ class QuickSyntaxParser
 		this.str = str.trim().replace('  ', ' ').replace('  ', ' ').replace('  ', ' ');
 		this.tokens = parseTokens(this.str);
 		
-		/*
-		this.modefunctions = new Map < String, Void->Void> ();
-		this.notefunctions= new Map < String, String->String> ();
-		this.barIndex = 0;
-		this.partIndex = 0;
-		this.voiceIndex = 0;
-		this.contentmodeOctave = 0;
-		this.contentmode = ContentMode.Notes(contentmodeOctave);
-		*/
-		
 		this.qsnotes = new QSyntaxNotes();
 		
 		this.modeparser = new ModeParser(this);
 		this.barparser = new BarParser(this);
 		this.noteparser = new NoteParser(this);
 		
-		this.modeparser.sendEvent(ParserEvents.SetOctave(123));
+		//this.modeparser.sendEvent(ParserEvents.SetOctave(123));
 		
 	}
 	

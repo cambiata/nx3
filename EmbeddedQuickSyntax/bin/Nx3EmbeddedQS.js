@@ -87,7 +87,7 @@ Main.main = function() {
 	var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
 	var nbars = builder.getNBars();
 	var vbar = new nx3.VBar(nbars[0]);
-	var target = new nx3.render.TargetSvg("#big",nx3.render.scaling.Scaling.BIG);
+	var target = new nx3.render.TargetSvg("#big",nx3.render.scaling.Scaling.MID);
 	var r = new nx3.render.Renderer(target,10,80);
 	r.renderBar(vbar);
 };
@@ -2977,10 +2977,13 @@ nx3.VComplex.prototype = {
 		if(note == this.vnotes[0]) return 0;
 		var firstnote = this.vnotes[0];
 		var secondnote = note;
-		var offsetX = this.getRectanglesXIntersection(firstnote.getVHeadsRectanglesDir(nx3.EDirectionUD.Up),secondnote.getVHeadsRectanglesDir(direction));
 		var diff = secondnote.nnote.getTopLevel() - firstnote.nnote.getBottomLevel();
-		if(diff == 1) if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 0.9 * offsetX; else offsetX = 0.7 * offsetX;
-		if(diff < 1 && offsetX == 0) offsetX = -0.8;
+		var offsetX = 0.0;
+		if(diff < 1) if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 4.4; else offsetX = 3.2;
+		if(diff == 1) {
+			if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 4.4; else offsetX = 3.2;
+			if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 0.9 * offsetX; else offsetX = 0.7 * offsetX;
+		}
 		return offsetX;
 	}
 	,getRectanglesXIntersection: function(rectsA,rectsB) {
@@ -3097,12 +3100,14 @@ nx3.VComplex.prototype = {
 		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
 		var firstnote = cx.ArrayTools.first(this.getVNotes());
 		var result = new Array();
+		var flags = new Array();
 		var _g1 = 0;
 		var _g = this.getVNotes().length;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var vnote = this.getVNotes()[i];
 			if(nx3.ENoteValTools.stavinglevel(vnote.nnote.value) == 0) continue;
+			if(vnote.nnote.type[0] != "Note") continue;
 			var direction = directions[i];
 			var rect = null;
 			var headw;
@@ -3114,53 +3119,48 @@ nx3.VComplex.prototype = {
 			default:
 				headw = 1.6;
 			}
+			var offset = 0.0;
+			if(vnote != firstnote) offset = this.getHeadsCollisionOffsetX(vnote,direction);
 			if(direction == nx3.EDirectionUD.Up) rect = new nx3.geom.Rectangle(0,vnote.nnote.getBottomLevel() - 7,headw,7); else rect = new nx3.geom.Rectangle(-headw,vnote.nnote.getTopLevel(),headw,7);
-			if(vnote != firstnote) {
-				var offset = this.getHeadsCollisionOffsetX(vnote,direction);
-				rect.offset(offset,0);
-			}
+			if(offset != 0) rect.offset(offset,0);
 			result.push(rect);
 			if(nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) {
 				var flagrect = null;
 				if(direction == nx3.EDirectionUD.Up) flagrect = new nx3.geom.Rectangle(headw,vnote.nnote.getBottomLevel() - 7,2.6,4.8); else flagrect = new nx3.geom.Rectangle(-headw,vnote.nnote.getTopLevel() + 7 - 4.8,2.6,4.8);
-				if(vnote != firstnote) {
-					var offset1 = this.getHeadsCollisionOffsetX(vnote,direction);
-					flagrect.offset(offset1,0);
-				}
-				result.push(flagrect);
+				if(offset != 0) flagrect.offset(offset,0);
+				flags.push(flagrect);
 			}
 		}
+		result = result.concat(flags);
 		return result;
 	}
+	,getStaveNoteBasicRectAndDirections: function(note,directions) {
+		var rects = this.getStaveBasicRects(directions);
+		if(note == cx.ArrayTools.first(this.getVNotes())) return { rect : rects[0], dir : directions[0]};
+		return { rect : rects[1], dir : directions[1]};
+	}
 	,getStavesBasicX: function(directions) {
-		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
-		var firstnote = cx.ArrayTools.first(this.getVNotes());
+		var rects = this.getStaveBasicRects(directions);
 		var result = new Array();
 		var _g1 = 0;
 		var _g = this.getVNotes().length;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var vnote = this.getVNotes()[i];
-			var direction = directions[i];
-			var rect = null;
-			var headw;
-			var _g2 = nx3.ENoteValTools.head(vnote.nnote.value);
-			switch(_g2[1]) {
-			case 2:
-				headw = 2.2;
-				break;
-			default:
-				headw = 1.6;
+			var rectDir = this.getStaveNoteBasicRectAndDirections(vnote,directions);
+			var direction = rectDir.dir;
+			var rect = rectDir.rect;
+			if(rect == null) {
+				result.push({ x : 0, y : 0});
+				continue;
 			}
-			var x = 0;
-			var y = 0;
+			var x = 0.0;
+			var y = 0.0;
 			if(direction == nx3.EDirectionUD.Up) {
-				rect = new nx3.geom.Rectangle(0,vnote.nnote.getBottomLevel() - 7,headw,7);
-				x = headw;
+				x += rect.width;
 				y = vnote.nnote.getBottomLevel();
 			} else {
-				rect = new nx3.geom.Rectangle(-headw,vnote.nnote.getTopLevel(),headw,7);
-				x = -headw;
+				x = rect.x;
 				y = vnote.nnote.getTopLevel();
 			}
 			result.push({ x : x, y : y});
@@ -5095,7 +5095,6 @@ nx3.qs.QuickSyntaxParser = function(str) {
 	this.modeparser = new nx3.qs.ModeParser(this);
 	this.barparser = new nx3.qs.BarParser(this);
 	this.noteparser = new nx3.qs.NoteParser(this);
-	this.modeparser.sendEvent(nx3.qs.ParserEvents.SetOctave(123));
 };
 nx3.qs.QuickSyntaxParser.__name__ = true;
 nx3.qs.QuickSyntaxParser.prototype = {
@@ -5228,6 +5227,7 @@ nx3.render.Renderer.prototype = {
 				directions = this4.get(vcomplex);
 				var headrects = vcomplex.getNotesHeadsRects(directions);
 				var staverects = vcomplex.getStaveBasicRects(directions);
+				this.target.rectangles(colx,party,staverects,1,11184810);
 				var signsrects = vcomplex.getSignsRects(headrects);
 				this.signs(colx,party,vcomplex);
 				var dotrects = vcomplex.getDotsRects(headrects,directions);
@@ -5321,9 +5321,8 @@ nx3.render.Renderer.prototype = {
 						}(this)));
 						var stavePos = stavesPos[noteComplexIdx];
 						var stavePosX = stavePos.x * this.scaling.halfNoteWidth;
-						var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * 1.6 * 2 * this.scaling.halfNoteWidth;
 						var point = null;
-						point = { x : colx + stavePosX + headsXOffset, y : party};
+						point = { x : colx + stavePosX, y : party};
 						beamgroupPoints.push(point);
 					}
 					this.beamgroup(0,0,beamgroup,beamgroupPoints,beamgroup.getCalculatedDirection());

@@ -1,4 +1,4 @@
-F:\nx3\Nx3Java
+F:\_nx3\Nx3Java
 begin defines
 dce
 haxe3
@@ -601,12 +601,12 @@ M java.io.File
 M java.nio.file.OpenOption
 M nx3.qs.BarParser
 C nx3.qs.BarParser
-C nx3.qs.BarParser_createFunctions_24__Fun
-C nx3.qs.BarParser_createFunctions_29__Fun
-C nx3.qs.BarParser_createFunctions_36__Fun
-C nx3.qs.BarParser_createFunctions_43__Fun
-C nx3.qs.BarParser_createFunctions_50__Fun
-C nx3.qs.BarParser_createFunctions_60__Fun
+C nx3.qs.BarParser_createFunctions_25__Fun
+C nx3.qs.BarParser_createFunctions_30__Fun
+C nx3.qs.BarParser_createFunctions_37__Fun
+C nx3.qs.BarParser_createFunctions_44__Fun
+C nx3.qs.BarParser_createFunctions_51__Fun
+C nx3.qs.BarParser_createFunctions_61__Fun
 M java.beans.VetoableChangeListener
 M java.util.Random
 M java.sun.util.resources.OpenListResourceBundle
@@ -645,6 +645,8 @@ E nx3.EClef
 M java.awt.Checkbox
 M nx3.ENoteType
 C nx3.ENoteType
+M nx3.qs.ParserEvents
+C nx3.qs.ParserEvents
 M java.javax.swing.event.MenuDragMouseListener
 M java.awt.Graphics
 M nx3.VPartbeamgroupsDirectionCalculator
@@ -839,6 +841,7 @@ C nx3.qs.NoteParser_createFunctions_88__Fun
 C nx3.qs.NoteParser_createFunctions_89__Fun
 C nx3.qs.NoteParser_createFunctions_90__Fun
 C nx3.qs.NoteParser_createFunctions_91__Fun
+C nx3.qs.NoteParser_createFunctions_92__Fun
 M java.javax.swing.InputVerifier
 M java.awt.peer.ContainerPeer
 M java.net.URL

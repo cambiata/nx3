@@ -119,7 +119,9 @@ class Renderer
 				//this.target.rectangles(colx, party, headrects , 1, 0xff0000);
 				
 				var staverects = vcomplex.getStaveBasicRects(directions);
-				//this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
+				this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
+				
+				
 				var signsrects = vcomplex.getSignsRects(headrects);
 				//this.target.rectangles(colx, party, signsrects , 1, 0xff0000);
 				this.signs(colx, party, vcomplex);
@@ -193,14 +195,10 @@ class Renderer
 						var stavesPos = vcomplex.getStavesBasicX(vpart.getVComplexDirections().get(vcomplex));
 						var stavePos = stavesPos[noteComplexIdx];
 						var stavePosX = stavePos.x * scaling.halfNoteWidth;
-						var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * Constants.HEAD_HALFWIDTH_NORMAL * 2 * scaling.halfNoteWidth;
-						//trace([stavePosX, headsXOffset]);
 						
 						var point:TPoint = null;
 						
-						
-						
-						point = { x:colx + stavePosX + headsXOffset, y:party};
+						point = { x:colx + stavePosX, y:party};
 						beamgroupPoints.push(point);
 					}
 					this.beamgroup(0, 0, beamgroup, beamgroupPoints, beamgroup.getCalculatedDirection());

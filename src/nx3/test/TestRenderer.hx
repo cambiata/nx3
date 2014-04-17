@@ -15,6 +15,7 @@ class TestRenderer
 			r.renderBar(TestItems.vbarSigns(), 10, 240);	
 			r.renderBar(TestItems.vbarTpl(), 10, 500);
 			var target = r.getTarget();
+			
 			/*
 			var text = "ABC abc gpd 123!#%";
 			var width = target.textwidth(text);
@@ -22,6 +23,7 @@ class TestRenderer
 			target.text(0, 0, '$text $width $height');		
 			target.rectangle(0, 0, new Rectangle(0, 0, width, height), 1, 0xff0000);
 			*/
+			
 	}
 	
 }

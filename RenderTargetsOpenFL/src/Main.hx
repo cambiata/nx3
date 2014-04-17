@@ -50,7 +50,7 @@ class Main extends Sprite
 		var target = new TargetSprite(Scaling.NORMAL);
 		TestRenderer.testRenderer( new Renderer(target, 10, 80));
 		this.addChild(target.getTargetSprite(200, 0));
-
+		
 		var target = new TargetSprite(Scaling.BIG);
 		TestRenderer.testRenderer( new Renderer(target, 10, 80));
 		this.addChild(target.getTargetSprite(600, 0));

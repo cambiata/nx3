@@ -140,12 +140,6 @@ class TestItems
 					new QNote4(0),
 					new QNote4(0),
 					new QNote4(0),
-					new QNote4(0),
-					new QNote4(0),
-					new QNote4(0),
-					new QNote4(0),
-					new QNote4(0),
-					new QNote4(0),
 					])
 			]),
 			
@@ -155,17 +149,50 @@ class TestItems
 					new NNote(ENoteType.Tpl(1)),
 					new NNote(ENoteType.Tpl(2)),
 					new NNote(ENoteType.Tpl(3)),
-					new NNote(ENoteType.Tpl(4)),
-					new NNote(ENoteType.Tpl(5)),
-					new NNote(ENoteType.Tpl(0)),
-					new NNote(ENoteType.Tpl(-1)),
-					new NNote(ENoteType.Tpl(-2)),
-					new NNote(ENoteType.Tpl(-3)),
 					])
 			]),						
 		]));				
 		return vbar;						
 	}	
+	
+	static public function vbarBugStaves()
+	{
+		var vbar = new VBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					
+					new QNote4(0),					
+					new QNote4(0),
+					new QNote4(0),
+					
+					new QNote1(0),
+					new QNote1(0),
+					new QNote1(0),
+					
+					new QNote8(0),
+					new QNote16(0),
+					new QNote16(0),
+					
+					]),
+				new NVoice([				
+				
+					new QNote4(2),
+					new QNote4(1),
+					new QNote4(0),					
+					
+					new QNote1(2),
+					new QNote1(1),
+					new QNote1(0),					
+					
+					new QNote8(1),
+					new QNote16(1),
+					new QNote16(0),					
+					])
+			]),
+			
+		]));				
+		return vbar;						
+	}		
 	
 	
 	
@@ -199,7 +226,9 @@ class TestItems
 	
 	static public function vbarQSyntax1()
 	{
-		var str = ' b a8 g f4 eB % g2 d8 c d e ';
+		//var str = ' b a8 g f4 eB % g2 d8 c d e ';
+		var str = '	f#8 + c  g16 a e f# % = e2';
+		//var str = '	f#8  % = d2';
 		//var str = ' e8 e e e % d c c d ';
 		var parser = new QuickSyntaxParser(str);
 		var qsnotes = parser.parseToQSyntaxNotes();

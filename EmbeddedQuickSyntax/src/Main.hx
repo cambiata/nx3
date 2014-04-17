@@ -41,7 +41,7 @@ class Main
 		var nbars = builder.getNBars();		
 		var vbar = new VBar(nbars.first());
 
-		var target = new TargetSvg('#big', Scaling.BIG);
+		var target = new TargetSvg('#big', Scaling.MID);
 		var r = new Renderer(target, 10, 80);
 		r.renderBar(vbar);				
 		
