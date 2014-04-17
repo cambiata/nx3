@@ -199,8 +199,7 @@ class TestItems
 	
 	static public function vbarQSyntax1()
 	{
-		var str = ' c d e f g a b ';
-		var str = ' b a8 g f4 ess % b2 d8 c d e ';
+		var str = ' b a8 g f4 eB % g2 d8 c d e ';
 		//var str = ' e8 e e e % d c c d ';
 		var parser = new QuickSyntaxParser(str);
 		var qsnotes = parser.parseToQSyntaxNotes();

@@ -1,4 +1,5 @@
 package nx3.qs;
+import nx3.qs.ParserEvents;
 
 
 /**
@@ -63,7 +64,7 @@ class BarParser extends BaseParser
 		});		
 	}
 	
-	override private function tokenFinished() 
+	override private function tokenFinished(originaltoken:String) 
 	{
 		//trace([this.barIndex, this.partIndex, this.voiceIndex]);
 	}
@@ -72,5 +73,10 @@ class BarParser extends BaseParser
 	{
 		 var bpvIndex:QSyntaxBPV = { barIndex:barIndex, partIndex:partIndex, voiceIndex:voiceIndex };
 		 return bpvIndex;
+	}
+	
+	override public function recieveEvent(event:ParserEvents) 
+	{
+		trace('RECIEVED EVENT by BarParser ' + event);
 	}
 }

@@ -46,8 +46,14 @@ class ModeParser extends BaseParser
 		
 	}	
 	
-	override private function tokenFinished() 
+	override private function tokenFinished(originaltoken:String) 
 	{
 		trace('mode is taken care of');
 	}
+	
+	override public function recieveEvent(event:ParserEvents) 
+	{
+		trace('RECIEVED EVENT by ModeParser ' + event);
+	}
+	
 }

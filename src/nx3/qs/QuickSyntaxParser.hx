@@ -6,7 +6,6 @@ import nx3.qs.BarParser;
 import nx3.qs.QuickSyntaxParser;
 import nx3.qs.QuickSyntaxParser.ContentMode;
 import nx3.qs.ModeParser;
-import nx3.qs.NoteParser;
 import nx3.NHead;
 import nx3.NNote;
 import nx3.qs.QSyntaxNotes;
@@ -58,12 +57,16 @@ class QuickSyntaxParser
 		this.barparser = new BarParser(this);
 		this.noteparser = new NoteParser(this);
 		
+		this.modeparser.sendEvent(ParserEvents.SetOctave(123));
+		
 	}
 	
 	public function parseToQSyntaxNotes():QSyntaxNotes
 	{
 		for (token in this.tokens)
 		{
+			//trace('TOKEN >$token<');
+			
 			var testtoken = token;			
 			testtoken = this.modeparser.parse(token, this);
 			if (testtoken == '') continue;
@@ -94,9 +97,12 @@ class QuickSyntaxParser
 		 //trace(['Note added to ', bpvIndex.barIndex, bpvIndex.partIndex, bpvIndex.voiceIndex, nnote]);
 	 }
 	 
-	 
-	 
-	
+	 public function passEvent(event:ParserEvents)
+	 {
+		 this.modeparser.recieveEvent(event);
+		 this.barparser.recieveEvent(event);
+		 this.noteparser.recieveEvent(event);
+	 }
 }
 
 

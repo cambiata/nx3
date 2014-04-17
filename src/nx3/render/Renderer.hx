@@ -1,4 +1,5 @@
 package nx3.render;
+import nx3.Constants;
 import nx3.EDirectionUDs;
 import nx3.ESign;
 import nx3.geom.Rectangle;
@@ -192,8 +193,8 @@ class Renderer
 						var stavesPos = vcomplex.getStavesBasicX(vpart.getVComplexDirections().get(vcomplex));
 						var stavePos = stavesPos[noteComplexIdx];
 						var stavePosX = stavePos.x * scaling.halfNoteWidth;
-						var MYSTISK_FAKTOR = 3;
-						var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * MYSTISK_FAKTOR * scaling.halfNoteWidth;
+						var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * Constants.HEAD_HALFWIDTH_NORMAL * 2 * scaling.halfNoteWidth;
+						//trace([stavePosX, headsXOffset]);
 						
 						var point:TPoint = null;
 						

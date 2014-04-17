@@ -22,6 +22,7 @@ class BaseParser
 	
 	function getTokenfunction(functions: Map<String, String->String>, token:String):String->String
 	{
+		
 			var keys:Array<String> = ArrayTools.fromHashKeys(functions.keys());
 			keys.sort(function(a, b)	return -Reflect.compare(a.length, b.length));
 		
@@ -38,6 +39,8 @@ class BaseParser
 	
 	public function parse(token:String, parser:QuickSyntaxParser):String
 	{
+		
+		
 		var originaltoken = token;
 		var func = this.getTokenfunction(this.functions, token);
 		while (func != null)
@@ -46,7 +49,7 @@ class BaseParser
 			//trace('Rest1: ' + token);
 			if (token == '') 
 			{
-				this.tokenFinished();
+				this.tokenFinished(originaltoken);
 				return ''; // klart o betart!
 			}
 			
@@ -61,7 +64,7 @@ class BaseParser
 		return '';
 	}
 	
-	function tokenFinished()
+	function tokenFinished(originaltoken:String)
 	{
 		trace('all is taken care of');
 	}
@@ -70,4 +73,16 @@ class BaseParser
 	{
 		trace('should be overridden');
 	}
+	
+	public function  sendEvent(event:ParserEvents)
+	{
+		this.builder.passEvent(event);
+	}
+	
+	public function recieveEvent(event:ParserEvents)
+	{
+		throw 'shouldBeOverridden';
+	}
+	
 }
+
