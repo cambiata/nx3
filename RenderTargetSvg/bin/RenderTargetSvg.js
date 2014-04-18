@@ -4521,6 +4521,17 @@ nx3.VPartComplexesMinDistancesCalculator.prototype = {
 	,getDistance: function(leftComplex,rightComplex) {
 		var left = this.getComplexRightside(leftComplex);
 		var right = this.getComplexLeftside(rightComplex);
+		if(rightComplex == null && leftComplex != null) {
+			var vnotes = leftComplex.getVNotes();
+			var hasflag = false;
+			var _g = 0;
+			while(_g < vnotes.length) {
+				var vnote = vnotes[_g];
+				++_g;
+				if(vnote.nnote.type[0] == "Note" && nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) hasflag = true;
+			}
+			if(hasflag) right = this.getComplexRightside(leftComplex);
+		}
 		var minDistance = left.minrect.width + left.minrect.x + -right.minrect.x;
 		var rectsDistance = cx.MathTools.round2(nx3.geom.RectanglesTools.getXIntersection(left.rects,right.rects),null);
 		return Math.max(minDistance,rectsDistance);
@@ -5677,6 +5688,12 @@ nx3.qs.BaseParser.prototype = {
 			++_g;
 			if(StringTools.startsWith(token,key)) return functions.get(key);
 		}
+		var _g1 = 0;
+		while(_g1 < keys.length) {
+			var key1 = keys[_g1];
+			++_g1;
+			if(key1 == "__ALL__") return functions.get(key1);
+		}
 		return null;
 	}
 	,parse: function(token,parser) {
@@ -5694,10 +5711,10 @@ nx3.qs.BaseParser.prototype = {
 		return "";
 	}
 	,tokenFinished: function(originaltoken) {
-		haxe.Log.trace("all is taken care of",{ fileName : "BaseParser.hx", lineNumber : 69, className : "nx3.qs.BaseParser", methodName : "tokenFinished"});
+		haxe.Log.trace("all is taken care of",{ fileName : "BaseParser.hx", lineNumber : 75, className : "nx3.qs.BaseParser", methodName : "tokenFinished"});
 	}
 	,createFunctions: function() {
-		haxe.Log.trace("should be overridden",{ fileName : "BaseParser.hx", lineNumber : 74, className : "nx3.qs.BaseParser", methodName : "createFunctions"});
+		haxe.Log.trace("should be overridden",{ fileName : "BaseParser.hx", lineNumber : 80, className : "nx3.qs.BaseParser", methodName : "createFunctions"});
 	}
 	,sendEvent: function(event) {
 		this.builder.passEvent(event);
@@ -5752,6 +5769,8 @@ nx3.qs.BarParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 		});
 		this.functions.set("%",function(token5) {
 			_g.voiceIndex++;
+			_g.sendEvent(nx3.qs.ParserEvents.SetOctave(0));
+			_g.sendEvent(nx3.qs.ParserEvents.SetNoteVal(nx3.ENoteVal.Nv4));
 			return HxOverrides.substr(token5,1,null);
 		});
 	}
@@ -5762,46 +5781,117 @@ nx3.qs.BarParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 		return bpvIndex;
 	}
 	,recieveEvent: function(event) {
-		haxe.Log.trace("RECIEVED EVENT by BarParser " + Std.string(event),{ fileName : "BarParser.hx", lineNumber : 80, className : "nx3.qs.BarParser", methodName : "recieveEvent"});
 	}
 	,__class__: nx3.qs.BarParser
 });
+nx3.qs.ContentMode = { __ename__ : true, __constructs__ : ["Notes","Tpls","Lyrics"] };
+nx3.qs.ContentMode.Notes = ["Notes",0];
+nx3.qs.ContentMode.Notes.toString = $estr;
+nx3.qs.ContentMode.Notes.__enum__ = nx3.qs.ContentMode;
+nx3.qs.ContentMode.Tpls = ["Tpls",1];
+nx3.qs.ContentMode.Tpls.toString = $estr;
+nx3.qs.ContentMode.Tpls.__enum__ = nx3.qs.ContentMode;
+nx3.qs.ContentMode.Lyrics = ["Lyrics",2];
+nx3.qs.ContentMode.Lyrics.toString = $estr;
+nx3.qs.ContentMode.Lyrics.__enum__ = nx3.qs.ContentMode;
+nx3.qs.LyricsParser = function(builder) {
+	nx3.qs.BaseParser.call(this,builder);
+	this.notevalue = nx3.ENoteVal.Nv4;
+	this.flagWord = false;
+};
+nx3.qs.LyricsParser.__name__ = ["nx3","qs","LyricsParser"];
+nx3.qs.LyricsParser.__super__ = nx3.qs.BaseParser;
+nx3.qs.LyricsParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
+	notevalue: null
+	,flagWord: null
+	,createFunctions: function() {
+		var _g = this;
+		this.functions.set("1.",function(token) {
+			_g.notevalue = nx3.ENoteVal.Nv1dot;
+			return HxOverrides.substr(token,2,null);
+		});
+		this.functions.set("1",function(token1) {
+			_g.notevalue = nx3.ENoteVal.Nv1;
+			return HxOverrides.substr(token1,1,null);
+		});
+		this.functions.set("2.",function(token2) {
+			_g.notevalue = nx3.ENoteVal.Nv2dot;
+			return HxOverrides.substr(token2,2,null);
+		});
+		this.functions.set("2",function(token3) {
+			_g.notevalue = nx3.ENoteVal.Nv2;
+			return HxOverrides.substr(token3,1,null);
+		});
+		this.functions.set("4.",function(token4) {
+			_g.notevalue = nx3.ENoteVal.Nv4dot;
+			return HxOverrides.substr(token4,2,null);
+		});
+		this.functions.set("4",function(token5) {
+			_g.notevalue = nx3.ENoteVal.Nv4;
+			return HxOverrides.substr(token5,1,null);
+		});
+		this.functions.set("8.",function(token6) {
+			_g.notevalue = nx3.ENoteVal.Nv8dot;
+			return HxOverrides.substr(token6,2,null);
+		});
+		this.functions.set("8",function(token7) {
+			_g.notevalue = nx3.ENoteVal.Nv8;
+			return HxOverrides.substr(token7,1,null);
+		});
+		this.functions.set("16.",function(token8) {
+			_g.notevalue = nx3.ENoteVal.Nv16dot;
+			return HxOverrides.substr(token8,3,null);
+		});
+		this.functions.set("16",function(token9) {
+			_g.notevalue = nx3.ENoteVal.Nv16;
+			return HxOverrides.substr(token9,2,null);
+		});
+		this.functions.set("__ALL__",function(token10) {
+			haxe.Log.trace("HANDLE __ALL___",{ fileName : "LyricsParser.hx", lineNumber : 40, className : "nx3.qs.LyricsParser", methodName : "createFunctions"});
+			_g.flagWord = true;
+			return HxOverrides.substr(token10,token10.length,null);
+		});
+	}
+	,tokenFinished: function(originaltoken) {
+		if(this.flagWord) {
+			var nnote = new nx3.NNote(nx3.ENoteType.Lyric(originaltoken),null,this.notevalue);
+			this.builder.addNote(nnote);
+			this.flagWord = false;
+		}
+	}
+	,__class__: nx3.qs.LyricsParser
+});
 nx3.qs.ModeParser = function(parser) {
 	nx3.qs.BaseParser.call(this,parser);
-	this.mode = nx3.qs.ContentMode.Notes(0);
 };
 nx3.qs.ModeParser.__name__ = ["nx3","qs","ModeParser"];
 nx3.qs.ModeParser.__super__ = nx3.qs.BaseParser;
 nx3.qs.ModeParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
-	mode: null
-	,createFunctions: function() {
+	createFunctions: function() {
 		var _g = this;
-		this.functions.set("notes:",function(token) {
-			_g.mode = nx3.qs.ContentMode.Notes(0);
-			haxe.Log.trace("handle notes...",{ fileName : "ModeParser.hx", lineNumber : 24, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
-			return HxOverrides.substr(token,6,null);
+		this.functions.set("not:",function(token) {
+			_g.sendEvent(nx3.qs.ParserEvents.SetMode(nx3.qs.ContentMode.Notes));
+			haxe.Log.trace("handle notes...",{ fileName : "ModeParser.hx", lineNumber : 21, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token,4,null);
 		});
-		this.functions.set("tpls:",function(token1) {
-			_g.mode = nx3.qs.ContentMode.Tpls;
-			haxe.Log.trace("handle tpls...",{ fileName : "ModeParser.hx", lineNumber : 30, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
-			return HxOverrides.substr(token1,5,null);
+		this.functions.set("tpl:",function(token1) {
+			_g.sendEvent(nx3.qs.ParserEvents.SetMode(nx3.qs.ContentMode.Tpls));
+			haxe.Log.trace("handle tpls...",{ fileName : "ModeParser.hx", lineNumber : 27, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token1,4,null);
 		});
-		this.functions.set("lyrics:",function(token2) {
-			_g.mode = nx3.qs.ContentMode.Lyrics;
-			haxe.Log.trace("handle lyrics...",{ fileName : "ModeParser.hx", lineNumber : 36, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
-			return HxOverrides.substr(token2,7,null);
+		this.functions.set("lyr:",function(token2) {
+			_g.sendEvent(nx3.qs.ParserEvents.SetMode(nx3.qs.ContentMode.Lyrics));
+			haxe.Log.trace("handle lyrics...",{ fileName : "ModeParser.hx", lineNumber : 33, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
+			return HxOverrides.substr(token2,4,null);
 		});
 		this.functions.set("xxx",function(token3) {
-			_g.mode = nx3.qs.ContentMode.Lyrics;
-			haxe.Log.trace("handle xxx...",{ fileName : "ModeParser.hx", lineNumber : 42, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
+			haxe.Log.trace("handle xxx...",{ fileName : "ModeParser.hx", lineNumber : 38, className : "nx3.qs.ModeParser", methodName : "createFunctions"});
 			return HxOverrides.substr(token3,3,null);
 		});
 	}
 	,tokenFinished: function(originaltoken) {
-		haxe.Log.trace("mode is taken care of",{ fileName : "ModeParser.hx", lineNumber : 51, className : "nx3.qs.ModeParser", methodName : "tokenFinished"});
 	}
 	,recieveEvent: function(event) {
-		haxe.Log.trace("RECIEVED EVENT by ModeParser " + Std.string(event),{ fileName : "ModeParser.hx", lineNumber : 56, className : "nx3.qs.ModeParser", methodName : "recieveEvent"});
 	}
 	,__class__: nx3.qs.ModeParser
 });
@@ -5815,6 +5905,8 @@ nx3.qs.NoteParser = function(parser) {
 	this.prevvalue = nx3.ENoteVal.Nv4;
 	this.clefAdjust = 0;
 	this.octAdjust = 0;
+	this.pause = false;
+	this.pauselevel = 0;
 };
 nx3.qs.NoteParser.__name__ = ["nx3","qs","NoteParser"];
 nx3.qs.NoteParser.__super__ = nx3.qs.BaseParser;
@@ -5827,6 +5919,8 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 	,prevsigns: null
 	,clefAdjust: null
 	,octAdjust: null
+	,pause: null
+	,pauselevel: null
 	,createFunctions: function() {
 		var _g = this;
 		this.functions.set("c#",function(token) {
@@ -5969,57 +6063,80 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 			_g.notesigns.push(nx3.ESign.None);
 			return HxOverrides.substr(token27,1,null);
 		});
-		this.functions.set("2.",function(token28) {
-			_g.notevalue = nx3.ENoteVal.Nv2dot;
+		this.functions.set("1.",function(token28) {
+			_g.notevalue = nx3.ENoteVal.Nv1dot;
 			return HxOverrides.substr(token28,2,null);
 		});
-		this.functions.set("2",function(token29) {
-			_g.notevalue = nx3.ENoteVal.Nv2;
+		this.functions.set("1",function(token29) {
+			_g.notevalue = nx3.ENoteVal.Nv1;
 			return HxOverrides.substr(token29,1,null);
 		});
-		this.functions.set("4.",function(token30) {
-			_g.notevalue = nx3.ENoteVal.Nv4dot;
+		this.functions.set("2.",function(token30) {
+			_g.notevalue = nx3.ENoteVal.Nv2dot;
 			return HxOverrides.substr(token30,2,null);
 		});
-		this.functions.set("4",function(token31) {
-			_g.notevalue = nx3.ENoteVal.Nv4;
+		this.functions.set("2",function(token31) {
+			_g.notevalue = nx3.ENoteVal.Nv2;
 			return HxOverrides.substr(token31,1,null);
 		});
-		this.functions.set("8.",function(token32) {
-			_g.notevalue = nx3.ENoteVal.Nv8dot;
+		this.functions.set("4.",function(token32) {
+			_g.notevalue = nx3.ENoteVal.Nv4dot;
 			return HxOverrides.substr(token32,2,null);
 		});
-		this.functions.set("8",function(token33) {
-			_g.notevalue = nx3.ENoteVal.Nv8;
+		this.functions.set("4",function(token33) {
+			_g.notevalue = nx3.ENoteVal.Nv4;
 			return HxOverrides.substr(token33,1,null);
 		});
-		this.functions.set("16.",function(token34) {
+		this.functions.set("8.",function(token34) {
+			_g.notevalue = nx3.ENoteVal.Nv8dot;
+			return HxOverrides.substr(token34,2,null);
+		});
+		this.functions.set("8",function(token35) {
+			_g.notevalue = nx3.ENoteVal.Nv8;
+			return HxOverrides.substr(token35,1,null);
+		});
+		this.functions.set("16.",function(token36) {
 			_g.notevalue = nx3.ENoteVal.Nv16dot;
-			return HxOverrides.substr(token34,3,null);
+			return HxOverrides.substr(token36,3,null);
 		});
-		this.functions.set("16",function(token35) {
+		this.functions.set("16",function(token37) {
 			_g.notevalue = nx3.ENoteVal.Nv16;
-			return HxOverrides.substr(token35,2,null);
+			return HxOverrides.substr(token37,2,null);
 		});
-		this.functions.set("=",function(token36) {
+		this.functions.set("=",function(token38) {
 			_g.octAdjust = 0;
-			return HxOverrides.substr(token36,1,null);
-		});
-		this.functions.set("+",function(token37) {
-			_g.octAdjust = -7;
-			return HxOverrides.substr(token37,1,null);
-		});
-		this.functions.set("++",function(token38) {
-			_g.octAdjust = -14;
 			return HxOverrides.substr(token38,1,null);
 		});
-		this.functions.set("-",function(token39) {
-			_g.octAdjust = 7;
+		this.functions.set("+",function(token39) {
+			_g.octAdjust = -7;
 			return HxOverrides.substr(token39,1,null);
 		});
-		this.functions.set("--",function(token40) {
+		this.functions.set("++",function(token40) {
+			_g.octAdjust = -14;
+			return HxOverrides.substr(token40,2,null);
+		});
+		this.functions.set("-",function(token41) {
+			_g.octAdjust = 7;
+			return HxOverrides.substr(token41,1,null);
+		});
+		this.functions.set("--",function(token42) {
 			_g.octAdjust = 14;
-			return HxOverrides.substr(token40,1,null);
+			return HxOverrides.substr(token42,2,null);
+		});
+		this.functions.set("p",function(token43) {
+			_g.pause = true;
+			_g.pauselevel = 0;
+			return HxOverrides.substr(token43,1,null);
+		});
+		this.functions.set("p+",function(token44) {
+			_g.pause = true;
+			_g.pauselevel = -1;
+			return HxOverrides.substr(token44,2,null);
+		});
+		this.functions.set("p-",function(token45) {
+			_g.pause = true;
+			_g.pauselevel = 1;
+			return HxOverrides.substr(token45,2,null);
 		});
 	}
 	,tokenFinished: function(originaltoken) {
@@ -6028,16 +6145,22 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 		if(this.notesigns.length < 1) this.notesigns = this.prevsigns.slice();
 		if(this.notevalue == null) this.notevalue = this.prevvalue;
 		var val = this.notevalue;
-		var nheads = [];
-		var _g1 = 0;
-		var _g = this.notelevels.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var level = this.notelevels[i] + this.octAdjust + this.clefAdjust;
-			var sign = this.notesigns[i];
-			nheads.push(new nx3.NHead(null,level,sign));
+		var nnote = null;
+		if(this.pause) {
+			nnote = new nx3.NNote(nx3.ENoteType.Pause(this.pauselevel),null,val);
+			this.pause = false;
+		} else {
+			var nheads = [];
+			var _g1 = 0;
+			var _g = this.notelevels.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				var level = this.notelevels[i] + this.octAdjust + this.clefAdjust;
+				var sign = this.notesigns[i];
+				nheads.push(new nx3.NHead(null,level,sign));
+			}
+			nnote = new nx3.NNote(null,nheads,val);
 		}
-		var nnote = new nx3.NNote(null,nheads,val);
 		this.builder.addNote(nnote);
 		this.prevlevels = this.notelevels.slice();
 		this.prevsigns = this.notesigns.slice();
@@ -6047,12 +6170,24 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 		this.notevalue = null;
 	}
 	,recieveEvent: function(event) {
-		haxe.Log.trace("RECIEVED EVENT by NoteParser " + Std.string(event),{ fileName : "NoteParser.hx", lineNumber : 124, className : "nx3.qs.NoteParser", methodName : "recieveEvent"});
+		switch(event[1]) {
+		case 0:
+			var octave = event[2];
+			this.octAdjust = octave;
+			break;
+		case 1:
+			var val = event[2];
+			this.notevalue = val;
+			break;
+		default:
+		}
 	}
 	,__class__: nx3.qs.NoteParser
 });
-nx3.qs.ParserEvents = { __ename__ : true, __constructs__ : ["SetOctave"] };
+nx3.qs.ParserEvents = { __ename__ : true, __constructs__ : ["SetOctave","SetNoteVal","SetMode"] };
 nx3.qs.ParserEvents.SetOctave = function(octave) { var $x = ["SetOctave",0,octave]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
+nx3.qs.ParserEvents.SetNoteVal = function(value) { var $x = ["SetNoteVal",1,value]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
+nx3.qs.ParserEvents.SetMode = function(mode) { var $x = ["SetMode",2,mode]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.QSyntaxTools = function() { };
 nx3.qs.QSyntaxTools.__name__ = ["nx3","qs","QSyntaxTools"];
 nx3.qs.QSyntaxTools.bpvToString = function(val) {
@@ -6157,6 +6292,8 @@ nx3.qs.QuickSyntaxParser = function(str) {
 	this.modeparser = new nx3.qs.ModeParser(this);
 	this.barparser = new nx3.qs.BarParser(this);
 	this.noteparser = new nx3.qs.NoteParser(this);
+	this.lyricsparser = new nx3.qs.LyricsParser(this);
+	this.mode = nx3.qs.ContentMode.Notes;
 };
 nx3.qs.QuickSyntaxParser.__name__ = ["nx3","qs","QuickSyntaxParser"];
 nx3.qs.QuickSyntaxParser.prototype = {
@@ -6166,6 +6303,8 @@ nx3.qs.QuickSyntaxParser.prototype = {
 	,modeparser: null
 	,barparser: null
 	,noteparser: null
+	,lyricsparser: null
+	,mode: null
 	,parseToQSyntaxNotes: function() {
 		var _g = 0;
 		var _g1 = this.tokens;
@@ -6177,8 +6316,18 @@ nx3.qs.QuickSyntaxParser.prototype = {
 			if(testtoken == "") continue;
 			testtoken = this.barparser.parse(token,this);
 			if(testtoken == "") continue;
-			testtoken = this.noteparser.parse(token,this);
-			if(testtoken == "") continue;
+			var _g2 = this.mode;
+			switch(_g2[1]) {
+			case 0:
+				testtoken = this.noteparser.parse(token,this);
+				if(testtoken == "") continue;
+				break;
+			case 2:
+				haxe.Log.trace("LYYYRICS",{ fileName : "QuickSyntaxParser.hx", lineNumber : 77, className : "nx3.qs.QuickSyntaxParser", methodName : "parseToQSyntaxNotes"});
+				testtoken = this.lyricsparser.parse(token,this);
+				break;
+			default:
+			}
 		}
 		return this.qsnotes;
 	}
@@ -6200,22 +6349,22 @@ nx3.qs.QuickSyntaxParser.prototype = {
 		this.modeparser.recieveEvent(event);
 		this.barparser.recieveEvent(event);
 		this.noteparser.recieveEvent(event);
+		switch(event[1]) {
+		case 2:
+			var mode = event[2];
+			this.mode = mode;
+			break;
+		default:
+		}
 	}
 	,__class__: nx3.qs.QuickSyntaxParser
 };
-nx3.qs.ContentMode = { __ename__ : true, __constructs__ : ["Notes","Tpls","Lyrics"] };
-nx3.qs.ContentMode.Notes = function(octave) { var $x = ["Notes",0,octave]; $x.__enum__ = nx3.qs.ContentMode; $x.toString = $estr; return $x; };
-nx3.qs.ContentMode.Tpls = ["Tpls",1];
-nx3.qs.ContentMode.Tpls.toString = $estr;
-nx3.qs.ContentMode.Tpls.__enum__ = nx3.qs.ContentMode;
-nx3.qs.ContentMode.Lyrics = ["Lyrics",2];
-nx3.qs.ContentMode.Lyrics.toString = $estr;
-nx3.qs.ContentMode.Lyrics.__enum__ = nx3.qs.ContentMode;
 nx3.render = {};
 nx3.render.ITarget = function() { };
 nx3.render.ITarget.__name__ = ["nx3","render","ITarget"];
 nx3.render.ITarget.prototype = {
 	getScaling: null
+	,clear: null
 	,testLines: null
 	,rect: null
 	,rectangle: null
@@ -6276,7 +6425,6 @@ nx3.render.Renderer.prototype = {
 			this.notlines(vbar,barMinWidth * this.scaling.unitX);
 			party += this.partDistance;
 		}
-		this.target.rect(this.targetX,this.targetY,new nx3.geom.Rectangle(0,-10 * this.scaling.unitY,barMinWidth * this.scaling.unitX,party - this.targetY),.3);
 	}
 	,complexes: function(vbar) {
 		var barMinWidth = vbar.getVColumnsMinWidth();
@@ -6320,7 +6468,7 @@ nx3.render.Renderer.prototype = {
 				directions = this4.get(vcomplex);
 				var headrects = vcomplex.getNotesHeadsRects(directions);
 				var staverects = vcomplex.getStaveBasicRects(directions,beamgroups);
-				var signsrects = vcomplex.getSignsRects(headrects);
+				this.target.rectangles(colx,party,staverects,1,11184810);
 				this.signs(colx,party,vcomplex);
 				var dotrects = vcomplex.getDotsRects(headrects,directions);
 			}
@@ -6329,24 +6477,25 @@ nx3.render.Renderer.prototype = {
 	}
 	,complexheads: function(x,y,vcomplex,directions) {
 		var idx = 0;
-		haxe.Log.trace(vcomplex.getNotesRects(directions).length,{ fileName : "Renderer.hx", lineNumber : 144, className : "nx3.render.Renderer", methodName : "complexheads"});
+		haxe.Log.trace(vcomplex.getNotesRects(directions).length,{ fileName : "Renderer.hx", lineNumber : 145, className : "nx3.render.Renderer", methodName : "complexheads"});
 		var _g = 0;
 		var _g1 = vcomplex.getVNotes();
 		while(_g < _g1.length) {
 			var vnote = _g1[_g];
 			++_g;
-			haxe.Log.trace(vnote.nnote.get_nheads().length,{ fileName : "Renderer.hx", lineNumber : 147, className : "nx3.render.Renderer", methodName : "complexheads"});
+			haxe.Log.trace(vnote.nnote.get_nheads().length,{ fileName : "Renderer.hx", lineNumber : 148, className : "nx3.render.Renderer", methodName : "complexheads"});
 		}
 	}
 	,signs: function(x,y,vcomplex) {
-		var signs = vcomplex.getSigns();
-		var rects = vcomplex.getSignsRects();
+		var signs = vcomplex.getVisibleSigns();
+		var signrects = vcomplex.getSignsRects();
+		this.target.rectangles(x,y,signrects,1,16711680);
 		var _g1 = 0;
 		var _g = signs.length;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var sign = signs[i];
-			var rect = rects[i];
+			var rect = signrects[i];
 			var xmlStr;
 			var _g2 = sign.sign;
 			switch(_g2[1]) {
@@ -6467,7 +6616,7 @@ nx3.render.Renderer.prototype = {
 		if(beamgroup.vnotes.length == 1) {
 			var firstnote = beamgroup.vnotes[0];
 			if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) > 0) {
-				if(beamgroup.getDirection() == nx3.EDirectionUD.Down) {
+				if(beamgroup.getCalculatedDirection() == nx3.EDirectionUD.Up) {
 					var adjustX = 0.6 * this.scaling.unitX;
 					var adjustY = this.scaling.unitY;
 					this.target.shape(leftX - adjustX,leftPoint.y + adjustY + leftTipY,nx3.render.svg.SvgElements.flagUp8,0);
@@ -6632,7 +6781,7 @@ nx3.render.TargetSvg.prototype = {
 	}
 	,text: function(x,y,text) {
 		var fontsize = this.font.size * this.scaling.fontScaling;
-		haxe.Log.trace(fontsize,{ fileName : "TargetSvg.hx", lineNumber : 233, className : "nx3.render.TargetSvg", methodName : "text"});
+		haxe.Log.trace(fontsize,{ fileName : "TargetSvg.hx", lineNumber : 234, className : "nx3.render.TargetSvg", methodName : "text"});
 		x = x + -0.2 * this.scaling.fontScaling;
 		y = y + 9.6 * this.scaling.fontScaling;
 		var etext = this.snap.text(x,y,text).attr({ fontSize : "" + fontsize + "px ", fontFamily : this.font.name});
@@ -6647,9 +6796,9 @@ nx3.render.TargetSvg.prototype = {
 		var fontsize = this.font.size * this.scaling.fontScaling;
 		var fontstr = "" + fontsize + "px " + this.font.name;
 		this.context.font = fontstr;
-		haxe.Log.trace(fontstr,{ fileName : "TargetSvg.hx", lineNumber : 258, className : "nx3.render.TargetSvg", methodName : "textwidth"});
+		haxe.Log.trace(fontstr,{ fileName : "TargetSvg.hx", lineNumber : 259, className : "nx3.render.TargetSvg", methodName : "textwidth"});
 		var measure = this.context.measureText(text);
-		haxe.Log.trace(measure.width,{ fileName : "TargetSvg.hx", lineNumber : 260, className : "nx3.render.TargetSvg", methodName : "textwidth"});
+		haxe.Log.trace(measure.width,{ fileName : "TargetSvg.hx", lineNumber : 261, className : "nx3.render.TargetSvg", methodName : "textwidth"});
 		return measure.width / this.scaling.unitX;
 	}
 	,textheight: function(text) {
@@ -6675,6 +6824,10 @@ nx3.render.TargetSvg.prototype = {
 		var pathStr = "M " + x + " " + y + " L " + x2 + " " + y2 + "  L " + x2 + " " + (y2 + pheight) + "  L " + x + "  " + (y + pheight) + "  L " + x + " " + y;
 		var el = this.snap.path(pathStr);
 		el.attr({ fill : fillColor == 0?"#000":"#" + StringTools.hex(fillColor), stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
+	}
+	,clear: function() {
+		var svgElement = new js.JQuery(this.svgId);
+		svgElement.empty();
 	}
 	,__class__: nx3.render.TargetSvg
 };
@@ -6735,6 +6888,8 @@ nx3.render.TargetSvgXml.prototype = {
 	}
 	,parallellogram: function(x,y,width,y2,pheight,lineWidth,lineColor,fillColor) {
 	}
+	,clear: function() {
+	}
 	,__class__: nx3.render.TargetSvgXml
 };
 nx3.render.scaling = {};
@@ -6775,6 +6930,10 @@ nx3.test.TestItems.vbarFlags = function() {
 	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote8(0),new nx3.QNote4(-1),new nx3.QNote8(0),new nx3.QNote8(0),new nx3.QNote8(1)]),new nx3.NVoice([new nx3.QNote8(2),new nx3.QNote8(3),new nx3.QNote8(4),new nx3.QNote4(3),new nx3.QNote8(2)])])]));
 	return vbar;
 };
+nx3.test.TestItems.vbarSignBug = function() {
+	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(0)]),new nx3.NVoice([new nx3.QNote4(2,null,"#")])])]));
+	return vbar;
+};
 nx3.test.TestItems.nvoicePause1 = function() {
 	return new nx3.NVoice([new nx3.QNote4(0),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4)]);
 };
@@ -6791,7 +6950,7 @@ nx3.test.TestItems.vvoiceLyrics1 = function() {
 	return new nx3.VVoice(nx3.test.TestItems.nvoiceLyrics1());
 };
 nx3.test.TestItems.vbarQSyntax1 = function() {
-	var str = "\tf#8 + c  g16 a e f# % = e2";
+	var str = " b % c# ";
 	var parser = new nx3.qs.QuickSyntaxParser(str);
 	var qsnotes = parser.parseToQSyntaxNotes();
 	var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
@@ -6837,7 +6996,6 @@ nx3.test.TestN.prototype = $extend(haxe.unit.TestCase.prototype,{
 	,testVoiceXml: function() {
 		var nvoice = new nx3.NVoice([new nx3.QNote4(1),new nx3.NNote(nx3.ENoteType.Pause(1),null,nx3.ENoteVal.Nv4)]);
 		var xmlStr = nx3.xml.VoiceXML.toXml(nvoice).toString();
-		this.xmlStrExport("xml/voiceIncludingPause.xml",xmlStr);
 		var nvoice2 = nx3.xml.VoiceXML.fromXmlStr(xmlStr);
 		var xmlStr2 = nx3.xml.VoiceXML.toXml(nvoice2).toString();
 		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 93, className : "nx3.test.TestN", methodName : "testVoiceXml"});
@@ -6976,7 +7134,7 @@ nx3.test.TestQuickSyntax.prototype = $extend(haxe.unit.TestCase.prototype,{
 nx3.test.TestRenderer = function() { };
 nx3.test.TestRenderer.__name__ = ["nx3","test","TestRenderer"];
 nx3.test.TestRenderer.testRenderer = function(r) {
-	r.renderBar(nx3.test.TestItems.vbarQSyntax1(),10,100);
+	r.renderBar(nx3.test.TestItems.vbarSignBug(),10,100);
 	r.renderBar(nx3.test.TestItems.vbarFlags(),180,100);
 	r.renderBar(nx3.test.TestItems.vbarSigns(),10,260);
 	r.renderBar(nx3.test.TestItems.vbarTpl(),10,520);
@@ -6993,7 +7151,6 @@ nx3.test.TestTargetSvgXml.prototype = $extend(haxe.unit.TestCase.prototype,{
 		var svg = new nx3.render.TargetSvgXml("test");
 		svg.line(10,10,20,20);
 		var xmlStr = svg.getXml().toString();
-		haxe.Log.trace(xmlStr,{ fileName : "TestTargetSvgXml.hx", lineNumber : 17, className : "nx3.test.TestTargetSvgXml", methodName : "testNew"});
 	}
 	,__class__: nx3.test.TestTargetSvgXml
 });
@@ -8585,11 +8742,11 @@ nx3.test.TestV.prototype = $extend(haxe.unit.TestCase.prototype,{
 		if(b == null) {
 			if(bwidth == -1 || bheight == -1) throw "Rect comparison error";
 			result = Math.abs(a.x - bx) <= 0.00001 && Math.abs(a.y - by) <= 0.00001 && Math.abs(a.width - bwidth) <= 0.00001 && Math.abs(a.height - bheight) <= 0.00001;
-			if(!result) haxe.Log.trace(["Rectangle not equal",Std.string(a)],{ fileName : "TestV.hx", lineNumber : 2127, className : "nx3.test.TestV", methodName : "rectEquals"});
+			if(!result) haxe.Log.trace(["Rectangle not equal",Std.string(a)],{ fileName : "TestV.hx", lineNumber : 2122, className : "nx3.test.TestV", methodName : "rectEquals"});
 			return result;
 		}
 		result = Math.abs(a.x - b.x) <= 0.00001 && Math.abs(a.y - b.y) <= 0.00001 && Math.abs(a.width - b.width) <= 0.00001 && Math.abs(a.height - b.height) <= 0.00001;
-		if(!result) haxe.Log.trace(["Rectangle not equal",Std.string(a)],{ fileName : "TestV.hx", lineNumber : 2131, className : "nx3.test.TestV", methodName : "rectEquals"});
+		if(!result) haxe.Log.trace(["Rectangle not equal",Std.string(a)],{ fileName : "TestV.hx", lineNumber : 2126, className : "nx3.test.TestV", methodName : "rectEquals"});
 		return result;
 	}
 	,arrEquals: function(a,b) {
@@ -8605,12 +8762,15 @@ nx3.test.Unittests = function() { };
 nx3.test.Unittests.__name__ = ["nx3","test","Unittests"];
 nx3.test.Unittests.performTests = function() {
 	var runner = new haxe.unit.TestRunner();
+	var start_time = new Date();
 	runner.add(new nx3.test.TestQ());
 	runner.add(new nx3.test.TestN());
 	runner.add(new nx3.test.TestV());
 	runner.add(new nx3.test.TestQuickSyntax());
 	runner.add(new nx3.test.TestTargetSvgXml());
+	var end_time = new Date();
 	var success = runner.run();
+	haxe.unit.TestRunner.print("Testing time: " + Std["int"](end_time.getTime() - start_time.getTime()) + "ms");
 };
 nx3.xml = {};
 nx3.xml.BarXML = function() { };
@@ -9012,6 +9172,8 @@ Math.isNaN = function(i1) {
 String.prototype.__class__ = String;
 String.__name__ = ["String"];
 Array.__name__ = ["Array"];
+Date.prototype.__class__ = Date;
+Date.__name__ = ["Date"];
 var Int = { __name__ : ["Int"]};
 var Dynamic = { __name__ : ["Dynamic"]};
 var Float = Number;
@@ -9038,6 +9200,8 @@ Xml.Comment = "comment";
 Xml.DocType = "doctype";
 Xml.ProcessingInstruction = "processingInstruction";
 Xml.Document = "document";
+var q = window.jQuery;
+js.JQuery = q;
 haxe.ds.ObjectMap.count = 0;
 haxe.xml.Parser.escapes = (function($this) {
 	var $r;

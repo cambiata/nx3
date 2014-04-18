@@ -86,7 +86,7 @@ class TestN extends   TestCase
 		]);
 		
 		var xmlStr = VoiceXML.toXml(nvoice).toString();
-		xmlStrExport('xml/voiceIncludingPause.xml', xmlStr);
+		//xmlStrExport('xml/voiceIncludingPause.xml', xmlStr);
 		
 		var nvoice2 = VoiceXML.fromXmlStr(xmlStr);
 		var xmlStr2 = VoiceXML.toXml(nvoice2).toString();
@@ -120,7 +120,7 @@ class TestN extends   TestCase
 		#end	
 	}
 
-
+/*
 #if neko
 	public function testBarXmlExport()
 	{
@@ -135,7 +135,7 @@ class TestN extends   TestCase
 		FileTools.putContent('xml/testBarSigns.xml', xmlStr);
 	}
 #end	
-	
+*/	
 	
 		
 }

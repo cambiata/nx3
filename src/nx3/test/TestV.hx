@@ -2107,36 +2107,6 @@ class TestV extends  haxe.unit.TestCase
 		this.assertEquals(bars.length, 2);		
 	}
 	
-	public function testSignBug()
-	{
-		var vbar = new VBar(new NBar([
-			new NPart([	
-				new NVoice([				
-					new QNote4(0),					
-					]),
-				new NVoice([				
-					new QNote4(2, '#'),									
-					]),
-			]),			
-		]));			
-		var vpart = vbar.getVParts().first();
-		var vcomplex = vpart.getVComplexes().first();
-		var directions = vpart.getVComplexDirections().get(vcomplex);
-		trace(directions);
-		var headrects = vcomplex.getNotesHeadsRects(directions);
-		trace(headrects);
-		var signsrects = vcomplex.getSignsRects(headrects);
-		trace(signsrects);
-		
-		
-		
-	}
-	
-	
-
-	
-	
-	
 	static private function barConfToArr(conf:VBarConfig):Array<Bool>
 	{
 		return [conf.showClef, conf.showKey, conf.showTime];
