@@ -1,5 +1,6 @@
 package nx3.qs;
 import cx.ArrayTools;
+import nx3.ENoteType;
 import nx3.ENoteVal;
 import nx3.ESign;
 import nx3.NHead;
@@ -21,6 +22,8 @@ class NoteParser extends BaseParser
 	
 	var clefAdjust:Int;
 	var octAdjust: Int;
+	var pause:Bool;
+	var pauselevel:Int;
 	
 	
 	public function new(parser:QuickSyntaxParser)
@@ -37,6 +40,9 @@ class NoteParser extends BaseParser
 		
 		this.clefAdjust = 0;
 		this.octAdjust = 0;
+		
+		this.pause = false;
+		this.pauselevel = 0;
 	}
 	
 	override public function createFunctions()
@@ -76,6 +82,8 @@ class NoteParser extends BaseParser
 		this.functions.set('bN', function (token:String) {	this.notelevels.push(0);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
 		this.functions.set('b', function (token:String) {	this.notelevels.push(0);	this.notesigns.push(ESign.None);	return token.substr(1);});			
 		
+		this.functions.set('1.', function (token:String) {	this.notevalue = ENoteVal.Nv1dot;	return token.substr(2);});		
+		this.functions.set('1', function (token:String) {	this.notevalue = ENoteVal.Nv1;	return token.substr(1);});		
 		this.functions.set('2.', function (token:String) {	this.notevalue = ENoteVal.Nv2dot;	return token.substr(2);});		
 		this.functions.set('2', function (token:String) {	this.notevalue = ENoteVal.Nv2;	return token.substr(1);});		
 		this.functions.set('4.', function (token:String) {	this.notevalue = ENoteVal.Nv4dot;	return token.substr(2);});		
@@ -87,9 +95,14 @@ class NoteParser extends BaseParser
 		
 		this.functions.set('=', function (token:String) {	this.octAdjust = 0;	return token.substr(1);});		
 		this.functions.set('+', function (token:String) {	this.octAdjust = -7;	return token.substr(1);});		
-		this.functions.set('++', function (token:String) {	this.octAdjust = -14;	return token.substr(1);});		
+		this.functions.set('++', function (token:String) {	this.octAdjust = -14;	return token.substr(2);});		
 		this.functions.set('-', function (token:String) {	this.octAdjust = 7;	return token.substr(1);});		
-		this.functions.set('--', function (token:String) {	this.octAdjust = 14;	return token.substr(1);});		
+		this.functions.set('--', function (token:String) {	this.octAdjust = 14;	return token.substr(2); } );		
+		
+		this.functions.set('p', function (token:String) {	this.pause = true;	 this.pauselevel = 0;  return token.substr(1); } );		
+		this.functions.set('p+', function (token:String) {	this.pause = true;	this.pauselevel = -1; return token.substr(2); } );		
+		this.functions.set('p-', function (token:String) {	this.pause = true;	this.pauselevel = 1; return token.substr(2); } );		
+		
 	}	
 
 	override private function tokenFinished(originaltoken:String) 
@@ -101,14 +114,26 @@ class NoteParser extends BaseParser
 		if (this.notevalue == null) this.notevalue = this.prevvalue;
 
 		var val = this.notevalue;
-		var nheads:Array<NHead> = [];
-		for (i in 0...this.notelevels.length)
+		var nnote:NNote = null;
+		
+		if (this.pause) 
 		{
-			var level = this.notelevels[i] + this.octAdjust + this.clefAdjust;
-			var sign = this.notesigns[i];
-			nheads.push(new NHead(level, sign));
+			nnote = new NNote(ENoteType.Pause(this.pauselevel), val);
+			this.pause = false;
 		}
-		var nnote = new NNote(nheads, val);
+		else
+		{
+			
+			var nheads:Array<NHead> = [];
+			for (i in 0...this.notelevels.length)
+			{
+				var level = this.notelevels[i] + this.octAdjust + this.clefAdjust;
+				var sign = this.notesigns[i];
+				nheads.push(new NHead(level, sign));
+			}
+			nnote = new NNote(nheads, val);
+		}
+		
 		this.builder.addNote(nnote);
 		this.prevlevels = this.notelevels.copy();
 		this.prevsigns = this.notesigns.copy();
@@ -121,7 +146,15 @@ class NoteParser extends BaseParser
 	
 	override public function recieveEvent(event:ParserEvents) 
 	{
-		trace('RECIEVED EVENT by NoteParser ' + event);
+		//trace('RECIEVED EVENT by NoteParser ' + event);
+		switch event
+		{
+			case ParserEvents.SetOctave(octave):
+				this.octAdjust = octave;
+			case ParserEvents.SetNoteVal(val):
+				this.notevalue = val;
+			default: 
+		}
 	}
 	
 	

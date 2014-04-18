@@ -33,6 +33,12 @@ class BaseParser
 					return functions.get(key);
 				}
 			}
+			
+			for (key in keys)
+			{
+				if (key == '__ALL__') return functions.get(key);
+			}				
+			
 			return null;
 	}	
 

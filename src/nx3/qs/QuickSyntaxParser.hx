@@ -4,7 +4,7 @@ import nx3.ENoteVal;
 import nx3.ESign;
 import nx3.qs.BarParser;
 import nx3.qs.QuickSyntaxParser;
-import nx3.qs.QuickSyntaxParser.ContentMode;
+import nx3.qs.ContentMode;
 import nx3.qs.ModeParser;
 import nx3.NHead;
 import nx3.NNote;
@@ -34,6 +34,8 @@ class QuickSyntaxParser
 	var modeparser:ModeParser;
 	var barparser:BarParser;
 	var noteparser:NoteParser;
+	var lyricsparser:LyricsParser;
+	var mode:ContentMode;
 	
 	
 	public function new(str:String) 
@@ -48,7 +50,9 @@ class QuickSyntaxParser
 		this.modeparser = new ModeParser(this);
 		this.barparser = new BarParser(this);
 		this.noteparser = new NoteParser(this);
+		this.lyricsparser = new LyricsParser(this);
 		
+		this.mode = ContentMode.Notes;
 		//this.modeparser.sendEvent(ParserEvents.SetOctave(123));
 		
 	}
@@ -64,8 +68,17 @@ class QuickSyntaxParser
 			if (testtoken == '') continue;
 			testtoken = this.barparser.parse(token, this);
 			if (testtoken == '') continue;			
-			testtoken = this.noteparser.parse(token, this);
-			if (testtoken == '') continue;
+			switch this.mode
+			{
+				case ContentMode.Notes:
+					testtoken = this.noteparser.parse(token, this);
+					if (testtoken == '') continue;
+				case ContentMode.Lyrics:
+					trace('LYYYRICS');
+					testtoken = this.lyricsparser.parse(token, this);
+				default:
+			}
+			
 		}
 		return this.qsnotes;
 	}
@@ -94,6 +107,13 @@ class QuickSyntaxParser
 		 this.modeparser.recieveEvent(event);
 		 this.barparser.recieveEvent(event);
 		 this.noteparser.recieveEvent(event);
+		 
+		 switch event
+		 {
+			 case ParserEvents.SetMode(mode):
+				 this.mode = mode;
+			default:
+		 }
 	 }
 }
 
@@ -101,12 +121,6 @@ class QuickSyntaxParser
 
 //typedef BPVIndex = { barIndex:Int, partIndex:Int, voiceIndex:Int };
 
-enum ContentMode 
-{
-	Notes(octave:Int);
-	Tpls;
-	Lyrics;
-}
 
 
 

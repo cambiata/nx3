@@ -14,7 +14,7 @@ class TestTargetSvgXml extends TestCase
 		var svg = new TargetSvgXml('test');
 		svg.line(10, 10, 20, 20);
 		var xmlStr = svg.getXml().toString();
-		trace(xmlStr);
+		//trace(xmlStr);
 	}
 	
 }

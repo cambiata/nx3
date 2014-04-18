@@ -20,6 +20,7 @@ import nx3.VBeamgroup;
 import nx3.VBeamgroups;
 import nx3.VComplex;
 import nx3.VNote;
+import nx3.VPart;
 
 using cx.ArrayTools;
 using nx3.ENoteValTools;
@@ -125,10 +126,10 @@ class Renderer
 				//trace(beamgroups);
 
 				var staverects = vcomplex.getStaveBasicRects(directions, beamgroups);
-				//this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
+				this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
 				
-				var signsrects = vcomplex.getSignsRects(headrects);
-				//this.target.rectangles(colx, party, signsrects , 1, 0xff0000);
+				//var signsrects = vcomplex.getSignsRects(headrects);
+				
 				this.signs(colx, party, vcomplex);
 				
 				var dotrects = vcomplex.getDotsRects(headrects, directions);				
@@ -150,12 +151,16 @@ class Renderer
 	
 	function signs(x:Float, y:Float, vcomplex:VComplex) 
 	{
-		var signs = vcomplex.getSigns();
-		var rects = vcomplex.getSignsRects();
+
+		var signs = vcomplex.getVisibleSigns();
+		var signrects = vcomplex.getSignsRects();
+		
+		this.target.rectangles(x, y, signrects , 1, 0xff0000);
+		
 		for (i in 0...signs.length)
 		{
 			var sign = signs[i];
-			var rect = rects[i];
+			var rect = signrects[i];
 			var xmlStr = switch(sign.sign)
 			{
 				case ESign.Flat: SvgElements.signFlat;

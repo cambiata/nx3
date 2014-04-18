@@ -182,6 +182,21 @@ class TestItems
 		return vbar;						
 	}		
 	
+	static public function vbarSignBug()
+	{
+		var vbar = new VBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),					
+					]),
+				new NVoice([				
+					new QNote4(2, '#'),									
+					]),
+			]),			
+		]));				
+		return vbar;						
+	}			
+	
 	
 	
 	static public function nvoicePause1()

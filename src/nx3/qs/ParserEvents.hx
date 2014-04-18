@@ -1,4 +1,5 @@
 package nx3.qs;
+import nx3.ENoteVal;
 
 /**
  * ...
@@ -7,5 +8,7 @@ package nx3.qs;
 enum ParserEvents
 {
 	SetOctave(octave:Int);
+	SetNoteVal(value:ENoteVal);
+	SetMode(mode:ContentMode);
 	
 }

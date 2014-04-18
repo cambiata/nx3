@@ -15,7 +15,6 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="..\..\_cx\src" />
     <class path="src" />
     <class path="..\src" />
   </classpaths>

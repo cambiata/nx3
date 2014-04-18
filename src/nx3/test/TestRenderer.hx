@@ -12,7 +12,7 @@ class TestRenderer
 	static public function testRenderer(r:Renderer) 
 	{
 			
-		r.renderBar(TestItems.vbarQSyntax1(), 10, 100);				
+		r.renderBar(TestItems.vbarSignBug(), 10, 100);				
 		r.renderBar(TestItems.vbarFlags(), 180, 100);				
 		r.renderBar(TestItems.vbarSigns(), 10, 260);	
 		r.renderBar(TestItems.vbarTpl(), 10, 520);

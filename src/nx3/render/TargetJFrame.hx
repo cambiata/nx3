@@ -100,4 +100,16 @@ class TargetJFrame extends JFrame implements ITarget
 		
 	}
 	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function clear():Void 
+	{
+		
+	}
+	
+	public function parallellogram(x:Float, y:Float, width:Float, y2:Float, pheight:Float, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int):Void 
+	{
+		
+	}
+	
 }

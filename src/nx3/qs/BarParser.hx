@@ -1,4 +1,5 @@
 package nx3.qs;
+import nx3.ENoteVal;
 import nx3.qs.ParserEvents;
 
 
@@ -60,6 +61,8 @@ class BarParser extends BaseParser
 		
 		this.functions.set('%', function (token:String) {
 			this.voiceIndex++;
+			sendEvent(ParserEvents.SetOctave(0));
+			sendEvent(ParserEvents.SetNoteVal(ENoteVal.Nv4));
 			return token.substr(1);
 		});		
 	}
@@ -77,6 +80,6 @@ class BarParser extends BaseParser
 	
 	override public function recieveEvent(event:ParserEvents) 
 	{
-		trace('RECIEVED EVENT by BarParser ' + event);
+		//trace('RECIEVED EVENT by BarParser ' + event);
 	}
 }
