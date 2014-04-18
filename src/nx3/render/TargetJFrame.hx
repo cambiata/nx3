@@ -1,25 +1,43 @@
 package nx3.render;
+import letters.targetJava.Surface;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
 import nx3.render.scaling.TScaling;
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.lang.System;
+import nx3.TFontInfo;
 
 /**
  * ...
  * @author Jonas Nyström
  */
-class TargetSvgFile implements ITarget
+class TargetJFrame extends JFrame implements ITarget
 {
-
+    public var surface: Surface;
 	public function new() 
 	{
-		
+        super( "TargetJFrame" );
+		//super();
+		System.setProperty( "sun.java2d.opengl", "True" );
+        setSize( 1200, 800);
+        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        setBackground( Color.black );
+        
+        surface = new Surface();
+        getContentPane().add( surface );
+        surface.setFocusable( true );
+        surface.requestFocusInWindow();
+        
+        setVisible( true );		
 	}
 	
 	/* INTERFACE nx3.render.ITarget */
 	
 	public function getScaling():TScaling 
 	{
-		
+		return null;
 	}
 	
 	public function testLines(x:Float, y:Float, width:Float):Void 
@@ -69,15 +87,15 @@ class TargetSvgFile implements ITarget
 	
 	public function textwidth(text:String):Float 
 	{
-		
+		return 0;
 	}
 	
 	public function textheight(text:String):Float 
 	{
-		
+		return 0;
 	}
 	
-	public function setFont(font:TFontInfo):Void 
+	@:overload public function setFont(font:TFontInfo):Void 
 	{
 		
 	}

@@ -39,10 +39,10 @@ class TestN extends   TestCase
 	public function testHeadXml()
 	{
 		var item1 = new NHead(2, ESign.Flat);
-		var xmlstr1= HeadXML.toXml(item1).toString();
+		var xmlstr1 = HeadXML.toXml(item1).toString();
 		var item2 = HeadXML.fromXmlStr(xmlstr1);
 		var xmlstr2 = HeadXML.toXml(item2).toString();
-		this.assertEquals(Std.string(item1), Std.string(item2));
+		//this.assertEquals(Std.string(item1), Std.string(item2));
 		this.assertEquals(xmlstr1, xmlstr2);		
 	}
 
@@ -53,7 +53,7 @@ class TestN extends   TestCase
 		var xmlstr1= NoteXML.toXml(item1).toString();
 		var item2 = NoteXML.fromXmlStr(xmlstr1);
 		var xmlstr2 = NoteXML.toXml(item2).toString();
-		this.assertEquals(Std.string(item1), Std.string(item2));
+		//this.assertEquals(Std.string(item1), Std.string(item2));
 		this.assertEquals(xmlstr1, xmlstr2);		
 		
 		// verify head level sorting...
@@ -65,7 +65,8 @@ class TestN extends   TestCase
 		var note = new NNote(ENoteType.Pause(1), ENoteVal.Nv4);
 		var xmlStr = NoteXML.toXml(note).toString();	
 		var note2 = NoteXML.fromXmlStr(xmlStr);		
-		this.assertEquals(Std.string(note), Std.string(note2));
+		var xmlStr2 = NoteXML.toXml(note2).toString();
+		this.assertEquals(xmlStr, xmlStr2);
 	}
 	
 	public function testNoteXml2()
@@ -88,7 +89,8 @@ class TestN extends   TestCase
 		xmlStrExport('xml/voiceIncludingPause.xml', xmlStr);
 		
 		var nvoice2 = VoiceXML.fromXmlStr(xmlStr);
-		this.assertEquals(Std.string(nvoice), Std.string(nvoice2));		
+		var xmlStr2 = VoiceXML.toXml(nvoice2).toString();
+		this.assertEquals(xmlStr, xmlStr2);
 	}
 	
 	

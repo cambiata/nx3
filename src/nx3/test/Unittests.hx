@@ -15,6 +15,7 @@ class Unittests
 		runner.add(new TestN());
 		runner.add(new TestV());
 		runner.add(new TestQuickSyntax());
+		runner.add(new TestTargetSvgXml());
 		var success = runner.run();		
 	}
 	

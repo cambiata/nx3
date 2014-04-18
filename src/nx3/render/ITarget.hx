@@ -13,6 +13,8 @@ import nx3.VNote;
 interface ITarget 
 {
 	public function getScaling():TScaling;
+
+	public function clear():Void;
 	
 	public function testLines(x:Float, y:Float, width:Float):Void;
 	
@@ -28,5 +30,8 @@ interface ITarget
 	public function textwidth(text:String): Float;
 	public function textheight(text:String):Float;
 	public function setFont(font:TFontInfo):Void;
+	
+	public function parallellogram(x:Float, y:Float, width:Float, y2:Float, pheight:Float,?lineWidth:Float, ?lineColor:Int, ?fillColor:Int):Void;
+	
 
 }

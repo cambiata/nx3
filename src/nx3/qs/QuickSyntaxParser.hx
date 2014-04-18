@@ -38,7 +38,9 @@ class QuickSyntaxParser
 	
 	public function new(str:String) 
 	{
-		this.str = str.trim().replace('  ', ' ').replace('  ', ' ').replace('  ', ' ');
+		str = QSyntaxTools.removeComments(str);
+		str = QSyntaxTools.removeSpaces(str);
+		this.str = str;
 		this.tokens = parseTokens(this.str);
 		
 		this.qsnotes = new QSyntaxNotes();

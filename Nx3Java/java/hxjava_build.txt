@@ -1,4 +1,4 @@
-F:\_nx3\Nx3Java
+F:\nx3\Nx3Java
 begin defines
 dce
 haxe3
@@ -109,6 +109,7 @@ C nx3.QHead
 C nx3.QHeadSharp
 C nx3.QHeadFlat
 C nx3.QHeadNatural
+M nx3.render.scaling.TScaling
 M nx3.VNoteHeadsRectsPausesCalculator
 C nx3.VNoteHeadsRectsPausesCalculator
 M java.sun.java2d.pipe.SpanIterator
@@ -285,8 +286,10 @@ M java.javax.swing.ActionPropertyChangeListener
 M java.util.Properties
 M nx3.VComplex
 C nx3.VComplex
-C nx3.VComplex_getRectanglesXIntersection_152__Fun
+C nx3.VComplex_getRectanglesXIntersection_162__Fun
 M java.lang.reflect.Member
+M nx3.render.ITarget
+C nx3.render.ITarget
 M nx3.ETies
 M java.lang.RuntimeException
 M java.awt.event.InputMethodEvent
@@ -342,6 +345,8 @@ C nx3.qs.ModeParser_createFunctions_34__Fun
 C nx3.qs.ModeParser_createFunctions_40__Fun
 M nx3.EPartType
 E nx3.EPartType
+M nx3.render.TargetJFrame
+C nx3.render.TargetJFrame
 M java.internal.StringExt
 C haxe.lang.StringExt
 C haxe.lang.StringRefl
@@ -422,7 +427,8 @@ M java.awt.geom.Line2D
 M java.awt.ScrollPane
 M haxe.root.Main
 C haxe.root.Main
-C haxe.root.Main_drawToScreen_40__Fun
+C haxe.root.Main_drawToScreen_47__Fun
+C haxe.root.ClefG
 M java.lang.System
 M java.nio.channels.AsynchronousFileChannel
 M java.awt.LayoutManager2
@@ -441,6 +447,7 @@ M java.io.ObjectStreamConstants
 M java.util.concurrent.Callable
 M nx3.VNoteHeadsRectsCalculator
 C nx3.VNoteHeadsRectsCalculator
+M java.util.regex.MatchResult
 M java.awt.MenuItem
 M java.javax.swing.plaf.ComponentUI
 M java.javax.accessibility.AccessibleIcon
@@ -715,6 +722,7 @@ E nx3.EKey
 M java.awt.Scrollbar
 M java.awt.peer.CheckboxMenuItemPeer
 M java.nio.channels.AsynchronousChannel
+M java.util.regex.Pattern
 M java.awt.peer.MenuItemPeer
 M java.awt.dnd.DragSourceDragEvent
 M haxe.ds.ObjectMap
@@ -852,6 +860,8 @@ E nx3.EDirectionUAD
 C nx3.EDirectionUADTools
 M java.awt.datatransfer.DataFlavor
 M java.javax.swing.event.PopupMenuListener
+M haxe.root.EReg
+C haxe.root.EReg
 M java.nio.CharBuffer
 M java.internal.FieldLookup
 C haxe.lang.FieldLookup
@@ -967,6 +977,7 @@ M java.awt.geom.PathIterator
 M nx3.VBarAttributes
 M nx3.VSigns
 M java.awt.MenuComponent
+M java.util.regex.Matcher
 M haxe.ds.IntMap
 C haxe.ds.IntMap
 C haxe.ds.IntMap_keys_332__Fun

@@ -276,7 +276,7 @@ class VComplex
 	
 	
 	
-	public function getStaveBasicRects(directions:EDirectionUDs/*, beamgroups:VBeamgroups=null*/):Rectangles
+	public function getStaveBasicRects(directions:EDirectionUDs, beamgroups:VBeamgroups=null):Rectangles
 	{
 		if (directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";		
 		var firstnote = this.getVNotes().first();		
@@ -289,7 +289,8 @@ class VComplex
 			if (vnote.nnote.value.stavinglevel() == 0) continue;
 			if (vnote.nnote.type.getName() != 'Note') continue;
 			
-			
+			var beamgroup:VBeamgroup = (beamgroups != null) ? beamgroups[i] : null;
+
 			var direction:EDirectionUD = directions[i];
 			var rect:Rectangle = null;
 			var headw:Float = switch vnote.nnote.value.head()
@@ -320,26 +321,29 @@ class VComplex
 			
 			//-----------------------------------------------------------------------------------------
 			// flag rect
-			if (vnote.nnote.value.beaminglevel() > 0 ) 
+			if (beamgroup != null && beamgroup.vnotes.length == 1)
 			{
-				var flagrect:Rectangle = null; 
-				if (direction == EDirectionUD.Up) 
-				{				
-					flagrect = new Rectangle(headw, vnote.nnote.getBottomLevel() - Constants.STAVE_BASIC_LENGTH, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
-				}
-				else
+				if (vnote.nnote.value.beaminglevel() > 0 ) 
 				{
-					flagrect = new Rectangle( -headw, vnote.nnote.getTopLevel() + Constants.STAVE_BASIC_LENGTH - Constants.FLAG_HEIGHT, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
-				}			
-				
-				if (offset != 0) flagrect.offset(offset, 0);					
-				
-				flags.push(flagrect);
-				//-----------------------------------------------------------------------------------------
-			}		
+					var flagrect:Rectangle = null; 
+					if (direction == EDirectionUD.Up) 
+					{				
+						flagrect = new Rectangle(headw, vnote.nnote.getBottomLevel() - Constants.STAVE_BASIC_LENGTH, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
+					}
+					else
+					{
+						flagrect = new Rectangle( -headw, vnote.nnote.getTopLevel() + Constants.STAVE_BASIC_LENGTH - Constants.FLAG_HEIGHT, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
+					}			
+					
+					if (offset != 0) flagrect.offset(offset, 0);					
+					
+					flags.push(flagrect);
+					//-----------------------------------------------------------------------------------------
+				}		
+			}
 		}
 		
-		result = result.concat(flags);
+		if (flags != []) result = result.concat(flags);
 		
 		return result;
 	}

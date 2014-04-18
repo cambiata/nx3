@@ -46,8 +46,8 @@
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
-    <option testMovie="Webserver" />
-    <option testMovieCommand="bin/index.html" />
+    <option testMovie="OpenDocument" />
+    <option testMovieCommand="bin/test.html" />
   </options>
   <!-- Plugin storage -->
   <storage />

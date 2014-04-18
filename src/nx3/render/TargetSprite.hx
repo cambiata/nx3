@@ -84,7 +84,7 @@ class TargetSprite  implements ITarget
 	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
 	{ 
 		this.sprite.graphics.lineStyle(lineWidth, lineColor);
-		this.sprite.graphics.drawRect(x+ rect.x*scaling.halfNoteWidth, y+rect.y*scaling.halfSpace, rect.width*scaling.halfNoteWidth, rect.height*scaling.halfSpace);
+		this.sprite.graphics.drawRect(x+ rect.x*scaling.unitX, y+rect.y*scaling.unitY, rect.width*scaling.unitX, rect.height*scaling.unitY);
 	}	
 
 	public function rectangles(x:Float, y:Float, rects:Rectangles, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
@@ -117,8 +117,8 @@ class TargetSprite  implements ITarget
 		var textfield = new TextField();
 		textfield.defaultTextFormat = this.textformat;
 		textfield.text = text;
-		textfield.x = x + Constants.FONT_TEXT_X_ADJUST_FLASH * this.scaling.halfNoteWidth;
-		textfield.y = y + Constants.FONT_TEXT_Y_ADJUST_FLASH * this.scaling.halfSpace;
+		textfield.x = x + Constants.FONT_TEXT_X_ADJUST_FLASH * this.scaling.unitX;
+		textfield.y = y + Constants.FONT_TEXT_Y_ADJUST_FLASH * this.scaling.unitY;
 		textfield.autoSize = TextFieldAutoSize.LEFT;
 		textfield.selectable = false;
 		this.sprite.addChild(textfield);
@@ -130,13 +130,13 @@ class TargetSprite  implements ITarget
 	public function textwidth(text:String):Float 
 	{
 		this.textfield.text = text;
-		var width = this.textfield.textWidth / this.scaling.halfNoteWidth;
+		var width = this.textfield.textWidth / this.scaling.unitX;
 		return width;
 	}
 	
 	public function textheight(text:String):Float 
 	{
-			return this.textformat.size / this.scaling.halfSpace;
+			return this.textformat.size / this.scaling.unitY;
 	}	
 	
 	public function setFont(font:TFontInfo):Void 
@@ -155,7 +155,7 @@ class TargetSprite  implements ITarget
 	{
 		this.sprite.graphics.beginFill(fillColor);
 		this.sprite.graphics.lineStyle(lineWidth*this.scaling.linesWidth, lineColor);
-		this.sprite.graphics.drawRect(x+ rect.x*scaling.halfNoteWidth, y+rect.y*scaling.halfSpace, rect.width*scaling.halfNoteWidth, rect.height*scaling.halfSpace);
+		this.sprite.graphics.drawRect(x+ rect.x*scaling.unitX, y+rect.y*scaling.unitY, rect.width*scaling.unitX, rect.height*scaling.unitY);
 		this.sprite.graphics.endFill();
 	}
 	
@@ -165,8 +165,30 @@ class TargetSprite  implements ITarget
 		//trace(rect.height * scaling.halfSpace);
 		this.sprite.graphics.beginFill(fillColor);
 		this.sprite.graphics.lineStyle(lineWidth*this.scaling.linesWidth, lineColor);
-		this.sprite.graphics.drawEllipse(x+ rect.x*scaling.halfNoteWidth, y+rect.y*scaling.halfSpace, rect.width*scaling.halfNoteWidth, rect.height*scaling.halfSpace);
+		this.sprite.graphics.drawEllipse(x+ rect.x*scaling.unitX, y+rect.y*scaling.unitY, rect.width*scaling.unitX, rect.height*scaling.unitY);
 		this.sprite.graphics.endFill();
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function parallellogram(x:Float, y:Float, x2:Float, y2:Float, pheight:Float,?lineWidth:Float=1, ?lineColor:Int=0x000000, ?fillColor:Int=0xFF0000):Void 
+	{
+		var g = this.sprite.graphics;
+		g.lineStyle(lineWidth * this.scaling.linesWidth, lineColor);
+		g.beginFill(fillColor);
+		g.moveTo(x, y);
+		g.lineTo(x2, y2);
+		g.lineTo(x2, y2 + pheight);
+		g.lineTo(x, y + pheight);
+		g.lineTo(x, y);
+		this.sprite.graphics.endFill();
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function clear():Void 
+	{
+		this.sprite.graphics.clear();
 	}
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -174,8 +196,8 @@ class TargetSprite  implements ITarget
 	function drawShape(shape:Shape, x:Float, y:Float, rect:Rectangle)
 	{
 		if (shape == null) return;
-		shape.x = x + rect.x * scaling.halfNoteWidth + scaling.svgX;
-		shape.y = y + rect.y * scaling.halfSpace + scaling.svgY;
+		shape.x = x + rect.x * scaling.unitX + scaling.svgX;
+		shape.y = y + rect.y * scaling.unitY + scaling.svgY;
 		this.sprite.addChild(shape);
 	}		
 	

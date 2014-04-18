@@ -29,6 +29,7 @@ class Main
 		TestRenderer.testRenderer(new Renderer(target, 10, 80));
 
 		var target = new TargetSvg('#big', Scaling.BIG);
+		
 		TestRenderer.testRenderer(new Renderer(target, 10, 80));	
 	}	
 }

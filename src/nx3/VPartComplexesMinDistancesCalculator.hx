@@ -6,8 +6,11 @@ package nx3;
  */
  import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
-using cx.MathTools;
 using nx3.geom.Rectangles.RectanglesTools;
+
+using cx.MathTools;
+using cx.ArrayTools;
+using nx3.ENoteValTools;
 
 class VPartComplexesMinDistancesCalculator 
 {
@@ -22,8 +25,26 @@ class VPartComplexesMinDistancesCalculator
 	{	
 		var left = getComplexRightside(leftComplex);
 		var right = getComplexLeftside(rightComplex);
-		
+		//trace( [left, right]);
 		//trace(right);		
+		
+		// Include flags if leftComplex is lastComplex
+		// Hacky!
+		if (rightComplex == null && leftComplex != null) 
+		{
+			var vnotes = leftComplex.getVNotes();
+			var hasflag = false;
+			for (vnote in vnotes)
+			{
+				if (vnote.nnote.type.getName() == 'Note' && vnote.nnote.value.beaminglevel() > 0) hasflag = true;
+			}
+			if (hasflag) 
+			{
+				right = getComplexRightside(leftComplex);
+			}
+		}
+		
+		
 		var minDistance:Float  = (left.minrect.width + left.minrect.x) + -right.minrect.x;
 		//trace(minDistance);
 		
@@ -49,7 +70,20 @@ class VPartComplexesMinDistancesCalculator
 		var rects:Rectangles = 	noterects;
 		
 		
-		rects = rects.concat(complex.getStaveBasicRects(directions));
+		var beamgroups:VBeamgroups = [];
+		var firstnote = complex.getVNotes().first();
+		var firstbeamgroup = vpart.getVVoices().first().getNotesBeamgroups().get(firstnote);
+		beamgroups.push(firstbeamgroup);
+		
+		if (complex.getVNotes().length == 2)
+		{
+			var secondnote = complex.getVNotes().second();
+			var secondbeamgroup = vpart.getVVoices().second().getNotesBeamgroups().get(secondnote);
+			beamgroups.push(secondbeamgroup);
+		}
+		
+		rects = rects.concat(complex.getStaveBasicRects(directions, beamgroups));
+		
 		// dots are the rightest...
 		var dotrects:Rectangles = complex.getDotsRects(noterects, directions);			
 		if (dotrects != null && dotrects != []) rects = rects.concat(dotrects);
@@ -70,7 +104,20 @@ class VPartComplexesMinDistancesCalculator
 		
 		var vnotes = complex.getVNotes();
 				
-		rects = rects.concat(complex.getStaveBasicRects(directions));
+		var beamgroups:VBeamgroups = [];
+		var firstnote = complex.getVNotes().first();
+		var firstbeamgroup = vpart.getVVoices().first().getNotesBeamgroups().get(firstnote);
+		beamgroups.push(firstbeamgroup);
+		
+		if (complex.getVNotes().length == 2)
+		{
+			var secondnote = complex.getVNotes().second();
+			var secondbeamgroup = vpart.getVVoices().second().getNotesBeamgroups().get(secondnote);
+			beamgroups.push(secondbeamgroup);
+		}
+		
+		rects = rects.concat(complex.getStaveBasicRects(directions, beamgroups));
+		
 		// signs are the leftest...
 		var signsrects:Rectangles =  complex.getSignsRects(noterects);		
 		if (signsrects != null && signsrects != []) rects = rects.concat(signsrects);

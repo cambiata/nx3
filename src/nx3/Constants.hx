@@ -40,4 +40,5 @@ class Constants
 	static public inline var FONT_TEXT_Y_ADJUST_SVG:Float = 9.6;
 	static public inline var FONT_TEXT_Y_ADJUST_FLASH:Float = -1.2;
 	static public inline var FONT_TEXT_X_ADJUST_FLASH:Float = -.3;
+	static public inline var BEAM_HEIGHT:Float = 1;
 } 

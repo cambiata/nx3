@@ -30,5 +30,19 @@ class QSyntaxTools
 		return '${barIndex}-${partIndex}-${voiceIndex}';
 	}
 	
+	static public function removeComments(code:String): String
+	{
+		var r = ~/\/\*([a-zA-Z0-9-+=" ]*)\*\//g;
+		code = r.replace(code, ' ');
+		return code;				
+	}
+	
+	static public function removeSpaces(code):String
+	{
+		var r =  ~/[ \t]{2,}/g;
+		code = r.replace(code, ' ');
+		return code;
+	}
+	
 	
 }

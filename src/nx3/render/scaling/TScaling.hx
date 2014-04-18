@@ -8,9 +8,9 @@ package nx3.render.scaling;
 typedef TScaling = {
 	linesWidth:			Float,
 	space:				Float,
-	halfSpace:			Float,
+	unitY:			Float,
 	noteWidth:			Float,
-	halfNoteWidth:		Float,
+	unitX:		Float,
 	quarterNoteWidth: 	Float,
 	signPosWidth:		Float,
 	svgScale:			Float,

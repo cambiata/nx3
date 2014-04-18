@@ -7,8 +7,6 @@ import nme.display.Shape;
 import flash.display.Shape;
 #end
 
-
-
 import format.SVG;
 import format.svg.SVG2Gfx;
 import haxe.macro.Format;
@@ -37,7 +35,6 @@ class ShapeTools
 		{
 			var str = Reflect.field(SvgElements, element);
 			return str;
-			
 		}
 		catch (err:Dynamic)
 		{

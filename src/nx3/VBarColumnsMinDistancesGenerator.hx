@@ -67,8 +67,6 @@ using cx.ArrayTools;
 				}
 				else if (complex != null && nextcomplex == null)
 				{
-					//trace('- complex but NO nextcomplex');
-					//trace('- store complex in bucket');					
 					var dist = new VPartComplexesMinDistancesCalculator(vpart).getDistance(complex, nextcomplex);
 					maxdist = Math.max(maxdist, dist);					
 					prevComplexBucket.set(ip, complex);

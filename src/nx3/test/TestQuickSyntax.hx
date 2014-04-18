@@ -2,6 +2,7 @@ package nx3.test;
 import haxe.unit.TestCase;
 import nx3.ESign;
 import nx3.NBars;
+import nx3.qs.QSyntaxTools;
 import nx3.qs.QuickSyntaxParser;
 import nx3.qs.QuickSyntaxBuilder;
 
@@ -87,6 +88,17 @@ class TestQuickSyntax extends TestCase
 		this.assertEquals(nnote0.nheads.first().level, 6);
 		this.assertEquals(nnote1.nheads.first().level, -2);
 		
+		
+	}
+	
+	public function testQSComment()
+	{
+			var code = ' Hej hopp /* i lingonskogen */ i stugan där vi ska /* ha sju */ dricka kaffe.';
+			var code2 = QSyntaxTools.removeComments(code);
+			
+			var code = ' a  b c  d   e   f      g    ';
+			var code2 = QSyntaxTools.removeSpaces(code);
+		this.assertTrue(true);
 		
 	}
 	

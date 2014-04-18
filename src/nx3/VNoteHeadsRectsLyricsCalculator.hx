@@ -6,7 +6,7 @@ import nx3.geom.Rectangles;
  * ...
  * @author Jonas Nyström
  */
-		#if  (openfl || nme)
+		#if  (flash || openfl || nme)
 			import nx3.render.TargetSprite;
 		#elseif js
 			import nx3.render.TargetSvg;
@@ -33,7 +33,7 @@ class VNoteHeadsRectsLyricsCalculator
 	
 	public function getHeadsRects(): Rectangles
 	{		
-		#if  (openfl || nme)
+		#if  (flash || openfl || nme)
 			var target = new TargetSprite();
 			if (this.font != null) target.setFont(font);
 			var width = target.textwidth(this.text);

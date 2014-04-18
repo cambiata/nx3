@@ -17,6 +17,7 @@ import nx3.TPoint;
 import nx3.TPoints;
 import nx3.VBar;
 import nx3.VBeamgroup;
+import nx3.VBeamgroups;
 import nx3.VComplex;
 import nx3.VNote;
 
@@ -41,7 +42,7 @@ class Renderer
 		this.targetX = targetX;
 		this.targetY = targetY;
 		this.scaling = this.target.getScaling();
-		this.partDistance = Std.int(16 * scaling.halfSpace);
+		this.partDistance = Std.int(16 * scaling.unitY);
 	}
 	
 	public function renderBar(vbar:VBar, newX:Float=-1, newY:Float=-1)
@@ -73,10 +74,10 @@ class Renderer
 		var party = this.targetY;
 		for (vpart in vbar.getVParts())
 		{		
-			this.notlines(vbar, barMinWidth*this.scaling.halfNoteWidth);
+			this.notlines(vbar, barMinWidth*this.scaling.unitX);
 			party += this.partDistance;
 		}
-		this.target.rect(this.targetX, this.targetY, new Rectangle(0, -10*this.scaling.halfSpace, barMinWidth * scaling.halfNoteWidth, (party-this.targetY) /*+ 10*this.scaling.halfSpace*/), .3);
+		//this.target.rect(this.targetX, this.targetY, new Rectangle(0, -10*this.scaling.unitY, barMinWidth * scaling.unitX, (party-this.targetY) /*+ 10*this.scaling.halfSpace*/), .3);
 		
 	}
 	
@@ -98,13 +99,17 @@ class Renderer
 			{
 				var vcolumn = vbar.getVComplexesVColumns().get(vcomplex);				
 				var pos = columnsMinPositions.get(vcolumn);				
-				var colx = this.targetX + pos * scaling.halfNoteWidth;
+				var colx = this.targetX + pos * scaling.unitX;
+				
+				var beamgroups:VBeamgroups = [];
 				
 				for (vnote in vcomplex.getVNotes())
 				{
 					var vvoice = vpart.getVNotesVVoices().get(vnote);
 					var noteComplexIdx = vcomplex.getVNotes().index(vnote);
 					var beamgroup = vvoice.getNotesBeamgroups().get(vnote);
+					beamgroups.push(beamgroup);
+					
 					var direction = beamgroupsDirections.get(beamgroup);
 					//var headsXOffset = vcomplex.getHeadsCollisionOffsetX(vnote) * scaling.halfNoteWidth;
 					this.heads(colx, party, vnote, direction);
@@ -117,10 +122,10 @@ class Renderer
 				//this.target.rectangles(colx, party, noterects , 1, 0x0000ff);				
 				var headrects = vcomplex.getNotesHeadsRects(directions);
 				//this.target.rectangles(colx, party, headrects , 1, 0xff0000);
-				
-				var staverects = vcomplex.getStaveBasicRects(directions);
-				this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
-				
+				//trace(beamgroups);
+
+				var staverects = vcomplex.getStaveBasicRects(directions, beamgroups);
+				//this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
 				
 				var signsrects = vcomplex.getSignsRects(headrects);
 				//this.target.rectangles(colx, party, signsrects , 1, 0xff0000);
@@ -159,7 +164,7 @@ class Renderer
 			default:
 				null;
 			}
-			if (xmlStr != null) this.target.shape(x + (rect.x) * this.scaling.halfNoteWidth, y + (rect.y+2) * this.scaling.halfSpace, xmlStr);
+			if (xmlStr != null) this.target.shape(x + (rect.x) * this.scaling.unitX, y + (rect.y+2) * this.scaling.unitY, xmlStr);
 			
 		}
 	}
@@ -188,13 +193,13 @@ class Renderer
 						var vnoteIdx = beamgroup.vnotes.index(vnote);
 						var vcolumn = vbar.getVNotesVColumns().get(vnote);
 						var pos = columnsMinPositions.get(vcolumn);				
-						var colx = this.targetX + pos * scaling.halfNoteWidth;												
+						var colx = this.targetX + pos * scaling.unitX;												
 						var vvoice = vpart.getVVoices()[vvoiceIdx];
 						var vcomplex = vnotesVComplexes.get(vnote);
 						var noteComplexIdx = vcomplex.getVNotes().indexOf(vnote);
 						var stavesPos = vcomplex.getStavesBasicX(vpart.getVComplexDirections().get(vcomplex));
 						var stavePos = stavesPos[noteComplexIdx];
-						var stavePosX = stavePos.x * scaling.halfNoteWidth;
+						var stavePosX = stavePos.x * scaling.unitX;
 						
 						var point:TPoint = null;
 						
@@ -218,18 +223,18 @@ class Renderer
 			case ENoteType.Lyric(text, o, c, font):
 				var rect = vnote.getVHeadsRectanglesDir(direction).first(); 
 				//this.target.rectangle(x, y, rect);
-				this.target.text(x + rect.x * this.scaling.halfNoteWidth, y + rect.y * scaling.halfSpace, text);
+				this.target.text(x + rect.x * this.scaling.unitX, y + rect.y * scaling.unitY, text);
 				
 			case ENoteType.Tpl(level):
 				var rect = vnote.getVHeadsRectanglesDir(direction).first().clone(); 
 				rect.inflate( -0.8, -0.8);
-				this.target.filledellipse(x, y, rect, 6, 0xff0000, 0xffffff);
+				this.target.filledellipse(x, y, rect, 5, 0xaaaaaa, 0xffffff);
 				
 			default:
 				var svginfo = RendererTools.getHeadSvgInfo(vnote.nnote);		
 				for (rect in vnote.getVHeadsRectanglesDir(direction))
 				{
-					this.target.shape(x+rect.x *scaling.halfNoteWidth, y + (rect.y + svginfo.y) * scaling.halfSpace, svginfo.xmlStr);
+					this.target.shape(x+rect.x *scaling.unitX, y + (rect.y + svginfo.y) * scaling.unitY, svginfo.xmlStr);
 				}				
 		}
 		
@@ -243,27 +248,54 @@ class Renderer
 		var frame = beamgroup.getFrame();
 		if (frame == null) return;
 
+		
+		
 		var leftPoint = points.first();		
-		var leftOuterY =  frame.leftOuterY * scaling.halfSpace;
-		var leftInnerY =  frame.leftInnerY * scaling.halfSpace;
-		var leftTipY =  frame.leftTipY * scaling.halfSpace;
+		var leftOuterY =  frame.leftOuterY * scaling.unitY;
+		var leftInnerY =  frame.leftInnerY * scaling.unitY;
+		var leftTipY =  frame.leftTipY * scaling.unitY;
 		var leftX = leftPoint.x;
 		// left stave
 		//this.target.line(leftPoint.x, leftPoint.y + leftInnerY, leftPoint.x, leftPoint.y + leftTipY, 1, 0x000000);
 		this.target.line(leftX, leftPoint.y + leftInnerY, leftX, leftPoint.y + leftTipY, 1, 0x000000);
 		
+		//--------------------------------------------------------------
+		// Flags
+		if (beamgroup.vnotes.length == 1)
+		{
+			var firstnote:VNote = beamgroup.vnotes[0];
+			if (firstnote.nnote.value.beaminglevel() > 0)
+			{
+				if (beamgroup.getCalculatedDirection() == EDirectionUD.Up)
+				{
+					var adjustX = 0.6 * scaling.unitX;
+					var adjustY = 1 * scaling.unitY;
+					this.target.shape(leftX - adjustX , leftPoint.y + adjustY +leftTipY, SvgElements.flagUp8, 0x000000);
+				}
+				else
+				{
+					var adjustX = 0.6 * scaling.unitX;
+					var adjustY = -3 * scaling.unitY;
+					this.target.shape(leftX - adjustX , leftPoint.y + adjustY +leftTipY, SvgElements.flagDown8, 0x000000);
+				}
+			}
+		}
+		//------------------------------------------------------------------------------------------
+		
 		if (beamgroup.vnotes.length < 2) return;
 
 		var rightPoint = points.last();
-		var rightOuterY  =  frame.rightOuterY * scaling.halfSpace;
-		var rightInnerY  =  frame.rightInnerY * scaling.halfSpace;
-		var rightTipY  =  frame.rightTipY * scaling.halfSpace;
+		var rightOuterY  =  frame.rightOuterY * scaling.unitY;
+		var rightInnerY  =  frame.rightInnerY * scaling.unitY;
+		var rightTipY  =  frame.rightTipY * scaling.unitY;
 
 		// right stave
 		this.target.line(rightPoint.x, rightPoint.y + rightInnerY, rightPoint.x, rightPoint.y + rightTipY, 1, 0x000000);
 
 		// beam
-		this.target.line(leftPoint.x, leftPoint.y + leftTipY, rightPoint.x, rightPoint.y + rightTipY, 5, 0x000000);
+		//this.target.line(leftPoint.x, leftPoint.y + leftTipY, rightPoint.x, rightPoint.y + rightTipY, 5, 0x000000);
+		var beamh:Float = Constants.BEAM_HEIGHT * this.scaling.unitY;
+		this.target.parallellogram(leftPoint.x, leftPoint.y + leftTipY - (beamh/2), rightPoint.x, rightPoint.y + rightTipY - (beamh/2), beamh, 0, 0, 0);
 		
 		if (beamgroup.vnotes.length < 3) return;
 		
@@ -271,10 +303,13 @@ class Renderer
 		for (i in 1...frame.outerLevels.length - 1)
 		{
 			var midPoint = points[i];
-			var midInnerY = frame.innerLevels[i] * scaling.halfSpace;
+			var midInnerY = frame.innerLevels[i] * scaling.unitY;
 			var delta:Float = (midPoint.x - leftPoint.x) / (rightPoint.x - leftPoint.x);
 			var midTipY = leftTipY + (rightTipY - leftTipY) * delta;
 			this.target.line(midPoint.x, midPoint.y + midInnerY, midPoint.x, midPoint.y + midTipY, 1, 0x000000);
+			
+			
+			
 		}		
 		
 	}	

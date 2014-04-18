@@ -17,9 +17,9 @@ class Scaling
 		linesWidth:			1.25,
 	#end			
 		space:					12.0,
-		halfSpace: 			6.0,
+		unitY: 			6.0,
 		noteWidth:			10,
-		halfNoteWidth:		5,
+		unitX:		5,
 		quarterNoteWidth: 	2.5,
 		signPosWidth:		14.0,
 		svgScale:				.27,
@@ -36,9 +36,9 @@ class Scaling
 		linesWidth:			.75,
 	#end
 		space:					8.0,
-		halfSpace: 			4.0,
+		unitY: 			4.0,
 		noteWidth:			7.0 , //11.0, 
-		halfNoteWidth:		3.5, // 5.5
+		unitX:		3.5, // 5.5
 		quarterNoteWidth: 	1.75, // 2.75
 		signPosWidth:		9.5,
 		svgScale:				.175,
@@ -51,9 +51,9 @@ class Scaling
 	{
 		linesWidth:			.5,
 		space:					6.0,
-		halfSpace: 			3.0,
+		unitY: 			3.0,
 		noteWidth:			5.0, //8.0,
-		halfNoteWidth:		2.5, // 4.0
+		unitX:		2.5, // 4.0
 		quarterNoteWidth: 	1.25, // 2.0
 		signPosWidth:		7.0,
 		svgScale:				.14,
@@ -67,9 +67,9 @@ class Scaling
 	{
 			linesWidth:			1.5,
 			space:					16.0,
-			halfSpace: 				8.0,
+			unitY: 				8.0,
 			noteWidth:				14.0,
-			halfNoteWidth:		7.0,
+			unitX:		7.0,
 			quarterNoteWidth: 	5.5,
 			signPosWidth:		19.0,
 			svgScale:				.36,
@@ -82,9 +82,9 @@ class Scaling
 	{
 			linesWidth:			3,
 			space:					32.0,
-			halfSpace: 			16.0,
+			unitY: 			16.0,
 			noteWidth:			28.0,
-			halfNoteWidth:		14.0,
+			unitX:		14.0,
 			quarterNoteWidth: 	11.0,
 			signPosWidth:		38.0,
 			svgScale:				.72,
@@ -97,7 +97,7 @@ class Scaling
 	
 	static public function scaleRect(scaling:TScaling, rect:Rectangle):Rectangle
 	{
-		return new Rectangle(rect.x * scaling.halfNoteWidth, rect.y * scaling.halfSpace, rect.width * scaling.halfNoteWidth, rect.height * scaling.halfSpace);
+		return new Rectangle(rect.x * scaling.unitX, rect.y * scaling.unitY, rect.width * scaling.unitX, rect.height * scaling.unitY);
 	}
 	
 }

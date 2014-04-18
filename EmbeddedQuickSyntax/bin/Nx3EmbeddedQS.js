@@ -6,6 +6,16 @@ function $extend(from, fields) {
 	if( fields.toString !== Object.prototype.toString ) proto.toString = fields.toString;
 	return proto;
 }
+var EReg = function(r,opt) {
+	opt = opt.split("u").join("");
+	this.r = new RegExp(r,opt);
+};
+EReg.__name__ = true;
+EReg.prototype = {
+	replace: function(s,by) {
+		return s.replace(this.r,by);
+	}
+};
 var HxOverrides = function() { };
 HxOverrides.__name__ = true;
 HxOverrides.cca = function(s,index) {
@@ -79,17 +89,38 @@ Lambda.indexOf = function(it,v) {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	var codeelement = window.document.getElementById("code");
-	var code = codeelement.textContent;
-	var svgelement = codeelement.parentNode;
+	var codeelement = new js.JQuery("#code");
+	var code = codeelement.text();
+	console.log(code);
+	var svgelement = codeelement.parent();
+	var svgid = svgelement.attr("id");
+	console.log(svgid);
 	var parser = new nx3.qs.QuickSyntaxParser(code);
 	var qsnotes = parser.parseToQSyntaxNotes();
 	var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
 	var nbars = builder.getNBars();
 	var vbar = new nx3.VBar(nbars[0]);
-	var target = new nx3.render.TargetSvg("#big",nx3.render.scaling.Scaling.MID);
+	var target = new nx3.render.TargetSvg("#" + svgid,nx3.render.scaling.Scaling.MID);
 	var r = new nx3.render.Renderer(target,10,80);
 	r.renderBar(vbar);
+	var textarea = new js.JQuery("#ta");
+	var oldcode = "";
+	textarea.keyup(function(event) {
+		var code1 = StringTools.trim(textarea.val());
+		if(code1 == oldcode) return;
+		try {
+			var parser1 = new nx3.qs.QuickSyntaxParser(code1);
+			var qsnotes1 = parser1.parseToQSyntaxNotes();
+			var builder1 = new nx3.qs.QuickSyntaxBuilder(qsnotes1);
+			var nbars1 = builder1.getNBars();
+			var vbar1 = new nx3.VBar(nbars1[0]);
+			target.clear();
+			r.renderBar(vbar1);
+		} catch( e ) {
+			console.log(e);
+		}
+		oldcode = code1;
+	});
 };
 var IMap = function() { };
 IMap.__name__ = true;
@@ -3096,7 +3127,7 @@ nx3.VComplex.prototype = {
 		}
 		return this.notesHeadsRects;
 	}
-	,getStaveBasicRects: function(directions) {
+	,getStaveBasicRects: function(directions,beamgroups) {
 		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
 		var firstnote = cx.ArrayTools.first(this.getVNotes());
 		var result = new Array();
@@ -3108,6 +3139,8 @@ nx3.VComplex.prototype = {
 			var vnote = this.getVNotes()[i];
 			if(nx3.ENoteValTools.stavinglevel(vnote.nnote.value) == 0) continue;
 			if(vnote.nnote.type[0] != "Note") continue;
+			var beamgroup;
+			if(beamgroups != null) beamgroup = beamgroups[i]; else beamgroup = null;
 			var direction = directions[i];
 			var rect = null;
 			var headw;
@@ -3124,14 +3157,16 @@ nx3.VComplex.prototype = {
 			if(direction == nx3.EDirectionUD.Up) rect = new nx3.geom.Rectangle(0,vnote.nnote.getBottomLevel() - 7,headw,7); else rect = new nx3.geom.Rectangle(-headw,vnote.nnote.getTopLevel(),headw,7);
 			if(offset != 0) rect.offset(offset,0);
 			result.push(rect);
-			if(nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) {
-				var flagrect = null;
-				if(direction == nx3.EDirectionUD.Up) flagrect = new nx3.geom.Rectangle(headw,vnote.nnote.getBottomLevel() - 7,2.6,4.8); else flagrect = new nx3.geom.Rectangle(-headw,vnote.nnote.getTopLevel() + 7 - 4.8,2.6,4.8);
-				if(offset != 0) flagrect.offset(offset,0);
-				flags.push(flagrect);
+			if(beamgroup != null && beamgroup.vnotes.length == 1) {
+				if(nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) {
+					var flagrect = null;
+					if(direction == nx3.EDirectionUD.Up) flagrect = new nx3.geom.Rectangle(headw,vnote.nnote.getBottomLevel() - 7,2.6,4.8); else flagrect = new nx3.geom.Rectangle(-headw,vnote.nnote.getTopLevel() + 7 - 4.8,2.6,4.8);
+					if(offset != 0) flagrect.offset(offset,0);
+					flags.push(flagrect);
+				}
 			}
 		}
-		result = result.concat(flags);
+		if(flags != []) result = result.concat(flags);
 		return result;
 	}
 	,getStaveNoteBasicRectAndDirections: function(note,directions) {
@@ -3903,6 +3938,17 @@ nx3.VPartComplexesMinDistancesCalculator.prototype = {
 	getDistance: function(leftComplex,rightComplex) {
 		var left = this.getComplexRightside(leftComplex);
 		var right = this.getComplexLeftside(rightComplex);
+		if(rightComplex == null && leftComplex != null) {
+			var vnotes = leftComplex.getVNotes();
+			var hasflag = false;
+			var _g = 0;
+			while(_g < vnotes.length) {
+				var vnote = vnotes[_g];
+				++_g;
+				if(vnote.nnote.type[0] == "Note" && nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) hasflag = true;
+			}
+			if(hasflag) right = this.getComplexRightside(leftComplex);
+		}
 		var minDistance = left.minrect.width + left.minrect.x + -right.minrect.x;
 		var rectsDistance = cx.MathTools.round2(nx3.geom.RectanglesTools.getXIntersection(left.rects,right.rects),null);
 		return Math.max(minDistance,rectsDistance);
@@ -3917,7 +3963,20 @@ nx3.VPartComplexesMinDistancesCalculator.prototype = {
 		minrect.y = -5;
 		minrect.height = 10;
 		var rects = noterects;
-		rects = rects.concat(complex.getStaveBasicRects(directions));
+		var beamgroups = [];
+		var firstnote = cx.ArrayTools.first(complex.getVNotes());
+		var firstbeamgroup;
+		var this2 = cx.ArrayTools.first(this.vpart.getVVoices()).getNotesBeamgroups();
+		firstbeamgroup = this2.get(firstnote);
+		beamgroups.push(firstbeamgroup);
+		if(complex.getVNotes().length == 2) {
+			var secondnote = cx.ArrayTools.second(complex.getVNotes());
+			var secondbeamgroup;
+			var this3 = cx.ArrayTools.second(this.vpart.getVVoices()).getNotesBeamgroups();
+			secondbeamgroup = this3.get(secondnote);
+			beamgroups.push(secondbeamgroup);
+		}
+		rects = rects.concat(complex.getStaveBasicRects(directions,beamgroups));
 		var dotrects = complex.getDotsRects(noterects,directions);
 		if(dotrects != null && dotrects != []) rects = rects.concat(dotrects);
 		return { minrect : minrect, rects : rects};
@@ -3933,7 +3992,20 @@ nx3.VPartComplexesMinDistancesCalculator.prototype = {
 		minrect.height = 10;
 		var rects = noterects;
 		var vnotes = complex.getVNotes();
-		rects = rects.concat(complex.getStaveBasicRects(directions));
+		var beamgroups = [];
+		var firstnote = cx.ArrayTools.first(complex.getVNotes());
+		var firstbeamgroup;
+		var this2 = cx.ArrayTools.first(this.vpart.getVVoices()).getNotesBeamgroups();
+		firstbeamgroup = this2.get(firstnote);
+		beamgroups.push(firstbeamgroup);
+		if(complex.getVNotes().length == 2) {
+			var secondnote = cx.ArrayTools.second(complex.getVNotes());
+			var secondbeamgroup;
+			var this3 = cx.ArrayTools.second(this.vpart.getVVoices()).getNotesBeamgroups();
+			secondbeamgroup = this3.get(secondnote);
+			beamgroups.push(secondbeamgroup);
+		}
+		rects = rects.concat(complex.getStaveBasicRects(directions,beamgroups));
 		var signsrects = complex.getSignsRects(noterects);
 		if(signsrects != null && signsrects != []) rects = rects.concat(signsrects);
 		return { minrect : minrect, rects : rects};
@@ -5022,6 +5094,16 @@ nx3.qs.QSyntaxTools.getBpv = function(barIndex,partIndex,voiceIndex) {
 nx3.qs.QSyntaxTools.getBpvString = function(barIndex,partIndex,voiceIndex) {
 	return "" + barIndex + "-" + partIndex + "-" + voiceIndex;
 };
+nx3.qs.QSyntaxTools.removeComments = function(code) {
+	var r = new EReg("/\\*([a-zA-Z0-9-+=\" ]*)\\*/","g");
+	code = r.replace(code," ");
+	return code;
+};
+nx3.qs.QSyntaxTools.removeSpaces = function(code) {
+	var r = new EReg("[ \t]{2,}","g");
+	code = r.replace(code," ");
+	return code;
+};
 nx3.qs.QuickSyntaxBuilder = function(qsnotes) {
 	this.qsnotes = qsnotes;
 };
@@ -5089,7 +5171,9 @@ nx3.qs.QuickSyntaxBuilder.prototype = {
 	}
 };
 nx3.qs.QuickSyntaxParser = function(str) {
-	this.str = StringTools.replace(StringTools.replace(StringTools.replace(StringTools.trim(str),"  "," "),"  "," "),"  "," ");
+	str = nx3.qs.QSyntaxTools.removeComments(str);
+	str = nx3.qs.QSyntaxTools.removeSpaces(str);
+	this.str = str;
 	this.tokens = this.parseTokens(this.str);
 	this.qsnotes = new haxe.ds.StringMap();
 	this.modeparser = new nx3.qs.ModeParser(this);
@@ -5150,7 +5234,7 @@ nx3.render.Renderer = function(target,targetX,targetY) {
 	this.targetX = targetX;
 	this.targetY = targetY;
 	this.scaling = this.target.getScaling();
-	this.partDistance = 16 * this.scaling.halfSpace | 0;
+	this.partDistance = 16 * this.scaling.unitY | 0;
 };
 nx3.render.Renderer.__name__ = true;
 nx3.render.Renderer.prototype = {
@@ -5182,10 +5266,9 @@ nx3.render.Renderer.prototype = {
 		while(_g < _g1.length) {
 			var vpart = _g1[_g];
 			++_g;
-			this.notlines(vbar,barMinWidth * this.scaling.halfNoteWidth);
+			this.notlines(vbar,barMinWidth * this.scaling.unitX);
 			party += this.partDistance;
 		}
-		this.target.rect(this.targetX,this.targetY,new nx3.geom.Rectangle(0,-10 * this.scaling.halfSpace,barMinWidth * this.scaling.halfNoteWidth,party - this.targetY),.3);
 	}
 	,complexes: function(vbar) {
 		var barMinWidth = vbar.getVColumnsMinWidth();
@@ -5206,7 +5289,8 @@ nx3.render.Renderer.prototype = {
 				var this1 = vbar.getVComplexesVColumns();
 				vcolumn = this1.get(vcomplex);
 				var pos = columnsMinPositions.h[vcolumn.__id__];
-				var colx = this.targetX + pos * this.scaling.halfNoteWidth;
+				var colx = this.targetX + pos * this.scaling.unitX;
+				var beamgroups = [];
 				var _g4 = 0;
 				var _g5 = vcomplex.getVNotes();
 				while(_g4 < _g5.length) {
@@ -5219,6 +5303,7 @@ nx3.render.Renderer.prototype = {
 					var beamgroup;
 					var this3 = vvoice.getNotesBeamgroups();
 					beamgroup = this3.get(vnote);
+					beamgroups.push(beamgroup);
 					var direction = beamgroupsDirections.h[beamgroup.__id__];
 					this.heads(colx,party,vnote,direction);
 				}
@@ -5226,8 +5311,7 @@ nx3.render.Renderer.prototype = {
 				var this4 = vpart.getVComplexDirections();
 				directions = this4.get(vcomplex);
 				var headrects = vcomplex.getNotesHeadsRects(directions);
-				var staverects = vcomplex.getStaveBasicRects(directions);
-				this.target.rectangles(colx,party,staverects,1,11184810);
+				var staverects = vcomplex.getStaveBasicRects(directions,beamgroups);
 				var signsrects = vcomplex.getSignsRects(headrects);
 				this.signs(colx,party,vcomplex);
 				var dotrects = vcomplex.getDotsRects(headrects,directions);
@@ -5270,7 +5354,7 @@ nx3.render.Renderer.prototype = {
 			default:
 				xmlStr = null;
 			}
-			if(xmlStr != null) this.target.shape(x + rect.x * this.scaling.halfNoteWidth,y + (rect.y + 2) * this.scaling.halfSpace,xmlStr);
+			if(xmlStr != null) this.target.shape(x + rect.x * this.scaling.unitX,y + (rect.y + 2) * this.scaling.unitY,xmlStr);
 		}
 	}
 	,staves: function(vbar) {
@@ -5307,7 +5391,7 @@ nx3.render.Renderer.prototype = {
 						var this1 = vbar.getVNotesVColumns();
 						vcolumn = this1.get(vnote);
 						var pos = columnsMinPositions.h[vcolumn.__id__];
-						var colx = this.targetX + pos * this.scaling.halfNoteWidth;
+						var colx = this.targetX + pos * this.scaling.unitX;
 						var vvoice = vpart.getVVoices()[vvoiceIdx];
 						var vcomplex = vnotesVComplexes.h[vnote.__id__];
 						var noteComplexIdx;
@@ -5320,7 +5404,7 @@ nx3.render.Renderer.prototype = {
 							return $r;
 						}(this)));
 						var stavePos = stavesPos[noteComplexIdx];
-						var stavePosX = stavePos.x * this.scaling.halfNoteWidth;
+						var stavePosX = stavePos.x * this.scaling.unitX;
 						var point = null;
 						point = { x : colx + stavePosX, y : party};
 						beamgroupPoints.push(point);
@@ -5343,13 +5427,13 @@ nx3.render.Renderer.prototype = {
 				var o = _g[3];
 				var text = _g[2];
 				var rect = cx.ArrayTools.first(vnote.getVHeadsRectanglesDir(direction));
-				this.target.text(x + rect.x * this.scaling.halfNoteWidth,y + rect.y * this.scaling.halfSpace,text);
+				this.target.text(x + rect.x * this.scaling.unitX,y + rect.y * this.scaling.unitY,text);
 				break;
 			case 3:
 				var level = _g[2];
 				var rect1 = cx.ArrayTools.first(vnote.getVHeadsRectanglesDir(direction)).clone();
 				rect1.inflate(-0.8,-0.8);
-				this.target.filledellipse(x,y,rect1,6,16711680,16777215);
+				this.target.filledellipse(x,y,rect1,5,11184810,16777215);
 				break;
 			default:
 				var svginfo = nx3.render.RendererTools.getHeadSvgInfo(vnote.nnote);
@@ -5358,7 +5442,7 @@ nx3.render.Renderer.prototype = {
 				while(_g1 < _g2.length) {
 					var rect2 = _g2[_g1];
 					++_g1;
-					this.target.shape(x + rect2.x * this.scaling.halfNoteWidth,y + (rect2.y + svginfo.y) * this.scaling.halfSpace,svginfo.xmlStr);
+					this.target.shape(x + rect2.x * this.scaling.unitX,y + (rect2.y + svginfo.y) * this.scaling.unitY,svginfo.xmlStr);
 				}
 			}
 		}
@@ -5367,25 +5451,40 @@ nx3.render.Renderer.prototype = {
 		var frame = beamgroup.getFrame();
 		if(frame == null) return;
 		var leftPoint = points[0];
-		var leftOuterY = frame.leftOuterY * this.scaling.halfSpace;
-		var leftInnerY = frame.leftInnerY * this.scaling.halfSpace;
-		var leftTipY = frame.leftTipY * this.scaling.halfSpace;
+		var leftOuterY = frame.leftOuterY * this.scaling.unitY;
+		var leftInnerY = frame.leftInnerY * this.scaling.unitY;
+		var leftTipY = frame.leftTipY * this.scaling.unitY;
 		var leftX = leftPoint.x;
 		this.target.line(leftX,leftPoint.y + leftInnerY,leftX,leftPoint.y + leftTipY,1,0);
+		if(beamgroup.vnotes.length == 1) {
+			var firstnote = beamgroup.vnotes[0];
+			if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) > 0) {
+				if(beamgroup.getCalculatedDirection() == nx3.EDirectionUD.Up) {
+					var adjustX = 0.6 * this.scaling.unitX;
+					var adjustY = this.scaling.unitY;
+					this.target.shape(leftX - adjustX,leftPoint.y + adjustY + leftTipY,nx3.render.svg.SvgElements.flagUp8,0);
+				} else {
+					var adjustX1 = 0.6 * this.scaling.unitX;
+					var adjustY1 = -3 * this.scaling.unitY;
+					this.target.shape(leftX - adjustX1,leftPoint.y + adjustY1 + leftTipY,nx3.render.svg.SvgElements.flagDown8,0);
+				}
+			}
+		}
 		if(beamgroup.vnotes.length < 2) return;
 		var rightPoint = points[points.length - 1];
-		var rightOuterY = frame.rightOuterY * this.scaling.halfSpace;
-		var rightInnerY = frame.rightInnerY * this.scaling.halfSpace;
-		var rightTipY = frame.rightTipY * this.scaling.halfSpace;
+		var rightOuterY = frame.rightOuterY * this.scaling.unitY;
+		var rightInnerY = frame.rightInnerY * this.scaling.unitY;
+		var rightTipY = frame.rightTipY * this.scaling.unitY;
 		this.target.line(rightPoint.x,rightPoint.y + rightInnerY,rightPoint.x,rightPoint.y + rightTipY,1,0);
-		this.target.line(leftPoint.x,leftPoint.y + leftTipY,rightPoint.x,rightPoint.y + rightTipY,5,0);
+		var beamh = 1 * this.scaling.unitY;
+		this.target.parallellogram(leftPoint.x,leftPoint.y + leftTipY - beamh / 2,rightPoint.x,rightPoint.y + rightTipY - beamh / 2,beamh,0,0,0);
 		if(beamgroup.vnotes.length < 3) return;
 		var _g1 = 1;
 		var _g = frame.outerLevels.length - 1;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var midPoint = points[i];
-			var midInnerY = frame.innerLevels[i] * this.scaling.halfSpace;
+			var midInnerY = frame.innerLevels[i] * this.scaling.unitY;
 			var delta = (midPoint.x - leftPoint.x) / (rightPoint.x - leftPoint.x);
 			var midTipY = leftTipY + (rightTipY - leftTipY) * delta;
 			this.target.line(midPoint.x,midPoint.y + midInnerY,midPoint.x,midPoint.y + midTipY,1,0);
@@ -5479,7 +5578,7 @@ nx3.render.TargetSvg.prototype = {
 	,rectangle: function(x,y,rect,lineWidth,lineColor) {
 		if(lineColor == null) lineColor = 0;
 		if(lineWidth == null) lineWidth = 1;
-		var r = this.snap.rect(x + rect.x * this.scaling.halfNoteWidth,y + rect.y * this.scaling.halfSpace,rect.width * this.scaling.halfNoteWidth,rect.height * this.scaling.halfSpace);
+		var r = this.snap.rect(x + rect.x * this.scaling.unitX,y + rect.y * this.scaling.unitY,rect.width * this.scaling.unitX,rect.height * this.scaling.unitY);
 		r.attr({ fill : "none", stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
 	}
 	,rectangles: function(x,y,rects,lineWidth,lineColor) {
@@ -5537,7 +5636,7 @@ nx3.render.TargetSvg.prototype = {
 		console.log(fontstr);
 		var measure = this.context.measureText(text);
 		console.log(measure.width);
-		return measure.width / this.scaling.halfNoteWidth;
+		return measure.width / this.scaling.unitX;
 	}
 	,textheight: function(text) {
 		return this.font.size / 3.8;
@@ -5548,13 +5647,30 @@ nx3.render.TargetSvg.prototype = {
 	,filledrectangle: function(x,y,rect,lineWidth,lineColor,fillColor) {
 	}
 	,filledellipse: function(x,y,rect,lineWidth,lineColor,fillColor) {
+		if(fillColor == null) fillColor = 65280;
+		if(lineColor == null) lineColor = 16711680;
+		if(lineWidth == null) lineWidth = 1;
+		var el = this.snap.ellipse(x + (rect.x + rect.width / 2) * this.scaling.unitX,y + (rect.y + rect.height / 2) * this.scaling.unitY,rect.width / 2 * this.scaling.unitX,rect.height / 2 * this.scaling.unitY);
+		el.attr({ fill : fillColor == 0?"#000":"#" + StringTools.hex(fillColor), stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
+	}
+	,parallellogram: function(x,y,x2,y2,pheight,lineWidth,lineColor,fillColor) {
+		if(fillColor == null) fillColor = 65280;
+		if(lineColor == null) lineColor = 16711680;
+		if(lineWidth == null) lineWidth = 1;
+		var pathStr = "M " + x + " " + y + " L " + x2 + " " + y2 + "  L " + x2 + " " + (y2 + pheight) + "  L " + x + "  " + (y + pheight) + "  L " + x + " " + y;
+		var el = this.snap.path(pathStr);
+		el.attr({ fill : fillColor == 0?"#000":"#" + StringTools.hex(fillColor), stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
+	}
+	,clear: function() {
+		var svgElement = new js.JQuery(this.svgId);
+		svgElement.empty();
 	}
 };
 nx3.render.scaling = {};
 nx3.render.scaling.Scaling = function() { };
 nx3.render.scaling.Scaling.__name__ = true;
 nx3.render.scaling.Scaling.scaleRect = function(scaling,rect) {
-	return new nx3.geom.Rectangle(rect.x * scaling.halfNoteWidth,rect.y * scaling.halfSpace,rect.width * scaling.halfNoteWidth,rect.height * scaling.halfSpace);
+	return new nx3.geom.Rectangle(rect.x * scaling.unitX,rect.y * scaling.unitY,rect.width * scaling.unitX,rect.height * scaling.unitY);
 };
 nx3.render.svg = {};
 nx3.render.svg.SvgElements = function() { };
@@ -6020,6 +6136,7 @@ nx3.Constants.FONT_TEXT_X_ADJUST_SVG = -0.2;
 nx3.Constants.FONT_TEXT_Y_ADJUST_SVG = 9.6;
 nx3.Constants.FONT_TEXT_Y_ADJUST_FLASH = -1.2;
 nx3.Constants.FONT_TEXT_X_ADJUST_FLASH = -.3;
+nx3.Constants.BEAM_HEIGHT = 1;
 nx3.ENoteValTools.DOT = 1.5;
 nx3.ENoteValTools.DOTDOT = 1.75;
 nx3.ENoteValTools.TRI = 0.66666666;
@@ -6053,11 +6170,11 @@ nx3.ENoteValTools.valNv32 = 378;
 nx3.ENoteValTools.valNv32dot = 567;
 nx3.ENoteValTools.valNv32ddot = 661;
 nx3.ENoteValTools.valNv32tri = 251;
-nx3.render.scaling.Scaling.MID = { linesWidth : 0.8, space : 12.0, halfSpace : 6.0, noteWidth : 10, halfNoteWidth : 5, quarterNoteWidth : 2.5, signPosWidth : 14.0, svgScale : .27, svgX : 0, svgY : -55.0, fontScaling : 1.5};
-nx3.render.scaling.Scaling.NORMAL = { linesWidth : .5, space : 8.0, halfSpace : 4.0, noteWidth : 7.0, halfNoteWidth : 3.5, quarterNoteWidth : 1.75, signPosWidth : 9.5, svgScale : .175, svgX : 0, svgY : -36.0, fontScaling : 1.0};
-nx3.render.scaling.Scaling.SMALL = { linesWidth : .5, space : 6.0, halfSpace : 3.0, noteWidth : 5.0, halfNoteWidth : 2.5, quarterNoteWidth : 1.25, signPosWidth : 7.0, svgScale : .14, svgX : 0, svgY : -28.5, fontScaling : 0.75};
-nx3.render.scaling.Scaling.BIG = { linesWidth : 1.5, space : 16.0, halfSpace : 8.0, noteWidth : 14.0, halfNoteWidth : 7.0, quarterNoteWidth : 5.5, signPosWidth : 19.0, svgScale : .36, svgX : -0.0, svgY : -74.0, fontScaling : 2.0};
-nx3.render.scaling.Scaling.PRINT1 = { linesWidth : 3, space : 32.0, halfSpace : 16.0, noteWidth : 28.0, halfNoteWidth : 14.0, quarterNoteWidth : 11.0, signPosWidth : 38.0, svgScale : .72, svgX : -0.0, svgY : -148.0, fontScaling : 4.0};
+nx3.render.scaling.Scaling.MID = { linesWidth : 0.8, space : 12.0, unitY : 6.0, noteWidth : 10, unitX : 5, quarterNoteWidth : 2.5, signPosWidth : 14.0, svgScale : .27, svgX : 0, svgY : -55.0, fontScaling : 1.5};
+nx3.render.scaling.Scaling.NORMAL = { linesWidth : .5, space : 8.0, unitY : 4.0, noteWidth : 7.0, unitX : 3.5, quarterNoteWidth : 1.75, signPosWidth : 9.5, svgScale : .175, svgX : 0, svgY : -36.0, fontScaling : 1.0};
+nx3.render.scaling.Scaling.SMALL = { linesWidth : .5, space : 6.0, unitY : 3.0, noteWidth : 5.0, unitX : 2.5, quarterNoteWidth : 1.25, signPosWidth : 7.0, svgScale : .14, svgX : 0, svgY : -28.5, fontScaling : 0.75};
+nx3.render.scaling.Scaling.BIG = { linesWidth : 1.5, space : 16.0, unitY : 8.0, noteWidth : 14.0, unitX : 7.0, quarterNoteWidth : 5.5, signPosWidth : 19.0, svgScale : .36, svgX : -0.0, svgY : -74.0, fontScaling : 2.0};
+nx3.render.scaling.Scaling.PRINT1 = { linesWidth : 3, space : 32.0, unitY : 16.0, noteWidth : 28.0, unitX : 14.0, quarterNoteWidth : 11.0, signPosWidth : 38.0, svgScale : .72, svgX : -0.0, svgY : -148.0, fontScaling : 4.0};
 nx3.render.svg.SvgElements.pauseNv2 = "<svg><g><rect height=\"23\" width=\"50\" x=\"8\" y=\"210\" /></g></svg>";
 nx3.render.svg.SvgElements.pauseNv1 = "<svg><g><rect height=\"26\" width=\"50\" x=\"8\" y=\"234\" /></g></svg>";
 nx3.render.svg.SvgElements.clefG = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\"\r\n\t\t\td=\"m 95.72971,266.7949 c -5.57504,2.79274 -12.48498,4.1891 -20.72511,4.1891 -9.69981,0 -18.99938,-1.66998 -27.91049,-5.00757 -8.90876,-3.33996 -16.75807,-7.86163 -23.54558,-13.56975 -6.78751,-5.70339 -12.24248,-12.38094 -16.36254,-20.03029 -4.12007,-7.64934 -6.1801,-15.78458 -6.1801,-24.40572 0,-29.26234 20.72746,-61.31506 62.18472,-96.1605 -1.3349,-5.34251 -2.33313,-10.74399 -2.99941,-16.209153 -0.66627,-5.460449 -1.00058,-11.107236 -1.00058,-16.938007 0,-8.010226 0.66392,-15.871864 1.99646,-23.582532 1.3302,-7.710668 3.23955,-14.935434 5.72336,-21.674325 2.48617,-6.738864 5.54208,-12.869193 9.17715,-18.393316 3.63272,-5.5265031 7.814,-10.1708424 12.53677,-13.9306366 16.47555,22.8253826 24.71097,44.6247216 24.71097,65.3862176 0,13.480109 -3.18069,26.321 -9.54442,38.522682 -6.36138,12.20404 -16.32959,24.07079 -29.90225,35.60967 l 7.99763,38.42834 c 4.36256,-0.35616 6.78751,-0.53307 7.2725,-0.53307 6.05767,0 11.72453,1.09209 16.99586,3.27863 5.27368,2.18418 9.88109,5.18919 13.82693,9.01269 3.94349,3.82349 7.07003,8.34517 9.37727,13.56502 2.30488,5.21986 3.4585,10.86193 3.46085,16.93329 -0.002,4.36836 -0.78869,8.68011 -2.36374,12.92581 -1.57504,4.25042 -3.814,8.28856 -6.72159,12.10969 -2.90994,3.82586 -6.36373,7.34272 -10.36137,10.55766 -3.99764,3.21965 -8.42141,5.98172 -13.26896,8.28856 0,-0.24294 0.18129,0.45523 0.54385,2.09218 0.36492,1.63932 0.8193,3.79048 1.36315,6.46291 0.5462,2.67008 1.18187,5.64443 1.90935,8.92306 0.72749,3.27626 1.36316,6.43224 1.90936,9.46556 0.5462,3.03568 1.02884,5.73878 1.45497,8.10222 0.42378,2.37052 0.63567,3.97681 0.63567,4.82595 0,5.70576 -1.21248,10.92561 -3.63508,15.65957 -2.42495,4.73396 -5.69746,8.80041 -9.81988,12.19933 -4.12006,3.39656 -8.90875,6.03833 -14.36136,7.9206 -5.45497,1.88226 -11.21364,2.82339 -17.27602,2.82339 -4.60506,0 -8.90641,-0.72885 -12.90875,-2.18654 -4,-1.45769 -7.515,-3.52157 -10.54502,-6.18929 -3.02765,-2.67244 -5.422,-5.91568 -7.18068,-9.73918 -1.75632,-3.82113 -2.63449,-8.03853 -2.63449,-12.64984 0,-3.27862 0.54621,-6.37563 1.63626,-9.2863 1.09005,-2.91066 2.60623,-5.39912 4.54384,-7.463 1.93996,-2.06389 4.3037,-3.7032 7.09122,-4.91323 2.78987,-1.21474 5.81989,-1.82329 9.09004,-1.82329 2.90994,0 5.63625,0.66988 8.18127,2.00492 2.54502,1.33503 4.72748,3.06634 6.54502,5.18919 1.81754,2.12521 3.27251,4.5547 4.36491,7.2861 1.09005,2.72905 1.63626,5.49111 1.63626,8.28384 0,6.31431 -2.33314,11.4752 -7.00176,15.48267 -4.66627,4.00512 -10.51205,6.37328 -17.54441,7.09976 5.57504,2.79509 11.329,4.19146 17.2666,4.1891 4.8452,0.002 9.57268,-0.87745 14.17773,-2.64177 4.6027,-1.75961 8.62859,-4.12777 12.08474,-7.10212 3.45379,-2.97436 6.24131,-6.43932 8.3602,-10.38547 2.11889,-3.94614 3.18069,-8.16354 3.18069,-12.65692 0,-1.70299 -0.18365,-3.58526 -0.54385,-5.64914 L 95.72971,266.7949 z M 95.18821,27.488123 c -1.21483,-0.243068 -2.30724,-0.365597 -3.27486,-0.365597 -3.75986,0 -7.24661,1.912917 -10.46026,5.738777 -3.21365,3.823478 -6.00352,8.80275 -8.36726,14.933079 -2.36374,6.132684 -4.21188,13.022518 -5.54914,20.671856 -1.33254,7.649365 -2.00117,15.298698 -2.00117,22.948042 0,3.158334 0.12478,6.194011 0.36492,9.10704 0.24485,2.91538 0.67333,5.70811 1.2831,8.37819 24.73216,-21.976242 37.09942,-41.768292 37.09942,-59.373819 0,-8.378205 -3.03237,-15.723276 -9.09475,-22.037568 z m 3.814,231.850857 c 5.94467,-4.37072 10.46026,-9.16837 13.55619,-14.39058 3.09123,-5.21986 4.63802,-10.86429 4.63802,-16.93801 0,-3.76216 -0.63802,-7.4347 -1.91171,-11.01996 -1.27134,-3.57818 -3.08887,-6.76718 -5.45497,-9.56227 -2.36609,-2.78801 -5.18657,-5.03588 -8.46143,-6.7318 -3.27486,-1.69828 -6.85108,-2.54506 -10.72865,-2.54506 -0.24249,0 -0.72749,0.0307 -1.45497,0.0873 -0.72513,0.0613 -1.75633,0.15097 -3.08887,0.2689 l 12.90639,60.83151 z M 81.56374,199.26225 c -3.75749,0.48354 -7.2725,1.42468 -10.545,2.82104 -3.27251,1.39637 -6.08828,3.12767 -8.45202,5.19155 -2.36374,2.06389 -4.24249,4.43205 -5.63625,7.10212 -1.39376,2.67244 -2.09064,5.58546 -2.09064,8.7438 0,9.34762 4.96527,17.11962 14.88874,23.31127 -8.24013,-1.33503 -14.84636,-4.52167 -19.81634,-9.56227 -4.96997,-5.03823 -7.45378,-11.38084 -7.45378,-19.03255 0,-4.49101 0.93937,-8.83106 2.81812,-13.02016 1.87875,-4.18909 4.39317,-7.95598 7.54325,-11.30065 3.15479,-3.34703 6.85108,-6.23647 11.09121,-8.66595 4.24249,-2.43421 8.72748,-4.13721 13.45261,-5.10664 l -7.63507,-36.42579 c -17.08768,12.86684 -30.02468,25.49546 -38.81101,37.88112 -8.78633,12.38567 -13.1795,24.64868 -13.1795,36.79139 0,6.67755 1.48322,12.99421 4.45438,18.94292 2.97115,5.95106 6.9735,11.14026 12.00469,15.5723 5.03119,4.4344 10.85107,7.92531 17.45966,10.47274 6.60623,2.55214 13.60563,3.82821 20.9982,3.82821 4.24249,0 8.18127,-0.39627 11.81634,-1.18408 3.63743,-0.79017 7.03001,-2.03558 10.1801,-3.73386 L 81.56374,199.26225 z\" />\r\n\t\t</g></svg>";

@@ -21,19 +21,12 @@ class Main
 	
 	static function main() 
 	{
-		/*
-		var vbar = TestTarget.testBar1();
-		var xmlStr = BarXML.toXml(vbar.nbar).toString();
-		trace(xmlStr);
-		*/
-		
-		//var jq = new JQuery('#test');
-		//var xmlStr = jq.html();
-		//var xmlStr = Browser.document.getElementById('code').textContent;
-		//Lib.alert(xmlStr);
-		var codeelement = Browser.document.getElementById('code');
-		var code = codeelement.textContent;
-		var svgelement = codeelement.parentNode;		
+		var codeelement = new JQuery('#code');
+		var code = codeelement.text();
+		trace(code);
+		var svgelement = codeelement.parent();
+		var svgid = svgelement.attr('id');
+		trace(svgid);
 		
 		var parser = new QuickSyntaxParser(code);
 		var qsnotes = parser.parseToQSyntaxNotes();
@@ -41,18 +34,29 @@ class Main
 		var nbars = builder.getNBars();		
 		var vbar = new VBar(nbars.first());
 
-		var target = new TargetSvg('#big', Scaling.MID);
+		var target = new TargetSvg('#$svgid', Scaling.MID);
 		var r = new Renderer(target, 10, 80);
 		r.renderBar(vbar);				
+
+		var textarea = new JQuery('#ta');
+		var oldcode = '';
+		textarea.keyup(function(event) {
+			var code = StringTools.trim(textarea.val());
+			if (code == oldcode) return;
+	
+			try {
+				var parser = new QuickSyntaxParser(code);
+				var qsnotes = parser.parseToQSyntaxNotes();
+				var builder = new QuickSyntaxBuilder(qsnotes);
+				var nbars = builder.getNBars();		
+				var vbar = new VBar(nbars.first());
+				target.clear();
+				r.renderBar(vbar);				
+			} catch (e:Dynamic) trace(e);
+			
+			oldcode = code;
+		});
 		
-		
-		/*
-		var nbar = BarXML.fromXmlStr(xmlStr);
-		var vbar = new VBar(nbar);
-		var target = new TargetSvg('#normal', Scaling.BIG);
-		var r = new Renderer(target, 10, 240);
-		r.renderBar(vbar);		
-	*/
 		
 	}
 	

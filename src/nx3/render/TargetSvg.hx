@@ -2,6 +2,7 @@ package nx3.render;
 import js.Browser;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
+import js.JQuery;
 import js.Lib;
 import nx3.Constants;
 import nx3.EDirectionUD;
@@ -154,7 +155,7 @@ class TargetSvg implements ITarget
 	
 	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
 	{
-		var r:SnapElement = this.snap.rect(x + rect.x * scaling.halfNoteWidth, y + rect.y * scaling.halfSpace, rect.width * scaling.halfNoteWidth, rect.height * scaling.halfSpace);
+		var r:SnapElement = this.snap.rect(x + rect.x * scaling.unitX, y + rect.y * scaling.unitY, rect.width * scaling.unitX, rect.height * scaling.unitY);
 		r.attr( {
 				fill: 'none',
 				stroke: hex(lineColor),
@@ -258,7 +259,7 @@ class TargetSvg implements ITarget
 		trace(fontstr);
 		var measure = context.measureText(text);
 		trace(measure.width);
-		return measure.width / this.scaling.halfNoteWidth;
+		return measure.width / this.scaling.unitX;
 	}
 	
 	public function textheight(text:String):Float 
@@ -281,9 +282,37 @@ class TargetSvg implements ITarget
 		
 	}
 	
-	public function filledellipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int):Void 
+	public function filledellipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float=1, ?lineColor:Int=0xFF0000, ?fillColor:Int=0x00FF00):Void 
 	{
+		var el = this.snap.ellipse(x + (rect.x + rect.width/2) * scaling.unitX, y + (rect.y + rect.height/2) * scaling.unitY, (rect.width/2) * scaling.unitX, (rect.height/2) * scaling.unitY);
+		el.attr( {
+				fill: hex(fillColor),
+				stroke: hex(lineColor),
+				strokeWidth: lineWidth * scaling.linesWidth,
+			});		
 		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function parallellogram(x:Float, y:Float, x2:Float, y2:Float, pheight:Float, ?lineWidth:Float=1, ?lineColor:Int=0xFF0000, ?fillColor:Int=0x00FF00):Void 
+	{
+		var pathStr = 'M ${x} ${y} L ${x2} ${ y2}  L ${x2} ${ y2 + pheight}  L ${x}  ${ y + pheight}  L ${x} ${ y}';
+		var el = this.snap.path(pathStr);
+		el.attr( {
+				fill: hex(fillColor),
+				stroke: hex(lineColor),
+				strokeWidth: lineWidth * scaling.linesWidth,			
+		});
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function clear():Void 
+	{
+		//this.snap = new Snap(svgId);
+		var svgElement = new JQuery(this.svgId);
+		svgElement.empty();
 	}
 	
 	/* INTERFACE nx3.render.ITarget */

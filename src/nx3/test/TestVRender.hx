@@ -24,7 +24,6 @@ import nx3.NPart;
 import nx3.NVoice;
 
 import nx3.geom.Rectangle;
-import nx3.render.FrameRenderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 import nx3.render.tools.RenderTools;

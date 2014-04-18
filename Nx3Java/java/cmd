@@ -59,7 +59,8 @@ src/nx3/EDisplayALN.java
 src/nx3/EDot.java
 src/nx3/VHead.java
 src/nx3/VComplex.java
-src/nx3/VComplex_getRectanglesXIntersection_152__Fun.java
+src/nx3/VComplex_getRectanglesXIntersection_162__Fun.java
+src/nx3/render/ITarget.java
 src/haxe/ds/StringMap.java
 src/haxe/ds/StringMap_keys_356__Fun.java
 src/haxe/ds/StringMap_keys_367__Fun.java
@@ -80,6 +81,7 @@ src/nx3/qs/ModeParser_createFunctions_28__Fun.java
 src/nx3/qs/ModeParser_createFunctions_34__Fun.java
 src/nx3/qs/ModeParser_createFunctions_40__Fun.java
 src/nx3/EPartType.java
+src/nx3/render/TargetJFrame.java
 src/haxe/lang/StringExt.java
 src/haxe/lang/StringRefl.java
 src/nx3/ENoteVal.java
@@ -104,7 +106,8 @@ src/nx3/QNote16.java
 src/nx3/QNote2.java
 src/nx3/QNote1.java
 src/haxe/root/Main.java
-src/haxe/root/Main_drawToScreen_40__Fun.java
+src/haxe/root/Main_drawToScreen_47__Fun.java
+src/haxe/root/ClefG.java
 src/cx/StrTools.java
 src/cx/StrTools_similarity_96__Fun.java
 src/nx3/VBamegroupFrameTipCalculator.java
@@ -230,6 +233,7 @@ src/nx3/qs/NoteParser_createFunctions_91__Fun.java
 src/nx3/qs/NoteParser_createFunctions_92__Fun.java
 src/nx3/EDirectionUAD.java
 src/nx3/EDirectionUADTools.java
+src/haxe/root/EReg.java
 src/haxe/lang/FieldLookup.java
 src/nx3/VBarColumnsMinDistancesGenerator.java
 src/cx/ArrayTools.java

@@ -4,7 +4,6 @@
 -cp ../src
 -cp src
 -D tools=1.3.2
--D fdb
 -D web
 -swf-version 11.2
 -swf bin/flash/bin/RenderTargets.swf

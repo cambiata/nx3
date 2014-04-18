@@ -11,10 +11,15 @@ class TestRenderer
 
 	static public function testRenderer(r:Renderer) 
 	{
-			r.renderBar(TestItems.vbarQSyntax1(), 10, 80);				
-			r.renderBar(TestItems.vbarSigns(), 10, 240);	
-			r.renderBar(TestItems.vbarTpl(), 10, 500);
+			
+		r.renderBar(TestItems.vbarQSyntax1(), 10, 100);				
+		r.renderBar(TestItems.vbarFlags(), 180, 100);				
+		r.renderBar(TestItems.vbarSigns(), 10, 260);	
+		r.renderBar(TestItems.vbarTpl(), 10, 520);
+			
+			
 			var target = r.getTarget();
+			//target.parallellogram(0, 0, 100, 30, 30);
 			
 			/*
 			var text = "ABC abc gpd 123!#%";
