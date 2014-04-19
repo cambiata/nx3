@@ -18,6 +18,8 @@ class Unittests
 		runner.add(new TestV());
 		runner.add(new TestQuickSyntax());
 		runner.add(new TestTargetSvgXml());
+		runner.add(new TestP());
+		
 		var end_time: Date = Date.now();
 		var success = runner.run();		
 		TestRunner.print('Testing time: ' + Std.int(end_time.getTime() - start_time.getTime()) + 'ms');

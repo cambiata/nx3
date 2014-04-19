@@ -1448,6 +1448,9 @@ class TestV extends  haxe.unit.TestCase
 		this.assertEquals(vbar.getVComplexesVColumns().get(vcomplex), vcolumn);
 	}
 	
+	
+	
+	
 	/*
 	public function testVBarColumnMinDistances()
 	{

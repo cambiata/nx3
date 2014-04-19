@@ -33,8 +33,8 @@ class Main
 		var nbars = builder.getNBars();		
 		var vbar = new VBar(nbars.first());
 
-		var target = new TargetSvg('#$svgid', Scaling.MID);
-		var r = new Renderer(target, 10, 80);
+		var target = new TargetSvg('#$svgid', Scaling.BIG);
+		var r = new Renderer(target, 10, 100);
 		r.renderBar(vbar);				
 
 		var textarea = new JQuery('#ta');

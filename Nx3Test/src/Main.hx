@@ -2,7 +2,6 @@ package ;
 
 import haxe.unit.TestCase;
 import haxe.unit.TestRunner;
-import nx3.EDirectionUD;
 import nx3.render.svg.SvgComposer;
 import nx3.render.svg.SvgElements;
 import nx3.test.Unittests;

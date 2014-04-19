@@ -126,7 +126,7 @@ class Renderer
 				//trace(beamgroups);
 
 				var staverects = vcomplex.getStaveBasicRects(directions, beamgroups);
-				this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
+				//this.target.rectangles(colx, party, staverects , 1, 0xaaaaaa);				
 				
 				//var signsrects = vcomplex.getSignsRects(headrects);
 				
@@ -155,7 +155,7 @@ class Renderer
 		var signs = vcomplex.getVisibleSigns();
 		var signrects = vcomplex.getSignsRects();
 		
-		this.target.rectangles(x, y, signrects , 1, 0xff0000);
+		//this.target.rectangles(x, y, signrects , 1, 0xff0000);
 		
 		for (i in 0...signs.length)
 		{

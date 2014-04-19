@@ -24,6 +24,7 @@ class NoteParser extends BaseParser
 	var octAdjust: Int;
 	var pause:Bool;
 	var pauselevel:Int;
+	var prevlevel:Int;
 	
 	
 	public function new(parser:QuickSyntaxParser)
@@ -34,6 +35,7 @@ class NoteParser extends BaseParser
 		this.notesigns = [];
 		this.notevalue = null;
 		
+		this.prevlevel = 0;
 		this.prevlevels = [0];
 		this.prevsigns = [ESign.None];
 		this.prevvalue = ENoteVal.Nv4;
@@ -116,6 +118,8 @@ class NoteParser extends BaseParser
 		var val = this.notevalue;
 		var nnote:NNote = null;
 		
+		
+		
 		if (this.pause) 
 		{
 			nnote = new NNote(ENoteType.Pause(this.pauselevel), val);
@@ -132,7 +136,11 @@ class NoteParser extends BaseParser
 				nheads.push(new NHead(level, sign));
 			}
 			nnote = new NNote(nheads, val);
+			
+			this.prevlevel = this.notelevels.first();
 		}
+		
+		
 		
 		this.builder.addNote(nnote);
 		this.prevlevels = this.notelevels.copy();

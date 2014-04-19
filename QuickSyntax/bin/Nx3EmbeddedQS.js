@@ -100,8 +100,8 @@ Main.main = function() {
 	var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
 	var nbars = builder.getNBars();
 	var vbar = new nx3.VBar(nbars[0]);
-	var target = new nx3.render.TargetSvg("#" + svgid,nx3.render.scaling.Scaling.MID);
-	var r = new nx3.render.Renderer(target,10,80);
+	var target = new nx3.render.TargetSvg("#" + svgid,nx3.render.scaling.Scaling.BIG);
+	var r = new nx3.render.Renderer(target,10,100);
 	r.renderBar(vbar);
 	var textarea = new js.JQuery("#ta");
 	var oldcode = "";
@@ -4549,6 +4549,7 @@ nx3.qs.NoteParser = function(parser) {
 	this.notelevels = [];
 	this.notesigns = [];
 	this.notevalue = null;
+	this.prevlevel = 0;
 	this.prevlevels = [0];
 	this.prevsigns = [nx3.ESign.None];
 	this.prevvalue = nx3.ENoteVal.Nv4;
@@ -4799,6 +4800,7 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 				nheads.push(new nx3.NHead(null,level,sign));
 			}
 			nnote = new nx3.NNote(null,nheads,val);
+			this.prevlevel = this.notelevels[0];
 		}
 		this.builder.addNote(nnote);
 		this.prevlevels = this.notelevels.slice();
@@ -5072,7 +5074,6 @@ nx3.render.Renderer.prototype = {
 				directions = this4.get(vcomplex);
 				var headrects = vcomplex.getNotesHeadsRects(directions);
 				var staverects = vcomplex.getStaveBasicRects(directions,beamgroups);
-				this.target.rectangles(colx,party,staverects,1,11184810);
 				this.signs(colx,party,vcomplex);
 				var dotrects = vcomplex.getDotsRects(headrects,directions);
 			}
@@ -5093,7 +5094,6 @@ nx3.render.Renderer.prototype = {
 	,signs: function(x,y,vcomplex) {
 		var signs = vcomplex.getVisibleSigns();
 		var signrects = vcomplex.getSignsRects();
-		this.target.rectangles(x,y,signrects,1,16711680);
 		var _g1 = 0;
 		var _g = signs.length;
 		while(_g1 < _g) {
