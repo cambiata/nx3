@@ -8,47 +8,47 @@ import haxe.ds.IntMap.IntMap;
 class PPart
 {
 	public var npart(default, null):NPart;
-	public var pbar(default, default): PBar;
+	public var bar(default, default): PBar;
 	
 	public function new(npart:NPart)
 	{
 		this.npart = npart;		
 	}		
 	
-	var pvoices:PVoices;
+	var voices:PVoices;
 	public function getPVoices():PVoices
 	{
-		if (this.pvoices != null) return this.pvoices;
-		this.pvoices = [];		
+		if (this.voices != null) return this.voices;
+		this.voices = [];		
 		
 		for (nvoice in this.npart.nvoices) 
 		{
-			var pvoice = new PVoice(nvoice);
-			pvoice.ppart = this;
-			this.pvoices.push(pvoice);
+			var voice = new PVoice(nvoice);
+			voice.part = this;
+			this.voices.push(voice);
 		}
-		return this.pvoices;
+		return this.voices;
 	}	
 	
-	var pcomplexes:PComplexes;	
-	public function getPComplexes():PComplexes
+	var complexes:PComplexes;	
+	public function getComplexes():PComplexes
 	{
-		if (this.pcomplexes != null) return this.pcomplexes;
+		if (this.complexes != null) return this.complexes;
 		var generator = new  PPartComplexesGenerator(this.getPVoices());
-		this.pcomplexes = generator.getComplexes();
-		return this.pcomplexes;
+		this.complexes = generator.getComplexes();
+		return this.complexes;
 	}	
 
-	var positionsPComplexes:IntMap<PComplex>;
-	public function getPositionsPComplexes():IntMap<PComplex>
+	var positionsComplexes:IntMap<PComplex>;
+	public function getPositionsComplexes():IntMap<PComplex>
 	{
-		if (this.positionsPComplexes != null) return  this.positionsPComplexes;
-		this.positionsPComplexes = new IntMap<PComplex>();
-		for (complex in this.getPComplexes())
+		if (this.positionsComplexes != null) return  this.positionsComplexes;
+		this.positionsComplexes = new IntMap<PComplex>();
+		for (complex in this.getComplexes())
 		{
-			this.positionsPComplexes.set(complex.getPosition(), complex);
+			this.positionsComplexes.set(complex.getPosition(), complex);
 		}
-		return this.positionsPComplexes;
+		return this.positionsComplexes;
 	}
 	
 	

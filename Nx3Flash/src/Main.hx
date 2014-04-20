@@ -25,6 +25,7 @@ class Main extends Sprite
 		
 		Unittests.performTests();
 		
+		/*
 		var target = new TargetSprite(Scaling.SMALL);
 		TestRenderer.testRenderer( new Renderer(target, 10, 80));
 		Lib.current.addChild(target.getTargetSprite(0, 0));
@@ -36,6 +37,12 @@ class Main extends Sprite
 		var target = new TargetSprite(Scaling.BIG);
 		TestRenderer.testRenderer( new Renderer(target, 10, 80));
 		Lib.current.addChild(target.getTargetSprite(600, 0));
+		*/
+		
+		var target = new TargetSprite(Scaling.BIG);
+		TestRenderer.devP(target);
+		Lib.current.addChild(target.getTargetSprite());
+		
 		
 	}
 }

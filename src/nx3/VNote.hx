@@ -137,4 +137,6 @@ class VNote
 		this.direction = calculator.getDirection(configDirection);
 		return this.direction;
 	}
+	
+	
 }

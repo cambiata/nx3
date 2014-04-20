@@ -1,18 +1,17 @@
 package nx3;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
-
+using nx3.geom.Rectangles.RectanglesTools;
 /**
  * ...
  * @author Jonas Nyström
  */
-
-class VComplexSignsRectsCalculator
+class PSignsRectsCalculator
 {
-	var vsigns:VSigns;
-	public function new(vsigns:VSigns)
+	var signs:VSigns;
+	public function new(signs:VSigns)
 	{
-		this.vsigns = vsigns;
+		this.signs = signs;
 	}
 	
 	public function getSignRects(headsRects:Rectangles=null):Rectangles
@@ -21,10 +20,10 @@ class VComplexSignsRectsCalculator
 		
 		if (headsRects == null) headsRects = [];
 		
-		for (vsign in vsigns)
+		for (sign in signs)
 		{
-			var rect:Rectangle = getSignRect(vsign.sign);			
-			rect.offset( -rect.width, vsign.level);
+			var rect:Rectangle = getSignRect(sign.sign);			
+			rect.offset( -rect.width, sign.level);
 			//trace(rect);
 			
 			

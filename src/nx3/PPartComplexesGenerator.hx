@@ -61,9 +61,9 @@ using nx3.VMapTools;
 		  var positionsMap = new Map<Int, PNotes>();
 		  for (vvoice in this.vvoices)
 		  {
-			  for (vnote in vvoice.getPNotes())
+			  for (vnote in vvoice.getNotes())
 			  {
-				  var npos = vvoice.getPNotePositions().get(vnote);
+				  var npos = vvoice.getNotePositions().get(vnote);
 				  if (!positionsMap.exists(npos)) positionsMap.set(npos, []);
 				  positionsMap.get(npos).push(vnote);
 			  }

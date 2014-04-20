@@ -5,13 +5,11 @@ import nx3.geom.Rectangles;
  * ...
  * @author Jonas Nyström
  */
+
 class PNote 
 {
 	public var nnote(default, default):NNote;
-	public var pvoice(default, default): PVoice;
-	//public var pbeamgroup(default, default): PBeamgroup;
-	
-	
+	public var voice(default, default): PVoice;
 	
 	public function new(nnote:NNote)
 	{
@@ -40,7 +38,7 @@ class PNote
 	{
 		if (this.beamgroup == null)
 		{
-			this.pvoice.getBeamgroups();
+			this.voice.getBeamgroups();
 		}
 		if (this.beamgroup == null) throw "this should not happen";
 		return this.beamgroup;
@@ -52,7 +50,6 @@ class PNote
 		return this;
 	}
 	
-	
 	public function getDirection():EDirectionUD
 	{
 		return this.getBeamgroup().getDirection();
@@ -63,7 +60,7 @@ class PNote
 	{
 		if (this.complex == null)
 		{
-			this.pvoice.ppart.getPComplexes();
+			this.voice.part.getComplexes();
 		}
 		if (this.complex == null) throw "Shouldn't happen";
 		return this.complex;
@@ -75,21 +72,6 @@ class PNote
 		return this;
 	}
 	
-	
-	/*
-	var pheadsPlacements:PHeadPlacements;
-	public function getPHeadsPlacements():PHeadPlacements
-	{
-		if (this.pheadsPlacements != null) return this.pheadsPlacements;
-		if (this.pheads == null) this.getPHeads();
-		
-		var calculator = new PHeadPlacementsCalculator(this.pheads, this.getDirection());
-		this.pheadsPlacements = calculator.getHeadsPlacements();
-		return this.pheadsPlacements;
-	}	
-	*/
-	
-	
 	var headsRects:Rectangles;
 	public function getHeadsRects():Rectangles
 	{
@@ -97,8 +79,17 @@ class PNote
 		var calculator = new PNoteheadsRectsCalculator(this);		
 		this.headsRects = calculator.getHeadsRects();
 		return headsRects;
-		
 	}
+	
+	var xoffset:Null<Float>;
+	public function getXOffset():Float
+	{
+		if (xoffset != null) return xoffset;
+		xoffset = this.getComplex().getNoteXOffset(this);
+		return xoffset;
+	}
+	
+	
 	
 	
 }

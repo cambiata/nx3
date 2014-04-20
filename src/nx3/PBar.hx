@@ -15,19 +15,19 @@ class PBar
 		this.nbar = nbar;		
 	}		
 	
-	var pparts:PParts;
-	public function getPParts():PParts
+	var parts:PParts;
+	public function getParts():PParts
 	{
-		if (this.pparts != null) return this.pparts;
-		this.pparts = [];		
+		if (this.parts != null) return this.parts;
+		this.parts = [];		
 		
 		for (npart in this.nbar.nparts) 
 		{
 			var ppart = new PPart(npart);
-			ppart.pbar = this;
-			this.pparts.push(ppart);
+			ppart.bar = this;
+			this.parts.push(ppart);
 		}
-		return this.pparts;
+		return this.parts;
 	}	
 	
 	

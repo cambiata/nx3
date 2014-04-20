@@ -11,7 +11,5 @@ class PHead
 	 {
 		 this.nhead = nhead;	
 	 }
-	 
-	 public var pnote(default, default): PNote;
-	
+	public var pnote(default, default): PNote;	
 }

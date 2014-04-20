@@ -33,7 +33,6 @@ class VComplex
 	
 	public function getSigns():VSigns
 	{
-
 		this.calculator = new VComplexSignsCalculator(this.vnotes);
 		this.signs = calculator.getSigns();
 		this.visibleSigns = calculator.getVisibleSigns();

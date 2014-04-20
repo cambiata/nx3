@@ -7,15 +7,15 @@ using nx3.ENoteValTools;
  */
 class PVoiceBeamgroupsGenerator
 {
-	var pnotes:PNotes;
+	var notes:PNotes;
 	var pattern:ENoteVals;
-	var pvoice:PVoice;
+	var voice:PVoice;
 
 	 public function new (pnotes:PNotes, pattern:ENoteVals=null)
 	 {
 		 if (pattern == null) pattern = [ENoteVal.Nv4];
-		this.pvoice = pnotes.first().pvoice;
-		 this.pnotes = pnotes;
+		this.voice = pnotes.first().voice;
+		 this.notes = pnotes;
 		this.pattern = pattern;
 		this.adjustPatternLenght();
 	 }
@@ -38,7 +38,7 @@ class PVoiceBeamgroupsGenerator
 		 var pnoteGroupIdx:Array<Int> = [];
 		 var groupIdxpnotes:Array<PNote> = [];
 		 
-		 for (pnote in this.pnotes)
+		 for (pnote in this.notes)
 		 {
 			 var beamgroupPosIdx = indexes[noteIdx];
 			 if (beamgroupPosIdx == -1)
@@ -58,7 +58,7 @@ class PVoiceBeamgroupsGenerator
 		 var noteIdx = 0;		
 		 var grouppnotes:Array<PNotes> = [];
 		 var pnotes:PNotes = null;
-		 for  (pnote in this.pnotes)
+		 for  (pnote in this.notes)
 		 {
 			 var groupIdx = pnoteGroupIdx[noteIdx];
 			 if (grouppnotes[groupIdx] == null) grouppnotes[groupIdx] = [];
@@ -93,10 +93,10 @@ class PVoiceBeamgroupsGenerator
 		 var result:Array<Int> = [];
 		 var p = 0;
 		 var curPatternPos = patternPositions[p];
-		 for (n in 0...this.pnotes.length)
+		 for (n in 0...this.notes.length)
 		 {
 			 var curNotePos = notesPositions[n];
-			 var nnote:NNote = pnotes[n].nnote;
+			 var nnote:NNote = notes[n].nnote;
 			 
 			 // Pattern index - but exlude non-beamable objects!
 			 var patternIdx = switch (nnote.type)
@@ -116,7 +116,7 @@ class PVoiceBeamgroupsGenerator
 	 {
 		 var result:Array<PosInfo> = [];
 		 var currPos = 0;
-		 for (pnote in this.pnotes)
+		 for (pnote in this.notes)
 		 {
 			 var value = pnote.nnote.value.value();
 			  var posinfo:PosInfo = { start:currPos, end:currPos +value };
@@ -143,7 +143,7 @@ class PVoiceBeamgroupsGenerator
 	 private function adjustPatternLenght()
 	 {
 		 var notesValue = 0;
-		 for (pnote in pnotes) notesValue += pnote.nnote.value.value();
+		 for (pnote in notes) notesValue += pnote.nnote.value.value();
 		 
 		 var patternValue = 0;
 		 for (value in pattern) patternValue += value.value();

@@ -11,7 +11,7 @@ class PBeamgroup
 	 
 	 public function new(pnotes:PNotes)
 	 {
-		 this.pvoice = pnotes.first().pvoice;
+		 this.voice = pnotes.first().voice;
 		 this.pnotes = pnotes;
 		 for (pnote in pnotes) pnote.setBeamgroup(this);
 	 }
@@ -37,20 +37,20 @@ class PBeamgroup
 	 
 	 public function getDirection():EDirectionUD
 	 {
-		 //if (this.direction == null) this.pvoice.ppart.getBeamgroupsDirections();
+		 //if (this.direction == null) this.voice.ppart.getBeamgroupsDirections();
 		 if (this.direction == null) 
 		 {
-			var calculator = new PPartbeamgroupsDirectionCalculator(this.pvoice.ppart);
+			var calculator = new PPartbeamgroupsDirectionCalculator(this.voice.part);
 			calculator.calculateBeamgroupsDirections();			 
-			// this.pvoice.ppart.calculateBeamgroupDirections();
+			// this.voice.ppart.calculateBeamgroupDirections();
 		 }
 		 return this.direction;
 	 }
 	 	 	 
-	 var pvoice:PVoice;
+	 var voice:PVoice;
 	 public function getPVoice():PVoice
 	 {
-		 return this.pvoice;
+		 return this.voice;
 	 }
 	 
 	 

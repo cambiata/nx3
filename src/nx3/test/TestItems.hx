@@ -6,6 +6,7 @@ import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
 import nx3.NVoice;
+import nx3.PPart;
 import nx3.QNote.QNote16;
 import nx3.QNote.QNote1;
 import nx3.QNote.QNote2;
@@ -238,6 +239,21 @@ class TestItems
 		var nbar:NBar = nbars.first();
 		var vbar = new VBar(nbar);
 		return vbar;
+	}
+	
+	static public function ppartComplex1()
+	{
+		var part = new PPart(new NPart([
+			new NVoice([
+				new QNote4([-3, -1, 0], "#"),
+			]),
+			
+			new NVoice([
+				new QNote4([1,2], "#b"),
+			]),
+			
+		]));
+		return part;
 	}
 	
 	
