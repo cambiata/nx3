@@ -8,13 +8,18 @@ import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
 import nx3.NVoice;
+import nx3.PColumnsDistancesCalculator;
 import nx3.PComplex;
 import nx3.PNote;
 import nx3.PPart;
 import nx3.PPartComplexesGenerator;
 import nx3.PVoice;
 import nx3.QNote.QLyric4;
+import nx3.QNote.QNote1;
+import nx3.QNote.QNote16;
+import nx3.QNote.QNote2;
 import nx3.QNote.QNote4;
+import nx3.QNote.QNote8;
 import nx3.QVoice;
 using cx.ArrayTools;
 using nx3.VMapTools;
@@ -146,6 +151,7 @@ class TestP extends TestCase
 		this.assertEquals(ppart.getPVoices().first().part, ppart);		
 	}	
 	
+	/*
 	public function testPPartComplexesGenerator()
 	{
 		var voice = new PVoice(new QVoice([4, 8, 8, 2]));
@@ -170,6 +176,7 @@ class TestP extends TestCase
 		this.assertEquals(complexes.third().getNotes().length, 1);
 		this.assertEquals(complexes.fourth().getNotes().length, 2);	
 	}
+	´*/
 	
 	public function testPPartComplexes2()
 	{
@@ -214,6 +221,8 @@ class TestP extends TestCase
 		this.assertEquals(complexes.fourth(), ppart.getPVoices().second().getNotes().third().getComplex());		
 	}
 	
+	
+	
 	public function testPBar()
 	{
 		var nbar =  new NBar( [new NPart([new NVoice([new NNote([new NHead(0)])])])]);
@@ -222,6 +231,65 @@ class TestP extends TestCase
 		this.assertEquals(pbar.getParts().length, 1);
 		this.assertEquals(pbar.getParts().first().bar, pbar);		
 	}		
+	
+	
+	public function testPBarColumns()
+	{
+		var pbar = TestItems.pbarColumns1();
+		var columns = pbar.getColumns();		
+		this.assertEquals(columns.length, 4);
+		this.assertEquals(columns.first().getPosition(), 0);
+		this.assertEquals(columns.first().getComplexes().first().getPosition(), 0);
+		this.assertEquals(columns.first().getComplexes().second().getPosition(), 0);
+		
+		this.assertEquals(columns.second().getPosition(), 3024);
+		this.assertEquals(columns.second().getComplexes().first(), null);
+		this.assertEquals(columns.second().getComplexes().second().getPosition(), 3024);
+		
+		this.assertEquals(columns.third().getPosition(), 6048);
+		this.assertEquals(columns.third().getComplexes().first().getPosition(), 6048);
+		this.assertEquals(columns.third().getComplexes().second(), null);		
+	}
+	
+	
+	public function testPBarColumns2()
+	{
+		
+		var pbar = TestItems.pbarColumns1();
+		var column = pbar.getParts().first().getPVoices().first().getNotes().first().getComplex().getColumn();		
+		this.assertEquals(column, pbar.getColumns().first());				
+		
+	}	
+	
+	public function testPBarColumnsDistances()
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					new QNote4(0),
+					]),
+			]),
+			new NPart([	
+				new NVoice([				
+					new QNote2(0),
+					
+					new QNote2(0),
+					
+					new QNote4(0),
+					
+				]),
+			]),			
+		]));		
+		
+		var calculator = new PColumnsDistancesCalculator(pbar);
+		calculator.calculate();
+	}
+	
+	
 
 	function rectEquals(a:Rectangle, bx:Float=-1, by:Float=-1, bwidth:Float=-1, bheight:Float=-1): Bool
 	{

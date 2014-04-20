@@ -1,4 +1,5 @@
 package nx3;
+import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
 
 /**
@@ -81,12 +82,31 @@ class PNote
 		return headsRects;
 	}
 	
+	var staveRect:Rectangle;
+	var staveRectChecked:Bool;
+	public function getStaveRect():Rectangle
+	{
+		if (staveRectChecked) return this.staveRect;
+		this.staveRect = this.getComplex().getStaveRect(this);
+		this.staveRectChecked = true;
+		return this.staveRect;
+	}
+	
+	
 	var xoffset:Null<Float>;
 	public function getXOffset():Float
 	{
 		if (xoffset != null) return xoffset;
 		xoffset = this.getComplex().getNoteXOffset(this);
 		return xoffset;
+	}
+	
+	var baserect:Rectangle;
+	public function getBaseRect():Rectangle
+	{
+		if (baserect != null) return this.baserect;
+		this.baserect =  new PBaseRectCalculator(this).getBaseRect();		
+		return this.baserect;		
 	}
 	
 	

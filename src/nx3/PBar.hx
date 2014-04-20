@@ -31,5 +31,17 @@ class PBar
 	}	
 	
 	
+	 var columns:PColumns;
+	 public function getColumns():PColumns
+	 {
+		 if (this.columns != null) return this.columns;
+		 var generator = new PColumnsGenerator(this);
+		 this.columns = generator.getColumns();
+		 /*
+		 */
+		 //this.positionsVColumns = generator.getPositionsColumns();
+		 return this.columns;
+	 }	
+	
 }
 

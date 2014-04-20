@@ -1,5 +1,8 @@
 package nx3;
+import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
+import nx3.PColumn;
+import nx3.PPart;
 using cx.ArrayTools;
 using nx3.geom.Rectangles.RectanglesTools;
 
@@ -9,10 +12,12 @@ using nx3.geom.Rectangles.RectanglesTools;
  */
 class PComplex
 {
+	var part:PPart;	
 	var position:Int;
 	public var notes(default, null) :PNotes;
-	public function new(notes:PNotes, position:Int)
+	public function new( part:PPart, notes:PNotes, position:Int)
 	{
+		this.part = part;
 		if (notes.length > 2) throw "PComplex nr of PNote(s) limited to max 2 - for now";
 		this.notes = notes;
 		for (note in this.notes) note.setComplex(this);
@@ -23,11 +28,20 @@ class PComplex
 	
 	public function getPosition():Int return this.position;
 	
+	
+	var column:PColumn;
+	public function setColumn(val:PColumn):PComplex { this.column = val; return this; }
+	public function getColumn():PColumn {
+		if (this.column != null) return this.column;		
+		this.part.bar.getColumns();
+		return this.column;
+	}
+	
+	
 	var headsrects:Rectangles;
 	public function getHeadsRects():Rectangles
 	{
 		if (headsrects != null) return headsrects;
-		
 		var firstrects  =  this.notes.first().getHeadsRects();		
 		if (this.notes.length == 1) return firstrects;		
 		var secondrects = this.notes.second().getHeadsRects().copy();		
@@ -71,12 +85,60 @@ class PComplex
 		return this.visiblesigns;
 	}
 	
+	var stavesrects:Rectangles;
+	public function getStavesRects():Rectangles
+	{
+		if (this.stavesrects != null) return this.stavesrects;
+		this.stavesrects = [];
+		for (note in this.notes)
+		{
+			var rect = this.getStaveRect(note);
+			if (rect != null) this.stavesrects.push(rect);
+		}
+		for (note in this.notes)
+		{
+			var flagrect = new PStaveRectCalculator(note).getStaveRect();
+			if (flagrect != null) this.stavesrects.push(flagrect);
+		}
+		return this.stavesrects;
+	}
+	
+	public function getStaveRect(note:PNote): Rectangle
+	{
+		return new PStaveRectCalculator(note).getStaveRect();		
+	}
 	
 	
+	var baserect:Rectangle;
+	public function getBaseRect():Rectangle
+	{
+		if (this.baserect != null) return this.baserect;
+		this.baserect = new Rectangle(0, 0, 0, 0);
+		for (note in this.getNotes())
+		{			
+			this.baserect = this.baserect.union(note.getBaseRect());
+		}		
+		return this.baserect;
+	}	
+	
+	var allrects:Rectangles;
+	public  function getAllRects():Rectangles
+	{
+		if (this.allrects != null) return this.allrects;
+		this.allrects = [];		
+		this.allrects = RectanglesTools.concat(this.allrects, this.getHeadsRects());
+		this.allrects = RectanglesTools.concat(this.allrects, this.getStavesRects());
+		this.allrects = RectanglesTools.concat(this.allrects, this.getSignsRects());
+		// ... MORE!			
+		return this.allrects;
+	}	
 	
 	
-	/*
-	var signs:VSigns;
-	var visibleSigns:VSigns;
-	*/
+	public function toString():String
+	{
+		var str = "PComplex: \r" ;
+		for (note in this.getNotes()) str += "- Note: " + Std.string(note.nnote) + "\r";
+		return str;
+	}
+	
 }

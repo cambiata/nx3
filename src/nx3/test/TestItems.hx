@@ -6,6 +6,7 @@ import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
 import nx3.NVoice;
+import nx3.PBar;
 import nx3.PPart;
 import nx3.QNote.QNote16;
 import nx3.QNote.QNote1;
@@ -230,7 +231,6 @@ class TestItems
 	
 	static public function vbarQSyntax1()
 	{
-		//var str = '	f#8 + c  g16 a e f# % = e2';
 		var str = ' b % c# ';
 		var parser = new QuickSyntaxParser(str);
 		var qsnotes = parser.parseToQSyntaxNotes();
@@ -245,16 +245,76 @@ class TestItems
 	{
 		var part = new PPart(new NPart([
 			new NVoice([
-				new QNote4([-3, -1, 0], "#"),
+				new QNote4([ -3, -1, 0], "#"),
+				
+				new QNote4([-1, -2]),
+				
+				new QNote4(2, 'b'),
+				
 			]),
 			
 			new NVoice([
-				new QNote4([1,2], "#b"),
+				new QNote4([0, 2], "#b"),
+				
+				new QNote4([2, 3]),
 			]),
 			
 		]));
 		return part;
 	}
+	
+	static public function pbarColumns1():PBar
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote2(),
+					new QNote4(),
+					new QNote4(),
+					]),
+				new NVoice([				
+					new QNote1(2),
+					]),
+					
+					
+			]),
+			new NPart([	
+				new NVoice([				
+					new QNote4(),
+					new QNote2(),
+					new QNote4(),
+				]),
+			]),			
+			
+		]));				
+		return pbar;				
+		
+	}
+	
+	static public function pbarColumnsDistances():PBar
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(),					
+					new QNote4(),
+					new QNote4(),					
+					]),
+
+					
+			]),
+			new NPart([	
+				new NVoice([				
+					new QNote2(),
+					new QNote4(),
+				]),
+			]),			
+			
+		]));				
+		return pbar;				
+		
+	}	
+	
 	
 	
 }

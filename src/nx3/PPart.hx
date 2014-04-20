@@ -15,6 +15,12 @@ class PPart
 		this.npart = npart;		
 	}		
 	
+	public function getBar():PBar
+	{
+		return this.bar;
+	}
+	
+	
 	var voices:PVoices;
 	public function getPVoices():PVoices
 	{
@@ -34,7 +40,7 @@ class PPart
 	public function getComplexes():PComplexes
 	{
 		if (this.complexes != null) return this.complexes;
-		var generator = new  PPartComplexesGenerator(this.getPVoices());
+		var generator = new  PPartComplexesGenerator(this);
 		this.complexes = generator.getComplexes();
 		return this.complexes;
 	}	
@@ -47,7 +53,7 @@ class PPart
 		for (complex in this.getComplexes())
 		{
 			this.positionsComplexes.set(complex.getPosition(), complex);
-		}
+		}		
 		return this.positionsComplexes;
 	}
 	

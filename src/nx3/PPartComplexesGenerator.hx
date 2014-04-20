@@ -1,6 +1,8 @@
 package nx3;
 import haxe.ds.IntMap.IntMap;
+import nx3.PPart;
 using nx3.VMapTools;
+using cx.ArrayTools;
 /**
  * ...
  * @author Jonas Nyström
@@ -10,10 +12,14 @@ using nx3.VMapTools;
 
  class PPartComplexesGenerator 
  {
+	 var part:PPart;
+	 
 	 public var vvoices(default, null) :PVoices;
-	 public function new(vvoices: PVoices) 
+	 public function new(part:PPart) 
 	 { 
-		this.vvoices = vvoices;
+		 this.part = part;
+		this.vvoices = part.getPVoices();
+		//this.part = this.vvoices.first().part;
 	  }
 	  
 	  var complexes:PComplexes;
@@ -50,12 +56,14 @@ using nx3.VMapTools;
 		  for (pos in poskeys)
 		  {
 			  var vnotes = positions.get(pos);
-			  var vcomplex = new PComplex(vnotes, pos);
+			  var vcomplex = new PComplex( this.part, vnotes, pos);
 			  this.complexes.push(vcomplex);
 		  }
 	  }
 	  
 	  var positionsMap: Map<Int, PNotes>;
+	  
+	  
 	  function calcPositionsMap()
 	  {
 		  var positionsMap = new Map<Int, PNotes>();

@@ -64,4 +64,10 @@ class RectanglesTools
 		return r;		
 	}
 	
+	static public function concat(rectsA:Rectangles, rectsB:Rectangles)
+	{
+		for (r in rectsB)	rectsA.push(r);
+		return rectsA;
+	}
+	
 }
