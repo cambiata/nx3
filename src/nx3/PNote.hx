@@ -76,7 +76,7 @@ class PNote
 	}
 	
 	
-	
+	/*
 	var pheadsPlacements:PHeadPlacements;
 	public function getPHeadsPlacements():PHeadPlacements
 	{
@@ -87,14 +87,16 @@ class PNote
 		this.pheadsPlacements = calculator.getHeadsPlacements();
 		return this.pheadsPlacements;
 	}	
+	*/
 	
-	var headsRectangles:Rectangles;
-	public function getHeadsRectangles():Rectangles
+	
+	var headsRects:Rectangles;
+	public function getHeadsRects():Rectangles
 	{
-		if (this.headsRectangles != null) return this.headsRectangles;
+		if (this.headsRects != null) return this.headsRects;
 		var calculator = new PNoteheadsRectsCalculator(this);		
-		this.headsRectangles = calculator.getHeadsRects();
-		return headsRectangles;
+		this.headsRects = calculator.getHeadsRects();
+		return headsRects;
 		
 	}
 	

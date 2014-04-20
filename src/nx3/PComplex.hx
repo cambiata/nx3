@@ -1,4 +1,5 @@
 package nx3;
+import nx3.geom.Rectangles;
 
 /**
  * ...
@@ -20,6 +21,11 @@ class PComplex
 	
 	public function getPosition():Int return this.position;
 	
+	public function getHeadsRects():Rectangles
+	{
+		var headsrects  = new Rectangles();
+		return null;
+	}
 	
 	/*
 	var signs:VSigns;

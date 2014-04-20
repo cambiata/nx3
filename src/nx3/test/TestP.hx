@@ -2,12 +2,14 @@ package nx3.test;
 
 import haxe.unit.TestCase;
 import nx3.EDirectionUD;
+import nx3.geom.Rectangle;
 import nx3.NBar;
 import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
 import nx3.NVoice;
 import nx3.PComplex;
+import nx3.PNote;
 import nx3.PPart;
 import nx3.PPartComplexesGenerator;
 import nx3.PVoice;
@@ -16,6 +18,7 @@ import nx3.QNote.QNote4;
 import nx3.QVoice;
 using cx.ArrayTools;
 using nx3.VMapTools;
+using cx.MathTools;
 using Lambda;
 /**
  * ...
@@ -32,6 +35,37 @@ class TestP extends TestCase
 		this.assertEquals(pnote.nnote.nheads.length, 1);
 		this.assertEquals(pnote.getPHeads().length, 1);
 		this.assertEquals(pnote.getPHeads().first().pnote, pnote);
+	}
+	
+	public function testPNoteHeadsRects()
+	{
+		var part = new PPart(new NPart([new NVoice([new NNote([
+			new NHead(0),
+		])])]));
+		var note = part.getPVoices().first().getPNotes().first();
+		var rects = note.getHeadsRects();
+		this.assertEquals(rects.length, 1);
+		this.assertTrue(rectEquals(rects.first(), -1.6, -1.0, 3.2, 2.0));
+
+		var part = new PPart(new NPart([new NVoice([
+			new QNote4([0,-1]),
+		])]));
+		var note0 = part.getPVoices().first().getPNotes().first();
+		var rects0 = note0.getHeadsRects();
+		this.assertEquals(rects0.length, 2);
+		this.assertEquals(note0.getDirection(), EDirectionUD.Down);
+		this.assertTrue(rectEquals(rects0.first(), -1.6, -2.0, 3.2, 2.0));
+		this.assertTrue(rectEquals(rects0.second(), -4.8, -1, 3.2, 2.0));
+		
+		var part = new PPart(new NPart([new NVoice([
+			new QNote4([0,1]),
+		])]));
+		var note0 = part.getPVoices().first().getPNotes().first();
+		var rects0 = note0.getHeadsRects();
+		this.assertEquals(rects0.length, 2);
+		this.assertEquals(note0.getDirection(), EDirectionUD.Up);
+		this.assertTrue(rectEquals(rects0.first(), 1.6, -1, 3.2, 2.0));
+		this.assertTrue(rectEquals(rects0.second(), -1.6, 0, 3.2, 2.0));
 	}
 	
 	public function testPVoice()
@@ -135,8 +169,6 @@ class TestP extends TestCase
 		this.assertEquals(complexes.second().getPNotes().length, 2);
 		this.assertEquals(complexes.third().getPNotes().length, 1);
 		this.assertEquals(complexes.fourth().getPNotes().length, 2);	
-		/*
-	*/
 	}
 	
 	public function testPPartComplexes2()
@@ -159,7 +191,6 @@ class TestP extends TestCase
 		this.assertEquals(complexes.fourth().getPNotes().length, 2);
 		this.assertEquals(complexes.fourth(), ppart.getPVoices().first().getPNotes().fourth().getComplex());
 		this.assertEquals(complexes.fourth(), ppart.getPVoices().second().getPNotes().third().getComplex());		
-
 		
 		var ppart = new PPart(new NPart([
 			new QVoice([4, 2, 4]),
@@ -191,6 +222,15 @@ class TestP extends TestCase
 		this.assertEquals(pbar.getPParts().length, 1);
 		this.assertEquals(pbar.getPParts().first().pbar, pbar);		
 	}		
+
+	function rectEquals(a:Rectangle, bx:Float=-1, by:Float=-1, bwidth:Float=-1, bheight:Float=-1): Bool
+	{
+		var result:Bool = false;
+			if (bwidth == -1 || bheight==-1) throw "Rect comparison error";
+			result =  MathTools.floatEquals(a.x, bx) && MathTools.floatEquals(a.y, by) && MathTools.floatEquals(a.width, bwidth) && MathTools.floatEquals(a.height, bheight);		
+			if (!result) trace(['Rectangle not equal', Std.string(a) , Std.string(new Rectangle(bx, by, bwidth, bheight))]);
+			return result;
+	}
 	
 	
 }	

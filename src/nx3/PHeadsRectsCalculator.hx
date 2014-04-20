@@ -1,4 +1,5 @@
 package nx3;
+import nx3.EDirectionUD;
 import nx3.ENoteType;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
@@ -15,12 +16,14 @@ class PHeadsRectsCalculator
 	var placements:PHeadPlacements;
 	var notevalue:ENoteVal;
 	var notetype:ENoteType;
+	var direction:EDirectionUD;
 	
-	public function new(vheads:PHeads, placements:PHeadPlacements, notevalue:ENoteVal )
+	public function new(note:PNote, ?direction:EDirectionUD = null/*, vheads:PHeads, placements:PHeadPlacements, notevalue:ENoteVal*/ )
 	{
-		this.vheads = vheads;
-		this.placements = placements;
-		this.notevalue = notevalue;
+		this.direction = (direction != null) ? direction : note.getDirection();
+		this.vheads = note.getPHeads();
+		this.placements = new PHeadPlacementsCalculator(this.vheads, this.direction).getHeadsPlacements();
+		this.notevalue = note.nnote.value;
 	}
 	
 	public function getHeadsRects():Rectangles
@@ -90,8 +93,5 @@ class PHeadsRectsCalculator
 					return new Rectangle(-2, -2, 4, 4);
 		}
 		return new Rectangle(-2, -2, 4, 4);
-		
 	}
-	
-	
 }

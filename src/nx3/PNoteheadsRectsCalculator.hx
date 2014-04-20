@@ -17,15 +17,15 @@ class PNoteheadsRectsCalculator
 	public function new(note:PNote) 
 	{
 			this.note = note;
-			this.heads = note.getPHeads();	
-			this.placements = note.getPHeadsPlacements();
+			//this.heads = note.getPHeads();	
+			//this.placements = note.getPHeadsPlacements();
 	}
 	
 	public function getHeadsRects():Rectangles
 	{
 		return switch this.note.nnote.type
 		{
-			case ENoteType.Note(h, v, a, a2): new PHeadsRectsCalculator(this.heads, this.placements, note.nnote.value).getHeadsRects();
+			case ENoteType.Note(h, v, a, a2): new PHeadsRectsCalculator(this.note).getHeadsRects();
 			//case ENoteType.Pause(l): 	new VNoteHeadsRectsPausesCalculator(vnote).getHeadsRects();
 			//case ENoteType.Lyric(text, o, c, font): new VNoteHeadsRectsLyricsCalculator(vnote, text, font).getHeadsRects();
 			//case ENoteType.Tpl:new VNoteHeadsRectsTplCalculator(vnote).getHeadsRects();
