@@ -1,4 +1,5 @@
 package nx3;
+import nx3.geom.Rectangles;
 
 /**
  * ...
@@ -73,5 +74,29 @@ class PNote
 		this.complex = val;
 		return this;
 	}
+	
+	
+	
+	var pheadsPlacements:PHeadPlacements;
+	public function getPHeadsPlacements():PHeadPlacements
+	{
+		if (this.pheadsPlacements != null) return this.pheadsPlacements;
+		if (this.pheads == null) this.getPHeads();
+		
+		var calculator = new PHeadPlacementsCalculator(this.pheads, this.getDirection());
+		this.pheadsPlacements = calculator.getHeadsPlacements();
+		return this.pheadsPlacements;
+	}	
+	
+	var headsRectangles:Rectangles;
+	public function getHeadsRectangles():Rectangles
+	{
+		if (this.headsRectangles != null) return this.headsRectangles;
+		var calculator = new PNoteheadsRectsCalculator(this);		
+		this.headsRectangles = calculator.getHeadsRects();
+		return headsRectangles;
+		
+	}
+	
 	
 }
