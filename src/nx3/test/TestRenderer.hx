@@ -1,7 +1,15 @@
 package nx3.test;
 import nx3.geom.Rectangle;
+import nx3.NBar;
+import nx3.NPart;
+import nx3.NVoice;
+import nx3.PBar;
 import nx3.PComplexMinDistCalculator;
 import nx3.PPart;
+import nx3.QNote.QLyric4;
+import nx3.QNote.QNote2;
+import nx3.QNote.QNote4;
+import nx3.QNote.QNote8;
 import nx3.render.Renderer;
 import nx3.render.TargetSprite;
 using cx.ArrayTools;
@@ -73,33 +81,47 @@ class TestRenderer
 		target.rectangle(x+distance, 100, complexB.getBaseRect(), 1, 0x00FFFF);
 		target.rectangles(x+distance, 100, complexB.getAllRects(), 1, 0x00FF00);
 		
-
+		var bar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote8(1),
+					new QNote8(0),
+					new QNote2(0),
+					new QNote4([-3,-2], 'b'),
+					]),
+			]),
+			new NPart([	
+				new NVoice([				
+					new QNote2(1),					
+					//new QNote4([ -1, 0], '#b'),						
+					new QNote4(0),					
+					new QNote4(0),					
+					new QNote4(0),					
+				]),
+			]),			
+		]));		
 		
-		/*	
-		var bar = TestItems.pbarColumns1();
-		var ox = 100;
-		var oy = 300;
-		var x = ox;
+		var calculator = new PColumnsDistancesCalculator(bar);
+		calculator.calculate();				
+		
+		var ox = 100.0;
+		var oy = 300.0;		
+		var cidx = 0;
 		for (column in bar.getColumns())
-		{
-			trace(column.getPosition());
+		{			
+			var x = ox + column.getXPosition() * target.getScaling().unitX;
 			var y = oy;
+			var cplix = 0;
 			for (complex in column.getComplexes())
 			{
+				y  = oy + cplix * 120;
+				cplix++;
 				if (complex == null) continue;
-				target.rectangles(x, y,  complex.getHeadsRects(), 1, 0x0000ff);		
-				target.rectangles(x, y, complex.getSignsRects(), 1, 0xff0000);		
-				target.rectangles(x, y, complex.getStavesRects(), 1, 0x00ff00);				
-				
-				
-				target.rectangle(x, y, complex.getBaseRect(), 1, 0xFF0000);
-				
-				
-				y += 80;
+				target.rectangles(x, y, complex.getAllRects(), 1, 0xFF0000);
+				target.rectangle(x, y, complex.getBaseRect(), 1, 0x00FF00);
 			}
-			x += 50;
-		}
-		*/
+		}		
 	}
 	
 }

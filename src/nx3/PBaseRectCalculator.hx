@@ -10,7 +10,10 @@ using nx3.ENoteValTools;
 class PBaseRectCalculator
 {
 	var note:PNote;
-
+	
+	static inline var BASERECT_HEIGHT:Float = 3;
+	static inline var BASERECT_HEIGHT_X_2:Float = BASERECT_HEIGHT * 2;
+	
 	public function new(note:PNote) 
 	{
 		this.note = note;
@@ -23,11 +26,11 @@ class PBaseRectCalculator
 			case ENoteType.Note(h, v, a, atr):
 				switch this.note.nnote.value.head()
 				{
-					case EHeadValueType.HVT1: new Rectangle( -Constants.HEAD_HALFWIDTH_WIDE, -5, Constants.HEAD_HALFWIDTH_WIDE * 2, 10);
-					default:  new Rectangle( -Constants.HEAD_HALFWIDTH_NORMAL, -5, Constants.HEAD_HALFWIDTH_NORMAL * 2, 10);				
+					case EHeadValueType.HVT1: new Rectangle( -Constants.HEAD_HALFWIDTH_WIDE, -BASERECT_HEIGHT, Constants.HEAD_HALFWIDTH_WIDE * 2, BASERECT_HEIGHT_X_2);
+					default:  new Rectangle( -Constants.HEAD_HALFWIDTH_NORMAL, -BASERECT_HEIGHT, Constants.HEAD_HALFWIDTH_NORMAL * 2, BASERECT_HEIGHT_X_2);				
 				}
 		
-			default: new Rectangle( -4, -5, 8, 10);
+			default: new Rectangle( -4, -BASERECT_HEIGHT, 8, BASERECT_HEIGHT_X_2);
 		}
 	}
 	

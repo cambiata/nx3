@@ -21,7 +21,7 @@ class PColumnsDistancesCalculator
 		this.setFirstLeftComplexes();
 		if (this.bar.getColumns().length < 2) return;
 
-		var leftColumn:PColumn;
+		var leftColumn:PColumn = null;
 		var xposition = 0.0;
 		for (columnIdx in 0...this.bar.getColumns().length)
 		{
@@ -29,7 +29,7 @@ class PColumnsDistancesCalculator
 			
 			if (columnIdx > 0)
 			{
-				trace('COLUMN $columnIdx');
+				// trace('COLUMN $columnIdx');
 				
 				var leftComplexes = leftColumn.getComplexes();
 				var rightComplexes = rightColumn.getComplexes();				
@@ -40,14 +40,14 @@ class PColumnsDistancesCalculator
 					var leftComplex = leftComplexes[complexIdx];					
 					var rightComplex = rightComplexes[complexIdx];										
 					var distance = getComplexDistances(columnIdx, complexIdx, leftComplex, rightComplex);
-					//trace(distance);
+					//// trace(distance);
 					columndistance = Math.max(columndistance, distance);										
 				}
 				columndistance = columndistance.round2();
 				rightColumn.setDistance(columndistance);
 				xposition += columndistance;
 				rightColumn.setXPosition(xposition);
-				trace('- column distance: $columndistance / $xposition');
+				// trace('- column distance: $columndistance / $xposition');
 			}
 			
 			leftColumn = rightColumn;
@@ -70,15 +70,15 @@ class PColumnsDistancesCalculator
 	
 	function getComplexDistances(columnIdx:Int, complexIdx:Int, leftComplex:PComplex, rightComplex:PComplex): Float
 	{
-		trace('CHECK DISTANCES column/complex: $columnIdx / $complexIdx ');
+		// trace('CHECK DISTANCES column/complex: $columnIdx / $complexIdx ');
 		
 		if (rightComplex == null) 
 		{
-			trace(' - rightComplex == NULL!');
+			// trace(' - rightComplex == NULL!');
 			if (leftComplex != null)
 			{
 				var leftColumnIdx = columnIdx - 1;
-				trace(' - set left column idx to $complexIdx / $leftColumnIdx');
+				// trace(' - set left column idx to $complexIdx / $leftColumnIdx');
 				this.prevLeftComplex.set(complexIdx, { leftComplex:leftComplex, columnPos: -123, columnIdx: leftColumnIdx } );
 			}
 			
@@ -87,25 +87,37 @@ class PColumnsDistancesCalculator
 		
 		if (leftComplex == null)
 		{
-			trace(' - leftComplex == NULL!');
+			// trace(' - leftComplex == NULL!');
 			var currentLeftColumIdx = columnIdx - 1;			
 			var prevLeftColumnIdx = this.prevLeftComplex.get(complexIdx).columnIdx;
 			
 			var currentLeftXPos = this.bar.getColumns()[currentLeftColumIdx].getXPosition();
 			var prevLeftXPos = this.bar.getColumns()[prevLeftColumnIdx].getXPosition();
 			
-			trace([prevLeftColumnIdx, currentLeftColumIdx]);
+			// trace([prevLeftColumnIdx, currentLeftColumIdx]);
 			var distanceBenefit = currentLeftXPos -prevLeftXPos;
-			trace([prevLeftXPos, currentLeftXPos, distanceBenefit]);
+			// trace([prevLeftXPos, currentLeftXPos, distanceBenefit]);
+			var currentLeftComplex = this.prevLeftComplex.get(complexIdx).leftComplex;
+			var distance = new PComplexMinDistCalculator().getDistance(currentLeftComplex, rightComplex);
 			
-			return 10;			
+			// trace('Current Left complex rects:');
+			// trace(currentLeftComplex.getAllRects());			
+			
+			// trace('Right complex rects:');
+			// trace(rightComplex.getAllRects());
+			
+			
+			// trace('calculated distance $distance - disance benefit $distanceBenefit');
+			var actualDistance = Math.max(0, distance - distanceBenefit);
+			return actualDistance;			
 		}
 		
 		var leftColumnIdx = columnIdx - 1;
-		trace(' - normal - set left column idx to $complexIdx / $leftColumnIdx');
+		// trace(' - normal - set left column idx to $complexIdx / $leftColumnIdx');
 		var distance = new PComplexMinDistCalculator().getDistance(leftComplex, rightComplex);		
 		
 		this.prevLeftComplex.set(complexIdx, { leftComplex:leftComplex, columnPos: -123, columnIdx: leftColumnIdx } );
+		
 		
 		
 		return distance;
