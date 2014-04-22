@@ -1,5 +1,6 @@
 package nx3;
 import nx3.geom.Rectangle;
+import nx3.geom.Rectangles;
 import nx3.PNote;
 using nx3.ENoteValTools;
 
@@ -35,18 +36,38 @@ class PStaveRectCalculator
 		{
 			rect = new Rectangle( -headw, note.nnote.getTopLevel(), headw, Constants.STAVE_BASIC_LENGTH);
 		}		
-		
 		rect.offset(this.note.getXOffset(), 0);
-		
 		return rect;
-		
 	}
 	
 	public function getFlagRect():Rectangle
 	{
+			if (this.note.nnote.value.beaminglevel() < 1) return null;
+			var beamgroup = note.getBeamgroup();
+			//-----------------------------------------------------------------------------------------
+			// flag rect
+			if (beamgroup != null && beamgroup.pnotes.length == 1)
+			{
+				if (note.nnote.value.beaminglevel() > 0 ) 
+				{
+					var headw:Float = switch this.note.nnote.value.head()
+					{
+						case EHeadValueType.HVT1: Constants.HEAD_HALFWIDTH_WIDE;
+						default: Constants.HEAD_HALFWIDTH_NORMAL;
+					}							
+					var rect:Rectangle = null; 
+					if (note.getDirection() == EDirectionUD.Up) 
+					{				
+						rect = new Rectangle(headw, note.nnote.getBottomLevel() - Constants.STAVE_BASIC_LENGTH, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
+					}
+					else
+					{
+						rect = new Rectangle( -headw, note.nnote.getTopLevel() + Constants.STAVE_BASIC_LENGTH - Constants.FLAG_HEIGHT, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
+					}			
+					rect.offset(this.note.getXOffset(), 0);					
+					return rect;
+				}		
+			}		
 		return null;
-		
 	}
-	
-	
 }

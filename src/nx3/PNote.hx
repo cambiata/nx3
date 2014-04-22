@@ -1,6 +1,7 @@
 package nx3;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
+using nx3.geom.Rectangles.RectanglesTools;
 
 /**
  * ...
@@ -60,7 +61,7 @@ class PNote
 	public function getComplex():PComplex
 	{
 		if (this.complex == null)
-		{
+		{			
 			this.voice.part.getComplexes();
 		}
 		if (this.complex == null) throw "Shouldn't happen";
@@ -78,7 +79,7 @@ class PNote
 	{
 		if (this.headsRects != null) return this.headsRects;
 		var calculator = new PNoteheadsRectsCalculator(this);		
-		this.headsRects = calculator.getHeadsRects();
+		this.headsRects = calculator.getHeadsRects();		
 		return headsRects;
 	}
 	
@@ -92,6 +93,25 @@ class PNote
 		return this.staveRect;
 	}
 	
+	var staveXPosition:Null<Float>;
+	public function getStaveXPosition():Float
+	{
+		if (this.staveXPosition != null) return this.staveXPosition;
+		
+		var staverect = this.getStaveRect();
+		if (staverect == null) return 0;
+
+		this.staveXPosition = (this.getDirection() == EDirectionUD.Up) ? staverect.width : staverect.x;
+		return this.staveXPosition;
+	}
+
+	var baserect:Rectangle;
+	public function getBaseRect():Rectangle
+	{
+		if (baserect != null) return this.baserect;
+		this.baserect =  new PBaseRectCalculator(this).getBaseRect();		
+		return this.baserect;		
+	}
 	
 	var xoffset:Null<Float>;
 	public function getXOffset():Float
@@ -101,14 +121,23 @@ class PNote
 		return xoffset;
 	}
 	
-	var baserect:Rectangle;
-	public function getBaseRect():Rectangle
+	var xposition:Null<Float>;
+	public function getXPosition():Float
 	{
-		if (baserect != null) return this.baserect;
-		this.baserect =  new PBaseRectCalculator(this).getBaseRect();		
-		return this.baserect;		
+		if (this.xposition != null) return this.xposition;
+		this.xposition = this.getComplex().getXPosition() + this.getXOffset();
+		return this.xposition;		
 	}
 	
+	/*
+	var yposition:Null<Float>;
+	public function getYPosition():Float
+	{
+		if (this.yposition != null) return this.yposition;
+		this.yposition = this.getComplex().getYPosition();
+		return this.xposition;		
+	}	
+	*/
 	
 	
 	

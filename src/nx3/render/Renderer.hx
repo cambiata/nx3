@@ -8,7 +8,12 @@ import nx3.NBar;
 import nx3.NPart;
 import nx3.NVoice;
 import nx3.ENoteType;
+import nx3.PBar;
+import nx3.PColumnsDistancesCalculator;
 import nx3.QNote.QNote16;
+import nx3.QNote.QNote2;
+import nx3.QNote.QNote4;
+import nx3.QNote.QNote8;
 import nx3.QVoice;
 import nx3.render.ITarget;
 import nx3.render.scaling.TScaling;
@@ -29,20 +34,13 @@ using nx3.ENoteValTools;
  * ...
  * @author Jonas Nyström
  */
-class Renderer
+class Renderer extends RendererBase
 {
-	var target:ITarget;
 	var partDistance:Int;
-	var targetY:Float;
-	var targetX:Float;
-	var scaling:TScaling;
 
 	public function new(target:ITarget, targetX:Float, targetY:Float) 
 	{
-		this.target = target;
-		this.targetX = targetX;
-		this.targetY = targetY;
-		this.scaling = this.target.getScaling();
+		super(target, targetX, targetY);
 		this.partDistance = Std.int(16 * scaling.unitY);
 	}
 	
@@ -241,8 +239,7 @@ class Renderer
 				{
 					this.target.shape(x+rect.x *scaling.unitX, y + (rect.y + svginfo.y) * scaling.unitY, svginfo.xmlStr);
 				}				
-		}
-		
+		}		
 	}	
 	
 	public function beamgroup(x:Float, y:Float, beamgroup:VBeamgroup, points:TPoints, direction:EDirectionUD):Void 
@@ -312,17 +309,24 @@ class Renderer
 			var delta:Float = (midPoint.x - leftPoint.x) / (rightPoint.x - leftPoint.x);
 			var midTipY = leftTipY + (rightTipY - leftTipY) * delta;
 			this.target.line(midPoint.x, midPoint.y + midInnerY, midPoint.x, midPoint.y + midTipY, 1, 0x000000);
-			
-			
-			
 		}		
-		
 	}	
 	
 	public function getTarget():ITarget
 	{
 		return this.target;
 	}
+	
+	public function renderPBar(bar:PBar, newX:Float=-1, newY:Float=-1)
+	{
+		if (newX != -1) this.targetX = newX;
+		if (newY != -1) this.targetY = newY;	
+		this.pbar(bar);
+		
+	}
+	
+
+	
 	
 	
 }

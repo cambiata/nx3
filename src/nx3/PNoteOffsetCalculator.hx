@@ -23,6 +23,12 @@ class PNoteOffsetCalculator
 		var secondrects =  this.complex.notes.second().getHeadsRects().copy();		
 		var secondoffset = firstrects.getXIntersection(secondrects);			
 		
+		var firstnote = this.complex.getNotes().first();
+		
+		if (note.nnote.getTopLevel() - firstnote.nnote.getBottomLevel()  == 1)
+		secondoffset = secondoffset * Constants.COMPLEX_COLLISION_CHORD_INTERSECTION; // .7;
+		
+		
 		return secondoffset;
 	}
 	

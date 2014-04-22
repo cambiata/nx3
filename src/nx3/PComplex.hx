@@ -28,10 +28,12 @@ class PComplex
 	
 	public function getPosition():Int return this.position;
 	
+	public function getPart():PPart return this.part;
 	
 	var column:PColumn;
 	public function setColumn(val:PColumn):PComplex { this.column = val; return this; }
-	public function getColumn():PColumn {
+	public function getColumn():PColumn 
+	{
 		if (this.column != null) return this.column;		
 		this.part.bar.getColumns();
 		return this.column;
@@ -97,7 +99,7 @@ class PComplex
 		}
 		for (note in this.notes)
 		{
-			var flagrect = new PStaveRectCalculator(note).getStaveRect();
+			var flagrect = new PStaveRectCalculator(note).getFlagRect();
 			if (flagrect != null) this.stavesrects.push(flagrect);
 		}
 		return this.stavesrects;
@@ -133,6 +135,32 @@ class PComplex
 		return this.allrects;
 	}	
 	
+	var xposition:Null<Float>;
+	public function getXPosition():Float
+	{
+		if (this.xposition != null) return this.xposition;		
+		
+		// TODO - check why this is needed...
+		this.getHeadsRects();
+		
+		this.xposition = this.getColumn().getXPosition();
+		return this.xposition;		
+	}	
+	
+	public function getIndex():Int
+	{
+		return this.part.getComplexes().indexOf(this);
+	}
+
+	/*
+	var yposition:Null<Float>;
+	public function getYPosition():Float
+	{
+		if (this.yposition != null) return this.yposition;
+		this.yposition = this.part.getYPosition();
+		return this.yposition;		
+	}	
+	*/
 	
 	public function toString():String
 	{

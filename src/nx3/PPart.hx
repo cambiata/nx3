@@ -13,6 +13,7 @@ class PPart
 	public function new(npart:NPart)
 	{
 		this.npart = npart;		
+		this.value = 0;
 	}		
 	
 	public function getBar():PBar
@@ -22,7 +23,7 @@ class PPart
 	
 	
 	var voices:PVoices;
-	public function getPVoices():PVoices
+	public function getVoices():PVoices
 	{
 		if (this.voices != null) return this.voices;
 		this.voices = [];		
@@ -57,5 +58,26 @@ class PPart
 		return this.positionsComplexes;
 	}
 	
+	public function getIndex():Int
+	{
+		return this.bar.getParts().indexOf(this);
+	}
+	
+	public function getYPosition():Float
+	{
+		return this.getIndex() * 20;
+	}
+	
+	var value:Int;
+	public function getValue():Int
+	{
+		if (value != 0) return this.value;
+		for (voice in this.getVoices())
+		{
+			this.value = Std.int(Math.max(this.value, voice.getValue()));
+		}
+		return this.value;
+	}
+
 	
 }

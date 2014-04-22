@@ -47,7 +47,7 @@ class TestP extends TestCase
 		var part = new PPart(new NPart([new NVoice([new NNote([
 			new NHead(0),
 		])])]));
-		var note = part.getPVoices().first().getNotes().first();
+		var note = part.getVoices().first().getNotes().first();
 		var rects = note.getHeadsRects();
 		this.assertEquals(rects.length, 1);
 		this.assertTrue(rectEquals(rects.first(), -1.6, -1.0, 3.2, 2.0));
@@ -55,7 +55,7 @@ class TestP extends TestCase
 		var part = new PPart(new NPart([new NVoice([
 			new QNote4([0,-1]),
 		])]));
-		var note0 = part.getPVoices().first().getNotes().first();
+		var note0 = part.getVoices().first().getNotes().first();
 		var rects0 = note0.getHeadsRects();
 		this.assertEquals(rects0.length, 2);
 		this.assertEquals(note0.getDirection(), EDirectionUD.Down);
@@ -65,7 +65,7 @@ class TestP extends TestCase
 		var part = new PPart(new NPart([new NVoice([
 			new QNote4([0,1]),
 		])]));
-		var note0 = part.getPVoices().first().getNotes().first();
+		var note0 = part.getVoices().first().getNotes().first();
 		var rects0 = note0.getHeadsRects();
 		this.assertEquals(rects0.length, 2);
 		this.assertEquals(note0.getDirection(), EDirectionUD.Up);
@@ -119,9 +119,9 @@ class TestP extends TestCase
 			new QVoice([8,8], [1, 1]),
 		]));	
 		
-		this.assertEquals(vpart.getPVoices().first().getBeamgroups().first().getDirection(), EDirectionUD.Up);
-		this.assertEquals(vpart.getPVoices().first().getBeamgroups().second().getDirection(), EDirectionUD.Down);
-		this.assertEquals(vpart.getPVoices().second().getBeamgroups().first().getDirection(), EDirectionUD.Down);
+		this.assertEquals(vpart.getVoices().first().getBeamgroups().first().getDirection(), EDirectionUD.Up);
+		this.assertEquals(vpart.getVoices().first().getBeamgroups().second().getDirection(), EDirectionUD.Down);
+		this.assertEquals(vpart.getVoices().second().getBeamgroups().first().getDirection(), EDirectionUD.Down);
 	}	
 
 	public function testPVoiceNoteDirections()
@@ -131,12 +131,12 @@ class TestP extends TestCase
 			new QVoice([8,8], [1, 1]),
 		]));	
 		
-		var voice0 = vpart.getPVoices().first();
+		var voice0 = vpart.getVoices().first();
 		this.assertEquals(voice0.getNotes().first().getDirection(), EDirectionUD.Up);
 		this.assertEquals(voice0.getNotes().second().getDirection(), EDirectionUD.Up);
 		this.assertEquals(voice0.getNotes().third().getDirection(), EDirectionUD.Down);
 		this.assertEquals(voice0.getNotes().fourth().getDirection(), EDirectionUD.Down);
-		var voice1 = vpart.getPVoices().second();
+		var voice1 = vpart.getVoices().second();
 		this.assertEquals(voice1.getNotes().first().getDirection(), EDirectionUD.Down);
 		this.assertEquals(voice1.getNotes().second().getDirection(), EDirectionUD.Down);
 	}	
@@ -147,8 +147,8 @@ class TestP extends TestCase
 		var npart =  new NPart([new NVoice([new NNote([new NHead(0)])])]);
 		var ppart = new PPart(npart);
 		this.assertEquals(ppart.npart.nvoices.length, 1);
-		this.assertEquals(ppart.getPVoices().length, 1);
-		this.assertEquals(ppart.getPVoices().first().part, ppart);		
+		this.assertEquals(ppart.getVoices().length, 1);
+		this.assertEquals(ppart.getVoices().first().part, ppart);		
 	}	
 	
 	/*
@@ -188,39 +188,57 @@ class TestP extends TestCase
 		var positions = complexes.map(function(v:PComplex) { return v.getPosition(); } );
 		this.assertEquals(positions.toString(), [0, 3024, 4536, 6048].toString());		
 		this.assertEquals(complexes.first().getNotes().length, 2);
-		this.assertEquals(complexes.first(), ppart.getPVoices().first().getNotes().first().getComplex());
-		this.assertEquals(complexes.first(), ppart.getPVoices().second().getNotes().first().getComplex());
+		this.assertEquals(complexes.first(), ppart.getVoices().first().getNotes().first().getComplex());
+		this.assertEquals(complexes.first(), ppart.getVoices().second().getNotes().first().getComplex());
 		this.assertEquals(complexes.second().getNotes().length, 2);
-		this.assertEquals(complexes.second(), ppart.getPVoices().first().getNotes().second().getComplex());
-		this.assertEquals(complexes.second(), ppart.getPVoices().second().getNotes().second().getComplex());
+		this.assertEquals(complexes.second(), ppart.getVoices().first().getNotes().second().getComplex());
+		this.assertEquals(complexes.second(), ppart.getVoices().second().getNotes().second().getComplex());
 		this.assertEquals(complexes.third().getNotes().length, 1);
-		this.assertEquals(complexes.third(), ppart.getPVoices().first().getNotes().third().getComplex());
+		this.assertEquals(complexes.third(), ppart.getVoices().first().getNotes().third().getComplex());
 		this.assertEquals(complexes.fourth().getNotes().length, 2);
-		this.assertEquals(complexes.fourth(), ppart.getPVoices().first().getNotes().fourth().getComplex());
-		this.assertEquals(complexes.fourth(), ppart.getPVoices().second().getNotes().third().getComplex());		
+		this.assertEquals(complexes.fourth(), ppart.getVoices().first().getNotes().fourth().getComplex());
+		this.assertEquals(complexes.fourth(), ppart.getVoices().second().getNotes().third().getComplex());		
 		
 		var ppart = new PPart(new NPart([
 			new QVoice([4, 2, 4]),
 			new QVoice([2, 4, 4]),
 		]));		
 		
-		var note0 = ppart.getPVoices().first().getNotes().first();
+		var note0 = ppart.getVoices().first().getNotes().first();
 		var complex = note0.getComplex();
 		this.assertEquals(note0, complex.getNotes().first());
 		
 		var complexes = ppart.getComplexes();
 		this.assertEquals(complexes.first().getNotes().length, 2);
-		this.assertEquals(complexes.first(), ppart.getPVoices().first().getNotes().first().getComplex());
-		this.assertEquals(complexes.first(), ppart.getPVoices().second().getNotes().first().getComplex());
+		this.assertEquals(complexes.first(), ppart.getVoices().first().getNotes().first().getComplex());
+		this.assertEquals(complexes.first(), ppart.getVoices().second().getNotes().first().getComplex());
 		this.assertEquals(complexes.second().getNotes().length, 1);
-		this.assertEquals(complexes.second(), ppart.getPVoices().first().getNotes().second().getComplex());
+		this.assertEquals(complexes.second(), ppart.getVoices().first().getNotes().second().getComplex());
 		this.assertEquals(complexes.third().getNotes().length, 1);
-		this.assertEquals(complexes.third(), ppart.getPVoices().second().getNotes().second().getComplex());
+		this.assertEquals(complexes.third(), ppart.getVoices().second().getNotes().second().getComplex());
 		this.assertEquals(complexes.fourth().getNotes().length, 2);
-		this.assertEquals(complexes.fourth(), ppart.getPVoices().first().getNotes().third().getComplex());
-		this.assertEquals(complexes.fourth(), ppart.getPVoices().second().getNotes().third().getComplex());		
+		this.assertEquals(complexes.fourth(), ppart.getVoices().first().getNotes().third().getComplex());
+		this.assertEquals(complexes.fourth(), ppart.getVoices().second().getNotes().third().getComplex());		
 	}
 	
+	/*
+	public function testPBarY()
+	{
+		var bar = TestItems.pbarTest();
+		this.assertEquals( bar.getParts().first().getYPosition(), 0);
+		this.assertEquals( bar.getParts().second().getYPosition(), 100);
+		
+		this.assertEquals(bar.getColumns().first().getComplexes().first().getNotes().first().getYPosition(), 0);
+		//this.assertEquals(bar.getColumns().first().getComplexes().second().getNotes().first().getYPosition(), 100);
+		
+		
+		this.assertEquals(bar.getColumns().first().getComplexes().second().getNotes().first().getComplex().getPart(), bar.getParts().second());
+		var note = bar.getParts().second().getVoices().first().getNotes().first();
+		trace(note.getYPosition());
+		
+		
+	}
+	*/
 	
 	
 	public function testPBar()
@@ -256,7 +274,7 @@ class TestP extends TestCase
 	{
 		
 		var pbar = TestItems.pbarColumns1();
-		var column = pbar.getParts().first().getPVoices().first().getNotes().first().getComplex().getColumn();		
+		var column = pbar.getParts().first().getVoices().first().getNotes().first().getComplex().getColumn();		
 		this.assertEquals(column, pbar.getColumns().first());				
 		
 	}	

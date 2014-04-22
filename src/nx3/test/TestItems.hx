@@ -312,8 +312,87 @@ class TestItems
 			
 		]));				
 		return pbar;				
-		
 	}	
+	
+	static public function pbarTest():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote8(3),
+					new QNote8(2),
+					new QNote2(0, '#'),
+					new QNote4([-3,-2], 'b'),
+					]),
+					
+				new NVoice([				
+					new QNote4(1),
+					]),					
+			]),
+			new NPart([	
+				new NVoice([				
+					new QNote2(1),					
+					//new QNote4([ -1, 0], '#b'),						
+					new QNote4(0),					
+					new QNote16(1),					
+					new QNote16(-2),					
+					new QNote8(-4),					
+					new QNote4(0),					
+				]),
+			]),			
+		]));						
+	}
+	
+	static public function pbarFlags():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote8([-1, 0]),
+					new QNote4(0, '#'),
+					new QNote8(1),
+					new QNote4(1),
+					]),
+					
+				/*	
+				new NVoice([				
+					new QNote4(1),
+					]),					
+				*/
+			]),
+		]));				
+	}	
+	
+	static public function pbarWhole():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+				]),
+				new NVoice([				
+					new QNote1(1),
+				]),
+			]),
+		]));						
+	}			
+	
+	static public function pbarDistances():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote1(0),
+				]),
+				new NVoice([				
+					new QNote4(2),
+				]),
+			]),
+		]));				
+		
+	}			
 	
 	
 	

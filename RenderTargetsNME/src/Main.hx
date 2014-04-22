@@ -21,15 +21,15 @@ class Main
 		Unittests.performTests();
 
 		var target = new TargetNmeBitmap(Scaling.SMALL);
-		TestRenderer.testRenderer( new Renderer(target, 10, 80));		
+		TestRenderer.testRenderP( new Renderer(target, 10, 80));		
 		target.saveBitmap('test-small.png');
 		
 		var target = new TargetNmeBitmap(Scaling.NORMAL);
-		TestRenderer.testRenderer( new Renderer(target, 10, 80));		
+		TestRenderer.testRenderP( new Renderer(target, 10, 80));		
 		target.saveBitmap('test-normal.png');
 		
 		var target = new TargetNmeBitmap(Scaling.BIG);
-		TestRenderer.testRenderer( new Renderer(target, 10, 80));		
+		TestRenderer.testRenderP( new Renderer(target, 10, 80));		
 		target.saveBitmap('test-big.png');
 	}
 }

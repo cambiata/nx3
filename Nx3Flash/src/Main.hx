@@ -40,7 +40,7 @@ class Main extends Sprite
 		*/
 		
 		var target = new TargetSprite(Scaling.BIG);
-		TestRenderer.devP(target);
+		TestRenderer.testRenderP(new Renderer(target, 10, 10));
 		Lib.current.addChild(target.getTargetSprite());
 		
 		

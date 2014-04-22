@@ -15,10 +15,10 @@ package nx3;
 	public function calculateBeamgroupsDirections():Void
 	{
 		var partbeamgroups :Array<PBeamgroups> = [];
-		for (pvoice in this.ppart.getPVoices()) partbeamgroups.push(pvoice.getBeamgroups());
+		for (pvoice in this.ppart.getVoices()) partbeamgroups.push(pvoice.getBeamgroups());
 		
 		var beamgroups0 = partbeamgroups[0];
-		var voiceDirection0 = this.ppart.getPVoices()[0].nvoice.direction;
+		var voiceDirection0 = this.ppart.getVoices()[0].nvoice.direction;
 		if (voiceDirection0 == null) voiceDirection0 = EDirectionUAD.Auto;
 		
 		if (partbeamgroups.length == 1)
@@ -43,11 +43,11 @@ package nx3;
 		else if (partbeamgroups.length == 2)
 		{
 			var beamgroups1 = partbeamgroups[1];
-			var voiceDirection1 = this.ppart.getPVoices()[1].nvoice.direction;
+			var voiceDirection1 = this.ppart.getVoices()[1].nvoice.direction;
 			if (voiceDirection1 == null) voiceDirection0 = EDirectionUAD.Auto;
 			
-			var voice0 = this.ppart.getPVoices()[0];
-			var voice1 = this.ppart.getPVoices()[1];			
+			var voice0 = this.ppart.getVoices()[0];
+			var voice1 = this.ppart.getVoices()[1];			
 			
 			if ((voiceDirection0 == EDirectionUAD.Auto) && (voiceDirection1 == EDirectionUAD.Auto))
 			{

@@ -2,6 +2,7 @@ package nx3;
  import haxe.ds.IntMap.IntMap;
  import nx3.PBar;
  using nx3.VMapTools;
+ using cx.ArrayTools;
 /**
  * ...
  * @author Jonas Nyström
@@ -53,9 +54,15 @@ class PColumnsGenerator
 		this.columns = [];
 		this.positionsColumns = new IntMap<PColumn>();
 		
+		var barvalue = this.bar.getValue();
+
+		var idx = 0;
 		 for (pos in positions)
 		 {
-
+			 var nextpos = ArrayTools.indexOrNull(positions, idx + 1);
+			 if (nextpos == null) nextpos = barvalue;
+			 var value = nextpos - pos;
+			 
 			 var vcomplexes:PComplexes = [];
 
 			 for (i in 0...this.vparts.length)
@@ -67,7 +74,7 @@ class PColumnsGenerator
 				vcomplexes.push(complex);
 			 }
 
-			var vcolumn = new PColumn(this.bar, vcomplexes, pos);
+			var vcolumn = new PColumn(this.bar, vcomplexes, pos, value);
 
 			
 		   this.columns.push(vcolumn);
@@ -78,6 +85,9 @@ class PColumnsGenerator
 				if (complex != null) complex.setColumn(vcolumn);
 			}			
 			this.positionsColumns.set(pos, vcolumn);			
+			
+			
+			idx++;
 		 }
 		 
 	 }

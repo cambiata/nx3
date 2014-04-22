@@ -45,6 +45,8 @@ class PColumnsDistancesCalculator
 				}
 				columndistance = columndistance.round2();
 				rightColumn.setDistance(columndistance);
+				
+				
 				xposition += columndistance;
 				rightColumn.setXPosition(xposition);
 				// trace('- column distance: $columndistance / $xposition');

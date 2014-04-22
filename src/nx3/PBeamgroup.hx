@@ -1,4 +1,5 @@
 package nx3;
+import nx3.PVoiceBeamgroupsGenerator.PosInfo;
 using cx.ArrayTools;
 using nx3.ENoteValTools;
 /**
@@ -52,6 +53,42 @@ class PBeamgroup
 	 {
 		 return this.voice;
 	 }
+	 
+	 var stavexpositions:XPositions;
+	 public function getNotesStemXPositions():XPositions
+	 {
+		 if (this.stavexpositions != null) return this.stavexpositions;
+		 this.stavexpositions = [];
+		 for (note in this.pnotes)
+		 {
+			this.stavexpositions.push(note.getComplex().getXPosition() + note.getStaveXPosition());
+		 }
+		 return this.stavexpositions;
+	 }
+	 
+	 
+	 var frame:PBeamframe;
+	 public function getFrame():PBeamframe
+	 {
+		 if (this.frame != null) return this.frame;
+		 
+		  var firstnote = this.pnotes.first().nnote;
+		  
+		 //-----------------------------------------------------------------------
+		 // Should this have staves/frame?
+		 if (firstnote.type.getName() != 'Note') return null;		 
+		 if (this.pnotes.length == 1)
+		 {
+			 var stavinglevel = firstnote.value.stavinglevel();			
+			 if (stavinglevel <= 0)  return null;
+		 }
+		 //----------------------------------------------------------------------		  
+		  
+		  var calculator = new PBeamgroupFrameCalculator(this);
+		 this.frame = calculator.getFrame();
+		 return this.frame;
+	 }
+	 
 	 
 	 
  }

@@ -25,6 +25,12 @@ class ArrayTools
 		return (idx < 0 || idx > a.length) ? null : a[idx];
 	}
 	
+	inline static public function indexOrValue<T>(a:Array<T>, idx:Int, fallbackValue:T)
+	{
+		return (idx < 0 || idx > a.length) ? fallbackValue : a[idx];
+	}	
+	
+	
 	inline static public function equals<T>(a:Array<T>, b:Array<T>):Bool
 	{
 		return (a.toString() == b.toString());

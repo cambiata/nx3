@@ -18,7 +18,7 @@ using cx.ArrayTools;
 	 public function new(part:PPart) 
 	 { 
 		 this.part = part;
-		this.vvoices = part.getPVoices();
+		this.vvoices = part.getVoices();
 		//this.part = this.vvoices.first().part;
 	  }
 	  
