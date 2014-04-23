@@ -23,13 +23,12 @@ class Main
 		Unittests.performTests();
 		
 		var target = new TargetSvg('#small', Scaling.SMALL);
-		TestRenderer.testRenderer(new Renderer(target, 10, 80));
+		TestRenderer.testRenderP(new Renderer(target, 10, 80));
 
 		var target = new TargetSvg('#normal', Scaling.NORMAL);
-		TestRenderer.testRenderer(new Renderer(target, 10, 80));
+		TestRenderer.testRenderP(new Renderer(target, 10, 80));
 
 		var target = new TargetSvg('#big', Scaling.BIG);
-		
-		TestRenderer.testRenderer(new Renderer(target, 10, 80));	
+		TestRenderer.testRenderP(new Renderer(target, 10, 80));	
 	}	
 }

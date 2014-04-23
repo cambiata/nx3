@@ -7,6 +7,8 @@ package nx3;
  * ...
  * @author Jonas Nyström
  */
+@:access(nx3.PComplex)
+ 
 class PColumnsGenerator
  {
 	 var vparts:PParts;
@@ -82,7 +84,7 @@ class PColumnsGenerator
 			
 			for (complex in vcomplexes) 
 			{
-				if (complex != null) complex.setColumn(vcolumn);
+				if (complex != null) complex.column = vcolumn;
 			}			
 			this.positionsColumns.set(pos, vcolumn);			
 			

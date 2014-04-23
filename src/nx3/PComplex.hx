@@ -10,32 +10,35 @@ using nx3.geom.Rectangles.RectanglesTools;
  * ...
  * @author Jonas Nyström
  */
+@:access(nx3.PNote)
+ 
 class PComplex
 {
 	var part:PPart;	
-	var position:Int;
+	var valueposition:Int;
 	public var notes(default, null) :PNotes;
-	public function new( part:PPart, notes:PNotes, position:Int)
+	
+	public function new( part:PPart, notes:PNotes, valueposition:Int)
 	{
 		this.part = part;
 		if (notes.length > 2) throw "PComplex nr of PNote(s) limited to max 2 - for now";
 		this.notes = notes;
-		for (note in this.notes) note.setComplex(this);
-		this.position = position;
+		for (note in this.notes) note.complex = this;
+		this.valueposition = valueposition;
 	}
 	
 	public function getNotes():PNotes return this.notes;
 	
-	public function getPosition():Int return this.position;
+	public function getValueposition():Int return this.valueposition;
 	
 	public function getPart():PPart return this.part;
 	
 	var column:PColumn;
-	public function setColumn(val:PColumn):PComplex { this.column = val; return this; }
 	public function getColumn():PColumn 
 	{
 		if (this.column != null) return this.column;		
 		this.part.bar.getColumns();
+		if (this.column == null) throw "this shouldn't happen";
 		return this.column;
 	}
 	
@@ -138,11 +141,9 @@ class PComplex
 	var xposition:Null<Float>;
 	public function getXPosition():Float
 	{
-		if (this.xposition != null) return this.xposition;		
-		
+		if (this.xposition != null) return this.xposition;				
 		// TODO - check why this is needed...
-		this.getHeadsRects();
-		
+		this.getHeadsRects();		
 		this.xposition = this.getColumn().getXPosition();
 		return this.xposition;		
 	}	

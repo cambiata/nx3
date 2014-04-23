@@ -10,12 +10,12 @@ class PColumn
 {
 	var bar:PBar;
 	var complexes:PComplexes;
-	var position:Int;	
-	 public function new(bar:PBar,complexes:PComplexes, pos:Int, value:Int) 
+	var valueposition:Int;	
+	 public function new(bar:PBar,complexes:PComplexes, valueposition:Int, value:Int) 
 	 { 
 		 this.bar = bar;
 		this.complexes = complexes;
-		this.position = pos;
+		this.valueposition = valueposition;
 		this.value = value;
 		this.xposition = 0.0;
 		this.distanceBenefit = 0;
@@ -26,25 +26,31 @@ class PColumn
 		 return this.complexes;
 	 }
 	 
-	 public function getPosition():Int
+	 public function getValueposition():Int
 	 {
-		 return this.position;
+		 return this.valueposition;
 	 }
 	 
-	 public function getValue():Int return this.value;
-	 
-	 var distance:Float;
-	 public function setDistance(val:Float):PColumn
+	 var value:Int;
+	 public function getValue():Int 
 	 {
-		 this.distance = val;
-		 this.distanceBenefit = Math.max(0, this.distance - Constants.HEAD_HALFWIDTH_NORMAL * 2);
-		 return this;
+		return this.value;
+	 }	 
+	 
+	 
+	 var distance:Null<Float>;
+	 public function getDistance():Float
+	 {
+		  if (this.distance == null) throw "Shouldnt be null";
+		 return this.distance;
 	 }
+	
 	 
 	 var distanceBenefit:Null<Float>;
 	 public function getDistanceBenefit():Float
 	 {
-		 if (this.distanceBenefit == null) throw "Shouldnt be null";
+		 if (this.distanceBenefit != null) return this.distanceBenefit;
+		 this.distanceBenefit = Math.max(0, this.getDistance() - Constants.HEAD_WIDTH_NORMAL);
 		 return this.distanceBenefit;
 	 }
 	 
@@ -56,16 +62,26 @@ class PColumn
 		 return this.valuedelta;		 
 	 }
 	 
-	 var xposition:Float;
-	 var value:Int;
+	 var xposition:Null<Float>;	 
+	 /*
 	 public function setXPosition(val:Float):PColumn
 	 {
 		 this.xposition = val;
 		 return this;
 	 }
+	 */
 	 public function getXPosition():Float 
 	 {		 
 		 return this.xposition;
+	 }
+	 
+	 var aposition:Null<Float>;
+	 public function getAPostion():Float
+	 {
+		if (this.aposition != null) return this.aposition;
+		this.bar.calculateAPositions();
+		if (this.aposition == null) throw "this shouldn't happen";
+		return this.aposition;
 	 }
 	 
 	 public function toString():String

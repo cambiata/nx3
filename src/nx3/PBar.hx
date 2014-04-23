@@ -39,10 +39,35 @@ class PBar
 		 if (this.columns != null) return this.columns;
 		 var generator = new PColumnsGenerator(this);
 		 this.columns = generator.getColumns();
-		  new PColumnsDistancesCalculator(this).calculate();
-		 //this.positionsVColumns = generator.getPositionsColumns();
+		 // new PColumnsDistancesCalculator(this).calculate();
+		 this.calculateMDistances();
+		 
 		 return this.columns;
 	 }	
+	 
+	 
+	 public function calculateMDistances()
+	 {
+		 if (this.columns == null) this.getColumns();
+		  new PColumnsDistancesCalculator(this).calculate();		 
+	 }
+	 
+	 public function calculateAPositions()
+	 {
+		 new PColumnsAllotmentCalculator(this).calculate();		 
+	 }
+	 
+	 /*
+	 var distances: Map < PColumn, { pos:Float, dist:Float }>;
+	 public function getColumnsDistances()
+	 {
+		 if (distances != null) return this.distances;
+		 if (this.columns == null) this.getColumns();
+		 var generator = new PColumnsGenerator(this);		 
+		this.distances = new PColumnsDistancesCalculator(this).getDistances();		 
+		return distances;		 
+	 }
+	 */	 
 	 
 	 var value:Int;
 	 public function getValue():Int

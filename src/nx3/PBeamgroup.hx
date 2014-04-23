@@ -6,6 +6,8 @@ using nx3.ENoteValTools;
  * ...
  * @author Jonas Nyström
  */
+@:access(nx3.PNote)
+ 
 class PBeamgroup
 {
 	 public var pnotes(default, null):PNotes;
@@ -14,7 +16,7 @@ class PBeamgroup
 	 {
 		 this.voice = pnotes.first().voice;
 		 this.pnotes = pnotes;
-		 for (pnote in pnotes) pnote.setBeamgroup(this);
+		 for (pnote in pnotes) pnote.beamgroup = this;
 	 }
 	 
 	 var value:Null<Int> = null;

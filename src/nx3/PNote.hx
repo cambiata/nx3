@@ -35,7 +35,7 @@ class PNote
 	
 	//----------------------------------------------------------------------------------
 	
-	var beamgroup:PBeamgroup = null;
+	var beamgroup:PBeamgroup;
 	public function getBeamgroup():PBeamgroup
 	{
 		if (this.beamgroup == null)
@@ -44,12 +44,6 @@ class PNote
 		}
 		if (this.beamgroup == null) throw "this should not happen";
 		return this.beamgroup;
-	}
-	
-	public function setBeamgroup(val:PBeamgroup):PNote
-	{
-		this.beamgroup = val;
-		return this;
 	}
 	
 	public function getDirection():EDirectionUD
@@ -66,12 +60,6 @@ class PNote
 		}
 		if (this.complex == null) throw "Shouldn't happen";
 		return this.complex;
-	}
-	
-	public function setComplex(val:PComplex):PNote
-	{
-		this.complex = val;
-		return this;
 	}
 	
 	var headsRects:Rectangles;
@@ -128,17 +116,6 @@ class PNote
 		this.xposition = this.getComplex().getXPosition() + this.getXOffset();
 		return this.xposition;		
 	}
-	
-	/*
-	var yposition:Null<Float>;
-	public function getYPosition():Float
-	{
-		if (this.yposition != null) return this.yposition;
-		this.yposition = this.getComplex().getYPosition();
-		return this.xposition;		
-	}	
-	*/
-	
 	
 	
 }

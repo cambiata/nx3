@@ -185,7 +185,7 @@ class TestP extends TestCase
 			new QVoice([4, 4, 2]),
 		]));
 		var complexes = ppart.getComplexes();
-		var positions = complexes.map(function(v:PComplex) { return v.getPosition(); } );
+		var positions = complexes.map(function(v:PComplex) { return v.getValueposition(); } );
 		this.assertEquals(positions.toString(), [0, 3024, 4536, 6048].toString());		
 		this.assertEquals(complexes.first().getNotes().length, 2);
 		this.assertEquals(complexes.first(), ppart.getVoices().first().getNotes().first().getComplex());
@@ -256,16 +256,16 @@ class TestP extends TestCase
 		var pbar = TestItems.pbarColumns1();
 		var columns = pbar.getColumns();		
 		this.assertEquals(columns.length, 4);
-		this.assertEquals(columns.first().getPosition(), 0);
-		this.assertEquals(columns.first().getComplexes().first().getPosition(), 0);
-		this.assertEquals(columns.first().getComplexes().second().getPosition(), 0);
+		this.assertEquals(columns.first().getValueposition(), 0);
+		this.assertEquals(columns.first().getComplexes().first().getValueposition(), 0);
+		this.assertEquals(columns.first().getComplexes().second().getValueposition(), 0);
 		
-		this.assertEquals(columns.second().getPosition(), 3024);
+		this.assertEquals(columns.second().getValueposition(), 3024);
 		this.assertEquals(columns.second().getComplexes().first(), null);
-		this.assertEquals(columns.second().getComplexes().second().getPosition(), 3024);
+		this.assertEquals(columns.second().getComplexes().second().getValueposition(), 3024);
 		
-		this.assertEquals(columns.third().getPosition(), 6048);
-		this.assertEquals(columns.third().getComplexes().first().getPosition(), 6048);
+		this.assertEquals(columns.third().getValueposition(), 6048);
+		this.assertEquals(columns.third().getComplexes().first().getValueposition(), 6048);
 		this.assertEquals(columns.third().getComplexes().second(), null);		
 	}
 	
@@ -286,24 +286,22 @@ class TestP extends TestCase
 				new NVoice([				
 					new QNote4(0),
 					new QNote4(0),
-					new QNote4(0),
-					new QNote4(0),
-					new QNote4(0),
 					]),
 			]),
-			new NPart([	
-				new NVoice([				
-					new QNote2(0),					
-					new QNote2(0),					
-					new QNote4(0),					
-				]),
-			]),			
 		]));		
 		
-		var calculator = new PColumnsDistancesCalculator(pbar);
-		//calculator.calculate();
-		
-		this.assertTrue(true);
+		this.assertEquals(pbar.getColumns().first().getXPosition(), 0);
+		this.assertEquals(pbar.getColumns().first().getValueposition(), 0);
+		this.assertEquals(pbar.getColumns().first().getValue(), 3024);
+		this.assertEquals(pbar.getColumns().first().getValueDelta(), 0.5);
+		this.assertEquals(pbar.getColumns().first().getDistanceBenefit(), 0);
+
+		this.assertEquals(pbar.getColumns().second().getXPosition(), 3.2);
+		this.assertEquals(pbar.getColumns().second().getValueposition(), 3024);
+		this.assertEquals(pbar.getColumns().second().getValue(), 3024);
+		this.assertEquals(pbar.getColumns().second().getValueDelta(), 0.5);
+		this.assertEquals(pbar.getColumns().second().getDistanceBenefit(), 0);
+
 	}
 	
 	

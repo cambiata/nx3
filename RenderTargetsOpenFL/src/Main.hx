@@ -33,7 +33,6 @@ class Main extends Sprite
 	function resize(e) 
 	{
 		if (!inited) init();
-		// else (resize or orientation change)
 	}
 	
 	function init() 

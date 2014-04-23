@@ -53,7 +53,7 @@ class PPart
 		this.positionsComplexes = new IntMap<PComplex>();
 		for (complex in this.getComplexes())
 		{
-			this.positionsComplexes.set(complex.getPosition(), complex);
+			this.positionsComplexes.set(complex.getValueposition(), complex);
 		}		
 		return this.positionsComplexes;
 	}
@@ -62,6 +62,7 @@ class PPart
 	{
 		return this.bar.getParts().indexOf(this);
 	}
+	
 	
 	public function getYPosition():Float
 	{

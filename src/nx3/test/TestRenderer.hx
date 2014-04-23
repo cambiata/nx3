@@ -12,7 +12,6 @@ import nx3.QNote.QNote4;
 import nx3.QNote.QNote8;
 import nx3.render.ITarget;
 import nx3.render.Renderer;
-import nx3.render.TargetSprite;
 using cx.ArrayTools;
 /**
  * ...
@@ -31,9 +30,9 @@ class TestRenderer
 	
 	static public function testRenderP(r:Renderer)
 	{
-		//r.renderPBar(TestItems.pbarTest(), 30, 100);		
+		r.renderPBar(TestItems.pbarTest(), 30, 100);		
 		r.renderPBar(TestItems.pbarDistances(), 30, 400);		
-		//r.renderPBar(TestItems.pbarWhole(), 30, 600);		
+		r.renderPBar(TestItems.pbarWhole(), 30, 600);		
 	}
 	
 }
