@@ -10,6 +10,8 @@ using nx3.ENoteValTools;
  * ...
  * @author Jonas Nyström
  */
+
+ 
 class PHeadsRectsCalculator
 {
 	var vheads:PHeads;
@@ -21,7 +23,7 @@ class PHeadsRectsCalculator
 	public function new(note:PNote, ?direction:EDirectionUD = null/*, vheads:PHeads, placements:PHeadPlacements, notevalue:ENoteVal*/ )
 	{
 		this.direction = (direction != null) ? direction : note.getDirection();
-		this.vheads = note.getPHeads();
+		this.vheads = note.getHeads();
 		this.placements = new PHeadPlacementsCalculator(this.vheads, this.direction).getHeadsPlacements();
 		this.notevalue = note.nnote.value;
 	}

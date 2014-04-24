@@ -38,8 +38,8 @@ class TestP extends TestCase
 		var nnote = new NNote([new NHead(0)]);
 		var pnote = new PNote(nnote);
 		this.assertEquals(pnote.nnote.nheads.length, 1);
-		this.assertEquals(pnote.getPHeads().length, 1);
-		this.assertEquals(pnote.getPHeads().first().pnote, pnote);
+		this.assertEquals(pnote.getHeads().length, 1);
+		this.assertEquals(pnote.getHeads().first().pnote, pnote);
 	}
 	
 	public function testPNoteHeadsRects()

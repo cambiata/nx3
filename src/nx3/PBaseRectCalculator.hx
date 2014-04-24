@@ -7,6 +7,7 @@ using nx3.ENoteValTools;
  * ...
  * @author Jonas Nyström
  */
+
 class PBaseRectCalculator
 {
 	var note:PNote;

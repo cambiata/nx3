@@ -10,7 +10,7 @@ using nx3.geom.Rectangles.RectanglesTools;
 
 class PNote 
 {
-	public var nnote(default, default):NNote;
+	public var nnote:NNote;
 	public var voice(default, default): PVoice;
 	
 	public function new(nnote:NNote)
@@ -19,7 +19,7 @@ class PNote
 	}	
 	
 	var pheads:PHeads;
-	public function getPHeads():PHeads
+	public function getHeads():PHeads
 	{
 		if (this.pheads != null) return this.pheads;
 		this.pheads = [];		

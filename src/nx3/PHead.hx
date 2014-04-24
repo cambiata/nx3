@@ -6,10 +6,11 @@ package nx3;
  */
 class PHead
 {
-	 public var nhead(default, default):NHead;
+	 public var nhead: NHead;
 	 public function new (nhead:NHead) 
 	 {
 		 this.nhead = nhead;	
 	 }
 	public var pnote(default, default): PNote;	
+	
 }
