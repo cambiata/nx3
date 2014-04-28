@@ -67,18 +67,20 @@ class QLyric4 extends NNote  { public function new(?text:String="QLyric4") 	supe
 
 class QNote4 extends QNote
 {
-	public function new(?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
+	public function new(?dot:Bool=false, ?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
 	{
-		super(headLevel, headLevels, ENoteVal.Nv4, signs);
+		var val = (dot) ? ENoteVal.Nv4dot: ENoteVal.Nv4;
+		super(headLevel, headLevels, val, signs);
 	}
 }
 
 
 class QNote8 extends QNote
 {
-	public function new(?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
+	public function new(?dot:Bool=false, ?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
 	{
-		super(headLevel, headLevels, ENoteVal.Nv8, signs);
+		var val = (dot) ? ENoteVal.Nv8dot: ENoteVal.Nv8;
+		super(headLevel, headLevels,val, signs);
 	}
 }
 
@@ -94,9 +96,10 @@ class QNote16 extends QNote
 
 class QNote2 extends QNote
 {
-	public function new(?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
+	public function new(?dot:Bool=false, ?headLevel:Int=null, ?headLevels:Array<Int>=null, ?signs:String='') 
 	{
-		super(headLevel, headLevels, ENoteVal.Nv2, signs);
+		var val = (dot) ? ENoteVal.Nv2dot: ENoteVal.Nv2;
+		super(headLevel, headLevels,  val, signs);
 	}
 }
 

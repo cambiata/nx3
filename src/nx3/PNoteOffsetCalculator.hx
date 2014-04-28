@@ -2,6 +2,7 @@ package nx3;
 import nx3.PComplex;
 using nx3.geom.Rectangles.RectanglesTools;
 using cx.ArrayTools;
+using nx3.ENoteValTools;
 /**
  * ...
  * @author Jonas Nyström
@@ -25,9 +26,20 @@ class PNoteOffsetCalculator
 		
 		var firstnote = this.complex.getNotes().first();
 		
-		if (note.nnote.getTopLevel() - firstnote.nnote.getBottomLevel()  == 1)
-		secondoffset = secondoffset * Constants.COMPLEX_COLLISION_CHORD_INTERSECTION; // .7;
+		var diff = note.nnote.getTopLevel() - firstnote.nnote.getBottomLevel();
 		
+		if (diff  == 1)
+		{
+			secondoffset = secondoffset * Constants.COMPLEX_COLLISION_CHORD_INTERSECTION; // .7;
+		}
+		
+		if (diff < 1)
+		{
+			if (firstnote.nnote.value.dotlevel() > 0)
+			{
+				secondoffset += (firstnote.nnote.value.dotlevel() == 1)? Constants.DOT_WIDTH : Constants.DDOT_WIDTH;
+			}
+		}
 		
 		return secondoffset;
 	}

@@ -32,8 +32,8 @@ class Constants
 	static public inline var COMPLEX_COLLISION_CHORD_INTERSECTION:Float = 0.8;
 	static public inline var COMPLEX_COLLISION_NEXTLINEDELTA:Float = 0.7;
 	static public inline var COMPLEX_COLLISION_NEXTLINEDELTA_H1:Float = 0.9;
-	static public inline var DOT_WIDTH:Float = 3.0;
-	static public inline var DDOT_WIDTH:Float = 4.0;
+	static public inline var DOT_WIDTH:Float = 2.0;
+	static public inline var DDOT_WIDTH:Float = 3.0;
 	static public inline var FLAG_HEIGHT:Float = 4.8;
 	static public inline var FLAG_WIDTH:Float = 2.6;
 	static public inline var FLOAT_QUASI_ZERO:Float = 0.0000001;
@@ -44,4 +44,6 @@ class Constants
 	static public inline var FONT_TEXT_Y_ADJUST_FLASH:Float = -1.2;
 	static public inline var FONT_TEXT_X_ADJUST_FLASH:Float = -.3;
 	static public inline var BEAM_HEIGHT:Float = 1;
+	
+	//static public inline var ASPACING_NORMAL:Float = 8;		
 } 

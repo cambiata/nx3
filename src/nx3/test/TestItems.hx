@@ -1,4 +1,5 @@
 package nx3.test;
+import nx3.EAllotment;
 import nx3.ENoteType;
 import nx3.ENoteVal;
 import nx3.NBar;
@@ -323,7 +324,9 @@ class TestItems
 					new QNote8(3),
 					new QNote8(2),
 					new QNote2(0, '#'),
-					new QNote4([-3,-2], 'b'),
+					new QNote4([ -3, -2], 'b'),
+					new QNote8(true, -3),
+					new QNote16(-2),					
 					]),
 					
 				new NVoice([				
@@ -341,7 +344,7 @@ class TestItems
 					new QNote4(0),					
 				]),
 			]),			
-		]));						
+		], EAllotment.Logaritmic));						
 	}
 	
 	static public function pbarFlags():PBar
@@ -394,6 +397,116 @@ class TestItems
 		
 	}			
 	
+	static public function pbarAllotLinear():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+					new QNote2(0),
+					new QNote4(0),
+					new QNote8(0),
+					new QNote8(0),
+					new QNote16(0),
+					new QNote16(0),
+					new QNote16(0),
+					new QNote16(0),
+				]),
+			]),
+		], EAllotment.Linear));						
+	}				
 	
+	static public function pbarAllotLogaritmic():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+					new QNote2(0),
+					new QNote4(0),
+					new QNote8(0),
+					new QNote8(0),
+					new QNote16(0),
+					new QNote16(0),
+					new QNote16(0),
+					new QNote16(0),
+				]),
+			]),
+		], EAllotment.Logaritmic));						
+	}				
+	
+	static public function pbarAllotEqual():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+					new QNote2(0),
+					new QNote4(0),
+					new QNote8(0),
+					new QNote8(0),
+					new QNote16(0),
+					new QNote16(0),
+					new QNote16(0),
+					new QNote16(0),
+				]),
+			]),
+		], EAllotment.Equal));						
+	}		
+	
+	static public function pbarTies():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([new NHead(0, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(0),
+						new QNote4(0),					
+					]),
+			]),
+		], EAllotment.LeftAlign));				
+	}
+	
+	static public function pbarDots():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([ new NHead(0)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(1)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(2)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(0)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(-1)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(-2)], ENoteVal.Nv4dot),
+						new NNote([new NHead(-3), new NHead(-2)], ENoteVal.Nv4dot),
+						new NNote([new NHead(1), new NHead(6)], ENoteVal.Nv4dot),
+					]),
+			]),
+		], EAllotment.LeftAlign));					
+	}	
+	
+	static public function pbarDots2():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([ new NHead(0)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(0)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(0)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(-1)], ENoteVal.Nv4dot),
+					]),
+				new NVoice([				
+						new NNote([ new NHead(0)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(1)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(2)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(3)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(4)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(5)], ENoteVal.Nv4dot),
+						new NNote([ new NHead(0), new NHead(1)], ENoteVal.Nv1dot),
+					]),
+					
+			]),
+		], EAllotment.LeftAlign));					
+	}	
 	
 }

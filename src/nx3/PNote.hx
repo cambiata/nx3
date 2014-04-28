@@ -117,5 +117,10 @@ class PNote
 		return this.xposition;		
 	}
 	
+	public function getTies():ETies
+	{
+		return this.nnote.getTies();
+		
+	}
 	
 }

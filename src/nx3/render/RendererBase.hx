@@ -1,4 +1,6 @@
 package nx3.render;
+import nx3.Constants;
+import nx3.geom.Rectangle;
 import nx3.EDirectionUD;
 import nx3.ENoteType;
 import nx3.PBeamgroup;
@@ -83,19 +85,39 @@ class RendererBase
 	public function pcomplex(complex:PComplex)
 	{
 		if (complex == null) return;
-		/*
+		
 		var y  = this.targetY + complex.getPart().getYPosition() * target.getScaling().unitY;
 		var x = this.targetX + complex.getXPosition() * target.getScaling().unitX;
-		target.rectangle(x, y, complex.getBaseRect(), 1, 0x00FF00);
-		target.rectangles(x, y, complex.getAllRects(), 1, 0xFF0000);		
-		*/
+		//target.rectangle(x, y, complex.getBaseRect(), 1, 0x00FF00);
+		//target.rectangles(x, y, complex.getAllRects(), 1, 0xFF0000);		
+		
 		
 		for (note in complex.getNotes())
 		{
 			this.pnoteHeads(note);
 		}
-		this.psigns(complex);				
+		this.psigns(complex);		
+		this.pdots(complex);
 	}
+	
+	public function pdots(complex:PComplex) 
+	{	
+		for (r in complex.getDotRects())
+		{			
+			var y  = this.targetY + complex.getPart().getYPosition() * target.getScaling().unitY;
+			var x = this.targetX + complex.getXPosition() * target.getScaling().unitX;			
+			var crect = r.clone();
+			var ddot =  (crect.width == Constants.DDOT_WIDTH);
+			crect.offset(0.9, 0.2);
+			crect.width = 0.7;
+			crect.height = 0.6;
+			this.target.filledellipse(x, y, crect, 0, 0, 0x000000);
+			if (!ddot) continue;
+			crect.offset(1.3, 0);
+			this.target.filledellipse(x, y, crect, 0, 0, 0x000000);
+		}		
+	}
+	
 	
 	public function psigns(complex:PComplex) 
 	{
@@ -173,8 +195,10 @@ class RendererBase
 		var rightTipY  =  frame.rightTipY * scaling.unitY;		
 		this.target.line(this.targetX + rightX, rightY+ rightInnerY, this.targetX + rightX, rightY+ rightTipY, 1, 0x000000);		
 		
+		
 		var beamh:Float = Constants.BEAM_HEIGHT * this.scaling.unitY;
-		this.target.parallellogram(this.targetX + leftX, rightY + leftTipY - (beamh/2), this.targetX + rightX, rightY+ rightTipY - (beamh/2), beamh, 0, 0, 0);
+		beamh  = (beamgroup.getDirection() == EDirectionUD.Up) ? -beamh : beamh;
+		this.target.parallellogram(this.targetX + leftX, rightY + leftTipY - beamh, this.targetX + rightX, rightY+ rightTipY - beamh, beamh, 0, 0, 0);
 		
 		//------------------------------------------------------------------------------------------
 		if (beamgroup.pnotes.length < 3) return;		

@@ -3,6 +3,7 @@ import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
 import nx3.PBar;
 import nx3.PComplexes;
+using cx.ArrayTools;
 
 /**
  * ...
@@ -33,9 +34,10 @@ class PColumn
 		 return this.valueposition;
 	 }
 	 
-	 var value:Int;
+	 var value:Null<Int>;
 	 public function getValue():Int 
 	 {
+		 if (this.value == null) throw "value shouldnt be null";
 		return this.value;
 	 }	 
 	 
@@ -79,12 +81,24 @@ class PColumn
 		 return this.mposition;
 	 }
 	 
+	 var adistance:Null<Float>;
+	 public function getADistance():Float
+	 {
+		if (this.adistance != null) return this.adistance;
+		this.bar.calculateAPositions();
+		//if (this.aposition == null) throw "aposition shouldn't be null";
+		return this.adistance;
+	 }	 
+	 
+	 var adistanceBenefit:Null<Float>;
+	 public function getADistanceBenefit():Float return adistanceBenefit;
+	 
 	 var aposition:Null<Float>;
 	 public function getAPostion():Float
 	 {
 		if (this.aposition != null) return this.aposition;
 		this.bar.calculateAPositions();
-		if (this.aposition == null) throw "this shouldn't happen";
+		//if (this.aposition == null) throw "aposition shouldn't be null";
 		return this.aposition;
 	 }
 	 
@@ -95,6 +109,7 @@ class PColumn
 		 this.rightX = 0;
 		for (complex in this.getComplexes())
 		{
+			if (complex != null)
 			this.rightX = Math.max(this.rightX, complex.getRightX());			
 		}
 		return this.rightX;
@@ -107,20 +122,29 @@ class PColumn
 		 this.leftX = 0;
 		for (complex in this.getComplexes())
 		{			
+			if (complex != null)
 			this.leftX = Math.min(this.leftX, complex.getLeftX());			
 		}
 		return this.leftX;
 	 }
 	 
-	 
+	 public function getNextComplex(complex:PComplex):PComplex
+	 {
+		if (this == this.bar.getColumns().last()) return null;
+		 var partIndex = this.getComplexes().indexOf(complex);
+		 var nextColumnIdx = this.bar.getColumns().indexOf(this)+1;
+		 for (ci in nextColumnIdx...this.bar.getColumns().length)
+		 {
+			 var complex = this.bar.getColumns()[ci].getComplexes()[partIndex];
+			 if (complex != null) return complex;			 
+		 }
+		 return null;
+	 }
 	 
 	 public function toString():String
 	 {
 		 return "PColumn";
-	 }
-	 
-	 
-	 
+	 }	 
 	 
 	 
 }

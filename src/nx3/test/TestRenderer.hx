@@ -21,10 +21,12 @@ class TestRenderer
 {
 	static public function testRenderer(r:Renderer) 
 	{
+		/*
 		r.renderBar(TestItems.vbarSignBug(), 10, 100);				
 		r.renderBar(TestItems.vbarFlags(), 180, 100);				
 		r.renderBar(TestItems.vbarSigns(), 10, 260);	
 		r.renderBar(TestItems.vbarTpl(), 10, 520);
+		*/
 		var target = r.getTarget();
 	}
 	
@@ -32,7 +34,9 @@ class TestRenderer
 	{
 		r.renderPBar(TestItems.pbarTest(), 30, 100);		
 		r.renderPBar(TestItems.pbarDistances(), 30, 400);		
-		r.renderPBar(TestItems.pbarWhole(), 30, 600);		
+		r.renderPBar(TestItems.pbarAllotLinear(), 30, 550);		
+		r.renderPBar(TestItems.pbarAllotLogaritmic(), 30, 650);		
+		r.renderPBar(TestItems.pbarDots2(), 30, 750);		
 	}
 	
 }

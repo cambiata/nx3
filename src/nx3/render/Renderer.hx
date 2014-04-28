@@ -44,6 +44,7 @@ class Renderer extends RendererBase
 		this.partDistance = Std.int(16 * scaling.unitY);
 	}
 	
+	
 	public function renderBar(vbar:VBar, newX:Float=-1, newY:Float=-1)
 	{
 		if (newX != -1) this.targetX = newX;
@@ -76,7 +77,7 @@ class Renderer extends RendererBase
 			this.notlines(vbar, barMinWidth*this.scaling.unitX);
 			party += this.partDistance;
 		}
-		//this.target.rect(this.targetX, this.targetY, new Rectangle(0, -10*this.scaling.unitY, barMinWidth * scaling.unitX, (party-this.targetY) /*+ 10*this.scaling.halfSpace*/), .3);
+		
 		
 	}
 	
@@ -311,6 +312,7 @@ class Renderer extends RendererBase
 			this.target.line(midPoint.x, midPoint.y + midInnerY, midPoint.x, midPoint.y + midTipY, 1, 0x000000);
 		}		
 	}	
+	
 	
 	public function getTarget():ITarget
 	{

@@ -5,38 +5,53 @@ import nx3.PBar;
  * ...
  * @author Jonas Nyström
  */
+
+ @:access(nx3.PColumn)
+ 
 class PColumnsAllotmentCalculator
 {
 	var bar:PBar;
+	var spacing:Float;
 
 	public function new(bar:PBar) 
 	{
 		this.bar = bar;
+		this.spacing = bar.nbar.spacing;
 	}
 	
-	public function calculate()
-	{
+	public function calculate(stretch:Float=0)
+	{		
+		var aposition = 0.0;
 		for (column in this.bar.getColumns())
 		{
-			trace([column.getMDistance(),/*column.getMWidth(),*/column.getMPosition()]);
-			//trace(column.getValue());
-			//trace(this.bar.nbar.allotment);
-			
-			//var distance = column.getMDistance();
-			
-			
-			switch(this.bar.nbar.allotment)
-			{
-				case EAllotment.Cramped:
-					
-				
-				default:
-				
-				
-			}
-			
+			var dist =  getADistance(column.getValue(), column);
+			var adistance = Math.max(column.getMDistance(), dist);
+			//trace([column.getMDistance(), getADistance(column.getValue())]);			
+			var adistanceBenefit = Math.max(0, column.getMDistance() - dist);
+			column.aposition = aposition;
+			column.adistance = adistance;
+			column.adistanceBenefit = adistanceBenefit;
+			aposition += adistance;
 		}
 	}
+	
+	inline static var delta:Float = 0.5;
+	function getADistance(val:Int, column:PColumn):Float
+	{
+		return switch this.bar.nbar.allotment
+		{
+			case EAllotment.Equal:
+				return this.spacing;
+			case EAllotment.LeftAlign:
+				column.getMDistance();
+			case EAllotment.Logaritmic: 
+				(delta +(val / Constants.BASE_NOTE_VALUE) / 2) *this.spacing;
+			default:
+				(val / Constants.BASE_NOTE_VALUE) *this.spacing;
+		}		
+	}
+	
+	
 	
 }
 

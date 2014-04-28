@@ -113,6 +113,22 @@ class PComplex
 		return new PStaveRectCalculator(note).getStaveRect();		
 	}
 	
+	var tierects:Rectangles;
+	public function getTieRects():Rectangles
+	{
+		if (this.tierects != null) return this.tierects;
+		this.tierects = new PComplexTierectsCalculator(this).getTieRects();
+		return this.tierects;
+	}
+	
+	var dotrects:Rectangles;
+	public function getDotRects():Rectangles
+	{
+		if (this.dotrects != null) return this.dotrects;
+		this.dotrects = new PComplexDotsrectsCalculator(this).getDotRects();
+		return this.dotrects;
+	}	
+	
 	
 	var baserect:Rectangle;
 	public function getBaseRect():Rectangle
@@ -134,6 +150,8 @@ class PComplex
 		this.allrects = RectanglesTools.concat(this.allrects, this.getHeadsRects());
 		this.allrects = RectanglesTools.concat(this.allrects, this.getStavesRects());
 		this.allrects = RectanglesTools.concat(this.allrects, this.getSignsRects());
+		this.allrects = RectanglesTools.concat(this.allrects, this.getTieRects());
+		this.allrects = RectanglesTools.concat(this.allrects, this.getDotRects());
 		// ... MORE!			
 		return this.allrects;
 	}	
@@ -151,7 +169,8 @@ class PComplex
 		if (this.xposition != null) return this.xposition;				
 		// TODO - check why this is needed...
 		this.getHeadsRects();		
-		this.xposition = this.getColumn().getMPosition();
+		//this.xposition = this.getColumn().getMPosition();
+		this.xposition = this.getColumn().getAPostion();
 		return this.xposition;		
 	}	
 	
@@ -174,6 +193,14 @@ class PComplex
 		if (this.rightX != null) return this.rightX;
 		this.leftX = this.getRect().x + this.getRect().width;
 		return this.leftX;		
+	}
+	
+	var next:PComplex;
+	public function getNext():PComplex
+	{
+		if (next != null) return this.next;
+		this.next = this.getColumn().getNextComplex(this);
+		return this.next;
 	}
 	
 	

@@ -1,7 +1,11 @@
 package nx3.test;
 
 import haxe.unit.TestCase;
+import nx3.EAllotment;
+import nx3.EDirectionUAD;
 import nx3.EDirectionUD;
+import nx3.ENoteVal;
+import nx3.ETie;
 import nx3.geom.Rectangle;
 import nx3.NBar;
 import nx3.NHead;
@@ -223,6 +227,84 @@ class TestP extends TestCase
 		this.assertEquals(complexes.fourth(), ppart.getVoices().second().getNotes().third().getComplex());		
 	}
 	
+	public function testPBarComplexDots()
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([new NHead(-3)], ENoteVal.Nv4dot),
+					]),
+			]),
+		]));		
+		var complex = pbar.getColumns().first().getComplexes().first();		
+		var rects = complex.getDotRects();
+		trace(rects);
+	}
+	
+	
+	public function testPBarComplexTies()
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([new NHead(0, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+					]),
+			]),
+		]));		
+		
+		var complex = pbar.getColumns().first().getComplexes().first();		
+		var rects = complex.getTieRects();
+		//trace(rects);
+		
+		this.assertTrue(true);
+		
+		
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([new NHead(0)], ENoteVal.Nv4),
+						new NNote([new NHead(0, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new NNote([new NHead(0)], ENoteVal.Nv4),				
+					]),
+				new NVoice([				
+					new NNote([new NHead(0, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv2),
+					new NNote([new NHead(0)], ENoteVal.Nv4),				
+					]),
+			]),
+		]));				
+		
+	}
+		
+	
+	
+	public function testPBarFindNextColumnComplex()
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote2(0),
+					]),
+			]),
+			
+			new NPart([	
+				new NVoice([				
+					new QNote2(0),
+					new QNote4(0),
+					]),
+			]),
+		]));			
+		
+		var complex0 = pbar.getColumns().first().getComplexes().first();
+		var complex1 = complex0.getNext();
+		this.assertEquals(complex1, pbar.getColumns().second().getComplexes().first());
+		
+		var complexA = pbar.getColumns().first().getComplexes().second();
+		var complexC = pbar.getColumns().third().getComplexes().second();
+		this.assertEquals(complexA.getNext(), complexC);
+	}
+	
+	
 	/*
 	public function testPBarY()
 	{
@@ -275,6 +357,8 @@ class TestP extends TestCase
 	}	
 	
 	*/
+
+	
 	public function testPBarColumnsDistances()
 	{
 		
@@ -362,22 +446,166 @@ class TestP extends TestCase
 		this.assertEquals(pbar.getColumns().first().getLeftX(), -4.2);		
 	}
 	
-	public function testPBarColumnsAllotment()
+	public function testPBarColumnsAllotmentTypes()
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote2(0),
+					new QNote4(0),
+					new QNote8(0),
+					new QNote8(0),
+					]),
+			]),
+		], EAllotment.Linear));				
+
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getADistance(), 16);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
+
+		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().second().getADistance(), 8);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 16);
+		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);		
+		
+		this.assertEquals(pbar.getColumns().third().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().third().getADistance(), 4);
+		this.assertEquals(pbar.getColumns().third().getAPostion(), 24);
+		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);				
+		
+		this.assertEquals(pbar.getColumns().fourth().getMDistance(), 1.6);
+		this.assertEquals(pbar.getColumns().fourth().getADistance(), 4);
+		this.assertEquals(pbar.getColumns().fourth().getAPostion(), 28);
+		this.assertEquals(pbar.getColumns().fourth().getADistanceBenefit(), 0);		
+
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote2(0),
+					new QNote4(0),
+					new QNote8(0),
+					new QNote8(0),
+					]),
+			]),
+		], EAllotment.Logaritmic));				
+
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getADistance(), 12);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
+
+		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().second().getADistance(), 8);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 12);
+		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);		
+		
+		this.assertEquals(pbar.getColumns().third().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().third().getADistance(), 6);
+		this.assertEquals(pbar.getColumns().third().getAPostion(), 20);
+		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);				
+		
+		this.assertEquals(pbar.getColumns().fourth().getMDistance(), 1.6);
+		this.assertEquals(pbar.getColumns().fourth().getADistance(), 6);
+		this.assertEquals(pbar.getColumns().fourth().getAPostion(), 26);
+		this.assertEquals(pbar.getColumns().fourth().getADistanceBenefit(), 0);				
+		
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote4(0),
+					]),
+			]),
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+					]),
+			]),
+		], EAllotment.Linear));				
+		
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getADistance(), 8);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);		
+		
+		this.assertEquals(pbar.getColumns().second().getMDistance(), 1.6);
+		this.assertEquals(pbar.getColumns().second().getADistance(), 24);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 8);
+		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);				
+		
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote4(0),
+					]),
+			]),
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+					]),
+			]),
+		], EAllotment.Logaritmic));				
+		
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getADistance(), 8);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);		
+		
+		this.assertEquals(pbar.getColumns().second().getMDistance(), 1.6);
+		this.assertEquals(pbar.getColumns().second().getADistance(), 16);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 8);
+		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);						
+	}
+	
+	public function testPBarColumnsAllotmentDistanceBenefit()
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote8(0),
+					new QNote8(0, '#'),
+					new QNote8(0),					
+					]),
+			]),
+		], EAllotment.Linear));				
+		
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 5.8);
+		this.assertEquals(pbar.getColumns().first().getADistance(), 5.8);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getADistanceBenefit().round2(), 1.8);				
+		
+		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().second().getADistance(), 4);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 5.8);
+		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);				
+		
+		this.assertEquals(pbar.getColumns().third().getMDistance(), 1.6);
+		this.assertEquals(pbar.getColumns().third().getADistance(), 4);
+		this.assertEquals(pbar.getColumns().third().getAPostion(), 9.8);
+		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);					
+	}
+	
+	public function testPBarLastColumnValue()
 	{
 		var pbar = new PBar(new NBar([
 			new NPart([	
 				new NVoice([				
 					new QNote4(0),
+					new QNote4(0),
 					]),
 			]),
-		]));				
-		this.assertEquals(pbar.getColumns().first().getMPosition(), 0);
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 1.6);
-		this.assertEquals(pbar.getColumns().first().getValueposition(), 0);
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+					]),
+			]),
+		]));					
+		this.assertEquals(pbar.getValue(), 12096);		
 		this.assertEquals(pbar.getColumns().first().getValue(), 3024);
-		this.assertEquals(pbar.getColumns().first().getValueDelta(), 1);
-		this.assertEquals(pbar.getColumns().first().getMDistanceBenefit(), 0);
-	}
+		this.assertEquals(pbar.getColumns().second().getValue(), 9072);
+	}	
 
 	function rectEquals(a:Rectangle, bx:Float=-1, by:Float=-1, bwidth:Float=-1, bheight:Float=-1): Bool
 	{

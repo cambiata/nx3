@@ -8,7 +8,7 @@ package nx3;
 
 enum EAllotment 
 {
-	Cramped;
+	LeftAlign;
 	Equal;
 	Logaritmic;
 	Linear;

@@ -62,7 +62,6 @@ class NNote
 		return this.headLevels;
 	}
 	
-	
 	public function getTopLevel():Int
 	{
 		return this.nheads[0].level;
@@ -71,5 +70,17 @@ class NNote
 	public function getBottomLevel():Int
 	{
 		return this.nheads[this.nheads.length-1].level;
+	}
+	
+	var ties:ETies;
+	public function getTies():ETies
+	{
+		if (this.ties != null) return this.ties;
+		this.ties =  new ETies();
+		for (head in this.nheads) 
+		{
+			if (head.tie != null) ties.push(head.tie);
+		}
+		return this.ties;
 	}
 }
