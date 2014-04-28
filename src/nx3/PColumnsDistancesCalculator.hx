@@ -1,4 +1,6 @@
 package nx3;
+import nx3.geom.Rectangles;
+import nx3.geom.Rectangles.RectanglesTools;
 import nx3.PBar;
 using cx.MathTools;
 using cx.ArrayTools;
@@ -22,15 +24,12 @@ class PColumnsDistancesCalculator
 	
 	public function calculate()
 	{
-		//this.setFirstLeftComplexes();
-		
-		if (this.bar.getColumns().length < 2) return;
-
 		var leftColumn:PColumn = null;
 		var xposition = 0.0;
 		for (columnIdx in 0...this.bar.getColumns().length)
 		{
 			var rightColumn = this.bar.getColumns()[columnIdx];			
+			rightColumn.mdistance = 0;
 			
 			// Set first column
 			if (columnIdx == 0)
@@ -40,11 +39,10 @@ class PColumnsDistancesCalculator
 				{
 					this.prevLeftComplex.set(complexId, { leftComplex:complex, columnIdx: 0 } );			
 					complexId++;
-				}								
+				}			
+				
 			}
-			else
-			//if (columnIdx > 0)
-			// For other columns
+			else if (columnIdx < this.bar.getColumns().length)
 			{
 				var leftComplexes = leftColumn.getComplexes();
 				var rightComplexes = rightColumn.getComplexes();				
@@ -60,42 +58,24 @@ class PColumnsDistancesCalculator
 				}
 
 				columndistance = columndistance.round2();
-				rightColumn.distance = columndistance;
+				leftColumn.mdistance = columndistance;
 				
 				xposition += columndistance;
-				rightColumn.xposition = xposition;
-				
+				rightColumn.mposition = xposition;
 			}
 			
+			// special treatment for last column....
+			if (columnIdx == this.bar.getColumns().length-1)
+			{
+				var lastColumn = this.bar.getColumns()[columnIdx];			
+				lastColumn.mdistance = lastColumn.getRightX();
+				return;
+			}
 			leftColumn = rightColumn;
-		}
-		
+		}		
 	}
 	
-	/*
-	var distances: Map < PColumn, { pos:Float, dist:Float }>;
-	public function getDistances():Map<PColumn, {pos:Float, dist:Float}>
-	{
-		
-		this.distances.set(this.bar.getColumns().first(), { pos:0, dist:0 } );
-		this.calculate();
-		return this.distances;		
-		//return null;
-	}
-	*/
-	/*
-	function setFirstLeftComplexes() 
-	{
-		var firstcolumn = this.bar.getColumns()[0];
-		var complexId = 0;
-		for (complex in firstcolumn.getComplexes())
-		{
-			this.prevLeftComplex.set(complexId, { leftComplex:complex, columnIdx: 0 } );			
-			complexId++;
-		}
-	}
-	*/
-	
+
 	var prevLeftComplex:Map<Int, {columnIdx:Int, leftComplex:PComplex}>;
 	
 	function getComplexDistances(columnIdx:Int, complexIdx:Int, leftComplex:PComplex, rightComplex:PComplex): Float
@@ -120,14 +100,14 @@ class PColumnsDistancesCalculator
 			var currentLeftColumIdx = columnIdx - 1;			
 			var prevLeftColumnIdx = this.prevLeftComplex.get(complexIdx).columnIdx;
 			
-			var currentLeftXPos = this.bar.getColumns()[currentLeftColumIdx].getXPosition();
-			var prevLeftXPos = this.bar.getColumns()[prevLeftColumnIdx].getXPosition();
+			var currentLeftXPos = this.bar.getColumns()[currentLeftColumIdx].getMPosition();
+			var prevLeftXPos = this.bar.getColumns()[prevLeftColumnIdx].getMPosition();
 			
 			// trace([prevLeftColumnIdx, currentLeftColumIdx]);
 			var distanceBenefit = currentLeftXPos -prevLeftXPos;
 			// trace([prevLeftXPos, currentLeftXPos, distanceBenefit]);
 			var currentLeftComplex = this.prevLeftComplex.get(complexIdx).leftComplex;
-			var distance = new PComplexMinDistCalculator().getDistance(currentLeftComplex, rightComplex);
+			var distance = new PComplexDistancesCalculator().getDistance(currentLeftComplex, rightComplex);
 			
 			// trace('Current Left complex rects:');
 			// trace(currentLeftComplex.getAllRects());			
@@ -143,7 +123,7 @@ class PColumnsDistancesCalculator
 		
 		var leftColumnIdx = columnIdx - 1;
 		// trace(' - normal - set left column idx to $complexIdx / $leftColumnIdx');
-		var distance = new PComplexMinDistCalculator().getDistance(leftComplex, rightComplex);		
+		var distance = new PComplexDistancesCalculator().getDistance(leftComplex, rightComplex);		
 		
 		this.prevLeftComplex.set(complexIdx, { leftComplex:leftComplex, columnIdx: leftColumnIdx } );
 		
@@ -151,5 +131,35 @@ class PColumnsDistancesCalculator
 		
 		return distance;
 	}
+	
+	/*
+	public function getColumnRightW(column:PColumn):Float
+	{
+		
+		var result:Float = 0;
+		for (complex in column.getComplexes())
+		{ 
+			var rect = RectanglesTools.unionAll(complex.getAllRects());			
+			var width = rect.width + rect.x;			
+			result = Math.max(result, width);
+		}
+		return result;
+	}
+	
+	public function getColumnLeftX(column:PColumn):Float // should be negative!
+	{
+		var result:Float = 0;
+		for (complex in column.getComplexes())
+		{ 
+			var rect = RectanglesTools.unionAll(complex.getAllRects());			
+			var width = rect.x;			
+			result = Math.min(result, width);
+		}
+		return result;		
+	}
+	*/
+	
+	
+	
 	
 }

@@ -16,9 +16,27 @@ class PColumnsAllotmentCalculator
 	
 	public function calculate()
 	{
-		
-		
-		
+		for (column in this.bar.getColumns())
+		{
+			trace([column.getMDistance(),/*column.getMWidth(),*/column.getMPosition()]);
+			//trace(column.getValue());
+			//trace(this.bar.nbar.allotment);
+			
+			//var distance = column.getMDistance();
+			
+			
+			switch(this.bar.nbar.allotment)
+			{
+				case EAllotment.Cramped:
+					
+				
+				default:
+				
+				
+			}
+			
+		}
 	}
 	
 }
+

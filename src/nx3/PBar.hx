@@ -41,6 +41,7 @@ class PBar
 		 this.columns = generator.getColumns();
 		 // new PColumnsDistancesCalculator(this).calculate();
 		 this.calculateMDistances();
+		 //this.calculateAPositions();
 		 
 		 return this.columns;
 	 }	

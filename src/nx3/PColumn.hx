@@ -1,4 +1,6 @@
 package nx3;
+import nx3.geom.Rectangle;
+import nx3.geom.Rectangles;
 import nx3.PBar;
 import nx3.PComplexes;
 
@@ -17,8 +19,8 @@ class PColumn
 		this.complexes = complexes;
 		this.valueposition = valueposition;
 		this.value = value;
-		this.xposition = 0.0;
-		this.distanceBenefit = 0;
+		this.mposition = 0.0;
+		this.mdistanceBenefit = 0;
 	 }
 	 
 	 public function getComplexes():PComplexes
@@ -38,20 +40,28 @@ class PColumn
 	 }	 
 	 
 	 
-	 var distance:Null<Float>;
-	 public function getDistance():Float
+	 var mdistance:Null<Float>;
+	 public function getMDistance():Float
 	 {
-		  if (this.distance == null) throw "Shouldnt be null";
-		 return this.distance;
+		  if (this.mdistance == null) throw "mdistance shouldnt be null";
+		 return this.mdistance;
 	 }
 	
-	 
-	 var distanceBenefit:Null<Float>;
-	 public function getDistanceBenefit():Float
+	 /*
+	 var mwidth:Null<Float>;
+	 public function getMWidth():Float
 	 {
-		 if (this.distanceBenefit != null) return this.distanceBenefit;
-		 this.distanceBenefit = Math.max(0, this.getDistance() - Constants.HEAD_WIDTH_NORMAL);
-		 return this.distanceBenefit;
+		  if (this.mwidth == null) throw "Shouldnt be null";
+		 return this.mwidth;
+	 }	 
+	 */
+	 
+	 var mdistanceBenefit:Null<Float>;
+	 public function getMDistanceBenefit():Float
+	 {
+		 if (this.mdistanceBenefit != null) return this.mdistanceBenefit;
+		 this.mdistanceBenefit = Math.max(0, this.getMDistance() - Constants.HEAD_WIDTH_NORMAL);
+		 return this.mdistanceBenefit;
 	 }
 	 
 	 var valuedelta:Null<Float>;
@@ -62,17 +72,11 @@ class PColumn
 		 return this.valuedelta;		 
 	 }
 	 
-	 var xposition:Null<Float>;	 
-	 /*
-	 public function setXPosition(val:Float):PColumn
-	 {
-		 this.xposition = val;
-		 return this;
-	 }
-	 */
-	 public function getXPosition():Float 
+	 var mposition:Null<Float>;	 
+
+	 public function getMPosition():Float 
 	 {		 
-		 return this.xposition;
+		 return this.mposition;
 	 }
 	 
 	 var aposition:Null<Float>;
@@ -84,22 +88,41 @@ class PColumn
 		return this.aposition;
 	 }
 	 
+	 var rightX:Null<Float>;
+	 public function getRightX():Float
+	 {
+		 if (this.rightX != null) return this.rightX;
+		 this.rightX = 0;
+		for (complex in this.getComplexes())
+		{
+			this.rightX = Math.max(this.rightX, complex.getRightX());			
+		}
+		return this.rightX;
+	 }
+	 
+	 var leftX:Null<Float>;
+	 public function getLeftX():Float
+	 {
+		 if (this.leftX != null) return this.leftX;
+		 this.leftX = 0;
+		for (complex in this.getComplexes())
+		{			
+			this.leftX = Math.min(this.leftX, complex.getLeftX());			
+		}
+		return this.leftX;
+	 }
+	 
+	 
+	 
 	 public function toString():String
 	 {
 		 return "PColumn";
 	 }
 	 
+	 
+	 
+	 
+	 
 }
 
-class PColumn2
-{
-	var bar:PBar;
-	//var complexes:PComplexes;
-	var position:Int;	
-	public function new(bar:PBar, pos:Int)
-	{
 
-		
-	}
-	
-}

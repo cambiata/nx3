@@ -7,7 +7,7 @@ using nx3.ENoteValTools;
  * ...
  * @author Jonas Nyström
  */
-class PComplexMinDistCalculator
+class PComplexDistancesCalculator
 {
 	//var vpart:VPart;
 	
@@ -40,6 +40,7 @@ class PComplexMinDistCalculator
 		// ... MORE!			
 		return rects;
 	}
+		
 	
 
 	

@@ -138,13 +138,20 @@ class PComplex
 		return this.allrects;
 	}	
 	
+	var rect:Rectangle;
+	public function getRect():Rectangle
+	{
+		this.rect  = RectanglesTools.unionAll(this.getAllRects());
+		return this.rect;
+	}
+	
 	var xposition:Null<Float>;
 	public function getXPosition():Float
 	{
 		if (this.xposition != null) return this.xposition;				
 		// TODO - check why this is needed...
 		this.getHeadsRects();		
-		this.xposition = this.getColumn().getXPosition();
+		this.xposition = this.getColumn().getMPosition();
 		return this.xposition;		
 	}	
 	
@@ -153,15 +160,22 @@ class PComplex
 		return this.part.getComplexes().indexOf(this);
 	}
 
-	/*
-	var yposition:Null<Float>;
-	public function getYPosition():Float
+	var leftX:Null<Float>;
+	public function getLeftX():Float
 	{
-		if (this.yposition != null) return this.yposition;
-		this.yposition = this.part.getYPosition();
-		return this.yposition;		
-	}	
-	*/
+		if (this.leftX != null) return this.leftX;
+		this.leftX = this.getRect().x;
+		return this.leftX;		
+	}
+
+	var rightX:Null<Float>;
+	public function getRightX():Float
+	{
+		if (this.rightX != null) return this.rightX;
+		this.leftX = this.getRect().x + this.getRect().width;
+		return this.leftX;		
+	}
+	
 	
 	public function toString():String
 	{

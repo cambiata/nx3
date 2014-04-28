@@ -4,7 +4,7 @@ import nx3.NBar;
 import nx3.NPart;
 import nx3.NVoice;
 import nx3.PBar;
-import nx3.PComplexMinDistCalculator;
+import nx3.PComplexDistancesCalculator;
 import nx3.PPart;
 import nx3.QNote.QLyric4;
 import nx3.QNote.QNote2;
