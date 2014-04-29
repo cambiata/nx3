@@ -6,7 +6,7 @@ import nx3.render.scaling.Scaling;
 import nx3.render.TargetSprite;
 import nx3.test.TestRenderer;
 import nx3.test.Unittests;
-
+using cx.ArrayTools;
 /**
  * ...
  * @author ...
@@ -23,7 +23,7 @@ class Main extends Sprite
 	{
 		super();
 		
-		//Unittests.performTests();
+		Unittests.performTests();
 		
 		/*
 		var target = new TargetSprite(Scaling.SMALL);

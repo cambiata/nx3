@@ -68,7 +68,7 @@ class PComplexTierectsCalculator
 						level = (firstnote.getDirection() == EDirectionUD.Up) ? level + 1 : level - 1;
 						direction = (firstnote.getDirection() == EDirectionUD.Up) ? EDirectionUD.Down : EDirectionUD.Up;
 						adjusty = (firstnote.getDirection() == EDirectionUD.Up) ? .8 : -.8;
-						rx -= 1; tiewidth += 1;
+						//rx -= 1; tiewidth += 1;
 					}
 					else
 					{

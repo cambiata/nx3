@@ -53,11 +53,46 @@ class RendererBase
 				this.target.filledellipse(x, y, rect, 5, 0xaaaaaa, 0xffffff);
 				
 			default:
-				var svginfo = RendererTools.getHeadSvgInfo(note.nnote);		
+				var svginfo = RendererTools.getHeadSvgInfo(note.nnote);						
+				var hx1: Float = x;
+				var hx2: Float = x;
+
 				for (rect in note.getHeadsRects())
 				{
-					this.target.shape(x+rect.x *scaling.unitX, y + (rect.y + svginfo.y) * scaling.unitY, svginfo.xmlStr);
+					this.target.shape(x + rect.x * scaling.unitX, y + (rect.y + svginfo.y) * scaling.unitY, svginfo.xmlStr);
 				}				
+
+				//--------------------------------------------------------------------------------------
+				// leger lines...
+				
+				var i = 0;
+				for (rect in note.getHeadsRects())
+				{
+					
+					var level = note.getHeads()[i].nhead.level;
+					if (level > 5 || level < -5)
+					{
+						hx1 = Math.min(hx1, x + (rect.x - Constants.LEGER_MARGIN) * scaling.unitX);
+						hx2 = Math.max(hx2, x + (rect.x + rect.width + Constants.LEGER_MARGIN) * scaling.unitX);					
+					}					
+					i++;
+				}						
+				
+				
+				for (head in note.getHeads())
+				{					
+					var level = head.nhead.level;
+					if (level <  5 && level >-5) continue;					
+					var lev1 = (level < 0) ? level : 5;
+					var lev2 = (level < 0) ? -4 : level+1;
+					
+					for (l in lev1...lev2)
+					{
+						if (((l+100) % 2) == 1) continue;
+						var hy = y + l * this.scaling.unitY;
+						this.target.line(hx1, hy , hx2, hy, 1, 0x000000);
+					}					
+				}
 		}		
 	}		
 	

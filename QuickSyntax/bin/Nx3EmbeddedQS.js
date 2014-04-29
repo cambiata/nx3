@@ -2735,8 +2735,6 @@ nx3.PComplexTierectsCalculator.prototype = {
 						if(firstnote.getDirection() == nx3.EDirectionUD.Up) level = level + 1; else level = level - 1;
 						if(firstnote.getDirection() == nx3.EDirectionUD.Up) direction = nx3.EDirectionUD.Down; else direction = nx3.EDirectionUD.Up;
 						if(firstnote.getDirection() == nx3.EDirectionUD.Up) adjusty = .8; else adjusty = -.8;
-						rx -= 1;
-						tiewidth += 1;
 					} else if(firstnote.getDirection() == nx3.EDirectionUD.Up) level = level - 1; else level = level - 1;
 					tiewidth = 3;
 				} else if(secondnote == null && head == cx.ArrayTools.last(firstnote.getHeads())) {
@@ -6931,12 +6929,46 @@ nx3.render.RendererBase.prototype = {
 				break;
 			default:
 				var svginfo = nx3.render.RendererTools.getHeadSvgInfo(note.nnote);
+				var hx1 = x;
+				var hx2 = x;
 				var _g1 = 0;
 				var _g2 = note.getHeadsRects();
 				while(_g1 < _g2.length) {
 					var rect2 = _g2[_g1];
 					++_g1;
 					this.target.shape(x + rect2.x * this.scaling.unitX,y + (rect2.y + svginfo.y) * this.scaling.unitY,svginfo.xmlStr);
+				}
+				var i = 0;
+				var _g11 = 0;
+				var _g21 = note.getHeadsRects();
+				while(_g11 < _g21.length) {
+					var rect3 = _g21[_g11];
+					++_g11;
+					var level1 = note.getHeads()[i].nhead.level;
+					if(level1 > 5 || level1 < -5) {
+						hx1 = Math.min(hx1,x + (rect3.x - 0.8) * this.scaling.unitX);
+						hx2 = Math.max(hx2,x + (rect3.x + rect3.width + 0.8) * this.scaling.unitX);
+					}
+					i++;
+				}
+				var _g12 = 0;
+				var _g22 = note.getHeads();
+				while(_g12 < _g22.length) {
+					var head = _g22[_g12];
+					++_g12;
+					var level2 = head.nhead.level;
+					if(level2 < 5 && level2 > -5) continue;
+					var lev1;
+					if(level2 < 0) lev1 = level2; else lev1 = 5;
+					var lev2;
+					if(level2 < 0) lev2 = -4; else lev2 = level2 + 1;
+					var _g3 = lev1;
+					while(_g3 < lev2) {
+						var l = _g3++;
+						if((l + 100) % 2 == 1) continue;
+						var hy = y + l * this.scaling.unitY;
+						this.target.line(hx1,hy,hx2,hy,1,0);
+					}
 				}
 			}
 		}
@@ -7491,6 +7523,7 @@ nx3.Constants.BEAM_HEIGHT = 0.95;
 nx3.Constants.TIE_WIDTH_CHORD = 3.2;
 nx3.Constants.TIE_WIDTH_SINGLE = 3;
 nx3.Constants.TIE_HEIGHT = 1.6;
+nx3.Constants.LEGER_MARGIN = 0.8;
 nx3.ENoteValTools.DOT = 1.5;
 nx3.ENoteValTools.DOTDOT = 1.75;
 nx3.ENoteValTools.TRI = 0.66666666;

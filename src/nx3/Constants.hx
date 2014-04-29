@@ -47,6 +47,7 @@ class Constants
 	static public inline var TIE_WIDTH_CHORD:Float = 3.2;
 	static public inline var TIE_WIDTH_SINGLE:Float = 3;
 	static public inline var TIE_HEIGHT:Float = 1.6;
+	static public inline var LEGER_MARGIN:Float =0.8;
 	
 	//static public inline var ASPACING_NORMAL:Float = 8;		
 } 

@@ -14,20 +14,28 @@ using Lambda;
 class ArrayTools 
 {
 
+	inline static function next<T>(a:Array<T>, item:T):Null<T>
+	{
+		var idx = a.indexOf(item);
+		if (idx == -1) return null;
+		if (idx == a.length - 1) return null;
+		return a[idx + 1];		
+	}
+	
 	inline static public function has<T>(a:Array<T>, item:T)
 	{
 		return a.indexOf(item) != -1;
 	}	
 	
 	
-	inline static public function indexOrNull<T>(a:Array<T>, idx:Int)
+	inline static public function indexOrNull<T>(a:Array<T>, idx:Int):Null<T>
 	{
-		return (idx < 0 || idx > a.length) ? null : a[idx];
+		return (idx < 0 || idx > a.length-1) ? null : a[idx];
 	}
 	
 	inline static public function indexOrValue<T>(a:Array<T>, idx:Int, fallbackValue:T)
 	{
-		return (idx < 0 || idx > a.length) ? fallbackValue : a[idx];
+		return (indexOrNull(a, idx) != null) ? a[idx] : fallbackValue;
 	}	
 	
 	
