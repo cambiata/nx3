@@ -9,6 +9,7 @@ import nx3.NPart;
 import nx3.NVoice;
 import nx3.PBar;
 import nx3.PPart;
+import nx3.QNote.QLyric4;
 import nx3.QNote.QNote16;
 import nx3.QNote.QNote1;
 import nx3.QNote.QNote2;
@@ -325,7 +326,7 @@ class TestItems
 					new QNote8(2),
 					new QNote2(0, '#'),
 					new QNote4([ -3, -2], 'b'),
-					new QNote8(true, -3),
+					new QNote8(true, 3),
 					new QNote16(-2),					
 					]),
 					
@@ -339,8 +340,8 @@ class TestItems
 					//new QNote4([ -1, 0], '#b'),						
 					new QNote4(0),					
 					new QNote16(1),					
-					new QNote16(-2),					
-					new QNote8(-4),					
+					new QNote8(-2),					
+					new QNote16(-4),					
 					new QNote4(0),					
 				]),
 			]),			
@@ -396,6 +397,29 @@ class TestItems
 		]));				
 		
 	}			
+	
+	static public function pbarLyrics():PBar
+	{
+		return new PBar(new NBar([
+		
+			new NPart([	
+				new NVoice([				
+					new QNote4(),
+					new QNote4(),
+				]),
+			]),
+		
+		
+			new NPart([	
+				new NVoice([				
+					new QLyric4('Hej'),
+					new QLyric4('Hopp'),
+				]),
+			]),
+		]));				
+		
+	}				
+	
 	
 	static public function pbarAllotLinear():PBar
 	{
@@ -459,12 +483,31 @@ class TestItems
 		return new PBar(new NBar([
 			new NPart([	
 				new NVoice([				
-						new NNote([new NHead(0, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
-						new QNote4(0),
-						new QNote4(0),					
+
+						 new NNote([new NHead(1, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(1),
+						new NNote([new NHead(-1, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(-1),
+						
+						new NNote([new NHead(1, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(1),
+						new NNote([new NHead(-1, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4( -1),		
+						
+						new NNote([new NHead(1, ETie.Tie(EDirectionUAD.Auto, 0)), new NHead(-1, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(1),
+						new NNote([new NHead(-1, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(-1),							
+						
 					]),
+					
+				new NVoice([										
+							new NNote([new NHead(5, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv2dot),
+							new QNote4(5),
+					]),
+					
 			]),
-		], EAllotment.LeftAlign));				
+		], EAllotment.Logaritmic));				
 	}
 	
 	static public function pbarDots():PBar

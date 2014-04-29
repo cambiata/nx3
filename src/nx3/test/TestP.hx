@@ -2,6 +2,7 @@ package nx3.test;
 
 import haxe.unit.TestCase;
 import nx3.EAllotment;
+import nx3.EBeamflagType;
 import nx3.EDirectionUAD;
 import nx3.EDirectionUD;
 import nx3.ENoteVal;
@@ -16,6 +17,7 @@ import nx3.PBar;
 import nx3.PColumn;
 import nx3.PColumnsDistancesCalculator;
 import nx3.PComplex;
+import nx3.PComplexTieTargetCalculator;
 import nx3.PNote;
 import nx3.PPart;
 import nx3.PPartComplexesGenerator;
@@ -129,6 +131,17 @@ class TestP extends TestCase
 		this.assertEquals(vpart.getVoices().first().getBeamgroups().second().getDirection(), EDirectionUD.Down);
 		this.assertEquals(vpart.getVoices().second().getBeamgroups().first().getDirection(), EDirectionUD.Down);
 	}	
+	
+	public function testBeamflags()
+	{
+		var vpart = new PPart(new NPart([
+			new QVoice([16, 16, 16, 16]),			
+		]));			
+		
+		var beamgroup = vpart.getVoices().first().getBeamgroups().first();
+		this.assertEquals(beamgroup.getFrame().beamflags.toString(), [EBeamflagType.Full16, EBeamflagType.Full16, EBeamflagType.Full16, ].toString());
+		
+	}
 
 	public function testPVoiceNoteDirections()
 	{
@@ -238,9 +251,8 @@ class TestP extends TestCase
 		]));		
 		var complex = pbar.getColumns().first().getComplexes().first();		
 		var rects = complex.getDotRects();
-		trace(rects);
+		this.assertEquals(rects.length, 1);
 	}
-	
 	
 	public function testPBarComplexTies()
 	{
@@ -274,7 +286,67 @@ class TestP extends TestCase
 		]));				
 		
 	}
+	
+	
+	public function testPBarComplexTieinfos()
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([new NHead(0, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(),
+					]),
+			]),
+		]));				
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().length, 1);
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().first().direction, EDirectionUD.Up);
+
 		
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([new NHead(1, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(),
+					]),
+			]),
+		]));				
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().length, 1);
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().first().direction, EDirectionUD.Down);
+
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([new NHead(1, ETie.Tie(EDirectionUAD.Auto, 0)), new NHead(3, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(),
+					]),
+			]),
+		]));				
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().length, 2);
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().first().direction, EDirectionUD.Up);
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().second().direction, EDirectionUD.Down);
+		
+	}
+
+	public function testPBarComplexTieTargets()
+	{
+		var pbar = new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+						new NNote([new NHead(0, ETie.Tie(EDirectionUAD.Auto, 0))], ENoteVal.Nv4),
+						new QNote4(0),
+					]),
+			]),
+		]));				
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().length, 1);
+		this.assertEquals( pbar.getColumns().first().getComplexes().first().getTieinfos().first().direction, EDirectionUD.Up);	
+		var tieinfos =  pbar.getColumns().first().getComplexes().first().getTieinfos();
+		//trace(tieinfos);
+		var calculator = new PComplexTieTargetCalculator(tieinfos);
+		tieinfos = calculator.findTargetHeads();
+		//trace(tieinfos);
+		this.assertEquals(tieinfos.first().head, pbar.getColumns().first().getComplexes().first().getNotes().first().getHeads().first());
+		this.assertEquals(tieinfos.first().target, pbar.getColumns().second().getComplexes().first().getNotes().first().getHeads().first());				
+	}
 	
 	
 	public function testPBarFindNextColumnComplex()

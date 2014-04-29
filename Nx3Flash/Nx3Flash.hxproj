@@ -7,7 +7,7 @@
     <movie path="bin\Nx3Flash.swf" />
     <movie fps="30" />
     <movie width="1400" />
-    <movie height="800" />
+    <movie height="1000" />
     <movie version="11" />
     <movie minorVersion="1" />
     <movie platform="Flash Player" />

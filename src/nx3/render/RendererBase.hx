@@ -1,8 +1,12 @@
 package nx3.render;
 import nx3.Constants;
+import nx3.EBeamflagType;
+import nx3.geom.BezieerTool;
+import nx3.geom.Pnt;
 import nx3.geom.Rectangle;
 import nx3.EDirectionUD;
 import nx3.ENoteType;
+import nx3.geom.Rectangles;
 import nx3.PBeamgroup;
 import nx3.PComplex;
 import nx3.PNote;
@@ -61,7 +65,7 @@ class RendererBase
 	{
 		for (part in bar.getParts())
 		{
-			this.target.testLines(this.targetX - (4*this.scaling.unitY) , this.targetY+ part.getYPosition()*this.scaling.unitY,  50*this.scaling.unitX);
+			this.target.testLines(this.targetX - (4*this.scaling.unitY) , this.targetY+ part.getYPosition()*this.scaling.unitY,  100*this.scaling.unitX);
 			for (voice in part.getVoices())
 			{
 				for (beamgroup in voice.getBeamgroups())
@@ -80,8 +84,6 @@ class RendererBase
 		}		
 	}	
 	
-	
-	
 	public function pcomplex(complex:PComplex)
 	{
 		if (complex == null) return;
@@ -98,6 +100,34 @@ class RendererBase
 		}
 		this.psigns(complex);		
 		this.pdots(complex);
+		this.pties(complex);
+	}
+	
+	public function pties(complex:PComplex) 
+	{		
+		var y  = this.targetY + complex.getPart().getYPosition() * target.getScaling().unitY;
+		var x = this.targetX + complex.getXPosition() * target.getScaling().unitX;				
+
+		for (info in complex.getTieinfos())
+		{
+		
+			var rect = info.rect;
+			var direction = info.direction;
+			
+			if (info.target != null)
+			{					
+				var targetcomplex = info.target.pnote.getComplex();
+				
+				var thisx = complex.getXPosition() + rect.x;				
+				var targetAllRect = RectanglesTools.unionAll(targetcomplex.getAllRects());
+				var targetx = targetcomplex.getXPosition() + targetAllRect.x;
+				rect.width = (targetx -thisx) - 0.5 ;				
+			}
+			
+			//this.target.rectangle(x, y, rect);
+			this.drawTie(x, y, rect, direction);
+			
+		}
 	}
 	
 	public function pdots(complex:PComplex) 
@@ -165,7 +195,8 @@ class RendererBase
 		//------------------------------------------------------------------------------------------
 		
 		if (beamgroup.pnotes.length == 1)
-		{			
+		{	
+			// Flags?
 			if (firstnote.nnote.value.beaminglevel() > 0)
 			{
 				if (beamgroup.getDirection() == EDirectionUD.Up)
@@ -185,7 +216,13 @@ class RendererBase
 		
 		//------------------------------------------------------------------------------------------
 		if (beamgroup.pnotes.length < 2) return;
+		//------------------------------------------------------------------------------------------
 
+		var storeY:Array<Float> = [rightY + leftTipY];
+		var storeX:Array<Float> = [this.targetX + leftX];
+		
+		//-------------------------------------------------------------------------------------------
+		
 		// right stave
 		var lastnote = beamgroup.pnotes.last();
 		
@@ -195,15 +232,74 @@ class RendererBase
 		var rightTipY  =  frame.rightTipY * scaling.unitY;		
 		this.target.line(this.targetX + rightX, rightY+ rightInnerY, this.targetX + rightX, rightY+ rightTipY, 1, 0x000000);		
 		
-		
 		var beamh:Float = Constants.BEAM_HEIGHT * this.scaling.unitY;
 		beamh  = (beamgroup.getDirection() == EDirectionUD.Up) ? -beamh : beamh;
 		this.target.parallellogram(this.targetX + leftX, rightY + leftTipY - beamh, this.targetX + rightX, rightY+ rightTipY - beamh, beamh, 0, 0, 0);
 		
 		//------------------------------------------------------------------------------------------
-		if (beamgroup.pnotes.length < 3) return;		
+		if (beamgroup.pnotes.length > 2) 
+		{
+			// mid staves
+			for (i in 1...frame.outerLevels.length - 1)
+			{
+				var midX = beamgroup.getNotesStemXPositions()[i] * this.scaling.unitX;		
+				var midInnerY = frame.innerLevels[i] * scaling.unitY;
+				var delta:Float = (midX - leftX) / (rightX - leftX);
+				var midTipY = leftTipY + (rightTipY - leftTipY) * delta;
+				this.target.line(this.targetX + midX, rightY + midInnerY, this.targetX + midX, rightY + midTipY, 1, 0x000000);
+				
+				storeY.push(rightY + midTipY);
+				storeX.push(this.targetX + midX);
+				
+			}	
+		}
+
+		storeY.push(rightY + rightTipY);
+		storeX.push(this.targetX + rightX);
 		
-		// mid staves
+		
+		
+		//--------------------------------------------------------------------------------------------------------------
+		
+		trace(storeX);
+		var idx = 0;
+		var beamh:Float = Constants.BEAM_HEIGHT * this.scaling.unitY;
+		for (flagtype in beamgroup.getFrame().beamflags)
+		{
+			var adjustY:Float = (beamgroup.getDirection() == EDirectionUD.Up) ? 2.1 : -2.1;
+			adjustY *= this.scaling.unitY;
+			
+			var currX = storeX[idx];
+			var currY = storeY[idx]+adjustY;			
+			var nextX = storeX[idx+1];
+			var nextY = storeY[idx + 1]+adjustY;			
+			//this.target.line(currX, currY, nextX, nextY, 5, 0xFF0000);
+			
+			var factor = 2.2 * this.scaling.unitX;
+			switch (flagtype)
+			{
+				case EBeamflagType.Full16:
+					//this.target.line(currX, currY, nextX, nextY, 5, 0xFF0000);
+					this.target.parallellogram(currX, currY  - beamh/2, nextX,nextY-beamh/2, beamh, 0, 0, 0);
+				case EBeamflagType.Start16:
+					var endX = currX + factor;
+					var endY = (factor / (nextX - currX)) * (nextY - currY) + currY;			
+					this.target.parallellogram(currX, currY  - beamh/2, endX,endY-beamh/2, beamh, 0, 0, 0);
+					//this.target.line(currX, currY, endX, endY, 5, 0xFF0000);
+				case EBeamflagType.End16:
+					var startX = nextX - factor;
+					var startY = ( -((nextX - startX) / (nextX - currX)) * (nextY - currY)) + nextY;			
+					this.target.parallellogram(startX, startY  - beamh/2, nextX,nextY-beamh/2, beamh, 0, 0, 0);
+					//this.target.line(startX, startY, nextX, nextY, 5, 0xFF0000);
+						
+				default:
+			}
+			
+			
+			idx++;
+		}
+		
+		/*
 		for (i in 1...frame.outerLevels.length - 1)
 		{
 			var midX = beamgroup.getNotesStemXPositions()[i] * this.scaling.unitX;		
@@ -211,8 +307,55 @@ class RendererBase
 			var delta:Float = (midX - leftX) / (rightX - leftX);
 			var midTipY = leftTipY + (rightTipY - leftTipY) * delta;
 			this.target.line(this.targetX + midX,rightY + midInnerY,this.targetX + midX, rightY + midTipY, 1, 0x000000);
-		}	
+		}			
+		*/
+		
 	}
+	
+	public function drawTie(x:Float, y:Float, rect:Rectangle, direction:EDirectionUD)
+	{
+		var a1:Pnt = null;
+		var c1:Pnt = null;
+		var c2:Pnt = null;
+		var a2:Pnt = null;
+		
+		if (direction == EDirectionUD.Down) 
+		{
+			 a1 = {x: rect.x, y:rect.y};
+			 c1 = { x:rect.x+1, y:rect.bottom };
+			 c2 = { x:rect.right - 1, y:rect.bottom } ;
+			 a2 = { x:rect.right, y:rect.y};						
+		}
+		else
+		{
+			 a1 = {x: rect.x, y:rect.bottom};
+			 c1 = { x:rect.x+1, y:rect.y };
+			 c2 = { x:rect.right-1, y:rect.y } ;
+			 a2 = { x:rect.right, y:rect.bottom};			
+		}
+		var coords1 = BezieerTool.bezieerCoordinates(a1, c1, c2, a2);
+		
+		var thickness = 0.06 * this.scaling.unitY;
+		if (direction == EDirectionUD.Down) 
+		{			 
+			 c1 = { x:rect.x, y:rect.bottom- thickness };
+			 c2 = { x:rect.right, y:rect.bottom-thickness } ;
+		}
+		else
+		{
+			 c1 = { x:rect.x, y:rect.y+thickness };
+			 c2 = { x:rect.right, y:rect.y+thickness } ;
+		}
+		
+		var coords2 = BezieerTool.bezieerCoordinates(a2, c2, c1, a1);		
+		coords1.shift();
+		
+		var coords = coords1.concat(coords2);
+		this.target.polyfill(x, y, coords);		
+	}
+	
+	
+	
 	
 	
 	

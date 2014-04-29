@@ -1,7 +1,10 @@
 package nx3.render;
 import nx3.EDirectionUD;
+import nx3.geom.Pnt;
+import nx3.geom.Pnts;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
+import nx3.geom.Point;
 import nx3.render.scaling.TScaling;
 import nx3.TPoints;
 import nx3.VNote;
@@ -33,5 +36,7 @@ interface ITarget
 	
 	public function parallellogram(x:Float, y:Float, width:Float, y2:Float, pheight:Float,?lineWidth:Float, ?lineColor:Int, ?fillColor:Int):Void;
 	
+	public function polyline(x:Float, y:Float, coordinates:Pnts,?lineWidth:Float = 1, ?lineColor:Int = 0x000000):Void;
+	public function polyfill(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float = 1, ?lineColor:Int = 0x000000, fillColor:Int = 0x000000):Void;
 
 }

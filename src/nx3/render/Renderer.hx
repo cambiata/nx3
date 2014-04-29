@@ -2,6 +2,7 @@ package nx3.render;
 import nx3.Constants;
 import nx3.EDirectionUDs;
 import nx3.ESign;
+import nx3.geom.BezieerTool;
 import nx3.geom.Rectangle;
 import nx3.EDirectionUD;
 import nx3.NBar;
@@ -45,6 +46,7 @@ class Renderer extends RendererBase
 	}
 	
 	
+	/*
 	public function renderBar(vbar:VBar, newX:Float=-1, newY:Float=-1)
 	{
 		if (newX != -1) this.targetX = newX;
@@ -312,7 +314,7 @@ class Renderer extends RendererBase
 			this.target.line(midPoint.x, midPoint.y + midInnerY, midPoint.x, midPoint.y + midTipY, 1, 0x000000);
 		}		
 	}	
-	
+	*/
 	
 	public function getTarget():ITarget
 	{
@@ -325,6 +327,8 @@ class Renderer extends RendererBase
 		if (newY != -1) this.targetY = newY;	
 		this.pbar(bar);
 		
+		//this.drawTie(10, 10, new Rectangle(0, 0, 100, 20), EDirectionUD.Up);
+		//this.target.polyfill(
 	}
 	
 

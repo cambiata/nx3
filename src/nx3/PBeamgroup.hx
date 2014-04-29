@@ -91,7 +91,12 @@ class PBeamgroup
 		 return this.frame;
 	 }
 	 
-	 
+	 public function toString():String
+	 {
+		 return "PBeamgroup \r" +
+		 Std.string(this.getFrame().beamflags);
+		 
+	 }
 	 
  }
  

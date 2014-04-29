@@ -1,4 +1,5 @@
 package nx3;
+import cx.ArrayTools;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
 using nx3.geom.Rectangles.RectanglesTools;
@@ -119,7 +120,23 @@ class PNote
 	
 	public function getTies():ETies
 	{
-		return this.nnote.getTies();
+		return this.nnote.getTies();		
+	}
+	
+	var next:PNote;
+	public function getNext():PNote
+	{
+		if (this.next != null) return this.next;
+		var idx = this.voice.getNotes().indexOf(this);
+		this.next = ArrayTools.indexOrNull(this.voice.getNotes(), idx + 1);
+		return this.next;
+	}
+	
+	
+	
+	public function setTiesInfo(info:ETies)
+	{
+		
 		
 	}
 	

@@ -23,7 +23,7 @@ class Main extends Sprite
 	{
 		super();
 		
-		Unittests.performTests();
+		//Unittests.performTests();
 		
 		/*
 		var target = new TargetSprite(Scaling.SMALL);

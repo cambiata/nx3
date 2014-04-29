@@ -6,6 +6,7 @@ import js.JQuery;
 import js.Lib;
 import nx3.Constants;
 import nx3.EDirectionUD;
+import nx3.geom.Pnts;
 import nx3.render.scaling.Scaling;
 import nx3.TFontInfo;
 import nx3.TPoints;
@@ -313,6 +314,46 @@ class TargetSvg implements ITarget
 		//this.snap = new Snap(svgId);
 		var svgElement = new JQuery(this.svgId);
 		svgElement.empty();
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function polyline(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float = 1, ?lineColor:Int = 0x000000):Void 
+	{
+		var pathStr = getPathString(x, y, coordinates);
+		var el = this.snap.path(pathStr);
+		el.attr( {
+				stroke: hex(lineColor),
+				strokeWidth: lineWidth * scaling.linesWidth,			
+		});				
+	}
+	
+	public function polyfill(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float = 1, ?lineColor:Int = 0x000000, fillColor:Int = 0x000000):Void 
+	{
+		var pathStr = getPathString(x, y, coordinates);
+		var el = this.snap.path(pathStr);
+		el.attr( {
+				fill: hex(fillColor), 
+				stroke: hex(lineColor),
+				strokeWidth: lineWidth * scaling.linesWidth,			
+		});						
+	}
+	
+	function getPathString(x:Float, y:Float, coordinates:Pnts):String
+	{
+		var pathStr = '';
+		var first = coordinates.shift();
+		var cx = x + first.x * this.scaling.unitX;
+		var cy = y + first.y * this.scaling.unitY;
+		pathStr += 'M ${cx} ${cy} ';
+			
+		for (coord in coordinates) 
+		{
+			var cx = x + coord.x * this.scaling.unitX;
+			var cy = y + coord.y * this.scaling.unitY;			
+			pathStr += 'L ${cx} ${cy} ';
+		}
+		return pathStr;		
 	}
 	
 	/* INTERFACE nx3.render.ITarget */

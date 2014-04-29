@@ -1,4 +1,6 @@
 package nx3.render;
+import nx3.geom.Pnt;
+import nx3.geom.Pnts;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
 import nx3.render.scaling.Scaling;
@@ -111,6 +113,27 @@ class TargetSvgXml implements ITarget
 	{
 		
 	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function polyline(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float=1, ?lineColor:Int = 0x000000):Void 
+	{
+		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function polyfill(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float = 1, ?lineColor:Int = 0x000000, fillColor:Int = 0x0000FF):Void 
+	{
+		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+
+	/* INTERFACE nx3.render.ITarget */
+	
+
 	
 	/* INTERFACE nx3.render.ITarget */
 	

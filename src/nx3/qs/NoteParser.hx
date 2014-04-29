@@ -1,8 +1,11 @@
 package nx3.qs;
 import cx.ArrayTools;
+import nx3.EDirectionUAD;
+import nx3.EDirectionUD;
 import nx3.ENoteType;
 import nx3.ENoteVal;
 import nx3.ESign;
+import nx3.ETie;
 import nx3.NHead;
 import nx3.NNote;
 using StringTools;
@@ -25,6 +28,7 @@ class NoteParser extends BaseParser
 	var pause:Bool;
 	var pauselevel:Int;
 	var prevlevel:Int;
+	var tie:Bool;
 	
 	
 	public function new(parser:QuickSyntaxParser)
@@ -45,6 +49,7 @@ class NoteParser extends BaseParser
 		
 		this.pause = false;
 		this.pauselevel = 0;
+		this.tie = false;
 	}
 	
 	override public function createFunctions()
@@ -95,6 +100,8 @@ class NoteParser extends BaseParser
 		this.functions.set('16.', function (token:String) {	this.notevalue = ENoteVal.Nv16dot;	return token.substr(3);});		
 		this.functions.set('16', function (token:String) {	this.notevalue = ENoteVal.Nv16;	return token.substr(2);});		
 		
+		this.functions.set('_', function (token:String) {	this.tie = true;	return token.substr(1);});				
+		
 		this.functions.set('=', function (token:String) {	this.octAdjust = 0;	return token.substr(1);});		
 		this.functions.set('+', function (token:String) {	this.octAdjust = -7;	return token.substr(1);});		
 		this.functions.set('++', function (token:String) {	this.octAdjust = -14;	return token.substr(2);});		
@@ -118,29 +125,25 @@ class NoteParser extends BaseParser
 		var val = this.notevalue;
 		var nnote:NNote = null;
 		
-		
-		
 		if (this.pause) 
 		{
 			nnote = new NNote(ENoteType.Pause(this.pauselevel), val);
 			this.pause = false;
 		}
 		else
-		{
-			
+		{			
 			var nheads:Array<NHead> = [];
 			for (i in 0...this.notelevels.length)
 			{
 				var level = this.notelevels[i] + this.octAdjust + this.clefAdjust;
 				var sign = this.notesigns[i];
-				nheads.push(new NHead(level, sign));
+				var tie = (this.tie) ? ETie.Tie(EDirectionUAD.Auto, 0) : null;
+				nheads.push(new NHead(level, sign, tie));
 			}
 			nnote = new NNote(nheads, val);
 			
 			this.prevlevel = this.notelevels.first();
 		}
-		
-		
 		
 		this.builder.addNote(nnote);
 		this.prevlevels = this.notelevels.copy();
@@ -150,6 +153,7 @@ class NoteParser extends BaseParser
 		this.notelevels = [];
 		this.notesigns = [];
 		this.notevalue = null;
+		this.tie = false;
 	}
 	
 	override public function recieveEvent(event:ParserEvents) 

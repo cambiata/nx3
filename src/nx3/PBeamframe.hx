@@ -14,4 +14,5 @@ typedef PBeamframe =
 	rightTipY:Int,
 	outerLevels:Array<Int>,
 	innerLevels:Array<Int>,	
+	beamflags:Array<EBeamflagType>,
 }

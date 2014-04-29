@@ -1,6 +1,9 @@
 package nx3.render;
 import nx3.Constants;
 import nx3.EDirectionUD;
+import nx3.geom.Pnt;
+import nx3.geom.Pnts;
+import nx3.geom.Point;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
 import nx3.render.scaling.Scaling;
@@ -200,5 +203,72 @@ class TargetSprite  implements ITarget
 		shape.y = y + rect.y * scaling.unitY + scaling.svgY;
 		this.sprite.addChild(shape);
 	}		
+	
+	
+	public function bezieerX(anchor1:Pnt, control1:Pnt, control2:Pnt, anchor2:Pnt, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void
+	{
+			var anchor1:Point = new Point(100, 100);
+			var control1:Point = new Point(100, 10);
+			var control2:Point = new Point(300, 10);
+			var anchor2:Point = new Point(300, 100);
+		
+			var coord:Pnts = [];
+			
+			coord.push(anchor1);
+			
+			var posx:Float;
+			var posy:Float;
+			 
+			for (i in 0...100)
+			{
+				var u = i / 100;
+				
+				posx = Math.pow(u,3)*(anchor2.x+3*(control1.x-control2.x)-anchor1.x)
+				+3*Math.pow(u,2)*(anchor1.x-2*control1.x+control2.x)
+				+3*u*(control1.x-anchor1.x)+anchor1.x;
+				
+				posy = Math.pow(u,3)*(anchor2.y+3*(control1.y-control2.y)-anchor1.y)
+				+3*Math.pow(u,2)*(anchor1.y-2*control1.y+control2.y)
+				+3*u*(control1.y-anchor1.y)+anchor1.y;
+			 
+				coord.push({x:posx, y:posy});
+			}
+			
+			coord.push(anchor2);			
+
+			this.sprite.graphics.lineStyle(lineWidth, lineColor);
+			this.sprite.graphics.moveTo(anchor1.x,anchor1.y);
+
+			for (co in coord)
+			{
+				this.sprite.graphics.lineTo(co.x, co.y);				
+			}
+
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function polyline(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float=1, ?lineColor:Int = 0x000000):Void 
+	{
+			this.sprite.graphics.lineStyle(lineWidth, lineColor);
+			
+				var first = coordinates.shift();
+				this.sprite.graphics.moveTo(x + first.x*this.scaling.unitX, y + first.y*this.scaling.unitY);
+
+			
+			for (co in coordinates) 
+			{
+				this.sprite.graphics.lineTo(x + co.x*this.scaling.unitX, y + co.y*this.scaling.unitY);				
+			}		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function polyfill(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float = 1, ?lineColor:Int = 0x000000, fillColor:Int = 0x0000FF):Void 
+	{
+		this.sprite.graphics.beginFill(fillColor);
+		this.polyline(x, y, coordinates, lineWidth, lineColor);
+		this.sprite.graphics.endFill();
+	}
 	
 }

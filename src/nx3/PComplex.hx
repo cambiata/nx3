@@ -203,6 +203,26 @@ class PComplex
 		return this.next;
 	}
 	
+	var tieinfos:PTieinfos;
+	public function setTieinfos(val:PTieinfos)
+	{
+		this.tieinfos = val;
+	}
+	
+	public function getTieinfos():PTieinfos 
+	{
+		if (this.tieinfos == null) this.getTieRects();
+		if (this.getTieRects().length == 0) return [];
+		this.tieinfos = new PComplexTieTargetCalculator(this.tieinfos).findTargetHeads();
+		return this.tieinfos;
+	}
+	
+	public function getHeads():PHeads
+	{
+		var result:PHeads = [];
+		for (note in this.getNotes()) result = result.concat(note.getHeads());
+		return result;		
+	}
 	
 	public function toString():String
 	{

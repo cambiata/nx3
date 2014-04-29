@@ -33,10 +33,10 @@ class TestRenderer
 	static public function testRenderP(r:Renderer)
 	{
 		r.renderPBar(TestItems.pbarTest(), 30, 100);		
-		r.renderPBar(TestItems.pbarDistances(), 30, 400);		
+		r.renderPBar(TestItems.pbarLyrics(), 30, 400);		
 		r.renderPBar(TestItems.pbarAllotLinear(), 30, 550);		
 		r.renderPBar(TestItems.pbarAllotLogaritmic(), 30, 650);		
-		r.renderPBar(TestItems.pbarDots2(), 30, 750);		
+		r.renderPBar(TestItems.pbarTies(), 30, 750);		
 	}
 	
 }

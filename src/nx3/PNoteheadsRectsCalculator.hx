@@ -27,7 +27,7 @@ class PNoteheadsRectsCalculator
 		{
 			case ENoteType.Note(h, v, a, a2): new PHeadsRectsCalculator(this.note).getHeadsRects();
 			//case ENoteType.Pause(l): 	new VNoteHeadsRectsPausesCalculator(vnote).getHeadsRects();
-			//case ENoteType.Lyric(text, o, c, font): new VNoteHeadsRectsLyricsCalculator(vnote, text, font).getHeadsRects();
+			case ENoteType.Lyric(text, o, c, font): new PNoteHeadsRectsLyricsCalculator(this.note, text, font).getHeadsRects();
 			//case ENoteType.Tpl:new VNoteHeadsRectsTplCalculator(vnote).getHeadsRects();
 		default:
 			throw "Non implemented ENoteType: " + this.note.nnote.type.getName();

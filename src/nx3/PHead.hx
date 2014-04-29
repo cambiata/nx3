@@ -13,4 +13,10 @@ class PHead
 	 }
 	public var pnote(default, default): PNote;	
 	
+	
+	public function toString():String
+	{
+		return 'PHead  \r' + Std.string(nhead);
+	}
+	
 }

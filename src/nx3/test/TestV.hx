@@ -1134,7 +1134,7 @@ class TestV extends  haxe.unit.TestCase
 			])
 		]));				
 		var distances = vpart.getVComplexesMinDistances();		
-		this.assertEquals(distances.get(vpart.getVComplexes().first()), 6.2);
+		this.assertEquals(distances.get(vpart.getVComplexes().first()), 5.2);
 		this.assertEquals(distances.get(vpart.getVComplexes().second()), 1.6);
 
 		var vpart = new VPart(new NPart([
