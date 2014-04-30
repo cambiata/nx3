@@ -22,6 +22,15 @@ class ArrayTools
 		return a[idx + 1];		
 	}
 	
+	inline static function prev<T>(a:Array<T>, item:T):Null<T>
+	{
+		var idx = a.indexOf(item);
+		if (idx <= 0) return null;
+		return a[idx - 1];		
+	}	
+	
+	
+	
 	inline static public function has<T>(a:Array<T>, item:T)
 	{
 		return a.indexOf(item) != -1;

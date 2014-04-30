@@ -301,11 +301,25 @@ Xml.prototype = {
 var cx = {};
 cx.ArrayTools = function() { };
 cx.ArrayTools.__name__ = true;
+cx.ArrayTools.next = function(a,item) {
+	var idx = HxOverrides.indexOf(a,item,0);
+	if(idx == -1) return null;
+	if(idx == a.length - 1) return null;
+	return a[idx + 1];
+};
+cx.ArrayTools.prev = function(a,item) {
+	var idx = HxOverrides.indexOf(a,item,0);
+	if(idx <= 0) return null;
+	return a[idx - 1];
+};
 cx.ArrayTools.has = function(a,item) {
 	return HxOverrides.indexOf(a,item,0) != -1;
 };
 cx.ArrayTools.indexOrNull = function(a,idx) {
-	if(idx < 0 || idx > a.length) return null; else return a[idx];
+	if(idx < 0 || idx > a.length - 1) return null; else return a[idx];
+};
+cx.ArrayTools.indexOrValue = function(a,idx,fallbackValue) {
+	if((idx < 0 || idx > a.length - 1?null:a[idx]) != null) return a[idx]; else return fallbackValue;
 };
 cx.ArrayTools.equals = function(a,b) {
 	return a.toString() == b.toString();
@@ -1868,12 +1882,78 @@ nx3.PBamegroupFrameTipCalculator.prototype = {
 	}
 };
 nx3.PBar = function(nbar) {
+	this._keys = null;
+	this._clefs = null;
 	this.nbar = nbar;
 	this.value = 0;
 };
 nx3.PBar.__name__ = true;
 nx3.PBar.prototype = {
-	getParts: function() {
+	get_clefs: function() {
+		if(this._clefs != null) return this._clefs;
+		this._clefs = new Array();
+		var _g = 0;
+		var _g1 = this.getParts();
+		while(_g < _g1.length) {
+			var vpart = _g1[_g];
+			++_g;
+			this._clefs.push(vpart.npart.clef);
+		}
+		return this._clefs;
+	}
+	,get_keys: function() {
+		if(this._keys != null) return this._keys;
+		this._keys = new Array();
+		var _g = 0;
+		var _g1 = this.getParts();
+		while(_g < _g1.length) {
+			var vpart = _g1[_g];
+			++_g;
+			this._keys.push(vpart.npart.key);
+		}
+		return this._keys;
+	}
+	,get_time: function() {
+		return this.nbar.time;
+	}
+	,get_displayClefs: function() {
+		var result = nx3.EDisplayALN.Never;
+		var _g = 0;
+		var _g1 = this.getParts();
+		while(_g < _g1.length) {
+			var vpart = _g1[_g];
+			++_g;
+			if(vpart.npart.clefDisplay == null) result = nx3.EDisplayALN.Layout;
+			if(vpart.npart.clefDisplay == nx3.EDisplayALN.Layout) result = nx3.EDisplayALN.Layout;
+			if(vpart.npart.clefDisplay == nx3.EDisplayALN.Always) {
+				result = nx3.EDisplayALN.Always;
+				break;
+			}
+		}
+		return result;
+	}
+	,get_displayKeys: function() {
+		var result = nx3.EDisplayALN.Never;
+		var _g = 0;
+		var _g1 = this.getParts();
+		while(_g < _g1.length) {
+			var vpart = _g1[_g];
+			++_g;
+			if(vpart.npart.keyDisplay == null) result = nx3.EDisplayALN.Layout;
+			if(vpart.npart.keyDisplay == nx3.EDisplayALN.Layout) result = nx3.EDisplayALN.Layout;
+			if(vpart.npart.keyDisplay == nx3.EDisplayALN.Always) {
+				result = nx3.EDisplayALN.Always;
+				break;
+			}
+		}
+		return result;
+	}
+	,get_displayTime: function() {
+		var result;
+		if(this.nbar.timeDisplay != null) result = this.nbar.timeDisplay; else result = nx3.EDisplayALN.Layout;
+		return this.nbar.timeDisplay;
+	}
+	,getParts: function() {
 		if(this.parts != null) return this.parts;
 		this.parts = [];
 		var _g = 0;
@@ -1912,6 +1992,17 @@ nx3.PBar.prototype = {
 		}
 		return this.value;
 	}
+	,getContentwidth: function() {
+		if(this.contentwidth != null) return this.contentwidth;
+		var lastcolumn = cx.ArrayTools.last(this.getColumns());
+		this.contentwidth = lastcolumn.getAPostion() + Math.max(lastcolumn.getADistance(),lastcolumn.getRightX());
+		return this.contentwidth;
+	}
+	,getContentXZero: function() {
+		var firstcolumn = cx.ArrayTools.first(this.getColumns());
+		this.contentx = -firstcolumn.getLeftX();
+		return this.contentx;
+	}
 };
 nx3.PBaseRectCalculator = function(note) {
 	this.note = note;
@@ -1935,10 +2026,60 @@ nx3.PBaseRectCalculator.prototype = {
 					return new nx3.geom.Rectangle(-1.6,-3,3.2,3 * 2);
 				}
 				break;
+			case 4:
+				var f = _g[5];
+				var c = _g[4];
+				var o = _g[3];
+				var text = _g[2];
+				return cx.ArrayTools.first(this.note.getHeadsRects()).clone();
 			default:
 				return new nx3.geom.Rectangle(-4,-3,8,3 * 2);
 			}
 		}
+	}
+};
+nx3.PBeamflagCalculator = function(beamgroup) {
+	this.beamgroup = beamgroup;
+};
+nx3.PBeamflagCalculator.__name__ = true;
+nx3.PBeamflagCalculator.prototype = {
+	getBeamflags: function() {
+		var firstpass = [];
+		var noteIdx = 0;
+		var holder = [];
+		var holderIdx = 0;
+		var _g = 0;
+		var _g1 = this.beamgroup.pnotes;
+		while(_g < _g1.length) {
+			var note = _g1[_g];
+			++_g;
+			var nextnote = cx.ArrayTools.indexOrNull(this.beamgroup.pnotes,noteIdx + 1);
+			if(nextnote == null) continue;
+			if(nx3.ENoteValTools.beaminglevel(note.nnote.value) > 1 && nx3.ENoteValTools.beaminglevel(nextnote.nnote.value) > 1) {
+				holder.push(2);
+				firstpass.push(nx3.EBeamflagType.Full16);
+			} else if(nx3.ENoteValTools.beaminglevel(note.nnote.value) == 1 && nx3.ENoteValTools.beaminglevel(nextnote.nnote.value) > 1) {
+				holder.push(-1);
+				firstpass.push(nx3.EBeamflagType.End16);
+			} else if(nx3.ENoteValTools.beaminglevel(note.nnote.value) > 1 && nx3.ENoteValTools.beaminglevel(nextnote.nnote.value) == 1) {
+				holder.push(1);
+				firstpass.push(nx3.EBeamflagType.Start16);
+			} else {
+				holder.push(0);
+				firstpass.push(nx3.EBeamflagType.None);
+			}
+			noteIdx++;
+		}
+		var result = [];
+		var _g2 = 0;
+		while(_g2 < firstpass.length) {
+			var r = firstpass[_g2];
+			++_g2;
+			var rnext = cx.ArrayTools.next(firstpass,r);
+			var rprev = cx.ArrayTools.prev(firstpass,r);
+			if(rnext == nx3.EBeamflagType.Full16 && r == nx3.EBeamflagType.End16) result.push(nx3.EBeamflagType.None); else if(rprev == nx3.EBeamflagType.Full16 && r == nx3.EBeamflagType.Start16) result.push(nx3.EBeamflagType.None); else result.push(r);
+		}
+		return result;
 	}
 };
 nx3.PBeamgroup = function(pnotes) {
@@ -2056,37 +2197,8 @@ nx3.PBeamgroupFrameCalculator.prototype = {
 	,calcFramePrototype: function() {
 		var count = this.innerLevels.length;
 		var tips = this.calcTips();
-		var beamflags = this.calcBeamflags();
+		var beamflags = new nx3.PBeamflagCalculator(this.beamgroup).getBeamflags();
 		return { leftInnerY : this.innerLevels[0], leftOuterY : this.outerLevels[0], rightInnerY : this.innerLevels[count - 1], rightOuterY : this.outerLevels[count - 1], leftTipY : tips.leftTip, rightTipY : tips.rightTip, outerLevels : this.outerLevels, innerLevels : this.innerLevels, beamflags : beamflags};
-	}
-	,calcBeamflags: function() {
-		var result = [];
-		var noteIdx = 0;
-		var holder = [];
-		var holderIdx = 0;
-		var _g = 0;
-		var _g1 = this.beamgroup.pnotes;
-		while(_g < _g1.length) {
-			var note = _g1[_g];
-			++_g;
-			var nextnote = cx.ArrayTools.indexOrNull(this.beamgroup.pnotes,noteIdx + 1);
-			if(nextnote == null) continue;
-			if(nx3.ENoteValTools.beaminglevel(note.nnote.value) > 1 && nx3.ENoteValTools.beaminglevel(nextnote.nnote.value) > 1) {
-				holder.push(2);
-				result.push(nx3.EBeamflagType.Full16);
-			} else if(nx3.ENoteValTools.beaminglevel(note.nnote.value) == 1 && nx3.ENoteValTools.beaminglevel(nextnote.nnote.value) > 1) {
-				holder.push(-1);
-				result.push(nx3.EBeamflagType.End16);
-			} else if(nx3.ENoteValTools.beaminglevel(note.nnote.value) > 1 && nx3.ENoteValTools.beaminglevel(nextnote.nnote.value) == 1) {
-				holder.push(1);
-				result.push(nx3.EBeamflagType.Start16);
-			} else {
-				holder.push(0);
-				result.push(nx3.EBeamflagType.None);
-			}
-			noteIdx++;
-		}
-		return result;
 	}
 	,getTopLevels: function() {
 		var levels = [];
@@ -2240,7 +2352,7 @@ nx3.PColumnsAllotmentCalculator.__name__ = true;
 nx3.PColumnsAllotmentCalculator.prototype = {
 	calculate: function(stretch) {
 		if(stretch == null) stretch = 0;
-		var aposition = 0.0;
+		var aposition = this.bar.getContentXZero();
 		var _g = 0;
 		var _g1 = this.bar.getColumns();
 		while(_g < _g1.length) {
@@ -2556,8 +2668,8 @@ nx3.PComplex.prototype = {
 	}
 	,getRightX: function() {
 		if(this.rightX != null) return this.rightX;
-		this.leftX = this.getRect().x + this.getRect().width;
-		return this.leftX;
+		this.rightX = this.getRect().x + this.getRect().width;
+		return this.rightX;
 	}
 	,getNext: function() {
 		if(this.next != null) return this.next;
@@ -3017,6 +3129,23 @@ nx3.PNoteHeadsRectsLyricsCalculator.prototype = {
 		return null;
 	}
 };
+nx3.PNoteHeadsRectsPausesCalculator = function(vnote) {
+	this.vnote = vnote;
+};
+nx3.PNoteHeadsRectsPausesCalculator.__name__ = true;
+nx3.PNoteHeadsRectsPausesCalculator.prototype = {
+	getHeadsRects: function() {
+		var _g = nx3.ENoteValTools.beaminglevel(this.vnote.nnote.value);
+		switch(_g) {
+		case 1:
+			return [new nx3.geom.Rectangle(-1.8,-3,3.6,6)];
+		case 2:
+			return [new nx3.geom.Rectangle(-2,-3,4,6)];
+		default:
+			return [new nx3.geom.Rectangle(-1.6,-3.3,3.2,6.6)];
+		}
+	}
+};
 nx3.PNoteOffsetCalculator = function(complex) {
 	this.complex = complex;
 };
@@ -3053,6 +3182,9 @@ nx3.PNoteheadsRectsCalculator.prototype = {
 				var v = _g[3];
 				var h = _g[2];
 				return new nx3.PHeadsRectsCalculator(this.note).getHeadsRects();
+			case 1:
+				var l = _g[2];
+				return new nx3.PNoteHeadsRectsPausesCalculator(this.note).getHeadsRects();
 			case 4:
 				var font = _g[5];
 				var c = _g[4];
@@ -3392,6 +3524,7 @@ nx3.PStaveRectCalculator.prototype = {
 		return rect;
 	}
 	,getFlagRect: function() {
+		if(this.note.nnote.type[0] != "Note") return null;
 		if(nx3.ENoteValTools.beaminglevel(this.note.nnote.value) < 1) return null;
 		var beamgroup = this.note.getBeamgroup();
 		if(beamgroup != null && beamgroup.pnotes.length == 1) {
@@ -3736,6 +3869,14 @@ nx3.QPause1.__name__ = true;
 nx3.QPause1.__super__ = nx3.NNote;
 nx3.QPause1.prototype = $extend(nx3.NNote.prototype,{
 });
+nx3.QLyric8 = function(text) {
+	if(text == null) text = "QLyric4";
+	nx3.NNote.call(this,nx3.ENoteType.Lyric(text),null,nx3.ENoteVal.Nv8);
+};
+nx3.QLyric8.__name__ = true;
+nx3.QLyric8.__super__ = nx3.NNote;
+nx3.QLyric8.prototype = $extend(nx3.NNote.prototype,{
+});
 nx3.QLyric4 = function(text) {
 	if(text == null) text = "QLyric4";
 	nx3.NNote.call(this,nx3.ENoteType.Lyric(text),null,nx3.ENoteVal.Nv4);
@@ -3743,6 +3884,14 @@ nx3.QLyric4 = function(text) {
 nx3.QLyric4.__name__ = true;
 nx3.QLyric4.__super__ = nx3.NNote;
 nx3.QLyric4.prototype = $extend(nx3.NNote.prototype,{
+});
+nx3.QLyric2 = function(text) {
+	if(text == null) text = "QLyric4";
+	nx3.NNote.call(this,nx3.ENoteType.Lyric(text),null,nx3.ENoteVal.Nv2);
+};
+nx3.QLyric2.__name__ = true;
+nx3.QLyric2.__super__ = nx3.NNote;
+nx3.QLyric2.prototype = $extend(nx3.NNote.prototype,{
 });
 nx3.QNote4 = function(dot,headLevel,headLevels,signs) {
 	if(signs == null) signs = "";
@@ -6974,12 +7123,13 @@ nx3.render.RendererBase.prototype = {
 		}
 	}
 	,pbar: function(bar) {
+		var contentwidth = bar.getContentwidth();
 		var _g = 0;
 		var _g1 = bar.getParts();
 		while(_g < _g1.length) {
 			var part = _g1[_g];
 			++_g;
-			this.target.testLines(this.targetX - 4 * this.scaling.unitY,this.targetY + part.getYPosition() * this.scaling.unitY,100 * this.scaling.unitX);
+			this.target.testLines(this.targetX,this.targetY + part.getYPosition() * this.scaling.unitY,contentwidth * this.scaling.unitX);
 			var _g2 = 0;
 			var _g3 = part.getVoices();
 			while(_g2 < _g3.length) {
@@ -7107,11 +7257,15 @@ nx3.render.RendererBase.prototype = {
 				if(beamgroup.getDirection() == nx3.EDirectionUD.Up) {
 					var adjustX = 0.6 * this.scaling.unitX;
 					var adjustY = this.scaling.unitY;
-					this.target.shape(this.targetX + leftX - adjustX,rightY + adjustY + leftTipY,nx3.render.svg.SvgElements.flagUp8,0);
+					var flag;
+					if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) == 2) flag = nx3.render.svg.SvgElements.flagUp16; else flag = nx3.render.svg.SvgElements.flagUp8;
+					this.target.shape(this.targetX + leftX - adjustX,rightY + adjustY + leftTipY,flag,0);
 				} else {
 					var adjustX1 = 0.6 * this.scaling.unitX;
 					var adjustY1 = -3 * this.scaling.unitY;
-					this.target.shape(this.targetX + leftX - adjustX1,rightY + adjustY1 + leftTipY,nx3.render.svg.SvgElements.flagDown8,0);
+					var flag1;
+					if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) == 2) flag1 = nx3.render.svg.SvgElements.flagDown16; else flag1 = nx3.render.svg.SvgElements.flagDown8;
+					this.target.shape(this.targetX + leftX - adjustX1,rightY + adjustY1 + leftTipY,flag1,0);
 				}
 			}
 		}
@@ -7143,7 +7297,6 @@ nx3.render.RendererBase.prototype = {
 		}
 		storeY.push(rightY + rightTipY);
 		storeX.push(this.targetX + rightX);
-		console.log(storeX);
 		var idx = 0;
 		var beamh1 = 0.95 * this.scaling.unitY;
 		var _g2 = 0;

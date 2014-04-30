@@ -3,17 +3,24 @@ package nx3.test;
 import haxe.unit.TestCase;
 import nx3.EAllotment;
 import nx3.EBeamflagType;
+import nx3.EClef;
 import nx3.EDirectionUAD;
 import nx3.EDirectionUD;
+import nx3.EKey;
 import nx3.ENoteVal;
 import nx3.ETie;
+import nx3.ETime;
 import nx3.geom.Rectangle;
 import nx3.NBar;
 import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
 import nx3.NVoice;
+import nx3.PAttributesRectsCalculator;
 import nx3.PBar;
+import nx3.PBarAttributes;
+import nx3.PBarConfig;
+import nx3.PBars;
 import nx3.PColumn;
 import nx3.PColumnsDistancesCalculator;
 import nx3.PComplex;
@@ -21,6 +28,8 @@ import nx3.PComplexTieTargetCalculator;
 import nx3.PNote;
 import nx3.PPart;
 import nx3.PPartComplexesGenerator;
+import nx3.PSystem;
+import nx3.PSystemGenerator;
 import nx3.PVoice;
 import nx3.QNote.QLyric4;
 import nx3.QNote.QNote1;
@@ -533,22 +542,22 @@ class TestP extends TestCase
 
 		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 16);
-		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
 
 		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().second().getADistance(), 8);
-		this.assertEquals(pbar.getColumns().second().getAPostion(), 16);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 16 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);		
 		
 		this.assertEquals(pbar.getColumns().third().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().third().getADistance(), 4);
-		this.assertEquals(pbar.getColumns().third().getAPostion(), 24);
+		this.assertEquals(pbar.getColumns().third().getAPostion(), 24 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);				
 		
 		this.assertEquals(pbar.getColumns().fourth().getMDistance(), 1.6);
 		this.assertEquals(pbar.getColumns().fourth().getADistance(), 4);
-		this.assertEquals(pbar.getColumns().fourth().getAPostion(), 28);
+		this.assertEquals(pbar.getColumns().fourth().getAPostion(), 28 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().fourth().getADistanceBenefit(), 0);		
 
 		var pbar = new PBar(new NBar([
@@ -564,22 +573,22 @@ class TestP extends TestCase
 
 		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 12);
-		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
 
 		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().second().getADistance(), 8);
-		this.assertEquals(pbar.getColumns().second().getAPostion(), 12);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 12 + pbar.getContentXZero()) ;
 		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);		
 		
 		this.assertEquals(pbar.getColumns().third().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().third().getADistance(), 6);
-		this.assertEquals(pbar.getColumns().third().getAPostion(), 20);
+		this.assertEquals(pbar.getColumns().third().getAPostion(), 20 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);				
 		
 		this.assertEquals(pbar.getColumns().fourth().getMDistance(), 1.6);
 		this.assertEquals(pbar.getColumns().fourth().getADistance(), 6);
-		this.assertEquals(pbar.getColumns().fourth().getAPostion(), 26);
+		this.assertEquals(pbar.getColumns().fourth().getAPostion(), 26 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().fourth().getADistanceBenefit(), 0);				
 		
 		var pbar = new PBar(new NBar([
@@ -598,12 +607,12 @@ class TestP extends TestCase
 		
 		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 8);
-		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);		
 		
 		this.assertEquals(pbar.getColumns().second().getMDistance(), 1.6);
 		this.assertEquals(pbar.getColumns().second().getADistance(), 24);
-		this.assertEquals(pbar.getColumns().second().getAPostion(), 8);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 8 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);				
 		
 		var pbar = new PBar(new NBar([
@@ -622,12 +631,12 @@ class TestP extends TestCase
 		
 		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 8);
-		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);		
 		
 		this.assertEquals(pbar.getColumns().second().getMDistance(), 1.6);
 		this.assertEquals(pbar.getColumns().second().getADistance(), 16);
-		this.assertEquals(pbar.getColumns().second().getAPostion(), 8);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 8+ pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);						
 	}
 	
@@ -645,17 +654,17 @@ class TestP extends TestCase
 		
 		this.assertEquals(pbar.getColumns().first().getMDistance(), 5.8);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 5.8);
-		this.assertEquals(pbar.getColumns().first().getAPostion(), 0);
+		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit().round2(), 1.8);				
 		
 		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
 		this.assertEquals(pbar.getColumns().second().getADistance(), 4);
-		this.assertEquals(pbar.getColumns().second().getAPostion(), 5.8);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 5.8 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);				
 		
 		this.assertEquals(pbar.getColumns().third().getMDistance(), 1.6);
 		this.assertEquals(pbar.getColumns().third().getADistance(), 4);
-		this.assertEquals(pbar.getColumns().third().getAPostion(), 9.8);
+		this.assertEquals(pbar.getColumns().third().getAPostion(), 9.8 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);					
 	}
 	
@@ -678,7 +687,29 @@ class TestP extends TestCase
 		this.assertEquals(pbar.getColumns().first().getValue(), 3024);
 		this.assertEquals(pbar.getColumns().second().getValue(), 9072);
 	}	
-
+	
+	public function testBarAttributes()
+	{
+		var rect = PAttributesRectsCalculator.getClefRect(EClef.ClefG);
+		var rect = PAttributesRectsCalculator.getKeyRect(EKey.Flat3);
+		this.assertTrue(true);
+	}
+	
+	public function testBarContentWidth()
+	{
+		var bar:PBar =  new PBar(new NBar([		
+			new NPart([	
+				new NVoice([				
+					new QNote8(0, '.'),
+				]),
+			]),
+		], EAllotment.LeftAlign));	
+		
+		var lastcolumn = bar.getColumns().last();
+		trace(bar.getContentwidth());
+		
+	}
+	
 	function rectEquals(a:Rectangle, bx:Float=-1, by:Float=-1, bwidth:Float=-1, bheight:Float=-1): Bool
 	{
 		var result:Bool = false;
@@ -687,6 +718,593 @@ class TestP extends TestCase
 			if (!result) trace(['Rectangle not equal', Std.string(a) , Std.string(new Rectangle(bx, by, bwidth, bheight))]);
 			return result;
 	}
+	
+	
+	public function testSystemGeneratorOneBar()
+	{		
+		// One part
+		// Get attributes from bar
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC, EKey.Flat2);
+		bars.push(new PBar(new NBar([n0], ETime.Time2_4)));		
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefC].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Flat2].toString());
+		this.assertEquals(system.bars.first().actAttributes.time, ETime.Time2_4);	
+	
+// One part
+		// Get attributes from defaults
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [PSystemGenerator.defaultClef].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [PSystemGenerator.defaultKey].toString());		
+		this.assertEquals(system.bars.first().actAttributes.time, PSystemGenerator.defaultTime);		
+		
+		// One part
+		// Get attributes from previous bar
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefF].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Sharp4].toString());		
+		this.assertEquals(system.bars.first().actAttributes.time, ETime.Time5_8);				
+		
+		// Two parts
+		// Get clefs/keys from bar and defaults
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Sharp5);
+		bars.push(new PBar(new NBar([n0, n1])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefC, PSystemGenerator.defaultClef].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [PSystemGenerator.defaultKey, EKey.Sharp5].toString());
+		this.assertEquals(system.bars.first().actAttributes.time, PSystemGenerator.defaultTime);
+		
+		// Two parts
+		// Get clefs/keys from previous bar
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));		
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF, EClef.ClefG], keys: [EKey.Sharp1, EKey.Flat3], time:ETime.Time5_8 };		
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefF, EClef.ClefG].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Sharp1, EKey.Flat3].toString());		
+		
+		// Two parts
+		// Get clefs/keys from bar and previous bar
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Sharp5);
+		bars.push(new PBar(new NBar([n0, n1])));
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF, EClef.ClefG], keys: [EKey.Sharp1, EKey.Flat3], time:ETime.Time5_8 };		
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefC, EClef.ClefG].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Sharp1, EKey.Sharp5].toString());						
+	
+	}
+
+	public function testSystemGeneratorBarConfigResult()
+	{
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showClef, true);
+
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:false, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showClef, false);
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showClef, true);
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [PSystemGenerator.defaultClef].toString());
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showClef, true);		
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [PSystemGenerator.defaultClef].toString());
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EDisplayALN.Never);
+		bars.push(new PBar(new NBar([n0])));
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showClef, false);				
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC, EDisplayALN.Always);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:false, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showClef, true);		
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EDisplayALN.Always);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:false, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showClef, true);						
+		
+		// Keys
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Sharp3);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showKey, true);
+
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Sharp3);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:false, showFirstKey:false, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showKey, false);
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showKey, true);
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [PSystemGenerator.defaultKey].toString());
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showKey, true);		
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Sharp4].toString());
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EDisplayALN.Layout, EDisplayALN.Never);
+		bars.push(new PBar(new NBar([n0])));
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showKey, false);				
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], null, null, null, EKey.Sharp3, EDisplayALN.Always);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:false, showFirstKey:false, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showKey, true);
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Sharp3].toString());
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])],null, null, null, null, EDisplayALN.Always);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:false, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showKey, true);					
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [PSystemGenerator.defaultKey].toString());
+		
+		// Time
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0], ETime.Time2_8)));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showTime, true);		
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0], ETime.Time2_8)));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:false }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showTime, false);			
+
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0], ETime.Time2_8, EDisplayALN.Always)));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:false }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showTime, true);			
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0], ETime.Time2_8, EDisplayALN.Never)));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showTime, false);				
+	
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();				
+		this.assertEquals(system.bars.first().barConfig.showTime, true);
+		this.assertEquals(system.bars.first().actAttributes.time, ETime.Time5_8);
+	}	
+	
+	public function testSystemGeneratorContentWidth()
+	{
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();		
+		this.assertEquals(system.bars.first().width, 170);
+		this.assertTrue(true);
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF, EKey.Sharp4);
+		bars.push(new PBar(new NBar([n0], ETime.Time5_8)));
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();		
+		this.assertEquals(system.bars.first().width, 190);
+		this.assertTrue(true);	
+		
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };		
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();		
+		this.assertEquals(system.bars.first().width, 190);
+		this.assertTrue(true);		
+	}
+		
+	public function testSystemGeneratorTwoBars()	
+	{	
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		bars.push(new PBar(new NBar([n0], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));		
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
+		var system:PSystem = generator.getSystem();		
+		//this.assertEquals(system.bars.first().width, 120);		
+		this.assertEquals(system.bars.length, 2);
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.bars.second().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [ EKey.Flat3].toString());
+		this.assertEquals(system.bars.second().actAttributes.keys.toString(), [ EKey.Flat3].toString());		
+		this.assertEquals(system.bars.first().actAttributes.time, ETime.Time3_2);
+		this.assertEquals(system.bars.first().barConfig.showClef, true);
+		this.assertEquals(system.bars.second().barConfig.showClef, false);
+		this.assertEquals(system.bars.first().barConfig.showKey, true);
+		this.assertEquals(system.bars.second().barConfig.showKey, false);		
+		this.assertEquals(system.bars.first().barConfig.showTime, true);
+		this.assertEquals(system.bars.second().barConfig.showTime, false);				
+	}	
+	public function testSystemGeneratorMoreBars()	
+	{	
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		bars.push(new PBar(new NBar([n0], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Sharp1);
+		bars.push(new PBar(new NBar([n0])));		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0], ETime.Time6_8)));		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF);
+		bars.push(new PBar(new NBar([n0])));
+
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:1000, height:600 } );
+		var system:PSystem = generator.getSystem();		
+		this.assertEquals(system.bars.length, 6);
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.bars.second().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.bars.third().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.bars.fourth().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.bars.fifth().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.bars.sixth().actAttributes.clefs.toString(), [EClef.ClefF].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [ EKey.Flat3].toString());
+		this.assertEquals(system.bars.second().actAttributes.keys.toString(), [ EKey.Flat3].toString());		
+		this.assertEquals(system.bars.third().actAttributes.keys.toString(), [ EKey.Sharp1].toString());		
+		this.assertEquals(system.bars.fourth().actAttributes.keys.toString(), [ EKey.Sharp1].toString());		
+		this.assertEquals(system.bars.fifth().actAttributes.keys.toString(), [ EKey.Sharp1].toString());		
+		this.assertEquals(system.bars.sixth().actAttributes.keys.toString(), [ EKey.Sharp1].toString());		
+		this.assertEquals(system.bars.first().actAttributes.time, ETime.Time3_2);
+		this.assertEquals(system.bars.second().actAttributes.time, ETime.Time3_2);
+		this.assertEquals(system.bars.third().actAttributes.time, ETime.Time3_2);
+		this.assertEquals(system.bars.fourth().actAttributes.time, ETime.Time6_8);
+		this.assertEquals(system.bars.fifth().actAttributes.time, ETime.Time6_8);
+		this.assertEquals(system.bars.sixth().actAttributes.time, ETime.Time6_8);
+		this.assertEquals(barConfToArr( system.bars.first().barConfig).toString() , [true, true, true].toString());
+		this.assertEquals(barConfToArr( system.bars.second().barConfig).toString() , [false, false, false].toString());
+		this.assertEquals(barConfToArr( system.bars.third().barConfig).toString() , [false, true, false].toString());
+		this.assertEquals(barConfToArr( system.bars.fourth().barConfig).toString() , [false, false, true].toString());
+		this.assertEquals(barConfToArr( system.bars.fifth().barConfig).toString() , [false, false, false].toString());
+		this.assertEquals(barConfToArr( system.bars.sixth().barConfig).toString() , [true, false, false].toString());
+		//this.assertEquals(barConfToArr( system.bars.fifth().barConfig).toString() , [false, false, false].toString());
+	}
+	
+	
+	public function testSystemGeneratorOverflow()
+	{
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		bars.push(new PBar(new NBar([n0], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));		
+		
+		var barscopy = bars.copy();
+		var pagewidth = 1000;
+		var generator = new PSystemGenerator(barscopy,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 6);
+		this.assertEquals(system.width, 780);
+		this.assertEquals(barscopy.length, 0);
+		
+		var barscopy = bars.copy();
+		var pagewidth = 780;
+		var generator = new PSystemGenerator(barscopy,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 6);
+		this.assertEquals(system.width, 780);		
+		this.assertEquals(barscopy.length, 0);		
+		
+		var barscopy = bars.copy();
+		var pagewidth = 700;
+		var generator = new PSystemGenerator(barscopy,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 5);
+		this.assertEquals(system.width, 660);			
+		this.assertEquals(barscopy.length, 1);
+		
+	}
+	
+	public function testSystemGeneratorCautions()
+	{
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		bars.push(new PBar(new NBar([n0], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0])));		
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 180);			
+
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		bars.push(new PBar(new NBar([n0], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF);
+		bars.push(new PBar(new NBar([n0])));		
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 200);
+		this.assertEquals(system.bars.first().barConfig.showCautClef, true);
+		this.assertEquals(system.bars.first().barConfig.showCautKey, false);
+		this.assertEquals(system.bars.first().barConfig.showCautTime, false);
+		this.assertEquals(system.bars.last().caAttributes.clefs.toString(), [EClef.ClefF].toString());
+
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		bars.push(new PBar(new NBar([n0], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Sharp1);
+		bars.push(new PBar(new NBar([n0])));		
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 190);
+		this.assertEquals(system.bars.first().barConfig.showCautClef, false);
+		this.assertEquals(system.bars.first().barConfig.showCautKey, true);
+		this.assertEquals(system.bars.first().barConfig.showCautTime, false);
+		this.assertEquals(system.bars.last().caAttributes.keys.toString(), [EKey.Sharp1].toString());
+
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		bars.push(new PBar(new NBar([n0], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0], ETime.Time2_2)));		
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 190);
+		this.assertEquals(system.bars.first().barConfig.showCautClef, false);
+		this.assertEquals(system.bars.first().barConfig.showCautKey, false);
+		this.assertEquals(system.bars.first().barConfig.showCautTime, true);
+		this.assertEquals(system.bars.last().caAttributes.time, ETime.Time2_2);
+	}
+	
+	public function testSystemGeneratorCautionsTwoParts()
+	{
+		
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF, EKey.Sharp4);
+		bars.push(new PBar(new NBar([n0, n1], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));		
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 190);			
+
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF, EKey.Sharp4);
+		bars.push(new PBar(new NBar([n0, n1], ETime.Time3_2)));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1], ETime.Time12_8)));		
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 200);		
+
+		var bars:PBars = [];			
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1], ETime.Time12_8)));		
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefG, EClef.ClefF], keys: [EKey.Flat3, EKey.Sharp4], time:ETime.Time3_2 };
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 200);
+		this.assertEquals(system.bars.first().barConfig.showTime, true);
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefG, EClef.ClefF].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Flat3, EKey.Sharp4].toString());
+		this.assertEquals(system.bars.first().actAttributes.time, ETime.Time3_2);
+		this.assertEquals(system.bars.first().barConfig.showCautTime, true);
+		this.assertEquals(system.bars.first().caAttributes.time, ETime.Time12_8);
+				
+		var bars:PBars = [];			
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC);
+		bars.push(new PBar(new NBar([n0, n1])));		
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefG, EClef.ClefF], keys: [EKey.Flat3, EKey.Sharp4], time:ETime.Time3_2 };
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 210);
+		this.assertEquals(system.bars.first().barConfig.showTime, true);
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefG, EClef.ClefF].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Flat3, EKey.Sharp4].toString());
+		this.assertEquals(system.bars.first().actAttributes.time, ETime.Time3_2);
+		this.assertEquals(system.bars.first().barConfig.showCautClef, true);
+		this.assertEquals(system.bars.first().caAttributes.clefs.toString(), [null, EClef.ClefC].toString());
+
+		var bars:PBars = [];			
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Flat1);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));		
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefG, EClef.ClefF], keys: [EKey.Flat3, EKey.Sharp4], time:ETime.Time3_2 };
+		var pagewidth = 250;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 200);
+		this.assertEquals(system.bars.first().barConfig.showTime, true);
+		this.assertEquals(system.bars.first().actAttributes.clefs.toString(), [EClef.ClefG, EClef.ClefF].toString());
+		this.assertEquals(system.bars.first().actAttributes.keys.toString(), [EKey.Flat3, EKey.Sharp4].toString());
+		this.assertEquals(system.bars.first().actAttributes.time, ETime.Time3_2);
+		this.assertEquals(system.bars.first().barConfig.showCautKey, true);
+		this.assertEquals(system.bars.first().caAttributes.keys.toString(), [EKey.Flat1, null].toString());
+
+		var bars:PBars = [];			
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Sharp2);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF, EKey.Sharp4);
+		bars.push(new PBar(new NBar([n0, n1], ETime.Time4_8)));		
+		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefG, EClef.ClefC], keys: [EKey.Flat3, EKey.Sharp4], time:ETime.Time3_2 };
+		var pagewidth = 260;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		
+		this.assertEquals(system.bars.first().barConfig.showCautClef, true);
+		this.assertEquals(system.bars.first().caAttributes.clefs.toString(), [null, EClef.ClefF].toString());
+		this.assertEquals(system.bars.first().barConfig.showCautKey, true);
+		this.assertEquals(system.bars.first().caAttributes.keys.toString(), [EKey.Sharp2, null].toString());
+		this.assertEquals(system.bars.first().barConfig.showCautTime, true);
+		this.assertEquals(system.bars.first().caAttributes.time, ETime.Time4_8);
+		this.assertEquals(system.width, 240);		
+	}
+	
+	public function testSystemGeneratorCautionsDontFit()
+	{
+		// Here, the two first bar DO fit...
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF, EKey.Sharp4);
+		bars.push(new PBar(new NBar([n0, n1], ETime.Time3_2)));
+
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));		
+
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]/*, EKey.Flat1*/);
+		bars.push(new PBar(new NBar([n0, n1])));		
+		var pagewidth = 315;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 2);
+		this.assertEquals(system.width, 310);			
+		this.assertEquals(bars.length, 1);
+		
+		// but when adding the need for cautionary attributes on the second bar, they DON'T!
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF, EKey.Sharp4);
+		bars.push(new PBar(new NBar([n0, n1], ETime.Time3_2)));
+
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])]);
+		bars.push(new PBar(new NBar([n0, n1])));		
+
+		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Flat1);
+		bars.push(new PBar(new NBar([n0, n1])));		
+		var pagewidth = 315;
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:pagewidth, height:600 } );
+		var system:PSystem = generator.getSystem();	
+		assertEquals(system.bars.length, 1);
+		this.assertEquals(system.width, 190);			
+		this.assertEquals(bars.length, 2);		
+	}
+	
+	static private function barConfToArr(conf:PBarConfig):Array<Bool>
+	{
+		return [conf.showClef, conf.showKey, conf.showTime];
+	}	
+	
 	
 	
 }	

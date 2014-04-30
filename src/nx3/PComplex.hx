@@ -93,13 +93,14 @@ class PComplex
 	var stavesrects:Rectangles;
 	public function getStavesRects():Rectangles
 	{
-		if (this.stavesrects != null) return this.stavesrects;
+		if (this.stavesrects != null) return this.stavesrects;		
 		this.stavesrects = [];
+		
 		for (note in this.notes)
-		{
+		{			
 			var rect = this.getStaveRect(note);
 			if (rect != null) this.stavesrects.push(rect);
-		}
+		}		
 		for (note in this.notes)
 		{
 			var flagrect = new PStaveRectCalculator(note).getFlagRect();
@@ -147,7 +148,7 @@ class PComplex
 	{
 		if (this.allrects != null) return this.allrects;
 		this.allrects = [];		
-		this.allrects = RectanglesTools.concat(this.allrects, this.getHeadsRects());
+		this.allrects = RectanglesTools.concat(this.allrects, this.getHeadsRects());		
 		this.allrects = RectanglesTools.concat(this.allrects, this.getStavesRects());
 		this.allrects = RectanglesTools.concat(this.allrects, this.getSignsRects());
 		this.allrects = RectanglesTools.concat(this.allrects, this.getTieRects());
@@ -191,8 +192,8 @@ class PComplex
 	public function getRightX():Float
 	{
 		if (this.rightX != null) return this.rightX;
-		this.leftX = this.getRect().x + this.getRect().width;
-		return this.leftX;		
+		this.rightX = this.getRect().x + this.getRect().width;
+		return this.rightX;		
 	}
 	
 	var next:PComplex;

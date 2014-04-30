@@ -122,9 +122,8 @@ class PColumn
 		 this.leftX = 0;
 		for (complex in this.getComplexes())
 		{			
-			if (complex != null)
-			this.leftX = Math.min(this.leftX, complex.getLeftX());			
-		}
+			if (complex != null) this.leftX = Math.min(this.leftX, complex.getLeftX());
+		}	
 		return this.leftX;
 	 }
 	 
@@ -140,7 +139,7 @@ class PColumn
 		 }
 		 return null;
 	 }
-	 
+	 	 
 	 public function toString():String
 	 {
 		 return "PColumn";

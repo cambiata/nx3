@@ -26,7 +26,7 @@ class PNoteheadsRectsCalculator
 		return switch this.note.nnote.type
 		{
 			case ENoteType.Note(h, v, a, a2): new PHeadsRectsCalculator(this.note).getHeadsRects();
-			//case ENoteType.Pause(l): 	new VNoteHeadsRectsPausesCalculator(vnote).getHeadsRects();
+			case ENoteType.Pause(l): 	new PNoteHeadsRectsPausesCalculator(this.note).getHeadsRects();
 			case ENoteType.Lyric(text, o, c, font): new PNoteHeadsRectsLyricsCalculator(this.note, text, font).getHeadsRects();
 			//case ENoteType.Tpl:new VNoteHeadsRectsTplCalculator(vnote).getHeadsRects();
 		default:

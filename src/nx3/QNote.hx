@@ -62,7 +62,9 @@ class QPause4 extends NNote  { public function new(?level:Int=0) 	super(ENoteTyp
 class QPause2 extends NNote  { public function new(?level:Int=0) 	super(ENoteType.Pause(level), ENoteVal.Nv2);}
 class QPause1 extends NNote  { public function new(?level:Int = 0) 	super(ENoteType.Pause(level), ENoteVal.Nv1); }
 
+class QLyric8 extends NNote  { public function new(?text:String="QLyric4") 	super(ENoteType.Lyric(text), ENoteVal.Nv8);}
 class QLyric4 extends NNote  { public function new(?text:String="QLyric4") 	super(ENoteType.Lyric(text), ENoteVal.Nv4);}
+class QLyric2 extends NNote  { public function new(?text:String="QLyric4") 	super(ENoteType.Lyric(text), ENoteVal.Nv2);}
 
 
 class QNote4 extends QNote

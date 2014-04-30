@@ -1,6 +1,7 @@
 package nx3;
 import cx.ArrayTools;
 using nx3.ENoteValTools;
+using cx.ArrayTools;
 /**
  * ...
  * @author Jonas Nyström
@@ -28,7 +29,7 @@ class PBeamgroupFrameCalculator
 		 // TODO!
 		 var count = this.innerLevels.length;
 		 var tips = this.calcTips();
-		 var beamflags = this.calcBeamflags();
+		 var beamflags = new PBeamflagCalculator(this.beamgroup).getBeamflags();
 		 
 		return {
 			leftInnerY : this.innerLevels[0],
@@ -43,45 +44,6 @@ class PBeamgroupFrameCalculator
 		}
 	 }
 	 
-	 function calcBeamflags() :Array<EBeamflagType>
-	 {
-		var result :Array<EBeamflagType> = [];
-		 var noteIdx = 0;
-		 
-		 var holder:Array<Int> = [];
-		 var holderIdx = 0;
-		 for (note in this.beamgroup.pnotes)
-		 {					 			 
-			
-			 var nextnote = ArrayTools.indexOrNull(this.beamgroup.pnotes, noteIdx + 1);
-			if (nextnote == null) continue;
-			
-			if (note.nnote.value.beaminglevel() > 1  && nextnote.nnote.value.beaminglevel() > 1 )
-			{
-				holder.push(2);				
-				result.push(EBeamflagType.Full16);
-			}
-			else if (note.nnote.value.beaminglevel() == 1  && nextnote.nnote.value.beaminglevel() > 1 )
-			{
-				holder.push( -1);
-				result.push(EBeamflagType.End16);
-			}
-			else if (note.nnote.value.beaminglevel() > 1  && nextnote.nnote.value.beaminglevel() == 1 )
-			 {
-				 holder.push(1);
-				 result.push(EBeamflagType.Start16);
-			 }
-			 else
-			 {
-				 holder.push(0);
-				 result.push(EBeamflagType.None);
-			 }
-			 
-			 noteIdx++;
-		 }
-		 
-		 return result;
-	 }
 
 	 function getTopLevels():Array<Int>
 	 {

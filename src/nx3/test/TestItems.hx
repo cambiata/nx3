@@ -9,7 +9,9 @@ import nx3.NPart;
 import nx3.NVoice;
 import nx3.PBar;
 import nx3.PPart;
+import nx3.QNote.QLyric2;
 import nx3.QNote.QLyric4;
+import nx3.QNote.QLyric8;
 import nx3.QNote.QNote16;
 import nx3.QNote.QNote1;
 import nx3.QNote.QNote2;
@@ -401,24 +403,39 @@ class TestItems
 	static public function pbarLyrics():PBar
 	{
 		return new PBar(new NBar([
-		
+
+			/*
 			new NPart([	
 				new NVoice([				
 					new QNote4(),
 					new QNote4(),
 				]),
 			]),
-		
-		
+			*/
 			new NPart([	
 				new NVoice([				
-					new QLyric4('Hej'),
-					new QLyric4('Hopp'),
+					new QLyric2('Hejsan'),
+					new QLyric4('Hoppsan'),
+					new QLyric8('i'),
+					new QLyric8('LINGONSKOGEN'),
 				]),
 			]),
-		]));				
+		], EAllotment.LeftAlign));				
 		
 	}				
+	
+	static public function pbarContentwidth1():PBar
+	{
+		return new PBar(new NBar([		
+			new NPart([	
+				new NVoice([				
+					new QNote4(0, '#'),
+					new QNote4(),
+				]),
+			]),
+		], EAllotment.Logaritmic));				
+	}				
+	
 	
 	
 	static public function pbarAllotLinear():PBar
@@ -477,6 +494,27 @@ class TestItems
 			]),
 		], EAllotment.Equal));						
 	}		
+	
+	static public function pbarAllotLeftalign():PBar
+	{
+		return new PBar(new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+					new QNote2(0),
+					new QNote4(0),
+					new QNote8(0),
+					new QNote8(0),
+					new QNote16(0),
+					new QNote16(0),
+					new QNote16(0),
+					new QNote16(0),
+				]),
+			]),
+		], EAllotment.LeftAlign));						
+	}			
+	
+	
 	
 	static public function pbarTies():PBar
 	{

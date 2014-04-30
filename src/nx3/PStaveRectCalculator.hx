@@ -42,6 +42,7 @@ class PStaveRectCalculator
 	
 	public function getFlagRect():Rectangle
 	{
+			if (this.note.nnote.type.getName() != 'Note') return null;
 			if (this.note.nnote.value.beaminglevel() < 1) return null;
 			var beamgroup = note.getBeamgroup();
 			//-----------------------------------------------------------------------------------------

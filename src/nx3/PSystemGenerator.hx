@@ -1,8 +1,6 @@
 package nx3;
-import cx.EnumTools;
-import nx3.IBarWidthCalculator;
-import nx3.VSystemGenerator.Pagesize;
-import nx3.VSystemGenerator.SimpleBarWidthCalculator;
+import nx3.geom.Size;
+import nx3.PSystemGenerator.PSimpleBarWidthCalculator;
 using cx.ArrayTools;
 
 /**
@@ -10,40 +8,40 @@ using cx.ArrayTools;
  * @author Jonas Nyström
  */
 
- typedef Pagesize = { width:Float, height:Float };
+
  
-class VSystemGenerator
+class PSystemGenerator
 {
 	static public var defaultClef:EClef = EClef.ClefF;
 	static public var defaultKey:EKey = EKey.Flat2;
 	static public var defaultTime:ETime = ETime.Time6_4;
 	
-	var bars:VBars;
-	var systemConfig:VSystemConfig;
-	var prevBarAttributes:VBarAttributes;
-	var pagesize:Pagesize;
-	var system:VSystem;
-	var barWidthCalculator:SimpleBarWidthCalculator;
+	var bars:PBars;
+	var systemConfig:PSystemConfig;
+	var prevBarAttributes:PBarAttributes;
+	var pagesize:Size;
+	var system:PSystem;
+	var barWidthCalculator:IBarWidthCalculator;
 
-	public function new(bars:VBars, systemConfig:VSystemConfig, prevBarAttributes:VBarAttributes, pagesize:Pagesize, barWidthCalculator:SimpleBarWidthCalculator=null) 
+	public function new(bars:PBars, systemConfig:PSystemConfig, prevBarAttributes:PBarAttributes, pagesize:Size, barWidthCalculator:IBarWidthCalculator=null) 
 	{
 		this.bars = bars;
 		this.systemConfig = systemConfig;
 		this.prevBarAttributes = prevBarAttributes;
 		this.pagesize = pagesize;
-		this.system = new VSystem();
-		this.barWidthCalculator = (barWidthCalculator != null) ? barWidthCalculator : new SimpleBarWidthCalculator();
+		this.system = new PSystem();
+		this.barWidthCalculator = (barWidthCalculator != null) ? barWidthCalculator : new PSimpleBarWidthCalculator();
 	}
 	
-	public function getSystem():VSystem
+	public function getSystem():PSystem
 	{
 		var tryAnotherBar = true;
 		
 		while (tryAnotherBar)
 		{
-			var currentBar:VBar = this.bars.first();
-			var currentBarConfig:VBarConfig = new VBarConfig();
-			var currentBarAttributes:VBarAttributes = getBarAttributes(currentBar);
+			var currentBar:PBar = this.bars.first();
+			var currentBarConfig:PBarConfig = new PBarConfig();
+			var currentBarAttributes:PBarAttributes = getBarAttributes(currentBar);
 			
 			if (this.prevBarAttributes != null) 
 				this.overrideActualAttributesFromPrevBarAttributes(currentBarAttributes, currentBar, this.prevBarAttributes);			
@@ -77,7 +75,7 @@ class VSystemGenerator
 			if (this.bars.length < 1) tryAnotherBar = false;
 		}
 		
-		this.system.status = VSystemStatus.Ok;		
+		this.system.status = PSystemStatus.Ok;		
 		return this.system;
 		
 	}
@@ -85,14 +83,14 @@ class VSystemGenerator
 	function takeCareOfLastBarCautions() 
 	{
 		
-		this.system.status = VSystemStatus.Ok;
-		var sysBar:VBar = this.system.bars.last().bar;
-		var sysBarAttributes:VBarAttributes = this.system.bars.last().actAttributes; // getBarAttributes(sysBar);
+		this.system.status = PSystemStatus.Ok;
+		var sysBar:PBar = this.system.bars.last().bar;
+		var sysBarAttributes:PBarAttributes = this.system.bars.last().actAttributes; // getBarAttributes(sysBar);
 		
 		if (sysBar != this.bars.last()) 
 		{
-			var nextBar:VBar = this.bars.first();
-			var nextBarAttributes:VBarAttributes = getBarAttributes(nextBar);
+			var nextBar:PBar = this.bars.first();
+			var nextBarAttributes:PBarAttributes = getBarAttributes(nextBar);
 			
 			var newClef:Bool = arrayBNullOrDiffers(sysBarAttributes.clefs, nextBarAttributes.clefs);
 			var newKey:Bool = arrayBNullOrDiffers(sysBarAttributes.keys, nextBarAttributes.keys);
@@ -100,14 +98,14 @@ class VSystemGenerator
 			
 			if (newClef || newKey || newTime)
 			{
-				//var cautAttributes:VBarAttributes = removeRedundantAttributes(sysBarAttributes, nextBarAttributes);
-				var sysBarCautAttributes:VBarAttributes = copyAndRemoveRedundantAttributes(sysBarAttributes, nextBarAttributes);
+				//var cautAttributes:PBarAttributes = removeRedundantAttributes(sysBarAttributes, nextBarAttributes);
+				var sysBarCautAttributes:PBarAttributes = copyAndRemoveRedundantAttributes(sysBarAttributes, nextBarAttributes);
 				var sysBarConfig = this.system.bars.last().barConfig;
 				var sysBarWidth = this.system.bars.last().width;
 				
 				var systemWidthWithoutLastBar = system.width - sysBarWidth;
 				
-				var sysBarConfigWithCautions = new VBarConfig(sysBarConfig.showClef, sysBarConfig.showKey, sysBarConfig.showTime);
+				var sysBarConfigWithCautions = new PBarConfig(sysBarConfig.showClef, sysBarConfig.showKey, sysBarConfig.showTime);
 				if (newClef) sysBarConfigWithCautions.showCautClef = true;
 				if (newKey) sysBarConfigWithCautions.showCautKey = true;
 				if (newTime) sysBarConfigWithCautions.showCautTime = true;
@@ -123,10 +121,10 @@ class VSystemGenerator
 				}
 				else
 				{
-					this.system.status = VSystemStatus.Problem(101, 'Last bar fits without caution attributes but not with them');
+					this.system.status = PSystemStatus.Problem(101, 'Last bar fits without caution attributes but not with them');
 					if (this.system.bars.length == 1)
 					{
-						this.system.status = VSystemStatus.Problem(102, 'First bar doesn\'t fit when adding required cational attributes');
+						this.system.status = PSystemStatus.Problem(102, 'First bar doesn\'t fit when adding required cational attributes');
 						return;
 					}
 					
@@ -135,27 +133,27 @@ class VSystemGenerator
 					// ...and put it back on the feeding bars array top
 					this.bars.unshift(sysBar);
 					this.system.width = this.system.width - sysBarWidth;
-					this.system.status = VSystemStatus.Ok;
+					this.system.status = PSystemStatus.Ok;
 				}
 			}
 		}		
 	}
 	
-	function copyAndRemoveRedundantAttributes(sysBarAttributes:VBarAttributes, nextBarAttributes:VBarAttributes) 
+	function copyAndRemoveRedundantAttributes(sysBarAttributes:PBarAttributes, nextBarAttributes:PBarAttributes) 
 	{
-		var result:VBarAttributes = copyBarAttributes(nextBarAttributes);
+		var result:PBarAttributes = copyBarAttributes(nextBarAttributes);
 		for (i in 0...sysBarAttributes.clefs.length) if (result.clefs[i] == sysBarAttributes.clefs[i]) result.clefs[i] = null;
 		for (i in 0...sysBarAttributes.keys.length) if (result.keys[i] == sysBarAttributes.keys[i]) result.keys[i] = null;
 		if (result.time == sysBarAttributes.time) result.time = null;
 		return result;
 	}
 	
-	function adaptBarConfig(bar:VBar, barConfig:VBarConfig, prevBarAttributes:VBarAttributes, showClef:Bool, showKey:Bool, showTime:Bool) 
+	function adaptBarConfig(bar:PBar, barConfig:PBarConfig, prevBarAttributes:PBarAttributes, showClef:Bool, showKey:Bool, showTime:Bool) 
 	{
 		showClef = (showClef == true) ? true : false;
 		showKey = (showKey == true) ? true : false;
 		showTime = (showTime == true) ? true : false;
-		var barAttributes:VBarAttributes = getBarAttributes(bar);
+		var barAttributes:PBarAttributes = getBarAttributes(bar);
 		
 		switch bar.displayClefs
 		{
@@ -215,7 +213,7 @@ class VSystemGenerator
 		}				
 	}
 	
-	function getBarWidth(bar:VBar, barAttributes:VBarAttributes, barConfig:VBarConfig, cautAttributes:VBarAttributes=null) : Float
+	function getBarWidth(bar:PBar, barAttributes:PBarAttributes, barConfig:PBarConfig, cautAttributes:PBarAttributes=null) : Float
 	{
 		var width = 0.0;
 
@@ -274,7 +272,7 @@ class VSystemGenerator
 		return width;
 	}
 	
-	function copyBarAttributes(barAttributes:VBarAttributes) :VBarAttributes
+	function copyBarAttributes(barAttributes:PBarAttributes) :PBarAttributes
 	{
 		var result = { clefs:new EClefs(), keys:new EKeys(), time: null };
 		result.clefs = barAttributes.clefs.copy();
@@ -284,20 +282,20 @@ class VSystemGenerator
 		//return { clefs:currentBarAttributes.clefs, keys:currentBarAttributes.keys, time:currentBarAttributes.time };
 	}
 	
-	function overrideActualAttributesWithDefaultsIfStillNotSet(currentBarAttributes:VBarAttributes) 
+	function overrideActualAttributesWithDefaultsIfStillNotSet(currentBarAttributes:PBarAttributes) 
 	{
 		for (i in 0...currentBarAttributes.clefs.length)
 		{
-			if (currentBarAttributes.clefs[i] == null) currentBarAttributes.clefs[i] = VSystemGenerator.defaultClef; // EClef.ClefC;
+			if (currentBarAttributes.clefs[i] == null) currentBarAttributes.clefs[i] = PSystemGenerator.defaultClef; // EClef.ClefC;
 		}		
 		for (i in 0...currentBarAttributes.keys.length)
 		{
-			if (currentBarAttributes.keys[i] == null) currentBarAttributes.keys[i] = VSystemGenerator.defaultKey;
+			if (currentBarAttributes.keys[i] == null) currentBarAttributes.keys[i] = PSystemGenerator.defaultKey;
 		}				
-		if (currentBarAttributes.time == null) currentBarAttributes.time = VSystemGenerator.defaultTime;
+		if (currentBarAttributes.time == null) currentBarAttributes.time = PSystemGenerator.defaultTime;
 	}
 	
-	function overrideActualAttributesFromPrevBarAttributes(currentBarAttributes:VBarAttributes, currentBar:VBar, prevBarAttributes:VBarAttributes) 
+	function overrideActualAttributesFromPrevBarAttributes(currentBarAttributes:PBarAttributes, currentBar:PBar, prevBarAttributes:PBarAttributes) 
 	{
 		if (! compareBarAttributesValidity(currentBarAttributes, prevBarAttributes)) throw "Attributes non compatible";		
 		for (i in 0...currentBar.clefs.length)
@@ -311,7 +309,7 @@ class VSystemGenerator
 		if (currentBar.time == null && prevBarAttributes.time != null) currentBarAttributes.time = prevBarAttributes.time;
 	}
 	
-	function getBarAttributes(bar:VBar) :VBarAttributes
+	function getBarAttributes(bar:PBar) :PBarAttributes
 	{		
 		// OBS Copying!
 		var time = [bar.time].copy().first();		
@@ -319,7 +317,7 @@ class VSystemGenerator
 		return result;
 	}
 	
-	function compareBarAttributesValidity(barAttributesA:VBarAttributes, barAttributesB:VBarAttributes):Bool
+	function compareBarAttributesValidity(barAttributesA:PBarAttributes, barAttributesB:PBarAttributes):Bool
 	{		
 		if (barAttributesA.clefs.length != barAttributesB.clefs.length) return false;
 		if (barAttributesA.keys.length != barAttributesB.keys.length) return false;
@@ -344,17 +342,7 @@ class VSystemGenerator
 	}	
 }
 
-/*
- interface IBarWidthCalculator
- {
-	 function getClefWidth(clef:EClef):Float;
-	 function getKeyWidth(key:EKey):Float;
-	 function getTimeWidth(time:ETime):Float;
-	 function getContentWidth(bar:VBar):Float;
- }
- */
- 
- class SimpleBarWidthCalculator 
+ class PSimpleBarWidthCalculator implements IBarWidthCalculator
  {
 	 public function new() { };
 	 public function getClefWidth(clef:EClef):Float
@@ -384,10 +372,9 @@ class VSystemGenerator
 		 return 10;		 
 	 }
 	 
-	 public function getContentWidth(bar:VBar):Float
+	 public function getContentWidth(bar:PBar):Float
 	 {
 		 return Std.int(bar.getValue() / 100);		
 	 }
 	 
  }
- 

@@ -98,9 +98,12 @@ class RendererBase
 	
 	public function pbar(bar:PBar)
 	{
+		var contentwidth = bar.getContentwidth();
+		//trace(bar.getContentwidth());
 		for (part in bar.getParts())
 		{
-			this.target.testLines(this.targetX - (4*this.scaling.unitY) , this.targetY+ part.getYPosition()*this.scaling.unitY,  100*this.scaling.unitX);
+			this.target.testLines(this.targetX , this.targetY+ part.getYPosition()*this.scaling.unitY,  contentwidth*this.scaling.unitX);
+			
 			for (voice in part.getVoices())
 			{
 				for (beamgroup in voice.getBeamgroups())
@@ -116,7 +119,7 @@ class RendererBase
 			{
 				this.pcomplex(complex);
 			}			
-		}		
+		}				
 	}	
 	
 	public function pcomplex(complex:PComplex)
@@ -238,13 +241,15 @@ class RendererBase
 				{
 					var adjustX = 0.6 * scaling.unitX;
 					var adjustY = 1 * scaling.unitY;
-					this.target.shape(this.targetX + leftX - adjustX , rightY + adjustY +leftTipY, SvgElements.flagUp8, 0x000000);
+					var flag = (firstnote.nnote.value.beaminglevel() == 2) ? SvgElements.flagUp16 : SvgElements.flagUp8;
+					this.target.shape(this.targetX + leftX - adjustX , rightY + adjustY +leftTipY, flag, 0x000000);
 				}
 				else
 				{
 					var adjustX = 0.6 * scaling.unitX;
 					var adjustY = -3 * scaling.unitY;
-					this.target.shape(this.targetX  + leftX- adjustX , rightY + adjustY +leftTipY, SvgElements.flagDown8, 0x000000);
+					var flag = (firstnote.nnote.value.beaminglevel() == 2) ? SvgElements.flagDown16 : SvgElements.flagDown8;					
+					this.target.shape(this.targetX  + leftX- adjustX , rightY + adjustY +leftTipY,flag, 0x000000);
 				}
 			}
 		}		
@@ -295,8 +300,8 @@ class RendererBase
 		
 		
 		//--------------------------------------------------------------------------------------------------------------
+		// Beam 16ths
 		
-		trace(storeX);
 		var idx = 0;
 		var beamh:Float = Constants.BEAM_HEIGHT * this.scaling.unitY;
 		for (flagtype in beamgroup.getFrame().beamflags)

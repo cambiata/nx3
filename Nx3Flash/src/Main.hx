@@ -43,6 +43,5 @@ class Main extends Sprite
 		TestRenderer.testRenderP(new Renderer(target, 10, 10));
 		Lib.current.addChild(target.getTargetSprite());
 		
-		
 	}
 }

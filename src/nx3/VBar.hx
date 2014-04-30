@@ -19,7 +19,6 @@ using nx3.geom.Rectangles.RectanglesTools;
 	 public var keys(get, null):EKeys;
 	 public var time(get, null):ETime;	 
 	 
-	 
 	 var _clefs:EClefs = null;
 	 private function get_clefs():EClefs
 	 {
@@ -85,6 +84,10 @@ using nx3.geom.Rectangles.RectanglesTools;
 		 var result = this.nbar.timeDisplay != null ? this.nbar.timeDisplay : EDisplayALN.Layout;
 		 return this.nbar.timeDisplay;
 	 }
+	 
+	 
+	 
+	 
 	 
 	 var vparts:VParts;
 	 public function getVParts():VParts

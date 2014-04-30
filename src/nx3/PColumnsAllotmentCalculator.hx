@@ -21,7 +21,7 @@ class PColumnsAllotmentCalculator
 	
 	public function calculate(stretch:Float=0)
 	{		
-		var aposition = 0.0;
+		var aposition = this.bar.getContentXZero();
 		for (column in this.bar.getColumns())
 		{
 			var dist =  getADistance(column.getValue(), column);

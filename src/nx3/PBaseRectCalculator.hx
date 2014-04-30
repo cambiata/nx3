@@ -2,7 +2,8 @@ package nx3;
 import nx3.geom.Rectangle;
 import nx3.PNote;
 using nx3.ENoteValTools;
-
+using nx3.geom.Rectangles;
+using cx.ArrayTools;
 /**
  * ...
  * @author Jonas Nyström
@@ -30,7 +31,9 @@ class PBaseRectCalculator
 					case EHeadValueType.HVT1: new Rectangle( -Constants.HEAD_HALFWIDTH_WIDE, -BASERECT_HEIGHT, Constants.HEAD_HALFWIDTH_WIDE * 2, BASERECT_HEIGHT_X_2);
 					default:  new Rectangle( -Constants.HEAD_HALFWIDTH_NORMAL, -BASERECT_HEIGHT, Constants.HEAD_HALFWIDTH_NORMAL * 2, BASERECT_HEIGHT_X_2);				
 				}
-		
+			case ENoteType.Lyric(text, o, c, f):
+				note.getHeadsRects().first().clone();
+				
 			default: new Rectangle( -4, -BASERECT_HEIGHT, 8, BASERECT_HEIGHT_X_2);
 		}
 	}
