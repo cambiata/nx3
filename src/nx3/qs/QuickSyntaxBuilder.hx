@@ -5,6 +5,7 @@ import nx3.NBars;
 import nx3.NNote;
 import nx3.NPart;
 import nx3.NParts;
+import nx3.NScore;
 import nx3.NVoice;
 import nx3.NVoices;
 import nx3.qs.QSyntaxNotes;
@@ -82,10 +83,14 @@ class QuickSyntaxBuilder
 		}
 		
 		return nbars;
-	
-		
-		
 	}
+	
+	public function getNScore():NScore
+	{
+		var nscore = new NScore(this.getNBars());
+		return nscore;
+	}
+	
 	
 	function max(valA:Int, valB:Int):Int
 	{

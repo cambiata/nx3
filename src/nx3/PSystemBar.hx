@@ -8,7 +8,7 @@ package nx3;
  {
 	 bar:PBar,
 	 barConfig:PBarConfig,
-	 systemWidths:PSystemBarWidths,
+	 barWidths:PSystembarMeasurements,
 	 actAttributes:VBarAttributes,
 	 caAttributes:VBarAttributes,
  }

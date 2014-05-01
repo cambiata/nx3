@@ -7,6 +7,7 @@ import nx3.ENoteVal;
  */
 enum ParserEvents
 {
+	SetGuessOctave(mode:Bool);
 	SetOctave(octave:Int);
 	SetNoteVal(value:ENoteVal);
 	SetMode(mode:ContentMode);

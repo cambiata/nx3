@@ -117,8 +117,10 @@ Main.render = function(code,target,renderer) {
 	var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
 	var nbars = builder.getNBars();
 	var pbar = new nx3.PBar(nbars[0]);
+	var nscore = builder.getNScore();
+	var score = new nx3.PScore(nscore);
 	target.clear();
-	renderer.renderPBar(pbar);
+	renderer.renderScore(score);
 };
 var IMap = function() { };
 IMap.__name__ = true;
@@ -934,6 +936,44 @@ nx3.EBarType.Ignore.__enum__ = nx3.EBarType;
 nx3.EBarType.Folded = ["Folded",3];
 nx3.EBarType.Folded.toString = $estr;
 nx3.EBarType.Folded.__enum__ = nx3.EBarType;
+nx3.EBarline = { __ename__ : true, __constructs__ : ["Normal","None","Double","Final","Dotted","Breath","EndRepeat","EndAndStartRepeat"] };
+nx3.EBarline.Normal = ["Normal",0];
+nx3.EBarline.Normal.toString = $estr;
+nx3.EBarline.Normal.__enum__ = nx3.EBarline;
+nx3.EBarline.None = ["None",1];
+nx3.EBarline.None.toString = $estr;
+nx3.EBarline.None.__enum__ = nx3.EBarline;
+nx3.EBarline.Double = ["Double",2];
+nx3.EBarline.Double.toString = $estr;
+nx3.EBarline.Double.__enum__ = nx3.EBarline;
+nx3.EBarline.Final = ["Final",3];
+nx3.EBarline.Final.toString = $estr;
+nx3.EBarline.Final.__enum__ = nx3.EBarline;
+nx3.EBarline.Dotted = ["Dotted",4];
+nx3.EBarline.Dotted.toString = $estr;
+nx3.EBarline.Dotted.__enum__ = nx3.EBarline;
+nx3.EBarline.Breath = ["Breath",5];
+nx3.EBarline.Breath.toString = $estr;
+nx3.EBarline.Breath.__enum__ = nx3.EBarline;
+nx3.EBarline.EndRepeat = ["EndRepeat",6];
+nx3.EBarline.EndRepeat.toString = $estr;
+nx3.EBarline.EndRepeat.__enum__ = nx3.EBarline;
+nx3.EBarline.EndAndStartRepeat = ["EndAndStartRepeat",7];
+nx3.EBarline.EndAndStartRepeat.toString = $estr;
+nx3.EBarline.EndAndStartRepeat.__enum__ = nx3.EBarline;
+nx3.EBarlineLeft = { __ename__ : true, __constructs__ : ["None","Single","Double","StartRepeat"] };
+nx3.EBarlineLeft.None = ["None",0];
+nx3.EBarlineLeft.None.toString = $estr;
+nx3.EBarlineLeft.None.__enum__ = nx3.EBarlineLeft;
+nx3.EBarlineLeft.Single = ["Single",1];
+nx3.EBarlineLeft.Single.toString = $estr;
+nx3.EBarlineLeft.Single.__enum__ = nx3.EBarlineLeft;
+nx3.EBarlineLeft.Double = ["Double",2];
+nx3.EBarlineLeft.Double.toString = $estr;
+nx3.EBarlineLeft.Double.__enum__ = nx3.EBarlineLeft;
+nx3.EBarlineLeft.StartRepeat = ["StartRepeat",3];
+nx3.EBarlineLeft.StartRepeat.toString = $estr;
+nx3.EBarlineLeft.StartRepeat.__enum__ = nx3.EBarlineLeft;
 nx3.EBeamflagType = { __ename__ : true, __constructs__ : ["None","Start16","End16","Full16"] };
 nx3.EBeamflagType.None = ["None",0];
 nx3.EBeamflagType.None.toString = $estr;
@@ -1716,6 +1756,8 @@ nx3.EVoiceType.Normal.__enum__ = nx3.EVoiceType;
 nx3.EVoiceType.Barpause = ["Barpause",1];
 nx3.EVoiceType.Barpause.toString = $estr;
 nx3.EVoiceType.Barpause.__enum__ = nx3.EVoiceType;
+nx3.IBarWidthCalculator = function() { };
+nx3.IBarWidthCalculator.__name__ = true;
 nx3.NBar = function(parts,type,time,timeDisplay,allotment,spacing) {
 	if(spacing == null) spacing = 8;
 	this.nparts = parts;
@@ -1809,6 +1851,10 @@ nx3.NPart = function(voices,type,clef,clefDisplay,key,keyDisplay) {
 	if(keyDisplay == null) this.keyDisplay = nx3.EDisplayALN.Layout; else this.keyDisplay = keyDisplay;
 };
 nx3.NPart.__name__ = true;
+nx3.NScore = function(nbars) {
+	this.nbars = nbars;
+};
+nx3.NScore.__name__ = true;
 nx3.NVoice = function(notes,type,direction) {
 	if(notes == null || notes == []) {
 		this.nnotes = null;
@@ -1820,6 +1866,45 @@ nx3.NVoice = function(notes,type,direction) {
 	if(direction != null) this.direction = direction; else this.direction = nx3.EDirectionUAD.Auto;
 };
 nx3.NVoice.__name__ = true;
+nx3.PAttributesRectsCalculator = function() { };
+nx3.PAttributesRectsCalculator.__name__ = true;
+nx3.PAttributesRectsCalculator.getClefRect = function(clef) {
+	switch(clef[1]) {
+	case 2:
+		return new nx3.geom.Rectangle(0,-3,5,6);
+	case 1:
+		return new nx3.geom.Rectangle(0,-4,6,8);
+	case 0:
+		return new nx3.geom.Rectangle(0,-5,6,10);
+	}
+};
+nx3.PAttributesRectsCalculator.getKeyRect = function(key) {
+	switch(key[1]) {
+	case 6:
+		return new nx3.geom.Rectangle(0,-3,1,6);
+	case 7:case 5:
+		return new nx3.geom.Rectangle(0,-3,2,6);
+	case 8:case 4:
+		return new nx3.geom.Rectangle(0,-3,3,6);
+	case 9:case 3:
+		return new nx3.geom.Rectangle(0,-3,4,6);
+	case 10:case 2:
+		return new nx3.geom.Rectangle(0,-3,5,6);
+	case 11:case 1:
+		return new nx3.geom.Rectangle(0,-3,6,6);
+	default:
+		return new nx3.geom.Rectangle(0,-2,.5,4);
+	}
+};
+nx3.PAttributesRectsCalculator.getTimeRect = function(time) {
+	if(time == null) return new nx3.geom.Rectangle(0,-3,.5,3);
+	switch(time[1]) {
+	case 16:
+		return new nx3.geom.Rectangle(0,-3,6,6);
+	default:
+		return new nx3.geom.Rectangle(0,-3,4,3);
+	}
+};
 nx3.PBamegroupFrameTipCalculator = function(notelevels,direction) {
 	if(direction == nx3.EDirectionUD.Down) {
 		var invertedLevels = new Array();
@@ -1889,7 +1974,10 @@ nx3.PBar = function(nbar) {
 };
 nx3.PBar.__name__ = true;
 nx3.PBar.prototype = {
-	get_clefs: function() {
+	getScore: function() {
+		return this.score;
+	}
+	,get_clefs: function() {
 		if(this._clefs != null) return this._clefs;
 		this._clefs = new Array();
 		var _g = 0;
@@ -2004,6 +2092,67 @@ nx3.PBar.prototype = {
 		return this.contentx;
 	}
 };
+nx3.PBarConfig = function(showClef,showKey,showTime,showCautClef,showCautKey,showCautTime) {
+	if(showCautTime == null) showCautTime = false;
+	if(showCautKey == null) showCautKey = false;
+	if(showCautClef == null) showCautClef = false;
+	if(showTime == null) showTime = false;
+	if(showKey == null) showKey = false;
+	if(showClef == null) showClef = false;
+	this.showClef = showClef;
+	this.showKey = showKey;
+	this.showTime = showTime;
+	this.showCautClef = showCautClef;
+	this.showCautKey = showCautKey;
+	this.showCautTime = showCautTime;
+};
+nx3.PBarConfig.__name__ = true;
+nx3.PBarWidthCalculator = function() {
+};
+nx3.PBarWidthCalculator.__name__ = true;
+nx3.PBarWidthCalculator.__interfaces__ = [nx3.IBarWidthCalculator];
+nx3.PBarWidthCalculator.prototype = {
+	getClefWidth: function(clef) {
+		return nx3.PAttributesRectsCalculator.getClefRect(clef).width;
+	}
+	,getKeyWidth: function(key) {
+		return nx3.PAttributesRectsCalculator.getKeyRect(key).width;
+	}
+	,getTimeWidth: function(time) {
+		return nx3.PAttributesRectsCalculator.getTimeRect(time).width;
+	}
+	,getContentWidth: function(bar) {
+		return bar.getContentwidth();
+	}
+	,getBarlineWidth: function(barline) {
+		return 4;
+	}
+	,getLeftBarlineWidth: function(barline) {
+		return 2;
+	}
+	,getClefsWidth: function(clefs) {
+		var result = 0.0;
+		var _g = 0;
+		while(_g < clefs.length) {
+			var clef = clefs[_g];
+			++_g;
+			if(clef == null) continue;
+			result = Math.max(result,nx3.PAttributesRectsCalculator.getClefRect(clef).width);
+		}
+		return result;
+	}
+	,getKeysWidth: function(keys) {
+		var result = 0.0;
+		var _g = 0;
+		while(_g < keys.length) {
+			var key = keys[_g];
+			++_g;
+			if(key == null) continue;
+			result = Math.max(result,nx3.PAttributesRectsCalculator.getKeyRect(key).width);
+		}
+		return result;
+	}
+};
 nx3.PBaseRectCalculator = function(note) {
 	this.note = note;
 };
@@ -2021,9 +2170,9 @@ nx3.PBaseRectCalculator.prototype = {
 				var _g1 = nx3.ENoteValTools.head(this.note.nnote.value);
 				switch(_g1[1]) {
 				case 2:
-					return new nx3.geom.Rectangle(-2.2,-3,4.4,3 * 2);
+					return new nx3.geom.Rectangle(-2.8000000000000003,-3,5.6000000000000005,3 * 2);
 				default:
-					return new nx3.geom.Rectangle(-1.6,-3,3.2,3 * 2);
+					return new nx3.geom.Rectangle(-2.2,-3,4.4,3 * 2);
 				}
 				break;
 			case 4:
@@ -2112,7 +2261,7 @@ nx3.PBeamgroup.prototype = {
 	}
 	,getDirection: function() {
 		if(this.direction == null) {
-			var calculator = new nx3.PPartbeamgroupsDirectionCalculator(this.voice.part);
+			var calculator = new nx3.PPartbeamgroupsDirectionCalculator(this.voice.getPart());
 			calculator.calculateBeamgroupsDirections();
 		}
 		return this.direction;
@@ -2553,7 +2702,7 @@ nx3.PComplex.prototype = {
 	}
 	,getColumn: function() {
 		if(this.column != null) return this.column;
-		this.part.bar.getColumns();
+		this.part.getBar().getColumns();
 		if(this.column == null) throw "this shouldn't happen";
 		return this.column;
 	}
@@ -2719,7 +2868,8 @@ nx3.PComplexDistancesCalculator.prototype = {
 		var leftRects = leftComplex.getAllRects();
 		var rightRects = rightComplex.getAllRects();
 		var objDistance = nx3.geom.RectanglesTools.getXIntersection(leftRects,rightRects);
-		return Math.max(minDistance,objDistance);
+		var objDistanceMargin = objDistance + 0.6;
+		return Math.max(minDistance,objDistanceMargin);
 	}
 	,getRects: function(complex) {
 		var rects = [];
@@ -2788,7 +2938,7 @@ nx3.PComplexTieTargetCalculator.prototype = {
 			++_g;
 			var head = info.head;
 			var headlevel = head.nhead.level;
-			var nextnote = head.pnote.getNext();
+			var nextnote = head.getNote().getNext();
 			if(nextnote == null) continue;
 			var nextheads = nextnote.getHeads();
 			var _g2 = 0;
@@ -2897,7 +3047,10 @@ nx3.PHead = function(nhead) {
 };
 nx3.PHead.__name__ = true;
 nx3.PHead.prototype = {
-	toString: function() {
+	getNote: function() {
+		return this.note;
+	}
+	,toString: function() {
 		return "PHead  \r" + Std.string(this.nhead);
 	}
 };
@@ -3038,19 +3191,22 @@ nx3.PNote = function(nnote) {
 };
 nx3.PNote.__name__ = true;
 nx3.PNote.prototype = {
-	getHeads: function() {
-		if(this.pheads != null) return this.pheads;
-		this.pheads = [];
+	getVoice: function() {
+		return this.voice;
+	}
+	,getHeads: function() {
+		if(this.heads != null) return this.heads;
+		this.heads = [];
 		var _g = 0;
 		var _g1 = this.nnote.get_nheads();
 		while(_g < _g1.length) {
 			var nhead = _g1[_g];
 			++_g;
 			var phead = new nx3.PHead(nhead);
-			phead.pnote = this;
-			this.pheads.push(phead);
+			phead.note = this;
+			this.heads.push(phead);
 		}
-		return this.pheads;
+		return this.heads;
 	}
 	,getBeamgroup: function() {
 		if(this.beamgroup == null) this.voice.getBeamgroups();
@@ -3061,7 +3217,7 @@ nx3.PNote.prototype = {
 		return this.getBeamgroup().getDirection();
 	}
 	,getComplex: function() {
-		if(this.complex == null) this.voice.part.getComplexes();
+		if(this.complex == null) this.voice.getPart().getComplexes();
 		if(this.complex == null) throw "Shouldn't happen";
 		return this.complex;
 	}
@@ -3393,6 +3549,36 @@ nx3.PPartbeamgroupsDirectionCalculator.prototype = {
 		} else throw "SHOULDN'T HAPPEN";
 	}
 };
+nx3.PScore = function(nscore) {
+	this.nscore = nscore;
+};
+nx3.PScore.__name__ = true;
+nx3.PScore.prototype = {
+	getBars: function() {
+		if(this.bars != null) return this.bars;
+		this.bars = [];
+		var _g = 0;
+		var _g1 = this.nscore.nbars;
+		while(_g < _g1.length) {
+			var nbar = _g1[_g];
+			++_g;
+			var bar = new nx3.PBar(nbar);
+			bar.score = this;
+			this.bars.push(bar);
+		}
+		return this.bars;
+	}
+	,getSystems: function() {
+		if(this.systems != null) return this.systems;
+		var tempbars;
+		var _this = this.getBars();
+		tempbars = _this.slice();
+		var generator = new nx3.PSystemGenerator(tempbars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,{ width : 400, height : 600},new nx3.PBarWidthCalculator());
+		var system = generator.getSystem();
+		this.systems = [system];
+		return this.systems;
+	}
+};
 nx3.PSignsCalculator = function(notes) {
 	this.notes = notes;
 };
@@ -3547,12 +3733,375 @@ nx3.PStaveRectCalculator.prototype = {
 		return null;
 	}
 };
+nx3.PSystem = function() {
+	this.systembars = [];
+	this.width = 0;
+};
+nx3.PSystem.__name__ = true;
+nx3.PSystem.prototype = {
+	getStatus: function() {
+		return this.status;
+	}
+	,getWidth: function() {
+		return this.width;
+	}
+	,getSystembars: function() {
+		return this.systembars;
+	}
+	,getLastBarAttributes: function() {
+		if(this.systembars.length == 0) return null;
+		return cx.ArrayTools.last(this.systembars).actAttributes;
+	}
+};
+nx3.PSystemGenerator = function(bars,systemConfig,prevBarAttributes,pagesize,barWidthCalculator) {
+	this.bars = bars;
+	this.systemConfig = systemConfig;
+	this.prevBarAttributes = prevBarAttributes;
+	this.pagesize = pagesize;
+	this.system = new nx3.PSystem();
+	if(barWidthCalculator != null) this.barWidthCalculator = barWidthCalculator; else this.barWidthCalculator = new nx3.PSimpleBarWidthCalculator();
+};
+nx3.PSystemGenerator.__name__ = true;
+nx3.PSystemGenerator.prototype = {
+	getSystem: function() {
+		var tryAnotherBar = true;
+		while(tryAnotherBar) {
+			var currentBar = this.bars[0];
+			var currentBarConfig = new nx3.PBarConfig();
+			var currentBarAttributes = this.getBarAttributes(currentBar);
+			if(this.prevBarAttributes != null) this.overrideActualAttributesFromPrevBarAttributes(currentBarAttributes,currentBar,this.prevBarAttributes);
+			this.overrideActualAttributesWithDefaultsIfStillNotSet(currentBarAttributes);
+			if(this.system.getSystembars().length == 0) this.adaptBarConfig(currentBar,currentBarConfig,this.prevBarAttributes,this.systemConfig.showFirstClef,this.systemConfig.showFirstKey,this.systemConfig.showFirstTime); else this.adaptBarConfig(currentBar,currentBarConfig,this.prevBarAttributes,this.systemConfig.showFollowingClef,this.systemConfig.showFollowingKey,this.systemConfig.showFollowingTime);
+			var currentBarMeasurements = this.getBarWidth(currentBar,currentBarAttributes,currentBarConfig);
+			var testSystemWidth = this.system.width + currentBarMeasurements.width;
+			if(testSystemWidth > this.pagesize.width) {
+				this.takeCareOfLastBarCautions();
+				return this.system;
+			}
+			this.system.width += currentBarMeasurements.width;
+			this.system.getSystembars().push({ bar : currentBar, barConfig : currentBarConfig, barWidths : currentBarMeasurements, actAttributes : currentBarAttributes, caAttributes : null});
+			this.bars.shift();
+			this.prevBarAttributes = this.copyBarAttributes(currentBarAttributes);
+			if(this.bars.length < 1) tryAnotherBar = false;
+		}
+		this.calculateSystembarXs();
+		this.system.status = nx3.PSystemStatus.Ok;
+		return this.system;
+	}
+	,calculateSystembarXs: function() {
+		var x = 0.0;
+		var _g = 0;
+		var _g1 = this.system.getSystembars();
+		while(_g < _g1.length) {
+			var systemBar = _g1[_g];
+			++_g;
+			systemBar.barWidths.x = x;
+			x += systemBar.barWidths.width;
+		}
+	}
+	,takeCareOfLastBarCautions: function() {
+		this.system.status = nx3.PSystemStatus.Ok;
+		var sysBar = cx.ArrayTools.last(this.system.getSystembars()).bar;
+		var sysBarAttributes = cx.ArrayTools.last(this.system.getSystembars()).actAttributes;
+		if(sysBar != cx.ArrayTools.last(this.bars)) {
+			var nextBar = this.bars[0];
+			var nextBarAttributes = this.getBarAttributes(nextBar);
+			var newClef = this.arrayBNullOrDiffers(sysBarAttributes.clefs,nextBarAttributes.clefs);
+			var newKey = this.arrayBNullOrDiffers(sysBarAttributes.keys,nextBarAttributes.keys);
+			var newTime = this.nullOrDiffers(sysBarAttributes.time,nextBarAttributes.time);
+			if(newClef || newKey || newTime) {
+				var sysBarCautAttributes = this.copyAndRemoveRedundantAttributes(sysBarAttributes,nextBarAttributes);
+				var sysBarConfig = cx.ArrayTools.last(this.system.getSystembars()).barConfig;
+				var sysBarWidth = cx.ArrayTools.last(this.system.getSystembars()).barWidths.width;
+				var systemWidthWithoutLastBar = this.system.width - sysBarWidth;
+				var sysBarConfigWithCautions = new nx3.PBarConfig(sysBarConfig.showClef,sysBarConfig.showKey,sysBarConfig.showTime);
+				if(newClef) sysBarConfigWithCautions.showCautClef = true;
+				if(newKey) sysBarConfigWithCautions.showCautKey = true;
+				if(newTime) sysBarConfigWithCautions.showCautTime = true;
+				var measurementsWithCautions = this.getBarWidth(sysBar,sysBarAttributes,sysBarConfigWithCautions,sysBarCautAttributes);
+				if(systemWidthWithoutLastBar + measurementsWithCautions.width <= this.pagesize.width) {
+					cx.ArrayTools.last(this.system.getSystembars()).caAttributes = sysBarCautAttributes;
+					cx.ArrayTools.last(this.system.getSystembars()).barConfig = sysBarConfigWithCautions;
+					cx.ArrayTools.last(this.system.getSystembars()).barWidths.width = measurementsWithCautions.width;
+					this.system.width = this.system.getWidth() - sysBarWidth + measurementsWithCautions.width;
+				} else {
+					this.system.status = nx3.PSystemStatus.Problem(101,"Last bar fits without caution attributes but not with them");
+					if(this.system.getSystembars().length == 1) {
+						this.system.status = nx3.PSystemStatus.Problem(102,"First bar doesn't fit when adding required cational attributes");
+						return;
+					}
+					this.system.getSystembars().pop();
+					this.bars.unshift(sysBar);
+					this.system.width = this.system.width - sysBarWidth;
+					this.system.status = nx3.PSystemStatus.Ok;
+				}
+			}
+		}
+	}
+	,copyAndRemoveRedundantAttributes: function(sysBarAttributes,nextBarAttributes) {
+		var result = this.copyBarAttributes(nextBarAttributes);
+		var _g1 = 0;
+		var _g = sysBarAttributes.clefs.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(result.clefs[i] == sysBarAttributes.clefs[i]) result.clefs[i] = null;
+		}
+		var _g11 = 0;
+		var _g2 = sysBarAttributes.keys.length;
+		while(_g11 < _g2) {
+			var i1 = _g11++;
+			if(result.keys[i1] == sysBarAttributes.keys[i1]) result.keys[i1] = null;
+		}
+		if(result.time == sysBarAttributes.time) result.time = null;
+		return result;
+	}
+	,adaptBarConfig: function(bar,barConfig,prevBarAttributes,showClef,showKey,showTime) {
+		if(showClef == true) showClef = true; else showClef = false;
+		if(showKey == true) showKey = true; else showKey = false;
+		if(showTime == true) showTime = true; else showTime = false;
+		var barAttributes = this.getBarAttributes(bar);
+		var _g = bar.get_displayClefs();
+		switch(_g[1]) {
+		case 2:
+			barConfig.showClef = false;
+			break;
+		case 0:
+			barConfig.showClef = true;
+			break;
+		default:
+			barConfig.showClef = showClef;
+			if(showClef == false && prevBarAttributes != null) {
+				var _g2 = 0;
+				var _g1 = prevBarAttributes.clefs.length;
+				while(_g2 < _g1) {
+					var i = _g2++;
+					if(bar.get_clefs()[i] == null) continue;
+					if(bar.get_clefs()[i] == prevBarAttributes.clefs[i]) continue;
+					barConfig.showClef = true;
+					break;
+				}
+			}
+		}
+		var _g3 = bar.get_displayKeys();
+		switch(_g3[1]) {
+		case 2:
+			barConfig.showKey = false;
+			break;
+		case 0:
+			barConfig.showKey = true;
+			break;
+		default:
+			barConfig.showKey = showKey;
+			if(showKey == false && prevBarAttributes != null) {
+				var _g21 = 0;
+				var _g11 = prevBarAttributes.keys.length;
+				while(_g21 < _g11) {
+					var i1 = _g21++;
+					if(bar.get_keys()[i1] == null) continue;
+					if(bar.get_keys()[i1] == prevBarAttributes.keys[i1]) continue;
+					barConfig.showKey = true;
+					break;
+				}
+			}
+		}
+		var _g4 = bar.get_displayTime();
+		switch(_g4[1]) {
+		case 2:
+			barConfig.showTime = false;
+			break;
+		case 0:
+			barConfig.showTime = true;
+			break;
+		default:
+			barConfig.showTime = showTime;
+			if(showTime == false && prevBarAttributes != null) {
+				if(bar.get_time() == null) {
+				} else if(bar.get_time() == prevBarAttributes.time) {
+				} else barConfig.showTime = true;
+			}
+		}
+	}
+	,getBarWidth: function(bar,barAttributes,barConfig,cautAttributes) {
+		var result = { width : 0, x : 0, leftBarlineWidth : 0, clefWidth : 0, keyWidth : 0, timeWidth : 0, contentWidth : 0, contentXZero : 0, cautClefWidth : 0, cautKeyWidth : 0, cautTimeWidth : 0, barlineWidth : 0};
+		var totalwidth = 0.0;
+		result.leftBarlineWidth = this.barWidthCalculator.getLeftBarlineWidth(nx3.EBarlineLeft.None);
+		totalwidth += result.leftBarlineWidth;
+		if(barConfig.showClef) result.clefWidth = this.barWidthCalculator.getClefsWidth(barAttributes.clefs);
+		totalwidth += result.clefWidth;
+		if(barConfig.showKey) result.keyWidth = this.barWidthCalculator.getKeysWidth(barAttributes.keys);
+		totalwidth += result.keyWidth;
+		if(barConfig.showTime) result.timeWidth += this.barWidthCalculator.getTimeWidth(barAttributes.time);
+		totalwidth += result.timeWidth;
+		result.contentWidth = this.barWidthCalculator.getContentWidth(bar);
+		totalwidth += result.contentWidth;
+		result.contentXZero = bar.getContentXZero();
+		if(barConfig.showCautClef && cautAttributes != null) result.cautClefWidth = this.barWidthCalculator.getClefsWidth(cautAttributes.clefs);
+		totalwidth += result.cautClefWidth;
+		if(barConfig.showCautKey && cautAttributes != null) result.cautKeyWidth = this.barWidthCalculator.getKeysWidth(cautAttributes.keys);
+		totalwidth += result.cautKeyWidth;
+		if(barConfig.showCautTime && cautAttributes != null) result.cautTimeWidth += this.barWidthCalculator.getTimeWidth(cautAttributes.time);
+		totalwidth += result.cautTimeWidth;
+		result.barlineWidth = this.barWidthCalculator.getBarlineWidth(nx3.EBarline.Normal);
+		totalwidth += result.barlineWidth;
+		result.width = totalwidth;
+		return result;
+	}
+	,copyBarAttributes: function(barAttributes) {
+		var result = { clefs : new Array(), keys : new Array(), time : null};
+		result.clefs = barAttributes.clefs.slice();
+		result.keys = barAttributes.keys.slice();
+		result.time = barAttributes.time;
+		return result;
+	}
+	,overrideActualAttributesWithDefaultsIfStillNotSet: function(currentBarAttributes) {
+		var _g1 = 0;
+		var _g = currentBarAttributes.clefs.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(currentBarAttributes.clefs[i] == null) currentBarAttributes.clefs[i] = nx3.PSystemGenerator.defaultClef;
+		}
+		var _g11 = 0;
+		var _g2 = currentBarAttributes.keys.length;
+		while(_g11 < _g2) {
+			var i1 = _g11++;
+			if(currentBarAttributes.keys[i1] == null) currentBarAttributes.keys[i1] = nx3.PSystemGenerator.defaultKey;
+		}
+		if(currentBarAttributes.time == null) currentBarAttributes.time = nx3.PSystemGenerator.defaultTime;
+	}
+	,overrideActualAttributesFromPrevBarAttributes: function(currentBarAttributes,currentBar,prevBarAttributes) {
+		if(!this.compareBarAttributesValidity(currentBarAttributes,prevBarAttributes)) throw "Attributes non compatible";
+		var _g1 = 0;
+		var _g = currentBar.get_clefs().length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(currentBar.get_clefs()[i] == null && prevBarAttributes.clefs[i] != null) currentBarAttributes.clefs[i] = prevBarAttributes.clefs[i];
+		}
+		var _g11 = 0;
+		var _g2 = currentBar.get_keys().length;
+		while(_g11 < _g2) {
+			var i1 = _g11++;
+			if(currentBar.get_keys()[i1] == null && prevBarAttributes.keys[i1] != null) currentBarAttributes.keys[i1] = prevBarAttributes.keys[i1];
+		}
+		if(currentBar.get_time() == null && prevBarAttributes.time != null) currentBarAttributes.time = prevBarAttributes.time;
+	}
+	,getBarAttributes: function(bar) {
+		var time = cx.ArrayTools.first((function($this) {
+			var $r;
+			var _this = [bar.get_time()];
+			$r = _this.slice();
+			return $r;
+		}(this)));
+		var result = { clefs : (function($this) {
+			var $r;
+			var _this1 = bar.get_clefs();
+			$r = _this1.slice();
+			return $r;
+		}(this)), keys : (function($this) {
+			var $r;
+			var _this2 = bar.get_keys();
+			$r = _this2.slice();
+			return $r;
+		}(this)), time : time};
+		return result;
+	}
+	,compareBarAttributesValidity: function(barAttributesA,barAttributesB) {
+		if(barAttributesA.clefs.length != barAttributesB.clefs.length) return false;
+		if(barAttributesA.keys.length != barAttributesB.keys.length) return false;
+		return true;
+	}
+	,arrayBNullOrDiffers: function(itemA,itemB) {
+		if(cx.ArrayTools.allNull(itemB)) return false;
+		var _g1 = 0;
+		var _g = itemA.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(itemB[i] != null && itemB[i] != itemA[i]) return true;
+		}
+		return false;
+	}
+	,nullOrDiffers: function(itemA,itemB) {
+		if(itemB == null) return false;
+		return itemB != itemA;
+	}
+};
+nx3.PSimpleBarWidthCalculator = function() {
+};
+nx3.PSimpleBarWidthCalculator.__name__ = true;
+nx3.PSimpleBarWidthCalculator.__interfaces__ = [nx3.IBarWidthCalculator];
+nx3.PSimpleBarWidthCalculator.prototype = {
+	getClefWidth: function(clef) {
+		if(clef == null) return 0;
+		return 20;
+	}
+	,getKeyWidth: function(key) {
+		if(key == null) return 0;
+		switch(key[1]) {
+		case 5:case 7:
+			return 10;
+		case 4:case 8:
+			return 20;
+		case 3:case 9:
+			return 30;
+		case 2:case 10:
+			return 40;
+		case 1:case 11:
+			return 50;
+		case 0:case 12:
+			return 60;
+		default:
+			return 0;
+		}
+	}
+	,getTimeWidth: function(time) {
+		if(time == null) return 0;
+		return 10;
+	}
+	,getContentWidth: function(bar) {
+		return Std["int"](bar.getValue() / 100);
+	}
+	,getLeftBarlineWidth: function(barline) {
+		return 0;
+	}
+	,getBarlineWidth: function(barline) {
+		return 0;
+	}
+	,getClefsWidth: function(clefs) {
+		var result = 0.0;
+		var _g = 0;
+		while(_g < clefs.length) {
+			var clef = clefs[_g];
+			++_g;
+			if(clef == null) continue;
+			result = Math.max(result,this.getClefWidth(clef));
+		}
+		return result;
+	}
+	,getKeysWidth: function(keys) {
+		var result = 0.0;
+		var _g = 0;
+		while(_g < keys.length) {
+			var key = keys[_g];
+			++_g;
+			if(key == null) continue;
+			result = Math.max(result,this.getKeyWidth(key));
+		}
+		return result;
+	}
+};
+nx3.PSystemStatus = { __ename__ : true, __constructs__ : ["Ok","Problem"] };
+nx3.PSystemStatus.Ok = ["Ok",0];
+nx3.PSystemStatus.Ok.toString = $estr;
+nx3.PSystemStatus.Ok.__enum__ = nx3.PSystemStatus;
+nx3.PSystemStatus.Problem = function(code,msg) { var $x = ["Problem",1,code,msg]; $x.__enum__ = nx3.PSystemStatus; $x.toString = $estr; return $x; };
 nx3.PVoice = function(nvoice) {
 	this.nvoice = nvoice;
 };
 nx3.PVoice.__name__ = true;
 nx3.PVoice.prototype = {
-	getNotes: function() {
+	getPart: function() {
+		return this.part;
+	}
+	,getNotes: function() {
 		if(this.notes != null) return this.notes;
 		this.notes = [];
 		var _g = 0;
@@ -3606,7 +4155,7 @@ nx3.PVoice.prototype = {
 };
 nx3.PVoiceBeamgroupsGenerator = function(pnotes,pattern) {
 	if(pattern == null) pattern = [nx3.ENoteVal.Nv4];
-	this.voice = pnotes[0].voice;
+	this.voice = pnotes[0].getVoice();
 	this.notes = pnotes;
 	this.pattern = pattern;
 	this.adjustPatternLenght();
@@ -6587,6 +7136,10 @@ nx3.qs.ModeParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 			console.log("handle xxx...");
 			return HxOverrides.substr(token3,3,null);
 		});
+		this.functions.set("guess:",function(token4) {
+			_g.sendEvent(nx3.qs.ParserEvents.SetGuessOctave(true));
+			return HxOverrides.substr(token4,6,null);
+		});
 	}
 	,tokenFinished: function(originaltoken) {
 	}
@@ -6594,12 +7147,13 @@ nx3.qs.ModeParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 	}
 });
 nx3.qs.NoteParser = function(parser) {
+	this.guessOctave = false;
 	nx3.qs.BaseParser.call(this,parser);
 	this.notelevels = [];
 	this.notesigns = [];
 	this.notevalue = null;
-	this.prevlevel = 0;
-	this.prevlevels = [0];
+	this.prevlevel = 3;
+	this.prevlevels = [3];
 	this.prevsigns = [nx3.ESign.None];
 	this.prevvalue = nx3.ENoteVal.Nv4;
 	this.clefAdjust = 0;
@@ -6614,142 +7168,142 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 	createFunctions: function() {
 		var _g = this;
 		this.functions.set("c#",function(token) {
-			_g.notelevels.push(6);
+			_g.pushNotelevel(6);
 			_g.notesigns.push(nx3.ESign.Sharp);
 			return HxOverrides.substr(token,2,null);
 		});
 		this.functions.set("cB",function(token1) {
-			_g.notelevels.push(6);
+			_g.pushNotelevel(6);
 			_g.notesigns.push(nx3.ESign.Flat);
 			return HxOverrides.substr(token1,2,null);
 		});
 		this.functions.set("cN",function(token2) {
-			_g.notelevels.push(6);
+			_g.pushNotelevel(6);
 			_g.notesigns.push(nx3.ESign.Natural);
 			return HxOverrides.substr(token2,2,null);
 		});
 		this.functions.set("c",function(token3) {
-			_g.notelevels.push(6);
+			_g.pushNotelevel(6);
 			_g.notesigns.push(nx3.ESign.None);
 			return HxOverrides.substr(token3,1,null);
 		});
 		this.functions.set("d#",function(token4) {
-			_g.notelevels.push(5);
+			_g.pushNotelevel(5);
 			_g.notesigns.push(nx3.ESign.Sharp);
 			return HxOverrides.substr(token4,2,null);
 		});
 		this.functions.set("dB",function(token5) {
-			_g.notelevels.push(5);
+			_g.pushNotelevel(5);
 			_g.notesigns.push(nx3.ESign.Flat);
 			return HxOverrides.substr(token5,2,null);
 		});
 		this.functions.set("dN",function(token6) {
-			_g.notelevels.push(5);
+			_g.pushNotelevel(5);
 			_g.notesigns.push(nx3.ESign.Natural);
 			return HxOverrides.substr(token6,2,null);
 		});
 		this.functions.set("d",function(token7) {
-			_g.notelevels.push(5);
+			_g.pushNotelevel(5);
 			_g.notesigns.push(nx3.ESign.None);
 			return HxOverrides.substr(token7,1,null);
 		});
 		this.functions.set("e#",function(token8) {
-			_g.notelevels.push(4);
+			_g.pushNotelevel(4);
 			_g.notesigns.push(nx3.ESign.Sharp);
 			return HxOverrides.substr(token8,2,null);
 		});
 		this.functions.set("eB",function(token9) {
-			_g.notelevels.push(4);
+			_g.pushNotelevel(4);
 			_g.notesigns.push(nx3.ESign.Flat);
 			return HxOverrides.substr(token9,2,null);
 		});
 		this.functions.set("eN",function(token10) {
-			_g.notelevels.push(4);
+			_g.pushNotelevel(4);
 			_g.notesigns.push(nx3.ESign.Natural);
 			return HxOverrides.substr(token10,2,null);
 		});
 		this.functions.set("e",function(token11) {
-			_g.notelevels.push(4);
+			_g.pushNotelevel(4);
 			_g.notesigns.push(nx3.ESign.None);
 			return HxOverrides.substr(token11,1,null);
 		});
 		this.functions.set("f#",function(token12) {
-			_g.notelevels.push(3);
+			_g.pushNotelevel(3);
 			_g.notesigns.push(nx3.ESign.Sharp);
 			return HxOverrides.substr(token12,2,null);
 		});
 		this.functions.set("fB",function(token13) {
-			_g.notelevels.push(3);
+			_g.pushNotelevel(3);
 			_g.notesigns.push(nx3.ESign.Flat);
 			return HxOverrides.substr(token13,2,null);
 		});
 		this.functions.set("fN",function(token14) {
-			_g.notelevels.push(3);
+			_g.pushNotelevel(3);
 			_g.notesigns.push(nx3.ESign.Natural);
 			return HxOverrides.substr(token14,2,null);
 		});
 		this.functions.set("f",function(token15) {
-			_g.notelevels.push(3);
+			_g.pushNotelevel(3);
 			_g.notesigns.push(nx3.ESign.None);
 			return HxOverrides.substr(token15,1,null);
 		});
 		this.functions.set("g#",function(token16) {
-			_g.notelevels.push(2);
+			_g.pushNotelevel(2);
 			_g.notesigns.push(nx3.ESign.Sharp);
 			return HxOverrides.substr(token16,2,null);
 		});
 		this.functions.set("gB",function(token17) {
-			_g.notelevels.push(2);
+			_g.pushNotelevel(2);
 			_g.notesigns.push(nx3.ESign.Flat);
 			return HxOverrides.substr(token17,2,null);
 		});
 		this.functions.set("gN",function(token18) {
-			_g.notelevels.push(2);
+			_g.pushNotelevel(2);
 			_g.notesigns.push(nx3.ESign.Natural);
 			return HxOverrides.substr(token18,2,null);
 		});
 		this.functions.set("g",function(token19) {
-			_g.notelevels.push(2);
+			_g.pushNotelevel(2);
 			_g.notesigns.push(nx3.ESign.None);
 			return HxOverrides.substr(token19,1,null);
 		});
 		this.functions.set("a#",function(token20) {
-			_g.notelevels.push(1);
+			_g.pushNotelevel(1);
 			_g.notesigns.push(nx3.ESign.Sharp);
 			return HxOverrides.substr(token20,2,null);
 		});
 		this.functions.set("aB",function(token21) {
-			_g.notelevels.push(1);
+			_g.pushNotelevel(1);
 			_g.notesigns.push(nx3.ESign.Flat);
 			return HxOverrides.substr(token21,2,null);
 		});
 		this.functions.set("aN",function(token22) {
-			_g.notelevels.push(1);
+			_g.pushNotelevel(1);
 			_g.notesigns.push(nx3.ESign.Natural);
 			return HxOverrides.substr(token22,2,null);
 		});
 		this.functions.set("a",function(token23) {
-			_g.notelevels.push(1);
+			_g.pushNotelevel(1);
 			_g.notesigns.push(nx3.ESign.None);
 			return HxOverrides.substr(token23,1,null);
 		});
 		this.functions.set("b#",function(token24) {
-			_g.notelevels.push(0);
+			_g.pushNotelevel(0);
 			_g.notesigns.push(nx3.ESign.Sharp);
 			return HxOverrides.substr(token24,2,null);
 		});
 		this.functions.set("bB",function(token25) {
-			_g.notelevels.push(0);
+			_g.pushNotelevel(0);
 			_g.notesigns.push(nx3.ESign.Flat);
 			return HxOverrides.substr(token25,2,null);
 		});
 		this.functions.set("bN",function(token26) {
-			_g.notelevels.push(0);
+			_g.pushNotelevel(0);
 			_g.notesigns.push(nx3.ESign.Natural);
 			return HxOverrides.substr(token26,2,null);
 		});
 		this.functions.set("b",function(token27) {
-			_g.notelevels.push(0);
+			_g.pushNotelevel(0);
 			_g.notesigns.push(nx3.ESign.None);
 			return HxOverrides.substr(token27,1,null);
 		});
@@ -6798,22 +7352,27 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 			return HxOverrides.substr(token38,1,null);
 		});
 		this.functions.set("=",function(token39) {
+			_g.prevlevel = 3;
 			_g.octAdjust = 0;
 			return HxOverrides.substr(token39,1,null);
 		});
 		this.functions.set("+",function(token40) {
+			_g.prevlevel = -4;
 			_g.octAdjust = -7;
 			return HxOverrides.substr(token40,1,null);
 		});
 		this.functions.set("++",function(token41) {
+			_g.prevlevel = -11;
 			_g.octAdjust = -14;
 			return HxOverrides.substr(token41,2,null);
 		});
 		this.functions.set("-",function(token42) {
+			_g.prevlevel = 10;
 			_g.octAdjust = 7;
 			return HxOverrides.substr(token42,1,null);
 		});
 		this.functions.set("--",function(token43) {
+			_g.prevlevel = 17;
 			_g.octAdjust = 14;
 			return HxOverrides.substr(token43,2,null);
 		});
@@ -6832,6 +7391,15 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 			_g.pauselevel = 1;
 			return HxOverrides.substr(token46,2,null);
 		});
+	}
+	,pushNotelevel: function(value) {
+		if(this.guessOctave) {
+			var delta = value + this.octAdjust - this.prevlevel;
+			console.log([value + this.octAdjust,this.prevlevel,value + this.octAdjust - this.prevlevel]);
+			if(delta >= 4) this.octAdjust = this.octAdjust - 7;
+			if(delta <= -4) this.octAdjust = this.octAdjust + 7;
+		}
+		this.notelevels.push(value);
 	}
 	,tokenFinished: function(originaltoken) {
 		if(Lambda.has(["+","++","-","--","="],originaltoken)) return;
@@ -6854,9 +7422,9 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 				var tie;
 				if(this.tie) tie = nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0); else tie = null;
 				nheads.push(new nx3.NHead(null,level,sign,tie));
+				this.prevlevel = level;
 			}
 			nnote = new nx3.NNote(null,nheads,val);
-			this.prevlevel = this.notelevels[0];
 		}
 		this.builder.addNote(nnote);
 		this.prevlevels = this.notelevels.slice();
@@ -6869,22 +7437,27 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 	}
 	,recieveEvent: function(event) {
 		switch(event[1]) {
-		case 0:
+		case 1:
 			var octave = event[2];
 			this.octAdjust = octave;
 			break;
-		case 1:
+		case 2:
 			var val = event[2];
 			this.notevalue = val;
+			break;
+		case 0:
+			var mode = event[2];
+			this.guessOctave = mode;
 			break;
 		default:
 		}
 	}
 });
-nx3.qs.ParserEvents = { __ename__ : true, __constructs__ : ["SetOctave","SetNoteVal","SetMode"] };
-nx3.qs.ParserEvents.SetOctave = function(octave) { var $x = ["SetOctave",0,octave]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
-nx3.qs.ParserEvents.SetNoteVal = function(value) { var $x = ["SetNoteVal",1,value]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
-nx3.qs.ParserEvents.SetMode = function(mode) { var $x = ["SetMode",2,mode]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
+nx3.qs.ParserEvents = { __ename__ : true, __constructs__ : ["SetGuessOctave","SetOctave","SetNoteVal","SetMode"] };
+nx3.qs.ParserEvents.SetGuessOctave = function(mode) { var $x = ["SetGuessOctave",0,mode]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
+nx3.qs.ParserEvents.SetOctave = function(octave) { var $x = ["SetOctave",1,octave]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
+nx3.qs.ParserEvents.SetNoteVal = function(value) { var $x = ["SetNoteVal",2,value]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
+nx3.qs.ParserEvents.SetMode = function(mode) { var $x = ["SetMode",3,mode]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.QSyntaxTools = function() { };
 nx3.qs.QSyntaxTools.__name__ = true;
 nx3.qs.QSyntaxTools.bpvToString = function(val) {
@@ -6973,6 +7546,10 @@ nx3.qs.QuickSyntaxBuilder.prototype = {
 		}
 		return nbars;
 	}
+	,getNScore: function() {
+		var nscore = new nx3.NScore(this.getNBars());
+		return nscore;
+	}
 	,max: function(valA,valB) {
 		if(valA > valB) return valA;
 		return valB;
@@ -7037,7 +7614,7 @@ nx3.qs.QuickSyntaxParser.prototype = {
 		this.barparser.recieveEvent(event);
 		this.noteparser.recieveEvent(event);
 		switch(event[1]) {
-		case 2:
+		case 3:
 			var mode = event[2];
 			this.mode = mode;
 			break;
@@ -7056,9 +7633,103 @@ nx3.render.RendererBase = function(target,targetX,targetY) {
 };
 nx3.render.RendererBase.__name__ = true;
 nx3.render.RendererBase.prototype = {
-	pnoteHeads: function(note) {
-		var y = this.targetY + note.getComplex().getPart().getYPosition() * this.target.getScaling().unitY;
-		var x = this.targetX + note.getComplex().getXPosition() * this.target.getScaling().unitX;
+	pscore: function(score) {
+		var _g = 0;
+		var _g1 = score.getSystems();
+		while(_g < _g1.length) {
+			var system = _g1[_g];
+			++_g;
+			this.psystem(system);
+		}
+	}
+	,psystem: function(system) {
+		var _g = 0;
+		var _g1 = system.getSystembars();
+		while(_g < _g1.length) {
+			var systembar = _g1[_g];
+			++_g;
+			var meas = systembar.barWidths;
+			var barX = meas.x;
+			var barWidth = meas.width;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(barX,-10,barWidth,40),2);
+			var leftBarlineX = barX;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(leftBarlineX,-10,meas.leftBarlineWidth,40));
+			var clefX = barX + meas.leftBarlineWidth;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(clefX,-9,meas.clefWidth,38),1,16711680);
+			var keyX = clefX + meas.clefWidth;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(keyX,-9,meas.keyWidth,38),1,16711680);
+			var timeX = keyX + meas.keyWidth;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(timeX,-9,meas.timeWidth,38),1,16711680);
+			var contentX = timeX + meas.timeWidth;
+			var cautClefX = contentX + meas.contentWidth;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(cautClefX,-9,meas.cautClefWidth,38),1,16711680);
+			var cautKeyX = cautClefX + meas.cautClefWidth;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(cautKeyX,-9,meas.cautKeyWidth,38),1,16711680);
+			var cautTimeX = cautKeyX + meas.cautKeyWidth;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(cautTimeX,-9,meas.cautTimeWidth,38),1,16711680);
+			var barlineX = cautTimeX + meas.cautTimeWidth;
+			this.target.rectangle(this.targetX,this.targetY,new nx3.geom.Rectangle(barlineX,-10,meas.barlineWidth,40),1,16711680);
+			this.barAttributes(systembar,barX,0);
+			this.barContent(systembar.bar,contentX,0);
+		}
+	}
+	,barAttributes: function(systembar,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var _g = 0;
+		var _g1 = systembar.bar.getParts();
+		while(_g < _g1.length) {
+			var part = _g1[_g];
+			++_g;
+			this.target.testLines(tx,ty + part.getYPosition() * this.scaling.unitY,systembar.barWidths.width * this.scaling.unitX);
+		}
+	}
+	,barContent: function(bar,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var contentwidth = bar.getContentwidth();
+		var _g = 0;
+		var _g1 = bar.getParts();
+		while(_g < _g1.length) {
+			var part = _g1[_g];
+			++_g;
+			var _g2 = 0;
+			var _g3 = part.getVoices();
+			while(_g2 < _g3.length) {
+				var voice = _g3[_g2];
+				++_g2;
+				var _g4 = 0;
+				var _g5 = voice.getBeamgroups();
+				while(_g4 < _g5.length) {
+					var beamgroup = _g5[_g4];
+					++_g4;
+					this.pbeamgroup(beamgroup,nx,ny);
+				}
+			}
+		}
+		var _g6 = 0;
+		var _g11 = bar.getColumns();
+		while(_g6 < _g11.length) {
+			var column = _g11[_g6];
+			++_g6;
+			var _g21 = 0;
+			var _g31 = column.getComplexes();
+			while(_g21 < _g31.length) {
+				var complex = _g31[_g21];
+				++_g21;
+				this.pcomplex(complex,nx,ny);
+			}
+		}
+	}
+	,pnoteHeads: function(note,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
+		var x = this.targetX + (nx + note.getComplex().getXPosition()) * this.target.getScaling().unitX;
+		var y = this.targetY + (ny + note.getComplex().getPart().getYPosition()) * this.target.getScaling().unitY;
 		{
 			var _g = note.nnote.type;
 			switch(_g[1]) {
@@ -7095,8 +7766,8 @@ nx3.render.RendererBase.prototype = {
 					++_g11;
 					var level1 = note.getHeads()[i].nhead.level;
 					if(level1 > 5 || level1 < -5) {
-						hx1 = Math.min(hx1,x + (rect3.x - 0.8) * this.scaling.unitX);
-						hx2 = Math.max(hx2,x + (rect3.x + rect3.width + 0.8) * this.scaling.unitX);
+						hx1 = Math.min(hx1,x + (rect3.x - 0.6) * this.scaling.unitX);
+						hx2 = Math.max(hx2,x + (rect3.x + rect3.width + 0.6) * this.scaling.unitX);
 					}
 					i++;
 				}
@@ -7122,60 +7793,28 @@ nx3.render.RendererBase.prototype = {
 			}
 		}
 	}
-	,pbar: function(bar) {
-		var contentwidth = bar.getContentwidth();
-		var _g = 0;
-		var _g1 = bar.getParts();
-		while(_g < _g1.length) {
-			var part = _g1[_g];
-			++_g;
-			this.target.testLines(this.targetX,this.targetY + part.getYPosition() * this.scaling.unitY,contentwidth * this.scaling.unitX);
-			var _g2 = 0;
-			var _g3 = part.getVoices();
-			while(_g2 < _g3.length) {
-				var voice = _g3[_g2];
-				++_g2;
-				var _g4 = 0;
-				var _g5 = voice.getBeamgroups();
-				while(_g4 < _g5.length) {
-					var beamgroup = _g5[_g4];
-					++_g4;
-					this.pbeamgroup(beamgroup);
-				}
-			}
-		}
-		var _g6 = 0;
-		var _g11 = bar.getColumns();
-		while(_g6 < _g11.length) {
-			var column = _g11[_g6];
-			++_g6;
-			var _g21 = 0;
-			var _g31 = column.getComplexes();
-			while(_g21 < _g31.length) {
-				var complex = _g31[_g21];
-				++_g21;
-				this.pcomplex(complex);
-			}
-		}
-	}
-	,pcomplex: function(complex) {
+	,pcomplex: function(complex,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
 		if(complex == null) return;
-		var y = this.targetY + complex.getPart().getYPosition() * this.target.getScaling().unitY;
-		var x = this.targetX + complex.getXPosition() * this.target.getScaling().unitX;
+		var x = this.targetX + (nx + complex.getXPosition()) * this.target.getScaling().unitX;
+		var y = this.targetY + (ny + complex.getPart().getYPosition()) * this.target.getScaling().unitY;
 		var _g = 0;
 		var _g1 = complex.getNotes();
 		while(_g < _g1.length) {
 			var note = _g1[_g];
 			++_g;
-			this.pnoteHeads(note);
+			this.pnoteHeads(note,nx,ny);
 		}
-		this.psigns(complex);
-		this.pdots(complex);
-		this.pties(complex);
+		this.psigns(complex,nx,ny);
+		this.pdots(complex,nx,ny);
+		this.pties(complex,nx,ny);
 	}
-	,pties: function(complex) {
-		var y = this.targetY + complex.getPart().getYPosition() * this.target.getScaling().unitY;
-		var x = this.targetX + complex.getXPosition() * this.target.getScaling().unitX;
+	,pties: function(complex,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
+		var x = this.targetX + (nx + complex.getXPosition()) * this.target.getScaling().unitX;
+		var y = this.targetY + (nx + complex.getPart().getYPosition()) * this.target.getScaling().unitY;
 		var _g = 0;
 		var _g1 = complex.getTieinfos();
 		while(_g < _g1.length) {
@@ -7184,7 +7823,7 @@ nx3.render.RendererBase.prototype = {
 			var rect = info.rect;
 			var direction = info.direction;
 			if(info.target != null) {
-				var targetcomplex = info.target.pnote.getComplex();
+				var targetcomplex = info.target.getNote().getComplex();
 				var thisx = complex.getXPosition() + rect.x;
 				var targetAllRect = nx3.geom.RectanglesTools.unionAll(targetcomplex.getAllRects());
 				var targetx = targetcomplex.getXPosition() + targetAllRect.x;
@@ -7193,14 +7832,16 @@ nx3.render.RendererBase.prototype = {
 			this.drawTie(x,y,rect,direction);
 		}
 	}
-	,pdots: function(complex) {
+	,pdots: function(complex,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
 		var _g = 0;
 		var _g1 = complex.getDotRects();
 		while(_g < _g1.length) {
 			var r = _g1[_g];
 			++_g;
-			var y = this.targetY + complex.getPart().getYPosition() * this.target.getScaling().unitY;
-			var x = this.targetX + complex.getXPosition() * this.target.getScaling().unitX;
+			var x = this.targetX + (nx + complex.getXPosition()) * this.target.getScaling().unitX;
+			var y = this.targetY + (ny + complex.getPart().getYPosition()) * this.target.getScaling().unitY;
 			var crect = r.clone();
 			var ddot = crect.width == 3.0;
 			crect.offset(0.9,0.2);
@@ -7212,9 +7853,11 @@ nx3.render.RendererBase.prototype = {
 			this.target.filledellipse(x,y,crect,0,0,0);
 		}
 	}
-	,psigns: function(complex) {
-		var y = this.targetY + complex.getPart().getYPosition() * this.target.getScaling().unitY;
-		var x = this.targetX + complex.getXPosition() * this.target.getScaling().unitX;
+	,psigns: function(complex,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
+		var x = this.targetX + (nx + complex.getXPosition()) * this.target.getScaling().unitX;
+		var y = this.targetY + (ny + complex.getPart().getYPosition()) * this.target.getScaling().unitY;
 		var signs = complex.getVisibleSigns();
 		var rects = complex.getSignsRects();
 		var _g1 = 0;
@@ -7241,10 +7884,108 @@ nx3.render.RendererBase.prototype = {
 			if(xmlStr != null) this.target.shape(x + rect.x * this.scaling.unitX,y + (rect.y + 2) * this.scaling.unitY,xmlStr);
 		}
 	}
-	,pbeamgroup: function(beamgroup) {
+	,pbeamgroup: function(beamgroup,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
 		var frame = beamgroup.getFrame();
 		if(frame == null) return;
-		var rightY = this.targetY + beamgroup.getPVoice().part.getYPosition() * this.target.getScaling().unitY;
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var rightY = ty + beamgroup.getPVoice().getPart().getYPosition() * this.target.getScaling().unitY;
+		var direction = beamgroup.getDirection();
+		var firstnote = beamgroup.pnotes[0];
+		var leftX = cx.ArrayTools.first(beamgroup.getNotesStemXPositions()) * this.scaling.unitX;
+		var leftOuterY = frame.leftOuterY * this.scaling.unitY;
+		var leftInnerY = frame.leftInnerY * this.scaling.unitY;
+		var leftTipY = frame.leftTipY * this.scaling.unitY;
+		this.target.line(tx + leftX,rightY + leftInnerY,tx + leftX,rightY + leftTipY,1,0);
+		if(beamgroup.pnotes.length == 1) {
+			if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) > 0) {
+				if(beamgroup.getDirection() == nx3.EDirectionUD.Up) {
+					var adjustX = 0.6 * this.scaling.unitX;
+					var adjustY = this.scaling.unitY;
+					var flag;
+					if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) == 2) flag = nx3.render.svg.SvgElements.flagUp16; else flag = nx3.render.svg.SvgElements.flagUp8;
+					this.target.shape(tx + leftX - adjustX,rightY + adjustY + leftTipY,flag,0);
+				} else {
+					var adjustX1 = 0.6 * this.scaling.unitX;
+					var adjustY1 = -3 * this.scaling.unitY;
+					var flag1;
+					if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) == 2) flag1 = nx3.render.svg.SvgElements.flagDown16; else flag1 = nx3.render.svg.SvgElements.flagDown8;
+					this.target.shape(tx + leftX - adjustX1,rightY + adjustY1 + leftTipY,flag1,0);
+				}
+			}
+		}
+		if(beamgroup.pnotes.length < 2) return;
+		var storeY = [rightY + leftTipY];
+		var storeX = [tx + leftX];
+		var lastnote = cx.ArrayTools.last(beamgroup.pnotes);
+		var rightX = cx.ArrayTools.last(beamgroup.getNotesStemXPositions()) * this.scaling.unitX;
+		var rightOuterY = frame.rightOuterY * this.scaling.unitY;
+		var rightInnerY = frame.rightInnerY * this.scaling.unitY;
+		var rightTipY = frame.rightTipY * this.scaling.unitY;
+		this.target.line(tx + rightX,rightY + rightInnerY,tx + rightX,rightY + rightTipY,1,0);
+		var beamh = 0.95 * this.scaling.unitY;
+		if(beamgroup.getDirection() == nx3.EDirectionUD.Up) beamh = -beamh; else beamh = beamh;
+		this.target.parallellogram(tx + leftX,rightY + leftTipY - beamh,tx + rightX,rightY + rightTipY - beamh,beamh,0,0,0);
+		if(beamgroup.pnotes.length > 2) {
+			var _g1 = 1;
+			var _g = frame.outerLevels.length - 1;
+			while(_g1 < _g) {
+				var i = _g1++;
+				var midX = beamgroup.getNotesStemXPositions()[i] * this.scaling.unitX;
+				var midInnerY = frame.innerLevels[i] * this.scaling.unitY;
+				var delta = (midX - leftX) / (rightX - leftX);
+				var midTipY = leftTipY + (rightTipY - leftTipY) * delta;
+				this.target.line(tx + midX,rightY + midInnerY,tx + midX,rightY + midTipY,1,0);
+				storeY.push(rightY + midTipY);
+				storeX.push(tx + midX);
+			}
+		}
+		storeY.push(rightY + rightTipY);
+		storeX.push(tx + rightX);
+		var idx = 0;
+		var beamh1 = 0.95 * this.scaling.unitY;
+		var _g2 = 0;
+		var _g11 = beamgroup.getFrame().beamflags;
+		while(_g2 < _g11.length) {
+			var flagtype = _g11[_g2];
+			++_g2;
+			var adjustY2;
+			if(beamgroup.getDirection() == nx3.EDirectionUD.Up) adjustY2 = 2.1; else adjustY2 = -2.1;
+			adjustY2 *= this.scaling.unitY;
+			var currX = storeX[idx];
+			var currY = storeY[idx] + adjustY2;
+			var nextX = storeX[idx + 1];
+			var nextY = storeY[idx + 1] + adjustY2;
+			var factor = 2.2 * this.scaling.unitX;
+			switch(flagtype[1]) {
+			case 3:
+				this.target.parallellogram(currX,currY - beamh1 / 2,nextX,nextY - beamh1 / 2,beamh1,0,0,0);
+				break;
+			case 1:
+				var endX = currX + factor;
+				var endY = factor / (nextX - currX) * (nextY - currY) + currY;
+				this.target.parallellogram(currX,currY - beamh1 / 2,endX,endY - beamh1 / 2,beamh1,0,0,0);
+				break;
+			case 2:
+				var startX = nextX - factor;
+				var startY = -((nextX - startX) / (nextX - currX)) * (nextY - currY) + nextY;
+				this.target.parallellogram(startX,startY - beamh1 / 2,nextX,nextY - beamh1 / 2,beamh1,0,0,0);
+				break;
+			default:
+			}
+			idx++;
+		}
+	}
+	,pbeamgroupx: function(beamgroup,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
+		var frame = beamgroup.getFrame();
+		if(frame == null) return;
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var rightY = this.targetY + beamgroup.getPVoice().getPart().getYPosition() * this.target.getScaling().unitY;
 		var direction = beamgroup.getDirection();
 		var firstnote = beamgroup.pnotes[0];
 		var leftX = cx.ArrayTools.first(beamgroup.getNotesStemXPositions()) * this.scaling.unitX;
@@ -7377,7 +8118,21 @@ nx3.render.Renderer.prototype = $extend(nx3.render.RendererBase.prototype,{
 		if(newX == null) newX = -1;
 		if(newX != -1) this.targetX = newX;
 		if(newY != -1) this.targetY = newY;
-		this.pbar(bar);
+		this.barContent(bar);
+	}
+	,renderSystem: function(system,newX,newY) {
+		if(newY == null) newY = -1;
+		if(newX == null) newX = -1;
+		if(newX != -1) this.targetX = newX;
+		if(newY != -1) this.targetY = newY;
+		this.psystem(system);
+	}
+	,renderScore: function(score,newX,newY) {
+		if(newY == null) newY = -1;
+		if(newX == null) newX = -1;
+		if(newX != -1) this.targetX = newX;
+		if(newY != -1) this.targetY = newY;
+		this.pscore(score);
 	}
 });
 nx3.render.RendererTools = function() { };
@@ -7676,7 +8431,8 @@ nx3.Constants.BEAM_HEIGHT = 0.95;
 nx3.Constants.TIE_WIDTH_CHORD = 3.2;
 nx3.Constants.TIE_WIDTH_SINGLE = 3;
 nx3.Constants.TIE_HEIGHT = 1.6;
-nx3.Constants.LEGER_MARGIN = 0.8;
+nx3.Constants.LEGER_MARGIN = 0.6;
+nx3.Constants.OBJECT_XMARGIN = 0.6;
 nx3.ENoteValTools.DOT = 1.5;
 nx3.ENoteValTools.DOTDOT = 1.75;
 nx3.ENoteValTools.TRI = 0.66666666;
@@ -7712,7 +8468,12 @@ nx3.ENoteValTools.valNv32ddot = 661;
 nx3.ENoteValTools.valNv32tri = 251;
 nx3.PBaseRectCalculator.BASERECT_HEIGHT = 3;
 nx3.PBaseRectCalculator.BASERECT_HEIGHT_X_2 = 3 * 2;
+nx3.PBaseRectCalculator.BASERECT_MARGIN = 0.6;
+nx3.PBaseRectCalculator.BASERECT_MARGIN_X_2 = 1.2;
 nx3.PColumnsAllotmentCalculator.delta = 0.5;
+nx3.PSystemGenerator.defaultClef = nx3.EClef.ClefF;
+nx3.PSystemGenerator.defaultKey = nx3.EKey.Flat2;
+nx3.PSystemGenerator.defaultTime = nx3.ETime.Time6_4;
 nx3.render.scaling.Scaling.MID = { linesWidth : 0.8, space : 12.0, unitY : 6.0, noteWidth : 10, unitX : 5, quarterNoteWidth : 2.5, signPosWidth : 14.0, svgScale : .27, svgX : 0, svgY : -55.0, fontScaling : 1.5};
 nx3.render.scaling.Scaling.NORMAL = { linesWidth : .5, space : 8.0, unitY : 4.0, noteWidth : 7.0, unitX : 3.5, quarterNoteWidth : 1.75, signPosWidth : 9.5, svgScale : .175, svgX : 0, svgY : -36.0, fontScaling : 1.0};
 nx3.render.scaling.Scaling.SMALL = { linesWidth : .5, space : 6.0, unitY : 3.0, noteWidth : 5.0, unitX : 2.5, quarterNoteWidth : 1.25, signPosWidth : 7.0, svgScale : .14, svgX : 0, svgY : -28.5, fontScaling : 0.75};

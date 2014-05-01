@@ -107,6 +107,8 @@ class TargetSprite  implements ITarget
 		this.sprite.graphics.lineTo(x2, y2);
 	}
 	
+
+	
 	public function shape(x:Float, y:Float, xmlStr:String,  ?fillColor:Int=0x000000):Void 
 	{
 		var shape:Shape = ShapeTools.getShape(xmlStr, this.scaling);

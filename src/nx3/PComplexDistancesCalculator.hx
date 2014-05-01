@@ -15,7 +15,7 @@ class PComplexDistancesCalculator
 	{
 		//this.vpart = vpart;
 	}
-
+	
 	public function getDistance(leftComplex:PComplex, rightComplex:PComplex):Float
 	{	
 		var leftBaseRects:Rectangles = [leftComplex.getBaseRect()];
@@ -26,7 +26,9 @@ class PComplexDistancesCalculator
 		var rightRects = rightComplex.getAllRects();
 		var objDistance = RectanglesTools.getXIntersection(leftRects, rightRects);
 		
-		return Math.max(minDistance, objDistance);
+		var objDistanceMargin = objDistance + Constants.OBJECT_XMARGIN;
+		
+		return Math.max(minDistance, objDistanceMargin);
 		
 	}
 	

@@ -18,7 +18,7 @@ class NoteParser extends BaseParser
 {
 	var notelevels:Array<Int>;
 	var notevalue:ENoteVal;
-	var notesigns:Array<ESign>;	
+	var notesigns:Array<ESign>;		
 	var prevlevels:Array<Int>;
 	var prevvalue:ENoteVal;
 	var prevsigns:Array<ESign>;		
@@ -30,6 +30,7 @@ class NoteParser extends BaseParser
 	var prevlevel:Int;
 	var tie:Bool;
 	
+	var guessOctave = false;
 	
 	public function new(parser:QuickSyntaxParser)
 	{
@@ -39,8 +40,8 @@ class NoteParser extends BaseParser
 		this.notesigns = [];
 		this.notevalue = null;
 		
-		this.prevlevel = 0;
-		this.prevlevels = [0];
+		this.prevlevel = 3;
+		this.prevlevels = [3];
 		this.prevsigns = [ESign.None];
 		this.prevvalue = ENoteVal.Nv4;
 		
@@ -51,43 +52,45 @@ class NoteParser extends BaseParser
 		this.pauselevel = 0;
 		this.tie = false;
 	}
-	
+
 	override public function createFunctions()
 	{
-		this.functions.set('c#', function (token:String) { this.notelevels.push(6); this.notesigns.push(ESign.Sharp); return token.substr(2); });
-		this.functions.set('cB', function (token:String) {	this.notelevels.push(6);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
-		this.functions.set('cN', function (token:String) {	this.notelevels.push(6);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
-		this.functions.set('c', function (token:String) {	this.notelevels.push(6);this.notesigns.push(ESign.None);	return token.substr(1);});		
+		
+		
+		this.functions.set('c#', function (token:String) {this.pushNotelevel(6); this.notesigns.push(ESign.Sharp); return token.substr(2); });
+		this.functions.set('cB', function (token:String) {	this.pushNotelevel(6);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
+		this.functions.set('cN', function (token:String) {	this.pushNotelevel(6);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
+		this.functions.set('c', function (token:String) {	this.pushNotelevel(6);this.notesigns.push(ESign.None);	return token.substr(1);});		
 
-		this.functions.set('d#', function (token:String) {	this.notelevels.push(5);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
-		this.functions.set('dB', function (token:String) {	this.notelevels.push(5);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
-		this.functions.set('dN', function (token:String) {	this.notelevels.push(5);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
-		this.functions.set('d', function (token:String) {	this.notelevels.push(5);	this.notesigns.push(ESign.None);	return token.substr(1);});		
+		this.functions.set('d#', function (token:String) {	this.pushNotelevel(5);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
+		this.functions.set('dB', function (token:String) {	this.pushNotelevel(5);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
+		this.functions.set('dN', function (token:String) {	this.pushNotelevel(5);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
+		this.functions.set('d', function (token:String) {	this.pushNotelevel(5);	this.notesigns.push(ESign.None);	return token.substr(1);});		
 		
-		this.functions.set('e#', function (token:String) {	this.notelevels.push(4);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
-		this.functions.set('eB', function (token:String) {	this.notelevels.push(4);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
-		this.functions.set('eN', function (token:String) {	this.notelevels.push(4);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
-		this.functions.set('e', function (token:String) {	this.notelevels.push(4);	this.notesigns.push(ESign.None);	return token.substr(1);});			
+		this.functions.set('e#', function (token:String) {	this.pushNotelevel(4);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
+		this.functions.set('eB', function (token:String) {	this.pushNotelevel(4);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
+		this.functions.set('eN', function (token:String) {	this.pushNotelevel(4);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
+		this.functions.set('e', function (token:String) {	this.pushNotelevel(4);	this.notesigns.push(ESign.None);	return token.substr(1);});			
 		
-		this.functions.set('f#', function (token:String) {this.notelevels.push(3);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
-		this.functions.set('fB', function (token:String) {	this.notelevels.push(3);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
-		this.functions.set('fN', function (token:String) {	this.notelevels.push(3);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
-		this.functions.set('f', function (token:String) {	this.notelevels.push(3);	this.notesigns.push(ESign.None);	return token.substr(1);});			
+		this.functions.set('f#', function (token:String) {this.pushNotelevel(3);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
+		this.functions.set('fB', function (token:String) {	this.pushNotelevel(3);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
+		this.functions.set('fN', function (token:String) {	this.pushNotelevel(3);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
+		this.functions.set('f', function (token:String) {	this.pushNotelevel(3);	this.notesigns.push(ESign.None);	return token.substr(1);});			
 		
-		this.functions.set('g#', function (token:String) { this.notelevels.push(2);	this.notesigns.push(ESign.Sharp);return token.substr(2);	});
-		this.functions.set('gB', function (token:String) {	this.notelevels.push(2);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
-		this.functions.set('gN', function (token:String) {this.notelevels.push(2);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
-		this.functions.set('g', function (token:String) {	this.notelevels.push(2);	this.notesigns.push(ESign.None);	return token.substr(1);});			
+		this.functions.set('g#', function (token:String) {this.pushNotelevel(2);	this.notesigns.push(ESign.Sharp);return token.substr(2);	});
+		this.functions.set('gB', function (token:String) {	this.pushNotelevel(2);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
+		this.functions.set('gN', function (token:String) {this.pushNotelevel(2);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
+		this.functions.set('g', function (token:String) {	this.pushNotelevel(2);	this.notesigns.push(ESign.None);	return token.substr(1);});			
 		
-		this.functions.set('a#', function (token:String) {	this.notelevels.push(1);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
-		this.functions.set('aB', function (token:String) {	this.notelevels.push(1);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
-		this.functions.set('aN', function (token:String) {	this.notelevels.push(1);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
-		this.functions.set('a', function (token:String) {	this.notelevels.push(1);	this.notesigns.push(ESign.None);	return token.substr(1);});			
+		this.functions.set('a#', function (token:String) {	this.pushNotelevel(1);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
+		this.functions.set('aB', function (token:String) {	this.pushNotelevel(1);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
+		this.functions.set('aN', function (token:String) {	this.pushNotelevel(1);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
+		this.functions.set('a', function (token:String) {	this.pushNotelevel(1);	this.notesigns.push(ESign.None);	return token.substr(1);});			
 		
-		this.functions.set('b#', function (token:String) {	this.notelevels.push(0);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
-		this.functions.set('bB', function (token:String) {	this.notelevels.push(0);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
-		this.functions.set('bN', function (token:String) {	this.notelevels.push(0);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
-		this.functions.set('b', function (token:String) {	this.notelevels.push(0);	this.notesigns.push(ESign.None);	return token.substr(1);});			
+		this.functions.set('b#', function (token:String) {	this.pushNotelevel(0);	this.notesigns.push(ESign.Sharp);	return token.substr(2);});
+		this.functions.set('bB', function (token:String) {	this.pushNotelevel(0);	this.notesigns.push(ESign.Flat);	return token.substr(2);});
+		this.functions.set('bN', function (token:String) {	this.pushNotelevel(0);	this.notesigns.push(ESign.Natural);	return token.substr(2);});
+		this.functions.set('b', function (token:String) {	this.pushNotelevel(0);	this.notesigns.push(ESign.None);	return token.substr(1);});			
 		
 		this.functions.set('1.', function (token:String) {	this.notevalue = ENoteVal.Nv1dot;	return token.substr(2);});		
 		this.functions.set('1', function (token:String) {	this.notevalue = ENoteVal.Nv1;	return token.substr(1);});		
@@ -102,17 +105,33 @@ class NoteParser extends BaseParser
 		
 		this.functions.set('_', function (token:String) {	this.tie = true;	return token.substr(1);});				
 		
-		this.functions.set('=', function (token:String) {	this.octAdjust = 0;	return token.substr(1);});		
-		this.functions.set('+', function (token:String) {	this.octAdjust = -7;	return token.substr(1);});		
-		this.functions.set('++', function (token:String) {	this.octAdjust = -14;	return token.substr(2);});		
-		this.functions.set('-', function (token:String) {	this.octAdjust = 7;	return token.substr(1);});		
-		this.functions.set('--', function (token:String) {	this.octAdjust = 14;	return token.substr(2); } );		
+		this.functions.set('=', function (token:String) {	this.prevlevel = 3;  this.octAdjust = 0;	return token.substr(1); } );		
+		this.functions.set('+', function (token:String) {	this.prevlevel = -4;  this.octAdjust = -7;	return token.substr(1); } );		
+		this.functions.set('++', function (token:String) {	this.prevlevel = -11;  this.octAdjust = -14;	return token.substr(2); } );		
+		this.functions.set('-', function (token:String) {	this.prevlevel = 10;  this.octAdjust = 7;	return token.substr(1); } );		
+		this.functions.set('--', function (token:String) {	this.prevlevel = 17;  this.octAdjust = 14;	return token.substr(2); } );		
 		
 		this.functions.set('p', function (token:String) {	this.pause = true;	 this.pauselevel = 0;  return token.substr(1); } );		
 		this.functions.set('p+', function (token:String) {	this.pause = true;	this.pauselevel = -1; return token.substr(2); } );		
 		this.functions.set('p-', function (token:String) {	this.pause = true;	this.pauselevel = 1; return token.substr(2); } );		
 		
+		//this.functions.set("$guess", function (token:String) {	this.guessOctave=true; return token.substr(6); } );		
+		
 	}	
+	
+	
+	function pushNotelevel(value:Int)
+	{
+		if (guessOctave)
+		{
+			var delta = value + this.octAdjust - this.prevlevel;
+			trace([value + this.octAdjust, this.prevlevel, value + this.octAdjust - this.prevlevel]);		
+			if (delta >= 4) this.octAdjust = this.octAdjust - 7;
+			if (delta <= -4) this.octAdjust = this.octAdjust + 7;
+		}
+		this.notelevels.push(value);
+	}
+	
 
 	override private function tokenFinished(originaltoken:String) 
 	{
@@ -139,10 +158,11 @@ class NoteParser extends BaseParser
 				var sign = this.notesigns[i];
 				var tie = (this.tie) ? ETie.Tie(EDirectionUAD.Auto, 0) : null;
 				nheads.push(new NHead(level, sign, tie));
+				this.prevlevel = level;
 			}
 			nnote = new NNote(nheads, val);
 			
-			this.prevlevel = this.notelevels.first();
+			
 		}
 		
 		this.builder.addNote(nnote);
@@ -165,6 +185,8 @@ class NoteParser extends BaseParser
 				this.octAdjust = octave;
 			case ParserEvents.SetNoteVal(val):
 				this.notevalue = val;
+			case ParserEvents.SetGuessOctave(mode):
+				this.guessOctave = mode;
 			default: 
 		}
 	}

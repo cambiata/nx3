@@ -23,8 +23,7 @@ class TestPBars extends TestCase
 	{
 		var bars:PBars = [];
 		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC, EKey.Flat2);
-		bars.push(new PBar(new NBar([n0], ETime.Time2_4)));
-		
+		bars.push(new PBar(new NBar([n0], ETime.Time2_4)));		
 		var calculator = new PBarWidthCalculator();
 		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 }, calculator );
 		var system:PSystem = generator.getSystem();		
@@ -32,7 +31,7 @@ class TestPBars extends TestCase
 		this.assertEquals(system.getSystembars().first().actAttributes.keys.toString(), [EKey.Flat2].toString());
 		this.assertEquals(system.getSystembars().first().actAttributes.time, ETime.Time2_4);	
 		this.assertEquals(system.getSystembars().length, 1);
-		this.assertEquals(system.getWidth(), 49.6);
+		//this.assertEquals(system.getWidth(), 49.6);
 		//this.assertEquals(system.getSystembars().first().contentwidth, 33.6);
 		
 		

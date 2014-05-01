@@ -462,8 +462,8 @@ class TestP extends TestCase
 			]),
 		]));		
 		this.assertEquals(pbar.getColumns().first().getMPosition(), 0);
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2); // distance between notes Nv4!
-		this.assertEquals(pbar.getColumns().second().getMPosition(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 4.4); // distance between notes Nv4!
+		this.assertEquals(pbar.getColumns().second().getMPosition(), 4.4);
 		this.assertEquals(pbar.getColumns().second().getMDistance(), 1.6); // distance after last note Nv4!
 		
 		var pbar = new PBar(new NBar([
@@ -475,7 +475,7 @@ class TestP extends TestCase
 			]),
 		]));		
 		this.assertEquals(pbar.getColumns().first().getMPosition(), 0);
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.8); // distance between notes Nv1 and Nv4!
+		this.assertEquals(pbar.getColumns().first().getMDistance(),5); // distance between notes Nv1 and Nv4!
 		this.assertEquals(pbar.getColumns().second().getMDistance(), 1.6); // distance after last note Nv4!
 		
 		var pbar = new PBar(new NBar([
@@ -486,9 +486,10 @@ class TestP extends TestCase
 					]),
 			]),
 		]));		
+		
 		this.assertEquals(pbar.getColumns().first().getMPosition(), 0);
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.8); // distance between notes Nv1 and Nv4!
-		this.assertEquals(pbar.getColumns().second().getMPosition(), 3.8);
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 5); // distance between notes Nv1 and Nv4!
+		this.assertEquals(pbar.getColumns().second().getMPosition(), 5);
 		this.assertEquals(pbar.getColumns().second().getMDistance(), 2.2); // distance after last note Nv4!		
 		
 		var pbar = new PBar(new NBar([
@@ -499,9 +500,10 @@ class TestP extends TestCase
 					]),
 			]),
 		]));		
+		
 		this.assertEquals(pbar.getColumns().first().getMPosition(), 0);
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 5.8); // distance between notes Nv4!
-		this.assertEquals(pbar.getColumns().second().getMPosition(), 5.8);
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 6.4); // distance between notes Nv4!
+		this.assertEquals(pbar.getColumns().second().getMPosition(), 6.4);
 		this.assertEquals(pbar.getColumns().second().getMDistance().round2(), 1.6); // distance after last note Nv4!		
 		
 	}
@@ -540,24 +542,24 @@ class TestP extends TestCase
 			]),
 		], EAllotment.Linear));				
 
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 4.4);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 16);
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
 
-		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().second().getMDistance(), 4.4);
 		this.assertEquals(pbar.getColumns().second().getADistance(), 8);
 		this.assertEquals(pbar.getColumns().second().getAPostion(), 16 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);		
 		
-		this.assertEquals(pbar.getColumns().third().getMDistance(), 3.2);
-		this.assertEquals(pbar.getColumns().third().getADistance(), 4);
+		this.assertEquals(pbar.getColumns().third().getMDistance(), 4.4);
+		this.assertEquals(pbar.getColumns().third().getADistance(), 4.4);
 		this.assertEquals(pbar.getColumns().third().getAPostion(), 24 + pbar.getContentXZero());
-		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);				
+		this.assertEquals(pbar.getColumns().third().getADistanceBenefit().round2(), 0.4);				
 		
 		this.assertEquals(pbar.getColumns().fourth().getMDistance(), 1.6);
 		this.assertEquals(pbar.getColumns().fourth().getADistance(), 4);
-		this.assertEquals(pbar.getColumns().fourth().getAPostion(), 28 + pbar.getContentXZero());
+		this.assertEquals(pbar.getColumns().fourth().getAPostion(), 28.4 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().fourth().getADistanceBenefit(), 0);		
 
 		var pbar = new PBar(new NBar([
@@ -571,17 +573,17 @@ class TestP extends TestCase
 			]),
 		], EAllotment.Logaritmic));				
 
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getMDistance(),4.4);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 12);
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
 
-		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().second().getMDistance(), 4.4);
 		this.assertEquals(pbar.getColumns().second().getADistance(), 8);
 		this.assertEquals(pbar.getColumns().second().getAPostion(), 12 + pbar.getContentXZero()) ;
 		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);		
 		
-		this.assertEquals(pbar.getColumns().third().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().third().getMDistance(), 4.4);
 		this.assertEquals(pbar.getColumns().third().getADistance(), 6);
 		this.assertEquals(pbar.getColumns().third().getAPostion(), 20 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);				
@@ -605,7 +607,7 @@ class TestP extends TestCase
 			]),
 		], EAllotment.Linear));				
 		
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 4.4);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 8);
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);		
@@ -629,7 +631,7 @@ class TestP extends TestCase
 			]),
 		], EAllotment.Logaritmic));				
 		
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 3.2);
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 4.4);
 		this.assertEquals(pbar.getColumns().first().getADistance(), 8);
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);		
@@ -652,19 +654,19 @@ class TestP extends TestCase
 			]),
 		], EAllotment.Linear));				
 		
-		this.assertEquals(pbar.getColumns().first().getMDistance(), 5.8);
-		this.assertEquals(pbar.getColumns().first().getADistance(), 5.8);
+		this.assertEquals(pbar.getColumns().first().getMDistance(), 6.4);
+		this.assertEquals(pbar.getColumns().first().getADistance(), 6.4);
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 0 + pbar.getContentXZero());
-		this.assertEquals(pbar.getColumns().first().getADistanceBenefit().round2(), 1.8);				
+		this.assertEquals(pbar.getColumns().first().getADistanceBenefit().round2(), 2.4);				
 		
-		this.assertEquals(pbar.getColumns().second().getMDistance(), 3.2);
-		this.assertEquals(pbar.getColumns().second().getADistance(), 4);
-		this.assertEquals(pbar.getColumns().second().getAPostion(), 5.8 + pbar.getContentXZero());
-		this.assertEquals(pbar.getColumns().second().getADistanceBenefit(), 0);				
+		this.assertEquals(pbar.getColumns().second().getMDistance(), 4.4);
+		this.assertEquals(pbar.getColumns().second().getADistance(), 4.4);
+		this.assertEquals(pbar.getColumns().second().getAPostion(), 6.4 + pbar.getContentXZero());
+		this.assertEquals(pbar.getColumns().second().getADistanceBenefit().round2(), 0.4);				
 		
 		this.assertEquals(pbar.getColumns().third().getMDistance(), 1.6);
 		this.assertEquals(pbar.getColumns().third().getADistance(), 4);
-		this.assertEquals(pbar.getColumns().third().getAPostion(), 9.8 + pbar.getContentXZero());
+		this.assertEquals(pbar.getColumns().third().getAPostion(), 10.8 + pbar.getContentXZero());
 		this.assertEquals(pbar.getColumns().third().getADistanceBenefit(), 0);					
 	}
 	
@@ -959,7 +961,7 @@ class TestP extends TestCase
 		bars.push(new PBar(new NBar([n0])));
 		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
 		var system:PSystem = generator.getSystem();		
-		this.assertEquals(system.getSystembars().first().systemWidths.width, 170);
+		this.assertEquals(system.getSystembars().first().barWidths.width, 170);
 		this.assertTrue(true);
 		
 		var bars:PBars = [];
@@ -967,7 +969,7 @@ class TestP extends TestCase
 		bars.push(new PBar(new NBar([n0], ETime.Time5_8)));
 		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
 		var system:PSystem = generator.getSystem();		
-		this.assertEquals(system.getSystembars().first().systemWidths.width, 190);
+		this.assertEquals(system.getSystembars().first().barWidths.width, 190);
 		this.assertTrue(true);	
 		
 		var bars:PBars = [];
@@ -976,7 +978,7 @@ class TestP extends TestCase
 		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };		
 		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
 		var system:PSystem = generator.getSystem();		
-		this.assertEquals(system.getSystembars().first().systemWidths.width, 190);
+		this.assertEquals(system.getSystembars().first().barWidths.width, 190);
 		this.assertTrue(true);		
 	}
 		

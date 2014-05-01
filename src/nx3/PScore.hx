@@ -25,9 +25,19 @@ class PScore
 			var bar = new PBar(nbar);
 			bar.score = this;
 			this.bars.push(bar);
-			
 		}
 		return this.bars;
+	}
+	
+	var systems:PSystems;
+	public function getSystems():PSystems
+	{		
+		if (this.systems != null) return this.systems;		
+		var tempbars = this.getBars().copy();
+		var generator = new PSystemGenerator(tempbars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 }, new PBarWidthCalculator() );
+		var system:PSystem = generator.getSystem();				
+		this.systems = [system];
+		return this.systems;
 	}
 	
 }

@@ -31,14 +31,18 @@ class TestRenderer
 	}
 	
 	static public function testRenderP(r:Renderer)
-	{
+	{		
+		r.renderScore(TestItems.scoreTest2(), 10, 100);
+		
+		/*
 		r.renderPBar(TestItems.pbarContentwidth1(), 30, 100);				
 		r.renderPBar(TestItems.pbarLyrics(), 30, 250);		
 		r.renderPBar(TestItems.pbarAllotLeftalign(), 30, 350);		
 		r.renderPBar(TestItems.pbarAllotEqual(), 30, 450);		
 		r.renderPBar(TestItems.pbarAllotLinear(), 30, 550);		
 		r.renderPBar(TestItems.pbarAllotLogaritmic(), 30, 650);		
-		//r.renderPBar(TestItems.pbarTies(), 30, 750);		
+		r.renderPBar(TestItems.pbarTies(), 30, 750);		
+		*/
 		
 	}
 	

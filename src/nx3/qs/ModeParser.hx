@@ -39,6 +39,11 @@ class ModeParser extends BaseParser
 			return token.substr(3);
 		});		
 		
+		this.functions.set('guess:', function (token:String) {
+			this.sendEvent(ParserEvents.SetGuessOctave(true));
+			return token.substr(6);
+		});				
+		
 		
 	}	
 	

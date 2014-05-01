@@ -1,6 +1,8 @@
 package nx3;
+import nx3.EKeys;
 import nx3.EBarline;
 import nx3.EBarlineLeft;
+import nx3.EClefs;
 import nx3.PBar;
 import nx3.ETime;
 import nx3.EKey;
@@ -52,6 +54,30 @@ class PBarWidthCalculator implements IBarWidthCalculator
 	public function getLeftBarlineWidth(barline:EBarlineLeft):Float 
 	{
 		return 2;
+	}
+	
+	/* INTERFACE nx3.IBarWidthCalculator */
+	
+	public function getClefsWidth(clefs:EClefs):Float 
+	{
+		var result = 0.0;
+		for (clef in clefs) 
+		{
+			if (clef == null) continue;
+			result = Math.max(result, PAttributesRectsCalculator.getClefRect(clef).width);			
+		}
+		return result;
+	}
+	
+	public function getKeysWidth(keys:EKeys):Float 
+	{
+		var result = 0.0;
+		for (key in keys) 
+		{
+			if (key == null) continue;
+			result = Math.max(result, PAttributesRectsCalculator.getKeyRect(key).width);	
+		}
+		return result;		
 	}
 	
 	/* INTERFACE nx3.IBarWidthCalculator */

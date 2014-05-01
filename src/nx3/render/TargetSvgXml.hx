@@ -130,6 +130,13 @@ class TargetSvgXml implements ITarget
 	
 	/* INTERFACE nx3.render.ITarget */
 	
+	public function sline(x:Float, y:Float, start:Pnt, end:Pnt, ?lineWidth:Float, ?lineColor:Int):Void 
+	{
+		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
 
 	/* INTERFACE nx3.render.ITarget */
 	

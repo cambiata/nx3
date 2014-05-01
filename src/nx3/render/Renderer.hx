@@ -11,6 +11,8 @@ import nx3.NVoice;
 import nx3.ENoteType;
 import nx3.PBar;
 import nx3.PColumnsDistancesCalculator;
+import nx3.PScore;
+import nx3.PSystem;
 import nx3.QNote.QNote16;
 import nx3.QNote.QNote2;
 import nx3.QNote.QNote4;
@@ -325,13 +327,26 @@ class Renderer extends RendererBase
 	{
 		if (newX != -1) this.targetX = newX;
 		if (newY != -1) this.targetY = newY;	
-		this.pbar(bar);
+		this.barContent(bar);
 		
 		//this.drawTie(10, 10, new Rectangle(0, 0, 100, 20), EDirectionUD.Up);
 		//this.target.polyfill(
 	}
 	
-
+	public function renderSystem(system:PSystem, newX:Float=-1, newY:Float=-1)
+	{
+		if (newX != -1) this.targetX = newX;
+		if (newY != -1) this.targetY = newY;	
+		this.psystem(system);
+	
+	}
+	
+	public function renderScore(score:PScore, newX:Float=-1, newY:Float=-1)
+	{
+		if (newX != -1) this.targetX = newX;
+		if (newY != -1) this.targetY = newY;	
+		this.pscore(score);	
+	}
 	
 	
 	

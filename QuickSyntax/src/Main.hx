@@ -4,6 +4,7 @@ import js.Browser;
 import js.JQuery;
 import js.Lib;
 import nx3.PBar;
+import nx3.PScore;
 import nx3.qs.QuickSyntaxBuilder;
 import nx3.qs.QuickSyntaxParser;
 import nx3.render.ITarget;
@@ -61,8 +62,12 @@ class Main
 				var builder = new QuickSyntaxBuilder(qsnotes);
 				var nbars = builder.getNBars();		
 				var pbar = new PBar(nbars.first());
+				var nscore = builder.getNScore();
+				var score = new PScore(nscore);
+				
 				target.clear();
-				renderer.renderPBar(pbar);			
+				//renderer.renderPBar(pbar);			
+				renderer.renderScore(score);
 	
 	}
 }

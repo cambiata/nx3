@@ -12,4 +12,10 @@ package nx3;
 	 function getTimeWidth(time:ETime):Float;
 	 function getContentWidth(bar:PBar):Float;
 	 function getBarlineWidth(barline:EBarline):Float;
+	 
+	 
+	 function getClefsWidth(clef:EClefs):Float;
+	 function getKeysWidth(key:EKeys):Float;
+
+	 
  }

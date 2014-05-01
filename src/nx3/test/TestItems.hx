@@ -2,13 +2,20 @@ package nx3.test;
 import nx3.EAllotment;
 import nx3.ENoteType;
 import nx3.ENoteVal;
+import nx3.ETime;
 import nx3.NBar;
 import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
+import nx3.NScore;
 import nx3.NVoice;
 import nx3.PBar;
+import nx3.PBars;
+import nx3.PBarWidthCalculator;
 import nx3.PPart;
+import nx3.PScore;
+import nx3.PSystem;
+import nx3.PSystemGenerator;
 import nx3.QNote.QLyric2;
 import nx3.QNote.QLyric4;
 import nx3.QNote.QLyric8;
@@ -589,5 +596,47 @@ class TestItems
 			]),
 		], EAllotment.LeftAlign));					
 	}	
+	
+	static public function systemTest1():PSystem
+	{
+		var bars:PBars = [];
+		var n0 = new NPart([new QVoice([.4, 16, 16, 4, 4], '#.b.')], EClef.ClefC, EKey.Flat2);
+		bars.push(new PBar(new NBar([n0], ETime.Time2_4)));	
+		var n1 =  new NPart([new QVoice([4, .4, 8], [2, 3, 4], '.#')]);
+		bars.push(new PBar(new NBar([n1])));				
+		
+		var calculator = new PBarWidthCalculator();
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 }, calculator );
+		var system:PSystem = generator.getSystem();				
+		return system;		
+	}
+	
+	static public function scoreTest1():PScore
+	{
+		var n0 = new NBar([ new NPart([new QVoice([.4, 16, 16, 4, 4], '#.b.')], EClef.ClefC, EKey.Flat2)], ETime.Time2_4);	
+		var n1 =  new NBar([new NPart([new QVoice([4, .4, 8], [2, 3, 4], '.#')])]);
+		var nscore:NScore = new NScore([n0, n1]);
+		var score = new PScore(nscore);
+		return score;
+	}
+	
+	static public function scoreTest2():PScore
+	{
+		var code = 'c d e f#8 g / c2 dB | e8 p g4_ g + c / + p - = bB a g16 aB g f | b8 a4 g8 f g4 c8 / e4 f# g c# |';
+		return scoreFromCode(code);		
+	}
+	
+	
+	static function scoreFromCode(code:String):PScore
+	{
+				var parser = new QuickSyntaxParser(code);
+				var qsnotes = parser.parseToQSyntaxNotes();
+				var builder = new QuickSyntaxBuilder(qsnotes);
+				var nscore = builder.getNScore();
+				var score = new PScore(nscore);		
+			return score;
+		
+	}
+	
 	
 }

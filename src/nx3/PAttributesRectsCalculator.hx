@@ -11,9 +11,9 @@ class PAttributesRectsCalculator
 	{
 		return switch clef
 		{
-			case EClef.ClefC: new Rectangle(0, -3, 3, 6);
-			case EClef.ClefF: new Rectangle(0, -4, 4, 8);
-			case EClef.ClefG: new Rectangle(0, -5, 4, 10);
+			case EClef.ClefC: new Rectangle(0, -3, 5, 6);
+			case EClef.ClefF: new Rectangle(0, -4, 6, 8);
+			case EClef.ClefG: new Rectangle(0, -5, 6, 10);
 		default:
 			return new Rectangle(0, -3, .5, 6);
 		}
