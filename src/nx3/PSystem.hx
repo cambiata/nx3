@@ -7,18 +7,24 @@ using cx.ArrayTools;
  */
 class PSystem
  {
-	public var bars:PSystemBars;
-	public var width:Float;
 	public function new()
 	{
-		this.bars = [];
+		this.systembars = [];
 		this.width = 0;
 	}
-	public var status:PSystemStatus;
+	var status:PSystemStatus;
+	public function getStatus():PSystemStatus return this.status;
+
+	var width:Float;
+	public function getWidth():Float return this.width;
+	
+	
+	var systembars:PSystemBars;
+	public function getSystembars():PSystemBars return this.systembars;
 	
 	public function getLastBarAttributes():PBarAttributes
 	{
-		if (bars.length == 0) return null;
-		return bars.last().actAttributes;
+		if (systembars.length == 0) return null;
+		return systembars.last().actAttributes;
 	}
  }

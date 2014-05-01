@@ -43,7 +43,7 @@ class PBeamgroup
 		 //if (this.direction == null) this.voice.ppart.getBeamgroupsDirections();
 		 if (this.direction == null) 
 		 {
-			var calculator = new PPartbeamgroupsDirectionCalculator(this.voice.part);
+			var calculator = new PPartbeamgroupsDirectionCalculator(this.voice.getPart());
 			calculator.calculateBeamgroupsDirections();			 
 			// this.voice.ppart.calculateBeamgroupDirections();
 		 }

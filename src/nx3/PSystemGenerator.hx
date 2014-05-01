@@ -1,4 +1,7 @@
 package nx3;
+import nx3.EBarline;
+import nx3.EBarlineLeft;
+import nx3.PSystemBarWidths;
 import nx3.geom.Size;
 import nx3.PSystemGenerator.PSimpleBarWidthCalculator;
 using cx.ArrayTools;
@@ -9,7 +12,8 @@ using cx.ArrayTools;
  */
 
 
- 
+ @:access(nx3.PSystemBar)
+ @:access(nx3.PSystem)
 class PSystemGenerator
 {
 	static public var defaultClef:EClef = EClef.ClefF;
@@ -49,7 +53,7 @@ class PSystemGenerator
 			this.overrideActualAttributesWithDefaultsIfStillNotSet(currentBarAttributes);
 			
 			// Set config display data...
-			if (this.system.bars.length == 0)
+			if (this.system.getSystembars().length == 0)
 			{
 				this.adaptBarConfig(currentBar, currentBarConfig, this.prevBarAttributes, this.systemConfig.showFirstClef, this.systemConfig.showFirstKey, this.systemConfig.showFirstTime);
 			}
@@ -58,17 +62,25 @@ class PSystemGenerator
 				this.adaptBarConfig(currentBar, currentBarConfig, this.prevBarAttributes, this.systemConfig.showFollowingClef, this.systemConfig.showFollowingKey, this.systemConfig.showFollowingTime);
 			}
 			
-			var currentBarWidth = getBarWidth(currentBar, currentBarAttributes, currentBarConfig);
+			var currentBarWidths:PSystemBarWidths = getBarWidth(currentBar, currentBarAttributes, currentBarConfig);
 			
-			var testSystemWidth = this.system.width + currentBarWidth;
+			var testSystemWidth = this.system.width + currentBarWidths.width;
 			if (testSystemWidth > this.pagesize.width) 
 			{
 				this.takeCareOfLastBarCautions();
 				return this.system;
 			}
 			
-			this.system.width += currentBarWidth;
-			this.system.bars.push({bar:currentBar, barConfig:currentBarConfig, width:currentBarWidth, actAttributes:currentBarAttributes, caAttributes:null});
+			this.system.width += currentBarWidths.width;
+			this.system.getSystembars().push(
+			{
+					bar:currentBar,
+					barConfig:currentBarConfig, 
+					//width:currentBarWidths.width, 
+					systemWidths: currentBarWidths,
+					actAttributes:currentBarAttributes, 
+					caAttributes:null,
+			});
 			this.bars.shift();
 			
 			this.prevBarAttributes =  this.copyBarAttributes(currentBarAttributes);
@@ -84,8 +96,8 @@ class PSystemGenerator
 	{
 		
 		this.system.status = PSystemStatus.Ok;
-		var sysBar:PBar = this.system.bars.last().bar;
-		var sysBarAttributes:PBarAttributes = this.system.bars.last().actAttributes; // getBarAttributes(sysBar);
+		var sysBar:PBar = this.system.getSystembars().last().bar;
+		var sysBarAttributes:PBarAttributes = this.system.getSystembars().last().actAttributes; // getBarAttributes(sysBar);
 		
 		if (sysBar != this.bars.last()) 
 		{
@@ -100,8 +112,8 @@ class PSystemGenerator
 			{
 				//var cautAttributes:PBarAttributes = removeRedundantAttributes(sysBarAttributes, nextBarAttributes);
 				var sysBarCautAttributes:PBarAttributes = copyAndRemoveRedundantAttributes(sysBarAttributes, nextBarAttributes);
-				var sysBarConfig = this.system.bars.last().barConfig;
-				var sysBarWidth = this.system.bars.last().width;
+				var sysBarConfig = this.system.getSystembars().last().barConfig;
+				var sysBarWidth = this.system.getSystembars().last().systemWidths.width;
 				
 				var systemWidthWithoutLastBar = system.width - sysBarWidth;
 				
@@ -110,26 +122,26 @@ class PSystemGenerator
 				if (newKey) sysBarConfigWithCautions.showCautKey = true;
 				if (newTime) sysBarConfigWithCautions.showCautTime = true;
 				
-				var sysBarWidthWithCautions = getBarWidth(sysBar, sysBarAttributes, sysBarConfigWithCautions, sysBarCautAttributes);
+				var sysBarWidthWithCautions:PSystemBarWidths = getBarWidth(sysBar, sysBarAttributes, sysBarConfigWithCautions, sysBarCautAttributes);
 				
-				if (systemWidthWithoutLastBar + sysBarWidthWithCautions <= this.pagesize.width)
+				if (systemWidthWithoutLastBar + sysBarWidthWithCautions.width <= this.pagesize.width)
 				{
-					this.system.bars.last().caAttributes = sysBarCautAttributes;
-					this.system.bars.last().barConfig = sysBarConfigWithCautions;
-					this.system.bars.last().width = sysBarWidthWithCautions;
-					this.system.width = this.system.width - sysBarWidth + sysBarWidthWithCautions;
+					this.system.getSystembars().last().caAttributes = sysBarCautAttributes;
+					this.system.getSystembars().last().barConfig = sysBarConfigWithCautions;
+					this.system.getSystembars().last().systemWidths.width = sysBarWidthWithCautions.width;
+					this.system.width = this.system.getWidth() - sysBarWidth + sysBarWidthWithCautions.width;
 				}
 				else
 				{
 					this.system.status = PSystemStatus.Problem(101, 'Last bar fits without caution attributes but not with them');
-					if (this.system.bars.length == 1)
+					if (this.system.getSystembars().length == 1)
 					{
 						this.system.status = PSystemStatus.Problem(102, 'First bar doesn\'t fit when adding required cational attributes');
 						return;
 					}
 					
 					// remove last bar of current system...
-					this.system.bars.pop();
+					this.system.getSystembars().pop();
 					// ...and put it back on the feeding bars array top
 					this.bars.unshift(sysBar);
 					this.system.width = this.system.width - sysBarWidth;
@@ -213,17 +225,40 @@ class PSystemGenerator
 		}				
 	}
 	
-	function getBarWidth(bar:PBar, barAttributes:PBarAttributes, barConfig:PBarConfig, cautAttributes:PBarAttributes=null) : Float
+	function getBarWidth(bar:PBar, barAttributes:PBarAttributes, barConfig:PBarConfig, cautAttributes:PBarAttributes=null) : PSystemBarWidths
 	{
-		var width = 0.0;
+		var result:PSystemBarWidths =
+		{
+			width:0,
+			
+			leftBarlineWidth:0,
+			clefWidth:0,
+			keyWidth:0,
+			timeWidth:0,
+			contentWidth:0,
+			contentXZero:0,
+			cautClefWidth:0,
+			cautKeyWidth:0,
+			cautTimeWidth:0,	
+			barlineWidth: 0,
+		};
+		
+		
+		
+		var totalwidth = 0.0;
 
+		var leftBarlineWidth = this.barWidthCalculator.getLeftBarlineWidth(EBarlineLeft.None);
+		totalwidth += leftBarlineWidth;
+		
+		
 		var clefsWidth = 0.0;
 		if (barConfig.showClef)
 		{
 			
 			for (clef in barAttributes.clefs) clefsWidth = Math.max(clefsWidth, this.barWidthCalculator.getClefWidth(clef));			
 		}
-		width += clefsWidth;
+		result.clefWidth = clefsWidth;
+		totalwidth += clefsWidth;
 		//trace(width);
 		
 		var keysWidth = 0.0;
@@ -231,45 +266,59 @@ class PSystemGenerator
 		{
 			for (key in barAttributes.keys) keysWidth = Math.max(keysWidth, this.barWidthCalculator.getKeyWidth(key));			
 		}
-		width += keysWidth;
+		result.keyWidth = keysWidth;
+		totalwidth += keysWidth;
 		//trace(width);
 		
 		var timeWidth = 0.0;
 		if (barConfig.showTime) timeWidth += this.barWidthCalculator.getTimeWidth(barAttributes.time);		
-		width += timeWidth;
+		result.timeWidth = timeWidth;
+		totalwidth += timeWidth;
 		//trace(width);		
 		
 		//------------------------------------------------------------------------------------------
 		//trace(bar.getValue());
 		var contentWidth:Float = this.barWidthCalculator.getContentWidth(bar);
-		width += contentWidth;
+		result.contentWidth = contentWidth;
+		totalwidth += contentWidth;
+
+		result.contentXZero = bar.getContentXZero();
 		//trace(width);
 		
 		//-------------------------------------------------------------------------------------------
 		
-		var clefsWidth = 0.0;
+		var cclefsWidth = 0.0;
 		if (barConfig.showCautClef && cautAttributes != null)
 		{
-			for (clef in cautAttributes.clefs) clefsWidth = Math.max(clefsWidth, this.barWidthCalculator.getClefWidth(clef));			
+			for (clef in cautAttributes.clefs) cclefsWidth = Math.max(cclefsWidth, this.barWidthCalculator.getClefWidth(clef));			
 		}
-		width += clefsWidth;
+		result.cautClefWidth = cclefsWidth;
+		totalwidth += cclefsWidth;
 		//trace(width);
 		
-		var keysWidth = 0.0;
+		var ckeysWidth = 0.0;
 		if (barConfig.showCautKey && cautAttributes != null)
 		{
-			for (key in cautAttributes.keys) keysWidth = Math.max(keysWidth, this.barWidthCalculator.getKeyWidth(key));			
+			for (key in cautAttributes.keys) ckeysWidth = Math.max(ckeysWidth, this.barWidthCalculator.getKeyWidth(key));			
 		}
-		width += keysWidth;
+		result.cautKeyWidth = ckeysWidth;
+		totalwidth += ckeysWidth;
 		//trace(width);
 		
-		var timeWidth = 0.0;
+		var ctimeWidth = 0.0;
 		if (barConfig.showCautTime && cautAttributes != null) 
-			timeWidth += this.barWidthCalculator.getTimeWidth(cautAttributes.time);		
-		width += timeWidth;
+			ctimeWidth += this.barWidthCalculator.getTimeWidth(cautAttributes.time);		
+		result.cautTimeWidth = ctimeWidth;
+		totalwidth += ctimeWidth;
 		
+		//-------------------------------------------------------------------------------------------
+
+		var barlineWidth = this.barWidthCalculator.getBarlineWidth(EBarline.Normal);
+		totalwidth += barlineWidth;
 		
-		return width;
+		result.width = totalwidth;
+		//return totalwidth;
+		return result;
 	}
 	
 	function copyBarAttributes(barAttributes:PBarAttributes) :PBarAttributes
@@ -375,6 +424,18 @@ class PSystemGenerator
 	 public function getContentWidth(bar:PBar):Float
 	 {
 		 return Std.int(bar.getValue() / 100);		
+	 }
+	 
+	 /* INTERFACE nx3.IBarWidthCalculator */
+	 
+	 public function getLeftBarlineWidth(barline:EBarlineLeft):Float 
+	 {
+		 return 0;
+	 }
+	 
+	 public function getBarlineWidth(barline:EBarline):Float 
+	 {
+		 return 0;
 	 }
 	 
  }

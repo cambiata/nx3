@@ -5,10 +5,10 @@ import haxe.ds.IntMap.IntMap;
  * ...
  * @author Jonas Nyström
  */
+@:access(nx3.PVoice)
 class PPart
 {
 	public var npart(default, null):NPart;
-	public var bar(default, default): PBar;
 	
 	public function new(npart:NPart)
 	{
@@ -16,6 +16,8 @@ class PPart
 		this.value = 0;
 	}		
 	
+	// parent
+	var bar: PBar;
 	public function getBar():PBar
 	{
 		return this.bar;

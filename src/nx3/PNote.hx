@@ -8,30 +8,39 @@ using nx3.geom.Rectangles.RectanglesTools;
  * ...
  * @author Jonas Nyström
  */
-
+@:access(nx3.PHead)
 class PNote 
 {
 	public var nnote:NNote;
-	public var voice(default, default): PVoice;
+	
+	
 	
 	public function new(nnote:NNote)
 	{
 		this.nnote = nnote;		
 	}	
 	
-	var pheads:PHeads;
+	var voice: PVoice;
+	public function getVoice():PVoice
+	{
+		return this.voice;
+	}
+	
+	
+	
+	var heads:PHeads;
 	public function getHeads():PHeads
 	{
-		if (this.pheads != null) return this.pheads;
-		this.pheads = [];		
+		if (this.heads != null) return this.heads;
+		this.heads = [];		
 		
 		for (nhead in this.nnote.nheads) 
 		{
 			var phead = new PHead(nhead);
-			phead.pnote = this;
-			this.pheads.push(phead);
+			phead.note = this;
+			this.heads.push(phead);
 		}
-		return this.pheads;
+		return this.heads;
 	}
 	
 	//----------------------------------------------------------------------------------
@@ -57,7 +66,7 @@ class PNote
 	{
 		if (this.complex == null)
 		{			
-			this.voice.part.getComplexes();
+			this.voice.getPart().getComplexes();
 		}
 		if (this.complex == null) throw "Shouldn't happen";
 		return this.complex;

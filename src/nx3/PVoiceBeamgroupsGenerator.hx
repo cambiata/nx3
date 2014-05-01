@@ -14,7 +14,7 @@ class PVoiceBeamgroupsGenerator
 	 public function new (pnotes:PNotes, pattern:ENoteVals=null)
 	 {
 		 if (pattern == null) pattern = [ENoteVal.Nv4];
-		this.voice = pnotes.first().voice;
+		this.voice = pnotes.first().getVoice();
 		 this.notes = pnotes;
 		this.pattern = pattern;
 		this.adjustPatternLenght();

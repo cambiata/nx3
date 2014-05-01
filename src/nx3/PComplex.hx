@@ -37,7 +37,7 @@ class PComplex
 	public function getColumn():PColumn 
 	{
 		if (this.column != null) return this.column;		
-		this.part.bar.getColumns();
+		this.part.getBar().getColumns();
 		if (this.column == null) throw "this shouldn't happen";
 		return this.column;
 	}

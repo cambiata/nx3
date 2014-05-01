@@ -21,7 +21,7 @@ class PComplexTieTargetCalculator
 		{
 			var head = info.head;
 			var headlevel = head.nhead.level;
-			var nextnote = head.pnote.getNext();
+			var nextnote = head.getNote().getNext();
 			if (nextnote == null) continue;
 			
 			var nextheads = nextnote.getHeads();

@@ -11,8 +11,10 @@ class PHead
 	 {
 		 this.nhead = nhead;	
 	 }
-	public var pnote(default, default): PNote;	
-	
+	 
+	 // parent
+	var note: PNote;	
+	public function getNote():PNote return this.note;
 	
 	public function toString():String
 	{

@@ -4,15 +4,20 @@ using nx3.ENoteValTools;
  * ...
  * @author Jonas Nyström
  */
+@:access(nx3.PNote)
 class PVoice
 {
 	public var nvoice(default, null):NVoice;
-	public var part(default, default):PPart;
 	
 	public function new(nvoice:NVoice)
 	{
 		this.nvoice = nvoice;		
 	}		
+	
+	var part:PPart;
+	public function getPart():PPart return this.part;
+	
+	
 	
 	var notes:PNotes;
 	public function getNotes():PNotes

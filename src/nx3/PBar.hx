@@ -4,11 +4,10 @@ using cx.ArrayTools;
  * ...
  * @author Jonas Nyström
  */
-
+@:access(nx3.PPart)
 class PBar
 {
 	public var nbar(default, null):NBar;
-	//public var 
 	
 	public function new(nbar:NBar)
 	{
@@ -16,7 +15,15 @@ class PBar
 		this.value = 0;
 	}		
 	
-	 public var clefs(get, null):EClefs;
+	// parent
+	var score:PScore;
+	public function getScore():PScore
+	{
+		return this.score;
+	}
+	
+	
+	public var clefs(get, null):EClefs;
 	 public var keys(get, null):EKeys;
 	 public var time(get, null):ETime;	 
 	 
