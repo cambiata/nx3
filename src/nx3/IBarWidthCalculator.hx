@@ -10,6 +10,8 @@ package nx3;
 	 function getClefWidth(clef:EClef):Float;
 	 function getKeyWidth(key:EKey):Float;
 	 function getTimeWidth(time:ETime):Float;
+	 
+	 function getContentLeftMarginWidth(bar:PBar): Float;
 	 function getContentWidth(bar:PBar):Float;
 	 function getBarlineWidth(barline:EBarline):Float;
 	 

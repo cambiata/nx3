@@ -3,6 +3,7 @@ import nx3.EKeys;
 import nx3.EBarline;
 import nx3.EBarlineLeft;
 import nx3.EClefs;
+import nx3.PBar;
 import nx3.PSystembarMeasurements;
 import nx3.geom.Size;
 import nx3.PSystemGenerator.PSimpleBarWidthCalculator;
@@ -73,15 +74,15 @@ class PSystemGenerator
 			}
 			
 			this.system.width += currentBarMeasurements.width;
-			this.system.getSystembars().push(
-			{
-					bar:currentBar,
-					barConfig:currentBarConfig, 
+			this.system.getSystembars().push(new PSystemBar(
+					currentBar,
+					currentBarConfig, 
 					//width:currentBarWidths.width, 
-					barWidths: currentBarMeasurements,
-					actAttributes:currentBarAttributes, 
-					caAttributes:null,
-			});
+					currentBarMeasurements,
+					currentBarAttributes, 
+					null
+			));
+		
 			this.bars.shift();
 			
 			this.prevBarAttributes =  this.copyBarAttributes(currentBarAttributes);
@@ -244,10 +245,11 @@ class PSystemGenerator
 		{
 			width:0,
 			x:0,
-			leftBarlineWidth:0,
+			ackoladeWidth:0,
 			clefWidth:0,
 			keyWidth:0,
 			timeWidth:0,
+			contentLeftMargin:0,
 			contentWidth:0,
 			contentXZero:0,
 			cautClefWidth:0,
@@ -260,8 +262,8 @@ class PSystemGenerator
 
 		//-------------------------------------------------------------------------------------------
 
-		result.leftBarlineWidth = this.barWidthCalculator.getLeftBarlineWidth(EBarlineLeft.None);
-		totalwidth += result.leftBarlineWidth;
+		result.ackoladeWidth = this.barWidthCalculator.getLeftBarlineWidth(EBarlineLeft.None);
+		totalwidth += result.ackoladeWidth;
 		
 		if (barConfig.showClef) result.clefWidth = this.barWidthCalculator.getClefsWidth(barAttributes.clefs);
 		totalwidth += result.clefWidth;
@@ -273,6 +275,9 @@ class PSystemGenerator
 		totalwidth += result.timeWidth;
 
 		//-------------------------------------------------------------------------------------------
+		
+		result.contentLeftMargin = this.barWidthCalculator.getContentLeftMarginWidth(bar);
+		totalwidth += result.contentLeftMargin;
 		
 		result.contentWidth = this.barWidthCalculator.getContentWidth(bar);
 		totalwidth += result.contentWidth;
@@ -439,6 +444,13 @@ class PSystemGenerator
 			result = Math.max(result, getKeyWidth(key));	
 		}
 		return result;		
+	 }
+	 
+	 /* INTERFACE nx3.IBarWidthCalculator */
+	 
+	 public function getContentLeftMarginWidth(bar:PBar) 
+	 {
+		 return 0;
 	 }
 	 
  }

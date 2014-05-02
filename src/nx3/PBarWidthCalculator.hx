@@ -37,10 +37,20 @@ class PBarWidthCalculator implements IBarWidthCalculator
 		return PAttributesRectsCalculator.getTimeRect(time).width;
 	}
 	
+	public function getContentLeftMarginWidth(bar:PBar) 
+	{
+		return 1;
+	}
+	
+	
 	public function getContentWidth(bar:PBar):Float 
 	{
 		return bar.getContentwidth();
 	}
+
+	
+	
+	
 	
 	/* INTERFACE nx3.IBarWidthCalculator */
 	
@@ -79,6 +89,9 @@ class PBarWidthCalculator implements IBarWidthCalculator
 		}
 		return result;		
 	}
+	
+	/* INTERFACE nx3.IBarWidthCalculator */
+	
 	
 	/* INTERFACE nx3.IBarWidthCalculator */
 	

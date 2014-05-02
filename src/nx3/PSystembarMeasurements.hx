@@ -9,10 +9,12 @@ typedef PSystembarMeasurements =
 {
 	width:Float,
 	x:Float,
-	leftBarlineWidth:Float,
+	ackoladeWidth:Float,
 	clefWidth:Float,
 	keyWidth:Float,
 	timeWidth:Float,
+	contentLeftMargin:Float,
+	
 	contentWidth:Float,
 	contentXZero:Float,
 	cautClefWidth:Float,

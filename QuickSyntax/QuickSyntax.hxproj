@@ -17,6 +17,7 @@
   <classpaths>
     <class path="src" />
     <class path="..\src" />
+    <class path=".." />
   </classpaths>
   <!-- Build options -->
   <build>

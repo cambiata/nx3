@@ -60,9 +60,9 @@ class RendererBase
 			
 			// draw left barline
 			var leftBarlineX = barX;			
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(leftBarlineX, -10, meas.leftBarlineWidth, 40));
+			this.target.rectangle(this.targetX, this.targetY, new Rectangle(leftBarlineX, -10, meas.ackoladeWidth, 40));
 			
-			var clefX = barX + meas.leftBarlineWidth;
+			var clefX = barX + meas.ackoladeWidth;
 			this.target.rectangle(this.targetX, this.targetY, new Rectangle(clefX, -9, meas.clefWidth, 38), 1, 0xFF0000);
 			// draw clef
 			
@@ -74,7 +74,10 @@ class RendererBase
 			this.target.rectangle(this.targetX, this.targetY, new Rectangle(timeX, -9, meas.timeWidth, 38), 1, 0xFF0000);
 			// draw time
 			
-			var contentX = timeX + meas.timeWidth;
+			var contentLeftMarginX = timeX + meas.timeWidth;
+			this.target.rectangle(this.targetX, this.targetY, new Rectangle(contentLeftMarginX, -10, meas.contentLeftMargin, 40), 1, 0xFF0000);
+			
+			var contentX = contentLeftMarginX + meas.contentLeftMargin;
 			//this.pbar(systembar.bar, contentX, 0);
 			
 			var cautClefX = contentX + meas.contentWidth;

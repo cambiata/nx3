@@ -171,7 +171,8 @@ class PComplex
 		// TODO - check why this is needed...
 		this.getHeadsRects();		
 		//this.xposition = this.getColumn().getMPosition();
-		this.xposition = this.getColumn().getAPostion();
+		//this.xposition = this.getColumn().getAPostion();
+		this.xposition = this.getColumn().getSPosition();
 		return this.xposition;		
 	}	
 	

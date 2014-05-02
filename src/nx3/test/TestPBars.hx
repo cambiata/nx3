@@ -9,6 +9,7 @@ import nx3.PBar;
 import nx3.PBars;
 import nx3.PBarWidthCalculator;
 import nx3.PSystem;
+import nx3.PSystemBar;
 import nx3.PSystemGenerator;
 import nx3.QVoice;
 using cx.ArrayTools;
@@ -33,6 +34,23 @@ class TestPBars extends TestCase
 		this.assertEquals(system.getSystembars().length, 1);
 		//this.assertEquals(system.getWidth(), 49.6);
 		//this.assertEquals(system.getSystembars().first().contentwidth, 33.6);
+		
+		
+	}
+	
+	
+	public function testStretch()
+	{
+		var nbar = new NBar([new NPart([new QVoice([4, 4, 4, 4])])]);
+		var pbar = new PBar(nbar);
+		var calculator = new PBarWidthCalculator();
+		var generator = new PSystemGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null,  { width:400, height:600 }, calculator );
+		var system:PSystem = generator.getSystem();
+		var systembar = system.getSystembars().first();
+		this.assertEquals(systembar.barWidths.contentWidth, 33.6);
+		systembar.setBarStretch(10);
+		
+		this.assertEquals(systembar.barWidths.contentWidth, 33.6);
 		
 		
 	}

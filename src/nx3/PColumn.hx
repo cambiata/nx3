@@ -102,6 +102,12 @@ class PColumn
 		return this.aposition;
 	 }
 	 
+	 var stretchDistance:Float = 0;
+	 public function getSPosition():Float
+	 {
+		return this.stretchDistance + this.getAPostion(); // Return APosition if not explicit set!
+	 }
+	 
 	 var rightX:Null<Float>;
 	 public function getRightX():Float
 	 {

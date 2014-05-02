@@ -180,6 +180,28 @@ class PBar
 		return this.contentx;
 	 }
 	 
+	 var stretchwidth:Float = 0;
+/*
+	 public function setStretchWidth(val:Float)
+	 {
+		 if (val == this.stretchwidth) return;
+		 this.stretchwidth = val;
+		 if (val == 0) 
+		 {
+
+		 }
+		 
+		 
+	 }
+*/	
+	 
+	 public function getStretchWidth():Float
+	 {
+		 return this.stretchwidth;
+	 }
+	 
+	 
+	 
 	 
 }
 

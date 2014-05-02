@@ -7814,7 +7814,7 @@ nx3.render.RendererBase.prototype = {
 		if(ny == null) ny = 0;
 		if(nx == null) nx = 0;
 		var x = this.targetX + (nx + complex.getXPosition()) * this.target.getScaling().unitX;
-		var y = this.targetY + (nx + complex.getPart().getYPosition()) * this.target.getScaling().unitY;
+		var y = this.targetY + (ny + complex.getPart().getYPosition()) * this.target.getScaling().unitY;
 		var _g = 0;
 		var _g1 = complex.getTieinfos();
 		while(_g < _g1.length) {
