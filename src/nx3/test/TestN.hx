@@ -4,6 +4,7 @@ package nx3.test;
 
 #if neko
 import cx.FileTools;
+import haxe.Serializer;
 import nx3.xml.Nx3XmlTools;
 #end
 
@@ -92,7 +93,6 @@ class TestN extends   TestCase
 		var xmlStr2 = VoiceXML.toXml(nvoice2).toString();
 		this.assertEquals(xmlStr, xmlStr2);
 	}
-	
 	
 	
 	public function testBarXml()

@@ -45,6 +45,7 @@ import nx3.PBar;
 		 }
 		 else
 		 {
+			// trace(amount);
 			 calculator.stretch(amount);
 		 }
 	 }

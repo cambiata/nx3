@@ -22,6 +22,7 @@ class PColumn
 		this.value = value;
 		this.mposition = 0.0;
 		this.mdistanceBenefit = 0;
+		//this.sposition = 0.0;
 	 }
 	 
 	 public function getComplexes():PComplexes
@@ -102,10 +103,15 @@ class PColumn
 		return this.aposition;
 	 }
 	 
-	 var stretchDistance:Float = 0;
+	 
+	 var sposition:Null<Float>;
 	 public function getSPosition():Float
 	 {
-		return this.stretchDistance + this.getAPostion(); // Return APosition if not explicit set!
+		 if (this.sposition != null) return this.sposition;
+		 
+		 // this.sposition is set from PBarStrecthCalculator!
+		 
+		return this.getAPostion(); 
 	 }
 	 
 	 var rightX:Null<Float>;

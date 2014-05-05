@@ -13,11 +13,11 @@ class Unittests
 		var runner = new  TestRunner(); 
 		
 		var start_time : Date = Date.now();
-		runner.add(new TestQ());
-		runner.add(new TestN());
-		runner.add(new TestV());
-		runner.add(new TestQuickSyntax());
-		runner.add(new TestTargetSvgXml());
+		//runner.add(new TestQ());
+		//runner.add(new TestN());
+		//runner.add(new TestV());
+		//runner.add(new TestQuickSyntax());
+		//runner.add(new TestTargetSvgXml());
 		runner.add(new TestP());
 		runner.add(new TestPBars());
 		
