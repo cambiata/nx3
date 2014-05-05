@@ -30,14 +30,14 @@ import nx3.PBar;
 	 
 	 public var bar(default,null):PBar;
 	 public var barConfig(default,null):PBarConfig;
-	 public var barWidths(default,null):PSystembarMeasurements;
+	 //public var barWidths(default,null):PSystembarMeasurements;
 	 public var actAttributes(default,null):VBarAttributes;
 	 public var caAttributes(default, null):VBarAttributes;
 	 
 	 var stretchamount:Float = 0;
 	 public function setBarStretch(amount:Float)
 	 {
-		 if (amount == stretchamount) return;
+		 if (amount == stretchamount) return;		
 		 var calculator = new PBarStretchCalculator(this);
 		 if (amount == 0)
 		 {
@@ -48,6 +48,14 @@ import nx3.PBar;
 			// trace(amount);
 			 calculator.stretch(amount);
 		 }
+	 }
+	 
+	var barWidths:PSystembarMeasurements;	
+	 public function getBarWidths():PSystembarMeasurements
+	 {
+		if (barWidths != null) return this.barWidths;
+		 this.barWidths = new PSystemBarWidthCalculator().getBarWidth(this.bar, this.actAttributes, this.barConfig, this.caAttributes);
+		 return this.barWidths;
 	 }
 	 
  }

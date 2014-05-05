@@ -961,7 +961,7 @@ class TestP extends TestCase
 		bars.push(new PBar(new NBar([n0])));
 		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
 		var system:PSystem = generator.getSystem();		
-		this.assertEquals(system.getSystembars().first().barWidths.width, 170);
+		this.assertEquals(system.getSystembars().first().getBarWidths().width, 170);
 		this.assertTrue(true);
 		
 		var bars:PBars = [];
@@ -969,7 +969,7 @@ class TestP extends TestCase
 		bars.push(new PBar(new NBar([n0], ETime.Time5_8)));
 		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 } );
 		var system:PSystem = generator.getSystem();		
-		this.assertEquals(system.getSystembars().first().barWidths.width, 190);
+		this.assertEquals(system.getSystembars().first().getBarWidths().width, 190);
 		this.assertTrue(true);	
 		
 		var bars:PBars = [];
@@ -978,7 +978,7 @@ class TestP extends TestCase
 		var prevBarAttributes:PBarAttributes = { clefs: [EClef.ClefF], keys: [EKey.Sharp4], time:ETime.Time5_8 };		
 		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, prevBarAttributes,  { width:400, height:600 } );
 		var system:PSystem = generator.getSystem();		
-		this.assertEquals(system.getSystembars().first().barWidths.width, 190);
+		this.assertEquals(system.getSystembars().first().getBarWidths().width, 190);
 		this.assertTrue(true);		
 	}
 		
@@ -1154,8 +1154,7 @@ class TestP extends TestCase
 	}
 	
 	public function testSystemGeneratorCautionsTwoParts()
-	{
-		
+	{		
 		var bars:PBars = [];		
 		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefG, EKey.Flat3);
 		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefF, EKey.Sharp4);

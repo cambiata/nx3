@@ -38,63 +38,68 @@ class RendererBase
 		this.scaling = this.target.getScaling();
 	}
 	
-	public function pscore(score:PScore)
+	public function psystems(systems:PSystems)
 	{
-		for (system in score.getSystems())
+		var ny = 0.0;
+		for (system in systems)
 		{
-			this.psystem(system);
+			this.psystem(system, 0, ny);
+			ny += 40;
 		}
 	}
 	
-	public function psystem(system:PSystem)
+	public function psystem(system:PSystem, nx:Float = 0, ny:Float = 0)
 	{
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY  + ny * this.scaling.unitY;				
 		
 		for (systembar in system.getSystembars())
 		{
-			var meas = systembar.barWidths;
+			var meas = systembar.getBarWidths();
+			
 			//trace([systembar.barWidths.x, systembar.barWidths.width]);
 			var barX =  meas.x;
 			var barWidth = meas.width;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(barX, -10, barWidth, 40), 2);
+			this.target.rectangle(tx, ty, new Rectangle(barX, -10, barWidth, 40), 2);
 			//this.pnotelines(x, 0, width);
 			
 			// draw left barline
 			var leftBarlineX = barX;			
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(leftBarlineX, -10, meas.ackoladeWidth, 40));
+			this.target.rectangle(tx, ty, new Rectangle(leftBarlineX, -10, meas.ackoladeWidth, 40));
 			
 			var clefX = barX + meas.ackoladeWidth;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(clefX, -9, meas.clefWidth, 38), 1, 0xFF0000);
+			this.target.rectangle(tx, ty, new Rectangle(clefX, -9, meas.clefWidth, 38), 1, 0xFF0000);
 			// draw clef
 			
 			var keyX = clefX + meas.clefWidth;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(keyX, -9, meas.keyWidth, 38), 1, 0xFF0000);
+			this.target.rectangle(tx, ty, new Rectangle(keyX, -9, meas.keyWidth, 38), 1, 0xFF0000);
 			// draw key
 			
 			var timeX = keyX + meas.keyWidth;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(timeX, -9, meas.timeWidth, 38), 1, 0xFF0000);
+			this.target.rectangle(tx, ty, new Rectangle(timeX, -9, meas.timeWidth, 38), 1, 0xFF0000);
 			// draw time
 			
 			var contentLeftMarginX = timeX + meas.timeWidth;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(contentLeftMarginX, -10, meas.contentLeftMargin, 40), 1, 0xFF0000);
+			this.target.rectangle(tx, ty, new Rectangle(contentLeftMarginX, -10, meas.contentLeftMargin, 40), 1, 0xFF0000);
 			
 			var contentX = contentLeftMarginX + meas.contentLeftMargin;
 			//this.pbar(systembar.bar, contentX, 0);
 			
 			var cautClefX = contentX + meas.contentWidth;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(cautClefX, -9, meas.cautClefWidth, 38), 1, 0xFF0000);			
+			this.target.rectangle(tx, ty, new Rectangle(cautClefX, -9, meas.cautClefWidth, 38), 1, 0xFF0000);			
 			
 			var cautKeyX = cautClefX + meas.cautClefWidth;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(cautKeyX, -9, meas.cautKeyWidth, 38), 1, 0xFF0000);			
+			this.target.rectangle(tx, ty, new Rectangle(cautKeyX, -9, meas.cautKeyWidth, 38), 1, 0xFF0000);			
 			
 			var cautTimeX = cautKeyX + meas.cautKeyWidth;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(cautTimeX, -9, meas.cautTimeWidth, 38), 1, 0xFF0000);
+			this.target.rectangle(tx, ty, new Rectangle(cautTimeX, -9, meas.cautTimeWidth, 38), 1, 0xFF0000);
 			
 			var barlineX = cautTimeX + meas.cautTimeWidth;
-			this.target.rectangle(this.targetX, this.targetY, new Rectangle(barlineX, -10, meas.barlineWidth, 40), 1, 0xFF0000);
+			this.target.rectangle(tx, ty, new Rectangle(barlineX, -10, meas.barlineWidth, 40), 1, 0xFF0000);
 			
 			//---------------------------------------------------------------------------------------------------------------
-			this.barAttributes(systembar, barX, 0);
-			this.barContent(systembar.bar, contentX, 0);
+			this.barAttributes(systembar, barX, ny);
+			this.barContent(systembar.bar, contentX, ny);
 		}
 		
 	}
@@ -106,10 +111,8 @@ class RendererBase
 		
 			for (part in systembar.bar.getParts())
 			{
-				this.target.testLines(tx , ty + part.getYPosition()*this.scaling.unitY,  systembar.barWidths.width*this.scaling.unitX);				
-				
+				this.target.testLines(tx , ty + part.getYPosition()*this.scaling.unitY,  systembar.getBarWidths().width*this.scaling.unitX);				
 			}		
-		
 	}
 	
 	public function barContent(bar:PBar, nx:Float=0, ny:Float=0)

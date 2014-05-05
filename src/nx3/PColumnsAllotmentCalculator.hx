@@ -7,6 +7,7 @@ import nx3.PBar;
  */
 
  @:access(nx3.PColumn)
+ @:access(nx3.PBar)
  
 class PColumnsAllotmentCalculator
 {
@@ -17,6 +18,7 @@ class PColumnsAllotmentCalculator
 	{
 		this.bar = bar;
 		this.spacing = bar.nbar.spacing;
+		this.bar.allottedDistanceSum = 0;
 	}
 	
 	public function calculate(stretch:Float=0)
@@ -24,7 +26,10 @@ class PColumnsAllotmentCalculator
 		var aposition = this.bar.getContentXZero();
 		for (column in this.bar.getColumns())
 		{
-			var dist =  getADistance(column.getValue(), column);
+			var dist =  this.getADistance(column.getValue(), column);
+			column.allottedDistance = dist;
+			this.bar.allottedDistanceSum += dist;
+			
 			var adistance = Math.max(column.getMDistance(), dist);
 			//trace([column.getMDistance(), getADistance(column.getValue())]);			
 			var adistanceBenefit = Math.max(0, column.getMDistance() - dist);

@@ -1,5 +1,7 @@
 package nx3.test;
 import nx3.EAllotment;
+import nx3.EClef;
+import nx3.EKey;
 import nx3.ENoteType;
 import nx3.ENoteVal;
 import nx3.ETime;
@@ -606,7 +608,7 @@ class TestItems
 		bars.push(new PBar(new NBar([n1])));				
 		
 		var calculator = new PBarWidthCalculator();
-		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:400, height:600 }, calculator );
+		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  400, calculator );
 		var system:PSystem = generator.getSystem();				
 		return system;		
 	}
@@ -619,6 +621,33 @@ class TestItems
 		var score = new PScore(nscore);
 		return score;
 	}
+	
+	static public function scoreStretch(systemwidth:Float):PScore
+	{
+		var n0 = new NBar([ new NPart([new QVoice([.4, 16, 16, 4, 4], '#.b.')], EClef.ClefC, EKey.Flat2)], ETime.Time2_4);	
+		//var n1 =  new NBar([new NPart([new QVoice([4, .4, 8], [2, 3, 4], '.#')])]);
+		var nscore:NScore = new NScore([n0]);
+		var score = new PScore(nscore);
+		score.getSystems(systemwidth).first().getSystembars().first();
+		return score;
+	}	
+	
+	static public function scoreLinebreak(): PScore
+	{
+		var b0 = new NBar([ new NPart([new QVoice([4, 4, 4], '')], EClef.ClefC, EKey.Flat2)], ETime.Time3_4);	
+		var b1 = new NBar([ new NPart([new QVoice([4, 4, 4], '')])]);	
+		var b2 = new NBar([ new NPart([new QVoice([4, 4, 4], '')])]);	
+		var b3 = new NBar([ new NPart([new QVoice([4, 4, 4], '')])]);	
+		var b4 = new NBar([ new NPart([new QVoice([4, 4, 4], '')])]);	
+		var b5 = new NBar([ new NPart([new QVoice([4, 4, 4], '')])]);	
+		var nscore = new NScore([b0, b1, b2, b3, b4, b5]);
+		var score = new PScore(nscore);
+		return score;
+	}
+	
+	
+	
+	
 	
 	static public function scoreTest2():PScore
 	{

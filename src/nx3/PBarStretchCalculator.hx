@@ -20,39 +20,60 @@ class PBarStretchCalculator
 	
 	public function stretch(amount:Float)
 	{
-		this.systembar.barWidths.contentWidth += amount;
+		//trace(this.systembar.getBarWidths());
+		
+		this.systembar.getBarWidths().contentWidth += amount;
+		this.systembar.getBarWidths().width += amount;
+		
+		//trace(this.systembar.getBarWidths());
+		
 		if (this.systembar.bar.getColumns().length < 2) return;
 		
-		var sdistance:Map<PColumn, Float> = new  Map<PColumn, Float>();
-		for (column in this.systembar.bar.getColumns())
+		var columns = this.systembar.bar.getColumns();
+		var firstcolumn = columns[0];
+		
+		var aDistance:Map<PColumn, Float> = new  Map<PColumn, Float>();
+		var gotShared:Map<PColumn, Float> = new  Map<PColumn, Float>();
+		
+		for (column in columns)
 		{
-			sdistance.set(column, column.getADistance());
+			aDistance.set(column, column.getADistance());
+			gotShared.set(column, 0);
 		}
+		var seedThreshold:Map<Int, Float> = new Map<Int, Float>();		
+		//var firstcolumn = this.systembar.bar.getColumns().first();
 		
-		
-		/*
-		var firstcolumn = this.systembar.bar.getColumns().first();
-		
-		var amountrest = amount;		
-		while (amountrest > 0)
+		var seedrest = amount;		
+		var countIterations = 0;
+		while (seedrest > 0)
 		{
-			var fraction = 0.5;
-			for (column in this.systembar.bar.getColumns())
+			var seed = .5;
+			for (column in columns)
 			{
-				var deltafraction = column.getValueDelta() * fraction;
-				if (column == firstcolumn) continue;
-				
-				
-				//if (column.stretchDistance < column.getADistanceBenefit())
-				//{
-					column.stretchPosition += deltafraction;
-					amountrest -= deltafraction;
-				//}
+				var grain = column.getDistanceDelta() * seed;
+				var valueDeltaInt = Std.int(column.getDistanceDelta() * 100000);				
+				if (!seedThreshold.exists(valueDeltaInt)) seedThreshold.set(valueDeltaInt, 0);
+				seedThreshold.set(valueDeltaInt, seedThreshold.get(valueDeltaInt) + grain);				
+				var threshold = seedThreshold.get(valueDeltaInt);				
+				var benefit =  (column == firstcolumn) ? 0.0 : column.getADistanceBenefit();								
+				if (threshold > benefit) 
+				{
+					gotShared.set(column, gotShared.get(column) + grain);				
+					seedrest -= grain;
+				}
 			}
+			countIterations++;
 		}
-		*/
-		//trace(this.systembar.barWidths.contentWidth );
-		//trace(this.systembar.barWidths.contentWidth );
+		
+		//trace(countIterations);
+		
+		 var gain = 0.0;
+		for (column in columns)
+		{
+			//trace([columns.indexOf(column), gotShared.get(column)]);			
+			column.sposition = column.getAPostion() + gain;
+			gain += gotShared.get(column);
+		}
 		
 	}
 	

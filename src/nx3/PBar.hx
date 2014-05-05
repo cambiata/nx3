@@ -190,10 +190,17 @@ class PBar
 		 {
 
 		 }
-		 
-		 
 	 }
 */	
+	 
+	var allottedDistanceSum:Null<Float>;
+	public function getAllottedDistanceSum():Float
+	{
+		if (this.allottedDistanceSum != null) return this.allottedDistanceSum;
+		this.getContentwidth();
+		return this.allottedDistanceSum;		
+	}
+
 	 
 	 public function getStretchWidth():Float
 	 {

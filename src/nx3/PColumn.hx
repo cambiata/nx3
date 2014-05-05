@@ -9,6 +9,7 @@ using cx.ArrayTools;
  * ...
  * @author Jonas Nyström
  */
+ 
 class PColumn
 {
 	var bar:PBar;
@@ -67,12 +68,16 @@ class PColumn
 		 return this.mdistanceBenefit;
 	 }
 	 
-	 var valuedelta:Null<Float>;
-	 public function getValueDelta():Float
+	 
+	 
+	 var allottedDistance:Float = 0;
+	 var distancedelta:Null<Float>;
+	 public function getDistanceDelta():Float
 	 {
-		 if (this.valuedelta != null) return this.valuedelta;
-		this.valuedelta = this.getValue() / this.bar.getValue() ;
-		 return this.valuedelta;		 
+		 if (this.distancedelta != null) return this.distancedelta;
+		this.bar.getContentwidth();
+		 this.distancedelta = this.allottedDistance / this.bar.getAllottedDistanceSum();
+		 return this.distancedelta;		 
 	 }
 	 
 	 var mposition:Null<Float>;	 
@@ -109,6 +114,7 @@ class PColumn
 	 {
 		 if (this.sposition != null) return this.sposition;
 		 
+		 // OBS!!!
 		 // this.sposition is set from PBarStrecthCalculator!
 		 
 		return this.getAPostion(); 

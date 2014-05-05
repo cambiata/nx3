@@ -27,4 +27,9 @@ class PSystem
 		if (systembars.length == 0) return null;
 		return systembars.last().actAttributes;
 	}
+	
+	var systemBreakWidth:Float = 0;
+	
+	
+	
  }

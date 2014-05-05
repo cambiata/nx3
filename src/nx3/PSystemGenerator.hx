@@ -26,18 +26,18 @@ class PSystemGenerator
 	var bars:PBars;
 	var systemConfig:PSystemConfig;
 	var prevBarAttributes:PBarAttributes;
-	var pagesize:Size;
+	var breakSystemwidth:Float;
 	var system:PSystem;
 	var barWidthCalculator:IBarWidthCalculator;
 
-	public function new(bars:PBars, systemConfig:PSystemConfig, prevBarAttributes:PBarAttributes, pagesize:Size, barWidthCalculator:IBarWidthCalculator=null) 
+	public function new(bars:PBars, systemConfig:PSystemConfig, prevBarAttributes:PBarAttributes, breakSystemwidth:Float, barWidthCalculator:IBarWidthCalculator=null) 
 	{
 		this.bars = bars;
 		this.systemConfig = systemConfig;
 		this.prevBarAttributes = prevBarAttributes;
-		this.pagesize = pagesize;
+		this.breakSystemwidth = breakSystemwidth;
 		this.system = new PSystem();
-		this.barWidthCalculator = (barWidthCalculator != null) ? barWidthCalculator : new PSimpleBarWidthCalculator();
+		this.barWidthCalculator = barWidthCalculator;
 	}
 	
 	public function getSystem():PSystem
@@ -67,9 +67,10 @@ class PSystemGenerator
 			var currentBarMeasurements:PSystembarMeasurements = getBarWidth(currentBar, currentBarAttributes, currentBarConfig);
 			
 			var testSystemWidth = this.system.width + currentBarMeasurements.width;
-			if (testSystemWidth > this.pagesize.width) 
+			if (testSystemWidth > this.breakSystemwidth) 
 			{
 				this.takeCareOfLastBarCautions();
+				this.calculateSystembarXs();
 				return this.system;
 			}
 			
@@ -138,7 +139,7 @@ class PSystemGenerator
 				
 				var measurementsWithCautions:PSystembarMeasurements = getBarWidth(sysBar, sysBarAttributes, sysBarConfigWithCautions, sysBarCautAttributes);
 				
-				if (systemWidthWithoutLastBar + measurementsWithCautions.width <= this.pagesize.width)
+				if (systemWidthWithoutLastBar + measurementsWithCautions.width <= this.breakSystemwidth)
 				{
 					this.system.getSystembars().last().caAttributes = sysBarCautAttributes;
 					this.system.getSystembars().last().barConfig = sysBarConfigWithCautions;
@@ -241,6 +242,12 @@ class PSystemGenerator
 	
 	function getBarWidth(bar:PBar, barAttributes:PBarAttributes, barConfig:PBarConfig, cautAttributes:PBarAttributes=null) : PSystembarMeasurements
 	{
+		var calculator:PSystemBarWidthCalculator = new PSystemBarWidthCalculator(this.barWidthCalculator);
+		return calculator.getBarWidth(bar, barAttributes, barConfig, cautAttributes);
+		
+		/*
+		this.barWidthCalculator = (this.barWidthCalculator == null) ? new PSimpleBarWidthCalculator() : this.barWidthCalculator;
+		
 		var result:PSystembarMeasurements =
 		{
 			width:0,
@@ -303,6 +310,8 @@ class PSystemGenerator
 		result.width = totalwidth;
 		
 		return result;
+		*/
+		
 	}
 	
 	function copyBarAttributes(barAttributes:PBarAttributes) :PBarAttributes
