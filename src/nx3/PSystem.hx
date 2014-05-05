@@ -29,6 +29,27 @@ class PSystem
 	}
 	
 	var systemBreakWidth:Float = 0;
+	public function getSystemBreakWidth():Float return this.systemBreakWidth;
+	
+	
+	var value:Null<Int>;
+	public function getValue():Int
+	{
+		if (this.value != null) return this.value;
+		this.value = 0;
+		for (systembar in this.getSystembars()) this.value += systembar.bar.getValue();		
+		return this.value;
+	}
+	
+	public function calculateSystembarXs()
+	{
+		var x = 0.0;
+		for (systemBar in this.getSystembars())		
+		{
+			systemBar.getBarWidths().x = x;
+			x += systemBar.getBarWidths().width;
+		}
+	}	
 	
 	
 	

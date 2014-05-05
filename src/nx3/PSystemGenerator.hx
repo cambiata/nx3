@@ -42,6 +42,8 @@ class PSystemGenerator
 	
 	public function getSystem():PSystem
 	{
+		this.system.systemBreakWidth = this.breakSystemwidth;
+		
 		var tryAnotherBar = true;		
 		while (tryAnotherBar)
 		{
@@ -70,7 +72,7 @@ class PSystemGenerator
 			if (testSystemWidth > this.breakSystemwidth) 
 			{
 				this.takeCareOfLastBarCautions();
-				this.calculateSystembarXs();
+				//this.system.calculateSystembarXs();
 				return this.system;
 			}
 			
@@ -90,13 +92,14 @@ class PSystemGenerator
 			if (this.bars.length < 1) tryAnotherBar = false;
 		}
 		
-		this.calculateSystembarXs();
+		//this.system.calculateSystembarXs();
 		
 		this.system.status = PSystemStatus.Ok;		
 		return this.system;
 		
 	}
 	
+	/*
 	function calculateSystembarXs()
 	{
 		var x = 0.0;
@@ -106,6 +109,7 @@ class PSystemGenerator
 			x += systemBar.barWidths.width;
 		}
 	}
+	*/
 	
 	function takeCareOfLastBarCautions() 
 	{

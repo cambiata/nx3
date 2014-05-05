@@ -36,21 +36,17 @@ class PScore
 	{		
 		if (systemwidth != prevSystemwidth) this.systems = null;
 		if (this.systems != null) return this.systems;		
-		
-		/*
-		var tempbars = this.getBars().copy();
-		var generator = new PSystemGenerator(tempbars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  { width:systemwidth, height:600 }, new PBarWidthCalculator() );
-		
-		var system:PSystem = generator.getSystem();				
-		this.systems = [system];
-		*/
+
 		this.systems = new PScoreSystemsGenerator(this.getBars()).getsSystems([systemwidth]);
-		//new PScoreSystemStretcher(systems.first()).stretchTo(123);
 		
+		for (system in this.systems)	system.calculateSystembarXs();
+		
+		for (system in this.systems)		
+		{
+			var ifMoreThan = (system != this.systems.last()) ? 0 : system.getSystemBreakWidth() *.7;
+			new PScoreSystemStretcher(system).stretchTo(system.getSystemBreakWidth(), ifMoreThan );
+		}
 		return this.systems;
-		
-		
-		
 	}
 	
 }

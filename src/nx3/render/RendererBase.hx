@@ -52,9 +52,12 @@ class RendererBase
 	{
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;				
+			
+		this.target.rectangle(tx, ty, new Rectangle(0, -10, system.getSystemBreakWidth(), 40), 2, 0x00ff00);
 		
 		for (systembar in system.getSystembars())
 		{
+			
 			var meas = systembar.getBarWidths();
 			
 			//trace([systembar.barWidths.x, systembar.barWidths.width]);

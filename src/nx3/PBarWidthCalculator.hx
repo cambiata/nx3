@@ -56,14 +56,14 @@ class PBarWidthCalculator implements IBarWidthCalculator
 	
 	public function getBarlineWidth(barline:EBarline):Float 
 	{
-		return 4;
+		return 1;
 	}
 	
 	/* INTERFACE nx3.IBarWidthCalculator */
 	
 	public function getLeftBarlineWidth(barline:EBarlineLeft):Float 
 	{
-		return 2;
+		return 1;
 	}
 	
 	/* INTERFACE nx3.IBarWidthCalculator */

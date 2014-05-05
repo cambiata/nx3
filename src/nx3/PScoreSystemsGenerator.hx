@@ -23,11 +23,13 @@ class PScoreSystemsGenerator
 		var tempbars = this.bars.copy();		
 		var result:PSystems = new PSystems();		
 		var sysidx = 0;
+		var prevbarAttributes:PBarAttributes = null;	
 		while (tempbars.length > 0)
 		{
 			var syswidth = systemwidths.indexOrValue(sysidx, systemwidths.first());
-			var generator = new PSystemGenerator(tempbars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  syswidth, new PBarWidthCalculator() );
+			var generator = new PSystemGenerator(tempbars,  { showFirstClef:true, showFirstKey:true, showFirstTime:(sysidx == 0) }, prevbarAttributes,  syswidth, new PBarWidthCalculator() );
 			var system:PSystem = generator.getSystem();								
+			prevbarAttributes = system.getLastBarAttributes();
 			result.push(system);
 			sysidx++;
 		}
