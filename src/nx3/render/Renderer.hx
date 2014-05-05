@@ -341,8 +341,9 @@ class Renderer extends RendererBase
 	
 	}
 	
-	public function renderScore(score:PScore, newX:Float=-1, newY:Float=-1, systemwidth:Float)
+	public function renderScore(score:PScore, newX:Float=-1, newY:Float=-1, systemwidth:Float=400)
 	{
+		//trace('renderScore');
 		if (newX != -1) this.targetX = newX;
 		if (newY != -1) this.targetY = newY;	
 		this.psystems(score.getSystems(systemwidth));	

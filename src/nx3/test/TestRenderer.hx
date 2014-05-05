@@ -37,8 +37,8 @@ class TestRenderer
 		//r.renderScore(TestItems.scoreStretch(140), 10, 400, 500);
 		//r.renderScore(TestItems.scoreStretch(150), 10, 800, 500);
 		
+		//r.renderPBar(TestItems.pbarContentwidth1(), 30, 100);				
 		/*
-		r.renderPBar(TestItems.pbarContentwidth1(), 30, 100);				
 		r.renderPBar(TestItems.pbarLyrics(), 30, 250);		
 		r.renderPBar(TestItems.pbarAllotLeftalign(), 30, 350);		
 		r.renderPBar(TestItems.pbarAllotEqual(), 30, 450);		

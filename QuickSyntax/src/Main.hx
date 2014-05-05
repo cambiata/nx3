@@ -11,6 +11,7 @@ import nx3.render.ITarget;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.TargetSvg;
+import nx3.test.TestItems;
 import nx3.VBar;
 using cx.ArrayTools;
 /**
@@ -29,8 +30,6 @@ class Main
 		var svgelement = codeelement.parent();
 		var svgid = svgelement.attr('id');
 		trace(svgid);
-		
-	
 	
 
 		var target = new TargetSvg('#$svgid', Scaling.BIG);

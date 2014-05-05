@@ -20,15 +20,17 @@ class Main
 {	
 	static function main() 
 	{
-		Unittests.performTests();
+		//Unittests.performTests();
 		
 		var target = new TargetSvg('#small', Scaling.SMALL);
 		TestRenderer.testRenderP(new Renderer(target, 10, 80));
 
+		
 		var target = new TargetSvg('#normal', Scaling.NORMAL);
 		TestRenderer.testRenderP(new Renderer(target, 10, 80));
 
 		var target = new TargetSvg('#big', Scaling.BIG);
 		TestRenderer.testRenderP(new Renderer(target, 10, 80));	
+		
 	}	
 }

@@ -632,9 +632,10 @@ class TestItems
 		return score;
 	}	
 	
-	static public function scoreLinebreak(): PScore
+	static public function scoreLinebreakX(): PScore
 	{
-		var b0 = new NBar([ new NPart([new QVoice([4, 4, 4], '')], EClef.ClefC, EKey.Flat2)], ETime.Time3_4);	
+		var b0 = new NBar([ new NPart([new QVoice([4, 4, 4], '')], EClef.ClefC, EKey.Sharp5)], ETime.Time3_4);	
+		
 		var b1 = new NBar([ new NPart([new QVoice([4, 4, 4, 4], '')])]);	
 		var b2 = new NBar([ new NPart([new QVoice([4, 4], '')])]);	
 		var b3 = new NBar([ new NPart([new QVoice([4, 4], '')])]);	
@@ -642,11 +643,75 @@ class TestItems
 		var b5 = new NBar([ new NPart([new QVoice([4, 4, 4, 4], '')])]);	
 		var b6 = new NBar([ new NPart([new QVoice([4, 4, 4], '')])]);	
 		var b7 = new NBar([ new NPart([new QVoice([4, 4], '')])]);	
+		
 		var nscore = new NScore([b0, b1, b2, b3, b4, b5, b6, b7]);
 		var score = new PScore(nscore);
 		return score;
+		
 	}
 	
+	
+	static public function scoreLinebreak(): PScore
+	{
+		var b0 = new NBar([new NPart([new NVoice([
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),				
+				]), ], EClef.ClefG, EKey.Sharp5), ], ETime.Time3_4);
+
+		var b1 = new NBar([new NPart([new NVoice([
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),				
+						new NNote([new NHead(0),]),				
+						new NNote([new NHead(0),]),				
+				]), ]), ]);
+		var b2 = new NBar([new NPart([new NVoice([
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),				
+				]), ]), ]);
+		var b3 = new NBar([new NPart([new NVoice([
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),				
+				]), ]), ]);
+		var b4 = new NBar([new NPart([new NVoice([
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),				
+						new NNote([new NHead(0),]),				
+				]), ]), ]);
+		var b5 = new NBar([new NPart([new NVoice([
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),				
+						new NNote([new NHead(0),]),				
+						new NNote([new NHead(0),]),				
+				]), ]), ]);
+		var b6 = new NBar([new NPart([new NVoice([
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),				
+				]), ]), ]);
+		var b7 = new NBar([new NPart([new NVoice([
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),
+						new NNote([new NHead(0),]),				
+				]), ]), ]);
+		var nscore = new NScore([b0, b1, b2, b3, b4, b5, b6, b7]);
+		var score = new PScore(nscore);
+		return score;				
+				
+		/*
+		var b1 = new NBar([ new NPart([new QVoice([4, 4, 4, 4], '')])]);	
+		var b2 = new NBar([ new NPart([new QVoice([4, 4], '')])]);	
+		var b3 = new NBar([ new NPart([new QVoice([4, 4], '')])]);	
+		var b4 = new NBar([ new NPart([new QVoice([4, 4, 4], '')])]);	
+		var b5 = new NBar([ new NPart([new QVoice([4, 4, 4, 4], '')])]);	
+		var b6 = new NBar([ new NPart([new QVoice([4, 4, 4], '')])]);	
+		var b7 = new NBar([ new NPart([new QVoice([4, 4], '')])]);	
+		
+		var nscore = new NScore([b0, b1, b2, b3, b4, b5, b6, b7]);
+		var score = new PScore(nscore);
+		return score;
+		*/
+	}
+		
 	
 	
 	

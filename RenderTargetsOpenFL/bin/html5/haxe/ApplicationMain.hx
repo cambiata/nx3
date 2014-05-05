@@ -40,7 +40,7 @@ import flash.Lib;
 		var element:HtmlElement = cast js.Browser.document.getElementById ("openfl-embed");
 		#end
 		
-		flash.Lib.create (1200, 800, element, 16777215);
+		flash.Lib.create (1200, 1000, element, 16777215);
 		
 		preloader = new NMEPreloader ();
 		Lib.current.addChild (preloader);
@@ -227,7 +227,13 @@ class DocumentClass {
 			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
 				
 				var fields = Context.getBuildFields ();
-				var method = macro { this.stage = flash.Lib.current.stage; super (); }
+				var method = macro {
+					
+					this.stage = flash.Lib.current.stage;
+					super ();
+					dispatchEvent (new Event (Event.ADDED_TO_STAGE, false, false));
+					
+				}
 				
 				fields.push ({ name: "new", access: [ APublic ], kind: FFun({ args: [], expr: method, params: [], ret: macro :Void }), pos: Context.currentPos () });
 				return fields;

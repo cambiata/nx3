@@ -49,6 +49,7 @@ class Constants
 	static public inline var TIE_HEIGHT:Float = 1.6;
 	static public inline var LEGER_MARGIN:Float =0.6;
 	static public inline var OBJECT_XMARGIN:Float = 0.6;
+	static public inline var ATTRIBUTE_SIGN_WIDTH:Float = 2.4;
 	
 	//static public inline var ASPACING_NORMAL:Float = 8;		
 } 

@@ -1,6 +1,8 @@
 package nx3.render;
 import nx3.Constants;
 import nx3.EBeamflagType;
+import nx3.EClef;
+import nx3.EKeysTools;
 import nx3.geom.BezieerTool;
 import nx3.geom.Pnt;
 import nx3.geom.Rectangle;
@@ -11,6 +13,7 @@ import nx3.PBar;
 import nx3.PBeamgroup;
 import nx3.PComplex;
 import nx3.PNote;
+import nx3.PPart;
 import nx3.PScore;
 import nx3.PSystem;
 import nx3.PSystemBar;
@@ -112,11 +115,71 @@ class RendererBase
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;		
 		
+		var partidx = 0;
 			for (part in systembar.bar.getParts())
 			{
-				this.target.testLines(tx , ty + part.getYPosition()*this.scaling.unitY,  systembar.getBarWidths().width*this.scaling.unitX);				
+				this.target.testLines(tx , ty + part.getYPosition() * this.scaling.unitY,  systembar.getBarWidths().width * this.scaling.unitX);				
+				
+				this.barAttributeClef(systembar, part, nx, ny);
+				this.barAttributeKey(systembar, part, nx, ny);
+				
+				partidx++;
 			}		
 	}
+	
+	public function barAttributeKey(systembar:PSystemBar, part:PPart, nx:Float, ny:Float)
+	{	
+		var showkey = systembar.barConfig.showKey;
+		if (!showkey) return;	
+
+		var partidx = systembar.bar.getParts().indexOf(part);
+		var actkey = systembar.actAttributes.keys[partidx];				
+		
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY  + ny * this.scaling.unitY;						
+		
+		var keyX = (systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth) * this.scaling.unitX;
+		var keyY = 1 * this.scaling.unitY;		
+		
+		var keyCode = EKeysTools.getSigncode(actkey);		
+		var svgXmlstr = (keyCode == -1) ? SvgElements.signFlat: SvgElements.signSharp;
+		var keyLevels = EKeysTools.getLevels(actkey, EClef.ClefG);
+		
+		for (level in keyLevels)
+		{		
+			var keyY = level * this.scaling.unitY;		
+			this.target.shape(tx + keyX, ty + keyY +  part.getYPosition() * this.scaling.unitY, svgXmlstr);		
+			keyX += Constants.ATTRIBUTE_SIGN_WIDTH * this.target.getScaling().unitX;
+		}
+		
+	}
+	
+	public function barAttributeClef(systembar:PSystemBar, part:PPart, nx:Float, ny:Float)
+	{
+		var showclef = systembar.barConfig.showClef;
+		if (!showclef) return;
+		
+		var partidx = systembar.bar.getParts().indexOf(part);
+		var actclef = systembar.actAttributes.clefs[partidx];		
+		
+		
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY  + ny * this.scaling.unitY;				
+		
+		var clefX = (systembar.getBarWidths().ackoladeWidth) * this.scaling.unitX;
+		var clefY = 1 * this.scaling.unitY;
+		
+		
+		
+		var svgXmlstr = switch actclef
+		{
+			case EClef.ClefC: SvgElements.clefC;
+			case EClef.ClefG: SvgElements.clefG;
+			case EClef.ClefF: SvgElements.clefF;						
+		}
+		this.target.shape(tx + clefX, ty + clefY +  part.getYPosition() * this.scaling.unitY, svgXmlstr);		
+	}
+	
 	
 	public function barContent(bar:PBar, nx:Float=0, ny:Float=0)
 	{

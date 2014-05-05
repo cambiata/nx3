@@ -24,12 +24,12 @@ class PScoreSystemStretcher
 		var diff = (stretchSystemToWidth - this.system.getWidth());						
 		
 		var totalvalue = this.system.getValue();		
-		trace([stretchSystemToWidth, this.system.getWidth(), diff]);
+		//trace([stretchSystemToWidth, this.system.getWidth(), diff]);
 		
 		for (systembar in this.system.getSystembars())
 		{
 			var stretchamount = (systembar.bar.getValue() / totalvalue) * diff;
-			trace(stretchamount);
+			//trace(stretchamount);
 			systembar.setBarStretch(stretchamount);
 		}
 		system.calculateSystembarXs();
