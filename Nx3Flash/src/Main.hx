@@ -26,7 +26,7 @@ class Main extends Sprite
 	{
 		super();
 		
-		Unittests.performTests();
+		//Unittests.performTests();
 		
 		
 		
@@ -80,7 +80,7 @@ class Main extends Sprite
 		{
 			targetHS.clear();
 			var renderWidth =  Math.max(60, rendererHS.xToUnitX(width));
-			rendererHS.renderScore(TestItems.scoreLinebreak(), 0, 100, renderWidth);
+			rendererHS.renderScore(TestItems.scoreTpl(), 0, 100, renderWidth);
 			trace([width, rendererHS.xToUnitX(width)]);
 		});		
 		

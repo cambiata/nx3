@@ -2348,16 +2348,16 @@ nx3.ENoteValTools.fromValString = function(valString) {
 		throw "unhandled note value: " + valString;
 	}
 };
-nx3.EPartType = { __ename__ : true, __constructs__ : ["Normal","Lyrics","Tpl","Tplchain","Dynamics","Chords","Ignore","Hidden"] };
+nx3.EPartType = { __ename__ : true, __constructs__ : ["Normal","Lyrics","Tplrow","Tplchain","Dynamics","Chords","Ignore","Hidden"] };
 nx3.EPartType.Normal = ["Normal",0];
 nx3.EPartType.Normal.toString = $estr;
 nx3.EPartType.Normal.__enum__ = nx3.EPartType;
 nx3.EPartType.Lyrics = ["Lyrics",1];
 nx3.EPartType.Lyrics.toString = $estr;
 nx3.EPartType.Lyrics.__enum__ = nx3.EPartType;
-nx3.EPartType.Tpl = ["Tpl",2];
-nx3.EPartType.Tpl.toString = $estr;
-nx3.EPartType.Tpl.__enum__ = nx3.EPartType;
+nx3.EPartType.Tplrow = ["Tplrow",2];
+nx3.EPartType.Tplrow.toString = $estr;
+nx3.EPartType.Tplrow.__enum__ = nx3.EPartType;
 nx3.EPartType.Tplchain = ["Tplchain",3];
 nx3.EPartType.Tplchain.toString = $estr;
 nx3.EPartType.Tplchain.__enum__ = nx3.EPartType;
@@ -4355,6 +4355,17 @@ nx3.PNote.prototype = {
 	}
 	,__class__: nx3.PNote
 };
+nx3.PNoteHeadsRectTplCalculator = function(note) {
+	this.note = note;
+};
+nx3.PNoteHeadsRectTplCalculator.__name__ = ["nx3","PNoteHeadsRectTplCalculator"];
+nx3.PNoteHeadsRectTplCalculator.prototype = {
+	note: null
+	,getHeadsRects: function() {
+		return [new nx3.geom.Rectangle(-6,-5.3,10,8.8)];
+	}
+	,__class__: nx3.PNoteHeadsRectTplCalculator
+};
 nx3.PNoteHeadsRectsLyricsCalculator = function(note,text,font) {
 	this.note = note;
 	this.text = text;
@@ -4444,6 +4455,9 @@ nx3.PNoteheadsRectsCalculator.prototype = {
 				var o = _g[3];
 				var text = _g[2];
 				return new nx3.PNoteHeadsRectsLyricsCalculator(this.note,text,font).getHeadsRects();
+			case 3:
+				var l1 = _g[2];
+				return new nx3.PNoteHeadsRectTplCalculator(this.note).getHeadsRects();
 			default:
 				throw "Non implemented ENoteType: " + this.note.nnote.type[0];
 				return [];
@@ -9200,8 +9214,7 @@ nx3.render.RendererBase.prototype = {
 		var tx = this.targetX + (nx + barX) * this.scaling.unitX;
 		var ty = this.targetY + ny * this.scaling.unitY;
 		var partFirstY = (cx.ArrayTools.first(systembars[0].bar.getParts()).getYPosition() - 4) * this.scaling.unitY;
-		var partLastY = (cx.ArrayTools.last(systembars[0].bar.getParts()).getYPosition() + 4) * this.scaling.unitY;
-		this.target.line(tx,ty + partFirstY,tx,ty + partLastY,2,0);
+		var partY = 0.0;
 		var _g = 0;
 		while(_g < systembars.length) {
 			var systembar = systembars[_g];
@@ -9214,12 +9227,21 @@ nx3.render.RendererBase.prototype = {
 			while(_g1 < _g2.length) {
 				var part = _g2[_g1];
 				++_g1;
-				var barlineTop = (part.getYPosition() - 4) * this.scaling.unitY;
-				var barlineBottom = (part.getYPosition() + 4) * this.scaling.unitY;
-				var barlineX = tx + (barX1 + barWidth1) * this.scaling.unitX;
-				this.target.line(barlineX,ty + barlineTop,barlineX,ty + barlineBottom,1.4,0);
+				var _g3 = part.npart.type;
+				switch(_g3[1]) {
+				case 0:
+					var barlineTop = (part.getYPosition() - 4) * this.scaling.unitY;
+					var barlineBottom = (part.getYPosition() + 4) * this.scaling.unitY;
+					var barlineX = tx + (barX1 + barWidth1) * this.scaling.unitX;
+					this.target.line(barlineX,ty + barlineTop,barlineX,ty + barlineBottom,1.4,0);
+					partY = part.getYPosition();
+					break;
+				default:
+				}
 			}
 		}
+		var partLastY = (partY + 4) * this.scaling.unitY;
+		this.target.line(tx,ty + partFirstY,tx,ty + partLastY,2,0);
 	}
 	,barAttributes: function(systembar,nx,ny,clefX,keyX,timeX) {
 		if(timeX == null) timeX = 0;
@@ -9229,17 +9251,19 @@ nx3.render.RendererBase.prototype = {
 		if(nx == null) nx = 0;
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY + ny * this.scaling.unitY;
-		var partidx = 0;
 		var _g = 0;
 		var _g1 = systembar.bar.getParts();
 		while(_g < _g1.length) {
 			var part = _g1[_g];
 			++_g;
+			if(part.npart.type[0] != "Normal") continue;
+			var partIdx;
+			var _this = systembar.bar.getParts();
+			partIdx = HxOverrides.indexOf(_this,part,0);
 			this.target.testLines(tx,ty + part.getYPosition() * this.scaling.unitY,systembar.getBarWidths().width * this.scaling.unitX);
 			this.barAttributeClef(systembar,part,nx,ny,clefX);
 			this.barAttributeKey(systembar,part,nx,ny,keyX);
 			this.barAttributeTime(systembar,part,nx,ny,timeX);
-			partidx++;
 		}
 	}
 	,barAttributeTime: function(systembar,part,nx,ny,timeX) {
@@ -9374,7 +9398,18 @@ nx3.render.RendererBase.prototype = {
 				var level = _g[2];
 				var rect1 = cx.ArrayTools.first(note.getHeadsRects()).clone();
 				rect1.inflate(-0.8,-0.8);
-				this.target.filledellipse(x,y,rect1,5,11184810,16777215);
+				var textlevel = (level * -1 + 21) % 7 + 1;
+				var text1;
+				if(textlevel == null) text1 = "null"; else text1 = "" + textlevel;
+				this.target.setFont({ name : "Arial", size : 24, bold : false, italic : false});
+				var textwidth = this.target.textwidth(text1) * this.scaling.unitX;
+				var textheight = this.target.textheight(text1) * this.scaling.unitY;
+				var ny1;
+				if(note.getVoice().getPart().npart.type[0] == "Tplchain") ny1 = y + level * 3 * this.scaling.unitY; else ny1 = y;
+				this.target.filledellipse(x,ny1,rect1,3,0,16777215);
+				var tx = x - textwidth / 2 - this.scaling.unitX;
+				var ty = ny1 - textheight / 5;
+				this.target.text(tx,ty,text1);
 				break;
 			default:
 				var svginfo = nx3.render.RendererTools.getHeadSvgInfo(note.nnote);
@@ -10202,6 +10237,12 @@ nx3.test.TestItems.scoreBachSinfonia4 = function() {
 	var score = new nx3.PScore(nscore);
 	return score;
 };
+nx3.test.TestItems.scoreTpl = function() {
+	var nbars = [new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,2),new nx3.QNote4(null,4),new nx3.QNote4(null,3),new nx3.QNote4(null,-1)])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Tpl(0)),new nx3.NNote(nx3.ENoteType.Tpl(2)),new nx3.NNote(nx3.ENoteType.Tpl(1)),new nx3.NNote(nx3.ENoteType.Tpl(-3))])],nx3.EPartType.Tplchain)])];
+	var nscore = new nx3.NScore(nbars);
+	var score = new nx3.PScore(nscore);
+	return score;
+};
 nx3.test.TestN = function() {
 	haxe.unit.TestCase.call(this);
 };
@@ -10390,7 +10431,7 @@ nx3.test.TestRenderer.testRenderer = function(r) {
 	var target = r.getTarget();
 };
 nx3.test.TestRenderer.testRenderP = function(r) {
-	r.renderScore(nx3.test.TestItems.scoreBachSinfonia4(),10,100,300);
+	r.renderScore(nx3.test.TestItems.scoreTpl(),10,100,300);
 };
 nx3.test.Unittests = function() { };
 nx3.test.Unittests.__name__ = ["nx3","test","Unittests"];

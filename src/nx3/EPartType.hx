@@ -8,7 +8,7 @@ enum EPartType
 {
 	Normal;
 	Lyrics;
-	Tpl;
+	Tplrow;
 	Tplchain;
 	Dynamics;
 	Chords;

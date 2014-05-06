@@ -3,6 +3,7 @@ import nx3.Constants;
 import nx3.EBeamflagType;
 import nx3.EClef;
 import nx3.EKeysTools;
+import nx3.EPartType;
 import nx3.ETime;
 import nx3.geom.BezieerTool;
 import nx3.geom.Pnt;
@@ -124,10 +125,9 @@ class RendererBase
 		
 		//var partidx = 0;		
 		
-		var partFirstY = (systembars.first().bar.getParts().first().getYPosition() - 4) * this.scaling.unitY;
-		var partLastY = (systembars.first().bar.getParts().last().getYPosition() + 4)* this.scaling.unitY;
+		var partFirstY = (systembars.first().bar.getParts().first().getYPosition() - 4) * this.scaling.unitY;		
+		var partY = 0.0;
 		
-		this.target.line(tx, ty + partFirstY, tx, ty + partLastY, 2, 0x000000);
 		
 		for (systembar in systembars)
 		{
@@ -136,17 +136,22 @@ class RendererBase
 			var barWidth = meas.width;				
 			
 			for (part in systembar.bar.getParts())
-			{
-				//var party = part.getYPosition() * this.scaling.unitY;
-				var barlineTop = (part.getYPosition()-4) * this.scaling.unitY;
-				var barlineBottom = (part.getYPosition() + 4) * this.scaling.unitY;
-				var barlineX = tx + (barX + barWidth) * this.scaling.unitX;
-				this.target.line(barlineX, ty + barlineTop, barlineX, ty + barlineBottom, 1.4, 0x000000);
+			{				
+				switch part.npart.type
+				{
+					case EPartType.Normal:
+						var barlineTop = (part.getYPosition()-4) * this.scaling.unitY;
+						var barlineBottom = (part.getYPosition() + 4) * this.scaling.unitY;
+						var barlineX = tx + (barX + barWidth) * this.scaling.unitX;
+						this.target.line(barlineX, ty + barlineTop, barlineX, ty + barlineBottom, 1.4, 0x000000);				
+						partY  = part.getYPosition();
+					default: 
+				}				
 			}
 			
 		}
-		
-			
+		var partLastY = (partY + 4) * this.scaling.unitY;
+		this.target.line(tx, ty + partFirstY, tx, ty + partLastY, 2, 0x000000);	
 	}
 	
 	public function barAttributes(systembar:PSystemBar, nx:Float = 0, ny:Float = 0, clefX:Float=0, keyX:Float=0, timeX:Float=0)
@@ -154,16 +159,16 @@ class RendererBase
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;		
 		
-		var partidx = 0;
 			for (part in systembar.bar.getParts())
 			{
-				this.target.testLines(tx , ty + part.getYPosition() * this.scaling.unitY,  systembar.getBarWidths().width * this.scaling.unitX);				
+				if (part.npart.type.getName() != 'Normal') continue;
 				
+				var partIdx = systembar.bar.getParts().indexOf(part);
+				
+				this.target.testLines(tx , ty + part.getYPosition() * this.scaling.unitY,  systembar.getBarWidths().width * this.scaling.unitX);				
 				this.barAttributeClef(systembar, part, nx, ny, clefX);
 				this.barAttributeKey(systembar, part, nx, ny, keyX);
 				this.barAttributeTime(systembar, part, nx, ny, timeX);
-				
-				partidx++;
 			}		
 	}
 	
@@ -296,13 +301,29 @@ class RendererBase
 			case ENoteType.Lyric(text, o, c, font):
 				var rect = note.getHeadsRects().first();
 				//var rect = vnote.getVHeadsRectanglesDir(direction).first(); 
-				this.target.text(x + rect.x * this.scaling.unitX, y + rect.y * scaling.unitY, text);
-				
+				this.target.text(x + rect.x * this.scaling.unitX, y + rect.y * scaling.unitY, text);				
 			case ENoteType.Tpl(level):
 				var rect = note.getHeadsRects().first().clone();
 				rect.inflate( -0.8, -0.8);
-				this.target.filledellipse(x, y, rect, 5, 0xaaaaaa, 0xffffff);
 				
+				var textlevel = (((level * -1) + 21) % 7)+1;
+				var text =  Std.string(textlevel);
+				this.target.setFont( { name:'Arial', size: 24, bold:false, italic:false } );
+				var textwidth = this.target.textwidth(text) * this.scaling.unitX;
+				
+				var textheight = this.target.textheight(text) * this.scaling.unitY;							
+				
+				var ny = (note.getVoice().getPart().npart.type.getName() == 'Tplchain') ? y + (level * 3) * this.scaling.unitY : y;				
+
+				this.target.filledellipse(x, ny, rect, 3, 0x000000, 0xffffff);		
+				var tx = x - textwidth / 2 - 1 * this.scaling.unitX;
+				#if (js)
+				var ty  = ny - textheight  / 5;
+				#else
+				var ty  = ny - textheight / 2 - 0.4*this.scaling.unitY;
+				#end
+				
+				this.target.text(tx, ty, text);
 			default:
 				var svginfo = RendererTools.getHeadSvgInfo(note.nnote);						
 				var hx1: Float = x;

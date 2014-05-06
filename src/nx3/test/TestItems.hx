@@ -4,6 +4,7 @@ import nx3.EClef;
 import nx3.EKey;
 import nx3.ENoteType;
 import nx3.ENoteVal;
+import nx3.EPartType;
 import nx3.ETime;
 import nx3.NBar;
 import nx3.NBars;
@@ -743,6 +744,33 @@ class TestItems
 		var score = new PScore(nscore);
 		return score;						
 	}	
+	
+	static public function scoreTpl():PScore
+	{
+		var nbars:NBars = [new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(2),
+					new QNote4(4),
+					new QNote4(3),
+					new QNote4(-1),
+					])
+			]),
+			
+			new NPart([	
+				new NVoice([				
+					new NNote(ENoteType.Tpl(0)),
+					new NNote(ENoteType.Tpl(2)),
+					new NNote(ENoteType.Tpl(1)),
+					new NNote(ENoteType.Tpl(-3)),
+					])
+			], EPartType.Tplchain),						
+		])];				
+		var nscore = new NScore(nbars);
+		var score = new PScore(nscore);
+		return score;				
+	}		
+	
 	
 	
 	
