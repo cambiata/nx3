@@ -58,7 +58,7 @@ class Main extends Sprite
 		*/
 		
 		var hs:HandlespriteDelayed = new HandlespriteDelayed();
-		hs.setSize(800, 800);
+		hs.setSize(1350, 800);
 		Lib.current.addChild(hs);		
 		
 		var targetHS = new TargetSprite(hs.getBackground(), Scaling.NORMAL);

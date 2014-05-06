@@ -21,9 +21,16 @@ obj/mscv16-ncxp/a01872f9_AssetType.obj
 obj/mscv16-ncxp/a01872f9_AssetData.obj
 obj/mscv16-ncxp/a01872f9_Assets.obj
 obj/mscv16-ncxp/a01872f9_AssetCache.obj
+obj/mscv16-ncxp/77283b70_VoiceXML.obj
+obj/mscv16-ncxp/77283b70_PartXML.obj
+obj/mscv16-ncxp/77283b70_NoteXML.obj
+obj/mscv16-ncxp/77283b70_HeadXML.obj
+obj/mscv16-ncxp/77283b70_BarsXML.obj
+obj/mscv16-ncxp/77283b70_BarXML.obj
 obj/mscv16-ncxp/b0bccac5_Unittests.obj
 obj/mscv16-ncxp/b0bccac5_TestRenderer.obj
 obj/mscv16-ncxp/b0bccac5_TestPBars.obj
+obj/mscv16-ncxp/b0bccac5_TestN.obj
 obj/mscv16-ncxp/b0bccac5_TestItems.obj
 obj/mscv16-ncxp/87a4d0e6_SvgElements.obj
 obj/mscv16-ncxp/87a4d0e6_ShapeTools.obj
@@ -197,6 +204,7 @@ obj/mscv16-ncxp/9a021478_StringMap.obj
 obj/mscv16-ncxp/9a021478_ObjectMap.obj
 obj/mscv16-ncxp/9a021478_IntMap.obj
 obj/mscv16-ncxp/e88cc5bd_BaseCode.obj
+obj/mscv16-ncxp/f4b30242_Utf8.obj
 obj/mscv16-ncxp/f4b30242_Unserializer.obj
 obj/mscv16-ncxp/f4b30242_Timer.obj
 obj/mscv16-ncxp/f4b30242_Resource.obj
@@ -323,7 +331,9 @@ obj/mscv16-ncxp/04ac0d7c_HandlespriteDelayed.obj
 obj/mscv16-ncxp/04ac0d7c_Handlesprite.obj
 obj/mscv16-ncxp/04ac0d7c_Handle.obj
 obj/mscv16-ncxp/099d6ef4_TimerTools.obj
+obj/mscv16-ncxp/099d6ef4_StrTools.obj
 obj/mscv16-ncxp/099d6ef4_MathTools.obj
+obj/mscv16-ncxp/099d6ef4_EnumTools.obj
 obj/mscv16-ncxp/099d6ef4_ArrayTools.obj
 obj/mscv16-ncxp/eeeff144_Thread.obj
 obj/mscv16-ncxp/eeeff144_Mutex.obj

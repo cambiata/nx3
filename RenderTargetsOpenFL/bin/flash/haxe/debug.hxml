@@ -4,10 +4,11 @@
 -cp ../src
 -cp src
 -D tools=1.4.0
+-D fdb
 -D web
 -swf-version 11.2
 -swf bin/flash/bin/RenderTargets.swf
--swf-header 1200:1000:60:FFFFFF
+-swf-header 1400:1000:60:FFFFFF
 -cp bin/flash/haxe
 #--remap nme:flash
 #--no-inline

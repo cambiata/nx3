@@ -9,7 +9,7 @@
 	<app main="Main" file="RenderTargets" path="bin" />
 	
 	<window background="#ffffff" fps="60" />
-	<window width="1200" height="1000" unless="mobile" />
+	<window width="1400" height="1000" unless="mobile" />
 	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
 	
 	<!-- classpath, haxe libs -->

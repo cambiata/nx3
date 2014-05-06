@@ -188,11 +188,89 @@
    <depend name="include/haxe/ds/StringMap.h"/>
    <depend name="include/openfl/AssetCache.h"/>
   </file>
+  <file name="src/nx3/xml/VoiceXML.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/Xml.h"/>
+   <depend name="include/cx/EnumTools.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/nx3/EDirectionUAD.h"/>
+   <depend name="include/nx3/EVoiceType.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+   <depend name="include/nx3/xml/NoteXML.h"/>
+   <depend name="include/nx3/xml/VoiceXML.h"/>
+  </file>
+  <file name="src/nx3/xml/PartXML.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/Xml.h"/>
+   <depend name="include/cx/EnumTools.h"/>
+   <depend name="include/nx3/EClef.h"/>
+   <depend name="include/nx3/EDisplayALN.h"/>
+   <depend name="include/nx3/EKey.h"/>
+   <depend name="include/nx3/EPartType.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+   <depend name="include/nx3/xml/PartXML.h"/>
+   <depend name="include/nx3/xml/VoiceXML.h"/>
+  </file>
+  <file name="src/nx3/xml/NoteXML.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/Xml.h"/>
+   <depend name="include/cx/EnumTools.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/nx3/EDirectionUAD.h"/>
+   <depend name="include/nx3/ELyricContinuation.h"/>
+   <depend name="include/nx3/ENotationVariant.h"/>
+   <depend name="include/nx3/ENoteArticulation.h"/>
+   <depend name="include/nx3/ENoteAttributes.h"/>
+   <depend name="include/nx3/ENoteType.h"/>
+   <depend name="include/nx3/ENoteVal.h"/>
+   <depend name="include/nx3/ENoteValTools.h"/>
+   <depend name="include/nx3/EPosition.h"/>
+   <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/xml/HeadXML.h"/>
+   <depend name="include/nx3/xml/NoteXML.h"/>
+  </file>
+  <file name="src/nx3/xml/HeadXML.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/Xml.h"/>
+   <depend name="include/cx/EnumTools.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/nx3/EDirectionUAD.h"/>
+   <depend name="include/nx3/EHeadType.h"/>
+   <depend name="include/nx3/ESign.h"/>
+   <depend name="include/nx3/ETie.h"/>
+   <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/xml/HeadXML.h"/>
+  </file>
+  <file name="src/nx3/xml/BarsXML.cpp">
+   <depend name="include/Xml.h"/>
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/xml/BarXML.h"/>
+   <depend name="include/nx3/xml/BarsXML.h"/>
+  </file>
+  <file name="src/nx3/xml/BarXML.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/Xml.h"/>
+   <depend name="include/cx/EnumTools.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/nx3/EAllotment.h"/>
+   <depend name="include/nx3/EBarType.h"/>
+   <depend name="include/nx3/EDisplayALN.h"/>
+   <depend name="include/nx3/ETime.h"/>
+   <depend name="include/nx3/ETimeUtils.h"/>
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/xml/BarXML.h"/>
+   <depend name="include/nx3/xml/PartXML.h"/>
+  </file>
   <file name="src/nx3/test/Unittests.cpp">
    <depend name="include/Date.h"/>
    <depend name="include/Std.h"/>
    <depend name="include/haxe/unit/TestCase.h"/>
    <depend name="include/haxe/unit/TestRunner.h"/>
+   <depend name="include/nx3/test/TestN.h"/>
    <depend name="include/nx3/test/TestPBars.h"/>
    <depend name="include/nx3/test/Unittests.h"/>
   </file>
@@ -228,6 +306,33 @@
    <depend name="include/nx3/PSystemGenerator.h"/>
    <depend name="include/nx3/QVoice.h"/>
    <depend name="include/nx3/test/TestPBars.h"/>
+  </file>
+  <file name="src/nx3/test/TestN.cpp">
+   <depend name="include/Xml.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/haxe/unit/TestCase.h"/>
+   <depend name="include/nx3/EDirectionUAD.h"/>
+   <depend name="include/nx3/EHeadType.h"/>
+   <depend name="include/nx3/ELyricContinuation.h"/>
+   <depend name="include/nx3/ENoteType.h"/>
+   <depend name="include/nx3/ENoteVal.h"/>
+   <depend name="include/nx3/EPosition.h"/>
+   <depend name="include/nx3/ESign.h"/>
+   <depend name="include/nx3/ETie.h"/>
+   <depend name="include/nx3/EVoiceType.h"/>
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+   <depend name="include/nx3/QNote.h"/>
+   <depend name="include/nx3/QNote4.h"/>
+   <depend name="include/nx3/VBar.h"/>
+   <depend name="include/nx3/test/TestItems.h"/>
+   <depend name="include/nx3/test/TestN.h"/>
+   <depend name="include/nx3/xml/BarXML.h"/>
+   <depend name="include/nx3/xml/HeadXML.h"/>
+   <depend name="include/nx3/xml/NoteXML.h"/>
+   <depend name="include/nx3/xml/VoiceXML.h"/>
   </file>
   <file name="src/nx3/test/TestItems.cpp">
    <depend name="include/IMap.h"/>
@@ -282,6 +387,7 @@
    <depend name="include/nx3/qs/QuickSyntaxBuilder.h"/>
    <depend name="include/nx3/qs/QuickSyntaxParser.h"/>
    <depend name="include/nx3/test/TestItems.h"/>
+   <depend name="include/nx3/xml/BarsXML.h"/>
   </file>
   <file name="src/nx3/render/svg/SvgElements.cpp">
    <depend name="include/nx3/render/svg/SvgElements.h"/>
@@ -361,6 +467,8 @@
    <depend name="include/nx3/ENoteValTools.h"/>
    <depend name="include/nx3/EPosition.h"/>
    <depend name="include/nx3/ESign.h"/>
+   <depend name="include/nx3/ETime.h"/>
+   <depend name="include/nx3/ETimeUtils.h"/>
    <depend name="include/nx3/NHead.h"/>
    <depend name="include/nx3/NNote.h"/>
    <depend name="include/nx3/PBar.h"/>
@@ -426,6 +534,7 @@
    <depend name="include/nx3/qs/QSyntaxTools.h"/>
   </file>
   <file name="src/nx3/qs/ParserEvents.cpp">
+   <depend name="include/nx3/EClef.h"/>
    <depend name="include/nx3/ENoteVal.h"/>
    <depend name="include/nx3/qs/ContentMode.h"/>
    <depend name="include/nx3/qs/ParserEvents.h"/>
@@ -479,6 +588,7 @@
   <file name="src/nx3/qs/BarParser.cpp">
    <depend name="include/IMap.h"/>
    <depend name="include/haxe/ds/StringMap.h"/>
+   <depend name="include/nx3/EClef.h"/>
    <depend name="include/nx3/ENoteVal.h"/>
    <depend name="include/nx3/qs/BarParser.h"/>
    <depend name="include/nx3/qs/BaseParser.h"/>
@@ -1709,6 +1819,9 @@
    <depend name="include/haxe/crypto/BaseCode.h"/>
    <depend name="include/haxe/io/Bytes.h"/>
   </file>
+  <file name="src/haxe/Utf8.cpp">
+   <depend name="include/haxe/Utf8.h"/>
+  </file>
   <file name="src/haxe/Unserializer.cpp">
    <depend name="include/Date.h"/>
    <depend name="include/IMap.h"/>
@@ -2647,10 +2760,22 @@
    <depend name="include/cx/TimerTools.h"/>
    <depend name="include/haxe/Timer.h"/>
   </file>
+  <file name="src/cx/StrTools.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/StringTools.h"/>
+   <depend name="include/cx/StrTools.h"/>
+   <depend name="include/haxe/Utf8.h"/>
+  </file>
   <file name="src/cx/MathTools.cpp">
    <depend name="include/Std.h"/>
    <depend name="include/StringTools.h"/>
    <depend name="include/cx/MathTools.h"/>
+  </file>
+  <file name="src/cx/EnumTools.cpp">
+   <depend name="include/StringTools.h"/>
+   <depend name="include/Type.h"/>
+   <depend name="include/cx/EnumTools.h"/>
+   <depend name="include/cx/StrTools.h"/>
   </file>
   <file name="src/cx/ArrayTools.cpp">
    <depend name="include/Lambda.h"/>
