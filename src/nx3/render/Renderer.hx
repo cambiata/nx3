@@ -323,6 +323,12 @@ class Renderer extends RendererBase
 		return this.target;
 	}
 	
+	public function xToUnitX(x:Float):Float return x * (1 / this.scaling.unitX);		
+	
+	public function yToUnitY(y:Float):Float return y * (1 / this.scaling.unitY);				
+
+	
+	
 	public function renderPBar(bar:PBar, newX:Float=-1, newY:Float=-1)
 	{
 		if (newX != -1) this.targetX = newX;

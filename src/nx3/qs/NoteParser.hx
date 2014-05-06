@@ -162,7 +162,6 @@ class NoteParser extends BaseParser
 			}
 			nnote = new NNote(nheads, val);
 			
-			
 		}
 		
 		this.builder.addNote(nnote);

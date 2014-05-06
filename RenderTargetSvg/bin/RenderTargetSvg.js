@@ -1911,11 +1911,14 @@ nx3.EKeysTools.getLevels = function(key,clef) {
 	case 0:
 		adjust = -1;
 		break;
+	case 1:
+		adjust = 1;
+		break;
 	default:
 		adjust = 0;
 	}
 	var _g1 = 0;
-	var _g = result.length - 1;
+	var _g = result.length;
 	while(_g1 < _g) {
 		var i = _g1++;
 		result[i] = result[i] + adjust;
@@ -2503,9 +2506,9 @@ nx3.ETimeUtils.toString = function(time) {
 	case 16:
 		return "12/8";
 	case 17:
-		return "Common";
+		return "C";
 	case 18:
-		return "Allabreve";
+		return "AllaBreve";
 	}
 	return "time-unknown";
 };
@@ -2546,9 +2549,9 @@ nx3.ETimeUtils.fromString = function(str) {
 		return nx3.ETime.Time9_8;
 	case "12/8":
 		return nx3.ETime.Time12_8;
-	case "Common":
+	case "C":
 		return nx3.ETime.TimeCommon;
-	case "Allabreve":
+	case "AllaBreve":
 		return nx3.ETime.TimeAllabreve;
 	default:
 		return null;
@@ -2733,11 +2736,11 @@ nx3.PAttributesRectsCalculator.__name__ = ["nx3","PAttributesRectsCalculator"];
 nx3.PAttributesRectsCalculator.getClefRect = function(clef) {
 	switch(clef[1]) {
 	case 2:
-		return new nx3.geom.Rectangle(0,-3,8,6);
+		return new nx3.geom.Rectangle(0,-3,9,6);
 	case 1:
-		return new nx3.geom.Rectangle(0,-4,8,8);
+		return new nx3.geom.Rectangle(0,-4,9,8);
 	case 0:
-		return new nx3.geom.Rectangle(0,-5,8,10);
+		return new nx3.geom.Rectangle(0,-5,9,10);
 	}
 };
 nx3.PAttributesRectsCalculator.getKeyRect = function(key) {
@@ -2745,15 +2748,15 @@ nx3.PAttributesRectsCalculator.getKeyRect = function(key) {
 	case 6:
 		return new nx3.geom.Rectangle(0,-3,1,6);
 	case 7:case 5:
-		return new nx3.geom.Rectangle(0,-3,3.4,6);
+		return new nx3.geom.Rectangle(0,-3,4.4,6);
 	case 8:case 4:
-		return new nx3.geom.Rectangle(0,-3,5.8,6);
+		return new nx3.geom.Rectangle(0,-3,6.8,6);
 	case 9:case 3:
-		return new nx3.geom.Rectangle(0,-3,8.2,6);
+		return new nx3.geom.Rectangle(0,-3,9.2,6);
 	case 10:case 2:
-		return new nx3.geom.Rectangle(0,-3,10.6,6);
+		return new nx3.geom.Rectangle(0,-3,11.6,6);
 	case 11:case 1:
-		return new nx3.geom.Rectangle(0,-3,13.,6);
+		return new nx3.geom.Rectangle(0,-3,14.,6);
 	default:
 		return new nx3.geom.Rectangle(0,-2,.5,4);
 	}
@@ -3091,7 +3094,7 @@ nx3.PBarWidthCalculator.prototype = {
 		return nx3.PAttributesRectsCalculator.getTimeRect(time).width;
 	}
 	,getContentLeftMarginWidth: function(bar) {
-		return 1;
+		return 3;
 	}
 	,getContentWidth: function(bar) {
 		return bar.getContentwidth();
@@ -4679,6 +4682,17 @@ nx3.PScore.prototype = {
 			this.bars.push(bar);
 		}
 		return this.bars;
+	}
+	,getNBars: function() {
+		var result = [];
+		var _g = 0;
+		var _g1 = this.getBars();
+		while(_g < _g1.length) {
+			var bar = _g1[_g];
+			++_g;
+			result.push(bar.nbar);
+		}
+		return result;
 	}
 	,systems: null
 	,prevSystemwidth: null
@@ -8474,6 +8488,10 @@ nx3.qs.BarParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 			_g.sendEvent(nx3.qs.ParserEvents.SetNoteVal(nx3.ENoteVal.Nv4));
 			return HxOverrides.substr(token5,1,null);
 		});
+		this.functions.set("clef:G",function(token6) {
+			_g.sendEvent(nx3.qs.ParserEvents.SetBarClef(nx3.EClef.ClefG));
+			return HxOverrides.substr(token6,6,null);
+		});
 	}
 	,tokenFinished: function(originaltoken) {
 	}
@@ -8921,11 +8939,12 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 	}
 	,__class__: nx3.qs.NoteParser
 });
-nx3.qs.ParserEvents = { __ename__ : true, __constructs__ : ["SetGuessOctave","SetOctave","SetNoteVal","SetMode"] };
+nx3.qs.ParserEvents = { __ename__ : true, __constructs__ : ["SetGuessOctave","SetOctave","SetNoteVal","SetMode","SetBarClef"] };
 nx3.qs.ParserEvents.SetGuessOctave = function(mode) { var $x = ["SetGuessOctave",0,mode]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.ParserEvents.SetOctave = function(octave) { var $x = ["SetOctave",1,octave]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.ParserEvents.SetNoteVal = function(value) { var $x = ["SetNoteVal",2,value]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.ParserEvents.SetMode = function(mode) { var $x = ["SetMode",3,mode]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
+nx3.qs.ParserEvents.SetBarClef = function(clef) { var $x = ["SetBarClef",4,clef]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.QSyntaxTools = function() { };
 nx3.qs.QSyntaxTools.__name__ = ["nx3","qs","QSyntaxTools"];
 nx3.qs.QSyntaxTools.bpvToString = function(val) {
@@ -9143,7 +9162,7 @@ nx3.render.RendererBase.prototype = {
 			var system = systems[_g];
 			++_g;
 			this.psystem(system,0,ny);
-			ny += 40;
+			ny += 50;
 		}
 	}
 	,psystem: function(system,nx,ny) {
@@ -9151,7 +9170,6 @@ nx3.render.RendererBase.prototype = {
 		if(nx == null) nx = 0;
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY + ny * this.scaling.unitY;
-		this.target.rectangle(tx,ty,new nx3.geom.Rectangle(0,-10,system.getSystemBreakWidth(),40),2,65280);
 		var _g = 0;
 		var _g1 = system.getSystembars();
 		while(_g < _g1.length) {
@@ -9160,31 +9178,53 @@ nx3.render.RendererBase.prototype = {
 			var meas = systembar.getBarWidths();
 			var barX = meas.x;
 			var barWidth = meas.width;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(barX,-10,barWidth,40),2);
 			var leftBarlineX = barX;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(leftBarlineX,-10,meas.ackoladeWidth,40));
 			var clefX = barX + meas.ackoladeWidth;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(clefX,-9,meas.clefWidth,38),1,16711680);
 			var keyX = clefX + meas.clefWidth;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(keyX,-9,meas.keyWidth,38),1,16711680);
 			var timeX = keyX + meas.keyWidth;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(timeX,-9,meas.timeWidth,38),1,16711680);
 			var contentLeftMarginX = timeX + meas.timeWidth;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(contentLeftMarginX,-10,meas.contentLeftMargin,40),1,16711680);
 			var contentX = contentLeftMarginX + meas.contentLeftMargin;
 			var cautClefX = contentX + meas.contentWidth;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(cautClefX,-9,meas.cautClefWidth,38),1,16711680);
 			var cautKeyX = cautClefX + meas.cautClefWidth;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(cautKeyX,-9,meas.cautKeyWidth,38),1,16711680);
 			var cautTimeX = cautKeyX + meas.cautKeyWidth;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(cautTimeX,-9,meas.cautTimeWidth,38),1,16711680);
 			var barlineX = cautTimeX + meas.cautTimeWidth;
-			this.target.rectangle(tx,ty,new nx3.geom.Rectangle(barlineX,-10,meas.barlineWidth,40),1,16711680);
-			this.barAttributes(systembar,barX,ny);
+			this.barAttributes(systembar,barX,ny,clefX,keyX,timeX);
 			this.barContent(systembar.bar,contentX,ny);
 		}
+		this.barBarlines(system.getSystembars(),nx,ny);
 	}
-	,barAttributes: function(systembar,nx,ny) {
+	,barBarlines: function(systembars,nx,ny) {
+		var meas = systembars[0].getBarWidths();
+		var barX = meas.x;
+		var barWidth = meas.width;
+		var tx = this.targetX + (nx + barX) * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var partFirstY = (cx.ArrayTools.first(systembars[0].bar.getParts()).getYPosition() - 4) * this.scaling.unitY;
+		var partLastY = (cx.ArrayTools.last(systembars[0].bar.getParts()).getYPosition() + 4) * this.scaling.unitY;
+		this.target.line(tx,ty + partFirstY,tx,ty + partLastY,2,0);
+		var _g = 0;
+		while(_g < systembars.length) {
+			var systembar = systembars[_g];
+			++_g;
+			var meas1 = systembar.getBarWidths();
+			var barX1 = meas1.x;
+			var barWidth1 = meas1.width;
+			var _g1 = 0;
+			var _g2 = systembar.bar.getParts();
+			while(_g1 < _g2.length) {
+				var part = _g2[_g1];
+				++_g1;
+				var barlineTop = (part.getYPosition() - 4) * this.scaling.unitY;
+				var barlineBottom = (part.getYPosition() + 4) * this.scaling.unitY;
+				var barlineX = tx + (barX1 + barWidth1) * this.scaling.unitX;
+				this.target.line(barlineX,ty + barlineTop,barlineX,ty + barlineBottom,1.4,0);
+			}
+		}
+	}
+	,barAttributes: function(systembar,nx,ny,clefX,keyX,timeX) {
+		if(timeX == null) timeX = 0;
+		if(keyX == null) keyX = 0;
+		if(clefX == null) clefX = 0;
 		if(ny == null) ny = 0;
 		if(nx == null) nx = 0;
 		var tx = this.targetX + nx * this.scaling.unitX;
@@ -9196,12 +9236,36 @@ nx3.render.RendererBase.prototype = {
 			var part = _g1[_g];
 			++_g;
 			this.target.testLines(tx,ty + part.getYPosition() * this.scaling.unitY,systembar.getBarWidths().width * this.scaling.unitX);
-			this.barAttributeClef(systembar,part,nx,ny);
-			this.barAttributeKey(systembar,part,nx,ny);
+			this.barAttributeClef(systembar,part,nx,ny,clefX);
+			this.barAttributeKey(systembar,part,nx,ny,keyX);
+			this.barAttributeTime(systembar,part,nx,ny,timeX);
 			partidx++;
 		}
 	}
-	,barAttributeKey: function(systembar,part,nx,ny) {
+	,barAttributeTime: function(systembar,part,nx,ny,timeX) {
+		if(timeX == null) timeX = 0;
+		var showTime = systembar.barConfig.showTime;
+		if(!showTime) return;
+		var acttime = systembar.actAttributes.time;
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		timeX = timeX * this.scaling.unitX;
+		var timeChars = nx3.ETimeUtils.toString(acttime).split("/");
+		if(timeChars.length == 2) {
+			var upperXmlStr = this.getSvgNumber(timeChars[0]);
+			var timeY = -3 * this.scaling.unitY;
+			this.target.shape(tx + timeX,ty + timeY + part.getYPosition() * this.scaling.unitY,upperXmlStr);
+			var lowerXmlStr = this.getSvgNumber(timeChars[1]);
+			var timeY1 = this.scaling.unitY;
+			this.target.shape(tx + timeX,ty + timeY1 + part.getYPosition() * this.scaling.unitY,lowerXmlStr);
+		} else {
+			var midXmlStr = this.getSvgNumber(timeChars[0]);
+			var timeY2 = -1 * this.scaling.unitY;
+			this.target.shape(tx + timeX,ty + timeY2 + part.getYPosition() * this.scaling.unitY,midXmlStr);
+		}
+	}
+	,barAttributeKey: function(systembar,part,nx,ny,keyX) {
+		if(keyX == null) keyX = 0;
 		var showkey = systembar.barConfig.showKey;
 		if(!showkey) return;
 		var partidx;
@@ -9210,22 +9274,23 @@ nx3.render.RendererBase.prototype = {
 		var actkey = systembar.actAttributes.keys[partidx];
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY + ny * this.scaling.unitY;
-		var keyX = (systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth) * this.scaling.unitX;
+		var keyX1 = (systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth) * this.scaling.unitX;
 		var keyY = this.scaling.unitY;
 		var keyCode = nx3.EKeysTools.getSigncode(actkey);
 		var svgXmlstr;
 		if(keyCode == -1) svgXmlstr = nx3.render.svg.SvgElements.signFlat; else svgXmlstr = nx3.render.svg.SvgElements.signSharp;
-		var keyLevels = nx3.EKeysTools.getLevels(actkey,nx3.EClef.ClefG);
+		var keyLevels = nx3.EKeysTools.getLevels(actkey,systembar.actAttributes.clefs[partidx]);
 		var _g = 0;
 		while(_g < keyLevels.length) {
 			var level = keyLevels[_g];
 			++_g;
 			var keyY1 = level * this.scaling.unitY;
-			this.target.shape(tx + keyX,ty + keyY1 + part.getYPosition() * this.scaling.unitY,svgXmlstr);
-			keyX += 2.4 * this.target.getScaling().unitX;
+			this.target.shape(tx + keyX1,ty + keyY1 + part.getYPosition() * this.scaling.unitY,svgXmlstr);
+			keyX1 += 2.4 * this.target.getScaling().unitX;
 		}
 	}
-	,barAttributeClef: function(systembar,part,nx,ny) {
+	,barAttributeClef: function(systembar,part,nx,ny,clefX) {
+		if(clefX == null) clefX = 0;
 		var showclef = systembar.barConfig.showClef;
 		if(!showclef) return;
 		var partidx;
@@ -9234,7 +9299,7 @@ nx3.render.RendererBase.prototype = {
 		var actclef = systembar.actAttributes.clefs[partidx];
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY + ny * this.scaling.unitY;
-		var clefX = systembar.getBarWidths().ackoladeWidth * this.scaling.unitX;
+		var clefX1 = systembar.getBarWidths().ackoladeWidth * this.scaling.unitX;
 		var clefY = this.scaling.unitY;
 		var svgXmlstr;
 		switch(actclef[1]) {
@@ -9248,7 +9313,7 @@ nx3.render.RendererBase.prototype = {
 			svgXmlstr = nx3.render.svg.SvgElements.clefF;
 			break;
 		}
-		this.target.shape(tx + clefX,ty + clefY + part.getYPosition() * this.scaling.unitY,svgXmlstr);
+		this.target.shape(tx + clefX1,ty + clefY + part.getYPosition() * this.scaling.unitY,svgXmlstr);
 	}
 	,barContent: function(bar,nx,ny) {
 		if(ny == null) ny = 0;
@@ -9666,6 +9731,36 @@ nx3.render.RendererBase.prototype = {
 		var coords = coords1.concat(coords2);
 		this.target.polyfill(x,y,coords);
 	}
+	,getSvgNumber: function($char) {
+		switch($char) {
+		case "0":
+			return nx3.render.svg.SvgElements.time0;
+		case "1":
+			return nx3.render.svg.SvgElements.time1;
+		case "2":
+			return nx3.render.svg.SvgElements.time2;
+		case "3":
+			return nx3.render.svg.SvgElements.time3;
+		case "4":
+			return nx3.render.svg.SvgElements.time4;
+		case "5":
+			return nx3.render.svg.SvgElements.time5;
+		case "6":
+			return nx3.render.svg.SvgElements.time6;
+		case "7":
+			return nx3.render.svg.SvgElements.time7;
+		case "8":
+			return nx3.render.svg.SvgElements.time8;
+		case "9":
+			return nx3.render.svg.SvgElements.time9;
+		case "C":
+			return nx3.render.svg.SvgElements.timeCommon;
+		case "AllaBreve":
+			return nx3.render.svg.SvgElements.timeAllabreve;
+		default:
+			return "";
+		}
+	}
 	,__class__: nx3.render.RendererBase
 };
 nx3.render.Renderer = function(target,targetX,targetY) {
@@ -9678,6 +9773,12 @@ nx3.render.Renderer.prototype = $extend(nx3.render.RendererBase.prototype,{
 	partDistance: null
 	,getTarget: function() {
 		return this.target;
+	}
+	,xToUnitX: function(x) {
+		return x * (1 / this.scaling.unitX);
+	}
+	,yToUnitY: function(y) {
+		return y * (1 / this.scaling.unitY);
 	}
 	,renderPBar: function(bar,newX,newY) {
 		if(newY == null) newY = -1;
@@ -9932,7 +10033,7 @@ nx3.test.TestItems.vbar1 = function() {
 	return new nx3.VBar(nx3.test.TestItems.nbar1());
 };
 nx3.test.TestItems.vbarSigns = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,1,null,"#"),new nx3.QNote4(null,null,[-1,0],"#b"),new nx3.QNote4(null,null,[3,4,5],"nb#"),new nx3.QNote4(null,null,[-5,-2,-1],"nb#"),new nx3.QNote4(null,null,[0,3,6],"nb#")])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,-1,null,"#"),new nx3.QNote4(null,0,null,"#"),new nx3.QNote4(null,-4,null,"n")]),new nx3.NVoice([new nx3.QNote2(null,null,[1,5],"bn")])])]));
+	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,1,null,"#"),new nx3.QNote4(null,null,[-1,0],"#b"),new nx3.QNote4(null,null,[3,4,5],"nb#"),new nx3.QNote4(null,null,[-5,-2,-1],"nb#"),new nx3.QNote4(null,null,[0,3,6],"nb#")])],null,nx3.EClef.ClefC,null,nx3.EKey.Flat2),new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,-1,null,"#"),new nx3.QNote4(null,0,null,"#"),new nx3.QNote4(null,-4,null,"n")]),new nx3.NVoice([new nx3.QNote2(null,null,[1,5],"bn")])],null,nx3.EClef.ClefF,null,nx3.EKey.Sharp3)],null,nx3.ETime.Time3_8));
 	return vbar;
 };
 nx3.test.TestItems.vbarPauses = function() {
@@ -10094,6 +10195,73 @@ nx3.test.TestItems.scoreFromCode = function(code) {
 	var score = new nx3.PScore(nscore);
 	return score;
 };
+nx3.test.TestItems.scoreBachSinfonia4 = function() {
+	var xmlStr = "<bars><bar time=\"C\"><part clef=\"ClefG\" key=\"Flat4\"><voice><pause val=\"16\"></pause><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"8\"><headx level=\"1\"></headx></note><note val=\"8\"><headx level=\"-4\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"8\"><headx level=\"1\"></headx></note><note val=\"8\"><headx level=\"-5\" tie=\"Tie(Auto,0)\"></headx></note></voice><voice><pause val=\"1\"></pause></voice></part><part clef=\"ClefF\" key=\"Flat4\"><voice><note val=\"8\"><headx level=\"0\"></headx></note><note val=\"8\"><headx level=\"-1\"></headx></note><note val=\"8\"><headx level=\"-2\"></headx></note><note val=\"8\"><headx level=\"0\"></headx></note><note val=\"8\"><headx level=\"-4\"></headx></note><note val=\"8\"><headx level=\"-5\" sign=\"Natural\"></headx></note><note val=\"8\"><headx level=\"-6\" sign=\"Sharp\"></headx></note><note val=\"8\"><headx level=\"-4\"></headx></note></voice></part></bar><bar><part><voice><note val=\"16\"><headx level=\"-5\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note><headx level=\"-6\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-6\"></headx></note><note val=\"16\"><headx level=\"-5\" sign=\"Sharp\"></headx></note><note val=\"16\"><headx level=\"-4\" sign=\"Sharp\"></headx></note><note val=\"16\"><headx level=\"-5\"></headx></note><note val=\"8.\"><headx level=\"-5\"></headx></note><note val=\"16\"><headx level=\"-6\"></headx></note></voice><voice><pause val=\"16\"></pause><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"2\" sign=\"Sharp\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"8\"><headx level=\"4\"></headx></note><note val=\"8\"><headx level=\"-1\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"8\"><headx level=\"4\"></headx></note><note val=\"8\"><headx level=\"-2\" tie=\"Tie(Auto,0)\"></headx></note></voice></part><part><voice><note><headx level=\"-7\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-7\"></headx></note><note val=\"16\"><headx level=\"-6\" sign=\"Natural\"></headx></note><note val=\"16\"><headx level=\"-5\" sign=\"Natural\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note><headx level=\"-8\"></headx></note><note><headx level=\"-1\"></headx></note></voice></part></bar><bar><part><voice><note><headx level=\"-6\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-6\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note><headx level=\"-5\" sign=\"Natural\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-5\"></headx></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"></headx></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note></voice><voice><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note><headx level=\"-4\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note><headx level=\"-3\" tie=\"Tie(Auto,0)\"></headx></note></voice></part><part><voice><note><headx level=\"3\"></headx></note><pause></pause><pause val=\"2\"></pause></voice></part></bar><bar><part><voice><note val=\"4.\"><headx level=\"-4\"></headx></note><note val=\"8\"><headx level=\"-6\"></headx></note><note><headx level=\"-5\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-5\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note></voice><voice><note val=\"8\"><headx level=\"-3\"></headx></note><note val=\"8\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\" sign=\"Natural\"></headx></note><note val=\"8.\"><headx level=\"0\" sign=\"Natural\"></headx></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"></headx></note><note><headx level=\"-1\"></headx></note></voice></part><part><voice><pause val=\"16\"></pause><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\" sign=\"Sharp\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"8\"><headx level=\"3\"></headx></note><note val=\"8\"><headx level=\"-2\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"8\"><headx level=\"3\"></headx></note><note val=\"8\"><headx level=\"-3\" tie=\"Tie(Auto,0)\"></headx></note></voice></part></bar><bar><part><voice><note><headx level=\"-2\"></headx></note><pause val=\"16\"></pause><note val=\"16\"><headx level=\"-7\"></headx></note><note val=\"16\"><headx level=\"-6\"></headx></note><note val=\"16\"><headx level=\"-7\"></headx></note><note><headx level=\"-3\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-6\"></headx></note><note val=\"16\"><headx level=\"-5\"></headx></note><note val=\"16\"><headx level=\"-6\"></headx></note></voice><voice><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note><headx level=\"2\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"2\"></headx></note><note val=\"16\"><headx level=\"-1\" sign=\"Natural\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note><headx level=\"3\" tie=\"Tie(Auto,0)\"></headx></note></voice></part><part><voice><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note><headx level=\"-5\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-5\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note><headx level=\"-4\" tie=\"Tie(Auto,0)\"></headx></note></voice></part></bar><bar><part><voice><note><headx level=\"-2\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note><headx level=\"-5\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-5\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note></voice><voice><note val=\"16\"><headx level=\"3\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note><headx level=\"0\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"2\"></headx></note><note val=\"16\"><headx level=\"3\"></headx></note></voice></part><part><voice><note val=\"16\"><headx level=\"-4\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"8\"><headx level=\"4\"></headx></note><note val=\"8\"><headx level=\"-2\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"8\"><headx level=\"1\"></headx></note><note val=\"8\"><headx level=\"-5\" tie=\"Tie(Auto,0)\"></headx></note></voice></part></bar></bars><bars><bar><part><voice><note val=\"2\"><headx level=\"-1\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"2\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"-2\"></headx></note></voice><voice><note val=\"8\"><headx level=\"4\"></headx></note><note val=\"8\"><headx level=\"0\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"2\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"2\"><headx level=\"3\" tie=\"Tie(Auto,0)\"></headx></note></voice></part><part><voice><note val=\"16\"><headx level=\"-5\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note val=\"16\"><headx level=\"-3\"></headx></note><note val=\"16\"><headx level=\"-4\"></headx></note><note val=\"8\"><headx level=\"-2\"></headx></note><note val=\"8\"><headx level=\"-8\" sign=\"Flat\"></headx></note><note val=\"8\"><headx level=\"-7\"></headx></note><note val=\"8\"><headx level=\"-6\"></headx></note><note val=\"8\"><headx level=\"-5\"></headx></note><note val=\"8\"><headx level=\"-4\"></headx></note></voice></part></bar><bar><part><voice><note val=\"16\"><headx level=\"2\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"0\" tie=\"Tie(Auto,0)\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note val=\"16\"><headx level=\"0\"></headx></note><note val=\"16\"><headx level=\"-1\"></headx></note><note><headx level=\"1\"></headx></note><pause val=\"8\"></pause><note val=\"8\"><headx level=\"-4\" tie=\"Tie(Auto,0)\"></headx></note></voice><voice><note><headx level=\"3\"></headx></note><note><headx level=\"4\"></headx></note><pause val=\"16\"></pause><note val=\"16\"><headx level=\"3\"></headx></note><note val=\"16\"><headx level=\"4\"></headx></note><note val=\"16\"><headx level=\"3\"></headx></note><note val=\"8\"><headx level=\"6\"></headx></note><note val=\"8\"><headx level=\"1\" tie=\"Tie(Auto,0)\"></headx></note></voice></part><part><voice><note val=\"8\"><headx level=\"-5\"></headx></note><note val=\"8\"><headx level=\"-3\"></headx></note><note val=\"8\"><headx level=\"-6\"></headx></note><note val=\"8\"><headx level=\"1\"></headx></note><note val=\"8\"><headx level=\"5\"></headx></note><note val=\"8\"><headx level=\"4\"></headx></note><note val=\"8\"><headx level=\"3\"></headx></note><note val=\"8\"><headx level=\"5\"></headx></note></voice></part></bar><bar><part><voice><note><headx level=\"6\"></headx></note><note><headx level=\"5\"></headx></note><note><headx level=\"4\"></headx></note><note val=\"8\"><headx level=\"3\"></headx></note><note val=\"8\"><headx level=\"2\"></headx></note></voice></part><part><voice><note val=\"2\"><headx level=\"6\"></headx></note><note val=\"2\"><headx level=\"5\"></headx></note></voice></part></bar><bar><part><voice><note><headx level=\"4\"></headx></note><note><headx level=\"3\"></headx></note><note><headx level=\"2\"></headx></note><note><headx level=\"-1\"></headx></note></voice></part><part><voice><note><headx level=\"-1\"></headx></note><note><headx level=\"0\"></headx></note><note><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"2\"></headx></note><note val=\"16\"><headx level=\"1\"></headx></note><note val=\"16\"><headx level=\"2\"></headx></note><note val=\"16\"><headx level=\"3\"></headx></note></voice></part></bar><bar><part><voice><note val=\"8\"><headx level=\"0\"></headx></note><note><headx level=\"1\"></headx></note><note val=\"8\"><headx level=\"2\"></headx></note><note val=\"8\"><headx level=\"3\"></headx></note><note><headx level=\"2\"></headx></note><note val=\"8\"><headx level=\"6\"></headx></note></voice></part><part><voice><note><headx level=\"4\"></headx></note><note><headx level=\"3\"></headx></note><note><headx level=\"2\"></headx></note><note><headx level=\"6\"></headx></note></voice></part></bar></bars> ";
+	var nbars = nx3.xml.BarsXML.fromXmlStr(xmlStr);
+	var nscore = new nx3.NScore(nbars);
+	var score = new nx3.PScore(nscore);
+	return score;
+};
+nx3.test.TestN = function() {
+	haxe.unit.TestCase.call(this);
+};
+nx3.test.TestN.__name__ = ["nx3","test","TestN"];
+nx3.test.TestN.__super__ = haxe.unit.TestCase;
+nx3.test.TestN.prototype = $extend(haxe.unit.TestCase.prototype,{
+	testHeadXml: function() {
+		var item1 = new nx3.NHead(null,2,nx3.ESign.Flat);
+		var xmlstr1 = nx3.xml.HeadXML.toXml(item1).toString();
+		var item2 = nx3.xml.HeadXML.fromXmlStr(xmlstr1);
+		var xmlstr2 = nx3.xml.HeadXML.toXml(item2).toString();
+		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 47, className : "nx3.test.TestN", methodName : "testHeadXml"});
+	}
+	,testNoteXml: function() {
+		var item1 = new nx3.NNote(null,[new nx3.NHead(null,-3),new nx3.NHead(null,-2,nx3.ESign.Flat),new nx3.NHead(null,4,nx3.ESign.Natural),new nx3.NHead(null,1)],nx3.ENoteVal.Nv2dot,nx3.EDirectionUAD.Down);
+		var xmlstr1 = nx3.xml.NoteXML.toXml(item1).toString();
+		var item2 = nx3.xml.NoteXML.fromXmlStr(xmlstr1);
+		var xmlstr2 = nx3.xml.NoteXML.toXml(item2).toString();
+		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 58, className : "nx3.test.TestN", methodName : "testNoteXml"});
+		this.assertEquals([-3,-2,1,4].toString(),item1.getHeadLevels().toString(),{ fileName : "TestN.hx", lineNumber : 61, className : "nx3.test.TestN", methodName : "testNoteXml"});
+	}
+	,testNotePause: function() {
+		var note = new nx3.NNote(nx3.ENoteType.Pause(1),null,nx3.ENoteVal.Nv4);
+		var xmlStr = nx3.xml.NoteXML.toXml(note).toString();
+		var note2 = nx3.xml.NoteXML.fromXmlStr(xmlStr);
+		var xmlStr2 = nx3.xml.NoteXML.toXml(note2).toString();
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 70, className : "nx3.test.TestN", methodName : "testNotePause"});
+	}
+	,testNoteXml2: function() {
+		var item = new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4);
+		this.assertEquals(item.type[1],1,{ fileName : "TestN.hx", lineNumber : 76, className : "nx3.test.TestN", methodName : "testNoteXml2"});
+		var item1 = new nx3.NNote(nx3.ENoteType.Lyric("Hello"),null,nx3.ENoteVal.Nv4);
+		this.assertEquals(item1.type[1],4,{ fileName : "TestN.hx", lineNumber : 78, className : "nx3.test.TestN", methodName : "testNoteXml2"});
+	}
+	,testVoiceXml: function() {
+		var nvoice = new nx3.NVoice([new nx3.QNote4(null,1),new nx3.NNote(nx3.ENoteType.Pause(1),null,nx3.ENoteVal.Nv4)]);
+		var xmlStr = nx3.xml.VoiceXML.toXml(nvoice).toString();
+		var nvoice2 = nx3.xml.VoiceXML.fromXmlStr(xmlStr);
+		var xmlStr2 = nx3.xml.VoiceXML.toXml(nvoice2).toString();
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 94, className : "nx3.test.TestN", methodName : "testVoiceXml"});
+	}
+	,testBarXml: function() {
+		var vbar = nx3.test.TestItems.vbar1();
+		var nbar = vbar.nbar;
+		var xmlStr = nx3.xml.BarXML.toXml(nbar).toString();
+		var nbar2 = nx3.xml.BarXML.fromXmlStr(xmlStr);
+		var xmlStr2 = nx3.xml.BarXML.toXml(nbar2).toString();
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 106, className : "nx3.test.TestN", methodName : "testBarXml"});
+		var vbar1 = nx3.test.TestItems.vbarSigns();
+		var nbar1 = vbar1.nbar;
+		var xmlStr1 = nx3.xml.BarXML.toXml(nbar1).toString();
+		haxe.Log.trace(xmlStr1,{ fileName : "TestN.hx", lineNumber : 111, className : "nx3.test.TestN", methodName : "testBarXml"});
+		var nbar21 = nx3.xml.BarXML.fromXmlStr(xmlStr1);
+		var xmlStr21 = nx3.xml.BarXML.toXml(nbar21).toString();
+		this.assertEquals(xmlStr1,xmlStr21,{ fileName : "TestN.hx", lineNumber : 114, className : "nx3.test.TestN", methodName : "testBarXml"});
+	}
+	,xmlStrExport: function(filename,xmlStr) {
+	}
+	,__class__: nx3.test.TestN
+});
 nx3.test.TestPBars = function() {
 	haxe.unit.TestCase.call(this);
 };
@@ -10222,13 +10390,14 @@ nx3.test.TestRenderer.testRenderer = function(r) {
 	var target = r.getTarget();
 };
 nx3.test.TestRenderer.testRenderP = function(r) {
-	r.renderScore(nx3.test.TestItems.scoreLinebreak(),10,100,120);
+	r.renderScore(nx3.test.TestItems.scoreBachSinfonia4(),10,100,300);
 };
 nx3.test.Unittests = function() { };
 nx3.test.Unittests.__name__ = ["nx3","test","Unittests"];
 nx3.test.Unittests.performTests = function() {
 	var runner = new haxe.unit.TestRunner();
 	var start_time = new Date();
+	runner.add(new nx3.test.TestN());
 	runner.add(new nx3.test.TestPBars());
 	var end_time = new Date();
 	var success = runner.run();
@@ -10284,9 +10453,9 @@ nx3.xml.BarXML.fromXmlStr = function(xmlStr) {
 	var typeStr = xml.get("type");
 	var type;
 	if(typeStr == null) type = nx3.EBarType.Normal; else type = cx.EnumTools.createFromString(nx3.EBarType,typeStr);
+	var time = null;
 	var timeStr = xml.get("time");
-	var time;
-	if(timeStr == null) time = nx3.ETime.Time4_4; else time = nx3.ETimeUtils.fromString(timeStr);
+	if(timeStr != null) time = nx3.ETimeUtils.fromString(timeStr);
 	var timeDisplayStr = xml.get("timedisplay");
 	var timeDisplay;
 	if(timeDisplayStr == null) timeDisplay = nx3.EDisplayALN.Layout; else timeDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,timeDisplayStr);
@@ -10296,10 +10465,34 @@ nx3.xml.BarXML.test = function(item) {
 	var str = nx3.xml.BarXML.toXml(item).toString();
 	var item2 = nx3.xml.BarXML.fromXmlStr(str);
 	var str2 = nx3.xml.BarXML.toXml(item2).toString();
-	haxe.Log.trace(str,{ fileName : "BarXML.hx", lineNumber : 99, className : "nx3.xml.BarXML", methodName : "test"});
-	haxe.Log.trace(str2,{ fileName : "BarXML.hx", lineNumber : 100, className : "nx3.xml.BarXML", methodName : "test"});
+	haxe.Log.trace(str,{ fileName : "BarXML.hx", lineNumber : 100, className : "nx3.xml.BarXML", methodName : "test"});
+	haxe.Log.trace(str2,{ fileName : "BarXML.hx", lineNumber : 101, className : "nx3.xml.BarXML", methodName : "test"});
 	return str == str2;
 	return false;
+};
+nx3.xml.BarsXML = function() { };
+nx3.xml.BarsXML.__name__ = ["nx3","xml","BarsXML"];
+nx3.xml.BarsXML.toXml = function(bars) {
+	var xml = Xml.createElement("bars");
+	var _g = 0;
+	while(_g < bars.length) {
+		var bar = bars[_g];
+		++_g;
+		var barXml = nx3.xml.BarXML.toXml(bar);
+		xml.addChild(barXml);
+	}
+	return xml;
+};
+nx3.xml.BarsXML.fromXmlStr = function(xmlStr) {
+	var xml = Xml.parse(xmlStr).firstElement();
+	var bars = [];
+	var $it0 = xml.elements();
+	while( $it0.hasNext() ) {
+		var b = $it0.next();
+		var bar = nx3.xml.BarXML.fromXmlStr(b.toString());
+		bars.push(bar);
+	}
+	return bars;
 };
 nx3.xml.HeadXML = function() { };
 nx3.xml.HeadXML.__name__ = ["nx3","xml","HeadXML"];
@@ -10354,7 +10547,8 @@ nx3.xml.HeadXML.fromXmlStr = function(xmlStr) {
 	var type = cx.EnumTools.createFromString(nx3.EHeadType,typeStr);
 	var level = Std.parseInt(xml.get(nx3.xml.HeadXML.XHEAD_LEVEL));
 	var sign = cx.EnumTools.createFromString(nx3.ESign,xml.get(nx3.xml.HeadXML.XHEAD_SIGN));
-	var tie = cx.EnumTools.createFromString(nx3.ETie,xml.get(nx3.xml.HeadXML.XHEAD_TIE));
+	var tie = null;
+	if(xml.get(nx3.xml.HeadXML.XHEAD_TIE) != null) tie = nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0);
 	var tieTo = cx.EnumTools.createFromString(nx3.ETie,xml.get(nx3.xml.HeadXML.XHEAD_TIETO));
 	return new nx3.NHead(type,level,sign,tie,tieTo);
 };
@@ -10362,8 +10556,8 @@ nx3.xml.HeadXML.test = function(item) {
 	var str = nx3.xml.HeadXML.toXml(item).toString();
 	var item2 = nx3.xml.HeadXML.fromXmlStr(str);
 	var str2 = nx3.xml.HeadXML.toXml(item2).toString();
-	haxe.Log.trace(str,{ fileName : "HeadXML.hx", lineNumber : 133, className : "nx3.xml.HeadXML", methodName : "test"});
-	haxe.Log.trace(str2,{ fileName : "HeadXML.hx", lineNumber : 134, className : "nx3.xml.HeadXML", methodName : "test"});
+	haxe.Log.trace(str,{ fileName : "HeadXML.hx", lineNumber : 138, className : "nx3.xml.HeadXML", methodName : "test"});
+	haxe.Log.trace(str2,{ fileName : "HeadXML.hx", lineNumber : 139, className : "nx3.xml.HeadXML", methodName : "test"});
 	return str == str2;
 };
 nx3.xml.NoteXML = function() { };
@@ -10528,15 +10722,24 @@ nx3.xml.PartXML.toXml = function(part) {
 			xml.set("clef",Std.string(part.clef));
 		}
 	}
-	var _g4 = part.clefDisplay;
-	switch(_g4[1]) {
+	if(part.key != null) {
+		var _g4 = part.key;
+		switch(_g4[1]) {
+		case 6:
+			break;
+		default:
+			xml.set("key",Std.string(part.key));
+		}
+	}
+	var _g5 = part.clefDisplay;
+	switch(_g5[1]) {
 	case 1:
 		break;
 	default:
 		xml.set("clefdisplay",Std.string(part.clefDisplay));
 	}
-	var _g5 = part.keyDisplay;
-	switch(_g5[1]) {
+	var _g6 = part.keyDisplay;
+	switch(_g6[1]) {
 	case 1:
 		break;
 	default:
@@ -10556,13 +10759,14 @@ nx3.xml.PartXML.fromXmlStr = function(xmlStr) {
 	var typeStr = xml.get("type");
 	var type = cx.EnumTools.createFromString(nx3.EPartType,typeStr);
 	var str = xml.get("clef");
-	var clef;
-	if(str == null) clef = nx3.EClef.ClefG; else clef = cx.EnumTools.createFromString(nx3.EClef,str);
+	var clef = null;
+	if(str != null) clef = cx.EnumTools.createFromString(nx3.EClef,str);
 	var clefDisplayStr = xml.get("clefdisplay");
 	var clefDisplay;
 	if(clefDisplayStr == null) clefDisplay = nx3.EDisplayALN.Layout; else clefDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,clefDisplayStr);
 	var str1 = xml.get("key");
-	var key = nx3.EKey.Natural;
+	var key = null;
+	if(str1 != null) key = cx.EnumTools.createFromString(nx3.EKey,str1);
 	var keyDisplayStr = xml.get("keydisplay");
 	var keyDisplay;
 	if(keyDisplayStr == null) keyDisplay = nx3.EDisplayALN.Layout; else keyDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,keyDisplayStr);
@@ -10809,6 +11013,7 @@ nx3.xml.BarXML.XBAR = "bar";
 nx3.xml.BarXML.XBAR_TYPE = "type";
 nx3.xml.BarXML.XBAR_TIME = "time";
 nx3.xml.BarXML.XBAR_TIMEDISPLAY = "timedisplay";
+nx3.xml.BarsXML.XBARS = "bars";
 nx3.xml.HeadXML.XHEAD = "headx";
 nx3.xml.HeadXML.XHEAD_TYPE = "type";
 nx3.xml.HeadXML.XHEAD_LEVEL = "level";

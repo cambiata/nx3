@@ -11,9 +11,9 @@ class PAttributesRectsCalculator
 	{
 		return switch clef
 		{
-			case EClef.ClefC: new Rectangle(0, -3, 8, 6);
-			case EClef.ClefF: new Rectangle(0, -4, 8, 8);
-			case EClef.ClefG: new Rectangle(0, -5, 8, 10);
+			case EClef.ClefC: new Rectangle(0, -3,9, 6);
+			case EClef.ClefF: new Rectangle(0, -4, 9, 8);
+			case EClef.ClefG: new Rectangle(0, -5, 9, 10);
 		default:
 			return new Rectangle(0, -3, .5, 6);
 		}
@@ -24,11 +24,11 @@ class PAttributesRectsCalculator
 		return switch key
 		{
 			case EKey.Natural: new Rectangle(0, -3, 1, 6);
-			case EKey.Flat1, EKey.Sharp1: new Rectangle(0, -3, Constants.ATTRIBUTE_SIGN_WIDTH*1 + 1, 6);
-			case EKey.Flat2, EKey.Sharp2: new Rectangle(0, -3, Constants.ATTRIBUTE_SIGN_WIDTH*2 + 1, 6);
-			case EKey.Flat3, EKey.Sharp3: new Rectangle(0, -3, Constants.ATTRIBUTE_SIGN_WIDTH*3 + 1, 6);
-			case EKey.Flat4, EKey.Sharp4: new Rectangle(0, -3,Constants.ATTRIBUTE_SIGN_WIDTH*4 + 1, 6);
-			case EKey.Flat5, EKey.Sharp5: new Rectangle(0, -3, Constants.ATTRIBUTE_SIGN_WIDTH*5 + 1, 6);
+			case EKey.Flat1, EKey.Sharp1: new Rectangle(0, -3, Constants.ATTRIBUTE_SIGN_WIDTH*1 + 2, 6);
+			case EKey.Flat2, EKey.Sharp2: new Rectangle(0, -3, Constants.ATTRIBUTE_SIGN_WIDTH*2 + 2, 6);
+			case EKey.Flat3, EKey.Sharp3: new Rectangle(0, -3, Constants.ATTRIBUTE_SIGN_WIDTH*3 + 2, 6);
+			case EKey.Flat4, EKey.Sharp4: new Rectangle(0, -3,Constants.ATTRIBUTE_SIGN_WIDTH*4 + 2, 6);
+			case EKey.Flat5, EKey.Sharp5: new Rectangle(0, -3, Constants.ATTRIBUTE_SIGN_WIDTH*5 + 2, 6);
 		default:
 			return new Rectangle(0, -2, .5, 4);
 		}		

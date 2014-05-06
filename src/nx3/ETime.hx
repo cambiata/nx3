@@ -55,8 +55,8 @@ class ETimeUtils {
 			case Time9_8: 	return '9/8';
 			case Time12_8: 	return '12/8';
 			
-			case TimeCommon: return 'Common';
-			case TimeAllabreve: return 'Allabreve';
+			case TimeCommon: return 'C';
+			case TimeAllabreve: return 'AllaBreve';
 		}
 		return "time-unknown";
 	}
@@ -84,10 +84,37 @@ class ETimeUtils {
 			case '9/8':		return ETime.Time9_8;
 			case '12/8':	return ETime.Time12_8;
 			
-			case 'Common': return ETime.TimeCommon;
-			case 'Allabreve': return ETime.TimeAllabreve;
+			case 'C': return ETime.TimeCommon;
+			case 'AllaBreve': return ETime.TimeAllabreve;
 			default: 			return null;			
 		}
 		return null;
 	}
+	/*
+	static public function getChars(time:ETime):Array<String> {
+	 return	switch(time) {
+			case Time2_2: 	['2', '2'];
+			case Time3_2: 	['3', '2'];
+			case Time4_2: 	['4', '2'];
+			
+			case Time7_4: 	['7', '4'];
+			case Time6_4: 	['6', '4'];
+			case Time5_4: 	['5', '4'];
+			case Time4_4: 	['4', '4'];
+			case Time3_4:	['3', '4'];
+			case Time2_4:	['2', '4'];
+			
+			case Time2_8: 	['2', '8'];
+			case Time3_8: 	['3', '8'];
+			case Time4_8: 	['4', '8'];
+			case Time5_8: 	['5', '8'];
+			case Time6_8: 	['6', '8'];
+			case Time7_8: 	['7', '8'];
+			case Time9_8: 	['9', '8'];
+			case Time12_8: ['12', '8'];
+			
+			case TimeCommon: ['C'];
+			case TimeAllabreve: ['A'];
+		}	
+		*/
 }

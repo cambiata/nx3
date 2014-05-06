@@ -13,6 +13,8 @@ import nx3.render.scaling.Scaling;
 import nx3.render.TargetSvg;
 import nx3.test.TestItems;
 import nx3.VBar;
+import nx3.xml.BarsXML;
+import nx3.xml.BarXML;
 using cx.ArrayTools;
 /**
  * ...
@@ -25,6 +27,8 @@ class Main
 	static function main() 
 	{
 		var codeelement = new JQuery('#code');
+		
+		
 		var code = codeelement.text();
 		trace(code);
 		var svgelement = codeelement.parent();
@@ -67,6 +71,10 @@ class Main
 				target.clear();
 				//renderer.renderPBar(pbar);			
 				renderer.renderScore(score);
+				
+				var xmlStr = BarsXML.toXml(score.getNBars()).toString();
+				var xmlelement = new JQuery('#xml');
+				xmlelement.html(xmlStr);
 	
 	}
 }

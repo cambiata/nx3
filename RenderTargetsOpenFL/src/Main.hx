@@ -1,5 +1,6 @@
 package ;
 
+import cx.flash.HandlespriteDelayed;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
@@ -40,6 +41,7 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 		
+		/*
 		Unittests.performTests();
 		
 		var target = new TargetSprite(Scaling.SMALL);
@@ -53,6 +55,30 @@ class Main extends Sprite
 		var target = new TargetSprite(Scaling.BIG);
 		TestRenderer.testRenderP( new Renderer(target, 10, 80));
 		this.addChild(target.getTargetSprite(600, 0));
+		*/
+		
+		var hs:HandlespriteDelayed = new HandlespriteDelayed();
+		hs.setSize(800, 800);
+		Lib.current.addChild(hs);		
+		
+		var targetHS = new TargetSprite(hs.getBackground(), Scaling.NORMAL);
+		var rendererHS = new Renderer(targetHS, 0, 0);
+		
+		hs.setRepaintCallback(function (x:Float, y:Float, width:Float, height:Float, background:Sprite)
+		{			
+			targetHS.clear();			
+			background.graphics.clear();
+			background.graphics.beginFill(0x0000FF, 0.1);
+			background.graphics.drawRect(0, 0, width, height);					
+		});
+		
+		hs.setRepaintDelayedCallback(function (x:Float, y:Float, width:Float, height:Float, background:Sprite)
+		{
+			targetHS.clear();
+			var renderWidth =  Math.max(60, rendererHS.xToUnitX(width));
+			rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);
+			trace([width, rendererHS.xToUnitX(width)]);
+		}, 100);				
 	}
 
 	/* SETUP */

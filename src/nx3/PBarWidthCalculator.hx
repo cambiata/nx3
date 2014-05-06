@@ -39,7 +39,7 @@ class PBarWidthCalculator implements IBarWidthCalculator
 	
 	public function getContentLeftMarginWidth(bar:PBar) 
 	{
-		return 1;
+		return 3;
 	}
 	
 	

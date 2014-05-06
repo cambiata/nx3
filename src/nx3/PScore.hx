@@ -30,6 +30,13 @@ class PScore
 		return this.bars;
 	}
 	
+	public function getNBars():NBars 
+	{
+		var result:NBars = [];
+		for (bar in this.getBars()) result.push(bar.nbar);
+		return result;		
+	}
+	
 	var systems:PSystems;
 	var prevSystemwidth:Float = 0;
 	public function getSystems(systemwidth: Float):PSystems

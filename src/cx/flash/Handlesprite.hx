@@ -13,22 +13,30 @@ class Handlesprite extends Sprite
 	private var handleTR:Handle;
 	private var handleBL:Handle;
 	private var handleBR:Handle;
-	private var backing:Shape;
+	private var backing:Sprite;
 	private var _width:Float;
 	private var _height:Float;
+	//private var _repaint:Float->Float->Float->Float->Void;
+	private  var repaint:Float->Float->Float->Float->Sprite->Void;
 	
 	public function new() 
 	{
 		super();
-		backing = new Shape();
+		backing = new Sprite();
+		//backing.graphics.beginFill(0x00ff00);
+		//backing.graphics.drawRect(10, 10, 200, 200);
+		addChild(backing);
 
+		
+		
 		this._width = 200;
 		this._height = 200;
 		
-		addChild(backing);
+
 		
 		this.x = 20;
 		this.y = 20;
+		
 		
 		
 		handleTL = new Handle(shiftTL);
@@ -43,7 +51,30 @@ class Handlesprite extends Sprite
 		handleBR = new Handle(shiftBR);
 		addChild(handleBR);
 		
+		this.repaint = this._repaint;
+		
 		__adjust();
+	}
+	
+	public function setSize(width:Float, height:Float)
+	{
+		this._width = width;
+		this._height = height;
+		this.__adjust();
+	}
+
+	public function setPosition(x:Float, y:Float)
+	{
+		this.x = x;
+		this.y = y;
+	}
+	
+	public function getBackground():Sprite return this.backing;
+	
+	public function setRepaintCallback(repaintFunction:Float->Float->Float->Float->Sprite-> Void)
+	{
+		this.repaint = repaintFunction;
+		this.__adjust();
 	}
 	
 	private function shift(x:Float, y:Float, w:Float, h:Float):Void {
@@ -70,16 +101,18 @@ class Handlesprite extends Sprite
 	{
 		handleTR.x = handleBR.x = _width;
 		handleBL.y = handleBR.y = _height;		
-		backing.graphics.clear();
+		//backing.graphics.clear();
 		backing.width = _width;
 		backing.height = _height;
-		this.redraw();
+		if (this.repaint == null) return;
+		this.repaint(backing.x, backing.y, _width, _height, this.backing);
 	}
 	
-	private function redraw()
+	private function _repaint(x:Float, y:Float, width:Float, height:Float, background:Sprite )
 	{
-		backing.graphics.beginFill(0xFF0000);
-		backing.graphics.drawRect(0, 0, _width, _height);		
-		
+		trace('repaint method - should be set dynamically from outside');		
+		backing.graphics.clear();
+		backing.graphics.beginFill(0xFF0000, .2);
+		backing.graphics.drawRect(0, 0, _width, _height);				
 	}
 }

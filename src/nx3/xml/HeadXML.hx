@@ -1,6 +1,7 @@
 package nx3.xml;
 import cx.EnumTools;
 import cx.StrTools;
+import nx3.EDirectionUAD;
 import nx3.NHead;
 import nx3.EHeadType;
 import nx3.ESign;
@@ -82,7 +83,11 @@ class HeadXML
 		var sign:ESign = EnumTools.createFromString(ESign, xml.get(XHEAD_SIGN));
 		
 		// tie
-		var tie:ETie = EnumTools.createFromString(ETie, xml.get(XHEAD_TIE));
+		//var tie:ETie = EnumTools.createFromString(ETie, xml.get(XHEAD_TIE));
+		//trace(tie);
+		var tie:ETie = null;
+		if (xml.get(XHEAD_TIE) != null) tie = ETie.Tie(EDirectionUAD.Auto, 0);
+		
 	
 		// tieFrom
 		var tieTo:ETie = EnumTools.createFromString(ETie, xml.get(XHEAD_TIETO));		

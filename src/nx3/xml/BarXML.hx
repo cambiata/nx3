@@ -81,8 +81,9 @@ class BarXML
 		var type = (typeStr == null) ? EBarType.Normal : EnumTools.createFromString(EBarType, typeStr);
 		
 		// time
+		var time:ETime = null;
 		var timeStr = xml.get(XBAR_TIME);
-		var time = (timeStr == null) ? ETime.Time4_4 : ETimeUtils.fromString(timeStr);
+		 if (timeStr!= null) time = ETimeUtils.fromString(timeStr);
 		
 		// timeDisplay
 		var timeDisplayStr = xml.get(XBAR_TIMEDISPLAY);

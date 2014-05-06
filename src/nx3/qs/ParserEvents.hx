@@ -1,4 +1,5 @@
 package nx3.qs;
+import nx3.EClef;
 import nx3.ENoteVal;
 
 /**
@@ -11,5 +12,6 @@ enum ParserEvents
 	SetOctave(octave:Int);
 	SetNoteVal(value:ENoteVal);
 	SetMode(mode:ContentMode);
+	SetBarClef(clef:EClef);
 	
 }

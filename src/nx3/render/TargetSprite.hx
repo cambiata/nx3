@@ -64,6 +64,8 @@ class TargetSprite  implements ITarget
 		return this.sprite;
 	}	
 	
+	
+	
 	public function testLines(x:Float, y:Float, width:Float):Void 
 	{
 		this.sprite.graphics.lineStyle(this.scaling.linesWidth, 0xAAAAAA);	
@@ -194,6 +196,7 @@ class TargetSprite  implements ITarget
 	public function clear():Void 
 	{
 		this.sprite.graphics.clear();
+		while (this.sprite.numChildren > 0) this.sprite.removeChildAt(0);
 	}
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------

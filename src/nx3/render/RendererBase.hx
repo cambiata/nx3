@@ -3,6 +3,7 @@ import nx3.Constants;
 import nx3.EBeamflagType;
 import nx3.EClef;
 import nx3.EKeysTools;
+import nx3.ETime;
 import nx3.geom.BezieerTool;
 import nx3.geom.Pnt;
 import nx3.geom.Rectangle;
@@ -17,11 +18,12 @@ import nx3.PPart;
 import nx3.PScore;
 import nx3.PSystem;
 import nx3.PSystemBar;
+import nx3.PSystemBars;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
 using cx.ArrayTools;
 using nx3.ENoteValTools;
-
+using nx3.ETime.ETimeUtils;
 /**
  * ...
  * @author Jonas Nyström
@@ -47,7 +49,7 @@ class RendererBase
 		for (system in systems)
 		{
 			this.psystem(system, 0, ny);
-			ny += 40;
+			ny += 50;
 		}
 	}
 	
@@ -56,7 +58,7 @@ class RendererBase
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 			
-		this.target.rectangle(tx, ty, new Rectangle(0, -10, system.getSystemBreakWidth(), 40), 2, 0x00ff00);
+		//this.target.rectangle(tx, ty, new Rectangle(0, -10, system.getSystemBreakWidth(), 40), 2, 0x00ff00);
 		
 		for (systembar in system.getSystembars())
 		{
@@ -66,51 +68,88 @@ class RendererBase
 			//trace([systembar.barWidths.x, systembar.barWidths.width]);
 			var barX =  meas.x;
 			var barWidth = meas.width;
-			this.target.rectangle(tx, ty, new Rectangle(barX, -10, barWidth, 40), 2);
-			//this.pnotelines(x, 0, width);
+			//this.target.rectangle(tx, ty, new Rectangle(barX, -10, barWidth, 40), 1);
 			
-			// draw left barline
 			var leftBarlineX = barX;			
-			this.target.rectangle(tx, ty, new Rectangle(leftBarlineX, -10, meas.ackoladeWidth, 40));
+			//this.target.rectangle(tx, ty, new Rectangle(leftBarlineX, -10, meas.ackoladeWidth, 40));
 			
 			var clefX = barX + meas.ackoladeWidth;
-			this.target.rectangle(tx, ty, new Rectangle(clefX, -9, meas.clefWidth, 38), 1, 0xFF0000);
-			// draw clef
+			//this.target.rectangle(tx, ty, new Rectangle(clefX, -9, meas.clefWidth, 38), 1, 0xFF0000);
 			
 			var keyX = clefX + meas.clefWidth;
-			this.target.rectangle(tx, ty, new Rectangle(keyX, -9, meas.keyWidth, 38), 1, 0xFF0000);
-			// draw key
+			//this.target.rectangle(tx, ty, new Rectangle(keyX, -9, meas.keyWidth, 38), 1, 0xFF0000);
 			
 			var timeX = keyX + meas.keyWidth;
-			this.target.rectangle(tx, ty, new Rectangle(timeX, -9, meas.timeWidth, 38), 1, 0xFF0000);
-			// draw time
+			//this.target.rectangle(tx, ty, new Rectangle(timeX, -9, meas.timeWidth, 38), 1, 0xFF0000);
 			
 			var contentLeftMarginX = timeX + meas.timeWidth;
-			this.target.rectangle(tx, ty, new Rectangle(contentLeftMarginX, -10, meas.contentLeftMargin, 40), 1, 0xFF0000);
+			//this.target.rectangle(tx, ty, new Rectangle(contentLeftMarginX, -10, meas.contentLeftMargin, 40), 1, 0xFF0000);
 			
 			var contentX = contentLeftMarginX + meas.contentLeftMargin;
 			//this.pbar(systembar.bar, contentX, 0);
 			
 			var cautClefX = contentX + meas.contentWidth;
-			this.target.rectangle(tx, ty, new Rectangle(cautClefX, -9, meas.cautClefWidth, 38), 1, 0xFF0000);			
+			//this.target.rectangle(tx, ty, new Rectangle(cautClefX, -9, meas.cautClefWidth, 38), 1, 0xFF0000);			
 			
 			var cautKeyX = cautClefX + meas.cautClefWidth;
-			this.target.rectangle(tx, ty, new Rectangle(cautKeyX, -9, meas.cautKeyWidth, 38), 1, 0xFF0000);			
+			//this.target.rectangle(tx, ty, new Rectangle(cautKeyX, -9, meas.cautKeyWidth, 38), 1, 0xFF0000);			
 			
 			var cautTimeX = cautKeyX + meas.cautKeyWidth;
-			this.target.rectangle(tx, ty, new Rectangle(cautTimeX, -9, meas.cautTimeWidth, 38), 1, 0xFF0000);
+			//this.target.rectangle(tx, ty, new Rectangle(cautTimeX, -9, meas.cautTimeWidth, 38), 1, 0xFF0000);
 			
 			var barlineX = cautTimeX + meas.cautTimeWidth;
-			this.target.rectangle(tx, ty, new Rectangle(barlineX, -10, meas.barlineWidth, 40), 1, 0xFF0000);
+			//this.target.rectangle(tx, ty, new Rectangle(barlineX, -10, meas.barlineWidth, 40), 1, 0xFF0000);
 			
 			//---------------------------------------------------------------------------------------------------------------
-			this.barAttributes(systembar, barX, ny);
+			
+			this.barAttributes(systembar, barX, ny, clefX, keyX, timeX);
 			this.barContent(systembar.bar, contentX, ny);
 		}
 		
+		this.barBarlines(system.getSystembars(), nx, ny);
+		
 	}
 	
-	public function barAttributes(systembar:PSystemBar, nx:Float = 0, ny:Float = 0)
+	private function barBarlines(systembars:PSystemBars, nx:Float, ny:Float) 
+	{
+		
+		var meas = systembars.first().getBarWidths();
+		
+		//trace([systembar.barWidths.x, systembar.barWidths.width]);
+		var barX =  meas.x;
+		var barWidth = meas.width;		
+		
+		var tx = this.targetX + (nx +  barX) * this.scaling.unitX;
+		var ty = this.targetY  + ny * this.scaling.unitY;				
+		
+		//var partidx = 0;		
+		
+		var partFirstY = (systembars.first().bar.getParts().first().getYPosition() - 4) * this.scaling.unitY;
+		var partLastY = (systembars.first().bar.getParts().last().getYPosition() + 4)* this.scaling.unitY;
+		
+		this.target.line(tx, ty + partFirstY, tx, ty + partLastY, 2, 0x000000);
+		
+		for (systembar in systembars)
+		{
+			var meas = systembar.getBarWidths();
+			var barX =  meas.x;
+			var barWidth = meas.width;				
+			
+			for (part in systembar.bar.getParts())
+			{
+				//var party = part.getYPosition() * this.scaling.unitY;
+				var barlineTop = (part.getYPosition()-4) * this.scaling.unitY;
+				var barlineBottom = (part.getYPosition() + 4) * this.scaling.unitY;
+				var barlineX = tx + (barX + barWidth) * this.scaling.unitX;
+				this.target.line(barlineX, ty + barlineTop, barlineX, ty + barlineBottom, 1.4, 0x000000);
+			}
+			
+		}
+		
+			
+	}
+	
+	public function barAttributes(systembar:PSystemBar, nx:Float = 0, ny:Float = 0, clefX:Float=0, keyX:Float=0, timeX:Float=0)
 	{
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;		
@@ -120,14 +159,47 @@ class RendererBase
 			{
 				this.target.testLines(tx , ty + part.getYPosition() * this.scaling.unitY,  systembar.getBarWidths().width * this.scaling.unitX);				
 				
-				this.barAttributeClef(systembar, part, nx, ny);
-				this.barAttributeKey(systembar, part, nx, ny);
+				this.barAttributeClef(systembar, part, nx, ny, clefX);
+				this.barAttributeKey(systembar, part, nx, ny, keyX);
+				this.barAttributeTime(systembar, part, nx, ny, timeX);
 				
 				partidx++;
 			}		
 	}
 	
-	public function barAttributeKey(systembar:PSystemBar, part:PPart, nx:Float, ny:Float)
+	public function barAttributeTime(systembar:PSystemBar, part:PPart, nx:Float, ny:Float, timeX:Float=0)
+	{
+		var showTime = systembar.barConfig.showTime;
+		if (!showTime) return;		
+		
+		var acttime = systembar.actAttributes.time;	
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY  + ny * this.scaling.unitY;				
+		
+		timeX =  timeX * this.scaling.unitX;
+			
+		var timeChars = acttime.toString().split('/');
+		if (timeChars.length == 2)
+		{
+			var upperXmlStr = getSvgNumber(timeChars.first());
+			var timeY = -3 * this.scaling.unitY;					
+			this.target.shape(tx + timeX, ty + timeY +  part.getYPosition() * this.scaling.unitY, upperXmlStr);		
+			
+			var lowerXmlStr = getSvgNumber(timeChars.second());			
+			var timeY = 1 * this.scaling.unitY;					
+			this.target.shape(tx + timeX, ty + timeY +  part.getYPosition() * this.scaling.unitY, lowerXmlStr);		
+		}
+		else
+		{
+			var midXmlStr = getSvgNumber(timeChars.first());
+			var timeY = -1 * this.scaling.unitY;					
+			this.target.shape(tx + timeX, ty + timeY +  part.getYPosition() * this.scaling.unitY, midXmlStr);					
+		}
+		
+		
+	}
+	
+	public function barAttributeKey(systembar:PSystemBar, part:PPart, nx:Float, ny:Float, keyX:Float=0)
 	{	
 		var showkey = systembar.barConfig.showKey;
 		if (!showkey) return;	
@@ -143,7 +215,7 @@ class RendererBase
 		
 		var keyCode = EKeysTools.getSigncode(actkey);		
 		var svgXmlstr = (keyCode == -1) ? SvgElements.signFlat: SvgElements.signSharp;
-		var keyLevels = EKeysTools.getLevels(actkey, EClef.ClefG);
+		var keyLevels = EKeysTools.getLevels(actkey, systembar.actAttributes.clefs[partidx]);
 		
 		for (level in keyLevels)
 		{		
@@ -154,7 +226,7 @@ class RendererBase
 		
 	}
 	
-	public function barAttributeClef(systembar:PSystemBar, part:PPart, nx:Float, ny:Float)
+	public function barAttributeClef(systembar:PSystemBar, part:PPart, nx:Float, ny:Float,  clefX:Float=0)
 	{
 		var showclef = systembar.barConfig.showClef;
 		if (!showclef) return;
@@ -714,7 +786,26 @@ class RendererBase
 		this.target.polyfill(x, y, coords);		
 	}
 	
-	
+	function getSvgNumber(char:String):String
+	{
+		return switch char
+		{
+			case '0': SvgElements.time0;
+			case '1': SvgElements.time1;
+			case '2': SvgElements.time2;
+			case '3': SvgElements.time3;
+			case '4': SvgElements.time4;
+			case '5': SvgElements.time5;
+			case '6': SvgElements.time6;
+			case '7': SvgElements.time7;
+			case '8': SvgElements.time8;
+			case '9': SvgElements.time9;
+			case 'C': SvgElements.timeCommon;
+			case 'AllaBreve': SvgElements.timeAllabreve;
+			default: return '';
+		}
+		
+	}
 	
 	
 	

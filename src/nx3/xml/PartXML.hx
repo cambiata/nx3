@@ -43,6 +43,8 @@ class PartXML
 				xml.set(XPART_TYPE, Std.string(part.type));				
 		}
 		
+		
+		
 		// clef		
 		if (part.clef != null)
 		switch(part.clef)
@@ -52,6 +54,16 @@ class PartXML
 			default:
 				xml.set(XPART_CLEF, Std.string(part.clef));			
 		}
+		
+		if (part.key != null)
+		switch(part.key)
+		{			
+			case EKey.Natural:
+				// nothing for G-clef
+			default:
+				xml.set(XPART_KEY, Std.string(part.key));			
+		}		
+		
 		
 		// clef display
 		switch(part.clefDisplay)
@@ -104,7 +116,8 @@ class PartXML
 		
 		// clef
 		var str = xml.get(XPART_CLEF);
-		var clef:EClef = (str == null) ? EClef.ClefG : EnumTools.createFromString(EClef, str);
+		var clef:EClef = null;
+		if (str != null) clef =  EnumTools.createFromString(EClef, str);
 		
 		// timeDisplay
 		var clefDisplayStr = xml.get(XPART_CLEFDISPLAY);
@@ -112,9 +125,9 @@ class PartXML
 		
 		// key
 		var str = xml.get(XPART_KEY);
-		//trace('part key');
-		var key = EKey.Natural;
-		//var key:EKey = (str == null) ? EKey.Natural : new EKey(Std.parseInt(str));
+		var key:EKey = null;
+		if (str != null) key =  EnumTools.createFromString(EKey, str);	
+		 //key= (str == null) ? EKey.Natural : new EKey(Std.parseInt(str));
 		
 		// keyDisplay
 		var keyDisplayStr = xml.get(XPART_KEYDISPLAY);

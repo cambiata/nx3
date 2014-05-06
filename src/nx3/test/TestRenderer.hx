@@ -32,7 +32,7 @@ class TestRenderer
 	
 	static public function testRenderP(r:Renderer)
 	{		
-		r.renderScore(TestItems.scoreLinebreak(), 10, 100, 120);
+		r.renderScore(TestItems.scoreBachSinfonia4(), 10, 100, 300);
 		
 		//r.renderScore(TestItems.scoreStretch(140), 10, 400, 500);
 		//r.renderScore(TestItems.scoreStretch(150), 10, 800, 500);

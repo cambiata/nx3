@@ -1,4 +1,5 @@
 package nx3.qs;
+import nx3.EClef;
 import nx3.ENoteVal;
 import nx3.qs.ParserEvents;
 
@@ -65,6 +66,14 @@ class BarParser extends BaseParser
 			sendEvent(ParserEvents.SetNoteVal(ENoteVal.Nv4));
 			return token.substr(1);
 		});		
+		
+		this.functions.set('clef:G', function (token:String) 
+		{
+			sendEvent(ParserEvents.SetBarClef(EClef.ClefG));
+			return token.substr(6);
+		});
+		
+		
 	}
 	
 	override private function tokenFinished(originaltoken:String) 

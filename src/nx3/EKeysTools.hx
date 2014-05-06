@@ -33,14 +33,14 @@ class EKeysTools
 		var adjust = switch clef
 		{
 			case EClef.ClefG: -1;
+			case EClef.ClefF: 1;
 			default: 0;
 		}
 		
-		for (i in 0...result.length-1)
+		for (i in 0...result.length)
 		{
 			result[i] = result[i] + adjust;
-		}
-		
+		}		
 		return result;
 	}
 	
