@@ -39,7 +39,7 @@ class MathTools
 		return value;
 	}	
 	
-	static inline public function round2(number:Float, precision:Int=8): Float {
+	static inline public function round2(number:Float, precision:Int=6): Float {
 		number = number * Math.pow(10, precision);
 		number = Math.round( number ) / Math.pow(10, precision);
 		return number;

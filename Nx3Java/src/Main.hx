@@ -22,7 +22,7 @@ class Main extends TargetJFrame
 {
 	public static function main() 
 	{
-		Unittests.performTests();
+		//Unittests.performTests();
 		new Main();
 	}
 

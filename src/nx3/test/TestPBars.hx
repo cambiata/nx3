@@ -240,17 +240,17 @@ class TestPBars extends TestCase
 		var score = new PScore(nscore);
 		
 		var systems:PSystems = score.getSystems(500);		
-		this.assertEquals(systems.first().getWidth(), 207.6);
+		this.assertEquals(systems.first().getWidth().round2(), 203.4);
 		this.assertEquals(systems.first().getSystembars().length, 6);
 		this.assertEquals(systems.length, 1);
 		
 		var systems:PSystems = score.getSystems(200);		
-		this.assertEquals(systems.first().getWidth(), 175.0);
+		this.assertEquals(systems.first().getWidth().round2(), 172.8);
 		this.assertEquals(systems.first().getSystembars().length, 5);		
 		this.assertEquals(systems.length, 2);
 		
 		var systems:PSystems = score.getSystems(170);		
-		this.assertEquals(systems.first().getWidth(), 142.4);
+		this.assertEquals(systems.first().getWidth(), 142.2);
 		this.assertEquals(systems.first().getSystembars().length, 4);		
 		this.assertEquals(systems.length, 2);
 		

@@ -108,7 +108,6 @@ class TestN extends   TestCase
 		var vbar = TestItems.vbarSigns();		
 		var nbar = vbar.nbar;
 		var xmlStr = BarXML.toXml(nbar).toString();
-		trace (xmlStr);
 		var nbar2 = BarXML.fromXmlStr(xmlStr);
 		var xmlStr2 = BarXML.toXml(nbar2).toString();
 		this.assertEquals(xmlStr, xmlStr2);				

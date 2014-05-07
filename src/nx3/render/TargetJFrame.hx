@@ -1,5 +1,6 @@
 package nx3.render;
 import letters.targetJava.Surface;
+import nx3.geom.Pnts;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
 import nx3.render.scaling.TScaling;
@@ -108,6 +109,18 @@ class TargetJFrame extends JFrame implements ITarget
 	}
 	
 	public function parallellogram(x:Float, y:Float, width:Float, y2:Float, pheight:Float, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int):Void 
+	{
+		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function polyline(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float = 1, ?lineColor:Int = 0x000000):Void 
+	{
+		
+	}
+	
+	public function polyfill(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float = 1, ?lineColor:Int = 0x000000, fillColor:Int = 0x000000):Void 
 	{
 		
 	}

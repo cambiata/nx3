@@ -1,0 +1,13 @@
+-main ApplicationMain 
+-lib openfl
+-cp src
+-cp ../src
+-D tools=1.4.0
+-D web
+-swf-version 11
+-swf bin/flash/bin/SfxrTest.swf
+-swf-header 800:480:60:000000
+-cp bin/flash/haxe
+#--remap nme:flash
+#--no-inline
+-debug

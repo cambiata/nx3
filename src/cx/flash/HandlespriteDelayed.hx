@@ -14,7 +14,7 @@ class HandlespriteDelayed extends Handlesprite
 	public function new() 
 	{
 		super();
-		this.repaintDelayed = this._repaintDelayed;
+		this.repaintDelayed = null; // this._repaintDelayed;
 		this.timeoutMS = 500;
 	}
 	
@@ -32,6 +32,7 @@ class HandlespriteDelayed extends Handlesprite
 		this.repaintDelayed = repaintFunction;
 	}
 	
+	/*
 	private function _repaintDelayed(x:Float, y:Float, width:Float, height:Float, background:Sprite )
 	{
 		trace('repaintDelayed method - should be set dynamically from outside');		
@@ -39,5 +40,6 @@ class HandlespriteDelayed extends Handlesprite
 		backing.graphics.beginFill(0x00FF00, .2);
 		backing.graphics.drawRect(0, 0, _width, _height);				
 	}	
+	*/
 	
 }
