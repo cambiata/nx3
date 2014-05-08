@@ -57,7 +57,15 @@ class PComplexTierectsCalculator
 			
 			if (head.nhead.tie != null) 
 			{
-				var level = head.nhead.level;
+				var tielevel = 0;
+				switch head.nhead.tie
+				{
+					case ETie.Tie(tiedir, tlevel): tielevel = tlevel;
+					default:
+				}
+				
+				
+				var level = head.nhead.level + tielevel;
 				
 				var direction:EDirectionUD = EDirectionUD.Up;
 				
@@ -103,6 +111,8 @@ class PComplexTierectsCalculator
 			{
 				if (head.nhead.tie != null) 
 				{					
+					
+					
 					var level = head.nhead.level;
 					
 					var headrect = this.complex.getHeadsRects()[headIdx];

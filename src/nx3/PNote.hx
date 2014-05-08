@@ -142,6 +142,22 @@ class PNote
 	}
 	
 	
+	var hasTie:Null<Bool>;
+	public function getHasTie():Bool
+	{
+		if (this.hasTie != null) return this.hasTie;
+		for (nhead in this.nnote.nheads)
+		{
+			if (nhead.tie != null) 
+			{
+				this.hasTie = true;
+				return this.hasTie;
+			}
+		}
+		this.hasTie = false;
+		return this.hasTie;
+	}
+	
 	
 	public function setTiesInfo(info:ETies)
 	{

@@ -17,7 +17,6 @@ import nx3.render.TargetSprite;
 import nx3.test.Unittests;
 import nx3.test.TestItems;
 import nx3.test.TestRenderer;
-import nx3.VBar;
 
 
 /**
@@ -76,8 +75,8 @@ class Main extends Sprite
 		{
 			targetHS.clear();
 			var renderWidth =  Math.max(60, rendererHS.xToUnitX(width));
-			rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);
-			trace([width, rendererHS.xToUnitX(width)]);
+			rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);			
+			//rendererHS.renderScore(TestItems.scoreTies(), 0, 100, renderWidth);			
 		}, 100);				
 	}
 

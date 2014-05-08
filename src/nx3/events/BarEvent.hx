@@ -8,7 +8,6 @@ import nx3.events.BarEvent.NoteIdentifiers;
 import nx3.events.BarEvent.NoteInfos;
 import nx3.PNotes;
 import nx3.ENoteVal;
-import nx3.VComplexSignsCalculator;
 
 /**
  * ...
@@ -18,7 +17,7 @@ enum BarEvent
 {
 	NotesChange(notes:NoteIdentifiers, action:NoteChange);
 	NotesDelete(notes:NoteIdentifiers, removedNotes:NoteInfos);	
-	NotesAdd(notes:NoteIdentifiers, notes:NoteInfos);
+	NotesAdd(notes:NoteIdentifiers, noteinfos:NoteInfos);
 }
 
 

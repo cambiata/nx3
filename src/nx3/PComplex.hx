@@ -226,6 +226,36 @@ class PComplex
 		return result;		
 	}
 	
+	var hasTie:Null<Bool>;
+	public function getHasTie():Bool
+	{
+		if (this.hasTie != null) return this.hasTie;
+		for (note in this.getNotes()) 
+		{
+			if (note.getHasTie() == true) 
+			{
+				this.hasTie = true;
+				return this.hasTie;
+			}
+		}
+		this.hasTie = false;
+		return this.hasTie;
+	}
+	
+	var headlevels:Array<Int>;
+	public function getHeadLevels():Array<Int>
+	{
+		if (this.headlevels != null) return this.headlevels;
+		this.headlevels = [];
+		for (note in this.getNotes())
+		{
+			for (nhead in note.nnote.nheads) this.headlevels.push(nhead.level);
+		}
+		return this.headlevels;
+	}
+	
+	
+	
 	public function toString():String
 	{
 		var str = "PComplex: \r" ;

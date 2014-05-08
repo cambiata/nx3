@@ -4,7 +4,9 @@ import nx3.EBeamflagType;
 import nx3.EClef;
 import nx3.EKeysTools;
 import nx3.EPartType;
+import nx3.ETie;
 import nx3.ETime;
+import nx3.EVoiceType;
 import nx3.geom.BezieerTool;
 import nx3.geom.Pnt;
 import nx3.geom.Rectangle;
@@ -20,6 +22,7 @@ import nx3.PScore;
 import nx3.PSystem;
 import nx3.PSystemBar;
 import nx3.PSystemBars;
+import nx3.PSystems;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
 using cx.ArrayTools;
@@ -50,9 +53,136 @@ class RendererBase
 		for (system in systems)
 		{
 			this.psystem(system, 0, ny);
+			this.psystemExtras(systems, system, 0, ny);
+			
 			ny += 50;
 		}
 	}
+
+	public function psystemExtras(systems:PSystems,system:PSystem, nx:Float = 0, ny:Float = 0)
+	{
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY  + ny * this.scaling.unitY;				
+		
+		/*
+		if (system != systems.first())
+		{
+			// do stuff like draw ties to the first bar...
+		}
+		*/
+		
+		for (systembar in system.getSystembars())
+		{
+				//trace(systembar.getBarWidths());
+				
+			
+			if (systembar == system.getSystembars().first())
+			{
+				if (system != systems.first())
+				{
+					var prevSystem = systems.prev(system);
+					var prevSystembar = prevSystem.getSystembars().last();
+					var tieconnections = prevSystembar.bar.getTieConnections();
+					//trace(tieconnections);
+					for (connection in tieconnections)
+					{					
+						var fromBarX = systembar.getBarWidths().x;		
+						var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.to.getXPosition();
+						var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+						
+						var tielevel = 0;
+						switch connection.tie
+						{
+							case ETie.Tie(tdir, tlevel): tielevel = tlevel;
+						default:							
+						}
+						
+						var xshift = -5;
+						var tiewidth = 3;
+						
+						var tierect = new Rectangle(fromBarX + fromNoteX + xshift, connection.level + tielevel, tiewidth, 1);
+						
+						this.drawTie(tx, ty + party, tierect, EDirectionUD.Down);
+					}
+					// draw stuff like tie to?
+				}
+			}
+			
+			
+			
+			if (systembar == system.getSystembars().last())
+			{
+				// draw stuff like tie from
+				
+				var tieconnections = systembar.bar.getTieConnections();
+				//trace(tieconnections);
+				for (connection in tieconnections)
+				{
+					var fromBarX = systembar.getBarWidths().x;					
+					var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.from.getXPosition();
+
+					var toBarX = systembar.getBarWidths().x + systembar.getBarWidths().width;
+					//var toNoteX = nextsystembar.getBarWidths().ackoladeWidth + nextsystembar.getBarWidths().clefWidth + nextsystembar.getBarWidths().keyWidth + nextsystembar.getBarWidths().timeWidth + nextsystembar.getBarWidths().contentLeftMargin +  connection.to.getXPosition();						
+					//trace([fromBarX, fromNoteX, toBarX, toNoteX]);
+					
+					var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+					//var tieX = tx + fromBarX * this.scaling.unitX;
+						var tielevel = 0;
+						switch connection.tie
+						{
+							case ETie.Tie(tdir, tlevel): tielevel = tlevel;
+						default:							
+						}					
+					
+					var xshift = 2;
+					var tierect = new Rectangle(fromBarX+fromNoteX + xshift, connection.level + tielevel, toBarX - (fromBarX+fromNoteX) ,  2);
+					
+					this.drawTie(tx, ty + party, tierect, EDirectionUD.Down);
+					
+				}
+				
+				
+			}
+			else
+			{
+				// draw stuff like ties between...
+				var tieconnections = systembar.bar.getTieConnections();
+				//trace(tieconnections);
+				for (connection in tieconnections)
+				{
+					var fromBarX = systembar.getBarWidths().x;					
+					var nextsystembar = connection.to.getComplex().getPart().getBar().getSystembar();
+					var toBarX = nextsystembar.getBarWidths().x;
+					var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.from.getXPosition();					
+					var toNoteX = nextsystembar.getBarWidths().ackoladeWidth + nextsystembar.getBarWidths().clefWidth + nextsystembar.getBarWidths().keyWidth + nextsystembar.getBarWidths().timeWidth + nextsystembar.getBarWidths().contentLeftMargin +  connection.to.getXPosition();
+						
+					//trace([fromBarX, fromNoteX, toBarX, toNoteX]);
+					
+					var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+					//var tieX = tx + fromBarX * this.scaling.unitX;
+					var xshift = 2;
+					
+					var tielevel = 0;
+					switch connection.tie
+					{
+						case ETie.Tie(tdir, tlevel): tielevel = tlevel;
+						default:
+					}				
+					
+					var tierect = new Rectangle(fromBarX+fromNoteX + xshift, connection.level + tielevel, (toBarX+toNoteX) - (fromBarX+fromNoteX) - xshift - xshift, 2);
+					
+					this.drawTie(tx, ty + party, tierect, EDirectionUD.Down);
+					
+				}
+				
+				
+			}
+			
+			
+		}		
+	}
+	
+	
 	
 	public function psystem(system:PSystem, nx:Float = 0, ny:Float = 0)
 	{
@@ -275,6 +405,13 @@ class RendererBase
 				{
 					this.pbeamgroup(beamgroup, nx, ny);					
 				}
+				
+				switch voice.nvoice.type
+				{
+					case EVoiceType.Normal:
+					case EVoiceType.Barpause(bplevel):						
+				}
+				
 			}
 		}		
 		for (column in bar.getColumns())
@@ -400,19 +537,28 @@ class RendererBase
 		{
 			var rect = info.rect;
 			var direction = info.direction;
+
+			//if (info.head.getNote() == info.head.getNote().getVoice().getNotes().last()) continue;
 			
 			if (info.target != null)
 			{					
-				var targetcomplex = info.target.getNote().getComplex();
-				
+				var targetcomplex = info.target.getNote().getComplex();				
 				var thisx = complex.getXPosition() + rect.x;				
 				var targetAllRect = RectanglesTools.unionAll(targetcomplex.getAllRects());
 				var targetx = targetcomplex.getXPosition() + targetAllRect.x;
-				rect.width = (targetx -thisx) - 0.5 ;				
+				//rect.width = 5; // (targetx -thisx) - 0.5 ;				
+				var xshift = .5*this.scaling.unitX;
+				
+				rect.width = (targetx -thisx) - 0.5 ;
+				this.drawTie(x+xshift, y, rect, direction);
 			}
-			
-			//this.target.rectangle(x, y, rect);
-			this.drawTie(x, y, rect, direction);
+			else
+			{				
+				// NO TARGET!
+				
+				rect.width = 6;
+				//this.drawTie(x, y, rect, direction);
+			}
 			
 		}
 	}

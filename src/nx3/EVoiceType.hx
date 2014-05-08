@@ -8,5 +8,5 @@ package nx3;
 enum EVoiceType 
 {
 	Normal;
-	Barpause;
+	Barpause(level:Int);
 }

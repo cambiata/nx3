@@ -37,10 +37,17 @@ class HeadXML
 			switch(head.tie)
 			{
 				case ETie.Tie(direction, level):
-					xml.set(XHEAD_TIE,/* StrTools.until(*/Std.string(head.tie)/*, '(')*/);						
+					xml.set(XHEAD_TIE, Std.string(true));				
+					
+					if (level != 0) 
+						xml.set(XHEAD_TIE_LEVEL, Std.string(level));
+						
+					if (direction != EDirectionUAD.Auto) 
+						xml.set(XHEAD_TIE_DIRECTION, Std.string(direction.getName()));
+					
 				//default:
 				 case  ETie.Gliss(direction, levelLeft, levelRight):
-					 xml.set(XHEAD_TIE,/* StrTools.until(*/Std.string(head.tie)/*, '(')*/);						
+					 xml.set(XHEAD_TIE,/* StrTools.until(*/Std.string(levelLeft)/*, '(')*/);						
 			}			
 		}
 		
@@ -66,6 +73,8 @@ class HeadXML
 	static public var XHEAD_SIGN = 'sign';
 	static public var XHEAD_TIE = 'tie';
 	static public var XHEAD_TIETO = 'tieto';
+	static public var XHEAD_TIE_DIRECTION = 'tiedirection';
+	static public var XHEAD_TIE_LEVEL = 'tielevel';
 	//static public var XHEAD_TIE_DIRECTION = 'tiedirection';
 	
 	static public function fromXmlStr(xmlStr:String): NHead
@@ -86,7 +95,12 @@ class HeadXML
 		//var tie:ETie = EnumTools.createFromString(ETie, xml.get(XHEAD_TIE));
 		//trace(tie);
 		var tie:ETie = null;
-		if (xml.get(XHEAD_TIE) != null) tie = ETie.Tie(EDirectionUAD.Auto, 0);
+		if (xml.get(XHEAD_TIE) != null) 
+		{
+				var tiedirection = (xml.get(XHEAD_TIE_DIRECTION) == null) ? EDirectionUAD.Auto : EDirectionUAD.Up; // OBS TODO!
+				var tielevel = (xml.get(XHEAD_TIE_LEVEL) == null) ? 0 : Std.parseInt(xml.get(XHEAD_TIE_LEVEL) );
+			tie = ETie.Tie(tiedirection, tielevel);
+		}
 		
 	
 		// tieFrom

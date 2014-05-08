@@ -16,12 +16,13 @@ import nx3.PBar;
  }
  */
  
- 
+ @:access(nx3.PBar)
  class PSystemBar
  {
 	 public function new(bar:PBar, barConfig:PBarConfig, barWidths:PSystembarMeasurements, actAttributes:PBarAttributes, caAttributes:PBarAttributes)
 	 {
 		 this.bar = bar;
+		 this.bar.systembar = this;
 		 this.barConfig = barConfig;
 		 this.barWidths = barWidths;
 		 this.actAttributes = actAttributes;

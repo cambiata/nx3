@@ -15,6 +15,7 @@ import nx3.NBar;
 import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
+import nx3.NScore;
 import nx3.NVoice;
 import nx3.PAttributesRectsCalculator;
 import nx3.PBar;
@@ -1306,10 +1307,86 @@ class TestP extends TestCase
 		this.assertEquals(bars.length, 2);		
 	}
 	
+	public function testBarTieConnections()
+	{
+		var nbar0:NBar = new NBar([
+			new NPart([
+				new NVoice([
+					new NNote([ new NHead(0) , ]),
+					new NNote([ new NHead(1, ETie.Tie(EDirectionUAD.Auto, 0)) ,  ]),
+				]),			
+				new NVoice([
+					new NNote([ new NHead(3, ETie.Tie(EDirectionUAD.Auto, 0)),  ]),
+				]),									
+			]),
+		
+			new NPart([
+				new NVoice([
+					new NNote([ new NHead(0) , ]),
+					new NNote([ new NHead(5, ETie.Tie(EDirectionUAD.Auto, 0)),  ]),
+				]),
+			]),
+		]);
+		
+		var nbar1:NBar = new NBar([
+			new NPart([
+				new NVoice([
+					new NNote([ new NHead(3) , ]),
+					new NNote([ new NHead(0) , ]),					
+				]),										
+			]),
+			
+			new NPart([
+				new NVoice([
+					new NNote([ new NHead(3) , ]),
+					new NNote([ new NHead(0) , ]),
+				]),
+				
+				new NVoice([
+					new NNote([ new NHead(5) , ]),
+					new NNote([ new NHead(0) , ]),
+				]),				
+				
+			]),
+			
+		]);		
+		
+		
+		
+		var score = new PScore(new NScore([nbar0, nbar1]));
+		var connections = score.getBars().first().getTieConnections();
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	static private function barConfToArr(conf:PBarConfig):Array<Bool>
 	{
 		return [conf.showClef, conf.showKey, conf.showTime];
 	}	
+	
+	
+	
 	
 	
 	

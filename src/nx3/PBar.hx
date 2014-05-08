@@ -22,6 +22,10 @@ class PBar
 		return this.score;
 	}
 	
+	var systembar:PSystemBar;
+	public function getSystembar():PSystemBar return this.systembar;
+	
+	
 	
 	public var clefs(get, null):EClefs;
 	 public var keys(get, null):EKeys;
@@ -126,6 +130,11 @@ class PBar
 		 
 		 return this.columns;
 	 }	
+	 	 
+	 public function getIndex():Int
+	 {
+		 return this.getScore().getBars().indexOf(this);
+	 }
 	 
 	 
 	 public function calculateMDistances()
@@ -207,8 +216,58 @@ class PBar
 		 return this.stretchwidth;
 	 }
 	 
-	 
-	 
+
+	 var tieconnections:PTieConnections;
+	 public function getTieConnections():PTieConnections
+	 {
+		 if (this.tieconnections != null) return this.tieconnections;
+		 this.tieconnections = [];
+
+		 var nextBar = this.score.getBars().indexOrNull(this.getIndex()+1);
+		 if (nextBar == null)
+		 {
+			 return this.tieconnections; // no connections from last bar
+		 }
+		 
+		 for (part in this.getParts())
+		 {			
+			 var nextPart = nextBar.getParts().indexOrNull(part.getIndex());
+
+			 for (voice in part.getVoices())
+			 {
+				 var lastnote = voice.getNotes().last();
+				 if (!lastnote.getHasTie() ) continue;
+				 
+				 for (nhead in lastnote.nnote.nheads)
+				 {
+					 if (nhead.tie != null) {
+						 
+						 var level = nhead.level; 
+						// trace('possible tie from ' + nhead.level);
+						 
+						 var nextPart = nextBar.getParts().indexOrNull(part.getIndex());
+						 if (nextPart == null) break;
+						 
+						 for (voice in nextPart.getVoices())
+						 {
+							 var nextnote = voice.getNotes().first();
+							 for (nnhead in nextnote.nnote.nheads)
+							 {
+								 if (nnhead.level == nhead.level)
+								 {
+									 //trace('found connection on level ' + nhead.level);
+									 this.tieconnections.push( { from:lastnote, to:nextnote, level: nhead.level, tie:nhead.tie } );
+									 break;
+								 }								 
+							 }							 
+						 }
+					 }
+				 }				 
+			 }
+		 }
+		 
+		 return this.tieconnections;
+	 }
 	 
 }
 

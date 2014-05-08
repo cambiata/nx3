@@ -234,6 +234,7 @@
   </file>
   <file name="src/nx3/xml/HeadXML.cpp">
    <depend name="include/Std.h"/>
+   <depend name="include/Type.h"/>
    <depend name="include/Xml.h"/>
    <depend name="include/cx/EnumTools.h"/>
    <depend name="include/haxe/Log.h"/>
@@ -271,6 +272,7 @@
    <depend name="include/haxe/unit/TestCase.h"/>
    <depend name="include/haxe/unit/TestRunner.h"/>
    <depend name="include/nx3/test/TestN.h"/>
+   <depend name="include/nx3/test/TestP.h"/>
    <depend name="include/nx3/test/TestPBars.h"/>
    <depend name="include/nx3/test/Unittests.h"/>
   </file>
@@ -307,9 +309,60 @@
    <depend name="include/nx3/QVoice.h"/>
    <depend name="include/nx3/test/TestPBars.h"/>
   </file>
+  <file name="src/nx3/test/TestP.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/haxe/unit/TestCase.h"/>
+   <depend name="include/nx3/EAllotment.h"/>
+   <depend name="include/nx3/EBarType.h"/>
+   <depend name="include/nx3/EBeamflagType.h"/>
+   <depend name="include/nx3/EClef.h"/>
+   <depend name="include/nx3/EDirectionUAD.h"/>
+   <depend name="include/nx3/EDirectionUD.h"/>
+   <depend name="include/nx3/EDisplayALN.h"/>
+   <depend name="include/nx3/EHeadType.h"/>
+   <depend name="include/nx3/EKey.h"/>
+   <depend name="include/nx3/ENoteType.h"/>
+   <depend name="include/nx3/ENoteVal.h"/>
+   <depend name="include/nx3/EPartType.h"/>
+   <depend name="include/nx3/ESign.h"/>
+   <depend name="include/nx3/ETie.h"/>
+   <depend name="include/nx3/ETime.h"/>
+   <depend name="include/nx3/EVoiceType.h"/>
+   <depend name="include/nx3/IBarWidthCalculator.h"/>
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NScore.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+   <depend name="include/nx3/PAttributesRectsCalculator.h"/>
+   <depend name="include/nx3/PBar.h"/>
+   <depend name="include/nx3/PBarConfig.h"/>
+   <depend name="include/nx3/PBeamgroup.h"/>
+   <depend name="include/nx3/PBeamgroupDirectionCalculator.h"/>
+   <depend name="include/nx3/PColumn.h"/>
+   <depend name="include/nx3/PComplex.h"/>
+   <depend name="include/nx3/PComplexTieTargetCalculator.h"/>
+   <depend name="include/nx3/PHead.h"/>
+   <depend name="include/nx3/PNote.h"/>
+   <depend name="include/nx3/PPart.h"/>
+   <depend name="include/nx3/PScore.h"/>
+   <depend name="include/nx3/PSystem.h"/>
+   <depend name="include/nx3/PSystemBar.h"/>
+   <depend name="include/nx3/PSystemGenerator.h"/>
+   <depend name="include/nx3/PVoice.h"/>
+   <depend name="include/nx3/QNote.h"/>
+   <depend name="include/nx3/QNote1.h"/>
+   <depend name="include/nx3/QNote2.h"/>
+   <depend name="include/nx3/QNote4.h"/>
+   <depend name="include/nx3/QNote8.h"/>
+   <depend name="include/nx3/QVoice.h"/>
+   <depend name="include/nx3/test/TestP.h"/>
+  </file>
   <file name="src/nx3/test/TestN.cpp">
    <depend name="include/Xml.h"/>
-   <depend name="include/haxe/Log.h"/>
    <depend name="include/haxe/unit/TestCase.h"/>
    <depend name="include/nx3/EDirectionUAD.h"/>
    <depend name="include/nx3/EHeadType.h"/>
@@ -326,7 +379,6 @@
    <depend name="include/nx3/NVoice.h"/>
    <depend name="include/nx3/QNote.h"/>
    <depend name="include/nx3/QNote4.h"/>
-   <depend name="include/nx3/VBar.h"/>
    <depend name="include/nx3/test/TestItems.h"/>
    <depend name="include/nx3/test/TestN.h"/>
    <depend name="include/nx3/xml/BarXML.h"/>
@@ -336,6 +388,8 @@
   </file>
   <file name="src/nx3/test/TestItems.cpp">
    <depend name="include/IMap.h"/>
+   <depend name="include/Xml.h"/>
+   <depend name="include/haxe/Log.h"/>
    <depend name="include/haxe/ds/StringMap.h"/>
    <depend name="include/nx3/EAllotment.h"/>
    <depend name="include/nx3/EBarType.h"/>
@@ -382,8 +436,6 @@
    <depend name="include/nx3/QPause4.h"/>
    <depend name="include/nx3/QPause8.h"/>
    <depend name="include/nx3/QVoice.h"/>
-   <depend name="include/nx3/VBar.h"/>
-   <depend name="include/nx3/VVoice.h"/>
    <depend name="include/nx3/qs/QuickSyntaxBuilder.h"/>
    <depend name="include/nx3/qs/QuickSyntaxParser.h"/>
    <depend name="include/nx3/test/TestItems.h"/>
@@ -455,9 +507,12 @@
    <depend name="include/nx3/render/RendererBase.h"/>
   </file>
   <file name="src/nx3/render/RendererBase.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/Type.h"/>
    <depend name="include/flash/geom/Rectangle.h"/>
    <depend name="include/nx3/EBeamflagType.h"/>
    <depend name="include/nx3/EClef.h"/>
+   <depend name="include/nx3/EDirectionUAD.h"/>
    <depend name="include/nx3/EDirectionUD.h"/>
    <depend name="include/nx3/EKey.h"/>
    <depend name="include/nx3/EKeysTools.h"/>
@@ -465,12 +520,17 @@
    <depend name="include/nx3/ENoteType.h"/>
    <depend name="include/nx3/ENoteVal.h"/>
    <depend name="include/nx3/ENoteValTools.h"/>
+   <depend name="include/nx3/EPartType.h"/>
    <depend name="include/nx3/EPosition.h"/>
    <depend name="include/nx3/ESign.h"/>
+   <depend name="include/nx3/ETie.h"/>
    <depend name="include/nx3/ETime.h"/>
    <depend name="include/nx3/ETimeUtils.h"/>
+   <depend name="include/nx3/EVoiceType.h"/>
    <depend name="include/nx3/NHead.h"/>
    <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NVoice.h"/>
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PBarConfig.h"/>
    <depend name="include/nx3/PBeamgroup.h"/>
@@ -616,320 +676,21 @@
   <file name="src/nx3/geom/BezieerTool.cpp">
    <depend name="include/nx3/geom/BezieerTool.h"/>
   </file>
-  <file name="src/nx3/VVoiceBeamgroupsGenerator.cpp">
-   <depend name="include/nx3/ENotationVariant.h"/>
-   <depend name="include/nx3/ENoteArticulation.h"/>
-   <depend name="include/nx3/ENoteAttributes.h"/>
-   <depend name="include/nx3/ENoteType.h"/>
+  <file name="src/nx3/events/NoteInfo.cpp">
    <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/ENoteValTools.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VVoiceBeamgroupsGenerator.h"/>
-  </file>
-  <file name="src/nx3/VVoice.cpp">
-   <depend name="include/IMap.h"/>
-   <depend name="include/haxe/ds/ObjectMap.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/ENoteValTools.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/NVoice.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VVoice.h"/>
-   <depend name="include/nx3/VVoiceBeamgroupsGenerator.h"/>
-  </file>
-  <file name="src/nx3/VPartbeamgroupsDirectionCalculator.cpp">
-   <depend name="include/IMap.h"/>
-   <depend name="include/haxe/ds/ObjectMap.h"/>
-   <depend name="include/nx3/EDirectionTools.h"/>
-   <depend name="include/nx3/EDirectionUAD.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/NVoice.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VBeamgroupDirectionCalculator.h"/>
-   <depend name="include/nx3/VPart.h"/>
-   <depend name="include/nx3/VPartbeamgroupsDirectionCalculator.h"/>
-   <depend name="include/nx3/VVoice.h"/>
-  </file>
-  <file name="src/nx3/VPartComplexesMinDistancesCalculator.cpp">
-   <depend name="include/IMap.h"/>
-   <depend name="include/Type.h"/>
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/haxe/ds/ObjectMap.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/ENoteType.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/ENoteValTools.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VComplex.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VPart.h"/>
-   <depend name="include/nx3/VPartComplexesMinDistancesCalculator.h"/>
-   <depend name="include/nx3/VVoice.h"/>
-   <depend name="include/nx3/geom/RectanglesTools.h"/>
-  </file>
-  <file name="src/nx3/VPartComplexesGenerator.cpp">
-   <depend name="include/IMap.h"/>
-   <depend name="include/haxe/ds/IntMap.h"/>
-   <depend name="include/haxe/ds/ObjectMap.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/VComplex.h"/>
-   <depend name="include/nx3/VMapTools.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VPartComplexesGenerator.h"/>
-   <depend name="include/nx3/VVoice.h"/>
-  </file>
-  <file name="src/nx3/VPart.cpp">
-   <depend name="include/IMap.h"/>
-   <depend name="include/Std.h"/>
-   <depend name="include/haxe/ds/IntMap.h"/>
-   <depend name="include/haxe/ds/ObjectMap.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/NPart.h"/>
-   <depend name="include/nx3/NVoice.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VComplex.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VPart.h"/>
-   <depend name="include/nx3/VPartComplexesGenerator.h"/>
-   <depend name="include/nx3/VPartComplexesMinDistancesCalculator.h"/>
-   <depend name="include/nx3/VPartbeamgroupsDirectionCalculator.h"/>
-   <depend name="include/nx3/VVoice.h"/>
-  </file>
-  <file name="src/nx3/VNoteInternalDirectionCalculator.cpp">
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/VHead.h"/>
-   <depend name="include/nx3/VNoteInternalDirectionCalculator.h"/>
-  </file>
-  <file name="src/nx3/VNoteHeadsRectsTplCalculator.cpp">
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VNoteHeadsRectsTplCalculator.h"/>
-  </file>
-  <file name="src/nx3/VNoteHeadsRectsPausesCalculator.cpp">
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/ENoteValTools.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VNoteHeadsRectsPausesCalculator.h"/>
-  </file>
-  <file name="src/nx3/VNoteHeadsRectsLyricsCalculator.cpp">
-   <depend name="include/flash/display/DisplayObject.h"/>
-   <depend name="include/flash/display/DisplayObjectContainer.h"/>
-   <depend name="include/flash/display/IBitmapDrawable.h"/>
-   <depend name="include/flash/display/InteractiveObject.h"/>
-   <depend name="include/flash/display/Sprite.h"/>
-   <depend name="include/flash/events/EventDispatcher.h"/>
-   <depend name="include/flash/events/IEventDispatcher.h"/>
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VNoteHeadsRectsLyricsCalculator.h"/>
-   <depend name="include/nx3/render/ITarget.h"/>
-   <depend name="include/nx3/render/TargetSprite.h"/>
-  </file>
-  <file name="src/nx3/VNoteHeadsRectsCalculator.cpp">
-   <depend name="include/Type.h"/>
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/ELyricContinuation.h"/>
-   <depend name="include/nx3/ENotationVariant.h"/>
-   <depend name="include/nx3/ENoteArticulation.h"/>
-   <depend name="include/nx3/ENoteAttributes.h"/>
-   <depend name="include/nx3/ENoteType.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/EPosition.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VHead.h"/>
-   <depend name="include/nx3/VHeadsRectsCalculator.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VNoteHeadsRectsCalculator.h"/>
-   <depend name="include/nx3/VNoteHeadsRectsLyricsCalculator.h"/>
-   <depend name="include/nx3/VNoteHeadsRectsPausesCalculator.h"/>
-   <depend name="include/nx3/VNoteHeadsRectsTplCalculator.h"/>
-  </file>
-  <file name="src/nx3/VNoteDirectionCalculator.cpp">
-   <depend name="include/nx3/EDirectionUAD.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/ENoteType.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VHead.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VNoteDirectionCalculator.h"/>
-   <depend name="include/nx3/VNoteInternalDirectionCalculator.h"/>
-  </file>
-  <file name="src/nx3/VNote.cpp">
-   <depend name="include/Std.h"/>
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VHead.h"/>
-   <depend name="include/nx3/VHeadPlacementCalculator.h"/>
-   <depend name="include/nx3/VHeadsRectsCalculator.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VNoteDirectionCalculator.h"/>
-   <depend name="include/nx3/VNoteHeadsRectsCalculator.h"/>
-  </file>
-  <file name="src/nx3/VMapTools.cpp">
-   <depend name="include/Reflect.h"/>
-   <depend name="include/nx3/VMapTools.h"/>
-  </file>
-  <file name="src/nx3/VHeadsRectsCalculator.cpp">
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/EHeadPosition.h"/>
-   <depend name="include/nx3/EHeadType.h"/>
-   <depend name="include/nx3/EHeadValueType.h"/>
-   <depend name="include/nx3/ENoteType.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/ENoteValTools.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/VHead.h"/>
-   <depend name="include/nx3/VHeadsRectsCalculator.h"/>
-  </file>
-  <file name="src/nx3/VHeadPlacementCalculator.cpp">
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/EHeadPosition.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/VHead.h"/>
-   <depend name="include/nx3/VHeadPlacementCalculator.h"/>
-  </file>
-  <file name="src/nx3/VHead.cpp">
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/VHead.h"/>
-  </file>
-  <file name="src/nx3/VComplexTiestoRectsCalculator.cpp">
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/ETie.h"/>
-   <depend name="include/nx3/VComplexTiestoRectsCalculator.h"/>
-  </file>
-  <file name="src/nx3/VComplexSignsRectsCalculator.cpp">
-   <depend name="include/flash/geom/Rectangle.h"/>
    <depend name="include/nx3/ESign.h"/>
-   <depend name="include/nx3/VComplexSignsRectsCalculator.h"/>
-  </file>
-  <file name="src/nx3/VComplexSignsCalculator.cpp">
-   <depend name="include/Reflect.h"/>
-   <depend name="include/nx3/ESign.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VComplexSignsCalculator.h"/>
-   <depend name="include/nx3/VNote.h"/>
-  </file>
-  <file name="src/nx3/VComplexDotsRectsCalculator.cpp">
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/EDot.h"/>
-   <depend name="include/nx3/VComplexDotsRectsCalculator.h"/>
-  </file>
-  <file name="src/nx3/VComplex.cpp">
-   <depend name="include/Type.h"/>
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/EDot.h"/>
-   <depend name="include/nx3/EHeadValueType.h"/>
-   <depend name="include/nx3/ENoteType.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/ENoteValTools.h"/>
    <depend name="include/nx3/ETie.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VComplex.h"/>
-   <depend name="include/nx3/VComplexDotsRectsCalculator.h"/>
-   <depend name="include/nx3/VComplexSignsCalculator.h"/>
-   <depend name="include/nx3/VComplexSignsRectsCalculator.h"/>
-   <depend name="include/nx3/VComplexTiestoRectsCalculator.h"/>
-   <depend name="include/nx3/VHead.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VNoteInternalDirectionCalculator.h"/>
+   <depend name="include/nx3/events/NoteInfo.h"/>
   </file>
-  <file name="src/nx3/VColumn.cpp">
-   <depend name="include/nx3/VColumn.h"/>
-   <depend name="include/nx3/VComplex.h"/>
-  </file>
-  <file name="src/nx3/VBeamgroupFrameCalculator.cpp">
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VBamegroupFrameTipCalculator.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VBeamgroupFrameCalculator.h"/>
-   <depend name="include/nx3/VNote.h"/>
-  </file>
-  <file name="src/nx3/VBeamgroupDirectionCalculator.cpp">
-   <depend name="include/Std.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VBeamgroupDirectionCalculator.h"/>
-   <depend name="include/nx3/VNote.h"/>
-  </file>
-  <file name="src/nx3/VBeamgroup.cpp">
-   <depend name="include/Type.h"/>
-   <depend name="include/haxe/Log.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/ENoteType.h"/>
+  <file name="src/nx3/events/NoteChange.cpp">
    <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/ENoteValTools.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/VBeamgroup.h"/>
-   <depend name="include/nx3/VBeamgroupDirectionCalculator.h"/>
-   <depend name="include/nx3/VBeamgroupFrameCalculator.h"/>
-   <depend name="include/nx3/VNote.h"/>
+   <depend name="include/nx3/ESign.h"/>
+   <depend name="include/nx3/events/NoteChange.h"/>
   </file>
-  <file name="src/nx3/VBarColumnsMinDistancesGenerator.cpp">
-   <depend name="include/IMap.h"/>
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/haxe/ds/IntMap.h"/>
-   <depend name="include/haxe/ds/ObjectMap.h"/>
-   <depend name="include/nx3/VBar.h"/>
-   <depend name="include/nx3/VBarColumnsMinDistancesGenerator.h"/>
-   <depend name="include/nx3/VColumn.h"/>
-   <depend name="include/nx3/VComplex.h"/>
-   <depend name="include/nx3/VPart.h"/>
-   <depend name="include/nx3/VPartComplexesMinDistancesCalculator.h"/>
-  </file>
-  <file name="src/nx3/VBarColumnsGenerator.cpp">
-   <depend name="include/IMap.h"/>
-   <depend name="include/Reflect.h"/>
-   <depend name="include/haxe/ds/IntMap.h"/>
-   <depend name="include/haxe/ds/ObjectMap.h"/>
-   <depend name="include/nx3/VBarColumnsGenerator.h"/>
-   <depend name="include/nx3/VColumn.h"/>
-   <depend name="include/nx3/VComplex.h"/>
-   <depend name="include/nx3/VMapTools.h"/>
-   <depend name="include/nx3/VPart.h"/>
-  </file>
-  <file name="src/nx3/VBar.cpp">
-   <depend name="include/IMap.h"/>
-   <depend name="include/Std.h"/>
-   <depend name="include/haxe/ds/IntMap.h"/>
-   <depend name="include/haxe/ds/ObjectMap.h"/>
-   <depend name="include/nx3/EClef.h"/>
-   <depend name="include/nx3/EDisplayALN.h"/>
-   <depend name="include/nx3/EKey.h"/>
-   <depend name="include/nx3/ETime.h"/>
-   <depend name="include/nx3/NBar.h"/>
-   <depend name="include/nx3/NPart.h"/>
-   <depend name="include/nx3/VBar.h"/>
-   <depend name="include/nx3/VBarColumnsGenerator.h"/>
-   <depend name="include/nx3/VBarColumnsMinDistancesGenerator.h"/>
-   <depend name="include/nx3/VColumn.h"/>
-   <depend name="include/nx3/VComplex.h"/>
-   <depend name="include/nx3/VNote.h"/>
-   <depend name="include/nx3/VPart.h"/>
-   <depend name="include/nx3/VVoice.h"/>
-  </file>
-  <file name="src/nx3/VBamegroupFrameTipCalculator.cpp">
-   <depend name="include/Std.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/VBamegroupFrameTipCalculator.h"/>
+  <file name="src/nx3/events/BarEvent.cpp">
+   <depend name="include/nx3/events/BarEvent.h"/>
+   <depend name="include/nx3/events/NoteChange.h"/>
+   <depend name="include/nx3/events/NoteInfo.h"/>
   </file>
   <file name="src/nx3/QVoiceUp.cpp">
    <depend name="include/nx3/EDirectionUAD.h"/>
@@ -1246,6 +1007,7 @@
   </file>
   <file name="src/nx3/PPartComplexesGenerator.cpp">
    <depend name="include/IMap.h"/>
+   <depend name="include/cx/MapTools.h"/>
    <depend name="include/haxe/ds/IntMap.h"/>
    <depend name="include/haxe/ds/ObjectMap.h"/>
    <depend name="include/nx3/PComplex.h"/>
@@ -1253,7 +1015,6 @@
    <depend name="include/nx3/PPart.h"/>
    <depend name="include/nx3/PPartComplexesGenerator.h"/>
    <depend name="include/nx3/PVoice.h"/>
-   <depend name="include/nx3/VMapTools.h"/>
   </file>
   <file name="src/nx3/PPart.cpp">
    <depend name="include/IMap.h"/>
@@ -1282,6 +1043,7 @@
    <depend name="include/nx3/PHead.h"/>
    <depend name="include/nx3/PHeadsRectsCalculator.h"/>
    <depend name="include/nx3/PNote.h"/>
+   <depend name="include/nx3/PNoteHeadsRectTplCalculator.h"/>
    <depend name="include/nx3/PNoteHeadsRectsLyricsCalculator.h"/>
    <depend name="include/nx3/PNoteHeadsRectsPausesCalculator.h"/>
    <depend name="include/nx3/PNoteheadsRectsCalculator.h"/>
@@ -1298,6 +1060,7 @@
   </file>
   <file name="src/nx3/PNoteHeadsRectsPausesCalculator.cpp">
    <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/nx3/ENoteType.h"/>
    <depend name="include/nx3/ENoteVal.h"/>
    <depend name="include/nx3/ENoteValTools.h"/>
    <depend name="include/nx3/NNote.h"/>
@@ -1317,6 +1080,11 @@
    <depend name="include/nx3/PNoteHeadsRectsLyricsCalculator.h"/>
    <depend name="include/nx3/render/ITarget.h"/>
    <depend name="include/nx3/render/TargetSprite.h"/>
+  </file>
+  <file name="src/nx3/PNoteHeadsRectTplCalculator.cpp">
+   <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/nx3/PNote.h"/>
+   <depend name="include/nx3/PNoteHeadsRectTplCalculator.h"/>
   </file>
   <file name="src/nx3/PNote.cpp">
    <depend name="include/flash/geom/Rectangle.h"/>
@@ -1365,6 +1133,7 @@
   </file>
   <file name="src/nx3/PComplexTierectsCalculator.cpp">
    <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/nx3/EDirectionUAD.h"/>
    <depend name="include/nx3/EDirectionUD.h"/>
    <depend name="include/nx3/ENoteVal.h"/>
    <depend name="include/nx3/ENoteValTools.h"/>
@@ -1406,6 +1175,7 @@
   <file name="src/nx3/PComplex.cpp">
    <depend name="include/Std.h"/>
    <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/nx3/NHead.h"/>
    <depend name="include/nx3/NNote.h"/>
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PColumn.h"/>
@@ -1425,13 +1195,13 @@
   <file name="src/nx3/PColumnsGenerator.cpp">
    <depend name="include/IMap.h"/>
    <depend name="include/Reflect.h"/>
+   <depend name="include/cx/MapTools.h"/>
    <depend name="include/haxe/ds/IntMap.h"/>
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PColumn.h"/>
    <depend name="include/nx3/PColumnsGenerator.h"/>
    <depend name="include/nx3/PComplex.h"/>
    <depend name="include/nx3/PPart.h"/>
-   <depend name="include/nx3/VMapTools.h"/>
   </file>
   <file name="src/nx3/PColumnsDistancesCalculator.cpp">
    <depend name="include/IMap.h"/>
@@ -1544,16 +1314,22 @@
    <depend name="include/nx3/EClef.h"/>
    <depend name="include/nx3/EDisplayALN.h"/>
    <depend name="include/nx3/EKey.h"/>
+   <depend name="include/nx3/ETie.h"/>
    <depend name="include/nx3/ETime.h"/>
    <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/NNote.h"/>
    <depend name="include/nx3/NPart.h"/>
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PColumn.h"/>
    <depend name="include/nx3/PColumnsAllotmentCalculator.h"/>
    <depend name="include/nx3/PColumnsDistancesCalculator.h"/>
    <depend name="include/nx3/PColumnsGenerator.h"/>
+   <depend name="include/nx3/PNote.h"/>
    <depend name="include/nx3/PPart.h"/>
    <depend name="include/nx3/PScore.h"/>
+   <depend name="include/nx3/PSystemBar.h"/>
+   <depend name="include/nx3/PVoice.h"/>
   </file>
   <file name="src/nx3/PBamegroupFrameTipCalculator.cpp">
    <depend name="include/Std.h"/>
@@ -1691,9 +1467,6 @@
   </file>
   <file name="src/nx3/EHeadPosition.cpp">
    <depend name="include/nx3/EHeadPosition.h"/>
-  </file>
-  <file name="src/nx3/EDot.cpp">
-   <depend name="include/nx3/EDot.h"/>
   </file>
   <file name="src/nx3/EDisplayALN.cpp">
    <depend name="include/nx3/EDisplayALN.h"/>
@@ -2721,13 +2494,11 @@
    <depend name="include/cx/flash/HandlespriteDelayed.h"/>
    <depend name="include/flash/display/DisplayObject.h"/>
    <depend name="include/flash/display/DisplayObjectContainer.h"/>
-   <depend name="include/flash/display/Graphics.h"/>
    <depend name="include/flash/display/IBitmapDrawable.h"/>
    <depend name="include/flash/display/InteractiveObject.h"/>
    <depend name="include/flash/display/Sprite.h"/>
    <depend name="include/flash/events/EventDispatcher.h"/>
    <depend name="include/flash/events/IEventDispatcher.h"/>
-   <depend name="include/haxe/Log.h"/>
   </file>
   <file name="src/cx/flash/Handlesprite.cpp">
    <depend name="include/cx/flash/Handle.h"/>
@@ -2770,6 +2541,10 @@
    <depend name="include/Std.h"/>
    <depend name="include/StringTools.h"/>
    <depend name="include/cx/MathTools.h"/>
+  </file>
+  <file name="src/cx/MapTools.cpp">
+   <depend name="include/Reflect.h"/>
+   <depend name="include/cx/MapTools.h"/>
   </file>
   <file name="src/cx/EnumTools.cpp">
    <depend name="include/StringTools.h"/>
@@ -2915,7 +2690,6 @@
    <depend name="include/flash/events/Event.h"/>
    <depend name="include/flash/events/EventDispatcher.h"/>
    <depend name="include/flash/events/IEventDispatcher.h"/>
-   <depend name="include/haxe/Log.h"/>
    <depend name="include/nx3/PScore.h"/>
    <depend name="include/nx3/render/ITarget.h"/>
    <depend name="include/nx3/render/Renderer.h"/>

@@ -20,7 +20,7 @@ class NVoice
 		if (notes == null || notes == []) 
 		{
 			this.nnotes = null;
-			this.type = EVoiceType.Barpause;
+			this.type = EVoiceType.Barpause(0);
 		}
 		else
 		{

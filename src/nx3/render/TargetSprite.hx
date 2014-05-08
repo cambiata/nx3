@@ -12,8 +12,6 @@ import nx3.render.svg.SvgElements;
 import nx3.render.svg.ShapeTools;
 import nx3.TFontInfo;
 import nx3.TPoints;
-import nx3.VBeamgroup;
-import nx3.VNote;
 
 
 #if (nme)
