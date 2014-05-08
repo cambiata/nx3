@@ -1,3 +1,4 @@
+
 package nx3.render;
 import js.Browser;
 import js.html.CanvasElement;
@@ -10,15 +11,13 @@ import nx3.geom.Pnts;
 import nx3.render.scaling.Scaling;
 import nx3.TFontInfo;
 import nx3.TPoints;
-import nx3.VBeamgroup;
-import nx3.VNote;
 import nx3.geom.Rectangles;
-
 import nx3.geom.Rectangle;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
 import snap.Snap;
 using nx3.ENoteValTools;
+
 /**
  * ...
  * @author Jonas Nyström
@@ -51,7 +50,6 @@ class TargetSvg implements ITarget
 			});
 		}		
 	}	
-	
 		
 	/*
 	public function test():Void 

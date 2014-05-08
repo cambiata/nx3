@@ -1,7 +1,7 @@
 package nx3;
  import haxe.ds.IntMap.IntMap;
  import nx3.PBar;
- using nx3.VMapTools;
+ using cx.MapTools;
  using cx.ArrayTools;
 /**
  * ...

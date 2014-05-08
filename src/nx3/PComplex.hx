@@ -74,16 +74,16 @@ class PComplex
 		return secondoffset;
 	}
 	
-	var signs:VSigns;
-	public function getSigns():VSigns
+	var signs:PSigns;
+	public function getSigns():PSigns
 	{
 		if (this.signs != null) return this.signs;
 		this.signs = new PSignsCalculator(this.getNotes()).getSigns();
 		return this.signs;
 	}
 	
-	var visiblesigns:VSigns;
-	public function getVisibleSigns():VSigns
+	var visiblesigns:PSigns;
+	public function getVisibleSigns():PSigns
 	{
 		if (this.visiblesigns != null) return this.visiblesigns;
 		this.visiblesigns =  new PSignsCalculator(this.getNotes()).getVisibleSigns();

@@ -643,6 +643,22 @@ cx.EnumTools.createFromString = function(e,str) {
 	}
 	return null;
 };
+cx.MapTools = function() { };
+cx.MapTools.__name__ = ["cx","MapTools"];
+cx.MapTools.keysToArray = function(it) {
+	var result = [];
+	while( it.hasNext() ) {
+		var v = it.next();
+		result.push(v);
+	}
+	return result;
+};
+cx.MapTools.sortarray = function(a) {
+	a.sort(function(a1,b) {
+		return Reflect.compare(a1,b);
+	});
+	return a;
+};
 cx.MathTools = function() { };
 cx.MathTools.__name__ = ["cx","MathTools"];
 cx.MathTools.floatFromString = function(str,comma) {
@@ -671,7 +687,7 @@ cx.MathTools.floatRange = function(min,value,max) {
 	return value;
 };
 cx.MathTools.round2 = function(number,precision) {
-	if(precision == null) precision = 8;
+	if(precision == null) precision = 6;
 	number = number * Math.pow(10,precision);
 	number = Math.round(number) / Math.pow(10,precision);
 	return number;
@@ -1783,9 +1799,6 @@ nx3.EDisplayALN.Layout.__enum__ = nx3.EDisplayALN;
 nx3.EDisplayALN.Never = ["Never",2];
 nx3.EDisplayALN.Never.toString = $estr;
 nx3.EDisplayALN.Never.__enum__ = nx3.EDisplayALN;
-nx3.EDot = { __ename__ : true, __constructs__ : ["Normal","Double"] };
-nx3.EDot.Normal = function(level) { var $x = ["Normal",0,level]; $x.__enum__ = nx3.EDot; $x.toString = $estr; return $x; };
-nx3.EDot.Double = function(level) { var $x = ["Double",1,level]; $x.__enum__ = nx3.EDot; $x.toString = $estr; return $x; };
 nx3.EHeadPosition = { __ename__ : true, __constructs__ : ["Left","Center","Right"] };
 nx3.EHeadPosition.Left = ["Left",0];
 nx3.EHeadPosition.Left.toString = $estr;
@@ -3691,7 +3704,7 @@ nx3.PColumnsGenerator.prototype = {
 			var vpart = vparts[_g];
 			++_g;
 			var poss;
-			var _this = nx3.VMapTools.keysToArray(vpart.getPositionsComplexes().keys());
+			var _this = cx.MapTools.keysToArray(vpart.getPositionsComplexes().keys());
 			poss = _this.slice();
 			var _g1 = 0;
 			while(_g1 < poss.length) {
@@ -3700,7 +3713,7 @@ nx3.PColumnsGenerator.prototype = {
 				positionsMap.set(pos,true);
 			}
 		}
-		var positions = nx3.VMapTools.keysToArray(positionsMap.keys());
+		var positions = cx.MapTools.keysToArray(positionsMap.keys());
 		positions.sort(function(a,b) {
 			return Reflect.compare(a,b);
 		});
@@ -4550,8 +4563,8 @@ nx3.PPartComplexesGenerator.prototype = {
 	}
 	,calcComplexes: function(positions) {
 		this.complexes = [];
-		var poskeys = nx3.VMapTools.keysToArray(positions.keys());
-		poskeys = nx3.VMapTools.sortarray(poskeys);
+		var poskeys = cx.MapTools.keysToArray(positions.keys());
+		poskeys = cx.MapTools.sortarray(poskeys);
 		var _g = 0;
 		while(_g < poskeys.length) {
 			var pos = poskeys[_g];
@@ -4812,7 +4825,7 @@ nx3.PSignsCalculator.prototype = {
 		return visibleSigns;
 	}
 	,calcUnsortedSigns: function(notes) {
-		var vsigns = [];
+		var PSigns = [];
 		var _g = 0;
 		while(_g < notes.length) {
 			var note = notes[_g];
@@ -4823,16 +4836,16 @@ nx3.PSignsCalculator.prototype = {
 				var nhead = _g2[_g1];
 				++_g1;
 				var tsign = { sign : nhead.sign, level : nhead.level, position : 0};
-				vsigns.push(tsign);
+				PSigns.push(tsign);
 			}
 		}
-		return vsigns;
+		return PSigns;
 	}
-	,calcSortSigns: function(vsigns) {
-		vsigns.sort(function(a,b) {
+	,calcSortSigns: function(PSigns) {
+		PSigns.sort(function(a,b) {
 			return Reflect.compare(a.level,b.level);
 		});
-		return vsigns;
+		return PSigns;
 	}
 	,__class__: nx3.PSignsCalculator
 };
@@ -5900,2167 +5913,6 @@ nx3.QVoiceUp.__super__ = nx3.QVoice;
 nx3.QVoiceUp.prototype = $extend(nx3.QVoice.prototype,{
 	__class__: nx3.QVoiceUp
 });
-nx3.VBamegroupFrameTipCalculator = function(notelevels,direction) {
-	if(direction == nx3.EDirectionUD.Down) {
-		var invertedLevels = new Array();
-		var _g = 0;
-		while(_g < notelevels.length) {
-			var level = notelevels[_g];
-			++_g;
-			invertedLevels.push(level * -1);
-		}
-		notelevels = invertedLevels;
-	}
-	this.notelevels = notelevels;
-	this.direction = direction;
-};
-nx3.VBamegroupFrameTipCalculator.__name__ = ["nx3","VBamegroupFrameTipCalculator"];
-nx3.VBamegroupFrameTipCalculator.intMin = function(levels) {
-	var result = levels[0];
-	if(levels.length == 1) return result;
-	var _g = 0;
-	while(_g < levels.length) {
-		var level = levels[_g];
-		++_g;
-		result = Std["int"](Math.min(result,level));
-	}
-	return result;
-};
-nx3.VBamegroupFrameTipCalculator.intMax = function(levels) {
-	var result = levels[0];
-	if(levels.length == 1) return result;
-	var _g = 0;
-	while(_g < levels.length) {
-		var level = levels[_g];
-		++_g;
-		result = Std["int"](Math.max(result,level));
-	}
-	return result;
-};
-nx3.VBamegroupFrameTipCalculator.prototype = {
-	notelevels: null
-	,direction: null
-	,getTips: function() {
-		var stemLength = 7;
-		var min = nx3.VBamegroupFrameTipCalculator.intMin(this.notelevels);
-		var leftTip = this.notelevels[0];
-		var rightTip = cx.ArrayTools.last(this.notelevels);
-		leftTip = nx3.VBamegroupFrameTipCalculator.intMin([leftTip,rightTip + 2,stemLength]);
-		rightTip = nx3.VBamegroupFrameTipCalculator.intMin([rightTip,leftTip + 2,stemLength]);
-		if(this.notelevels.length > 2) {
-			var inlevels = this.notelevels.slice();
-			inlevels.shift();
-			inlevels.pop();
-			var inmin = nx3.VBamegroupFrameTipCalculator.intMin(inlevels);
-			if(leftTip >= inmin && rightTip >= inmin) {
-				leftTip = inmin;
-				rightTip = inmin;
-			} else if(rightTip < leftTip && min < leftTip) leftTip = nx3.VBamegroupFrameTipCalculator.intMin([min + 2,leftTip]); else if(leftTip < rightTip && min < rightTip) rightTip = nx3.VBamegroupFrameTipCalculator.intMin([min + 2,rightTip]);
-		}
-		leftTip = Std["int"](Math.min(stemLength,leftTip));
-		rightTip = Std["int"](Math.min(stemLength,rightTip));
-		if(this.direction == nx3.EDirectionUD.Down) return { leftTip : -leftTip, rightTip : -rightTip};
-		return { leftTip : leftTip, rightTip : rightTip};
-	}
-	,__class__: nx3.VBamegroupFrameTipCalculator
-};
-nx3.VBar = function(nbar) {
-	this._keys = null;
-	this._clefs = null;
-	this.nbar = nbar;
-};
-nx3.VBar.__name__ = ["nx3","VBar"];
-nx3.VBar.prototype = {
-	nbar: null
-	,clefs: null
-	,keys: null
-	,time: null
-	,_clefs: null
-	,get_clefs: function() {
-		if(this._clefs != null) return this._clefs;
-		this._clefs = new Array();
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			this._clefs.push(vpart.npart.clef);
-		}
-		return this._clefs;
-	}
-	,_keys: null
-	,get_keys: function() {
-		if(this._keys != null) return this._keys;
-		this._keys = new Array();
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			this._keys.push(vpart.npart.key);
-		}
-		return this._keys;
-	}
-	,get_time: function() {
-		return this.nbar.time;
-	}
-	,displayClefs: null
-	,displayKeys: null
-	,displayTime: null
-	,get_displayClefs: function() {
-		var result = nx3.EDisplayALN.Never;
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			if(vpart.npart.clefDisplay == null) result = nx3.EDisplayALN.Layout;
-			if(vpart.npart.clefDisplay == nx3.EDisplayALN.Layout) result = nx3.EDisplayALN.Layout;
-			if(vpart.npart.clefDisplay == nx3.EDisplayALN.Always) {
-				result = nx3.EDisplayALN.Always;
-				break;
-			}
-		}
-		return result;
-	}
-	,get_displayKeys: function() {
-		var result = nx3.EDisplayALN.Never;
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			if(vpart.npart.keyDisplay == null) result = nx3.EDisplayALN.Layout;
-			if(vpart.npart.keyDisplay == nx3.EDisplayALN.Layout) result = nx3.EDisplayALN.Layout;
-			if(vpart.npart.keyDisplay == nx3.EDisplayALN.Always) {
-				result = nx3.EDisplayALN.Always;
-				break;
-			}
-		}
-		return result;
-	}
-	,get_displayTime: function() {
-		var result;
-		if(this.nbar.timeDisplay != null) result = this.nbar.timeDisplay; else result = nx3.EDisplayALN.Layout;
-		return this.nbar.timeDisplay;
-	}
-	,vparts: null
-	,getVParts: function() {
-		if(this.vparts != null) return this.vparts;
-		this.vparts = [];
-		var _g = 0;
-		var _g1 = this.nbar.nparts;
-		while(_g < _g1.length) {
-			var npart = _g1[_g];
-			++_g;
-			this.vparts.push(new nx3.VPart(npart));
-		}
-		return this.vparts;
-	}
-	,vcolumns: null
-	,getVColumns: function() {
-		if(this.vcolumns != null) return this.vcolumns;
-		if(this.vparts == null) this.getVParts();
-		var generator = new nx3.VBarColumnsGenerator(this.vparts);
-		this.vcolumns = generator.getColumns();
-		this.positionsVColumns = generator.getPositionsColumns();
-		return this.vcolumns;
-	}
-	,positionsVColumns: null
-	,getPositionsColumns: function() {
-		if(this.positionsVColumns == null) this.getVColumns();
-		return this.positionsVColumns;
-	}
-	,vcolumnsPositions: null
-	,getVColumnsPositions: function() {
-		if(this.positionsVColumns == null) this.getVColumns();
-		this.vcolumnsPositions = new haxe.ds.ObjectMap();
-		var $it0 = this.positionsVColumns.keys();
-		while( $it0.hasNext() ) {
-			var pos = $it0.next();
-			var vcolumn = this.positionsVColumns.get(pos);
-			this.vcolumnsPositions.set(vcolumn,pos);
-		}
-		return this.vcolumnsPositions;
-	}
-	,value: null
-	,getValue: function() {
-		if(this.value != null) return this.value;
-		var value = .0;
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			value = Math.max(value,vpart.getValue());
-		}
-		this.value = value | 0;
-		return this.value;
-	}
-	,vnotesVColumns: null
-	,getVNotesVColumns: function() {
-		if(this.vnotesVColumns != null) return this.vnotesVColumns;
-		this.vnotesVColumns = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vpart.getVVoices();
-			while(_g2 < _g3.length) {
-				var vvoice = _g3[_g2];
-				++_g2;
-				var _g4 = 0;
-				var _g5 = vvoice.getVNotes();
-				while(_g4 < _g5.length) {
-					var vnote = _g5[_g4];
-					++_g4;
-					var pos;
-					var this1 = vvoice.getVNotePositions();
-					pos = this1.get(vnote);
-					var vcolumn = this.getPositionsColumns().get(pos);
-					this.vnotesVColumns.set(vnote,vcolumn);
-				}
-			}
-		}
-		return this.vnotesVColumns;
-	}
-	,vcomplexesVColumns: null
-	,getVComplexesVColumns: function() {
-		if(this.vcomplexesVColumns != null) return this.vcomplexesVColumns;
-		this.vcomplexesVColumns = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vpart.getVComplexes();
-			while(_g2 < _g3.length) {
-				var vcomplex = _g3[_g2];
-				++_g2;
-				var pos;
-				var this1 = vpart.getVComplexesPositions();
-				pos = this1.get(vcomplex);
-				var vcolumn = this.getPositionsColumns().get(pos);
-				this.vcomplexesVColumns.set(vcomplex,vcolumn);
-			}
-		}
-		return this.vcomplexesVColumns;
-	}
-	,vcolumnsMinDistances: null
-	,vcolumnsMinPositions: null
-	,getVColumnsMinDistances: function() {
-		if(this.vcolumnsMinDistances != null) return this.vcolumnsMinDistances;
-		var distancesData = new nx3.VBarColumnsMinDistancesGenerator(this).getDistancesData();
-		this.vcolumnsMinDistances = distancesData.distances;
-		this.vcolumnsMinPositions = distancesData.positions;
-		return this.vcolumnsMinDistances;
-	}
-	,getVColumnsMinPositions: function() {
-		if(this.vcolumnsMinPositions != null) return this.vcolumnsMinPositions;
-		if(this.vcolumnsMinDistances == null) this.getVColumnsMinDistances();
-		return this.vcolumnsMinPositions;
-	}
-	,vcolumnsMinWidth: null
-	,getVColumnsMinWidth: function() {
-		if(this.vcolumnsMinWidth != null) return this.vcolumnsMinWidth;
-		if(this.vcolumnsMinDistances == null) this.getVColumnsMinDistances();
-		var lastColumn = cx.ArrayTools.last(this.getVColumns());
-		var lastPosition;
-		var this1 = this.getVColumnsMinPositions();
-		lastPosition = this1.get(lastColumn);
-		var lastDistance;
-		var this2 = this.getVColumnsMinDistances();
-		lastDistance = this2.get(lastColumn);
-		this.vcolumnsMinWidth = lastPosition + lastDistance;
-		return this.vcolumnsMinWidth;
-	}
-	,__class__: nx3.VBar
-};
-nx3.VBarColumnsGenerator = function(vparts) {
-	this.vparts = vparts;
-};
-nx3.VBarColumnsGenerator.__name__ = ["nx3","VBarColumnsGenerator"];
-nx3.VBarColumnsGenerator.prototype = {
-	vparts: null
-	,positions: null
-	,columns: null
-	,positionsColumns: null
-	,getColumns: function() {
-		if(this.columns != null) return this.columns;
-		this.positions = this.calcPositions(this.vparts);
-		this.calcColumns(this.positions,this.vparts);
-		return this.columns;
-	}
-	,getPositionsColumns: function() {
-		if(this.columns == null) this.getColumns();
-		return this.positionsColumns;
-	}
-	,vcomplexesVColumns: null
-	,getVComplexesVColumns: function() {
-		if(this.columns == null) this.getColumns();
-		return this.vcomplexesVColumns;
-	}
-	,calcColumns: function(positions,vparts) {
-		var partsCount = vparts.length;
-		this.columns = [];
-		this.positionsColumns = new haxe.ds.IntMap();
-		var _g = 0;
-		while(_g < positions.length) {
-			var pos = positions[_g];
-			++_g;
-			var vcomplexes = [];
-			var _g1 = 0;
-			while(_g1 < vparts.length) {
-				var vpart = vparts[_g1];
-				++_g1;
-				var complex = vpart.getPositionsVComplexes().get(pos);
-				vcomplexes.push(complex);
-			}
-			var vcolumn = new nx3.VColumn(vcomplexes);
-			this.columns.push(vcolumn);
-			this.positionsColumns.set(pos,vcolumn);
-		}
-	}
-	,calcPositions: function(vparts) {
-		var positionsMap = new haxe.ds.IntMap();
-		var _g = 0;
-		while(_g < vparts.length) {
-			var vpart = vparts[_g];
-			++_g;
-			var poss = nx3.VMapTools.keysToArray(vpart.getPositionsVComplexes().keys());
-			var _g1 = 0;
-			while(_g1 < poss.length) {
-				var pos = poss[_g1];
-				++_g1;
-				positionsMap.set(pos,true);
-			}
-		}
-		var positions = nx3.VMapTools.keysToArray(positionsMap.keys());
-		positions.sort(function(a,b) {
-			return Reflect.compare(a,b);
-		});
-		return positions;
-	}
-	,__class__: nx3.VBarColumnsGenerator
-};
-nx3.VBarColumnsMinDistancesGenerator = function(vbar) {
-	this.vbar = vbar;
-};
-nx3.VBarColumnsMinDistancesGenerator.__name__ = ["nx3","VBarColumnsMinDistancesGenerator"];
-nx3.VBarColumnsMinDistancesGenerator.prototype = {
-	vbar: null
-	,getDistancesData: function() {
-		var distances = this.getDistances();
-		var positions = this.getPositions(distances);
-		return { distances : distances, positions : positions};
-	}
-	,getDistances: function() {
-		var distances = new haxe.ds.ObjectMap();
-		var positions = new haxe.ds.ObjectMap();
-		var nrOfColumns = this.vbar.getVColumns().length;
-		var nrOfParts = this.vbar.getVParts().length;
-		var prevComplexBucket = new haxe.ds.IntMap();
-		var prevColumnBucket = new haxe.ds.IntMap();
-		var curpos = 0;
-		var _g = 0;
-		while(_g < nrOfColumns) {
-			var ic = _g++;
-			var column = this.vbar.getVColumns()[ic];
-			var nextColumn = cx.ArrayTools.indexOrNull(this.vbar.getVColumns(),ic + 1);
-			var maxdist = 0;
-			var _g1 = 0;
-			while(_g1 < nrOfParts) {
-				var ip = _g1++;
-				var vpart = this.vbar.getVParts()[ip];
-				var complex = column.vcomplexes[ip];
-				var nextcomplex;
-				if(nextColumn != null) nextcomplex = nextColumn.vcomplexes[ip]; else nextcomplex = null;
-				if(complex != null && nextcomplex != null) {
-					var dist = new nx3.VPartComplexesMinDistancesCalculator(vpart).getDistance(complex,nextcomplex);
-					maxdist = Math.max(maxdist,dist);
-					prevComplexBucket.set(ip,complex);
-					prevColumnBucket.set(ip,column);
-				} else if(complex == null && nextcomplex != null) maxdist = Math.max(3.2,maxdist); else if(complex != null && nextcomplex == null) {
-					var dist1 = new nx3.VPartComplexesMinDistancesCalculator(vpart).getDistance(complex,nextcomplex);
-					maxdist = Math.max(maxdist,dist1);
-					prevComplexBucket.set(ip,complex);
-					prevColumnBucket.set(ip,column);
-				} else {
-				}
-			}
-			distances.set(column,maxdist);
-			positions.set(column,curpos);
-			curpos = curpos + maxdist;
-		}
-		return distances;
-	}
-	,getPositions: function(distances) {
-		var positions = new haxe.ds.ObjectMap();
-		var curpos = this.getFirstColumnPosition();
-		var _g = 0;
-		var _g1 = this.vbar.getVColumns();
-		while(_g < _g1.length) {
-			var vcolumn = _g1[_g];
-			++_g;
-			var distance = distances.h[vcolumn.__id__];
-			positions.set(vcolumn,curpos);
-			curpos = curpos + distance;
-		}
-		return positions;
-	}
-	,getFirstColumnPosition: function() {
-		var pos = 0;
-		var _g = 0;
-		var _g1 = this.vbar.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			var distanceCalculator = new nx3.VPartComplexesMinDistancesCalculator(vpart);
-			var firstcomplex = cx.ArrayTools.first(vpart.getVComplexes());
-			var distancedata = distanceCalculator.getComplexLeftside(firstcomplex);
-			var _g2 = 0;
-			var _g3 = distancedata.rects;
-			while(_g2 < _g3.length) {
-				var rect = _g3[_g2];
-				++_g2;
-				pos = Math.max(pos,-rect.x);
-			}
-		}
-		return pos;
-	}
-	,__class__: nx3.VBarColumnsMinDistancesGenerator
-};
-nx3.VBeamgroup = function(vnotes) {
-	this.value = null;
-	this.vnotes = vnotes;
-};
-nx3.VBeamgroup.__name__ = ["nx3","VBeamgroup"];
-nx3.VBeamgroup.prototype = {
-	vnotes: null
-	,direction: null
-	,getDirection: function() {
-		if(this.direction != null) return this.direction;
-		this.direction = new nx3.VBeamgroupDirectionCalculator(this).getDirection();
-		return this.direction;
-	}
-	,setDirection: function(val) {
-		return this.direction = val;
-	}
-	,calculatedDirection: null
-	,getCalculatedDirection: function() {
-		if(this.calculatedDirection == null) throw "direction is not calculated";
-		return this.calculatedDirection;
-	}
-	,setCalculatedDirection: function(direction) {
-		this.calculatedDirection = direction;
-	}
-	,calculator: null
-	,frame: null
-	,getFrame: function() {
-		if(this.frame != null) return this.frame;
-		var firstnote = this.vnotes[0].nnote;
-		if(firstnote.type[0] != "Note") return null;
-		if(this.vnotes.length == 1) {
-			var stavinglevel = nx3.ENoteValTools.stavinglevel(firstnote.value);
-			if(stavinglevel <= 0) return null;
-		}
-		if(this.calculatedDirection == null) {
-			throw "error";
-			haxe.Log.trace("direction should be calculated befor getting frame",{ fileName : "VBeamgroup.hx", lineNumber : 66, className : "nx3.VBeamgroup", methodName : "getFrame"});
-			this.calculatedDirection = this.getDirection();
-		}
-		this.calculator = new nx3.VBeamgroupFrameCalculator(this);
-		this.frame = this.calculator.getFrame();
-		return this.frame;
-	}
-	,value: null
-	,getValue: function() {
-		if(this.value != null) return this.value;
-		this.value = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			this.value += nx3.ENoteValTools.value(vnote.nnote.value);
-		}
-		return this.value;
-	}
-	,__class__: nx3.VBeamgroup
-};
-nx3.VBeamgroupDirectionCalculator = function(beamgroup) {
-	this.beamgroup = beamgroup;
-};
-nx3.VBeamgroupDirectionCalculator.__name__ = ["nx3","VBeamgroupDirectionCalculator"];
-nx3.VBeamgroupDirectionCalculator.prototype = {
-	beamgroup: null
-	,getDirection: function() {
-		this.topLevel = this.findTopLevel();
-		this.bottomLevel = this.findBottomLevel();
-		if(this.topLevel + this.bottomLevel <= 0) return nx3.EDirectionUD.Down;
-		return nx3.EDirectionUD.Up;
-	}
-	,topLevel: null
-	,findTopLevel: function() {
-		var topLevel = this.beamgroup.vnotes[0].nnote.getTopLevel();
-		if(this.beamgroup.vnotes.length == 1) return topLevel;
-		var _g1 = 1;
-		var _g = this.beamgroup.vnotes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var level = this.beamgroup.vnotes[i].nnote.getTopLevel();
-			topLevel = Std["int"](Math.min(topLevel,level));
-		}
-		return topLevel;
-	}
-	,bottomLevel: null
-	,findBottomLevel: function() {
-		var bottomLevel = this.beamgroup.vnotes[0].nnote.getBottomLevel();
-		if(this.beamgroup.vnotes.length == 1) return bottomLevel;
-		var _g1 = 1;
-		var _g = this.beamgroup.vnotes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var level = this.beamgroup.vnotes[i].nnote.getBottomLevel();
-			bottomLevel = Std["int"](Math.max(bottomLevel,level));
-		}
-		return bottomLevel;
-	}
-	,__class__: nx3.VBeamgroupDirectionCalculator
-};
-nx3.VBeamgroupFrameCalculator = function(beamgroup) {
-	this.beamgroup = beamgroup;
-};
-nx3.VBeamgroupFrameCalculator.__name__ = ["nx3","VBeamgroupFrameCalculator"];
-nx3.VBeamgroupFrameCalculator.prototype = {
-	beamgroup: null
-	,outerLevels: null
-	,innerLevels: null
-	,getFrame: function() {
-		this.calcLevelArrays();
-		var frame = this.calcFramePrototype();
-		return frame;
-	}
-	,calcFramePrototype: function() {
-		var count = this.innerLevels.length;
-		var tips = this.calcTips();
-		return { leftInnerY : this.innerLevels[0], leftOuterY : this.outerLevels[0], rightInnerY : this.innerLevels[count - 1], rightOuterY : this.outerLevels[count - 1], leftTipY : tips.leftTip, rightTipY : tips.rightTip, outerLevels : this.outerLevels, innerLevels : this.innerLevels};
-	}
-	,getTopLevels: function() {
-		var levels = [];
-		var _g = 0;
-		var _g1 = this.beamgroup.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			levels.push(vnote.nnote.getTopLevel());
-		}
-		return levels;
-	}
-	,getBottomLevels: function() {
-		var levels = [];
-		var _g = 0;
-		var _g1 = this.beamgroup.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			levels.push(vnote.nnote.getBottomLevel());
-		}
-		return levels;
-	}
-	,calcLevelArrays: function() {
-		var _g = this.beamgroup.getCalculatedDirection();
-		switch(_g[1]) {
-		case 0:
-			this.outerLevels = this.getTopLevels();
-			this.innerLevels = this.getBottomLevels();
-			break;
-		case 1:
-			this.outerLevels = this.getBottomLevels();
-			this.innerLevels = this.getTopLevels();
-			break;
-		}
-	}
-	,calcTips: function() {
-		var stemLenght = 7;
-		var direction = this.beamgroup.getCalculatedDirection();
-		var calculator = new nx3.VBamegroupFrameTipCalculator(this.outerLevels,direction);
-		var tips = calculator.getTips();
-		if(direction == nx3.EDirectionUD.Up) tips.leftTip = tips.leftTip - stemLenght; else tips.leftTip = tips.leftTip + stemLenght;
-		if(direction == nx3.EDirectionUD.Up) tips.rightTip = tips.rightTip - stemLenght; else tips.rightTip = tips.rightTip + stemLenght;
-		return tips;
-	}
-	,__class__: nx3.VBeamgroupFrameCalculator
-};
-nx3.VColumn = function(vcomplexes) {
-	this.vcomplexes = vcomplexes;
-};
-nx3.VColumn.__name__ = ["nx3","VColumn"];
-nx3.VColumn.prototype = {
-	vcomplexes: null
-	,__class__: nx3.VColumn
-};
-nx3.VComplex = function(vnotes,directions) {
-	this.notesHeadsRects = null;
-	this.notesHeadsRectsDirCheck = null;
-	if(vnotes.length > 2) throw "VComplex nr of VNote(s) limited to max 2 - for now";
-	this.vnotes = vnotes;
-};
-nx3.VComplex.__name__ = ["nx3","VComplex"];
-nx3.VComplex.prototype = {
-	vnotes: null
-	,signs: null
-	,visibleSigns: null
-	,calculator: null
-	,getVNotes: function() {
-		return this.vnotes;
-	}
-	,getSigns: function() {
-		this.calculator = new nx3.VComplexSignsCalculator(this.vnotes);
-		this.signs = this.calculator.getSigns();
-		this.visibleSigns = this.calculator.getVisibleSigns();
-		return this.signs;
-	}
-	,getVisibleSigns: function() {
-		if(this.visibleSigns != null) return this.visibleSigns;
-		this.getSigns();
-		return this.visibleSigns;
-	}
-	,signRects: null
-	,getSignsRects: function(headsRects) {
-		if(this.signRects != null) return this.signRects;
-		if(this.getVisibleSigns().length == 0) return [];
-		this.signRects = new nx3.VComplexSignsRectsCalculator(this.getVisibleSigns()).getSignRects(headsRects);
-		return this.signRects;
-	}
-	,tiestoRects: null
-	,getTiestoRects: function(headsRects) {
-		if(this.signRects == null) this.getSignsRects(headsRects);
-		if(this.tiestoRects != null) return this.tiestoRects;
-		var rects;
-		if(this.signRects != null && this.signRects.length > 0) rects = this.signRects; else rects = headsRects;
-		this.tiestoRects = new nx3.VComplexTiestoRectsCalculator(this.getComplexTiestos()).getTiestoRects(rects);
-		return this.tiestoRects;
-	}
-	,getComplexTiestos: function() {
-		return null;
-	}
-	,dotsRects: null
-	,getDotsRects: function(headsRects,directions) {
-		if(this.dotsRects != null) return this.dotsRects;
-		this.dotsRects = new nx3.VComplexDotsRectsCalculator(this.getDots(directions)).getDotsRects(headsRects);
-		return this.dotsRects;
-	}
-	,getDots: function(directions) {
-		var result = null;
-		var _g = 0;
-		var _g1 = this.getVNotes();
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			var dotlevel = nx3.ENoteValTools.dotlevel(vnote.nnote.value);
-			if(dotlevel != 0) {
-				if(result == null) result = new Array();
-				var _g2 = 0;
-				var _g3 = vnote.nnote.get_nheads();
-				while(_g2 < _g3.length) {
-					var nhead = _g3[_g2];
-					++_g2;
-					var dot = nx3.EDot.Normal(nhead.level);
-					if(dotlevel == 2) dot = nx3.EDot.Double(nhead.level);
-					result.push(dot);
-				}
-			}
-		}
-		return result;
-	}
-	,getHeadsCollisionOffsetX: function(note,direction) {
-		if(this.vnotes.length == 1) return 0;
-		if(note == this.vnotes[0]) return 0;
-		var firstnote = this.vnotes[0];
-		var secondnote = note;
-		var diff = secondnote.nnote.getTopLevel() - firstnote.nnote.getBottomLevel();
-		var offsetX = 0.0;
-		if(diff < 1) if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 4.4; else offsetX = 3.2;
-		if(diff == 1) {
-			if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 4.4; else offsetX = 3.2;
-			if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 0.9 * offsetX; else offsetX = 0.7 * offsetX;
-		}
-		return offsetX;
-	}
-	,getRectanglesXIntersection: function(rectsA,rectsB) {
-		var rectsB2 = new Array();
-		var _g = 0;
-		while(_g < rectsB.length) {
-			var r = rectsB[_g];
-			++_g;
-			rectsB2.push(r.clone());
-		}
-		var check = function() {
-			var _g1 = 0;
-			while(_g1 < rectsA.length) {
-				var ra = rectsA[_g1];
-				++_g1;
-				var _g11 = 0;
-				while(_g11 < rectsB2.length) {
-					var rb = rectsB2[_g11];
-					++_g11;
-					var i = ra.intersection(rb);
-					if(i.width > 0) return i.width;
-				}
-			}
-			return 0;
-		};
-		var x = 0;
-		var moveX = check();
-		while(moveX > 0) {
-			x += moveX;
-			var _g2 = 0;
-			while(_g2 < rectsB2.length) {
-				var r1 = rectsB2[_g2];
-				++_g2;
-				r1.offset(moveX,0);
-			}
-			moveX = check();
-		}
-		return x;
-	}
-	,getNoteHeadsRects: function(note,dir) {
-		if(dir == null) dir = new nx3.VNoteInternalDirectionCalculator(note.getVHeads()).getDirection();
-		if(note == this.vnotes[0]) return note.getVHeadsRectanglesDir(dir);
-		var rects = note.getVHeadsRectanglesDir(dir);
-		var offsetX = this.getHeadsCollisionOffsetX(note,dir);
-		var _g = 0;
-		while(_g < rects.length) {
-			var rect = rects[_g];
-			++_g;
-			rect.offset(offsetX,0);
-		}
-		return rects;
-	}
-	,getNoteRect: function(note,dir) {
-		var result = null;
-		if(note == this.vnotes[0]) {
-			if(dir == null) dir = new nx3.VNoteInternalDirectionCalculator(note.getVHeads()).getDirection();
-			var rects = note.getVHeadsRectanglesDir(dir);
-			result = rects[0].clone();
-			var _g1 = 1;
-			var _g = rects.length;
-			while(_g1 < _g) {
-				var i = _g1++;
-				result = result.union(rects[i]);
-			}
-			return result;
-		}
-		if(dir == null) dir = new nx3.VNoteInternalDirectionCalculator(note.getVHeads()).getDirection();
-		var rects1 = note.getVHeadsRectanglesDir(dir);
-		result = rects1[0].clone();
-		var _g11 = 1;
-		var _g2 = rects1.length;
-		while(_g11 < _g2) {
-			var i1 = _g11++;
-			result = result.union(rects1[i1]);
-		}
-		var offsetX = this.getHeadsCollisionOffsetX(note,dir);
-		result.offset(offsetX,0);
-		return result;
-	}
-	,getNotesRects: function(directions) {
-		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
-		var result = new Array();
-		var _g1 = 0;
-		var _g = this.getVNotes().length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var vnote = this.getVNotes()[i];
-			var rect = this.getNoteRect(vnote,directions[i]);
-			result.push(rect);
-		}
-		return result;
-	}
-	,notesHeadsRectsDirCheck: null
-	,notesHeadsRects: null
-	,getNotesHeadsRects: function(directions) {
-		if(this.notesHeadsRects != null && this.notesHeadsRectsDirCheck == directions) return this.notesHeadsRects;
-		this.notesHeadsRectsDirCheck = directions;
-		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
-		this.notesHeadsRects = new Array();
-		var _g1 = 0;
-		var _g = this.getVNotes().length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var vnote = this.getVNotes()[i];
-			var rects = this.getNoteHeadsRects(vnote,directions[i]);
-			var _g2 = 0;
-			while(_g2 < rects.length) {
-				var rect = rects[_g2];
-				++_g2;
-				this.notesHeadsRects.push(rect);
-			}
-		}
-		return this.notesHeadsRects;
-	}
-	,getStaveBasicRects: function(directions,beamgroups) {
-		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
-		var firstnote = cx.ArrayTools.first(this.getVNotes());
-		var result = new Array();
-		var flags = new Array();
-		var _g1 = 0;
-		var _g = this.getVNotes().length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var vnote = this.getVNotes()[i];
-			if(nx3.ENoteValTools.stavinglevel(vnote.nnote.value) == 0) continue;
-			if(vnote.nnote.type[0] != "Note") continue;
-			var beamgroup;
-			if(beamgroups != null) beamgroup = beamgroups[i]; else beamgroup = null;
-			var direction = directions[i];
-			var rect = null;
-			var headw;
-			var _g2 = nx3.ENoteValTools.head(vnote.nnote.value);
-			switch(_g2[1]) {
-			case 2:
-				headw = 2.2;
-				break;
-			default:
-				headw = 1.6;
-			}
-			var offset = 0.0;
-			if(vnote != firstnote) offset = this.getHeadsCollisionOffsetX(vnote,direction);
-			if(direction == nx3.EDirectionUD.Up) rect = new nx3.geom.Rectangle(0,vnote.nnote.getBottomLevel() - 7,headw,7); else rect = new nx3.geom.Rectangle(-headw,vnote.nnote.getTopLevel(),headw,7);
-			if(offset != 0) rect.offset(offset,0);
-			result.push(rect);
-			if(beamgroup != null && beamgroup.vnotes.length == 1) {
-				if(nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) {
-					var flagrect = null;
-					if(direction == nx3.EDirectionUD.Up) flagrect = new nx3.geom.Rectangle(headw,vnote.nnote.getBottomLevel() - 7,2.6,4.8); else flagrect = new nx3.geom.Rectangle(-headw,vnote.nnote.getTopLevel() + 7 - 4.8,2.6,4.8);
-					if(offset != 0) flagrect.offset(offset,0);
-					flags.push(flagrect);
-				}
-			}
-		}
-		if(flags != []) result = result.concat(flags);
-		return result;
-	}
-	,getStaveNoteBasicRectAndDirections: function(note,directions) {
-		var rects = this.getStaveBasicRects(directions);
-		if(note == cx.ArrayTools.first(this.getVNotes())) return { rect : rects[0], dir : directions[0]};
-		return { rect : rects[1], dir : directions[1]};
-	}
-	,getStavesBasicX: function(directions) {
-		var rects = this.getStaveBasicRects(directions);
-		var result = new Array();
-		var _g1 = 0;
-		var _g = this.getVNotes().length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var vnote = this.getVNotes()[i];
-			var rectDir = this.getStaveNoteBasicRectAndDirections(vnote,directions);
-			var direction = rectDir.dir;
-			var rect = rectDir.rect;
-			if(rect == null) {
-				result.push({ x : 0, y : 0});
-				continue;
-			}
-			var x = 0.0;
-			var y = 0.0;
-			if(direction == nx3.EDirectionUD.Up) {
-				x += rect.width;
-				y = vnote.nnote.getBottomLevel();
-			} else {
-				x = rect.x;
-				y = vnote.nnote.getTopLevel();
-			}
-			result.push({ x : x, y : y});
-		}
-		return result;
-	}
-	,__class__: nx3.VComplex
-};
-nx3.VComplexDotsRectsCalculator = function(dots) {
-	this.dots = dots;
-};
-nx3.VComplexDotsRectsCalculator.__name__ = ["nx3","VComplexDotsRectsCalculator"];
-nx3.VComplexDotsRectsCalculator.prototype = {
-	dots: null
-	,getDotsRects: function(headsRects) {
-		if(this.dots == null || this.dots == []) return [];
-		if(headsRects == null) headsRects = [];
-		var rects = [];
-		var _g = 0;
-		var _g1 = this.dots;
-		while(_g < _g1.length) {
-			var dot = _g1[_g];
-			++_g;
-			var rect = null;
-			switch(dot[1]) {
-			case 0:
-				var level = dot[2];
-				rect = new nx3.geom.Rectangle(0,level - 1,2.0,2);
-				break;
-			case 1:
-				var level1 = dot[2];
-				rect = new nx3.geom.Rectangle(0,level1 - 1,3.0,2);
-				break;
-			}
-			var _g2 = 0;
-			while(_g2 < headsRects.length) {
-				var hr = headsRects[_g2];
-				++_g2;
-				var i = rect.intersection(hr);
-				if(i.width > 0) rect.offset(i.width,0);
-			}
-			rects.push(rect);
-		}
-		return rects;
-	}
-	,__class__: nx3.VComplexDotsRectsCalculator
-};
-nx3.VComplexSignsCalculator = function(vnotes) {
-	this.vnotes = vnotes;
-};
-nx3.VComplexSignsCalculator.__name__ = ["nx3","VComplexSignsCalculator"];
-nx3.VComplexSignsCalculator.prototype = {
-	vnotes: null
-	,getSigns: function() {
-		var signs;
-		signs = this.calcUnsortedSigns(this.vnotes);
-		signs = this.calcSortSigns(signs);
-		return signs;
-	}
-	,visibleSigns: null
-	,getVisibleSigns: function() {
-		return this.calcVisibleSigns(this.getSigns());
-	}
-	,calcVisibleSigns: function(signs) {
-		var visibleSigns = [];
-		var _g = 0;
-		while(_g < signs.length) {
-			var sign = signs[_g];
-			++_g;
-			if(sign.sign == nx3.ESign.None) continue;
-			visibleSigns.push(sign);
-		}
-		return visibleSigns;
-	}
-	,calcUnsortedSigns: function(vnotes) {
-		var vsigns = [];
-		var _g = 0;
-		while(_g < vnotes.length) {
-			var vnote = vnotes[_g];
-			++_g;
-			var _g1 = 0;
-			var _g2 = vnote.nnote.get_nheads();
-			while(_g1 < _g2.length) {
-				var nhead = _g2[_g1];
-				++_g1;
-				var tsign = { sign : nhead.sign, level : nhead.level, position : 0};
-				vsigns.push(tsign);
-			}
-		}
-		return vsigns;
-	}
-	,calcSortSigns: function(vsigns) {
-		vsigns.sort(function(a,b) {
-			return Reflect.compare(a.level,b.level);
-		});
-		return vsigns;
-	}
-	,__class__: nx3.VComplexSignsCalculator
-};
-nx3.VComplexSignsRectsCalculator = function(vsigns) {
-	this.vsigns = vsigns;
-};
-nx3.VComplexSignsRectsCalculator.__name__ = ["nx3","VComplexSignsRectsCalculator"];
-nx3.VComplexSignsRectsCalculator.prototype = {
-	vsigns: null
-	,getSignRects: function(headsRects) {
-		var rects = new Array();
-		if(headsRects == null) headsRects = [];
-		var _g = 0;
-		var _g1 = this.vsigns;
-		while(_g < _g1.length) {
-			var vsign = _g1[_g];
-			++_g;
-			var rect = this.getSignRect(vsign.sign);
-			rect.offset(-rect.width,vsign.level);
-			var _g2 = 0;
-			while(_g2 < headsRects.length) {
-				var hr = headsRects[_g2];
-				++_g2;
-				var i = rect.intersection(hr);
-				var count = 0;
-				while(i.width > 0.0000001) {
-					rect.offset(-i.width,0);
-					i = rect.intersection(hr);
-					if(count > 5) break;
-					count++;
-				}
-			}
-			var _g21 = 0;
-			while(_g21 < rects.length) {
-				var r = rects[_g21];
-				++_g21;
-				var i1 = r.intersection(rect);
-				while(i1.width > 0 || i1.height > 0) {
-					rect.x = r.x - rect.width;
-					i1 = r.intersection(rect);
-				}
-			}
-			rects.push(rect);
-		}
-		return rects;
-	}
-	,getSignRect: function(sign) {
-		switch(sign[1]) {
-		case 0:
-			return null;
-		case 5:
-			return new nx3.geom.Rectangle(0,-1.5,2.6,3);
-		case 7:case 8:case 6:
-			return new nx3.geom.Rectangle(0,-2,4.4,4);
-		case 2:
-			return new nx3.geom.Rectangle(0,-3,2.6,5);
-		default:
-			return new nx3.geom.Rectangle(0,-3,2.6,6);
-		}
-		throw "This shouldn't happen!";
-		return null;
-	}
-	,__class__: nx3.VComplexSignsRectsCalculator
-};
-nx3.VComplexTiestoRectsCalculator = function(ties) {
-};
-nx3.VComplexTiestoRectsCalculator.__name__ = ["nx3","VComplexTiestoRectsCalculator"];
-nx3.VComplexTiestoRectsCalculator.prototype = {
-	getTiestoRects: function(rects) {
-		return null;
-	}
-	,__class__: nx3.VComplexTiestoRectsCalculator
-};
-nx3.VHead = function(nhead) {
-	this.nhead = nhead;
-};
-nx3.VHead.__name__ = ["nx3","VHead"];
-nx3.VHead.prototype = {
-	nhead: null
-	,__class__: nx3.VHead
-};
-nx3.VHeadPlacementCalculator = function(vheads,direction) {
-	this.vheads = vheads;
-	this.direction = direction;
-};
-nx3.VHeadPlacementCalculator.__name__ = ["nx3","VHeadPlacementCalculator"];
-nx3.VHeadPlacementCalculator.prototype = {
-	vheads: null
-	,direction: null
-	,getHeadsPlacements: function() {
-		if(this.vheads.length == 1) return [{ level : this.vheads[0].nhead.level, pos : nx3.EHeadPosition.Center}];
-		var len = this.vheads.length;
-		var placements = [];
-		var tempArray = [];
-		var _g = 0;
-		var _g1 = this.vheads;
-		while(_g < _g1.length) {
-			var vhead = _g1[_g];
-			++_g;
-			var placement = { level : vhead.nhead.level, pos : nx3.EHeadPosition.Center};
-			placements.push(placement);
-			tempArray.push(0);
-		}
-		if(this.direction == nx3.EDirectionUD.Up) {
-			var _g11 = 0;
-			var _g2 = len - 1;
-			while(_g11 < _g2) {
-				var j = _g11++;
-				var i = len - j - 1;
-				var vhead1 = this.vheads[i];
-				var vheadNext = this.vheads[i - 1];
-				var lDiff = vhead1.nhead.level - vheadNext.nhead.level;
-				if(lDiff < 2) {
-					if(tempArray[i] == tempArray[i - 1]) {
-						tempArray[i - 1] = 1;
-						placements[i - 1].pos = nx3.EHeadPosition.Right;
-					}
-				}
-			}
-		} else {
-			var _g12 = 0;
-			var _g3 = len - 1;
-			while(_g12 < _g3) {
-				var i1 = _g12++;
-				var vhead2 = this.vheads[i1];
-				var vheadNext1 = this.vheads[i1 + 1];
-				var lDiff1 = vheadNext1.nhead.level - vhead2.nhead.level;
-				if(lDiff1 < 2) {
-					if(tempArray[i1] == tempArray[i1 + 1]) {
-						tempArray[i1 + 1] = -1;
-						placements[i1 + 1].pos = nx3.EHeadPosition.Left;
-					}
-				}
-			}
-		}
-		return placements;
-	}
-	,__class__: nx3.VHeadPlacementCalculator
-};
-nx3.VHeadsRectsCalculator = function(vheads,placements,notevalue) {
-	this.vheads = vheads;
-	this.placements = placements;
-	this.notevalue = notevalue;
-};
-nx3.VHeadsRectsCalculator.__name__ = ["nx3","VHeadsRectsCalculator"];
-nx3.VHeadsRectsCalculator.prototype = {
-	vheads: null
-	,placements: null
-	,notevalue: null
-	,notetype: null
-	,getHeadsRects: function() {
-		var rects = new Array();
-		var i = 0;
-		var _g = 0;
-		var _g1 = this.placements;
-		while(_g < _g1.length) {
-			var placement = _g1[_g];
-			++_g;
-			var headtype = this.vheads[i].nhead.type;
-			var rect = null;
-			var headw = 0;
-			this.headRect(headtype,this.notevalue);
-			var _g2 = nx3.ENoteValTools.head(this.notevalue);
-			switch(_g2[1]) {
-			case 2:
-				headw = 2.2;
-				break;
-			default:
-				headw = 1.6;
-			}
-			var rect1 = new nx3.geom.Rectangle(-headw,-1,2 * headw,2);
-			var pos = 0.0;
-			var _g21 = placement.pos;
-			switch(_g21[1]) {
-			case 0:
-				pos = -2 * headw;
-				break;
-			case 2:
-				pos = 2 * headw;
-				break;
-			default:
-				pos = 0;
-			}
-			rect1.offset(pos,placement.level);
-			rects.push(rect1);
-			i++;
-		}
-		return rects;
-	}
-	,headRect: function(type,notevalue) {
-		var headw = 2;
-		var headh = 2;
-		switch(type[1]) {
-		case 0:
-			var _g = nx3.ENoteValTools.head(this.notevalue);
-			switch(_g[1]) {
-			case 2:
-				return new nx3.geom.Rectangle(-2.2,-1,4.4,2);
-			default:
-				return new nx3.geom.Rectangle(-1.6,-1,3.2,2);
-			}
-			break;
-		case 3:
-			var _g1 = nx3.ENoteValTools.beaminglevel(this.notevalue);
-			switch(_g1) {
-			case 1:
-				return new nx3.geom.Rectangle(-1.8,-3,3.6,6);
-			case 2:
-				return new nx3.geom.Rectangle(-2,-3,4,6);
-			default:
-				return new nx3.geom.Rectangle(-1.6,-3.3,3.2,6.6);
-			}
-			break;
-		default:
-			return new nx3.geom.Rectangle(-2,-2,4,4);
-		}
-		return new nx3.geom.Rectangle(-2,-2,4,4);
-	}
-	,__class__: nx3.VHeadsRectsCalculator
-};
-nx3.VMapTools = function() { };
-nx3.VMapTools.__name__ = ["nx3","VMapTools"];
-nx3.VMapTools.keysToArray = function(it) {
-	var result = [];
-	while( it.hasNext() ) {
-		var v = it.next();
-		result.push(v);
-	}
-	return result;
-};
-nx3.VMapTools.sortarray = function(a) {
-	a.sort(function(a1,b) {
-		return Reflect.compare(a1,b);
-	});
-	return a;
-};
-nx3.VNote = function(nnote) {
-	this.nnote = nnote;
-};
-nx3.VNote.__name__ = ["nx3","VNote"];
-nx3.VNote.prototype = {
-	nnote: null
-	,vheads: null
-	,getVHeads: function() {
-		if(this.vheads != null) return this.vheads;
-		this.vheads = [];
-		var _g = 0;
-		var _g1 = this.nnote.get_nheads();
-		while(_g < _g1.length) {
-			var nhead = _g1[_g];
-			++_g;
-			this.vheads.push(new nx3.VHead(nhead));
-		}
-		return this.vheads;
-	}
-	,vheadsPlacements: null
-	,getVHeadsPlacements: function() {
-		if(this.vheadsPlacements != null) return this.vheadsPlacements;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadPlacementCalculator(this.vheads,this.getDirection());
-		this.vheadsPlacements = calculator.getHeadsPlacements();
-		return this.vheadsPlacements;
-	}
-	,vheadsPlacementsUp: null
-	,getVHeadPlacementsUp: function() {
-		if(this.vheadsPlacementsUp != null) return this.vheadsPlacementsUp;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadPlacementCalculator(this.vheads,nx3.EDirectionUD.Up);
-		this.vheadsPlacementsUp = calculator.getHeadsPlacements();
-		return this.vheadsPlacementsUp;
-	}
-	,vheadsPlacementsDown: null
-	,getVHeadPlacementsDown: function() {
-		if(this.vheadsPlacementsDown != null) return this.vheadsPlacementsDown;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadPlacementCalculator(this.vheads,nx3.EDirectionUD.Down);
-		this.vheadsPlacementsDown = calculator.getHeadsPlacements();
-		return this.vheadsPlacementsDown;
-	}
-	,getVHeadPlacementsDir: function(dir) {
-		if(dir == nx3.EDirectionUD.Up) return this.getVHeadPlacementsUp(); else return this.getVHeadPlacementsDown();
-	}
-	,getVHeadsRectanglesDir: function(dir) {
-		if(dir == nx3.EDirectionUD.Up) return this.getVHeadsRectanglesUp(); else return this.getVHeadsRectanglesDown();
-	}
-	,vheadsRectanglesUp: null
-	,getVHeadsRectanglesUp: function() {
-		if(this.vheadsRectanglesUp != null) return this.vheadsRectanglesUp;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadsRectsCalculator(this.getVHeads(),this.getVHeadPlacementsUp(),this.nnote.value);
-		var calculator1 = new nx3.VNoteHeadsRectsCalculator(this,this.getVHeadPlacementsUp());
-		this.vheadsRectanglesUp = calculator1.getHeadsRects();
-		return this.vheadsRectanglesUp;
-	}
-	,vheadsRectanglesDown: null
-	,getVHeadsRectanglesDown: function() {
-		if(this.vheadsRectanglesDown != null) return this.vheadsRectanglesDown;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadsRectsCalculator(this.getVHeads(),this.getVHeadPlacementsDown(),this.nnote.value);
-		var calculator1 = new nx3.VNoteHeadsRectsCalculator(this,this.getVHeadPlacementsDown());
-		this.vheadsRectanglesDown = calculator1.getHeadsRects();
-		return this.vheadsRectanglesDown;
-	}
-	,config: null
-	,setConfig: function(newConfig) {
-		if(Std.string(this.config) == Std.string(newConfig)) return; else {
-			this.direction = null;
-			this.vheadsPlacements = null;
-		}
-		this.config = newConfig;
-	}
-	,direction: null
-	,getDirection: function() {
-		if(this.direction != null) return this.direction;
-		var calculator = new nx3.VNoteDirectionCalculator(this);
-		var configDirection;
-		if(this.config != null) configDirection = this.config.direction; else configDirection = null;
-		this.direction = calculator.getDirection(configDirection);
-		return this.direction;
-	}
-	,__class__: nx3.VNote
-};
-nx3.VNoteDirectionCalculator = function(vnote) {
-	this.vnote = vnote;
-};
-nx3.VNoteDirectionCalculator.__name__ = ["nx3","VNoteDirectionCalculator"];
-nx3.VNoteDirectionCalculator.prototype = {
-	vnote: null
-	,getDirection: function(directionConfig) {
-		if(this.vnote.nnote.type[1] != 0) return nx3.EDirectionUD.Down;
-		var direction;
-		if(this.vnote.nnote.direction != null) {
-			var _g = this.vnote.nnote.direction;
-			switch(_g[1]) {
-			case 0:
-				direction = nx3.EDirectionUD.Up;
-				return direction;
-			case 2:
-				direction = nx3.EDirectionUD.Down;
-				return direction;
-			default:
-			}
-		}
-		if(directionConfig != null) return directionConfig;
-		var calculator = new nx3.VNoteInternalDirectionCalculator(this.vnote.getVHeads());
-		return calculator.getDirection();
-	}
-	,__class__: nx3.VNoteDirectionCalculator
-};
-nx3.VNoteHeadsRectsCalculator = function(vnote,placements) {
-	this.vnote = vnote;
-	this.heads = vnote.getVHeads();
-	if(placements != null) this.placements = placements; else this.placements = vnote.getVHeadsPlacements();
-};
-nx3.VNoteHeadsRectsCalculator.__name__ = ["nx3","VNoteHeadsRectsCalculator"];
-nx3.VNoteHeadsRectsCalculator.prototype = {
-	vnote: null
-	,placements: null
-	,heads: null
-	,getHeadsRects: function() {
-		{
-			var _g = this.vnote.nnote.type;
-			switch(_g[1]) {
-			case 0:
-				var a2 = _g[5];
-				var a = _g[4];
-				var v = _g[3];
-				var h = _g[2];
-				return new nx3.VHeadsRectsCalculator(this.heads,this.placements,this.vnote.nnote.value).getHeadsRects();
-			case 1:
-				var l = _g[2];
-				return new nx3.VNoteHeadsRectsPausesCalculator(this.vnote).getHeadsRects();
-			case 4:
-				var font = _g[5];
-				var c = _g[4];
-				var o = _g[3];
-				var text = _g[2];
-				return new nx3.VNoteHeadsRectsLyricsCalculator(this.vnote,text,font).getHeadsRects();
-			case 3:
-				return new nx3.VNoteHeadsRectsTplCalculator(this.vnote).getHeadsRects();
-			default:
-				throw "Non implemented ENoteType: " + this.vnote.nnote.type[0];
-				return [];
-			}
-		}
-	}
-	,__class__: nx3.VNoteHeadsRectsCalculator
-};
-nx3.VNoteHeadsRectsLyricsCalculator = function(vnote,text,font) {
-	this.vnote = vnote;
-	this.text = text;
-	this.font = font;
-};
-nx3.VNoteHeadsRectsLyricsCalculator.__name__ = ["nx3","VNoteHeadsRectsLyricsCalculator"];
-nx3.VNoteHeadsRectsLyricsCalculator.prototype = {
-	vnote: null
-	,text: null
-	,font: null
-	,getHeadsRects: function() {
-		var target = new nx3.render.TargetSvg();
-		if(this.font != null) target.setFont(this.font);
-		var width = target.textwidth(this.text);
-		var height = target.textheight(this.text);
-		return [new nx3.geom.Rectangle(-width / 2,-height / 2,width,height)];
-		return null;
-	}
-	,__class__: nx3.VNoteHeadsRectsLyricsCalculator
-};
-nx3.VNoteHeadsRectsPausesCalculator = function(vnote) {
-	this.vnote = vnote;
-};
-nx3.VNoteHeadsRectsPausesCalculator.__name__ = ["nx3","VNoteHeadsRectsPausesCalculator"];
-nx3.VNoteHeadsRectsPausesCalculator.prototype = {
-	vnote: null
-	,getHeadsRects: function() {
-		var _g = nx3.ENoteValTools.beaminglevel(this.vnote.nnote.value);
-		switch(_g) {
-		case 1:
-			return [new nx3.geom.Rectangle(-1.8,-3,3.6,6)];
-		case 2:
-			return [new nx3.geom.Rectangle(-2,-3,4,6)];
-		default:
-			return [new nx3.geom.Rectangle(-1.6,-3.3,3.2,6.6)];
-		}
-	}
-	,__class__: nx3.VNoteHeadsRectsPausesCalculator
-};
-nx3.VNoteHeadsRectsTplCalculator = function(vnote) {
-	this.vnote = vnote;
-};
-nx3.VNoteHeadsRectsTplCalculator.__name__ = ["nx3","VNoteHeadsRectsTplCalculator"];
-nx3.VNoteHeadsRectsTplCalculator.prototype = {
-	vnote: null
-	,getHeadsRects: function() {
-		return [new nx3.geom.Rectangle(-6,-5.3,12,10.6)];
-	}
-	,__class__: nx3.VNoteHeadsRectsTplCalculator
-};
-nx3.VNoteInternalDirectionCalculator = function(vheads) {
-	this.vheads = vheads;
-};
-nx3.VNoteInternalDirectionCalculator.__name__ = ["nx3","VNoteInternalDirectionCalculator"];
-nx3.VNoteInternalDirectionCalculator.prototype = {
-	vheads: null
-	,getDirection: function() {
-		var headsCount = this.vheads.length;
-		switch(headsCount) {
-		case 0:
-			return nx3.EDirectionUD.Down;
-		case 1:
-			return this.weightToDirection(this.vheads[0].nhead.level);
-		default:
-		}
-		var weight = this.vheads[0].nhead.level + this.vheads[headsCount - 1].nhead.level;
-		return this.weightToDirection(weight);
-	}
-	,weightToDirection: function(weight) {
-		if(weight <= 0) return nx3.EDirectionUD.Down; else return nx3.EDirectionUD.Up;
-	}
-	,__class__: nx3.VNoteInternalDirectionCalculator
-};
-nx3.VPart = function(npart) {
-	this.caluclateBeamgropuDirectionsFlag = false;
-	this.npart = npart;
-};
-nx3.VPart.__name__ = ["nx3","VPart"];
-nx3.VPart.prototype = {
-	npart: null
-	,vvoices: null
-	,getVVoices: function() {
-		if(this.vvoices != null) return this.vvoices;
-		this.vvoices = [];
-		var _g = 0;
-		var _g1 = this.npart.nvoices;
-		while(_g < _g1.length) {
-			var nvoice = _g1[_g];
-			++_g;
-			this.vvoices.push(new nx3.VVoice(nvoice));
-		}
-		return this.vvoices;
-	}
-	,vcomplexes: null
-	,vcomplexesPositions: null
-	,positionsVComplexes: null
-	,generator: null
-	,getVComplexes: function() {
-		if(this.vcomplexes != null) return this.vcomplexes;
-		this.generator = new nx3.VPartComplexesGenerator(this.getVVoices());
-		this.vcomplexes = this.generator.getComplexes();
-		this.vcomplexesPositions = this.generator.getComplexesPositions();
-		this.positionsVComplexes = this.generator.getPositionsComplexes();
-		return this.vcomplexes;
-	}
-	,vnotesVComplexes: null
-	,getVNotesVComplexes: function() {
-		if(this.vnotesVComplexes != null) return this.vnotesVComplexes;
-		if(this.vcomplexes == null) this.getVComplexes();
-		this.vnotesVComplexes = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.vcomplexes;
-		while(_g < _g1.length) {
-			var vcomplex = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vcomplex.getVNotes();
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				this.vnotesVComplexes.set(vnote,vcomplex);
-			}
-		}
-		return this.vnotesVComplexes;
-	}
-	,getPositionsVComplexes: function() {
-		if(this.vcomplexes == null) this.getVComplexes();
-		return this.positionsVComplexes;
-	}
-	,getVComplexesPositions: function() {
-		if(this.vcomplexes == null) this.getVComplexes();
-		return this.vcomplexesPositions;
-	}
-	,vcomplexesMinDistances: null
-	,getVComplexesMinDistances: function() {
-		if(this.vcomplexesMinDistances != null) return this.vcomplexesMinDistances;
-		this.vcomplexesMinDistances = new haxe.ds.ObjectMap();
-		var complexes = this.getVComplexes();
-		this.getBeamgroupsDirections();
-		var i = 0;
-		var _g1 = 0;
-		var _g = complexes.length;
-		while(_g1 < _g) {
-			var i1 = _g1++;
-			var leftComplex = complexes[i1];
-			var rightComplex;
-			if(i1 < complexes.length) rightComplex = complexes[i1 + 1]; else rightComplex = null;
-			var distance = new nx3.VPartComplexesMinDistancesCalculator(this).getDistance(leftComplex,rightComplex);
-			this.vcomplexesMinDistances.set(leftComplex,distance);
-		}
-		return this.vcomplexesMinDistances;
-	}
-	,value: null
-	,getValue: function() {
-		if(this.value != null) return this.value;
-		if(this.getVVoices().length == 1) this.value = this.vvoices[0].getValue();
-		var value = .0;
-		var _g = 0;
-		var _g1 = this.vvoices;
-		while(_g < _g1.length) {
-			var vvoice = _g1[_g];
-			++_g;
-			value = Math.max(value,vvoice.getValue());
-		}
-		this.value = value | 0;
-		return this.value;
-	}
-	,voicesbeamgroups: null
-	,getVoicesBeamgroups: function() {
-		if(this.voicesbeamgroups != null) return this.voicesbeamgroups;
-		this.voicesbeamgroups = new Array();
-		var _g = 0;
-		var _g1 = this.getVVoices();
-		while(_g < _g1.length) {
-			var vvoice = _g1[_g];
-			++_g;
-			this.voicesbeamgroups.push(vvoice.getBeamgroups());
-		}
-		this.calculateBeamgropusDirections();
-		return this.voicesbeamgroups;
-	}
-	,getVoiceBeamgroups: function(vvoice) {
-		if(this.voicesbeamgroups == null) this.getVoicesBeamgroups();
-		var voiceIdx;
-		var _this = this.getVVoices();
-		voiceIdx = HxOverrides.indexOf(_this,vvoice,0);
-		return this.voicesbeamgroups[voiceIdx];
-	}
-	,beamgroupsDirections: null
-	,getBeamgroupsDirections: function() {
-		if(this.beamgroupsDirections != null) return this.beamgroupsDirections;
-		if(this.voicesbeamgroups == null) this.getVoicesBeamgroups();
-		var calculator = new nx3.VPartbeamgroupsDirectionCalculator(this);
-		this.beamgroupsDirections = calculator.getBeamgroupsDirections();
-		return this.beamgroupsDirections;
-	}
-	,caluclateBeamgropuDirectionsFlag: null
-	,calculateBeamgropusDirections: function(force) {
-		if(force == null) force = false;
-		if(this.caluclateBeamgropuDirectionsFlag == true && force == false) return;
-		var calculator = new nx3.VPartbeamgroupsDirectionCalculator(this);
-		calculator.calculateBeamgroupsDirections();
-		this.caluclateBeamgropuDirectionsFlag = true;
-	}
-	,vnotesVVoices: null
-	,getVNotesVVoices: function() {
-		if(this.vnotesVVoices != null) return this.vnotesVVoices;
-		this.vnotesVVoices = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.getVVoices();
-		while(_g < _g1.length) {
-			var vvoice = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vvoice.getVNotes();
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				this.vnotesVVoices.set(vnote,vvoice);
-			}
-		}
-		return this.vnotesVVoices;
-	}
-	,vcomplexDirections: null
-	,getVComplexDirections: function() {
-		if(this.vcomplexDirections != null) return this.vcomplexDirections;
-		this.vcomplexDirections = new haxe.ds.ObjectMap();
-		var beamgroupsDirections = this.getBeamgroupsDirections();
-		var _g = 0;
-		var _g1 = this.getVComplexes();
-		while(_g < _g1.length) {
-			var vcomplex = _g1[_g];
-			++_g;
-			var directions = new Array();
-			var _g2 = 0;
-			var _g3 = vcomplex.getVNotes();
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				var vvoice;
-				var this1 = this.getVNotesVVoices();
-				vvoice = this1.get(vnote);
-				var beamgroup;
-				var this2 = vvoice.getNotesBeamgroups();
-				beamgroup = this2.get(vnote);
-				var direction = beamgroupsDirections.h[beamgroup.__id__];
-				directions.push(direction);
-			}
-			this.vcomplexDirections.set(vcomplex,directions);
-		}
-		return this.vcomplexDirections;
-	}
-	,__class__: nx3.VPart
-};
-nx3.VPartComplexesGenerator = function(vvoices) {
-	this.vvoices = vvoices;
-};
-nx3.VPartComplexesGenerator.__name__ = ["nx3","VPartComplexesGenerator"];
-nx3.VPartComplexesGenerator.prototype = {
-	vvoices: null
-	,complexes: null
-	,getComplexes: function() {
-		if(this.complexes != null) return this.complexes;
-		this.positionsMap = this.calcPositionsMap();
-		this.calcComplexes(this.positionsMap);
-		return this.complexes;
-	}
-	,positionsComplexes: null
-	,getPositionsComplexes: function() {
-		if(this.complexes == null) this.getComplexes();
-		return this.positionsComplexes;
-	}
-	,complexesPositions: null
-	,getComplexesPositions: function() {
-		if(this.complexes == null) this.getComplexes();
-		return this.complexesPositions;
-	}
-	,calcComplexes: function(positions) {
-		this.complexes = [];
-		this.positionsComplexes = new haxe.ds.IntMap();
-		this.complexesPositions = new haxe.ds.ObjectMap();
-		var poskeys = nx3.VMapTools.keysToArray(positions.keys());
-		poskeys = nx3.VMapTools.sortarray(poskeys);
-		var _g = 0;
-		while(_g < poskeys.length) {
-			var pos = poskeys[_g];
-			++_g;
-			var vnotes = positions.get(pos);
-			var vcomplex = new nx3.VComplex(vnotes);
-			this.complexes.push(vcomplex);
-			this.positionsComplexes.set(pos,vcomplex);
-			this.complexesPositions.set(vcomplex,pos);
-		}
-	}
-	,positionsMap: null
-	,calcPositionsMap: function() {
-		var positionsMap = new haxe.ds.IntMap();
-		var _g = 0;
-		var _g1 = this.vvoices;
-		while(_g < _g1.length) {
-			var vvoice = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vvoice.getVNotes();
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				var npos;
-				var this1 = vvoice.getVNotePositions();
-				npos = this1.get(vnote);
-				if(!positionsMap.exists(npos)) positionsMap.set(npos,[]);
-				positionsMap.get(npos).push(vnote);
-			}
-		}
-		return positionsMap;
-	}
-	,__class__: nx3.VPartComplexesGenerator
-};
-nx3.VPartComplexesMinDistancesCalculator = function(vpart) {
-	this.vpart = vpart;
-};
-nx3.VPartComplexesMinDistancesCalculator.__name__ = ["nx3","VPartComplexesMinDistancesCalculator"];
-nx3.VPartComplexesMinDistancesCalculator.prototype = {
-	vpart: null
-	,getDistance: function(leftComplex,rightComplex) {
-		var left = this.getComplexRightside(leftComplex);
-		var right = this.getComplexLeftside(rightComplex);
-		if(rightComplex == null && leftComplex != null) {
-			var vnotes = leftComplex.getVNotes();
-			var hasflag = false;
-			var _g = 0;
-			while(_g < vnotes.length) {
-				var vnote = vnotes[_g];
-				++_g;
-				if(vnote.nnote.type[0] == "Note" && nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) hasflag = true;
-			}
-			if(hasflag) right = this.getComplexRightside(leftComplex);
-		}
-		var minDistance = left.minrect.width + left.minrect.x + -right.minrect.x;
-		var rectsDistance = cx.MathTools.round2(nx3.geom.RectanglesTools.getXIntersection(left.rects,right.rects),null);
-		return Math.max(minDistance,rectsDistance);
-	}
-	,getComplexRightside: function(complex) {
-		if(complex == null) return { minrect : new nx3.geom.Rectangle(0,0,0,0), rects : []};
-		var directions;
-		var this1 = this.vpart.getVComplexDirections();
-		directions = this1.get(complex);
-		var noterects = complex.getNotesHeadsRects(directions);
-		var minrect = nx3.geom.RectanglesTools.unionAll(noterects);
-		minrect.y = -5;
-		minrect.height = 10;
-		var rects = noterects;
-		var beamgroups = [];
-		var firstnote = cx.ArrayTools.first(complex.getVNotes());
-		var firstbeamgroup;
-		var this2 = cx.ArrayTools.first(this.vpart.getVVoices()).getNotesBeamgroups();
-		firstbeamgroup = this2.get(firstnote);
-		beamgroups.push(firstbeamgroup);
-		if(complex.getVNotes().length == 2) {
-			var secondnote = cx.ArrayTools.second(complex.getVNotes());
-			var secondbeamgroup;
-			var this3 = cx.ArrayTools.second(this.vpart.getVVoices()).getNotesBeamgroups();
-			secondbeamgroup = this3.get(secondnote);
-			beamgroups.push(secondbeamgroup);
-		}
-		rects = rects.concat(complex.getStaveBasicRects(directions,beamgroups));
-		var dotrects = complex.getDotsRects(noterects,directions);
-		if(dotrects != null && dotrects != []) rects = rects.concat(dotrects);
-		return { minrect : minrect, rects : rects};
-	}
-	,getComplexLeftside: function(complex) {
-		if(complex == null) return { minrect : new nx3.geom.Rectangle(0,0,0,0), rects : []};
-		var directions;
-		var this1 = this.vpart.getVComplexDirections();
-		directions = this1.get(complex);
-		var noterects = complex.getNotesHeadsRects(directions);
-		var minrect = nx3.geom.RectanglesTools.unionAll(noterects);
-		minrect.y = -5;
-		minrect.height = 10;
-		var rects = noterects;
-		var vnotes = complex.getVNotes();
-		var beamgroups = [];
-		var firstnote = cx.ArrayTools.first(complex.getVNotes());
-		var firstbeamgroup;
-		var this2 = cx.ArrayTools.first(this.vpart.getVVoices()).getNotesBeamgroups();
-		firstbeamgroup = this2.get(firstnote);
-		beamgroups.push(firstbeamgroup);
-		if(complex.getVNotes().length == 2) {
-			var secondnote = cx.ArrayTools.second(complex.getVNotes());
-			var secondbeamgroup;
-			var this3 = cx.ArrayTools.second(this.vpart.getVVoices()).getNotesBeamgroups();
-			secondbeamgroup = this3.get(secondnote);
-			beamgroups.push(secondbeamgroup);
-		}
-		rects = rects.concat(complex.getStaveBasicRects(directions,beamgroups));
-		var signsrects = complex.getSignsRects(noterects);
-		if(signsrects != null && signsrects != []) rects = rects.concat(signsrects);
-		return { minrect : minrect, rects : rects};
-	}
-	,__class__: nx3.VPartComplexesMinDistancesCalculator
-};
-nx3.VPartbeamgroupsDirectionCalculator = function(vpart) {
-	this.vpart = vpart;
-};
-nx3.VPartbeamgroupsDirectionCalculator.__name__ = ["nx3","VPartbeamgroupsDirectionCalculator"];
-nx3.VPartbeamgroupsDirectionCalculator.prototype = {
-	vpart: null
-	,getBeamgroupsDirections: function() {
-		var beamgroupsDirections = new haxe.ds.ObjectMap();
-		var partbeamgroups = this.vpart.getVoicesBeamgroups();
-		var beamgroups0 = partbeamgroups[0];
-		var voiceDirection0 = this.vpart.getVVoices()[0].nvoice.direction;
-		if(voiceDirection0 == null) voiceDirection0 = nx3.EDirectionUAD.Auto;
-		if(partbeamgroups.length == 1) {
-			var _g = 0;
-			while(_g < beamgroups0.length) {
-				var beamgroup = beamgroups0[_g];
-				++_g;
-				var direction = null;
-				switch(voiceDirection0[1]) {
-				case 0:
-					direction = nx3.EDirectionUD.Up;
-					break;
-				case 2:
-					direction = nx3.EDirectionUD.Down;
-					break;
-				case 1:
-					var calculator = new nx3.VBeamgroupDirectionCalculator(beamgroup);
-					direction = calculator.getDirection();
-					break;
-				}
-				beamgroupsDirections.set(beamgroup,direction);
-			}
-		} else if(partbeamgroups.length == 2) {
-			var beamgroups1 = partbeamgroups[1];
-			var voiceDirection1 = this.vpart.getVVoices()[1].nvoice.direction;
-			if(voiceDirection1 == null) voiceDirection0 = nx3.EDirectionUAD.Auto;
-			var voice0 = this.vpart.getVVoices()[0];
-			var voice1 = this.vpart.getVVoices()[1];
-			if(voiceDirection0 == nx3.EDirectionUAD.Auto && voiceDirection1 == nx3.EDirectionUAD.Auto) {
-				var voice0value = voice0.getValue();
-				var voice1value = voice1.getValue();
-				var direction1 = null;
-				var bgPosition = 0;
-				var _g1 = 0;
-				while(_g1 < beamgroups0.length) {
-					var beamgroup1 = beamgroups0[_g1];
-					++_g1;
-					if(bgPosition < voice1value) direction1 = nx3.EDirectionUD.Up; else {
-						var calculator1 = new nx3.VBeamgroupDirectionCalculator(beamgroup1);
-						direction1 = calculator1.getDirection();
-					}
-					beamgroupsDirections.set(beamgroup1,direction1);
-					bgPosition += beamgroup1.getValue();
-				}
-				var bgPosition1 = 0;
-				var _g2 = 0;
-				while(_g2 < beamgroups1.length) {
-					var beamgroup2 = beamgroups1[_g2];
-					++_g2;
-					if(bgPosition1 < voice0value) direction1 = nx3.EDirectionUD.Down; else {
-						var calculator2 = new nx3.VBeamgroupDirectionCalculator(beamgroup2);
-						direction1 = calculator2.getDirection();
-					}
-					beamgroupsDirections.set(beamgroup2,direction1);
-					bgPosition1 += beamgroup2.getValue();
-				}
-			} else {
-				var _g3 = 0;
-				while(_g3 < beamgroups0.length) {
-					var beamgroup3 = beamgroups0[_g3];
-					++_g3;
-					var value = nx3.EDirectionTools.uadToUd(voice0.nvoice.direction);
-					beamgroupsDirections.set(beamgroup3,value);
-				}
-				var _g4 = 0;
-				while(_g4 < beamgroups1.length) {
-					var beamgroup4 = beamgroups1[_g4];
-					++_g4;
-					var value1 = nx3.EDirectionTools.uadToUd(voice1.nvoice.direction);
-					beamgroupsDirections.set(beamgroup4,value1);
-				}
-			}
-		} else throw "SHOULDN'T HAPPEN";
-		return beamgroupsDirections;
-	}
-	,calculateBeamgroupsDirections: function() {
-		var partbeamgroups = this.vpart.getVoicesBeamgroups();
-		var beamgroups0 = partbeamgroups[0];
-		var voiceDirection0 = this.vpart.getVVoices()[0].nvoice.direction;
-		if(voiceDirection0 == null) voiceDirection0 = nx3.EDirectionUAD.Auto;
-		if(partbeamgroups.length == 1) {
-			var _g = 0;
-			while(_g < beamgroups0.length) {
-				var beamgroup = beamgroups0[_g];
-				++_g;
-				var direction = null;
-				switch(voiceDirection0[1]) {
-				case 0:
-					direction = nx3.EDirectionUD.Up;
-					break;
-				case 2:
-					direction = nx3.EDirectionUD.Down;
-					break;
-				case 1:
-					var calculator = new nx3.VBeamgroupDirectionCalculator(beamgroup);
-					direction = calculator.getDirection();
-					break;
-				}
-				beamgroup.setCalculatedDirection(direction);
-			}
-		} else if(partbeamgroups.length == 2) {
-			var beamgroups1 = partbeamgroups[1];
-			var voiceDirection1 = this.vpart.getVVoices()[1].nvoice.direction;
-			if(voiceDirection1 == null) voiceDirection0 = nx3.EDirectionUAD.Auto;
-			var voice0 = this.vpart.getVVoices()[0];
-			var voice1 = this.vpart.getVVoices()[1];
-			if(voiceDirection0 == nx3.EDirectionUAD.Auto && voiceDirection1 == nx3.EDirectionUAD.Auto) {
-				var voice0value = voice0.getValue();
-				var voice1value = voice1.getValue();
-				var direction1 = null;
-				var bgPosition = 0;
-				var _g1 = 0;
-				while(_g1 < beamgroups0.length) {
-					var beamgroup1 = beamgroups0[_g1];
-					++_g1;
-					if(bgPosition < voice1value) direction1 = nx3.EDirectionUD.Up; else {
-						var calculator1 = new nx3.VBeamgroupDirectionCalculator(beamgroup1);
-						direction1 = calculator1.getDirection();
-					}
-					beamgroup1.setCalculatedDirection(direction1);
-					bgPosition += beamgroup1.getValue();
-				}
-				var bgPosition1 = 0;
-				var _g2 = 0;
-				while(_g2 < beamgroups1.length) {
-					var beamgroup2 = beamgroups1[_g2];
-					++_g2;
-					if(bgPosition1 < voice0value) direction1 = nx3.EDirectionUD.Down; else {
-						var calculator2 = new nx3.VBeamgroupDirectionCalculator(beamgroup2);
-						direction1 = calculator2.getDirection();
-					}
-					beamgroup2.setCalculatedDirection(direction1);
-					bgPosition1 += beamgroup2.getValue();
-				}
-			} else {
-				var _g3 = 0;
-				while(_g3 < beamgroups0.length) {
-					var beamgroup3 = beamgroups0[_g3];
-					++_g3;
-					beamgroup3.setCalculatedDirection(nx3.EDirectionTools.uadToUd(voice0.nvoice.direction));
-				}
-				var _g4 = 0;
-				while(_g4 < beamgroups1.length) {
-					var beamgroup4 = beamgroups1[_g4];
-					++_g4;
-					beamgroup4.setCalculatedDirection(nx3.EDirectionTools.uadToUd(voice1.nvoice.direction));
-				}
-			}
-		} else throw "SHOULDN'T HAPPEN";
-	}
-	,__class__: nx3.VPartbeamgroupsDirectionCalculator
-};
-nx3.VVoice = function(nvoice) {
-	this.nvoice = nvoice;
-};
-nx3.VVoice.__name__ = ["nx3","VVoice"];
-nx3.VVoice.prototype = {
-	nvoice: null
-	,vnotes: null
-	,getVNotes: function() {
-		if(this.vnotes != null) return this.vnotes;
-		this.vnotes = [];
-		var _g = 0;
-		var _g1 = this.nvoice.nnotes;
-		while(_g < _g1.length) {
-			var nnote = _g1[_g];
-			++_g;
-			this.vnotes.push(new nx3.VNote(nnote));
-		}
-		return this.vnotes;
-	}
-	,vnotePositions: null
-	,getVNotePositions: function() {
-		if(this.vnotePositions != null) return this.vnotePositions;
-		if(this.vnotes == null) this.getVNotes();
-		this.vnotePositions = new haxe.ds.ObjectMap();
-		var pos = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			this.vnotePositions.set(vnote,pos);
-			pos += nx3.ENoteValTools.value(vnote.nnote.value);
-		}
-		return this.vnotePositions;
-	}
-	,value: null
-	,getValue: function() {
-		if(this.value != null) return this.value;
-		if(this.vnotes == null) this.getVNotes();
-		this.value = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			this.value += nx3.ENoteValTools.value(vnote.nnote.value);
-		}
-		return this.value;
-	}
-	,beamgroups: null
-	,beampattern: null
-	,getBeamgroups: function(pattern) {
-		if(pattern != null && pattern != this.beampattern) {
-			this.beampattern = pattern;
-			this.beamgroups = null;
-		}
-		if(this.beamgroups != null) return this.beamgroups;
-		this.beamgroups = new nx3.VVoiceBeamgroupsGenerator(this.getVNotes(),pattern).getBeamgroups();
-		return this.beamgroups;
-	}
-	,notesBeamgroups: null
-	,getNotesBeamgroups: function(pattern) {
-		if(pattern != null && pattern != this.beampattern) this.notesBeamgroups = null;
-		if(this.notesBeamgroups != null) return this.notesBeamgroups;
-		if(this.beamgroups == null) this.getBeamgroups(pattern);
-		this.notesBeamgroups = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.beamgroups;
-		while(_g < _g1.length) {
-			var beamgroup = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = beamgroup.vnotes;
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				this.notesBeamgroups.set(vnote,beamgroup);
-			}
-		}
-		return this.notesBeamgroups;
-	}
-	,__class__: nx3.VVoice
-};
-nx3.VVoiceBeamgroupsGenerator = function(vnotes,pattern) {
-	if(pattern == null) pattern = [nx3.ENoteVal.Nv4];
-	this.vnotes = vnotes;
-	this.pattern = pattern;
-	this.adjustPatternLenght();
-};
-nx3.VVoiceBeamgroupsGenerator.__name__ = ["nx3","VVoiceBeamgroupsGenerator"];
-nx3.VVoiceBeamgroupsGenerator.prototype = {
-	vnotes: null
-	,pattern: null
-	,getBeamgroups: function() {
-		var patternPositions = this.getPatternPositions();
-		var notesPositions = this.getNotesPositions();
-		var notesBeamgroupPosIndexes = this.getNotesBeamgroupPosIndexes(patternPositions,notesPositions);
-		var beamgroups = this.createBeamgroups(notesBeamgroupPosIndexes);
-		return beamgroups;
-	}
-	,createBeamgroups: function(indexes) {
-		var noteIdx = 0;
-		var prevBeamgroupPosIdx = -1;
-		var groupIdx = -1;
-		var result = [];
-		var vnoteGroupIdx = [];
-		var groupIdxVNotes = [];
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			var beamgroupPosIdx = indexes[noteIdx];
-			if(beamgroupPosIdx == -1) {
-				groupIdx++;
-				vnoteGroupIdx.push(groupIdx);
-			} else {
-				if(prevBeamgroupPosIdx != beamgroupPosIdx) groupIdx++;
-				vnoteGroupIdx.push(groupIdx);
-			}
-			prevBeamgroupPosIdx = beamgroupPosIdx;
-			noteIdx++;
-		}
-		var noteIdx1 = 0;
-		var groupVNotes = [];
-		var vnotes = null;
-		var _g2 = 0;
-		var _g11 = this.vnotes;
-		while(_g2 < _g11.length) {
-			var vnote1 = _g11[_g2];
-			++_g2;
-			var groupIdx1 = vnoteGroupIdx[noteIdx1];
-			if(groupVNotes[groupIdx1] == null) groupVNotes[groupIdx1] = [];
-			groupVNotes[groupIdx1].push(vnote1);
-			noteIdx1++;
-		}
-		var _g3 = 0;
-		while(_g3 < groupVNotes.length) {
-			var group = groupVNotes[_g3];
-			++_g3;
-			var beamgroup = new nx3.VBeamgroup(group);
-			result.push(beamgroup);
-		}
-		return result;
-	}
-	,getNotesBeamgroupPosIndexes: function(patternPositions,notesPositions) {
-		var findPatternIdxForNote = function(curNotePos) {
-			var _g1 = 0;
-			var _g = patternPositions.length;
-			while(_g1 < _g) {
-				var p = _g1++;
-				var curPatternPos = patternPositions[p];
-				if(curNotePos.start >= curPatternPos.start && curNotePos.end <= curPatternPos.end) return p;
-			}
-			return -1;
-		};
-		var result = [];
-		var p1 = 0;
-		var curPatternPos1 = patternPositions[p1];
-		var _g11 = 0;
-		var _g2 = this.vnotes.length;
-		while(_g11 < _g2) {
-			var n = _g11++;
-			var curNotePos1 = notesPositions[n];
-			var nnote = this.vnotes[n].nnote;
-			var patternIdx;
-			{
-				var _g21 = nnote.type;
-				switch(_g21[1]) {
-				case 0:
-					var attributes = _g21[5];
-					var articluation = _g21[4];
-					var variant = _g21[3];
-					var heads = _g21[2];
-					if(nx3.ENoteValTools.beaminglevel(nnote.value) <= 0) patternIdx = -1; else patternIdx = findPatternIdxForNote(curNotePos1);
-					break;
-				case 1:
-					var level = _g21[2];
-					patternIdx = -1;
-					break;
-				default:
-					patternIdx = -1;
-				}
-			}
-			result.push(patternIdx);
-		}
-		return result;
-	}
-	,getNotesPositions: function() {
-		var result = [];
-		var currPos = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			var value = nx3.ENoteValTools.value(vnote.nnote.value);
-			var posinfo = { start : currPos, end : currPos + value};
-			result.push(posinfo);
-			currPos += value;
-		}
-		return result;
-	}
-	,getPatternPositions: function() {
-		var result = [];
-		var currPos = 0;
-		var _g = 0;
-		var _g1 = this.pattern;
-		while(_g < _g1.length) {
-			var segment = _g1[_g];
-			++_g;
-			var value = nx3.ENoteValTools.value(segment);
-			var posinfo = { start : currPos, end : currPos + value};
-			result.push(posinfo);
-			currPos += value;
-		}
-		return result;
-	}
-	,adjustPatternLenght: function() {
-		var notesValue = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			notesValue += nx3.ENoteValTools.value(vnote.nnote.value);
-		}
-		var patternValue = 0;
-		var _g2 = 0;
-		var _g11 = this.pattern;
-		while(_g2 < _g11.length) {
-			var value = _g11[_g2];
-			++_g2;
-			patternValue += nx3.ENoteValTools.value(value);
-		}
-		while(patternValue < notesValue) {
-			this.pattern = this.pattern.concat(this.pattern);
-			patternValue *= 2;
-		}
-	}
-	,__class__: nx3.VVoiceBeamgroupsGenerator
-};
 nx3.geom = {};
 nx3.geom.BezieerTool = function() { };
 nx3.geom.BezieerTool.__name__ = ["nx3","geom","BezieerTool"];
@@ -9968,7 +7820,7 @@ nx3.render.TargetSvg.prototype = {
 	}
 	,text: function(x,y,text) {
 		var fontsize = this.font.size * this.scaling.fontScaling;
-		haxe.Log.trace(fontsize,{ fileName : "TargetSvg.hx", lineNumber : 235, className : "nx3.render.TargetSvg", methodName : "text"});
+		haxe.Log.trace(fontsize,{ fileName : "TargetSvg.hx", lineNumber : 233, className : "nx3.render.TargetSvg", methodName : "text"});
 		x = x + -0.2 * this.scaling.fontScaling;
 		y = y + 9.6 * this.scaling.fontScaling;
 		var etext = this.snap.text(x,y,text).attr({ fontSize : "" + fontsize + "px ", fontFamily : this.font.name});
@@ -9983,9 +7835,9 @@ nx3.render.TargetSvg.prototype = {
 		var fontsize = this.font.size * this.scaling.fontScaling;
 		var fontstr = "" + fontsize + "px " + this.font.name;
 		this.context.font = fontstr;
-		haxe.Log.trace(fontstr,{ fileName : "TargetSvg.hx", lineNumber : 260, className : "nx3.render.TargetSvg", methodName : "textwidth"});
+		haxe.Log.trace(fontstr,{ fileName : "TargetSvg.hx", lineNumber : 258, className : "nx3.render.TargetSvg", methodName : "textwidth"});
 		var measure = this.context.measureText(text);
-		haxe.Log.trace(measure.width,{ fileName : "TargetSvg.hx", lineNumber : 262, className : "nx3.render.TargetSvg", methodName : "textwidth"});
+		haxe.Log.trace(measure.width,{ fileName : "TargetSvg.hx", lineNumber : 260, className : "nx3.render.TargetSvg", methodName : "textwidth"});
 		return measure.width / this.scaling.unitX;
 	}
 	,textheight: function(text) {
@@ -10064,57 +7916,11 @@ nx3.test.TestItems.__name__ = ["nx3","test","TestItems"];
 nx3.test.TestItems.nbar1 = function() {
 	return new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote8(null,3),new nx3.QPause8(0),new nx3.QNote8(null,-2),new nx3.QNote8(null,4),new nx3.QPause16(),new nx3.QPause8(),new nx3.QPause4(),new nx3.QPause2(),new nx3.QPause1()])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote16(null,[-1,0]),new nx3.QNote16(null,[0,1],"#"),new nx3.QNote16(null,[1,2]),new nx3.QNote16(null,[5,7]),new nx3.QNote16(null,[0,1]),new nx3.QNote16(null,[0,2]),new nx3.QNote16(null,[0,3]),new nx3.QNote16(null,[0,2])])])]);
 };
-nx3.test.TestItems.vbar1 = function() {
-	return new nx3.VBar(nx3.test.TestItems.nbar1());
-};
-nx3.test.TestItems.vbarSigns = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,1,null,"#"),new nx3.QNote4(null,null,[-1,0],"#b"),new nx3.QNote4(null,null,[3,4,5],"nb#"),new nx3.QNote4(null,null,[-5,-2,-1],"nb#"),new nx3.QNote4(null,null,[0,3,6],"nb#")])],null,nx3.EClef.ClefC,null,nx3.EKey.Flat2),new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,-1,null,"#"),new nx3.QNote4(null,0,null,"#"),new nx3.QNote4(null,-4,null,"n")]),new nx3.NVoice([new nx3.QNote2(null,null,[1,5],"bn")])],null,nx3.EClef.ClefF,null,nx3.EKey.Sharp3)],null,nx3.ETime.Time3_8));
-	return vbar;
-};
-nx3.test.TestItems.vbarPauses = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,-1),new nx3.NHead(null,1)],nx3.ENoteVal.Nv1),new nx3.QNote4(null,0),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv1),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv2),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv16)])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarLyrics = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Lyric("Hello")),new nx3.NNote(nx3.ENoteType.Lyric("World!")),new nx3.NNote(nx3.ENoteType.Lyric("Verylongword")),new nx3.NNote(nx3.ENoteType.Lyric("&")),new nx3.NNote(nx3.ENoteType.Lyric("&"))])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarTpl = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Tpl(0)),new nx3.NNote(nx3.ENoteType.Tpl(1)),new nx3.NNote(nx3.ENoteType.Tpl(2)),new nx3.NNote(nx3.ENoteType.Tpl(3))])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarFlags = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote8(null,0),new nx3.QNote4(null,-1),new nx3.QNote8(null,0),new nx3.QNote8(null,0),new nx3.QNote8(null,1)]),new nx3.NVoice([new nx3.QNote8(null,2),new nx3.QNote8(null,3),new nx3.QNote8(null,4),new nx3.QNote4(null,3),new nx3.QNote8(null,2)])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarSignBug = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0)]),new nx3.NVoice([new nx3.QNote4(null,2,null,"#")])])]));
-	return vbar;
-};
 nx3.test.TestItems.nvoicePause1 = function() {
 	return new nx3.NVoice([new nx3.QNote4(null,0),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4)]);
 };
-nx3.test.TestItems.vvoicePause1 = function() {
-	return new nx3.VVoice(nx3.test.TestItems.nvoicePause1());
-};
-nx3.test.TestItems.vvoicePausesEights = function() {
-	return new nx3.VVoice(new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv8)]));
-};
 nx3.test.TestItems.nvoiceLyrics1 = function() {
 	return new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Lyric("Hello"),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Lyric("World!"),null,nx3.ENoteVal.Nv8)]);
-};
-nx3.test.TestItems.vvoiceLyrics1 = function() {
-	return new nx3.VVoice(nx3.test.TestItems.nvoiceLyrics1());
-};
-nx3.test.TestItems.vbarQSyntax1 = function() {
-	var str = " b % c# ";
-	var parser = new nx3.qs.QuickSyntaxParser(str);
-	var qsnotes = parser.parseToQSyntaxNotes();
-	var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
-	var nbars = builder.getNBars();
-	var nbar = nbars[0];
-	var vbar = new nx3.VBar(nbar);
-	return vbar;
 };
 nx3.test.TestItems.ppartComplex1 = function() {
 	var part = new nx3.PPart(new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,null,[-3,-1,0],"#"),new nx3.QNote4(null,null,[-1,-2]),new nx3.QNote4(null,2,null,"b")]),new nx3.NVoice([new nx3.QNote4(null,null,[0,2],"#b"),new nx3.QNote4(null,null,[2,3])])]));
@@ -10254,54 +8060,843 @@ nx3.test.TestN.prototype = $extend(haxe.unit.TestCase.prototype,{
 		var xmlstr1 = nx3.xml.HeadXML.toXml(item1).toString();
 		var item2 = nx3.xml.HeadXML.fromXmlStr(xmlstr1);
 		var xmlstr2 = nx3.xml.HeadXML.toXml(item2).toString();
-		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 47, className : "nx3.test.TestN", methodName : "testHeadXml"});
+		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 46, className : "nx3.test.TestN", methodName : "testHeadXml"});
 	}
 	,testNoteXml: function() {
 		var item1 = new nx3.NNote(null,[new nx3.NHead(null,-3),new nx3.NHead(null,-2,nx3.ESign.Flat),new nx3.NHead(null,4,nx3.ESign.Natural),new nx3.NHead(null,1)],nx3.ENoteVal.Nv2dot,nx3.EDirectionUAD.Down);
 		var xmlstr1 = nx3.xml.NoteXML.toXml(item1).toString();
 		var item2 = nx3.xml.NoteXML.fromXmlStr(xmlstr1);
 		var xmlstr2 = nx3.xml.NoteXML.toXml(item2).toString();
-		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 58, className : "nx3.test.TestN", methodName : "testNoteXml"});
-		this.assertEquals([-3,-2,1,4].toString(),item1.getHeadLevels().toString(),{ fileName : "TestN.hx", lineNumber : 61, className : "nx3.test.TestN", methodName : "testNoteXml"});
+		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 57, className : "nx3.test.TestN", methodName : "testNoteXml"});
+		this.assertEquals([-3,-2,1,4].toString(),item1.getHeadLevels().toString(),{ fileName : "TestN.hx", lineNumber : 60, className : "nx3.test.TestN", methodName : "testNoteXml"});
 	}
 	,testNotePause: function() {
 		var note = new nx3.NNote(nx3.ENoteType.Pause(1),null,nx3.ENoteVal.Nv4);
 		var xmlStr = nx3.xml.NoteXML.toXml(note).toString();
 		var note2 = nx3.xml.NoteXML.fromXmlStr(xmlStr);
 		var xmlStr2 = nx3.xml.NoteXML.toXml(note2).toString();
-		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 70, className : "nx3.test.TestN", methodName : "testNotePause"});
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 69, className : "nx3.test.TestN", methodName : "testNotePause"});
 	}
 	,testNoteXml2: function() {
 		var item = new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4);
-		this.assertEquals(item.type[1],1,{ fileName : "TestN.hx", lineNumber : 76, className : "nx3.test.TestN", methodName : "testNoteXml2"});
+		this.assertEquals(item.type[1],1,{ fileName : "TestN.hx", lineNumber : 75, className : "nx3.test.TestN", methodName : "testNoteXml2"});
 		var item1 = new nx3.NNote(nx3.ENoteType.Lyric("Hello"),null,nx3.ENoteVal.Nv4);
-		this.assertEquals(item1.type[1],4,{ fileName : "TestN.hx", lineNumber : 78, className : "nx3.test.TestN", methodName : "testNoteXml2"});
+		this.assertEquals(item1.type[1],4,{ fileName : "TestN.hx", lineNumber : 77, className : "nx3.test.TestN", methodName : "testNoteXml2"});
 	}
 	,testVoiceXml: function() {
 		var nvoice = new nx3.NVoice([new nx3.QNote4(null,1),new nx3.NNote(nx3.ENoteType.Pause(1),null,nx3.ENoteVal.Nv4)]);
 		var xmlStr = nx3.xml.VoiceXML.toXml(nvoice).toString();
 		var nvoice2 = nx3.xml.VoiceXML.fromXmlStr(xmlStr);
 		var xmlStr2 = nx3.xml.VoiceXML.toXml(nvoice2).toString();
-		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 94, className : "nx3.test.TestN", methodName : "testVoiceXml"});
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 93, className : "nx3.test.TestN", methodName : "testVoiceXml"});
 	}
 	,testBarXml: function() {
-		var vbar = nx3.test.TestItems.vbar1();
-		var nbar = vbar.nbar;
+		var nbar = nx3.test.TestItems.nbar1();
 		var xmlStr = nx3.xml.BarXML.toXml(nbar).toString();
 		var nbar2 = nx3.xml.BarXML.fromXmlStr(xmlStr);
 		var xmlStr2 = nx3.xml.BarXML.toXml(nbar2).toString();
-		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 106, className : "nx3.test.TestN", methodName : "testBarXml"});
-		var vbar1 = nx3.test.TestItems.vbarSigns();
-		var nbar1 = vbar1.nbar;
-		var xmlStr1 = nx3.xml.BarXML.toXml(nbar1).toString();
-		haxe.Log.trace(xmlStr1,{ fileName : "TestN.hx", lineNumber : 111, className : "nx3.test.TestN", methodName : "testBarXml"});
-		var nbar21 = nx3.xml.BarXML.fromXmlStr(xmlStr1);
-		var xmlStr21 = nx3.xml.BarXML.toXml(nbar21).toString();
-		this.assertEquals(xmlStr1,xmlStr21,{ fileName : "TestN.hx", lineNumber : 114, className : "nx3.test.TestN", methodName : "testBarXml"});
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 104, className : "nx3.test.TestN", methodName : "testBarXml"});
 	}
 	,xmlStrExport: function(filename,xmlStr) {
 	}
 	,__class__: nx3.test.TestN
+});
+nx3.test.TestP = function() {
+	haxe.unit.TestCase.call(this);
+};
+nx3.test.TestP.__name__ = ["nx3","test","TestP"];
+nx3.test.TestP.barConfToArr = function(conf) {
+	return [conf.showClef,conf.showKey,conf.showTime];
+};
+nx3.test.TestP.__super__ = haxe.unit.TestCase;
+nx3.test.TestP.prototype = $extend(haxe.unit.TestCase.prototype,{
+	testPNote: function() {
+		var nnote = new nx3.NNote(null,[new nx3.NHead(null,0)]);
+		var pnote = new nx3.PNote(nnote);
+		this.assertEquals(pnote.nnote.get_nheads().length,1,{ fileName : "TestP.hx", lineNumber : 57, className : "nx3.test.TestP", methodName : "testPNote"});
+		this.assertEquals(pnote.getHeads().length,1,{ fileName : "TestP.hx", lineNumber : 58, className : "nx3.test.TestP", methodName : "testPNote"});
+		this.assertEquals(cx.ArrayTools.first(pnote.getHeads()).getNote(),pnote,{ fileName : "TestP.hx", lineNumber : 59, className : "nx3.test.TestP", methodName : "testPNote"});
+	}
+	,testPNoteHeadsRects: function() {
+		var part = new nx3.PPart(new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])]));
+		var note = cx.ArrayTools.first(cx.ArrayTools.first(part.getVoices()).getNotes());
+		var rects = note.getHeadsRects();
+		this.assertEquals(rects.length,1,{ fileName : "TestP.hx", lineNumber : 69, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		this.assertTrue(this.rectEquals(rects[0],-1.6,-1.0,3.2,2.0),{ fileName : "TestP.hx", lineNumber : 70, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		var part1 = new nx3.PPart(new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,null,[0,-1])])]));
+		var note0 = cx.ArrayTools.first(cx.ArrayTools.first(part1.getVoices()).getNotes());
+		var rects0 = note0.getHeadsRects();
+		this.assertEquals(rects0.length,2,{ fileName : "TestP.hx", lineNumber : 77, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		this.assertEquals(note0.getDirection(),nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 78, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		this.assertTrue(this.rectEquals(rects0[0],-1.6,-2.0,3.2,2.0),{ fileName : "TestP.hx", lineNumber : 79, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		this.assertTrue(this.rectEquals(rects0[1],-4.8,-1,3.2,2.0),{ fileName : "TestP.hx", lineNumber : 80, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		var part2 = new nx3.PPart(new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,null,[0,1])])]));
+		var note01 = cx.ArrayTools.first(cx.ArrayTools.first(part2.getVoices()).getNotes());
+		var rects01 = note01.getHeadsRects();
+		this.assertEquals(rects01.length,2,{ fileName : "TestP.hx", lineNumber : 87, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		this.assertEquals(note01.getDirection(),nx3.EDirectionUD.Up,{ fileName : "TestP.hx", lineNumber : 88, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		this.assertTrue(this.rectEquals(rects01[0],1.6,-1,3.2,2.0),{ fileName : "TestP.hx", lineNumber : 89, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+		this.assertTrue(this.rectEquals(rects01[1],-1.6,0,3.2,2.0),{ fileName : "TestP.hx", lineNumber : 90, className : "nx3.test.TestP", methodName : "testPNoteHeadsRects"});
+	}
+	,testPVoice: function() {
+		var nvoice = new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])]);
+		var voice = new nx3.PVoice(nvoice);
+		this.assertEquals(voice.nvoice.nnotes.length,1,{ fileName : "TestP.hx", lineNumber : 97, className : "nx3.test.TestP", methodName : "testPVoice"});
+		this.assertEquals(voice.getNotes().length,1,{ fileName : "TestP.hx", lineNumber : 98, className : "nx3.test.TestP", methodName : "testPVoice"});
+		this.assertEquals(cx.ArrayTools.first(voice.getNotes()).getVoice(),voice,{ fileName : "TestP.hx", lineNumber : 99, className : "nx3.test.TestP", methodName : "testPVoice"});
+	}
+	,testPVoiceBeamgroups: function() {
+		var voice = new nx3.PVoice(new nx3.QVoice([8,8,8,8,8,8]));
+		var beamgroups = voice.getBeamgroups([nx3.ENoteVal.Nv4dot]);
+		this.assertEquals(2,beamgroups.length,{ fileName : "TestP.hx", lineNumber : 106, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+		this.assertEquals(3,beamgroups[0].pnotes.length,{ fileName : "TestP.hx", lineNumber : 107, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+		this.assertEquals(3,beamgroups[1].pnotes.length,{ fileName : "TestP.hx", lineNumber : 108, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+		this.assertEquals(cx.ArrayTools.first(voice.getNotes()).getBeamgroup(),beamgroups[0],{ fileName : "TestP.hx", lineNumber : 109, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+		this.assertEquals(cx.ArrayTools.second(voice.getNotes()).getBeamgroup(),beamgroups[0],{ fileName : "TestP.hx", lineNumber : 110, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+		this.assertEquals(cx.ArrayTools.third(voice.getNotes()).getBeamgroup(),beamgroups[0],{ fileName : "TestP.hx", lineNumber : 111, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+		this.assertEquals(cx.ArrayTools.fourth(voice.getNotes()).getBeamgroup(),beamgroups[1],{ fileName : "TestP.hx", lineNumber : 112, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+		this.assertEquals(cx.ArrayTools.fifth(voice.getNotes()).getBeamgroup(),beamgroups[1],{ fileName : "TestP.hx", lineNumber : 113, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+		this.assertEquals(cx.ArrayTools.sixth(voice.getNotes()).getBeamgroup(),beamgroups[1],{ fileName : "TestP.hx", lineNumber : 114, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroups"});
+	}
+	,testPVoiceBeamgroupsPNote: function() {
+		var voice = new nx3.PVoice(new nx3.QVoice([8,8,8,8,8,8]));
+		var beamgroup = cx.ArrayTools.first(voice.getNotes()).getBeamgroup();
+		this.assertEquals(beamgroup.pnotes[0],cx.ArrayTools.first(voice.getNotes()),{ fileName : "TestP.hx", lineNumber : 121, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroupsPNote"});
+		this.assertEquals(beamgroup.pnotes[1],cx.ArrayTools.second(voice.getNotes()),{ fileName : "TestP.hx", lineNumber : 122, className : "nx3.test.TestP", methodName : "testPVoiceBeamgroupsPNote"});
+	}
+	,testBeamgroupDirection: function() {
+		var calculator = new nx3.PBeamgroupDirectionCalculator(new nx3.PBeamgroup([new nx3.PNote(new nx3.QNote4(null,0))]));
+		var direction = calculator.getDirection();
+		this.assertEquals(calculator.getDirection(),nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 129, className : "nx3.test.TestP", methodName : "testBeamgroupDirection"});
+	}
+	,testPartbeamgroupsDirectionsTwoVoices: function() {
+		var vpart = new nx3.PPart(new nx3.NPart([new nx3.QVoice([8,8,8,8],null,[-1,-1,-1,-1]),new nx3.QVoice([8,8],null,[1,1])]));
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(vpart.getVoices()).getBeamgroups()).getDirection(),nx3.EDirectionUD.Up,{ fileName : "TestP.hx", lineNumber : 139, className : "nx3.test.TestP", methodName : "testPartbeamgroupsDirectionsTwoVoices"});
+		this.assertEquals(cx.ArrayTools.second(cx.ArrayTools.first(vpart.getVoices()).getBeamgroups()).getDirection(),nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 140, className : "nx3.test.TestP", methodName : "testPartbeamgroupsDirectionsTwoVoices"});
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.second(vpart.getVoices()).getBeamgroups()).getDirection(),nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 141, className : "nx3.test.TestP", methodName : "testPartbeamgroupsDirectionsTwoVoices"});
+	}
+	,testBeamflags: function() {
+		var vpart = new nx3.PPart(new nx3.NPart([new nx3.QVoice([16,16,16,16])]));
+		var beamgroup = cx.ArrayTools.first(cx.ArrayTools.first(vpart.getVoices()).getBeamgroups());
+		this.assertEquals(beamgroup.getFrame().beamflags.toString(),[nx3.EBeamflagType.Full16,nx3.EBeamflagType.Full16,nx3.EBeamflagType.Full16].toString(),{ fileName : "TestP.hx", lineNumber : 151, className : "nx3.test.TestP", methodName : "testBeamflags"});
+	}
+	,testPVoiceNoteDirections: function() {
+		var vpart = new nx3.PPart(new nx3.NPart([new nx3.QVoice([8,8,8,8],null,[-1,-1,-1,-1]),new nx3.QVoice([8,8],null,[1,1])]));
+		var voice0 = cx.ArrayTools.first(vpart.getVoices());
+		this.assertEquals(cx.ArrayTools.first(voice0.getNotes()).getDirection(),nx3.EDirectionUD.Up,{ fileName : "TestP.hx", lineNumber : 163, className : "nx3.test.TestP", methodName : "testPVoiceNoteDirections"});
+		this.assertEquals(cx.ArrayTools.second(voice0.getNotes()).getDirection(),nx3.EDirectionUD.Up,{ fileName : "TestP.hx", lineNumber : 164, className : "nx3.test.TestP", methodName : "testPVoiceNoteDirections"});
+		this.assertEquals(cx.ArrayTools.third(voice0.getNotes()).getDirection(),nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 165, className : "nx3.test.TestP", methodName : "testPVoiceNoteDirections"});
+		this.assertEquals(cx.ArrayTools.fourth(voice0.getNotes()).getDirection(),nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 166, className : "nx3.test.TestP", methodName : "testPVoiceNoteDirections"});
+		var voice1 = cx.ArrayTools.second(vpart.getVoices());
+		this.assertEquals(cx.ArrayTools.first(voice1.getNotes()).getDirection(),nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 168, className : "nx3.test.TestP", methodName : "testPVoiceNoteDirections"});
+		this.assertEquals(cx.ArrayTools.second(voice1.getNotes()).getDirection(),nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 169, className : "nx3.test.TestP", methodName : "testPVoiceNoteDirections"});
+	}
+	,testPPart: function() {
+		var npart = new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])]);
+		var ppart = new nx3.PPart(npart);
+		this.assertEquals(ppart.npart.nvoices.length,1,{ fileName : "TestP.hx", lineNumber : 177, className : "nx3.test.TestP", methodName : "testPPart"});
+		this.assertEquals(ppart.getVoices().length,1,{ fileName : "TestP.hx", lineNumber : 178, className : "nx3.test.TestP", methodName : "testPPart"});
+		this.assertEquals(cx.ArrayTools.first(ppart.getVoices()).getPart(),ppart,{ fileName : "TestP.hx", lineNumber : 179, className : "nx3.test.TestP", methodName : "testPPart"});
+	}
+	,testPPartComplexes2: function() {
+		var ppart = new nx3.PPart(new nx3.NPart([new nx3.QVoice([4,8,8,2]),new nx3.QVoice([4,4,2])]));
+		var complexes = ppart.getComplexes();
+		var positions = complexes.map(function(v) {
+			return v.getValueposition();
+		});
+		this.assertEquals(positions.toString(),[0,3024,4536,6048].toString(),{ fileName : "TestP.hx", lineNumber : 217, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[0].getNotes().length,2,{ fileName : "TestP.hx", lineNumber : 218, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[0],cx.ArrayTools.first(cx.ArrayTools.first(ppart.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 219, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[0],cx.ArrayTools.first(cx.ArrayTools.second(ppart.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 220, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[1].getNotes().length,2,{ fileName : "TestP.hx", lineNumber : 221, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[1],cx.ArrayTools.second(cx.ArrayTools.first(ppart.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 222, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[1],cx.ArrayTools.second(cx.ArrayTools.second(ppart.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 223, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[2].getNotes().length,1,{ fileName : "TestP.hx", lineNumber : 224, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[2],cx.ArrayTools.third(cx.ArrayTools.first(ppart.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 225, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[3].getNotes().length,2,{ fileName : "TestP.hx", lineNumber : 226, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[3],cx.ArrayTools.fourth(cx.ArrayTools.first(ppart.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 227, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes[3],cx.ArrayTools.third(cx.ArrayTools.second(ppart.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 228, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		var ppart1 = new nx3.PPart(new nx3.NPart([new nx3.QVoice([4,2,4]),new nx3.QVoice([2,4,4])]));
+		var note0 = cx.ArrayTools.first(cx.ArrayTools.first(ppart1.getVoices()).getNotes());
+		var complex = note0.getComplex();
+		this.assertEquals(note0,cx.ArrayTools.first(complex.getNotes()),{ fileName : "TestP.hx", lineNumber : 237, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		var complexes1 = ppart1.getComplexes();
+		this.assertEquals(complexes1[0].getNotes().length,2,{ fileName : "TestP.hx", lineNumber : 240, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[0],cx.ArrayTools.first(cx.ArrayTools.first(ppart1.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 241, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[0],cx.ArrayTools.first(cx.ArrayTools.second(ppart1.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 242, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[1].getNotes().length,1,{ fileName : "TestP.hx", lineNumber : 243, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[1],cx.ArrayTools.second(cx.ArrayTools.first(ppart1.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 244, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[2].getNotes().length,1,{ fileName : "TestP.hx", lineNumber : 245, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[2],cx.ArrayTools.second(cx.ArrayTools.second(ppart1.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 246, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[3].getNotes().length,2,{ fileName : "TestP.hx", lineNumber : 247, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[3],cx.ArrayTools.third(cx.ArrayTools.first(ppart1.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 248, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+		this.assertEquals(complexes1[3],cx.ArrayTools.third(cx.ArrayTools.second(ppart1.getVoices()).getNotes()).getComplex(),{ fileName : "TestP.hx", lineNumber : 249, className : "nx3.test.TestP", methodName : "testPPartComplexes2"});
+	}
+	,testPBarComplexDots: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,-3)],nx3.ENoteVal.Nv4dot)])])]));
+		var complex = cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes());
+		var rects = complex.getDotRects();
+		this.assertEquals(rects.length,1,{ fileName : "TestP.hx", lineNumber : 263, className : "nx3.test.TestP", methodName : "testPBarComplexDots"});
+	}
+	,testPBarComplexTies: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))],nx3.ENoteVal.Nv4)])])]));
+		var complex = cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes());
+		var rects = complex.getTieRects();
+		this.assertTrue(true,{ fileName : "TestP.hx", lineNumber : 280, className : "nx3.test.TestP", methodName : "testPBarComplexTies"});
+		var pbar1 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)],nx3.ENoteVal.Nv4),new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))],nx3.ENoteVal.Nv4),new nx3.NNote(null,[new nx3.NHead(null,0)],nx3.ENoteVal.Nv4)]),new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))],nx3.ENoteVal.Nv2),new nx3.NNote(null,[new nx3.NHead(null,0)],nx3.ENoteVal.Nv4)])])]));
+	}
+	,testPBarComplexTieinfos: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))],nx3.ENoteVal.Nv4),new nx3.QNote4()])])]));
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes()).getTieinfos().length,1,{ fileName : "TestP.hx", lineNumber : 310, className : "nx3.test.TestP", methodName : "testPBarComplexTieinfos"});
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes()).getTieinfos()).direction,nx3.EDirectionUD.Up,{ fileName : "TestP.hx", lineNumber : 311, className : "nx3.test.TestP", methodName : "testPBarComplexTieinfos"});
+		var pbar1 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,1,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))],nx3.ENoteVal.Nv4),new nx3.QNote4()])])]));
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(pbar1.getColumns()).getComplexes()).getTieinfos().length,1,{ fileName : "TestP.hx", lineNumber : 322, className : "nx3.test.TestP", methodName : "testPBarComplexTieinfos"});
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(cx.ArrayTools.first(pbar1.getColumns()).getComplexes()).getTieinfos()).direction,nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 323, className : "nx3.test.TestP", methodName : "testPBarComplexTieinfos"});
+		var pbar2 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,1,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),new nx3.NHead(null,3,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))],nx3.ENoteVal.Nv4),new nx3.QNote4()])])]));
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(pbar2.getColumns()).getComplexes()).getTieinfos().length,2,{ fileName : "TestP.hx", lineNumber : 333, className : "nx3.test.TestP", methodName : "testPBarComplexTieinfos"});
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(cx.ArrayTools.first(pbar2.getColumns()).getComplexes()).getTieinfos()).direction,nx3.EDirectionUD.Up,{ fileName : "TestP.hx", lineNumber : 334, className : "nx3.test.TestP", methodName : "testPBarComplexTieinfos"});
+		this.assertEquals(cx.ArrayTools.second(cx.ArrayTools.first(cx.ArrayTools.first(pbar2.getColumns()).getComplexes()).getTieinfos()).direction,nx3.EDirectionUD.Down,{ fileName : "TestP.hx", lineNumber : 335, className : "nx3.test.TestP", methodName : "testPBarComplexTieinfos"});
+	}
+	,testPBarComplexTieTargets: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))],nx3.ENoteVal.Nv4),new nx3.QNote4(null,0)])])]));
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes()).getTieinfos().length,1,{ fileName : "TestP.hx", lineNumber : 349, className : "nx3.test.TestP", methodName : "testPBarComplexTieTargets"});
+		this.assertEquals(cx.ArrayTools.first(cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes()).getTieinfos()).direction,nx3.EDirectionUD.Up,{ fileName : "TestP.hx", lineNumber : 350, className : "nx3.test.TestP", methodName : "testPBarComplexTieTargets"});
+		var tieinfos = cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes()).getTieinfos();
+		var calculator = new nx3.PComplexTieTargetCalculator(tieinfos);
+		tieinfos = calculator.findTargetHeads();
+		this.assertEquals(tieinfos[0].head,cx.ArrayTools.first(cx.ArrayTools.first(cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes()).getNotes()).getHeads()),{ fileName : "TestP.hx", lineNumber : 356, className : "nx3.test.TestP", methodName : "testPBarComplexTieTargets"});
+		this.assertEquals(tieinfos[0].target,cx.ArrayTools.first(cx.ArrayTools.first(cx.ArrayTools.first(cx.ArrayTools.second(pbar.getColumns()).getComplexes()).getNotes()).getHeads()),{ fileName : "TestP.hx", lineNumber : 357, className : "nx3.test.TestP", methodName : "testPBarComplexTieTargets"});
+	}
+	,testPBarFindNextColumnComplex: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote2(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote2(null,0),new nx3.QNote4(null,0)])])]));
+		var complex0 = cx.ArrayTools.first(cx.ArrayTools.first(pbar.getColumns()).getComplexes());
+		var complex1 = complex0.getNext();
+		this.assertEquals(complex1,cx.ArrayTools.first(cx.ArrayTools.second(pbar.getColumns()).getComplexes()),{ fileName : "TestP.hx", lineNumber : 381, className : "nx3.test.TestP", methodName : "testPBarFindNextColumnComplex"});
+		var complexA = cx.ArrayTools.second(cx.ArrayTools.first(pbar.getColumns()).getComplexes());
+		var complexC = cx.ArrayTools.second(cx.ArrayTools.third(pbar.getColumns()).getComplexes());
+		this.assertEquals(complexA.getNext(),complexC,{ fileName : "TestP.hx", lineNumber : 385, className : "nx3.test.TestP", methodName : "testPBarFindNextColumnComplex"});
+	}
+	,testPBarColumnsDistances: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0)])])]));
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getMPosition(),0,{ fileName : "TestP.hx", lineNumber : 453, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getMDistance(),1.6,{ fileName : "TestP.hx", lineNumber : 454, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		var pbar1 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0)])])]));
+		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getMPosition(),0,{ fileName : "TestP.hx", lineNumber : 464, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 465, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getMPosition(),4.4,{ fileName : "TestP.hx", lineNumber : 466, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getMDistance(),1.6,{ fileName : "TestP.hx", lineNumber : 467, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		var pbar2 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote1(0),new nx3.QNote4(null,0)])])]));
+		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getMPosition(),0,{ fileName : "TestP.hx", lineNumber : 477, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getMDistance(),5,{ fileName : "TestP.hx", lineNumber : 478, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.second(pbar2.getColumns()).getMDistance(),1.6,{ fileName : "TestP.hx", lineNumber : 479, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		var pbar3 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote1(0)])])]));
+		this.assertEquals(cx.ArrayTools.first(pbar3.getColumns()).getMPosition(),0,{ fileName : "TestP.hx", lineNumber : 490, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.first(pbar3.getColumns()).getMDistance(),5,{ fileName : "TestP.hx", lineNumber : 491, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.second(pbar3.getColumns()).getMPosition(),5,{ fileName : "TestP.hx", lineNumber : 492, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.second(pbar3.getColumns()).getMDistance(),2.2,{ fileName : "TestP.hx", lineNumber : 493, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		var pbar4 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0,null,"#")])])]));
+		this.assertEquals(cx.ArrayTools.first(pbar4.getColumns()).getMPosition(),0,{ fileName : "TestP.hx", lineNumber : 504, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.first(pbar4.getColumns()).getMDistance(),6.4,{ fileName : "TestP.hx", lineNumber : 505, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.ArrayTools.second(pbar4.getColumns()).getMPosition(),6.4,{ fileName : "TestP.hx", lineNumber : 506, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar4.getColumns()).getMDistance(),null),1.6,{ fileName : "TestP.hx", lineNumber : 507, className : "nx3.test.TestP", methodName : "testPBarColumnsDistances"});
+	}
+	,testPBarColumnWidths: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0,null,"#"),new nx3.QNote1(0)])])]));
+		this.assertEquals(cx.ArrayTools.last(pbar.getColumns()).getRightX(),2.2,{ fileName : "TestP.hx", lineNumber : 528, className : "nx3.test.TestP", methodName : "testPBarColumnWidths"});
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getLeftX(),-4.2,{ fileName : "TestP.hx", lineNumber : 529, className : "nx3.test.TestP", methodName : "testPBarColumnWidths"});
+	}
+	,testPBarColumnsAllotmentTypes: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote2(null,0),new nx3.QNote4(null,0),new nx3.QNote8(null,0),new nx3.QNote8(null,0)])])],null,null,null,nx3.EAllotment.Linear));
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 545, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getADistance(),16,{ fileName : "TestP.hx", lineNumber : 546, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getAPostion(),pbar.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 547, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 548, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 550, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getADistance(),8,{ fileName : "TestP.hx", lineNumber : 551, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getAPostion(),16 + pbar.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 552, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 553, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.third(pbar.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 555, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.third(pbar.getColumns()).getADistance(),4.4,{ fileName : "TestP.hx", lineNumber : 556, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.third(pbar.getColumns()).getAPostion(),24 + pbar.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 557, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.third(pbar.getColumns()).getADistanceBenefit(),null),0.4,{ fileName : "TestP.hx", lineNumber : 558, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.fourth(pbar.getColumns()).getMDistance(),1.6,{ fileName : "TestP.hx", lineNumber : 560, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.fourth(pbar.getColumns()).getADistance(),4,{ fileName : "TestP.hx", lineNumber : 561, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.fourth(pbar.getColumns()).getAPostion(),28.4 + pbar.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 562, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.fourth(pbar.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 563, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		var pbar1 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote2(null,0),new nx3.QNote4(null,0),new nx3.QNote8(null,0),new nx3.QNote8(null,0)])])],null,null,null,nx3.EAllotment.Logaritmic));
+		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 576, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getADistance(),12,{ fileName : "TestP.hx", lineNumber : 577, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getAPostion(),pbar1.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 578, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 579, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 581, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getADistance(),8,{ fileName : "TestP.hx", lineNumber : 582, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getAPostion(),12 + pbar1.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 583, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 584, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.third(pbar1.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 586, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.third(pbar1.getColumns()).getADistance(),6,{ fileName : "TestP.hx", lineNumber : 587, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.third(pbar1.getColumns()).getAPostion(),20 + pbar1.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 588, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.third(pbar1.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 589, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.fourth(pbar1.getColumns()).getMDistance(),1.6,{ fileName : "TestP.hx", lineNumber : 591, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.fourth(pbar1.getColumns()).getADistance(),6,{ fileName : "TestP.hx", lineNumber : 592, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.fourth(pbar1.getColumns()).getAPostion(),26 + pbar1.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 593, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.fourth(pbar1.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 594, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		var pbar2 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote1(0)])])],null,null,null,nx3.EAllotment.Linear));
+		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 610, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getADistance(),8,{ fileName : "TestP.hx", lineNumber : 611, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getAPostion(),pbar2.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 612, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 613, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar2.getColumns()).getMDistance(),1.6,{ fileName : "TestP.hx", lineNumber : 615, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar2.getColumns()).getADistance(),24,{ fileName : "TestP.hx", lineNumber : 616, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar2.getColumns()).getAPostion(),8 + pbar2.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 617, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar2.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 618, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		var pbar3 = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote1(0)])])],null,null,null,nx3.EAllotment.Logaritmic));
+		this.assertEquals(cx.ArrayTools.first(pbar3.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 634, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar3.getColumns()).getADistance(),8,{ fileName : "TestP.hx", lineNumber : 635, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar3.getColumns()).getAPostion(),pbar3.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 636, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.first(pbar3.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 637, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar3.getColumns()).getMDistance(),1.6,{ fileName : "TestP.hx", lineNumber : 639, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar3.getColumns()).getADistance(),16,{ fileName : "TestP.hx", lineNumber : 640, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar3.getColumns()).getAPostion(),8 + pbar3.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 641, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+		this.assertEquals(cx.ArrayTools.second(pbar3.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 642, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentTypes"});
+	}
+	,testPBarColumnsAllotmentDistanceBenefit: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote8(null,0),new nx3.QNote8(null,0,null,"#"),new nx3.QNote8(null,0)])])],null,null,null,nx3.EAllotment.Linear));
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getMDistance(),6.4,{ fileName : "TestP.hx", lineNumber : 657, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getADistance(),6.4,{ fileName : "TestP.hx", lineNumber : 658, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getAPostion(),pbar.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 659, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.first(pbar.getColumns()).getADistanceBenefit(),null),2.4,{ fileName : "TestP.hx", lineNumber : 660, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getMDistance(),4.4,{ fileName : "TestP.hx", lineNumber : 662, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getADistance(),4.4,{ fileName : "TestP.hx", lineNumber : 663, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getAPostion(),6.4 + pbar.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 664, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar.getColumns()).getADistanceBenefit(),null),0.4,{ fileName : "TestP.hx", lineNumber : 665, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.third(pbar.getColumns()).getMDistance(),1.6,{ fileName : "TestP.hx", lineNumber : 667, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.third(pbar.getColumns()).getADistance(),4,{ fileName : "TestP.hx", lineNumber : 668, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.third(pbar.getColumns()).getAPostion(),10.8 + pbar.getContentXZero(),{ fileName : "TestP.hx", lineNumber : 669, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+		this.assertEquals(cx.ArrayTools.third(pbar.getColumns()).getADistanceBenefit(),0,{ fileName : "TestP.hx", lineNumber : 670, className : "nx3.test.TestP", methodName : "testPBarColumnsAllotmentDistanceBenefit"});
+	}
+	,testPBarLastColumnValue: function() {
+		var pbar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote1(0)])])]));
+		this.assertEquals(pbar.getValue(),12096,{ fileName : "TestP.hx", lineNumber : 688, className : "nx3.test.TestP", methodName : "testPBarLastColumnValue"});
+		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getValue(),3024,{ fileName : "TestP.hx", lineNumber : 689, className : "nx3.test.TestP", methodName : "testPBarLastColumnValue"});
+		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getValue(),9072,{ fileName : "TestP.hx", lineNumber : 690, className : "nx3.test.TestP", methodName : "testPBarLastColumnValue"});
+	}
+	,testBarAttributes: function() {
+		var rect = nx3.PAttributesRectsCalculator.getClefRect(nx3.EClef.ClefG);
+		var rect1 = nx3.PAttributesRectsCalculator.getKeyRect(nx3.EKey.Flat3);
+		this.assertTrue(true,{ fileName : "TestP.hx", lineNumber : 697, className : "nx3.test.TestP", methodName : "testBarAttributes"});
+	}
+	,testBarContentWidth: function() {
+		var bar = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote8(null,0,null,".")])])],null,null,null,nx3.EAllotment.LeftAlign));
+		var lastcolumn = cx.ArrayTools.last(bar.getColumns());
+		this.assertEquals(bar.getContentwidth(),3.2,{ fileName : "TestP.hx", lineNumber : 711, className : "nx3.test.TestP", methodName : "testBarContentWidth"});
+	}
+	,rectEquals: function(a,bx,by,bwidth,bheight) {
+		if(bheight == null) bheight = -1;
+		if(bwidth == null) bwidth = -1;
+		if(by == null) by = -1;
+		if(bx == null) bx = -1;
+		var result = false;
+		if(bwidth == -1 || bheight == -1) throw "Rect comparison error";
+		result = Math.abs(a.x - bx) <= 0.00001 && Math.abs(a.y - by) <= 0.00001 && Math.abs(a.width - bwidth) <= 0.00001 && Math.abs(a.height - bheight) <= 0.00001;
+		if(!result) haxe.Log.trace(["Rectangle not equal",Std.string(a),Std.string(new nx3.geom.Rectangle(bx,by,bwidth,bheight))],{ fileName : "TestP.hx", lineNumber : 720, className : "nx3.test.TestP", methodName : "rectEquals"});
+		return result;
+	}
+	,testSystemGeneratorOneBar: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefC,null,nx3.EKey.Flat2);
+		bars.push(new nx3.PBar(new nx3.NBar([n0],null,nx3.ETime.Time2_4)));
+		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system = generator.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefC].toString(),{ fileName : "TestP.hx", lineNumber : 738, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat2].toString(),{ fileName : "TestP.hx", lineNumber : 739, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.time,nx3.ETime.Time2_4,{ fileName : "TestP.hx", lineNumber : 740, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		var bars1 = [];
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars1.push(new nx3.PBar(new nx3.NBar([n01])));
+		var generator1 = new nx3.PSystemGenerator(bars1,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system1 = generator1.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system1.getSystembars()).actAttributes.clefs.toString(),[nx3.PSystemGenerator.defaultClef].toString(),{ fileName : "TestP.hx", lineNumber : 749, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system1.getSystembars()).actAttributes.keys.toString(),[nx3.PSystemGenerator.defaultKey].toString(),{ fileName : "TestP.hx", lineNumber : 750, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system1.getSystembars()).actAttributes.time,nx3.PSystemGenerator.defaultTime,{ fileName : "TestP.hx", lineNumber : 751, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		var bars2 = [];
+		var n02 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars2.push(new nx3.PBar(new nx3.NBar([n02])));
+		var prevBarAttributes = { clefs : [nx3.EClef.ClefF], keys : [nx3.EKey.Sharp4], time : nx3.ETime.Time5_8};
+		var generator2 = new nx3.PSystemGenerator(bars2,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes,400);
+		var system2 = generator2.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefF].toString(),{ fileName : "TestP.hx", lineNumber : 761, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp4].toString(),{ fileName : "TestP.hx", lineNumber : 762, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).actAttributes.time,nx3.ETime.Time5_8,{ fileName : "TestP.hx", lineNumber : 763, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		var bars3 = [];
+		var n03 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefC);
+		var n1 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Sharp5);
+		bars3.push(new nx3.PBar(new nx3.NBar([n03,n1])));
+		var generator3 = new nx3.PSystemGenerator(bars3,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system3 = generator3.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefC,nx3.PSystemGenerator.defaultClef].toString(),{ fileName : "TestP.hx", lineNumber : 773, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).actAttributes.keys.toString(),[nx3.PSystemGenerator.defaultKey,nx3.EKey.Sharp5].toString(),{ fileName : "TestP.hx", lineNumber : 774, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).actAttributes.time,nx3.PSystemGenerator.defaultTime,{ fileName : "TestP.hx", lineNumber : 775, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		var bars4 = [];
+		var n04 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n11 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars4.push(new nx3.PBar(new nx3.NBar([n04,n11])));
+		var prevBarAttributes1 = { clefs : [nx3.EClef.ClefF,nx3.EClef.ClefG], keys : [nx3.EKey.Sharp1,nx3.EKey.Flat3], time : nx3.ETime.Time5_8};
+		var generator4 = new nx3.PSystemGenerator(bars4,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes1,400);
+		var system4 = generator4.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefF,nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 786, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp1,nx3.EKey.Flat3].toString(),{ fileName : "TestP.hx", lineNumber : 787, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		var bars5 = [];
+		var n05 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefC);
+		var n12 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Sharp5);
+		bars5.push(new nx3.PBar(new nx3.NBar([n05,n12])));
+		var prevBarAttributes2 = { clefs : [nx3.EClef.ClefF,nx3.EClef.ClefG], keys : [nx3.EKey.Sharp1,nx3.EKey.Flat3], time : nx3.ETime.Time5_8};
+		var generator5 = new nx3.PSystemGenerator(bars5,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes2,400);
+		var system5 = generator5.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefC,nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 798, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp1,nx3.EKey.Sharp5].toString(),{ fileName : "TestP.hx", lineNumber : 799, className : "nx3.test.TestP", methodName : "testSystemGeneratorOneBar"});
+	}
+	,testSystemGeneratorBarConfigResult: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefC);
+		bars.push(new nx3.PBar(new nx3.NBar([n0])));
+		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system = generator.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).barConfig.showClef,true,{ fileName : "TestP.hx", lineNumber : 812, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars1 = [];
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefC);
+		bars1.push(new nx3.PBar(new nx3.NBar([n01])));
+		var generator1 = new nx3.PSystemGenerator(bars1,{ showFirstClef : false, showFirstKey : true, showFirstTime : true},null,400);
+		var system1 = generator1.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system1.getSystembars()).barConfig.showClef,false,{ fileName : "TestP.hx", lineNumber : 819, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars2 = [];
+		var n02 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars2.push(new nx3.PBar(new nx3.NBar([n02])));
+		var generator2 = new nx3.PSystemGenerator(bars2,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system2 = generator2.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).barConfig.showClef,true,{ fileName : "TestP.hx", lineNumber : 826, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).actAttributes.clefs.toString(),[nx3.PSystemGenerator.defaultClef].toString(),{ fileName : "TestP.hx", lineNumber : 827, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars3 = [];
+		var n03 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars3.push(new nx3.PBar(new nx3.NBar([n03])));
+		var prevBarAttributes = { clefs : [nx3.EClef.ClefF], keys : [nx3.EKey.Sharp4], time : nx3.ETime.Time5_8};
+		var generator3 = new nx3.PSystemGenerator(bars3,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes,400);
+		var system3 = generator3.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).barConfig.showClef,true,{ fileName : "TestP.hx", lineNumber : 835, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).actAttributes.clefs.toString(),[nx3.PSystemGenerator.defaultClef].toString(),{ fileName : "TestP.hx", lineNumber : 836, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars4 = [];
+		var n04 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,nx3.EDisplayALN.Never);
+		bars4.push(new nx3.PBar(new nx3.NBar([n04])));
+		var prevBarAttributes1 = { clefs : [nx3.EClef.ClefF], keys : [nx3.EKey.Sharp4], time : nx3.ETime.Time5_8};
+		var generator4 = new nx3.PSystemGenerator(bars4,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes1,400);
+		var system4 = generator4.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).barConfig.showClef,false,{ fileName : "TestP.hx", lineNumber : 844, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars5 = [];
+		var n05 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefC,nx3.EDisplayALN.Always);
+		bars5.push(new nx3.PBar(new nx3.NBar([n05])));
+		var generator5 = new nx3.PSystemGenerator(bars5,{ showFirstClef : false, showFirstKey : true, showFirstTime : true},null,400);
+		var system5 = generator5.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).barConfig.showClef,true,{ fileName : "TestP.hx", lineNumber : 851, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars6 = [];
+		var n06 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,nx3.EDisplayALN.Always);
+		bars6.push(new nx3.PBar(new nx3.NBar([n06])));
+		var generator6 = new nx3.PSystemGenerator(bars6,{ showFirstClef : false, showFirstKey : true, showFirstTime : true},null,400);
+		var system6 = generator6.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system6.getSystembars()).barConfig.showClef,true,{ fileName : "TestP.hx", lineNumber : 858, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars7 = [];
+		var n07 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Sharp3);
+		bars7.push(new nx3.PBar(new nx3.NBar([n07])));
+		var generator7 = new nx3.PSystemGenerator(bars7,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system7 = generator7.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system7.getSystembars()).barConfig.showKey,true,{ fileName : "TestP.hx", lineNumber : 867, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars8 = [];
+		var n08 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Sharp3);
+		bars8.push(new nx3.PBar(new nx3.NBar([n08])));
+		var generator8 = new nx3.PSystemGenerator(bars8,{ showFirstClef : false, showFirstKey : false, showFirstTime : true},null,400);
+		var system8 = generator8.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system8.getSystembars()).barConfig.showKey,false,{ fileName : "TestP.hx", lineNumber : 874, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars9 = [];
+		var n09 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars9.push(new nx3.PBar(new nx3.NBar([n09])));
+		var generator9 = new nx3.PSystemGenerator(bars9,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system9 = generator9.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system9.getSystembars()).barConfig.showKey,true,{ fileName : "TestP.hx", lineNumber : 881, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		this.assertEquals(cx.ArrayTools.first(system9.getSystembars()).actAttributes.keys.toString(),[nx3.PSystemGenerator.defaultKey].toString(),{ fileName : "TestP.hx", lineNumber : 882, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars10 = [];
+		var n010 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars10.push(new nx3.PBar(new nx3.NBar([n010])));
+		var prevBarAttributes2 = { clefs : [nx3.EClef.ClefF], keys : [nx3.EKey.Sharp4], time : nx3.ETime.Time5_8};
+		var generator10 = new nx3.PSystemGenerator(bars10,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes2,400);
+		var system10 = generator10.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system10.getSystembars()).barConfig.showKey,true,{ fileName : "TestP.hx", lineNumber : 890, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		this.assertEquals(cx.ArrayTools.first(system10.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp4].toString(),{ fileName : "TestP.hx", lineNumber : 891, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars11 = [];
+		var n011 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,nx3.EDisplayALN.Layout,null,nx3.EDisplayALN.Never);
+		bars11.push(new nx3.PBar(new nx3.NBar([n011])));
+		var prevBarAttributes3 = { clefs : [nx3.EClef.ClefF], keys : [nx3.EKey.Sharp4], time : nx3.ETime.Time5_8};
+		var generator11 = new nx3.PSystemGenerator(bars11,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes3,400);
+		var system11 = generator11.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system11.getSystembars()).barConfig.showKey,false,{ fileName : "TestP.hx", lineNumber : 899, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars12 = [];
+		var n012 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Sharp3,nx3.EDisplayALN.Always);
+		bars12.push(new nx3.PBar(new nx3.NBar([n012])));
+		var generator12 = new nx3.PSystemGenerator(bars12,{ showFirstClef : false, showFirstKey : false, showFirstTime : true},null,400);
+		var system12 = generator12.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system12.getSystembars()).barConfig.showKey,true,{ fileName : "TestP.hx", lineNumber : 906, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		this.assertEquals(cx.ArrayTools.first(system12.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp3].toString(),{ fileName : "TestP.hx", lineNumber : 907, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars13 = [];
+		var n013 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,null,nx3.EDisplayALN.Always);
+		bars13.push(new nx3.PBar(new nx3.NBar([n013])));
+		var generator13 = new nx3.PSystemGenerator(bars13,{ showFirstClef : false, showFirstKey : true, showFirstTime : true},null,400);
+		var system13 = generator13.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system13.getSystembars()).barConfig.showKey,true,{ fileName : "TestP.hx", lineNumber : 914, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		this.assertEquals(cx.ArrayTools.first(system13.getSystembars()).actAttributes.keys.toString(),[nx3.PSystemGenerator.defaultKey].toString(),{ fileName : "TestP.hx", lineNumber : 915, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars14 = [];
+		var n014 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars14.push(new nx3.PBar(new nx3.NBar([n014],null,nx3.ETime.Time2_8)));
+		var generator14 = new nx3.PSystemGenerator(bars14,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system14 = generator14.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system14.getSystembars()).barConfig.showTime,true,{ fileName : "TestP.hx", lineNumber : 924, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars15 = [];
+		var n015 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars15.push(new nx3.PBar(new nx3.NBar([n015],null,nx3.ETime.Time2_8)));
+		var generator15 = new nx3.PSystemGenerator(bars15,{ showFirstClef : true, showFirstKey : true, showFirstTime : false},null,400);
+		var system15 = generator15.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system15.getSystembars()).barConfig.showTime,false,{ fileName : "TestP.hx", lineNumber : 931, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars16 = [];
+		var n016 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars16.push(new nx3.PBar(new nx3.NBar([n016],null,nx3.ETime.Time2_8,nx3.EDisplayALN.Always)));
+		var generator16 = new nx3.PSystemGenerator(bars16,{ showFirstClef : true, showFirstKey : true, showFirstTime : false},null,400);
+		var system16 = generator16.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system16.getSystembars()).barConfig.showTime,true,{ fileName : "TestP.hx", lineNumber : 938, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars17 = [];
+		var n017 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars17.push(new nx3.PBar(new nx3.NBar([n017],null,nx3.ETime.Time2_8,nx3.EDisplayALN.Never)));
+		var generator17 = new nx3.PSystemGenerator(bars17,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system17 = generator17.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system17.getSystembars()).barConfig.showTime,false,{ fileName : "TestP.hx", lineNumber : 945, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		var bars18 = [];
+		var n018 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars18.push(new nx3.PBar(new nx3.NBar([n018])));
+		var prevBarAttributes4 = { clefs : [nx3.EClef.ClefF], keys : [nx3.EKey.Sharp4], time : nx3.ETime.Time5_8};
+		var generator18 = new nx3.PSystemGenerator(bars18,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes4,400);
+		var system18 = generator18.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system18.getSystembars()).barConfig.showTime,true,{ fileName : "TestP.hx", lineNumber : 953, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+		this.assertEquals(cx.ArrayTools.first(system18.getSystembars()).actAttributes.time,nx3.ETime.Time5_8,{ fileName : "TestP.hx", lineNumber : 954, className : "nx3.test.TestP", methodName : "testSystemGeneratorBarConfigResult"});
+	}
+	,testSystemGeneratorContentWidth: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n0])));
+		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system = generator.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).getBarWidths().width,170,{ fileName : "TestP.hx", lineNumber : 964, className : "nx3.test.TestP", methodName : "testSystemGeneratorContentWidth"});
+		this.assertTrue(true,{ fileName : "TestP.hx", lineNumber : 965, className : "nx3.test.TestP", methodName : "testSystemGeneratorContentWidth"});
+		var bars1 = [];
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefF,null,nx3.EKey.Sharp4);
+		bars1.push(new nx3.PBar(new nx3.NBar([n01],null,nx3.ETime.Time5_8)));
+		var generator1 = new nx3.PSystemGenerator(bars1,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system1 = generator1.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system1.getSystembars()).getBarWidths().width,190,{ fileName : "TestP.hx", lineNumber : 972, className : "nx3.test.TestP", methodName : "testSystemGeneratorContentWidth"});
+		this.assertTrue(true,{ fileName : "TestP.hx", lineNumber : 973, className : "nx3.test.TestP", methodName : "testSystemGeneratorContentWidth"});
+		var bars2 = [];
+		var n02 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars2.push(new nx3.PBar(new nx3.NBar([n02])));
+		var prevBarAttributes = { clefs : [nx3.EClef.ClefF], keys : [nx3.EKey.Sharp4], time : nx3.ETime.Time5_8};
+		var generator2 = new nx3.PSystemGenerator(bars2,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes,400);
+		var system2 = generator2.getSystem();
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).getBarWidths().width,190,{ fileName : "TestP.hx", lineNumber : 981, className : "nx3.test.TestP", methodName : "testSystemGeneratorContentWidth"});
+		this.assertTrue(true,{ fileName : "TestP.hx", lineNumber : 982, className : "nx3.test.TestP", methodName : "testSystemGeneratorContentWidth"});
+	}
+	,testSystemGeneratorTwoBars: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		bars.push(new nx3.PBar(new nx3.NBar([n0],null,nx3.ETime.Time3_2)));
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n01])));
+		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400);
+		var system = generator.getSystem();
+		this.assertEquals(system.getSystembars().length,2,{ fileName : "TestP.hx", lineNumber : 995, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 996, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.second(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 997, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat3].toString(),{ fileName : "TestP.hx", lineNumber : 998, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.second(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat3].toString(),{ fileName : "TestP.hx", lineNumber : 999, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.time,nx3.ETime.Time3_2,{ fileName : "TestP.hx", lineNumber : 1000, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).barConfig.showClef,true,{ fileName : "TestP.hx", lineNumber : 1001, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.second(system.getSystembars()).barConfig.showClef,false,{ fileName : "TestP.hx", lineNumber : 1002, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).barConfig.showKey,true,{ fileName : "TestP.hx", lineNumber : 1003, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.second(system.getSystembars()).barConfig.showKey,false,{ fileName : "TestP.hx", lineNumber : 1004, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).barConfig.showTime,true,{ fileName : "TestP.hx", lineNumber : 1005, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+		this.assertEquals(cx.ArrayTools.second(system.getSystembars()).barConfig.showTime,false,{ fileName : "TestP.hx", lineNumber : 1006, className : "nx3.test.TestP", methodName : "testSystemGeneratorTwoBars"});
+	}
+	,testSystemGeneratorMoreBars: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		bars.push(new nx3.PBar(new nx3.NBar([n0],null,nx3.ETime.Time3_2)));
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n01])));
+		var n02 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Sharp1);
+		bars.push(new nx3.PBar(new nx3.NBar([n02])));
+		var n03 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n03],null,nx3.ETime.Time6_8)));
+		var n04 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n04])));
+		var n05 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefF);
+		bars.push(new nx3.PBar(new nx3.NBar([n05])));
+		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,1000);
+		var system = generator.getSystem();
+		this.assertEquals(system.getSystembars().length,6,{ fileName : "TestP.hx", lineNumber : 1026, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 1027, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.second(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 1028, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.third(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 1029, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.fourth(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 1030, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.fifth(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG].toString(),{ fileName : "TestP.hx", lineNumber : 1031, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.sixth(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefF].toString(),{ fileName : "TestP.hx", lineNumber : 1032, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat3].toString(),{ fileName : "TestP.hx", lineNumber : 1033, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.second(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat3].toString(),{ fileName : "TestP.hx", lineNumber : 1034, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.third(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp1].toString(),{ fileName : "TestP.hx", lineNumber : 1035, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.fourth(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp1].toString(),{ fileName : "TestP.hx", lineNumber : 1036, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.fifth(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp1].toString(),{ fileName : "TestP.hx", lineNumber : 1037, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.sixth(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Sharp1].toString(),{ fileName : "TestP.hx", lineNumber : 1038, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.time,nx3.ETime.Time3_2,{ fileName : "TestP.hx", lineNumber : 1039, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.second(system.getSystembars()).actAttributes.time,nx3.ETime.Time3_2,{ fileName : "TestP.hx", lineNumber : 1040, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.third(system.getSystembars()).actAttributes.time,nx3.ETime.Time3_2,{ fileName : "TestP.hx", lineNumber : 1041, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.fourth(system.getSystembars()).actAttributes.time,nx3.ETime.Time6_8,{ fileName : "TestP.hx", lineNumber : 1042, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.fifth(system.getSystembars()).actAttributes.time,nx3.ETime.Time6_8,{ fileName : "TestP.hx", lineNumber : 1043, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(cx.ArrayTools.sixth(system.getSystembars()).actAttributes.time,nx3.ETime.Time6_8,{ fileName : "TestP.hx", lineNumber : 1044, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(nx3.test.TestP.barConfToArr(cx.ArrayTools.first(system.getSystembars()).barConfig).toString(),[true,true,true].toString(),{ fileName : "TestP.hx", lineNumber : 1045, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(nx3.test.TestP.barConfToArr(cx.ArrayTools.second(system.getSystembars()).barConfig).toString(),[false,false,false].toString(),{ fileName : "TestP.hx", lineNumber : 1046, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(nx3.test.TestP.barConfToArr(cx.ArrayTools.third(system.getSystembars()).barConfig).toString(),[false,true,false].toString(),{ fileName : "TestP.hx", lineNumber : 1047, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(nx3.test.TestP.barConfToArr(cx.ArrayTools.fourth(system.getSystembars()).barConfig).toString(),[false,false,true].toString(),{ fileName : "TestP.hx", lineNumber : 1048, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(nx3.test.TestP.barConfToArr(cx.ArrayTools.fifth(system.getSystembars()).barConfig).toString(),[false,false,false].toString(),{ fileName : "TestP.hx", lineNumber : 1049, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+		this.assertEquals(nx3.test.TestP.barConfToArr(cx.ArrayTools.sixth(system.getSystembars()).barConfig).toString(),[true,false,false].toString(),{ fileName : "TestP.hx", lineNumber : 1050, className : "nx3.test.TestP", methodName : "testSystemGeneratorMoreBars"});
+	}
+	,testSystemGeneratorOverflow: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		bars.push(new nx3.PBar(new nx3.NBar([n0],null,nx3.ETime.Time3_2)));
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n01])));
+		var n02 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n02])));
+		var n03 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n03])));
+		var n04 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n04])));
+		var n05 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n05])));
+		var barscopy = bars.slice();
+		var pagewidth = 1000;
+		var generator = new nx3.PSystemGenerator(barscopy,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth);
+		var system = generator.getSystem();
+		this.assertEquals(system.getSystembars().length,6,{ fileName : "TestP.hx", lineNumber : 1075, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+		this.assertEquals(system.getWidth(),780,{ fileName : "TestP.hx", lineNumber : 1076, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+		this.assertEquals(barscopy.length,0,{ fileName : "TestP.hx", lineNumber : 1077, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+		var barscopy1 = bars.slice();
+		var pagewidth1 = 780;
+		var generator1 = new nx3.PSystemGenerator(barscopy1,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth1);
+		var system1 = generator1.getSystem();
+		this.assertEquals(system1.getSystembars().length,6,{ fileName : "TestP.hx", lineNumber : 1083, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+		this.assertEquals(system1.getWidth(),780,{ fileName : "TestP.hx", lineNumber : 1084, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+		this.assertEquals(barscopy1.length,0,{ fileName : "TestP.hx", lineNumber : 1085, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+		var barscopy2 = bars.slice();
+		var pagewidth2 = 700;
+		var generator2 = new nx3.PSystemGenerator(barscopy2,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth2);
+		var system2 = generator2.getSystem();
+		this.assertEquals(system2.getSystembars().length,5,{ fileName : "TestP.hx", lineNumber : 1091, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+		this.assertEquals(system2.getWidth(),660,{ fileName : "TestP.hx", lineNumber : 1092, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+		this.assertEquals(barscopy2.length,1,{ fileName : "TestP.hx", lineNumber : 1093, className : "nx3.test.TestP", methodName : "testSystemGeneratorOverflow"});
+	}
+	,testSystemGeneratorCautions: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		bars.push(new nx3.PBar(new nx3.NBar([n0],null,nx3.ETime.Time3_2)));
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n01])));
+		var pagewidth = 250;
+		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth);
+		var system = generator.getSystem();
+		this.assertEquals(system.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1107, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(system.getWidth(),180,{ fileName : "TestP.hx", lineNumber : 1108, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		var bars1 = [];
+		var n02 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		bars1.push(new nx3.PBar(new nx3.NBar([n02],null,nx3.ETime.Time3_2)));
+		var n03 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefF);
+		bars1.push(new nx3.PBar(new nx3.NBar([n03])));
+		var pagewidth1 = 250;
+		var generator1 = new nx3.PSystemGenerator(bars1,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth1);
+		var system1 = generator1.getSystem();
+		this.assertEquals(system1.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1118, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(system1.getWidth(),200,{ fileName : "TestP.hx", lineNumber : 1119, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system1.getSystembars()).barConfig.showCautClef,true,{ fileName : "TestP.hx", lineNumber : 1120, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system1.getSystembars()).barConfig.showCautKey,false,{ fileName : "TestP.hx", lineNumber : 1121, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system1.getSystembars()).barConfig.showCautTime,false,{ fileName : "TestP.hx", lineNumber : 1122, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.last(system1.getSystembars()).caAttributes.clefs.toString(),[nx3.EClef.ClefF].toString(),{ fileName : "TestP.hx", lineNumber : 1123, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		var bars2 = [];
+		var n04 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		bars2.push(new nx3.PBar(new nx3.NBar([n04],null,nx3.ETime.Time3_2)));
+		var n05 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Sharp1);
+		bars2.push(new nx3.PBar(new nx3.NBar([n05])));
+		var pagewidth2 = 250;
+		var generator2 = new nx3.PSystemGenerator(bars2,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth2);
+		var system2 = generator2.getSystem();
+		this.assertEquals(system2.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1133, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(system2.getWidth(),190,{ fileName : "TestP.hx", lineNumber : 1134, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).barConfig.showCautClef,false,{ fileName : "TestP.hx", lineNumber : 1135, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).barConfig.showCautKey,true,{ fileName : "TestP.hx", lineNumber : 1136, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).barConfig.showCautTime,false,{ fileName : "TestP.hx", lineNumber : 1137, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.last(system2.getSystembars()).caAttributes.keys.toString(),[nx3.EKey.Sharp1].toString(),{ fileName : "TestP.hx", lineNumber : 1138, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		var bars3 = [];
+		var n06 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		bars3.push(new nx3.PBar(new nx3.NBar([n06],null,nx3.ETime.Time3_2)));
+		var n07 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars3.push(new nx3.PBar(new nx3.NBar([n07],null,nx3.ETime.Time2_2)));
+		var pagewidth3 = 250;
+		var generator3 = new nx3.PSystemGenerator(bars3,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth3);
+		var system3 = generator3.getSystem();
+		this.assertEquals(system3.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1148, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(system3.getWidth(),190,{ fileName : "TestP.hx", lineNumber : 1149, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).barConfig.showCautClef,false,{ fileName : "TestP.hx", lineNumber : 1150, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).barConfig.showCautKey,false,{ fileName : "TestP.hx", lineNumber : 1151, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).barConfig.showCautTime,true,{ fileName : "TestP.hx", lineNumber : 1152, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+		this.assertEquals(cx.ArrayTools.last(system3.getSystembars()).caAttributes.time,nx3.ETime.Time2_2,{ fileName : "TestP.hx", lineNumber : 1153, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautions"});
+	}
+	,testSystemGeneratorCautionsTwoParts: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		var n1 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefF,null,nx3.EKey.Sharp4);
+		bars.push(new nx3.PBar(new nx3.NBar([n0,n1],null,nx3.ETime.Time3_2)));
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n11 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n01,n11])));
+		var pagewidth = 250;
+		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth);
+		var system = generator.getSystem();
+		this.assertEquals(system.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1168, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(system.getWidth(),190,{ fileName : "TestP.hx", lineNumber : 1169, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		var bars1 = [];
+		var n02 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		var n12 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefF,null,nx3.EKey.Sharp4);
+		bars1.push(new nx3.PBar(new nx3.NBar([n02,n12],null,nx3.ETime.Time3_2)));
+		var n03 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n13 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars1.push(new nx3.PBar(new nx3.NBar([n03,n13],null,nx3.ETime.Time12_8)));
+		var pagewidth1 = 250;
+		var generator1 = new nx3.PSystemGenerator(bars1,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth1);
+		var system1 = generator1.getSystem();
+		this.assertEquals(system1.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1181, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(system1.getWidth(),200,{ fileName : "TestP.hx", lineNumber : 1182, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		var bars2 = [];
+		var n04 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n14 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars2.push(new nx3.PBar(new nx3.NBar([n04,n14])));
+		var n05 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n15 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars2.push(new nx3.PBar(new nx3.NBar([n05,n15],null,nx3.ETime.Time12_8)));
+		var prevBarAttributes = { clefs : [nx3.EClef.ClefG,nx3.EClef.ClefF], keys : [nx3.EKey.Flat3,nx3.EKey.Sharp4], time : nx3.ETime.Time3_2};
+		var pagewidth2 = 250;
+		var generator2 = new nx3.PSystemGenerator(bars2,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes,pagewidth2);
+		var system2 = generator2.getSystem();
+		this.assertEquals(system2.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1195, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(system2.getWidth(),200,{ fileName : "TestP.hx", lineNumber : 1196, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).barConfig.showTime,true,{ fileName : "TestP.hx", lineNumber : 1197, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG,nx3.EClef.ClefF].toString(),{ fileName : "TestP.hx", lineNumber : 1198, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat3,nx3.EKey.Sharp4].toString(),{ fileName : "TestP.hx", lineNumber : 1199, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).actAttributes.time,nx3.ETime.Time3_2,{ fileName : "TestP.hx", lineNumber : 1200, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).barConfig.showCautTime,true,{ fileName : "TestP.hx", lineNumber : 1201, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system2.getSystembars()).caAttributes.time,nx3.ETime.Time12_8,{ fileName : "TestP.hx", lineNumber : 1202, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		var bars3 = [];
+		var n06 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n16 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars3.push(new nx3.PBar(new nx3.NBar([n06,n16])));
+		var n07 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n17 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefC);
+		bars3.push(new nx3.PBar(new nx3.NBar([n07,n17])));
+		var prevBarAttributes1 = { clefs : [nx3.EClef.ClefG,nx3.EClef.ClefF], keys : [nx3.EKey.Flat3,nx3.EKey.Sharp4], time : nx3.ETime.Time3_2};
+		var pagewidth3 = 250;
+		var generator3 = new nx3.PSystemGenerator(bars3,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes1,pagewidth3);
+		var system3 = generator3.getSystem();
+		this.assertEquals(system3.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1215, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(system3.getWidth(),210,{ fileName : "TestP.hx", lineNumber : 1216, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).barConfig.showTime,true,{ fileName : "TestP.hx", lineNumber : 1217, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG,nx3.EClef.ClefF].toString(),{ fileName : "TestP.hx", lineNumber : 1218, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat3,nx3.EKey.Sharp4].toString(),{ fileName : "TestP.hx", lineNumber : 1219, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).actAttributes.time,nx3.ETime.Time3_2,{ fileName : "TestP.hx", lineNumber : 1220, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).barConfig.showCautClef,true,{ fileName : "TestP.hx", lineNumber : 1221, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system3.getSystembars()).caAttributes.clefs.toString(),[null,nx3.EClef.ClefC].toString(),{ fileName : "TestP.hx", lineNumber : 1222, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		var bars4 = [];
+		var n08 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n18 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars4.push(new nx3.PBar(new nx3.NBar([n08,n18])));
+		var n09 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Flat1);
+		var n19 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars4.push(new nx3.PBar(new nx3.NBar([n09,n19])));
+		var prevBarAttributes2 = { clefs : [nx3.EClef.ClefG,nx3.EClef.ClefF], keys : [nx3.EKey.Flat3,nx3.EKey.Sharp4], time : nx3.ETime.Time3_2};
+		var pagewidth4 = 250;
+		var generator4 = new nx3.PSystemGenerator(bars4,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes2,pagewidth4);
+		var system4 = generator4.getSystem();
+		this.assertEquals(system4.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1235, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(system4.getWidth(),200,{ fileName : "TestP.hx", lineNumber : 1236, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).barConfig.showTime,true,{ fileName : "TestP.hx", lineNumber : 1237, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefG,nx3.EClef.ClefF].toString(),{ fileName : "TestP.hx", lineNumber : 1238, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat3,nx3.EKey.Sharp4].toString(),{ fileName : "TestP.hx", lineNumber : 1239, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).actAttributes.time,nx3.ETime.Time3_2,{ fileName : "TestP.hx", lineNumber : 1240, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).barConfig.showCautKey,true,{ fileName : "TestP.hx", lineNumber : 1241, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system4.getSystembars()).caAttributes.keys.toString(),[nx3.EKey.Flat1,null].toString(),{ fileName : "TestP.hx", lineNumber : 1242, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		var bars5 = [];
+		var n010 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n110 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars5.push(new nx3.PBar(new nx3.NBar([n010,n110])));
+		var n011 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Sharp2);
+		var n111 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefF,null,nx3.EKey.Sharp4);
+		bars5.push(new nx3.PBar(new nx3.NBar([n011,n111],null,nx3.ETime.Time4_8)));
+		var prevBarAttributes3 = { clefs : [nx3.EClef.ClefG,nx3.EClef.ClefC], keys : [nx3.EKey.Flat3,nx3.EKey.Sharp4], time : nx3.ETime.Time3_2};
+		var pagewidth5 = 260;
+		var generator5 = new nx3.PSystemGenerator(bars5,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},prevBarAttributes3,pagewidth5);
+		var system5 = generator5.getSystem();
+		this.assertEquals(system5.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1255, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).barConfig.showCautClef,true,{ fileName : "TestP.hx", lineNumber : 1257, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).caAttributes.clefs.toString(),[null,nx3.EClef.ClefF].toString(),{ fileName : "TestP.hx", lineNumber : 1258, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).barConfig.showCautKey,true,{ fileName : "TestP.hx", lineNumber : 1259, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).caAttributes.keys.toString(),[nx3.EKey.Sharp2,null].toString(),{ fileName : "TestP.hx", lineNumber : 1260, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).barConfig.showCautTime,true,{ fileName : "TestP.hx", lineNumber : 1261, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(cx.ArrayTools.first(system5.getSystembars()).caAttributes.time,nx3.ETime.Time4_8,{ fileName : "TestP.hx", lineNumber : 1262, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+		this.assertEquals(system5.getWidth(),240,{ fileName : "TestP.hx", lineNumber : 1263, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsTwoParts"});
+	}
+	,testSystemGeneratorCautionsDontFit: function() {
+		var bars = [];
+		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		var n1 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefF,null,nx3.EKey.Sharp4);
+		bars.push(new nx3.PBar(new nx3.NBar([n0,n1],null,nx3.ETime.Time3_2)));
+		var n01 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n11 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n01,n11])));
+		var n02 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n12 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars.push(new nx3.PBar(new nx3.NBar([n02,n12])));
+		var pagewidth = 315;
+		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth);
+		var system = generator.getSystem();
+		this.assertEquals(system.getSystembars().length,2,{ fileName : "TestP.hx", lineNumber : 1284, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsDontFit"});
+		this.assertEquals(system.getWidth(),310,{ fileName : "TestP.hx", lineNumber : 1285, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsDontFit"});
+		this.assertEquals(bars.length,1,{ fileName : "TestP.hx", lineNumber : 1286, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsDontFit"});
+		var bars1 = [];
+		var n03 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat3);
+		var n13 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefF,null,nx3.EKey.Sharp4);
+		bars1.push(new nx3.PBar(new nx3.NBar([n03,n13],null,nx3.ETime.Time3_2)));
+		var n04 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n14 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		bars1.push(new nx3.PBar(new nx3.NBar([n04,n14])));
+		var n05 = new nx3.NPart([new nx3.QVoice([4,4,4,4])]);
+		var n15 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,null,null,nx3.EKey.Flat1);
+		bars1.push(new nx3.PBar(new nx3.NBar([n05,n15])));
+		var pagewidth1 = 315;
+		var generator1 = new nx3.PSystemGenerator(bars1,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,pagewidth1);
+		var system1 = generator1.getSystem();
+		this.assertEquals(system1.getSystembars().length,1,{ fileName : "TestP.hx", lineNumber : 1304, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsDontFit"});
+		this.assertEquals(system1.getWidth(),190,{ fileName : "TestP.hx", lineNumber : 1305, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsDontFit"});
+		this.assertEquals(bars1.length,2,{ fileName : "TestP.hx", lineNumber : 1306, className : "nx3.test.TestP", methodName : "testSystemGeneratorCautionsDontFit"});
+	}
+	,__class__: nx3.test.TestP
 });
 nx3.test.TestPBars = function() {
 	haxe.unit.TestCase.call(this);
@@ -10411,15 +9006,15 @@ nx3.test.TestPBars.prototype = $extend(haxe.unit.TestCase.prototype,{
 		var nscore = new nx3.NScore([b0,b1,b2,b3,b4,b5]);
 		var score = new nx3.PScore(nscore);
 		var systems = score.getSystems(500);
-		this.assertEquals(systems[0].getWidth(),207.6,{ fileName : "TestPBars.hx", lineNumber : 243, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
+		this.assertEquals(cx.MathTools.round2(systems[0].getWidth(),null),203.4,{ fileName : "TestPBars.hx", lineNumber : 243, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 		this.assertEquals(systems[0].getSystembars().length,6,{ fileName : "TestPBars.hx", lineNumber : 244, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 		this.assertEquals(systems.length,1,{ fileName : "TestPBars.hx", lineNumber : 245, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 		var systems1 = score.getSystems(200);
-		this.assertEquals(systems1[0].getWidth(),175.0,{ fileName : "TestPBars.hx", lineNumber : 248, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
+		this.assertEquals(cx.MathTools.round2(systems1[0].getWidth(),null),172.8,{ fileName : "TestPBars.hx", lineNumber : 248, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 		this.assertEquals(systems1[0].getSystembars().length,5,{ fileName : "TestPBars.hx", lineNumber : 249, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 		this.assertEquals(systems1.length,2,{ fileName : "TestPBars.hx", lineNumber : 250, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 		var systems2 = score.getSystems(170);
-		this.assertEquals(systems2[0].getWidth(),142.4,{ fileName : "TestPBars.hx", lineNumber : 253, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
+		this.assertEquals(systems2[0].getWidth(),142.2,{ fileName : "TestPBars.hx", lineNumber : 253, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 		this.assertEquals(systems2[0].getSystembars().length,4,{ fileName : "TestPBars.hx", lineNumber : 254, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 		this.assertEquals(systems2.length,2,{ fileName : "TestPBars.hx", lineNumber : 255, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
 	}
@@ -10439,6 +9034,7 @@ nx3.test.Unittests.performTests = function() {
 	var runner = new haxe.unit.TestRunner();
 	var start_time = new Date();
 	runner.add(new nx3.test.TestN());
+	runner.add(new nx3.test.TestP());
 	runner.add(new nx3.test.TestPBars());
 	var end_time = new Date();
 	var success = runner.run();
@@ -10889,6 +9485,16 @@ var Bool = Boolean;
 Bool.__ename__ = ["Bool"];
 var Class = { __name__ : ["Class"]};
 var Enum = { };
+if(Array.prototype.map == null) Array.prototype.map = function(f) {
+	var a = [];
+	var _g1 = 0;
+	var _g = this.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		a[i] = f(this[i]);
+	}
+	return a;
+};
 if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
 	var a1 = [];
 	var _g11 = 0;

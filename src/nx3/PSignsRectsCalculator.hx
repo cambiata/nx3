@@ -8,8 +8,8 @@ using nx3.geom.Rectangles.RectanglesTools;
  */
 class PSignsRectsCalculator
 {
-	var signs:VSigns;
-	public function new(signs:VSigns)
+	var signs:PSigns;
+	public function new(signs:PSigns)
 	{
 		this.signs = signs;
 	}

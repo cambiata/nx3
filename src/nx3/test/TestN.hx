@@ -15,7 +15,6 @@ import nx3.NVoice;
 import nx3.QNote.QNote4;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
-import nx3.VBar;
 import nx3.xml.BarXML;
 import nx3.xml.VoiceXML;
 
@@ -97,20 +96,13 @@ class TestN extends   TestCase
 	
 	public function testBarXml()
 	{
-		var vbar = TestItems.vbar1();		
-		var nbar = vbar.nbar;
+		var nbar = TestItems.nbar1();
 		var xmlStr = BarXML.toXml(nbar).toString();
 		
 		var nbar2 = BarXML.fromXmlStr(xmlStr);
 		var xmlStr2 = BarXML.toXml(nbar2).toString();
 		this.assertEquals(xmlStr, xmlStr2);
 		
-		var vbar = TestItems.vbarSigns();		
-		var nbar = vbar.nbar;
-		var xmlStr = BarXML.toXml(nbar).toString();
-		var nbar2 = BarXML.fromXmlStr(xmlStr);
-		var xmlStr2 = BarXML.toXml(nbar2).toString();
-		this.assertEquals(xmlStr, xmlStr2);				
 	}
 	
 

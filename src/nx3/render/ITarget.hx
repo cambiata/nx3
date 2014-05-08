@@ -8,7 +8,6 @@ import nx3.geom.Point;
 import nx3.render.scaling.TScaling;
 import nx3.TFontInfo;
 import nx3.TPoints;
-import nx3.VNote;
 
 /**
  * @author Jonas Nyström

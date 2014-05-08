@@ -25,7 +25,7 @@ class PBamegroupFrameTipCalculator
 		 this.direction = direction;		 
 	 }
 	 
-	 public function getTips():VFrameTips
+	 public function getTips():PFrametips
 	 {
 		 var stemLength = 7;
 		 

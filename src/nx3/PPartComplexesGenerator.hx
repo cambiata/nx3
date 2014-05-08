@@ -1,8 +1,8 @@
 package nx3;
 import haxe.ds.IntMap.IntMap;
 import nx3.PPart;
-using nx3.VMapTools;
 using cx.ArrayTools;
+using cx.MapTools;
 /**
  * ...
  * @author Jonas Nyström

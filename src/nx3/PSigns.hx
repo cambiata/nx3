@@ -1,6 +1,7 @@
 package nx3;
+
 /**
  * ...
  * @author Jonas Nyström
  */
- typedef VColumns = Array<VColumn>;
+typedef PSigns = Array<PSign>;

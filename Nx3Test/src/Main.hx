@@ -3,12 +3,7 @@ package ;
 import cx.MathTools;
 import haxe.unit.TestCase;
 import haxe.unit.TestRunner;
-import nx3.render.svg.SvgComposer;
-import nx3.render.svg.SvgElements;
 import nx3.test.Unittests;
-import nx3.test.TestN;
-import nx3.test.TestQ;
-import nx3.test.TestV;
 
 /**
  * ...

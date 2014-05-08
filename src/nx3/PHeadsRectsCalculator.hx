@@ -3,7 +3,6 @@ import nx3.EDirectionUD;
 import nx3.ENoteType;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
-import nx3.VNote;
 using nx3.ENoteValTools;
 
 /**

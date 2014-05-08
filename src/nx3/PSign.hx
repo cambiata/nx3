@@ -4,8 +4,9 @@ package nx3;
  * ...
  * @author Jonas Nyström
  */
-typedef VFrameTips = 
+typedef PSign =
 {
-	leftTip:Int,
-	rightTip:Int,
+	sign:ESign,
+	level:Int,	
+	position:Int,	
 }

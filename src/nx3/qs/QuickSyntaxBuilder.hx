@@ -9,8 +9,6 @@ import nx3.NScore;
 import nx3.NVoice;
 import nx3.NVoices;
 import nx3.qs.QSyntaxNotes;
-import nx3.VBar;
-import nx3.VBars;
 
 /**
  * ...

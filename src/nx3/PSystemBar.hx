@@ -19,7 +19,7 @@ import nx3.PBar;
  
  class PSystemBar
  {
-	 public function new(bar:PBar, barConfig:PBarConfig, barWidths:PSystembarMeasurements, actAttributes:VBarAttributes, caAttributes:VBarAttributes)
+	 public function new(bar:PBar, barConfig:PBarConfig, barWidths:PSystembarMeasurements, actAttributes:PBarAttributes, caAttributes:PBarAttributes)
 	 {
 		 this.bar = bar;
 		 this.barConfig = barConfig;
@@ -31,8 +31,8 @@ import nx3.PBar;
 	 public var bar(default,null):PBar;
 	 public var barConfig(default,null):PBarConfig;
 	 //public var barWidths(default,null):PSystembarMeasurements;
-	 public var actAttributes(default,null):VBarAttributes;
-	 public var caAttributes(default, null):VBarAttributes;
+	 public var actAttributes(default,null):PBarAttributes;
+	 public var caAttributes(default, null):PBarAttributes;
 	 
 	 var stretchamount:Float = 0;
 	 public function setBarStretch(amount:Float)

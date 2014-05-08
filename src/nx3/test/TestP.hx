@@ -39,7 +39,7 @@ import nx3.QNote.QNote4;
 import nx3.QNote.QNote8;
 import nx3.QVoice;
 using cx.ArrayTools;
-using nx3.VMapTools;
+using cx.MapTools;
 using cx.MathTools;
 using Lambda;
 /**

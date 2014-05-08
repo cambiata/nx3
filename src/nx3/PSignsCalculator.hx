@@ -13,25 +13,25 @@ class PSignsCalculator
 		this.notes = notes;		
 	}
 
-	public function getSigns():VSigns
+	public function getSigns():PSigns
 	{
-		var signs:VSigns;
+		var signs:PSigns;
 		signs = calcUnsortedSigns(this.notes);
 		signs = calcSortSigns(signs);
 		return signs;
 	}
 	
-	var visibleSigns:VSigns;
-	public function getVisibleSigns():VSigns
+	var visibleSigns:PSigns;
+	public function getVisibleSigns():PSigns
 	{
 		return calcVisibleSigns(this.getSigns());
 	}
 	
 	//----------------------------------------------------------------------------------
 	
-	function calcVisibleSigns(signs:VSigns)
+	function calcVisibleSigns(signs:PSigns)
 	{
-		var visibleSigns:VSigns = [];
+		var visibleSigns:PSigns = [];
 		for (sign in signs)
 		{
 			if (sign.sign == ESign.None) continue;
@@ -40,30 +40,30 @@ class PSignsCalculator
 		return visibleSigns;
 	}
 	
-	function calcUnsortedSigns(notes:PNotes):VSigns
+	function calcUnsortedSigns(notes:PNotes):PSigns
 	{
-		var vsigns:VSigns = [];
+		var PSigns:PSigns = [];
 		for (note in notes)
 		{
 			for (nhead in note.nnote.nheads)
 			{
-				var tsign:VSign = {
+				var tsign:PSign = {
 					sign:nhead.sign,
 					level:nhead.level,
 					position:0,
 				}
-				vsigns.push(tsign);
+				PSigns.push(tsign);
 			}
 		}
-		return vsigns;
+		return PSigns;
 	}	
 	
-	function calcSortSigns(vsigns:VSigns):VSigns
+	function calcSortSigns(PSigns:PSigns):PSigns
 	{
-		vsigns.sort(function(a:VSign, b:VSign) {
+		PSigns.sort(function(a:PSign, b:PSign) {
 			return Reflect.compare(a.level, b.level);
 		});
-		return vsigns;
+		return PSigns;
 	}
 	
 }
