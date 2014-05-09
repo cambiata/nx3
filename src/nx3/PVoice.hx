@@ -34,6 +34,9 @@ class PVoice
 		return this.notes;
 	}	
 	
+	public function getNote(idx:Int):PNote return (idx < 0 || idx > this.getNotes().length) ? null : this.getNotes()[idx];
+	
+	
 	var value:Null<Int>;
 	public function getValue():Int
 	{

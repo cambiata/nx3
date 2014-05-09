@@ -117,6 +117,8 @@ class PBar
 		return this.parts;
 	}	
 	
+	public function getPart(idx:Int):PPart return (idx < 0 || idx > this.getParts().length) ? null : this.getParts()[idx];
+	
 	
 	 var columns:PColumns;
 	 public function getColumns():PColumns

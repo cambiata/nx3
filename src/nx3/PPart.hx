@@ -39,6 +39,8 @@ class PPart
 		return this.voices;
 	}	
 	
+	public function getVoice(idx:Int):PVoice return (idx < 0 || idx > this.getVoices().length) ? null : this.getVoices()[idx];
+	
 	var complexes:PComplexes;	
 	public function getComplexes():PComplexes
 	{

@@ -40,15 +40,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/openfl.svg", Reflect.field (AssetType, "text".toUpperCase ()));
 		className.set ("assets/test.data", __ASSET__assets_test_data);
 		type.set ("assets/test.data", Reflect.field (AssetType, "binary".toUpperCase ()));
-		className.set ("assets/test2.data", __ASSET__assets_test2_data);
-		type.set ("assets/test2.data", Reflect.field (AssetType, "binary".toUpperCase ()));
 		
 		
 		#elseif html5
 		
 		addExternal("assets/openfl.svg", "text", "assets/openfl.svg");
 		addExternal("assets/test.data", "binary", "assets/test.data");
-		addExternal("assets/test2.data", "binary", "assets/test2.data");
 		
 		
 		#else
@@ -62,9 +59,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/test.data", __ASSET__assets_test_data);
 		type.set ("assets/test.data", Reflect.field (AssetType, "binary".toUpperCase ()));
-		
-		className.set ("assets/test2.data", __ASSET__assets_test2_data);
-		type.set ("assets/test2.data", Reflect.field (AssetType, "binary".toUpperCase ()));
 		
 		
 		#else
@@ -650,11 +644,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 @:keep class __ASSET__assets_openfl_svg extends null { }
 @:keep class __ASSET__assets_test_data extends null { }
-@:keep class __ASSET__assets_test2_data extends null { }
 
 
 #elseif html5
-
 
 
 
@@ -665,7 +657,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 @:file("assets/openfl.svg") class __ASSET__assets_openfl_svg extends flash.utils.ByteArray {}
 @:file("assets/test.data") class __ASSET__assets_test_data extends flash.utils.ByteArray {}
-@:file("assets/test2.data") class __ASSET__assets_test2_data extends flash.utils.ByteArray {}
 
 
 #end

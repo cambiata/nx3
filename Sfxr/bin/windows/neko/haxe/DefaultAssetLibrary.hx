@@ -40,8 +40,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/openfl.svg", Reflect.field (AssetType, "text".toUpperCase ()));
 		path.set ("assets/test.data", "assets/test.data");
 		type.set ("assets/test.data", Reflect.field (AssetType, "binary".toUpperCase ()));
-		path.set ("assets/test2.data", "assets/test2.data");
-		type.set ("assets/test2.data", Reflect.field (AssetType, "binary".toUpperCase ()));
 		
 		
 		#elseif html5
@@ -53,7 +51,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var loadManifest = false;
-		loadManifest = true;
 		loadManifest = true;
 		loadManifest = true;
 		
@@ -643,9 +640,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
-
 #elseif html5
-
 
 
 

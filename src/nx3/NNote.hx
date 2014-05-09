@@ -10,14 +10,15 @@ package nx3;
  * @author Jonas Nyström
  */
 
- 
+ @:access(nx3.NHead)
 class NNote
 {
 	
 	public var type(default, null):ENoteType;
 	public var value(default, null): ENoteVal;
 	public var direction(default, null):EDirectionUAD;
-	public var nheads(get, null):Array<NHead>;	
+	public var nheads(get, null):Array<NHead>;		
+	var nvoice:NVoice;
 	
 	public function new(?type:ENoteType=null, ?heads:Array<NHead>=null, ?value:ENoteVal=null , ?direction:EDirectionUAD=null) 
 	{
@@ -25,6 +26,8 @@ class NNote
 		{
 			type = (heads != null) ? ENoteType.Note(heads) :  ENoteType.Note([new NHead()]);
 		}
+		
+		if (heads != null) for (head in heads) head.nnote = this;
 		
 		this.type = (type == null) ? ENoteType.Note(heads) : type;
 		this.value = (value == null) ? ENoteVal.Nv4 : value;
@@ -83,4 +86,15 @@ class NNote
 		}
 		return this.ties;
 	}
+	
+	public function toString():String
+	{
+		var str = '';
+		str +=  (type.getName() !='Note') ? ' '  + this.type.getName() : '';		
+		var heads = '';
+		for (head in this.nheads) heads += head.toString();
+		return 'NNote($str):$heads';
+	}
+	
+	
 }
