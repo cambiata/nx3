@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace></RootNamespace>
+    <AssemblyName>Main</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+	
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+  
+  </ItemGroup>
+  <ItemGroup>
+	
+    <Compile Include="src\cs\Boot.cs"/>
+	
+    <Compile Include="src\Std.cs"/>
+	
+    <Compile Include="src\Xml.cs"/>
+	
+    <Compile Include="src\cs\internal\Null.cs"/>
+	
+    <Compile Include="src\nx3\xml\BarsXML.cs"/>
+	
+    <Compile Include="src\haxe\Log.cs"/>
+	
+    <Compile Include="src\nx3\EPosition.cs"/>
+	
+    <Compile Include="src\nx3\PColumn.cs"/>
+	
+    <Compile Include="src\nx3\VHeadsRectsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\geom\Point.cs"/>
+	
+    <Compile Include="src\nx3\ENoteAttributes.cs"/>
+	
+    <Compile Include="src\nx3\xml\PartXML.cs"/>
+	
+    <Compile Include="src\Array.cs"/>
+	
+    <Compile Include="src\nx3\PBeamgroupDirectionCalculator.cs"/>
+	
+    <Compile Include="src\nx3\EBarlineLeft.cs"/>
+	
+    <Compile Include="src\nx3\PNoteHeadsRectsPausesCalculator.cs"/>
+	
+    <Compile Include="src\nx3\VNote.cs"/>
+	
+    <Compile Include="src\nx3\xml\NoteXML.cs"/>
+	
+    <Compile Include="src\nx3\PSystemBar.cs"/>
+	
+    <Compile Include="src\cs\internal\Function.cs"/>
+	
+    <Compile Include="src\nx3\PBarConfig.cs"/>
+	
+    <Compile Include="src\nx3\Constants.cs"/>
+	
+    <Compile Include="src\nx3\PComplex.cs"/>
+	
+    <Compile Include="src\nx3\xml\BarXML.cs"/>
+	
+    <Compile Include="src\nx3\ENoteArticulation.cs"/>
+	
+    <Compile Include="src\nx3\PHead.cs"/>
+	
+    <Compile Include="src\nx3\PHeadPlacementsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\VNoteInternalDirectionCalculator.cs"/>
+	
+    <Compile Include="src\nx3\EHeadValueType.cs"/>
+	
+    <Compile Include="src\nx3\PBeamgroupFrameCalculator.cs"/>
+	
+    <Compile Include="src\cx\EnumTools.cs"/>
+	
+    <Compile Include="src\nx3\EBarType.cs"/>
+	
+    <Compile Include="src\nx3\PPartbeamgroupsDirectionCalculator.cs"/>
+	
+    <Compile Include="src\nx3\VNoteHeadsRectsPausesCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PNote.cs"/>
+	
+    <Compile Include="src\nx3\PSystem.cs"/>
+	
+    <Compile Include="src\nx3\ENoteValTools.cs"/>
+	
+    <Compile Include="src\nx3\PPart.cs"/>
+	
+    <Compile Include="src\nx3\ENotationVariant.cs"/>
+	
+    <Compile Include="src\nx3\EBarline.cs"/>
+	
+    <Compile Include="src\nx3\xml\VoiceXML.cs"/>
+	
+    <Compile Include="src\nx3\EAllotment.cs"/>
+	
+    <Compile Include="src\cx\MathTools.cs"/>
+	
+    <Compile Include="src\nx3\geom\Rectangles.cs"/>
+	
+    <Compile Include="src\nx3\IBarWidthCalculator.cs"/>
+	
+    <Compile Include="src\nx3\NHead.cs"/>
+	
+    <Compile Include="src\nx3\PPartComplexesGenerator.cs"/>
+	
+    <Compile Include="src\nx3\EVoiceType.cs"/>
+	
+    <Compile Include="src\nx3\PBar.cs"/>
+	
+    <Compile Include="src\nx3\PComplexTieTargetCalculator.cs"/>
+	
+    <Compile Include="src\Type.cs"/>
+	
+    <Compile Include="src\nx3\PScore.cs"/>
+	
+    <Compile Include="src\nx3\PSystemGenerator.cs"/>
+	
+    <Compile Include="src\nx3\EHeadPosition.cs"/>
+	
+    <Compile Include="src\nx3\ESign.cs"/>
+	
+    <Compile Include="src\nx3\PNoteheadsRectsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PNoteOffsetCalculator.cs"/>
+	
+    <Compile Include="src\nx3\EClef.cs"/>
+	
+    <Compile Include="src\nx3\EDirectionUD.cs"/>
+	
+    <Compile Include="src\Lambda.cs"/>
+	
+    <Compile Include="src\nx3\ENoteType.cs"/>
+	
+    <Compile Include="src\nx3\NScore.cs"/>
+	
+    <Compile Include="src\nx3\PStaveRectCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PSignsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PBarWidthCalculator.cs"/>
+	
+    <Compile Include="src\StringTools.cs"/>
+	
+    <Compile Include="src\haxe\Int64.cs"/>
+	
+    <Compile Include="src\Map.cs"/>
+	
+    <Compile Include="src\nx3\PComplexTierectsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\NBar.cs"/>
+	
+    <Compile Include="src\nx3\PSystemBarWidthCalculator.cs"/>
+	
+    <Compile Include="src\Reflect.cs"/>
+	
+    <Compile Include="src\nx3\PNoteHeadsRectTplCalculator.cs"/>
+	
+    <Compile Include="src\nx3\EBeamflagType.cs"/>
+	
+    <Compile Include="src\nx3\PScoreSystemsGenerator.cs"/>
+	
+    <Compile Include="src\nx3\ETime.cs"/>
+	
+    <Compile Include="src\nx3\VNoteHeadsRectsLyricsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\ETie.cs"/>
+	
+    <Compile Include="src\nx3\EKey.cs"/>
+	
+    <Compile Include="src\haxe\ds\ObjectMap.cs"/>
+	
+    <Compile Include="src\nx3\EDisplayALN.cs"/>
+	
+    <Compile Include="src\nx3\xml\HeadXML.cs"/>
+	
+    <Compile Include="src\nx3\VHead.cs"/>
+	
+    <Compile Include="src\nx3\PSignsRectsCalculator.cs"/>
+	
+    <Compile Include="src\haxe\xml\Parser.cs"/>
+	
+    <Compile Include="src\nx3\PVoiceBeamgroupsGenerator.cs"/>
+	
+    <Compile Include="src\haxe\ds\StringMap.cs"/>
+	
+    <Compile Include="src\nx3\NNote.cs"/>
+	
+    <Compile Include="src\nx3\NPart.cs"/>
+	
+    <Compile Include="src\nx3\geom\Rectangle.cs"/>
+	
+    <Compile Include="src\nx3\PBamegroupFrameTipCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PColumnsDistancesCalculator.cs"/>
+	
+    <Compile Include="src\haxe\Utf8.cs"/>
+	
+    <Compile Include="src\nx3\PScoreSystemStretcher.cs"/>
+	
+    <Compile Include="src\cs\internal\Iterator.cs"/>
+	
+    <Compile Include="src\nx3\EPartType.cs"/>
+	
+    <Compile Include="src\nx3\PSystemStatus.cs"/>
+	
+    <Compile Include="src\cs\internal\StringExt.cs"/>
+	
+    <Compile Include="src\cs\internal\Runtime.cs"/>
+	
+    <Compile Include="src\cs\Lib.cs"/>
+	
+    <Compile Include="src\nx3\ENoteVal.cs"/>
+	
+    <Compile Include="src\nx3\VMapTools.cs"/>
+	
+    <Compile Include="src\nx3\EDirectionUAD.cs"/>
+	
+    <Compile Include="src\nx3\PBaseRectCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PColumnsAllotmentCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PBeamgroup.cs"/>
+	
+    <Compile Include="src\nx3\PVoice.cs"/>
+	
+    <Compile Include="src\cx\ArrayTools.cs"/>
+	
+    <Compile Include="src\cs\internal\HxObject.cs"/>
+	
+    <Compile Include="src\cs\internal\Exceptions.cs"/>
+	
+    <Compile Include="src\nx3\EHeadType.cs"/>
+	
+    <Compile Include="src\nx3\VNoteHeadsRectsTplCalculator.cs"/>
+	
+    <Compile Include="src\Math.cs"/>
+	
+    <Compile Include="src\nx3\VNoteDirectionCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PBarStretchCalculator.cs"/>
+	
+    <Compile Include="src\cs\internal\FieldLookup.cs"/>
+	
+    <Compile Include="src\nx3\PHeadsRectsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PNoteHeadsRectsLyricsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\EDirectionTools.cs"/>
+	
+    <Compile Include="src\Main.cs"/>
+	
+    <Compile Include="src\cx\StrTools.cs"/>
+	
+    <Compile Include="src\nx3\PBeamflagCalculator.cs"/>
+	
+    <Compile Include="src\nx3\VNoteHeadsRectsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\NVoice.cs"/>
+	
+    <Compile Include="src\nx3\ELyricContinuation.cs"/>
+	
+    <Compile Include="src\nx3\PComplexDotsrectsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PAttributesRectsCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PComplexDistancesCalculator.cs"/>
+	
+    <Compile Include="src\nx3\VHeadPlacementCalculator.cs"/>
+	
+    <Compile Include="src\nx3\PColumnsGenerator.cs"/>
+	
+    <Compile Include="src\haxe\ds\IntMap.cs"/>
+	
+    <Compile Include="src\StringBuf.cs"/>
+	
+  </ItemGroup>
+  
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
