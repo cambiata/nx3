@@ -56,6 +56,8 @@ class NNote
 		//return null;
 	}
 	
+	public function getNHead(idx:Int):NHead return (idx < 0 || idx > this.nheads.length) ? null : this.nheads[idx];
+	
 	var headLevels:Array<Int>;
 	public function getHeadLevels():Array<Int>
 	{

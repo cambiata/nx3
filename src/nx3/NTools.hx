@@ -1,5 +1,4 @@
 package nx3;
-import nx3.test.TestEvents.NNoteRef;
 using cx.ArrayTools;
 /**
  * ...
@@ -15,7 +14,7 @@ using cx.ArrayTools;
 class NTools
 {
 
-	static public function noteRef(nnote:NNote):NNoteRef
+	static public function noteRef(nnote:NNote):NRef
 	{
 		var nvoice = nnote.nvoice;
 		var noteIdx = nvoice.nnotes.indexOf(nnote);
@@ -29,7 +28,7 @@ class NTools
 		var nscore = nbar.nscore;
 		var barIdx = nscore.nbars.indexOf(nbar);
 		
-		return { bar: barIdx, part:partIdx, voice:voiceIdx, note:noteIdx };
+		return { score:nscore, bar: barIdx, part:partIdx, voice:voiceIdx, note:noteIdx, head:0 };
 	}
 	
 }
