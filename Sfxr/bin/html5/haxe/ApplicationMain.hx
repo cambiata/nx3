@@ -64,13 +64,6 @@ import flash.Lib;
 		
 		
 		
-		var urlLoader = new URLLoader ();
-		urlLoader.dataFormat = BINARY;
-		urlLoaders.set("assets/test2.data", urlLoader);
-		total ++;
-		
-		
-		
 		if (total == 0) {
 			
 			start ();

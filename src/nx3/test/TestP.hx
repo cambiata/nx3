@@ -1313,17 +1313,17 @@ class TestP extends TestCase
 			new NPart([
 				new NVoice([
 					new NNote([ new NHead(0) , ]),
-					new NNote([ new NHead(1, ETie.Tie(EDirectionUAD.Auto, 0)) ,  ]),
+					new NNote([ new NHead(1, ETie.Tie(EDirectionUAD.Auto, 0)) ,  ]), // This one doesnt have a target in nbar1
 				]),			
 				new NVoice([
-					new NNote([ new NHead(3, ETie.Tie(EDirectionUAD.Auto, 0)),  ]),
+					new NNote([ new NHead(3, ETie.Tie(EDirectionUAD.Auto, 0)),  ]), // This one has!
 				]),									
 			]),
 		
 			new NPart([
 				new NVoice([
 					new NNote([ new NHead(0) , ]),
-					new NNote([ new NHead(5, ETie.Tie(EDirectionUAD.Auto, 0)),  ]),
+					new NNote([ new NHead(5, ETie.Tie(EDirectionUAD.Auto, 0)),  ]), // This one has!
 				]),
 			]),
 		]);
@@ -1355,6 +1355,7 @@ class TestP extends TestCase
 		
 		var score = new PScore(new NScore([nbar0, nbar1]));
 		var connections = score.getBars().first().getTieConnections();
+		this.assertEquals(connections.length, 2);
 		
 		
 		

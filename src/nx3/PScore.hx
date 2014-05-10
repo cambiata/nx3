@@ -14,6 +14,7 @@ class PScore
 	public function new(nscore:NScore) 
 	{
 		this.nscore = nscore;
+		
 	}
 	
 	var bars:PBars;
@@ -55,5 +56,8 @@ class PScore
 		}
 		return this.systems;
 	}
+	
+	public function getBar(idx:Int):PBar return (idx < 0 || idx > this.getBars().length) ? null : this.getBars()[idx];
+	
 	
 }

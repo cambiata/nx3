@@ -206,5 +206,10 @@ class NoteXML
 		return (str == str2);
 	}
 	
+	static public function clone(nnote:NNote):NNote
+	{
+		return NoteXML.fromXmlStr(NoteXML.toXml(nnote).toString());		
+	}
+	
 	
 }

@@ -4,8 +4,10 @@ import cx.ByteArrayTools;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import flash.utils.Endian;
 import haxe.Http;
 import haxe.io.Bytes;
+import haxe.io.BytesData;
 import nx3.audio.PlayerFactory;
 import openfl.Assets;
 import vault.Sfxr;
@@ -16,6 +18,9 @@ import vault.SfxrParams;
  * @author Jonas Nyström
  */
 
+ 
+ //@:file("assets/test.data") class TestData extends flash.utils.ByteArray {}
+ 
 class Main extends Sprite 
 {
 	var inited:Bool;
@@ -33,18 +38,52 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 
+		//var b = TestData.
 		// (your code here)
+		
+		//var bytes = TestData
+		
+		//var bytes = new TestData(123, 1);
 		
 		// Stage:
 		// stage.stageWidth x stage.stageHeight @ stage.dpiScale
 		
 		// Assets:
 		// nme.Assets.getBitmapData("img/assetname.jpg");
+		
 
-	//var byteArray = Assets.getBytes('assets/test.data');
-	trace(Assets.exists('assets/test.data'));  // true
-	var bytearray = Assets.getBytes('assets/test.data');
-	trace(bytearray);  // null
+		
+		
+
+	Assets.loadBytes('assets/test.data',  function (ba:flash.utils.ByteArray) {			
+			trace(ba.length); // 96 in flash/native - 104 in html5
+			
+			var str = '';
+			for (i in 0...ba.length)
+			str += Std.string(ba.readByte()) + ', ';
+			trace(str);
+			
+			
+			/*
+			
+			var arrayBytes = new BytesData();
+			for (i in 0...ba.length) 
+			{
+				arrayBytes.push(ba.readByte());							
+			}
+			
+			var pf = new PlayerFactory();
+			var play = pf.getPlayFunction(arrayBytes);					
+			play();
+			*/
+			
+		} );
+	
+	//trace(byteArray);
+	//trace(Assets.exists('assets/test.data'));  // true
+	//var bytearray = Assets.getBytes('assets/test.data');
+	//var bytearray = Assets.getText('assets/test.txt');
+	//trace(bytearray);  // null
 	
 	/*
 	var arrayBytes = new Array<Int>();
@@ -72,7 +111,7 @@ class Main extends Sprite
 		
 		 
 		 
-  
+  /*
     var params = new SfxrParams();
 
      params.waveType = 1;
@@ -90,16 +129,16 @@ class Main extends Sprite
     sfxr.play();
 
     haxe.Timer.delay(function() {
-      trace(1);
+      //trace(1);
       sfxr.play();
     }, 2000);
 
     haxe.Timer.delay(function() {
-      trace(2);
+      //trace(2);
       sfxr.play();
     }, 3000);
 			
-		
+		*/
 		
 		
 	}
