@@ -26,13 +26,17 @@ ApplicationMain.main = function() {
 	urlLoader1.set_dataFormat(flash.net.URLLoaderDataFormat.BINARY);
 	ApplicationMain.urlLoaders.set("assets/test.data",urlLoader1);
 	ApplicationMain.total++;
+	var urlLoader2 = new flash.net.URLLoader();
+	urlLoader2.set_dataFormat(flash.net.URLLoaderDataFormat.BINARY);
+	ApplicationMain.urlLoaders.set("assets/test2.data",urlLoader2);
+	ApplicationMain.total++;
 	if(ApplicationMain.total == 0) ApplicationMain.start(); else {
 		var $it0 = ApplicationMain.urlLoaders.keys();
 		while( $it0.hasNext() ) {
 			var path = $it0.next();
-			var urlLoader2 = ApplicationMain.urlLoaders.get(path);
-			urlLoader2.addEventListener("complete",ApplicationMain.loader_onComplete);
-			urlLoader2.load(new flash.net.URLRequest(path));
+			var urlLoader3 = ApplicationMain.urlLoaders.get(path);
+			urlLoader3.addEventListener("complete",ApplicationMain.loader_onComplete);
+			urlLoader3.load(new flash.net.URLRequest(path));
 		}
 		var _g = 0;
 		while(_g < sounds.length) {
@@ -77,8 +81,8 @@ ApplicationMain.preloader_onComplete = function(event) {
 	if(hasMain) Reflect.callMethod(Main,Reflect.field(Main,"main"),[]); else {
 		var instance = Type.createInstance(DocumentClass,[]);
 		if(js.Boot.__instanceof(instance,flash.display.DisplayObject)) flash.Lib.current.addChild(instance); else {
-			haxe.Log.trace("Error: No entry point found",{ fileName : "ApplicationMain.hx", lineNumber : 168, className : "ApplicationMain", methodName : "preloader_onComplete"});
-			haxe.Log.trace("If you are using DCE with a static main, you may need to @:keep the function",{ fileName : "ApplicationMain.hx", lineNumber : 169, className : "ApplicationMain", methodName : "preloader_onComplete"});
+			haxe.Log.trace("Error: No entry point found",{ fileName : "ApplicationMain.hx", lineNumber : 175, className : "ApplicationMain", methodName : "preloader_onComplete"});
+			haxe.Log.trace("If you are using DCE with a static main, you may need to @:keep the function",{ fileName : "ApplicationMain.hx", lineNumber : 176, className : "ApplicationMain", methodName : "preloader_onComplete"});
 		}
 	}
 };
@@ -953,9 +957,19 @@ Main.prototype = $extend(flash.display.Sprite.prototype,{
 	,init: function() {
 		if(this.inited) return;
 		this.inited = true;
-		openfl.Assets.loadBytes("assets/test.data",function(ba) {
-			haxe.Log.trace(ba.length,{ fileName : "Main.hx", lineNumber : 59, className : "Main", methodName : "init"});
-		});
+		var byteArray = openfl.Assets.getBytes("assets/test.data");
+		haxe.Log.trace(byteArray.length,{ fileName : "Main.hx", lineNumber : 45, className : "Main", methodName : "init"});
+		var bytesData = new Array();
+		var _g1 = 0;
+		var _g = byteArray.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			bytesData.push(byteArray.readByte());
+		}
+		var byteArray1 = bytesData;
+		var pf = new nx3.audio.PlayerFactory();
+		var play = pf.getPlayFunction(byteArray1);
+		play();
 	}
 	,added: function(e) {
 		this.removeEventListener(flash.events.Event.ADDED_TO_STAGE,$bind(this,this.added));
@@ -988,7 +1002,6 @@ openfl.AssetLibrary.prototype = {
 		return null;
 	}
 	,getBytes: function(id) {
-		haxe.Log.trace("AssetLibrary getBytes",{ fileName : "Assets.hx", lineNumber : 1139, className : "openfl.AssetLibrary", methodName : "getBytes"});
 		return null;
 	}
 	,getFont: function(id) {
@@ -1046,6 +1059,7 @@ var DefaultAssetLibrary = function() {
 	openfl.AssetLibrary.call(this);
 	this.addExternal("assets/openfl.svg","text","assets/openfl.svg");
 	this.addExternal("assets/test.data","binary","assets/test.data");
+	this.addExternal("assets/test2.data","binary","assets/test2.data");
 };
 $hxClasses["DefaultAssetLibrary"] = DefaultAssetLibrary;
 DefaultAssetLibrary.__name__ = ["DefaultAssetLibrary"];
@@ -1079,7 +1093,22 @@ DefaultAssetLibrary.prototype = $extend(openfl.AssetLibrary.prototype,{
 		}(this)));
 	}
 	,getBytes: function(id) {
-		return null;
+		haxe.Log.trace("js",{ fileName : "DefaultAssetLibrary.hx", lineNumber : 246, className : "DefaultAssetLibrary", methodName : "getBytes"});
+		var bytes = null;
+		var data = ((function($this) {
+			var $r;
+			var key = DefaultAssetLibrary.path.get(id);
+			$r = ApplicationMain.urlLoaders.get(key);
+			return $r;
+		}(this))).data;
+		if(typeof(data) == "string") {
+			bytes = new flash.utils.ByteArray();
+			bytes.writeUTFBytes(data);
+		} else if(js.Boot.__instanceof(data,flash.utils.ByteArray)) bytes = data; else bytes = null;
+		if(bytes != null) {
+			bytes.position = 0;
+			return bytes;
+		} else return null;
 	}
 	,getFont: function(id) {
 		return js.Boot.__cast(Type.createInstance(DefaultAssetLibrary.className.get(id),[]) , flash.text.Font);
@@ -1466,18 +1495,20 @@ cx.ByteArrayTools = function() { };
 $hxClasses["cx.ByteArrayTools"] = cx.ByteArrayTools;
 cx.ByteArrayTools.__name__ = ["cx","ByteArrayTools"];
 cx.ByteArrayTools.toBytes = function(byteArray) {
-	var arrayBytes = new Array();
+	var bytes = haxe.io.Bytes.ofData(cx.ByteArrayTools.toBytesData(byteArray));
+	return bytes;
+};
+cx.ByteArrayTools.toBytesData = function(byteArray) {
+	var bytesData = new Array();
 	var _g1 = 0;
 	var _g = byteArray.length;
 	while(_g1 < _g) {
 		var i = _g1++;
-		arrayBytes.push(byteArray.readByte());
+		bytesData.push(byteArray.readByte());
 	}
-	var bytes = haxe.io.Bytes.ofData(arrayBytes);
-	return bytes;
+	return bytesData;
 };
-cx.ByteArrayTools.fromBytes = function(bytes) {
-	var bytesData = bytes.b;
+cx.ByteArrayTools.fromBytesData = function(bytesData) {
 	var byteArray = new flash.utils.ByteArray();
 	var _g1 = 0;
 	var _g = bytesData.length;
@@ -1485,6 +1516,10 @@ cx.ByteArrayTools.fromBytes = function(bytes) {
 		var i = _g1++;
 		byteArray.writeByte(bytesData[i]);
 	}
+	return byteArray;
+};
+cx.ByteArrayTools.fromBytes = function(bytes) {
+	var byteArray = cx.ByteArrayTools.fromBytesData(bytes.b);
 	return byteArray;
 };
 var haxe = {};
@@ -6045,9 +6080,9 @@ openfl.Assets.getBitmapData = function(id,useCache) {
 				var bitmapData1 = library.getBitmapData(symbolName);
 				if(useCache && openfl.Assets.cache.enabled) openfl.Assets.cache.bitmapData.set(id,bitmapData1);
 				return bitmapData1;
-			} else haxe.Log.trace("[openfl.Assets] BitmapData asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 119, className : "openfl.Assets", methodName : "getBitmapData"});
-		} else haxe.Log.trace("[openfl.Assets] There is no BitmapData asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 125, className : "openfl.Assets", methodName : "getBitmapData"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 131, className : "openfl.Assets", methodName : "getBitmapData"});
+			} else haxe.Log.trace("[openfl.Assets] BitmapData asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 118, className : "openfl.Assets", methodName : "getBitmapData"});
+		} else haxe.Log.trace("[openfl.Assets] There is no BitmapData asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 124, className : "openfl.Assets", methodName : "getBitmapData"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 130, className : "openfl.Assets", methodName : "getBitmapData"});
 	return null;
 };
 openfl.Assets.getBytes = function(id) {
@@ -6057,16 +6092,11 @@ openfl.Assets.getBytes = function(id) {
 	var pos = id.indexOf(":") + 1;
 	symbolName = HxOverrides.substr(id,pos,null);
 	var library = openfl.Assets.getLibrary(libraryName);
-	haxe.Log.trace(symbolName,{ fileName : "Assets.hx", lineNumber : 158, className : "openfl.Assets", methodName : "getBytes"});
 	if(library != null) {
-		haxe.Log.trace(" exists",{ fileName : "Assets.hx", lineNumber : 164, className : "openfl.Assets", methodName : "getBytes"});
 		if(library.exists(symbolName,openfl.AssetType.BINARY)) {
-			if(library.isLocal(symbolName,openfl.AssetType.BINARY)) {
-				haxe.Log.trace("library getBytes",{ fileName : "Assets.hx", lineNumber : 171, className : "openfl.Assets", methodName : "getBytes"});
-				return library.getBytes(symbolName);
-			} else haxe.Log.trace("[openfl.Assets] String or ByteArray asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 176, className : "openfl.Assets", methodName : "getBytes"});
-		} else haxe.Log.trace("[openfl.Assets] There is no String or ByteArray asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 182, className : "openfl.Assets", methodName : "getBytes"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 188, className : "openfl.Assets", methodName : "getBytes"});
+			if(library.isLocal(symbolName,openfl.AssetType.BINARY)) return library.getBytes(symbolName); else haxe.Log.trace("[openfl.Assets] String or ByteArray asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 167, className : "openfl.Assets", methodName : "getBytes"});
+		} else haxe.Log.trace("[openfl.Assets] There is no String or ByteArray asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 173, className : "openfl.Assets", methodName : "getBytes"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 179, className : "openfl.Assets", methodName : "getBytes"});
 	return null;
 };
 openfl.Assets.getFont = function(id,useCache) {
@@ -6084,9 +6114,9 @@ openfl.Assets.getFont = function(id,useCache) {
 				var font = library.getFont(symbolName);
 				if(useCache && openfl.Assets.cache.enabled) openfl.Assets.cache.font.set(id,font);
 				return font;
-			} else haxe.Log.trace("[openfl.Assets] Font asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 239, className : "openfl.Assets", methodName : "getFont"});
-		} else haxe.Log.trace("[openfl.Assets] There is no Font asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 245, className : "openfl.Assets", methodName : "getFont"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 251, className : "openfl.Assets", methodName : "getFont"});
+			} else haxe.Log.trace("[openfl.Assets] Font asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 230, className : "openfl.Assets", methodName : "getFont"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Font asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 236, className : "openfl.Assets", methodName : "getFont"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 242, className : "openfl.Assets", methodName : "getFont"});
 	return null;
 };
 openfl.Assets.getLibrary = function(name) {
@@ -6102,9 +6132,9 @@ openfl.Assets.getMovieClip = function(id) {
 	var library = openfl.Assets.getLibrary(libraryName);
 	if(library != null) {
 		if(library.exists(symbolName,openfl.AssetType.MOVIE_CLIP)) {
-			if(library.isLocal(symbolName,openfl.AssetType.MOVIE_CLIP)) return library.getMovieClip(symbolName); else haxe.Log.trace("[openfl.Assets] MovieClip asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 301, className : "openfl.Assets", methodName : "getMovieClip"});
-		} else haxe.Log.trace("[openfl.Assets] There is no MovieClip asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 307, className : "openfl.Assets", methodName : "getMovieClip"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 313, className : "openfl.Assets", methodName : "getMovieClip"});
+			if(library.isLocal(symbolName,openfl.AssetType.MOVIE_CLIP)) return library.getMovieClip(symbolName); else haxe.Log.trace("[openfl.Assets] MovieClip asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 292, className : "openfl.Assets", methodName : "getMovieClip"});
+		} else haxe.Log.trace("[openfl.Assets] There is no MovieClip asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 298, className : "openfl.Assets", methodName : "getMovieClip"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 304, className : "openfl.Assets", methodName : "getMovieClip"});
 	return null;
 };
 openfl.Assets.getMusic = function(id,useCache) {
@@ -6125,9 +6155,9 @@ openfl.Assets.getMusic = function(id,useCache) {
 				var sound1 = library.getMusic(symbolName);
 				if(useCache && openfl.Assets.cache.enabled) openfl.Assets.cache.sound.set(id,sound1);
 				return sound1;
-			} else haxe.Log.trace("[openfl.Assets] Sound asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 370, className : "openfl.Assets", methodName : "getMusic"});
-		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 376, className : "openfl.Assets", methodName : "getMusic"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 382, className : "openfl.Assets", methodName : "getMusic"});
+			} else haxe.Log.trace("[openfl.Assets] Sound asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 361, className : "openfl.Assets", methodName : "getMusic"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 367, className : "openfl.Assets", methodName : "getMusic"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 373, className : "openfl.Assets", methodName : "getMusic"});
 	return null;
 };
 openfl.Assets.getPath = function(id) {
@@ -6138,8 +6168,8 @@ openfl.Assets.getPath = function(id) {
 	symbolName = HxOverrides.substr(id,pos,null);
 	var library = openfl.Assets.getLibrary(libraryName);
 	if(library != null) {
-		if(library.exists(symbolName,null)) return library.getPath(symbolName); else haxe.Log.trace("[openfl.Assets] There is no asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 417, className : "openfl.Assets", methodName : "getPath"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 423, className : "openfl.Assets", methodName : "getPath"});
+		if(library.exists(symbolName,null)) return library.getPath(symbolName); else haxe.Log.trace("[openfl.Assets] There is no asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 408, className : "openfl.Assets", methodName : "getPath"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 414, className : "openfl.Assets", methodName : "getPath"});
 	return null;
 };
 openfl.Assets.getSound = function(id,useCache) {
@@ -6160,9 +6190,9 @@ openfl.Assets.getSound = function(id,useCache) {
 				var sound1 = library.getSound(symbolName);
 				if(useCache && openfl.Assets.cache.enabled) openfl.Assets.cache.sound.set(id,sound1);
 				return sound1;
-			} else haxe.Log.trace("[openfl.Assets] Sound asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 480, className : "openfl.Assets", methodName : "getSound"});
-		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 486, className : "openfl.Assets", methodName : "getSound"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 492, className : "openfl.Assets", methodName : "getSound"});
+			} else haxe.Log.trace("[openfl.Assets] Sound asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 471, className : "openfl.Assets", methodName : "getSound"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 477, className : "openfl.Assets", methodName : "getSound"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 483, className : "openfl.Assets", methodName : "getSound"});
 	return null;
 };
 openfl.Assets.getText = function(id) {
@@ -6174,9 +6204,9 @@ openfl.Assets.getText = function(id) {
 	var library = openfl.Assets.getLibrary(libraryName);
 	if(library != null) {
 		if(library.exists(symbolName,openfl.AssetType.TEXT)) {
-			if(library.isLocal(symbolName,openfl.AssetType.TEXT)) return library.getText(symbolName); else haxe.Log.trace("[openfl.Assets] String asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 529, className : "openfl.Assets", methodName : "getText"});
-		} else haxe.Log.trace("[openfl.Assets] There is no String asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 535, className : "openfl.Assets", methodName : "getText"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 541, className : "openfl.Assets", methodName : "getText"});
+			if(library.isLocal(symbolName,openfl.AssetType.TEXT)) return library.getText(symbolName); else haxe.Log.trace("[openfl.Assets] String asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 520, className : "openfl.Assets", methodName : "getText"});
+		} else haxe.Log.trace("[openfl.Assets] There is no String asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 526, className : "openfl.Assets", methodName : "getText"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 532, className : "openfl.Assets", methodName : "getText"});
 	return null;
 };
 openfl.Assets.initialize = function() {
@@ -6236,8 +6266,8 @@ openfl.Assets.loadBitmapData = function(id,handler,useCache) {
 				handler(bitmapData1);
 			}); else library.loadBitmapData(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no BitmapData asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 706, className : "openfl.Assets", methodName : "loadBitmapData"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 712, className : "openfl.Assets", methodName : "loadBitmapData"});
+		} else haxe.Log.trace("[openfl.Assets] There is no BitmapData asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 697, className : "openfl.Assets", methodName : "loadBitmapData"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 703, className : "openfl.Assets", methodName : "loadBitmapData"});
 	handler(null);
 };
 openfl.Assets.loadBytes = function(id,handler) {
@@ -6251,8 +6281,8 @@ openfl.Assets.loadBytes = function(id,handler) {
 		if(library.exists(symbolName,openfl.AssetType.BINARY)) {
 			library.loadBytes(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no String or ByteArray asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 744, className : "openfl.Assets", methodName : "loadBytes"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 750, className : "openfl.Assets", methodName : "loadBytes"});
+		} else haxe.Log.trace("[openfl.Assets] There is no String or ByteArray asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 733, className : "openfl.Assets", methodName : "loadBytes"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 739, className : "openfl.Assets", methodName : "loadBytes"});
 	handler(null);
 };
 openfl.Assets.loadFont = function(id,handler,useCache) {
@@ -6274,8 +6304,8 @@ openfl.Assets.loadFont = function(id,handler,useCache) {
 				handler(font);
 			}); else library.loadFont(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no Font asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 801, className : "openfl.Assets", methodName : "loadFont"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 807, className : "openfl.Assets", methodName : "loadFont"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Font asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 790, className : "openfl.Assets", methodName : "loadFont"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 796, className : "openfl.Assets", methodName : "loadFont"});
 	handler(null);
 };
 openfl.Assets.loadLibrary = function(name,handler) {
@@ -6287,7 +6317,7 @@ openfl.Assets.loadLibrary = function(name,handler) {
 		var library = unserializer.unserialize();
 		openfl.Assets.libraries.set(name,library);
 		library.load(handler);
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + name + "\"",{ fileName : "Assets.hx", lineNumber : 837, className : "openfl.Assets", methodName : "loadLibrary"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + name + "\"",{ fileName : "Assets.hx", lineNumber : 826, className : "openfl.Assets", methodName : "loadLibrary"});
 };
 openfl.Assets.loadMusic = function(id,handler,useCache) {
 	if(useCache == null) useCache = true;
@@ -6311,8 +6341,8 @@ openfl.Assets.loadMusic = function(id,handler,useCache) {
 				handler(sound1);
 			}); else library.loadMusic(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 892, className : "openfl.Assets", methodName : "loadMusic"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 898, className : "openfl.Assets", methodName : "loadMusic"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 881, className : "openfl.Assets", methodName : "loadMusic"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 887, className : "openfl.Assets", methodName : "loadMusic"});
 	handler(null);
 };
 openfl.Assets.loadMovieClip = function(id,handler) {
@@ -6326,8 +6356,8 @@ openfl.Assets.loadMovieClip = function(id,handler) {
 		if(library.exists(symbolName,openfl.AssetType.MOVIE_CLIP)) {
 			library.loadMovieClip(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no MovieClip asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 928, className : "openfl.Assets", methodName : "loadMovieClip"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 934, className : "openfl.Assets", methodName : "loadMovieClip"});
+		} else haxe.Log.trace("[openfl.Assets] There is no MovieClip asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 917, className : "openfl.Assets", methodName : "loadMovieClip"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 923, className : "openfl.Assets", methodName : "loadMovieClip"});
 	handler(null);
 };
 openfl.Assets.loadSound = function(id,handler,useCache) {
@@ -6352,8 +6382,8 @@ openfl.Assets.loadSound = function(id,handler,useCache) {
 				handler(sound1);
 			}); else library.loadSound(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 991, className : "openfl.Assets", methodName : "loadSound"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 997, className : "openfl.Assets", methodName : "loadSound"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 980, className : "openfl.Assets", methodName : "loadSound"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 986, className : "openfl.Assets", methodName : "loadSound"});
 	handler(null);
 };
 openfl.Assets.loadText = function(id,handler) {
@@ -6367,8 +6397,8 @@ openfl.Assets.loadText = function(id,handler) {
 		if(library.exists(symbolName,openfl.AssetType.TEXT)) {
 			library.loadText(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no String asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 1027, className : "openfl.Assets", methodName : "loadText"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 1033, className : "openfl.Assets", methodName : "loadText"});
+		} else haxe.Log.trace("[openfl.Assets] There is no String asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 1016, className : "openfl.Assets", methodName : "loadText"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 1022, className : "openfl.Assets", methodName : "loadText"});
 	handler(null);
 };
 openfl.Assets.registerLibrary = function(name,library) {
@@ -7387,5 +7417,3 @@ openfl.display.Tilesheet.TILE_BLEND_SCREEN = 262144;
 vault.Sfxr.html5AudioContext = null;
 ApplicationMain.main();
 })();
-
-//# sourceMappingURL=Sfxr.js.map
