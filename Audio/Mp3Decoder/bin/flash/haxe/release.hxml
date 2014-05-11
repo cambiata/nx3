@@ -1,0 +1,12 @@
+-main ApplicationMain 
+-lib openfl
+-lib actuate
+-cp src
+-cp ../AS3Mp3Decoder-master/src
+-D tools=1.4.0
+-D web
+-swf-version 11.2
+-swf bin/flash/bin/Mp3Decoder.swf
+-swf-header 800:480:60:000000
+-cp bin/flash/haxe
+#--remap nme:flash

@@ -10,13 +10,13 @@ import nx3.EVoiceType;
 @:access(nx3.NNote)
 class NVoice
 {
-	
+
 	public var direction(default, null):EDirectionUAD;
 	public var nnotes(default, null):Array<NNote>;
 	public var type(default, null):EVoiceType;
 
 	var npart:NPart;
-	
+		
 	public function new(notes:Array<NNote>=null, ?type:EVoiceType, ?direction:EDirectionUAD) 
 	{
 		if (notes == null || notes == []) 
