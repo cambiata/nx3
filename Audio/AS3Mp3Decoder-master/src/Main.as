@@ -28,6 +28,8 @@ package
 		
 		public function Main():void 
 		{
+			trace(int.MIN_VALUE);
+			
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
 		}

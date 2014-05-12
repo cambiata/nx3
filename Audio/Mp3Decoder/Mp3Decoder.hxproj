@@ -17,6 +17,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="..\..\src" />
     <class path="..\AS3Mp3Decoder-master\src" />
     <class path="bin\flash\haxe" />
   </classpaths>

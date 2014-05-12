@@ -83,6 +83,8 @@
 		}
 		
 		public function calculateMaxBits(signed:Boolean, ...values):uint {
+		
+			
 			var b:uint = 0;
 			var vmax:int = int.MIN_VALUE;
 			for(var i:uint = 0; i < values.length; i++) {

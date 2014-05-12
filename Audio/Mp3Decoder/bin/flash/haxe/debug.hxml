@@ -2,6 +2,7 @@
 -lib openfl
 -lib actuate
 -cp src
+-cp ../../src
 -cp ../AS3Mp3Decoder-master/src
 -D tools=1.4.0
 -D web

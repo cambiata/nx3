@@ -36,10 +36,16 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
+		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
+		type.set ("assets/openfl.svg", Reflect.field (AssetType, "text".toUpperCase ()));
+		className.set ("assets/test.mp3", __ASSET__assets_test_mp3);
+		type.set ("assets/test.mp3", Reflect.field (AssetType, "music".toUpperCase ()));
 		
 		
 		#elseif html5
 		
+		addExternal("assets/openfl.svg", "text", "assets/openfl.svg");
+		addExternal("assets/test.mp3", "music", "assets/test.mp3");
 		
 		
 		#else
@@ -47,6 +53,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var loadManifest = false;
+		
+		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
+		type.set ("assets/openfl.svg", Reflect.field (AssetType, "text".toUpperCase ()));
+		
+		className.set ("assets/test.mp3", __ASSET__assets_test_mp3);
+		type.set ("assets/test.mp3", Reflect.field (AssetType, "music".toUpperCase ()));
 		
 		
 		#else
@@ -630,15 +642,21 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if pixi
 #elseif flash
 
+@:keep class __ASSET__assets_openfl_svg extends flash.utils.ByteArray { }
+@:keep class __ASSET__assets_test_mp3 extends flash.media.Sound { }
 
 
 #elseif html5
 
 
 
+
+
 #elseif (windows || mac || linux)
 
 
+@:file("assets/openfl.svg") class __ASSET__assets_openfl_svg extends flash.utils.ByteArray {}
+@:sound("assets/test.mp3") class __ASSET__assets_test_mp3 extends flash.media.Sound {}
 
 
 #end
