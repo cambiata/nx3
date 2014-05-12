@@ -9,6 +9,7 @@ import nx3.NPart;
 import nx3.NVoice;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
+import nx3.render.action.TestInteractivity;
 import nx3.render.ITarget;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
@@ -62,6 +63,7 @@ class Main extends Sprite
 		
 		var targetHS = new TargetSprite(hs.getBackground(), Scaling.NORMAL);
 		var rendererHS = new Renderer(targetHS, 0, 0);
+		rendererHS.addInteraction( new TestInteractivity());
 		
 		hs.setRepaintCallback(function (x:Float, y:Float, width:Float, height:Float, background:Sprite)
 		{			
@@ -75,9 +77,9 @@ class Main extends Sprite
 		{
 			targetHS.clear();
 			var renderWidth =  Math.max(60, rendererHS.xToUnitX(width));
+			//rendererHS.renderScore(TestItems.scoreTpl(), 0, 100, renderWidth);			
 			rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);			
-			//rendererHS.renderScore(TestItems.scoreTies(), 0, 100, renderWidth);			
-		}, 100);				
+		}, 200);				
 	}
 
 	/* SETUP */

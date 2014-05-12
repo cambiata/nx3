@@ -33,6 +33,7 @@ obj/mscv16-debug-ncxp/ee66d886_TestPBars.obj
 obj/mscv16-debug-ncxp/ee66d886_TestP.obj
 obj/mscv16-debug-ncxp/ee66d886_TestN.obj
 obj/mscv16-debug-ncxp/ee66d886_TestItems.obj
+obj/mscv16-debug-ncxp/ee66d886_TestEvents.obj
 obj/mscv16-debug-ncxp/0787a065_SvgElements.obj
 obj/mscv16-debug-ncxp/0787a065_ShapeTools.obj
 obj/mscv16-debug-ncxp/1e2d18a3_Scaling.obj
@@ -54,6 +55,9 @@ obj/mscv16-debug-ncxp/28c28f58_BaseParser.obj
 obj/mscv16-debug-ncxp/59d9f4a0_RectanglesTools.obj
 obj/mscv16-debug-ncxp/59d9f4a0_Point.obj
 obj/mscv16-debug-ncxp/59d9f4a0_BezieerTool.obj
+obj/mscv16-debug-ncxp/8db7b92a_EvHeadSign.obj
+obj/mscv16-debug-ncxp/8db7b92a_EvAddNote.obj
+obj/mscv16-debug-ncxp/8db7b92a_IEvent.obj
 obj/mscv16-debug-ncxp/8db7b92a_NoteInfo.obj
 obj/mscv16-debug-ncxp/8db7b92a_NoteChange.obj
 obj/mscv16-debug-ncxp/8db7b92a_BarEvent.obj
@@ -82,10 +86,10 @@ obj/mscv16-debug-ncxp/27caf139_PVoiceBeamgroupsGenerator.obj
 obj/mscv16-debug-ncxp/27caf139_PVoice.obj
 obj/mscv16-debug-ncxp/27caf139_PSystemStatus.obj
 obj/mscv16-debug-ncxp/27caf139_PSimpleBarWidthCalculator.obj
-obj/mscv16-debug-ncxp/27caf139_PSystemGenerator.obj
-obj/mscv16-debug-ncxp/27caf139_PSystemBarWidthCalculator.obj
+obj/mscv16-debug-ncxp/27caf139_PSystemBarsGenerator.obj
 obj/mscv16-debug-ncxp/27caf139_PSystemBar.obj
 obj/mscv16-debug-ncxp/27caf139_PSystem.obj
+obj/mscv16-debug-ncxp/27caf139_PSysbarMeasurements.obj
 obj/mscv16-debug-ncxp/27caf139_PStaveRectCalculator.obj
 obj/mscv16-debug-ncxp/27caf139_PSignsRectsCalculator.obj
 obj/mscv16-debug-ncxp/27caf139_PSignsCalculator.obj
@@ -125,7 +129,9 @@ obj/mscv16-debug-ncxp/27caf139_PBar.obj
 obj/mscv16-debug-ncxp/27caf139_PBamegroupFrameTipCalculator.obj
 obj/mscv16-debug-ncxp/27caf139_PAttributesRectsCalculator.obj
 obj/mscv16-debug-ncxp/27caf139_NVoice.obj
+obj/mscv16-debug-ncxp/27caf139_NTools.obj
 obj/mscv16-debug-ncxp/27caf139_NScore.obj
+obj/mscv16-debug-ncxp/27caf139_NRefTools.obj
 obj/mscv16-debug-ncxp/27caf139_NPart.obj
 obj/mscv16-debug-ncxp/27caf139_NNote.obj
 obj/mscv16-debug-ncxp/27caf139_NHead.obj

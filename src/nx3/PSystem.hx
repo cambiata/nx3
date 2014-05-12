@@ -5,6 +5,7 @@ using cx.ArrayTools;
  * ...
  * @author Jonas Nyström
  */
+@:access(nx3.PSystemBar)
 class PSystem
  {
 	public function new()
@@ -46,8 +47,8 @@ class PSystem
 		var x = 0.0;
 		for (systemBar in this.getSystembars())		
 		{
-			systemBar.getBarWidths().x = x;
-			x += systemBar.getBarWidths().width;
+			systemBar.xposition = x;
+			x += systemBar.getBarMeasurements().getTotalWidth();
 		}
 	}	
 	

@@ -1,4 +1,5 @@
 package nx3.render;
+import flash.events.MouseEvent;
 import nx3.Constants;
 import nx3.EDirectionUD;
 import nx3.geom.Pnt;
@@ -6,6 +7,9 @@ import nx3.geom.Pnts;
 import nx3.geom.Point;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
+import nx3.render.action.EActionType;
+import nx3.render.action.EActivityType;
+import nx3.render.el.HoverSprite;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
@@ -195,6 +199,7 @@ class TargetSprite  implements ITarget
 	{
 		this.sprite.graphics.clear();
 		while (this.sprite.numChildren > 0) this.sprite.removeChildAt(0);
+		//this.sprite.addChild(this.spriteInteractive);
 	}
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -272,6 +277,51 @@ class TargetSprite  implements ITarget
 		this.sprite.graphics.beginFill(fillColor);
 		this.polyline(x, y, coordinates, lineWidth, lineColor);
 		this.sprite.graphics.endFill();
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function interactiveEllipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int=0x00FF00, cb:EActivityType->Void=null):Void 
+	{
+		var rect = scaleRect(rect, 1, 1.2);
+		var s = new HoverSprite(rect, lineColor, lineWidth);
+		
+		/*
+		s.graphics.beginFill(fillColor);
+		s.graphics.lineStyle(lineWidth*this.scaling.linesWidth, lineColor);
+		s.graphics.drawEllipse(0, 0, rect.width*scaling.unitX, rect.height*scaling.unitY);
+		s.graphics.endFill();	
+		*/
+		
+		
+		s.x = x;
+		s.y = y;
+		this.sprite.addChild(s);
+		
+		s.addEventListener(MouseEvent.ROLL_OVER, function(e) {			
+			if (cb != null) cb(EActivityType.MouseOver);
+		});
+		s.addEventListener(MouseEvent.ROLL_OUT, function(e) {
+			if (cb != null) cb(EActivityType.MouseOver);
+		});
+		s.addEventListener(MouseEvent.MOUSE_DOWN, function(e) {
+			if (cb != null) cb(EActivityType.MouseDown);
+		});
+		s.addEventListener(MouseEvent.MOUSE_UP, function(e) {
+			if (cb != null) cb(EActivityType.MouseUp);
+		});
+		
+		
+		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function scaleRect(rect:Rectangle, inflateX:Float=0, inflateY:Float=0):Rectangle return 
+	{
+		var result = new Rectangle(rect.x * this.scaling.unitX, rect.y * this.scaling.unitY, rect.width * this.scaling.unitX, rect.height * this.scaling.unitX);
+		if (inflateX != 0 || inflateY != 0) result.inflate(inflateX * this.scaling.unitX, inflateY*this.scaling.unitY);
+		return result;
 	}
 	
 }

@@ -12,7 +12,7 @@ import nx3.PBarWidthCalculator;
 import nx3.PScore;
 import nx3.PSystem;
 import nx3.PSystemBar;
-import nx3.PSystemGenerator;
+import nx3.PSystemBarsGenerator;
 import nx3.PSystems;
 import nx3.QVoice;
 using cx.ArrayTools;
@@ -30,7 +30,7 @@ class TestPBars extends TestCase
 		var n0 = new NPart([new QVoice([4, 4, 4, 4])], EClef.ClefC, EKey.Flat2);
 		bars.push(new PBar(new NBar([n0], ETime.Time2_4)));		
 		var calculator = new PBarWidthCalculator();
-		var generator = new PSystemGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null, 400, calculator );
+		var generator = new PSystemBarsGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null, 400, calculator );
 		var system:PSystem = generator.getSystem();		
 		this.assertEquals(system.getSystembars().first().actAttributes.clefs.toString(), [EClef.ClefC].toString());
 		this.assertEquals(system.getSystembars().first().actAttributes.keys.toString(), [EKey.Flat2].toString());
@@ -62,13 +62,13 @@ class TestPBars extends TestCase
 		var generator = new PSystemGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
 		var system:PSystem = generator.getSystem();
 		var systembar:PSystemBar = system.getSystembars().first();
-		this.assertEquals(systembar.getBarWidths().contentWidth, 9.6);
+		this.assertEquals(systembar.getBarMeasurements().getContentlWidth(), 9.6);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
 		
 		systembar.setBarStretch(10);
 		
-		this.assertEquals(systembar.getBarWidths().contentWidth, 19.6);
+		this.assertEquals(systembar.getBarMeasurements().getContentlWidth(), 19.6);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);
 
 	}
@@ -83,7 +83,7 @@ class TestPBars extends TestCase
 		var generator = new PSystemGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
 		var system:PSystem = generator.getSystem();
 		var systembar:PSystemBar = system.getSystembars().first();
-		this.assertEquals(systembar.getBarWidths().contentWidth, 17.6);
+		this.assertEquals(systembar.getBarMeasurements().getContentlWidth(), 17.6);
 		
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 1.6);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);
@@ -103,7 +103,7 @@ class TestPBars extends TestCase
 		var generator = new PSystemGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
 		var system:PSystem = generator.getSystem();
 		var systembar:PSystemBar = system.getSystembars().first();
-		this.assertEquals(systembar.getBarWidths().contentWidth, 21.6);
+		this.assertEquals(systembar.getBarMeasurements().getContentlWidth(), 21.6);
 		
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
@@ -121,7 +121,7 @@ class TestPBars extends TestCase
 		var generator = new PSystemGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
 		var system:PSystem = generator.getSystem();
 		var systembar:PSystemBar = system.getSystembars().first();
-		this.assertEquals(systembar.getBarWidths().contentWidth, 21.6);		
+		this.assertEquals(systembar.getBarMeasurements().getContentlWidth(), 21.6);		
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit(), 0);
 		this.assertEquals(pbar.getColumns().first().getDistanceDelta(), 0.6);		
@@ -140,12 +140,12 @@ class TestPBars extends TestCase
 		var nbar = new NBar([new NPart([new QVoice([16, 16], '#')])]);
 		var pbar = new PBar(nbar);
 		var calculator = new PBarWidthCalculator();
-		var generator = new PSystemGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
+		var generator = new PSystemBarsGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
 		var system:PSystem = generator.getSystem();
 		var systembar:PSystemBar = system.getSystembars().first();
 		
 		
-		this.assertEquals(systembar.getBarWidths().contentWidth.round2(), 15.6);		
+		this.assertEquals(systembar.getBarMeasurements().getContentWidth().round2(), 15.6);		
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 4.2);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 4.2);
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit().round2(), 1.4 );
@@ -169,11 +169,11 @@ class TestPBars extends TestCase
 		var nbar = new NBar([new NPart([new QVoice([16, 16], '.#')])]);
 		var pbar = new PBar(nbar);
 		var calculator = new PBarWidthCalculator();
-		var generator = new PSystemGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
+		var generator = new PSystemBarsGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
 		var system:PSystem = generator.getSystem();
 		var systembar:PSystemBar = system.getSystembars().first();
 		
-		this.assertEquals(systembar.getBarWidths().contentWidth.round2(), 13);		
+		this.assertEquals(systembar.getBarMeasurements().getContentWidth().round2(), 13);		
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 1.6);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit().round2(), 1.4 );
@@ -189,7 +189,7 @@ class TestPBars extends TestCase
 		systembar.setBarStretch(2);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);		
 		this.assertEquals(pbar.getColumns().second().getAPostion().round2(), 8);				
-		this.assertEquals(systembar.getBarWidths().contentWidth.round2(), 15);		
+		this.assertEquals(systembar.getBarMeasurements().getContentWidth().round2(), 15);		
 		
 		systembar.setBarStretch(0);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);	
@@ -199,12 +199,12 @@ class TestPBars extends TestCase
 		var nbar = new NBar([new NPart([new QVoice([16, 16], '##')])]);
 		var pbar = new PBar(nbar);
 		var calculator = new PBarWidthCalculator();
-		var generator = new PSystemGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
+		var generator = new PSystemBarsGenerator([pbar],  { showFirstClef:false, showFirstKey:false, showFirstTime:false }, null, 400, calculator );
 		var system:PSystem = generator.getSystem();
 		var systembar:PSystemBar = system.getSystembars().first();
 		
 		
-		this.assertEquals(systembar.getBarWidths().contentWidth.round2(), 15.6);		
+		this.assertEquals(systembar.getBarMeasurements().getContentWidth().round2(), 15.6);		
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 4.2);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 4.2);
 		this.assertEquals(pbar.getColumns().first().getADistanceBenefit().round2(), 1.4 );
@@ -220,7 +220,7 @@ class TestPBars extends TestCase
 		systembar.setBarStretch(2);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 4.2);		
 		this.assertEquals(pbar.getColumns().second().getAPostion().round2(), 10.6);				
-		this.assertEquals(systembar.getBarWidths().contentWidth.round2(), 17.6);				
+		this.assertEquals(systembar.getBarMeasurements().getContentWidth().round2(), 17.6);				
 		
 		systembar.setBarStretch(0);
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 4.2);		

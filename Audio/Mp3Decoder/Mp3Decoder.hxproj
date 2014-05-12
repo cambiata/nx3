@@ -19,16 +19,16 @@
     <class path="src" />
     <class path="..\..\src" />
     <class path="..\AS3Mp3Decoder-master\src" />
-    <class path="bin\flash\haxe" />
+    <class path="bin\windows\cpp\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="tools=1.4.0&#xA;display&#xA;web" />
+    <option directives="tools=1.4.0&#xA;lime_native&#xA;no-compilation&#xA;display&#xA;windows&#xA;desktop" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="--no-output&#xA;-swf-version 11.2&#xA;#--remap nme:flash" />
+    <option additional="--no-output&#xA;--macro allowPackage('flash')&#xA;--macro keep(&quot;Main&quot;)" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

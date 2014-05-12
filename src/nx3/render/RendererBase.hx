@@ -23,6 +23,10 @@ import nx3.PSystem;
 import nx3.PSystemBar;
 import nx3.PSystemBars;
 import nx3.PSystems;
+import nx3.render.action.EActionInfo;
+import nx3.render.action.EActionType;
+import nx3.render.action.EActivityType;
+import nx3.render.action.IInteractivity;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
 using cx.ArrayTools;
@@ -38,13 +42,20 @@ class RendererBase
 	var targetY:Float;
 	var targetX:Float;
 	var scaling:TScaling;
+	var interactions:Array<IInteractivity>;
 
-	public function new(target:ITarget, targetX:Float, targetY:Float) 
+	public function new(target:ITarget, targetX:Float, targetY:Float, interactions:Array<IInteractivity>=null ) 
 	{
 		this.target = target;
 		this.targetX = targetX;
 		this.targetY = targetY;
 		this.scaling = this.target.getScaling();
+		this.interactions = (interactions != null) ? interactions : [];		
+	}
+	
+	public function addInteraction(interaction:IInteractivity)
+	{
+		this.interactions.push(interaction);
 	}
 	
 	public function psystems(systems:PSystems)
@@ -86,8 +97,9 @@ class RendererBase
 					//trace(tieconnections);
 					for (connection in tieconnections)
 					{					
-						var fromBarX = systembar.getBarWidths().x;		
-						var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.to.getXPosition();
+						var fromBarX = systembar.getXPosition();		
+						//var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.to.getXPosition();
+						var fromNoteX = systembar.getBarMeasurements().getLeftContentMarginXPosition()  +connection.from.getXPosition();
 						var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
 						
 						var tielevel = 0;
@@ -118,10 +130,10 @@ class RendererBase
 				//trace(tieconnections);
 				for (connection in tieconnections)
 				{
-					var fromBarX = systembar.getBarWidths().x;					
-					var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.from.getXPosition();
-
-					var toBarX = systembar.getBarWidths().x + systembar.getBarWidths().width;
+					var fromBarX = systembar.getXPosition();					
+					//var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.from.getXPosition();
+					var fromNoteX = systembar.getBarMeasurements().getLeftContentMarginXPosition()  +connection.from.getXPosition();
+					var toBarX = systembar.getXPosition() + systembar.getBarMeasurements().getTotalWidth();
 					//var toNoteX = nextsystembar.getBarWidths().ackoladeWidth + nextsystembar.getBarWidths().clefWidth + nextsystembar.getBarWidths().keyWidth + nextsystembar.getBarWidths().timeWidth + nextsystembar.getBarWidths().contentLeftMargin +  connection.to.getXPosition();						
 					//trace([fromBarX, fromNoteX, toBarX, toNoteX]);
 					
@@ -150,12 +162,13 @@ class RendererBase
 				//trace(tieconnections);
 				for (connection in tieconnections)
 				{
-					var fromBarX = systembar.getBarWidths().x;					
+					var fromBarX = systembar.getXPosition();					
 					var nextsystembar = connection.to.getComplex().getPart().getBar().getSystembar();
-					var toBarX = nextsystembar.getBarWidths().x;
-					var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.from.getXPosition();					
-					var toNoteX = nextsystembar.getBarWidths().ackoladeWidth + nextsystembar.getBarWidths().clefWidth + nextsystembar.getBarWidths().keyWidth + nextsystembar.getBarWidths().timeWidth + nextsystembar.getBarWidths().contentLeftMargin +  connection.to.getXPosition();
-						
+					var toBarX = nextsystembar.getXPosition();
+					//var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.from.getXPosition();					
+					var fromNoteX = systembar.getBarMeasurements().getLeftContentMarginXPosition() +connection.from.getXPosition();
+					//var toNoteX = nextsystembar.getBarWidths().ackoladeWidth + nextsystembar.getBarWidths().clefWidth + nextsystembar.getBarWidths().keyWidth + nextsystembar.getBarWidths().timeWidth + nextsystembar.getBarWidths().contentLeftMargin +  connection.to.getXPosition();
+					var toNoteX = nextsystembar.getBarMeasurements().getLeftContentMarginXPosition() +connection.to.getXPosition();	
 					//trace([fromBarX, fromNoteX, toBarX, toNoteX]);
 					
 					var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
@@ -190,51 +203,14 @@ class RendererBase
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 			
 		//this.target.rectangle(tx, ty, new Rectangle(0, -10, system.getSystemBreakWidth(), 40), 2, 0x00ff00);
-		
+		var barx = 0.0;
 		for (systembar in system.getSystembars())
 		{
+			var meas = systembar.getBarMeasurements();
+			this.barAttributes(systembar, barx, ny);
+			this.barContent(systembar, barx, ny);
+			barx += systembar.getBarMeasurements().getTotalWidth();
 			
-			var meas = systembar.getBarWidths();
-			
-			//trace([systembar.barWidths.x, systembar.barWidths.width]);
-			var barX =  meas.x;
-			var barWidth = meas.width;
-			//this.target.rectangle(tx, ty, new Rectangle(barX, -10, barWidth, 40), 1);
-			
-			var leftBarlineX = barX;			
-			//this.target.rectangle(tx, ty, new Rectangle(leftBarlineX, -10, meas.ackoladeWidth, 40));
-			
-			var clefX = barX + meas.ackoladeWidth;
-			//this.target.rectangle(tx, ty, new Rectangle(clefX, -9, meas.clefWidth, 38), 1, 0xFF0000);
-			
-			var keyX = clefX + meas.clefWidth;
-			//this.target.rectangle(tx, ty, new Rectangle(keyX, -9, meas.keyWidth, 38), 1, 0xFF0000);
-			
-			var timeX = keyX + meas.keyWidth;
-			//this.target.rectangle(tx, ty, new Rectangle(timeX, -9, meas.timeWidth, 38), 1, 0xFF0000);
-			
-			var contentLeftMarginX = timeX + meas.timeWidth;
-			//this.target.rectangle(tx, ty, new Rectangle(contentLeftMarginX, -10, meas.contentLeftMargin, 40), 1, 0xFF0000);
-			
-			var contentX = contentLeftMarginX + meas.contentLeftMargin;
-			//this.pbar(systembar.bar, contentX, 0);
-			
-			var cautClefX = contentX + meas.contentWidth;
-			//this.target.rectangle(tx, ty, new Rectangle(cautClefX, -9, meas.cautClefWidth, 38), 1, 0xFF0000);			
-			
-			var cautKeyX = cautClefX + meas.cautClefWidth;
-			//this.target.rectangle(tx, ty, new Rectangle(cautKeyX, -9, meas.cautKeyWidth, 38), 1, 0xFF0000);			
-			
-			var cautTimeX = cautKeyX + meas.cautKeyWidth;
-			//this.target.rectangle(tx, ty, new Rectangle(cautTimeX, -9, meas.cautTimeWidth, 38), 1, 0xFF0000);
-			
-			var barlineX = cautTimeX + meas.cautTimeWidth;
-			//this.target.rectangle(tx, ty, new Rectangle(barlineX, -10, meas.barlineWidth, 40), 1, 0xFF0000);
-			
-			//---------------------------------------------------------------------------------------------------------------
-			
-			this.barAttributes(systembar, barX, ny, clefX, keyX, timeX);
-			this.barContent(systembar.bar, contentX, ny);
 		}
 		
 		this.barBarlines(system.getSystembars(), nx, ny);
@@ -244,13 +220,12 @@ class RendererBase
 	private function barBarlines(systembars:PSystemBars, nx:Float, ny:Float) 
 	{
 		
-		var meas = systembars.first().getBarWidths();
 		
 		//trace([systembar.barWidths.x, systembar.barWidths.width]);
-		var barX =  meas.x;
-		var barWidth = meas.width;		
+		//var barX =  systembars.first().getXPosition();
+		//var barWidth = systembars.first().getBarMeasurements().getTotalWidth();		
 		
-		var tx = this.targetX + (nx +  barX) * this.scaling.unitX;
+		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 		
 		//var partidx = 0;		
@@ -258,12 +233,11 @@ class RendererBase
 		var partFirstY = (systembars.first().bar.getParts().first().getYPosition() - 4) * this.scaling.unitY;		
 		var partY = 0.0;
 		
-		
+		var barX = 0.0;
 		for (systembar in systembars)
 		{
-			var meas = systembar.getBarWidths();
-			var barX =  meas.x;
-			var barWidth = meas.width;				
+			
+			var barWidth = systembar.getBarMeasurements().getTotalWidth();				
 			
 			for (part in systembar.bar.getParts())
 			{				
@@ -278,13 +252,14 @@ class RendererBase
 					default: 
 				}				
 			}
+			barX += barWidth;
 			
 		}
 		var partLastY = (partY + 4) * this.scaling.unitY;
 		this.target.line(tx, ty + partFirstY, tx, ty + partLastY, 2, 0x000000);	
 	}
 	
-	public function barAttributes(systembar:PSystemBar, nx:Float = 0, ny:Float = 0, clefX:Float=0, keyX:Float=0, timeX:Float=0)
+	public function barAttributes(systembar:PSystemBar, nx:Float = 0, ny:Float = 0)
 	{
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;		
@@ -295,10 +270,10 @@ class RendererBase
 				
 				var partIdx = systembar.bar.getParts().indexOf(part);
 				
-				this.target.testLines(tx , ty + part.getYPosition() * this.scaling.unitY,  systembar.getBarWidths().width * this.scaling.unitX);				
-				this.barAttributeClef(systembar, part, nx, ny, clefX);
-				this.barAttributeKey(systembar, part, nx, ny, keyX);
-				this.barAttributeTime(systembar, part, nx, ny, timeX);
+				this.target.testLines(tx , ty + part.getYPosition() * this.scaling.unitY,  systembar.getBarMeasurements().getTotalWidth()* this.scaling.unitX);				
+				this.barAttributeClef(systembar, part, nx, ny, systembar.getBarMeasurements().getClefXPosition());
+				this.barAttributeKey(systembar, part, nx, ny, systembar.getBarMeasurements().getKeyXPosition());
+				this.barAttributeTime(systembar, part, nx, ny, systembar.getBarMeasurements().getTimeXPosition());
 			}		
 	}
 	
@@ -345,7 +320,7 @@ class RendererBase
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;						
 		
-		var keyX = (systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth) * this.scaling.unitX;
+		var keyX = systembar.getBarMeasurements().getKeyXPosition() * this.scaling.unitX;
 		var keyY = 1 * this.scaling.unitY;		
 		
 		var keyCode = EKeysTools.getSigncode(actkey);		
@@ -373,7 +348,7 @@ class RendererBase
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 		
-		var clefX = (systembar.getBarWidths().ackoladeWidth) * this.scaling.unitX;
+		var clefX = (systembar.getBarMeasurements().getClefXPosition() * this.scaling.unitX);
 		var clefY = 1 * this.scaling.unitY;
 		
 		
@@ -388,8 +363,12 @@ class RendererBase
 	}
 	
 	
-	public function barContent(bar:PBar, nx:Float=0, ny:Float=0)
+	public function barContent(systembar:PSystemBar, nx:Float=0, ny:Float=0)
 	{
+		
+		var bar = systembar.bar;
+		nx = nx + systembar.getBarMeasurements().getContentXPosition();
+		
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;
 		
@@ -420,6 +399,8 @@ class RendererBase
 			for (complex in column.getComplexes())
 			{
 				this.pcomplex(complex, nx, ny);
+				this.interactiveComplex(complex, nx, ny);
+				
 			}			
 		}				
 	}	
@@ -468,7 +449,11 @@ class RendererBase
 
 				for (rect in note.getHeadsRects())
 				{
-					this.target.shape(x + rect.x * scaling.unitX, y + (rect.y + svginfo.y) * scaling.unitY, svginfo.xmlStr);
+					this.target.shape(x + rect.x * scaling.unitX, y + (rect.y + svginfo.y) * scaling.unitY, svginfo.xmlStr);					
+					this.target.interactiveEllipse(x, y, rect, 5 * this.scaling.linesWidth, 0x36b633, function(activityType:EActivityType) {
+						trace(activityType.getName());
+						for (interaction in this.interactions) interaction.handleAction(EActionType.NoteAction(activityType, note, EActionInfo.TargetInfo(this.target, rect)));
+					});
 				}				
 
 				//--------------------------------------------------------------------------------------
@@ -526,7 +511,34 @@ class RendererBase
 		this.psigns(complex, nx, ny);		
 		this.pdots(complex, nx, ny);
 		this.pties(complex, nx, ny);
+		
+		
+		
 	}
+	
+	public function interactiveComplex(complex:PComplex, nx:Float, ny:Float)
+	{
+		if (complex == null) return;
+		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;
+		var y  =  this.targetY + (ny + complex.getPart().getYPosition()) * target.getScaling().unitY;
+		for (note in complex.getNotes())
+		{
+			this.interactiveNote(note, nx, ny);
+		}		
+		
+	}
+	
+	public function interactiveNote(note:PNote, nx:Float, ny:Float)
+	{
+		var x = this.targetX +  (nx +  note.getComplex().getXPosition()) * target.getScaling().unitX;
+		var y  = this.targetY + (ny + note.getComplex().getPart().getYPosition()) * target.getScaling().unitY;		
+	
+	}
+	
+
+	
+
+		
 	
 	public function pties(complex:PComplex, nx:Float=0, ny:Float=0) 
 	{		

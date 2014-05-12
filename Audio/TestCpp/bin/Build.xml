@@ -11,7 +11,10 @@
    <depend name="include/sys/io/_Process/Stdout.h"/>
   </file>
   <file name="src/sys/io/_Process/Stdout.cpp">
+   <depend name="include/cpp/Lib.h"/>
    <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/Eof.h"/>
+   <depend name="include/haxe/io/Error.h"/>
    <depend name="include/haxe/io/Input.h"/>
    <depend name="include/sys/io/_Process/Stdout.h"/>
   </file>
@@ -20,11 +23,36 @@
    <depend name="include/haxe/io/Output.h"/>
    <depend name="include/sys/io/_Process/Stdin.h"/>
   </file>
+  <file name="src/nme/utils/CompressionAlgorithm.cpp">
+   <depend name="include/nme/utils/CompressionAlgorithm.h"/>
+  </file>
+  <file name="src/nme/utils/ByteArray.cpp">
+   <depend name="include/nme/utils/ByteArray.h"/>
+  </file>
+  <file name="src/nme/errors/EOFError.cpp">
+   <depend name="include/nme/errors/EOFError.h"/>
+   <depend name="include/nme/errors/Error.h"/>
+  </file>
+  <file name="src/nme/errors/Error.cpp">
+   <depend name="include/nme/errors/Error.h"/>
+  </file>
+  <file name="src/nme/Loader.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/cpp/Lib.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/nme/Loader.h"/>
+   <depend name="include/sys/io/Process.h"/>
+  </file>
   <file name="src/haxe/io/Output.cpp">
    <depend name="include/haxe/io/Output.h"/>
   </file>
   <file name="src/haxe/io/Input.cpp">
+   <depend name="include/StringBuf.h"/>
+   <depend name="include/haxe/io/Eof.h"/>
    <depend name="include/haxe/io/Input.h"/>
+  </file>
+  <file name="src/haxe/io/Error.cpp">
+   <depend name="include/haxe/io/Error.h"/>
   </file>
   <file name="src/haxe/io/Eof.cpp">
    <depend name="include/haxe/io/Eof.h"/>
@@ -35,12 +63,22 @@
   <file name="src/cpp/Lib.cpp">
    <depend name="include/cpp/Lib.h"/>
   </file>
+  <file name="src/com/codeazur/as3icy/decoder/SynthesisFilter.cpp">
+   <depend name="include/com/codeazur/as3icy/decoder/OutputBuffer.h"/>
+   <depend name="include/com/codeazur/as3icy/decoder/SynthesisFilter.h"/>
+  </file>
+  <file name="src/com/codeazur/as3icy/decoder/OutputBuffer.cpp">
+   <depend name="include/com/codeazur/as3icy/decoder/OutputBuffer.h"/>
+  </file>
+  <file name="src/StringBuf.cpp">
+   <depend name="include/StringBuf.h"/>
+  </file>
   <file name="src/Std.cpp">
    <depend name="include/Std.h"/>
   </file>
   <file name="src/Main.cpp">
    <depend name="include/Main.h"/>
-   <depend name="include/sys/io/Process.h"/>
+   <depend name="include/com/codeazur/as3icy/decoder/SynthesisFilter.h"/>
   </file>
   <file name="src/__boot__.cpp">
   </file>

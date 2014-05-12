@@ -42,10 +42,8 @@ class TestEvents extends TestCase
 		return score;
 	}
 	
-	
 	public function testEventAddNote()
 	{
-		
 		var score:NScore = score1();		
 		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length, 1);
 		var notestoadd = [new NNote([ new NHead(1) ]), new NNote([ new NHead(2) ]), ];

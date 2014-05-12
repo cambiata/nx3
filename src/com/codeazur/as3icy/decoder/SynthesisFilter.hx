@@ -2,7 +2,11 @@ package com.codeazur.as3icy.decoder;
 
 import com.codeazur.as3icy.decoder.OutputBuffer;
 
+#if (!openfl)
+import nme.utils.ByteArray;
+#else
 import flash.utils.ByteArray;
+#end
 
 class SynthesisFilter
 {

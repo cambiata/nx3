@@ -97,19 +97,16 @@ class TestN extends   TestCase
 	public function testBarXml()
 	{
 		var nbar = TestItems.nbar1();
-		var xmlStr = BarXML.toXml(nbar).toString();
-		
+		var xmlStr = BarXML.toXml(nbar).toString();		
 		var nbar2 = BarXML.fromXmlStr(xmlStr);
 		var xmlStr2 = BarXML.toXml(nbar2).toString();
-		this.assertEquals(xmlStr, xmlStr2);
-		
+		this.assertEquals(xmlStr, xmlStr2);		
 	}
-	
 
 	public function xmlStrExport(filename:String, xmlStr:String)
 	{
 		#if neko
-			FileTools.putContent(filename, xmlStr);
+			FileTools.saveContent(filename, xmlStr);
 		#end	
 	}
 

@@ -271,6 +271,7 @@
    <depend name="include/Std.h"/>
    <depend name="include/haxe/unit/TestCase.h"/>
    <depend name="include/haxe/unit/TestRunner.h"/>
+   <depend name="include/nx3/test/TestEvents.h"/>
    <depend name="include/nx3/test/TestN.h"/>
    <depend name="include/nx3/test/TestP.h"/>
    <depend name="include/nx3/test/TestPBars.h"/>
@@ -303,9 +304,10 @@
    <depend name="include/nx3/PBarWidthCalculator.h"/>
    <depend name="include/nx3/PColumn.h"/>
    <depend name="include/nx3/PScore.h"/>
+   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystem.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
-   <depend name="include/nx3/PSystemGenerator.h"/>
+   <depend name="include/nx3/PSystemBarsGenerator.h"/>
    <depend name="include/nx3/QVoice.h"/>
    <depend name="include/nx3/test/TestPBars.h"/>
   </file>
@@ -349,9 +351,10 @@
    <depend name="include/nx3/PNote.h"/>
    <depend name="include/nx3/PPart.h"/>
    <depend name="include/nx3/PScore.h"/>
+   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystem.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
-   <depend name="include/nx3/PSystemGenerator.h"/>
+   <depend name="include/nx3/PSystemBarsGenerator.h"/>
    <depend name="include/nx3/PVoice.h"/>
    <depend name="include/nx3/QNote.h"/>
    <depend name="include/nx3/QNote1.h"/>
@@ -420,7 +423,7 @@
    <depend name="include/nx3/PScore.h"/>
    <depend name="include/nx3/PSystem.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
-   <depend name="include/nx3/PSystemGenerator.h"/>
+   <depend name="include/nx3/PSystemBarsGenerator.h"/>
    <depend name="include/nx3/QLyric2.h"/>
    <depend name="include/nx3/QLyric4.h"/>
    <depend name="include/nx3/QLyric8.h"/>
@@ -440,6 +443,34 @@
    <depend name="include/nx3/qs/QuickSyntaxParser.h"/>
    <depend name="include/nx3/test/TestItems.h"/>
    <depend name="include/nx3/xml/BarsXML.h"/>
+  </file>
+  <file name="src/nx3/test/TestEvents.cpp">
+   <depend name="include/haxe/unit/TestCase.h"/>
+   <depend name="include/nx3/EAllotment.h"/>
+   <depend name="include/nx3/EBarType.h"/>
+   <depend name="include/nx3/EClef.h"/>
+   <depend name="include/nx3/EDirectionUAD.h"/>
+   <depend name="include/nx3/EDisplayALN.h"/>
+   <depend name="include/nx3/EHeadType.h"/>
+   <depend name="include/nx3/EKey.h"/>
+   <depend name="include/nx3/ENoteType.h"/>
+   <depend name="include/nx3/ENoteVal.h"/>
+   <depend name="include/nx3/EPartType.h"/>
+   <depend name="include/nx3/ESign.h"/>
+   <depend name="include/nx3/ETie.h"/>
+   <depend name="include/nx3/ETime.h"/>
+   <depend name="include/nx3/EVoiceType.h"/>
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NRefTools.h"/>
+   <depend name="include/nx3/NScore.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+   <depend name="include/nx3/events/EvAddNote.h"/>
+   <depend name="include/nx3/events/EvHeadSign.h"/>
+   <depend name="include/nx3/events/IEvent.h"/>
+   <depend name="include/nx3/test/TestEvents.h"/>
   </file>
   <file name="src/nx3/render/svg/SvgElements.cpp">
    <depend name="include/nx3/render/svg/SvgElements.h"/>
@@ -539,6 +570,7 @@
    <depend name="include/nx3/PHead.h"/>
    <depend name="include/nx3/PNote.h"/>
    <depend name="include/nx3/PPart.h"/>
+   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystem.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
    <depend name="include/nx3/PVoice.h"/>
@@ -675,6 +707,34 @@
   </file>
   <file name="src/nx3/geom/BezieerTool.cpp">
    <depend name="include/nx3/geom/BezieerTool.h"/>
+  </file>
+  <file name="src/nx3/events/EvHeadSign.cpp">
+   <depend name="include/nx3/ESign.h"/>
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NRefTools.h"/>
+   <depend name="include/nx3/NScore.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+   <depend name="include/nx3/events/EvHeadSign.h"/>
+   <depend name="include/nx3/events/IEvent.h"/>
+  </file>
+  <file name="src/nx3/events/EvAddNote.cpp">
+   <depend name="include/IMap.h"/>
+   <depend name="include/haxe/ds/ObjectMap.h"/>
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NRefTools.h"/>
+   <depend name="include/nx3/NScore.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+   <depend name="include/nx3/events/EvAddNote.h"/>
+   <depend name="include/nx3/events/IEvent.h"/>
+   <depend name="include/nx3/xml/NoteXML.h"/>
+  </file>
+  <file name="src/nx3/events/IEvent.cpp">
+   <depend name="include/nx3/events/IEvent.h"/>
   </file>
   <file name="src/nx3/events/NoteInfo.cpp">
    <depend name="include/nx3/ENoteVal.h"/>
@@ -903,7 +963,7 @@
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PSimpleBarWidthCalculator.h"/>
   </file>
-  <file name="src/nx3/PSystemGenerator.cpp">
+  <file name="src/nx3/PSystemBarsGenerator.cpp">
    <depend name="include/cx/ArrayTools.h"/>
    <depend name="include/nx3/EClef.h"/>
    <depend name="include/nx3/EDisplayALN.h"/>
@@ -912,13 +972,27 @@
    <depend name="include/nx3/IBarWidthCalculator.h"/>
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PBarConfig.h"/>
+   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystem.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
-   <depend name="include/nx3/PSystemBarWidthCalculator.h"/>
-   <depend name="include/nx3/PSystemGenerator.h"/>
+   <depend name="include/nx3/PSystemBarsGenerator.h"/>
    <depend name="include/nx3/PSystemStatus.h"/>
   </file>
-  <file name="src/nx3/PSystemBarWidthCalculator.cpp">
+  <file name="src/nx3/PSystemBar.cpp">
+   <depend name="include/nx3/PBar.h"/>
+   <depend name="include/nx3/PBarConfig.h"/>
+   <depend name="include/nx3/PBarStretchCalculator.h"/>
+   <depend name="include/nx3/PSysbarMeasurements.h"/>
+   <depend name="include/nx3/PSystemBar.h"/>
+  </file>
+  <file name="src/nx3/PSystem.cpp">
+   <depend name="include/nx3/PBar.h"/>
+   <depend name="include/nx3/PSysbarMeasurements.h"/>
+   <depend name="include/nx3/PSystem.h"/>
+   <depend name="include/nx3/PSystemBar.h"/>
+   <depend name="include/nx3/PSystemStatus.h"/>
+  </file>
+  <file name="src/nx3/PSysbarMeasurements.cpp">
    <depend name="include/nx3/EBarline.h"/>
    <depend name="include/nx3/EBarlineLeft.h"/>
    <depend name="include/nx3/EClef.h"/>
@@ -927,22 +1001,8 @@
    <depend name="include/nx3/IBarWidthCalculator.h"/>
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PBarConfig.h"/>
-   <depend name="include/nx3/PSimpleBarWidthCalculator.h"/>
-   <depend name="include/nx3/PSystemBarWidthCalculator.h"/>
-  </file>
-  <file name="src/nx3/PSystemBar.cpp">
-   <depend name="include/nx3/IBarWidthCalculator.h"/>
-   <depend name="include/nx3/PBar.h"/>
-   <depend name="include/nx3/PBarConfig.h"/>
-   <depend name="include/nx3/PBarStretchCalculator.h"/>
-   <depend name="include/nx3/PSystemBar.h"/>
-   <depend name="include/nx3/PSystemBarWidthCalculator.h"/>
-  </file>
-  <file name="src/nx3/PSystem.cpp">
-   <depend name="include/nx3/PBar.h"/>
-   <depend name="include/nx3/PSystem.h"/>
-   <depend name="include/nx3/PSystemBar.h"/>
-   <depend name="include/nx3/PSystemStatus.h"/>
+   <depend name="include/nx3/PBarWidthCalculator.h"/>
+   <depend name="include/nx3/PSysbarMeasurements.h"/>
   </file>
   <file name="src/nx3/PStaveRectCalculator.cpp">
    <depend name="include/Type.h"/>
@@ -976,7 +1036,7 @@
    <depend name="include/nx3/PBarWidthCalculator.h"/>
    <depend name="include/nx3/PScoreSystemsGenerator.h"/>
    <depend name="include/nx3/PSystem.h"/>
-   <depend name="include/nx3/PSystemGenerator.h"/>
+   <depend name="include/nx3/PSystemBarsGenerator.h"/>
   </file>
   <file name="src/nx3/PScoreSystemStretcher.cpp">
    <depend name="include/nx3/PBar.h"/>
@@ -1304,6 +1364,7 @@
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PBarStretchCalculator.h"/>
    <depend name="include/nx3/PColumn.h"/>
+   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
   </file>
   <file name="src/nx3/PBarConfig.cpp">
@@ -1347,22 +1408,42 @@
    <depend name="include/nx3/EDirectionUAD.h"/>
    <depend name="include/nx3/EVoiceType.h"/>
    <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+  </file>
+  <file name="src/nx3/NTools.cpp">
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NScore.h"/>
+   <depend name="include/nx3/NTools.h"/>
    <depend name="include/nx3/NVoice.h"/>
   </file>
   <file name="src/nx3/NScore.cpp">
    <depend name="include/nx3/NBar.h"/>
    <depend name="include/nx3/NScore.h"/>
   </file>
+  <file name="src/nx3/NRefTools.cpp">
+   <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NRefTools.h"/>
+   <depend name="include/nx3/NScore.h"/>
+   <depend name="include/nx3/NVoice.h"/>
+  </file>
   <file name="src/nx3/NPart.cpp">
    <depend name="include/nx3/EClef.h"/>
    <depend name="include/nx3/EDisplayALN.h"/>
    <depend name="include/nx3/EKey.h"/>
    <depend name="include/nx3/EPartType.h"/>
+   <depend name="include/nx3/NBar.h"/>
    <depend name="include/nx3/NPart.h"/>
    <depend name="include/nx3/NVoice.h"/>
   </file>
   <file name="src/nx3/NNote.cpp">
    <depend name="include/Reflect.h"/>
+   <depend name="include/Type.h"/>
    <depend name="include/nx3/EDirectionUAD.h"/>
    <depend name="include/nx3/EHeadType.h"/>
    <depend name="include/nx3/ENotationVariant.h"/>
@@ -1374,12 +1455,15 @@
    <depend name="include/nx3/ETie.h"/>
    <depend name="include/nx3/NHead.h"/>
    <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/NVoice.h"/>
   </file>
   <file name="src/nx3/NHead.cpp">
+   <depend name="include/Type.h"/>
    <depend name="include/nx3/EHeadType.h"/>
    <depend name="include/nx3/ESign.h"/>
    <depend name="include/nx3/ETie.h"/>
    <depend name="include/nx3/NHead.h"/>
+   <depend name="include/nx3/NNote.h"/>
   </file>
   <file name="src/nx3/NBar.cpp">
    <depend name="include/nx3/EAllotment.h"/>
@@ -1387,7 +1471,10 @@
    <depend name="include/nx3/EDisplayALN.h"/>
    <depend name="include/nx3/ETime.h"/>
    <depend name="include/nx3/NBar.h"/>
+   <depend name="include/nx3/NNote.h"/>
    <depend name="include/nx3/NPart.h"/>
+   <depend name="include/nx3/NScore.h"/>
+   <depend name="include/nx3/NVoice.h"/>
   </file>
   <file name="src/nx3/IBarWidthCalculator.cpp">
    <depend name="include/nx3/EBarline.h"/>

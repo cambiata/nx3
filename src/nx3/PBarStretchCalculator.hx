@@ -8,7 +8,7 @@ import cx.ArrayTools;
  */
 
  @:access(nx3.PColumn)
- 
+ @:access(nx3.PSystemBar)
 class PBarStretchCalculator
 {
 	var systembar:PSystemBar;
@@ -22,8 +22,8 @@ class PBarStretchCalculator
 	{
 		//trace(this.systembar.getBarWidths());
 		
-		this.systembar.getBarWidths().contentWidth += amount;
-		this.systembar.getBarWidths().width += amount;
+		this.systembar.getBarMeasurements().setContentWidth( this.systembar.getBarMeasurements().getContentWidth() + amount );
+		//this.systembar.getBarWidths().width += amount;
 		
 		//trace(this.systembar.getBarWidths());
 		

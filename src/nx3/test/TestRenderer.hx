@@ -10,6 +10,7 @@ import nx3.QNote.QLyric4;
 import nx3.QNote.QNote2;
 import nx3.QNote.QNote4;
 import nx3.QNote.QNote8;
+import nx3.render.action.TestInteractivity;
 import nx3.render.ITarget;
 import nx3.render.Renderer;
 using cx.ArrayTools;
@@ -32,6 +33,8 @@ class TestRenderer
 	
 	static public function testRenderP(r:Renderer)
 	{		
+		//r.renderScore(TestItems.scoreBachSinfonia4(), 10, 100, 300);
+		r.addInteraction( new TestInteractivity());
 		r.renderScore(TestItems.scoreTpl(), 10, 100, 300);
 		
 		//r.renderScore(TestItems.scoreStretch(140), 10, 400, 500);

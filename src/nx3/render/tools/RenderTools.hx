@@ -22,7 +22,7 @@ class RenderTools
 		#if (neko || windows)
 		var bitmapData = new BitmapData(Std.int(sprite.width)+extraWidth, Std.int(sprite.height)+extraHeight, false);
 		bitmapData.draw(sprite);		
-		cx.FileTools.putBinaryContent(filename, bitmapData.encode('png').asString());		
+		cx.FileTools.saveStringAsBinary(filename, bitmapData.encode('png').asString());		
 		#end
 	}
 	

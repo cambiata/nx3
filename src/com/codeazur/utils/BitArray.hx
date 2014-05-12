@@ -2,7 +2,11 @@ package com.codeazur.utils;
 
 
 import com.codeazur.as3icy.ICYConst;
+#if (!openfl)
+import nme.utils.ByteArray;
+#else
 import flash.utils.ByteArray;
+#end
 
 class BitArray extends ByteArray
 {
@@ -14,7 +18,11 @@ class BitArray extends ByteArray
         var partial : Int;
         var bitsConsumed : Int;
         if (bitsPending > 0) {
+	        
+	        
+	        
             var byte : Int = this[position - 1] & (0xff >> (8 - bitsPending));
+            //var byte : Int = this.position - 1 & (0xff >> (8 - bitsPending));
             bitsConsumed = Std.int(Math.min(bitsPending, bits));
             bitsPending -= bitsConsumed;
             partial = byte >> bitsPending;

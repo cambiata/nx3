@@ -1063,6 +1063,7 @@
    <depend name="include/flash/utils/ByteArray.h"/>
    <depend name="include/flash/utils/IDataInput.h"/>
    <depend name="include/flash/utils/IDataOutput.h"/>
+   <depend name="include/haxe/Log.h"/>
    <depend name="include/haxe/io/Bytes.h"/>
    <depend name="include/openfl/AssetLibrary.h"/>
    <depend name="include/openfl/AssetType.h"/>
@@ -1117,6 +1118,7 @@
    <depend name="include/flash/utils/IDataOutput.h"/>
    <depend name="include/haxe/Log.h"/>
    <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/openfl/Assets.h"/>
    <depend name="include/openfl/utils/IMemoryRange.h"/>
   </file>
   <file name="src/flash/display/Sprite.cpp">

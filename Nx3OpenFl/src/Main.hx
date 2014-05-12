@@ -6,7 +6,6 @@ import flash.Lib;
 import haxe.unit.TestRunner;
 import nx3.test.TestN;
 import nx3.test.TestQ;
-import nx3.test.TestV;
 import nx3.test.TestVRender;
 
 /**
@@ -33,12 +32,15 @@ class Main extends Sprite
 
 		// (your code here)
 
+		/*
 		var runner = new  TestRunner(); 
 		runner.add(new TestQ());
 		runner.add(new TestN());
 		runner.add(new TestV());
 		runner.add(new TestVRender());
 		var success = runner.run();			
+		*/
+		U
 
 	}
 

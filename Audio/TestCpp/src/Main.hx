@@ -1,9 +1,9 @@
 package ;
 
 //import com.codeazur.as3icy.decoder.OutputBuffer;
+import com.codeazur.utils.BitArray;
 import cpp.Lib;
 import sys.io.Process;
-//import nme.utils.ByteArray;
 
 
 /**
@@ -16,7 +16,9 @@ class Main
 	
 	static function main() 
 	{
-		new Process('haxelib', []);
+		//new Process('haxelib', []);
+		//new SynthesisFilter(1);
+		new BitArray();
 		//trace('hello');
 		//var ba = new ByteArray();
 		//var loader = new Loader();

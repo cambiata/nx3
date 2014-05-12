@@ -223,21 +223,21 @@ class DefaultAssetLibrary extends AssetLibrary {
 	
 	
 	public override function getBytes (id:String):ByteArray {
-
+		
 		#if pixi
-		trace('pixi');
+		
 		return null;
 		
 		#elseif (flash)
 		
 		return cast (Type.createInstance (className.get (id), []), ByteArray);
 		
-		//#elseif openfl_html5
-		//trace('openfl_html5');
-		//return null;
+		#elseif openfl_html5
 		
-		#elseif (openfl_html5 || js)
-		trace('js');
+		return null;
+		
+		#elseif js
+		
 		var bytes:ByteArray = null;
 		var data = ApplicationMain.urlLoaders.get (path.get (id)).data;
 		

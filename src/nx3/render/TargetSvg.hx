@@ -8,6 +8,7 @@ import js.Lib;
 import nx3.Constants;
 import nx3.EDirectionUD;
 import nx3.geom.Pnts;
+import nx3.render.action.EActivityType;
 import nx3.render.scaling.Scaling;
 import nx3.TFontInfo;
 import nx3.TPoints;
@@ -335,6 +336,49 @@ class TargetSvg implements ITarget
 				stroke: hex(lineColor),
 				strokeWidth: lineWidth * scaling.linesWidth,			
 		});						
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function interactiveEllipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int, cb:EActivityType->Void=null):Void 
+	{
+		var rect = scaleRect(rect);
+		x = x + 1 * this.scaling.unitX;
+		y = y + 1 * this.scaling.unitY;
+		var el = this.snap.ellipse(x+rect.x*this.scaling.unitX, y+rect.y*this.scaling.unitY, rect.width, rect.height);
+		el.attr( {
+				fill: hex(fillColor),
+				stroke: '#ddd',
+				strokeWidth: lineWidth,
+				fillOpacity: 0.0,	
+				strokeOpacity: 0.1 ,
+			});	
+		
+		el.mouseover(function(e) {
+			el.attr( { fillOpacity: 0.0, strokeOpacity: 0.5, stroke: hex(lineColor) } );
+			cb(EActivityType.MouseOver);
+		});
+		el.mouseout(function(e) {
+			el.attr( { fillOpacity: 0.0, strokeOpacity: 0.1, stroke: '#ddd' } );
+			cb(EActivityType.MouseOut);
+		});	
+		
+		if (cb != null) 
+		el.mousedown(function (e) {			
+			cb(EActivityType.MouseDown);
+		});
+		el.mouseup(function(e) {
+			cb(EActivityType.MouseUp);
+		});
+		
+
+	}
+	
+	public function scaleRect(rect:Rectangle, inflateX:Float = 0, inflateY:Float = 0):Rectangle 
+	{
+		var result = new Rectangle(rect.x, rect.y, rect.width * this.scaling.unitX, rect.height * this.scaling.unitX);
+		if (inflateX != 0 || inflateY != 0) result.inflate(inflateX * this.scaling.unitX, inflateY*this.scaling.unitY);
+		return result;		
 	}
 	
 	function getPathString(x:Float, y:Float, coordinates:Pnts):String

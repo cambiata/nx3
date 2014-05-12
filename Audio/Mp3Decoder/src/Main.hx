@@ -70,12 +70,12 @@ class Main extends Sprite
 			ul.load(new URLRequest('test.mp3'));
 			#end
 			
-			#if (neko)
+			#if (neko || cpp)
 			var ba = Assets.getBytes('assets/test.mp3');
 			trace(ba.length);
 			icyDecoder.loadBytes(ba);
-			//icyDecoder.startProcessingByEnterFrame();
-			icyDecoder.startProcessingByLoop();
+			icyDecoder.startProcessingByEnterFrame();
+			//icyDecoder.startProcessingByLoop();
 			#end
 			
 			var testSound:Sound = new Sound();

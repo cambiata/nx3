@@ -1,5 +1,6 @@
 package nx3;
 import nx3.PBar;
+import nx3.PSystembarMeasurements;
 
 /**
  * ...
@@ -19,12 +20,12 @@ import nx3.PBar;
  @:access(nx3.PBar)
  class PSystemBar
  {
-	 public function new(bar:PBar, barConfig:PBarConfig, barWidths:PSystembarMeasurements, actAttributes:PBarAttributes, caAttributes:PBarAttributes)
+	 public function new(bar:PBar, barConfig:PBarConfig, barMeasurements:PSystembarMeasurements, actAttributes:PBarAttributes, caAttributes:PBarAttributes)
 	 {
 		 this.bar = bar;
 		 this.bar.systembar = this;
 		 this.barConfig = barConfig;
-		 this.barWidths = barWidths;
+		 this.barMeasurements = barMeasurements;
 		 this.actAttributes = actAttributes;
 		 this.caAttributes = caAttributes;
 	 }
@@ -50,14 +51,23 @@ import nx3.PBar;
 			 calculator.stretch(amount);
 		 }
 	 }
-	 
-	var barWidths:PSystembarMeasurements;	
-	 public function getBarWidths():PSystembarMeasurements
+ 
+	 var barMeasurements:PSystembarMeasurements;
+	 public function getBarMeasurements():PSystembarMeasurements
 	 {
-		if (barWidths != null) return this.barWidths;
-		 this.barWidths = new PSystemBarWidthCalculator().getBarWidth(this.bar, this.actAttributes, this.barConfig, this.caAttributes);
-		 return this.barWidths;
+		if (barMeasurements != null) return this.barMeasurements;
+		 //this.barWidths = new PSystemBarWidthCalculator().getBarMeasurements(this.bar, this.actAttributes, this.barConfig, this.caAttributes);
+		 this.barMeasurements = new PSystembarMeasurements(this.bar).init(this.actAttributes, this.barConfig, this.caAttributes);
+		 return this.barMeasurements;
 	 }
+	 
+	 var xposition:Float;
+	 public function getXPosition():Float
+	 {
+		 return xposition;
+	 }
+	 
+	 
 	 
  }
  

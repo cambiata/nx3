@@ -30,10 +30,10 @@ using nx3.ENoteValTools;
  * ...
  * @author Jonas Nyström
  */
+
 class Renderer extends RendererBase
 {
 	var partDistance:Int;
-
 	public function new(target:ITarget, targetX:Float, targetY:Float) 
 	{
 		super(target, targetX, targetY);
@@ -45,16 +45,8 @@ class Renderer extends RendererBase
 		return this.target;
 	}
 	
-	public function xToUnitX(x:Float):Float return x * (1 / this.scaling.unitX);		
-	
-	public function yToUnitY(y:Float):Float return y * (1 / this.scaling.unitY);				
-	
-	public function renderPBar(bar:PBar, newX:Float=-1, newY:Float=-1)
-	{
-		if (newX != -1) this.targetX = newX;
-		if (newY != -1) this.targetY = newY;	
-		this.barContent(bar);
-	}
+	public function xToUnitX(x:Float):Float return x * (1 / this.scaling.unitX);			
+	public function yToUnitY(y:Float):Float return y * (1 / this.scaling.unitY);		
 	
 	public function renderSystem(system:PSystem, newX:Float=-1, newY:Float=-1)
 	{
@@ -70,7 +62,5 @@ class Renderer extends RendererBase
 		if (newY != -1) this.targetY = newY;	
 		this.psystems(score.getSystems(systemwidth));	
 	}
-	
-	
 	
 }
