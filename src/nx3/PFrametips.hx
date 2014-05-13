@@ -6,6 +6,6 @@ package nx3;
  */
 typedef PFrametips =
 {
-	leftTip:Int,
-	rightTip:Int,
+	leftTip:Float,
+	rightTip:Float,
 }

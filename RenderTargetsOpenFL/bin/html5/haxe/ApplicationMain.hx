@@ -40,7 +40,7 @@ import flash.Lib;
 		var element:HtmlElement = cast js.Browser.document.getElementById ("openfl-embed");
 		#end
 		
-		flash.Lib.create (1200, 1000, element, 16777215);
+		flash.Lib.create (1400, 1000, element, 16777215);
 		
 		preloader = new NMEPreloader ();
 		Lib.current.addChild (preloader);

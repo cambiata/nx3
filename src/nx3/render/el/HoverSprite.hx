@@ -2,7 +2,6 @@ package nx3.render.el;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import nx3.geom.Rectangle;
-import nx3.render.action.EActivityType;
 
 /**
  * ...
@@ -27,12 +26,12 @@ class HoverSprite extends Sprite
 		this.graphics.lineStyle(lineWidth, lineColor);
 		this.addEventListener(MouseEvent.ROLL_OVER, function(e) {			
 			this.redraw(this.lineColor, this.lineWidth, 0.6);
-			trace('mouseover');
+			//trace('mouseover');
 		});
 		this.addEventListener(MouseEvent.ROLL_OUT, function(e) {
 			
 			this.redraw(0x000000, this.lineWidth/3, 0.2);
-			trace('mouseout');
+			//trace('mouseout');
 		});
 	}
 	

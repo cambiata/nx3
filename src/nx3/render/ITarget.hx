@@ -5,7 +5,7 @@ import nx3.geom.Pnts;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
 import nx3.geom.Point;
-import nx3.render.action.EActivityType;
+import nx3.action.EActivityType;
 import nx3.render.scaling.TScaling;
 import nx3.TFontInfo;
 import nx3.TPoints;
@@ -44,7 +44,10 @@ interface ITarget
 	
 	public function interactiveEllipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int,  cb:EActivityType-> Void = null):Void ;
 	
-	public function scaleRect(rect:Rectangle, inflateX:Float=0, inflateY:Float=0):Rectangle;
+	public function scaleRect(rect:Rectangle, inflateX:Float = 0, inflateY:Float = 0):Rectangle;
+	
+	public function tooltipShow(rect:Rectangle, text:String):Void;
+	public function tooltipHide():Void;
 	
 
 }

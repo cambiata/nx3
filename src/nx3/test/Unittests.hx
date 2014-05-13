@@ -16,9 +16,9 @@ class Unittests
 		//runner.add(new TestQ());
 		runner.add(new TestN());
 		//runner.add(new TestQuickSyntax());
-		//runner.add(new TestTargetSvgXml());
-		runner.add(new TestP());
-		runner.add(new TestPBars());
+		runner.add(new TestTargetSvgXml());
+		//runner.add(new TestP());
+		//runner.add(new TestPBars());
 		runner.add(new TestEvents());
 		
 		var end_time: Date = Date.now();

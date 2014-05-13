@@ -36,6 +36,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
+		className.set ("assets/60.data", __ASSET__assets_60_data);
+		type.set ("assets/60.data", Reflect.field (AssetType, "binary".toUpperCase ()));
+		className.set ("assets/chromatic.data", __ASSET__assets_chromatic_data);
+		type.set ("assets/chromatic.data", Reflect.field (AssetType, "binary".toUpperCase ()));
 		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
 		type.set ("assets/openfl.svg", Reflect.field (AssetType, "text".toUpperCase ()));
 		className.set ("assets/test.data", __ASSET__assets_test_data);
@@ -46,6 +50,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#elseif html5
 		
+		addExternal("assets/60.data", "binary", "assets/60.data");
+		addExternal("assets/chromatic.data", "binary", "assets/chromatic.data");
 		addExternal("assets/openfl.svg", "text", "assets/openfl.svg");
 		addExternal("assets/test.data", "binary", "assets/test.data");
 		addExternal("assets/test2.data", "binary", "assets/test2.data");
@@ -56,6 +62,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var loadManifest = false;
+		
+		className.set ("assets/60.data", __ASSET__assets_60_data);
+		type.set ("assets/60.data", Reflect.field (AssetType, "binary".toUpperCase ()));
+		
+		className.set ("assets/chromatic.data", __ASSET__assets_chromatic_data);
+		type.set ("assets/chromatic.data", Reflect.field (AssetType, "binary".toUpperCase ()));
 		
 		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
 		type.set ("assets/openfl.svg", Reflect.field (AssetType, "text".toUpperCase ()));
@@ -640,6 +652,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if pixi
 #elseif flash
 
+@:keep class __ASSET__assets_60_data extends null { }
+@:keep class __ASSET__assets_chromatic_data extends null { }
 @:keep class __ASSET__assets_openfl_svg extends null { }
 @:keep class __ASSET__assets_test_data extends null { }
 @:keep class __ASSET__assets_test2_data extends null { }
@@ -652,9 +666,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
 #elseif (windows || mac || linux)
 
 
+@:file("assets/60.data") class __ASSET__assets_60_data extends flash.utils.ByteArray {}
+@:file("assets/chromatic.data") class __ASSET__assets_chromatic_data extends flash.utils.ByteArray {}
 @:file("assets/openfl.svg") class __ASSET__assets_openfl_svg extends flash.utils.ByteArray {}
 @:file("assets/test.data") class __ASSET__assets_test_data extends flash.utils.ByteArray {}
 @:file("assets/test2.data") class __ASSET__assets_test2_data extends flash.utils.ByteArray {}

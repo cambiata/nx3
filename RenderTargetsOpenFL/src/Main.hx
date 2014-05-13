@@ -3,13 +3,15 @@ package ;
 import cx.flash.HandlespriteDelayed;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.geom.Rectangle;
 import flash.Lib;
 import nx3.NBar;
 import nx3.NPart;
 import nx3.NVoice;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
-import nx3.render.action.TestInteractivity;
+import nx3.action.SoundInteractivity;
+import nx3.action.TestInteractivity;
 import nx3.render.ITarget;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
@@ -18,7 +20,6 @@ import nx3.render.TargetSprite;
 import nx3.test.Unittests;
 import nx3.test.TestItems;
 import nx3.test.TestRenderer;
-
 
 /**
  * ...
@@ -64,6 +65,7 @@ class Main extends Sprite
 		var targetHS = new TargetSprite(hs.getBackground(), Scaling.NORMAL);
 		var rendererHS = new Renderer(targetHS, 0, 0);
 		rendererHS.addInteraction( new TestInteractivity());
+		rendererHS.addInteraction( new SoundInteractivity());
 		
 		hs.setRepaintCallback(function (x:Float, y:Float, width:Float, height:Float, background:Sprite)
 		{			
@@ -77,9 +79,11 @@ class Main extends Sprite
 		{
 			targetHS.clear();
 			var renderWidth =  Math.max(60, rendererHS.xToUnitX(width));
-			//rendererHS.renderScore(TestItems.scoreTpl(), 0, 100, renderWidth);			
-			rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);			
-		}, 200);				
+			rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);												
+		}, 200);		
+		
+		
+		
 	}
 
 	/* SETUP */

@@ -1,4 +1,5 @@
 package nx3.render;
+import cx.flash.Tooltipsprite;
 import flash.events.MouseEvent;
 import nx3.Constants;
 import nx3.EDirectionUD;
@@ -7,8 +8,8 @@ import nx3.geom.Pnts;
 import nx3.geom.Point;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
-import nx3.render.action.EActionType;
-import nx3.render.action.EActivityType;
+import nx3.action.EActionType;
+import nx3.action.EActivityType;
 import nx3.render.el.HoverSprite;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
@@ -135,6 +136,7 @@ class TargetSprite  implements ITarget
 	
 	var textfield:TextField;
 	var textformat:TextFormat;
+	var tooltip:Tooltipsprite;
 	
 	public function textwidth(text:String):Float 
 	{
@@ -302,7 +304,7 @@ class TargetSprite  implements ITarget
 			if (cb != null) cb(EActivityType.MouseOver);
 		});
 		s.addEventListener(MouseEvent.ROLL_OUT, function(e) {
-			if (cb != null) cb(EActivityType.MouseOver);
+			if (cb != null) cb(EActivityType.MouseOut);
 		});
 		s.addEventListener(MouseEvent.MOUSE_DOWN, function(e) {
 			if (cb != null) cb(EActivityType.MouseDown);
@@ -322,6 +324,30 @@ class TargetSprite  implements ITarget
 		var result = new Rectangle(rect.x * this.scaling.unitX, rect.y * this.scaling.unitY, rect.width * this.scaling.unitX, rect.height * this.scaling.unitX);
 		if (inflateX != 0 || inflateY != 0) result.inflate(inflateX * this.scaling.unitX, inflateY*this.scaling.unitY);
 		return result;
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function tooltipShow(rect:Rectangle, text:String) 
+	{
+		if (this.tooltip == null) {
+			
+			this.tooltip = new Tooltipsprite(new Rectangle(10, 10, 140, 40));
+			this.sprite.addChild(this.tooltip);
+		}
+		this.tooltip.x = rect.x;
+		this.tooltip.y = rect.y;
+		this.tooltip.alpha = 1;
+		this.tooltip.draw(text, rect);		
+	}
+	
+	public function tooltipHide() 
+	{
+		if (this.tooltip != null) 
+		{
+			this.tooltip.alpha = 0;
+			this.tooltip.x = -200;
+		}
 	}
 	
 }

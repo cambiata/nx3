@@ -52,6 +52,20 @@ import flash.Lib;
 		
 		var urlLoader = new URLLoader ();
 		urlLoader.dataFormat = BINARY;
+		urlLoaders.set("assets/60.data", urlLoader);
+		total ++;
+		
+		
+		
+		var urlLoader = new URLLoader ();
+		urlLoader.dataFormat = BINARY;
+		urlLoaders.set("assets/chromatic.data", urlLoader);
+		total ++;
+		
+		
+		
+		var urlLoader = new URLLoader ();
+		urlLoader.dataFormat = BINARY;
 		urlLoaders.set("assets/openfl.svg", urlLoader);
 		total ++;
 		

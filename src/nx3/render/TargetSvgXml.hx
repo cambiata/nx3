@@ -3,6 +3,7 @@ import nx3.geom.Pnt;
 import nx3.geom.Pnts;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
+import nx3.action.EActivityType;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 
@@ -131,6 +132,30 @@ class TargetSvgXml implements ITarget
 	/* INTERFACE nx3.render.ITarget */
 	
 	public function sline(x:Float, y:Float, start:Pnt, end:Pnt, ?lineWidth:Float, ?lineColor:Int):Void 
+	{
+		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function interactiveEllipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int, cb:EActivityType -> Void = null):Void 
+	{
+		
+	}
+	
+	public function scaleRect(rect:Rectangle, inflateX:Float = 0, inflateY:Float = 0):Rectangle 
+	{
+		return null;
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function tooltipShow(rect:Rectangle, text:String):Void 
+	{
+		
+	}
+	
+	public function tooltipHide():Void 
 	{
 		
 	}

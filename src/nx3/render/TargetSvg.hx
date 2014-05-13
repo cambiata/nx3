@@ -8,7 +8,7 @@ import js.Lib;
 import nx3.Constants;
 import nx3.EDirectionUD;
 import nx3.geom.Pnts;
-import nx3.render.action.EActivityType;
+import nx3.action.EActivityType;
 import nx3.render.scaling.Scaling;
 import nx3.TFontInfo;
 import nx3.TPoints;
@@ -231,7 +231,7 @@ class TargetSvg implements ITarget
 	public function text(x:Float, y:Float, text:String):Void 
 	{
 		var fontsize = this.font.size * this.scaling.fontScaling;
-		trace(fontsize);
+		//trace(fontsize);
 		
 		x = x  + Constants.FONT_TEXT_X_ADJUST_SVG * this.scaling.fontScaling; // * this.scaling.svgScale;
 		y = y  + Constants.FONT_TEXT_Y_ADJUST_SVG * this.scaling.fontScaling; // * this.scaling.svgScale;
@@ -256,9 +256,9 @@ class TargetSvg implements ITarget
 		var fontsize = this.font.size * this.scaling.fontScaling;
 		var fontstr = '${fontsize}px ${this.font.name}';
 		this.context.font = fontstr;
-		trace(fontstr);
+		//trace(fontstr);
 		var measure = context.measureText(text);
-		trace(measure.width);
+		//trace(measure.width);
 		return measure.width / this.scaling.unitX;
 	}
 	
@@ -270,6 +270,7 @@ class TargetSvg implements ITarget
 	
 	/* INTERFACE nx3.render.ITarget */
 	var font:TFontInfo;
+	
 	public function setFont(font:TFontInfo):Void 
 	{
 		this.font = font;
@@ -380,6 +381,71 @@ class TargetSvg implements ITarget
 		if (inflateX != 0 || inflateY != 0) result.inflate(inflateX * this.scaling.unitX, inflateY*this.scaling.unitY);
 		return result;		
 	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function tooltipShow(rect:Rectangle, text:String):Void 
+	{
+		if (this.tooltip == null) createTooltip(rect, text);
+		if (this.tooltip != null) 
+		{
+			this.tooltip.attr( {
+				x: Math.round(rect.x),
+				y: Math.round(rect.y),
+				visibility:'visible',
+			});	
+			untyped this.toolText.node.textContent = text;
+		}		
+	}
+	
+	public function tooltipHide():Void 
+	{
+		
+		if (this.tooltip != null) 
+		{
+			this.tooltip.attr( {
+				visibility:'hidden',
+			});		
+		}
+		
+	}
+	
+	var tooltip:SnapElement;
+	var toolText: SnapElement;
+	public function createTooltip(rect:Rectangle, text:String)
+	{
+		this.tooltip = this.snap.el('svg', {
+			x:rect.x,
+			y:rect.y,
+		});		
+		
+		
+		var toolBackground:SnapElement = this.snap.rect(0, 0, rect.width, rect.height);
+		toolBackground.attr( {
+				fill: '#fff2ca',
+				stroke: '#666666',
+				rx: 4,
+				ry: 4,
+				strokeWidth: 1,
+			});							
+		tooltip.append(toolBackground);
+		
+		
+		this.toolText = this.snap.text(8, 19, '');
+		this.toolText.attr( {
+			fontSize: '13px ',
+			fontFamily: 'Open Sans',
+			
+		});
+		
+		tooltip.append(this.toolText);		
+		
+		this.tooltip.attr( {
+			visibility:'hidden',
+		});
+		
+	}
+	
 	
 	function getPathString(x:Float, y:Float, coordinates:Pnts):String
 	{

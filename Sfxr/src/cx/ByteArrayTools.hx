@@ -15,10 +15,10 @@ class ByteArrayTools
 		#if (flash)
 			var bytes = Bytes.ofData(byteArray);
 		#elseif (html5)
-			//var arrayBytes = new Array<Int>();
-			//for (i in 0...byteArray.length) arrayBytes.push(byteArray.readByte());
-			//var bytes = Bytes.ofData(arrayBytes);
-			var bytes = Bytes.ofData(toBytesData(byteArray));
+			var arrayBytes = new Array<Int>();
+			for (i in 0...byteArray.length) arrayBytes.push(byteArray.readByte());
+			var bytes = Bytes.ofData(arrayBytes);
+			//var bytes = Bytes.ofData(toBytesData(byteArray));
 		#else // if neko & cpp
 			var bytes:Bytes = byteArray;
 		#end

@@ -1,6 +1,7 @@
 -main ApplicationMain 
 -lib openfl
 -lib actuate
+-lib format
 -cp src
 -D tools=1.4.0
 -D fdb

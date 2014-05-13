@@ -20,23 +20,31 @@ ApplicationMain.main = function() {
 	var id;
 	var urlLoader = new flash.net.URLLoader();
 	urlLoader.set_dataFormat(flash.net.URLLoaderDataFormat.BINARY);
-	ApplicationMain.urlLoaders.set("assets/openfl.svg",urlLoader);
+	ApplicationMain.urlLoaders.set("assets/60.data",urlLoader);
 	ApplicationMain.total++;
 	var urlLoader1 = new flash.net.URLLoader();
 	urlLoader1.set_dataFormat(flash.net.URLLoaderDataFormat.BINARY);
-	ApplicationMain.urlLoaders.set("assets/test.data",urlLoader1);
+	ApplicationMain.urlLoaders.set("assets/chromatic.data",urlLoader1);
 	ApplicationMain.total++;
 	var urlLoader2 = new flash.net.URLLoader();
 	urlLoader2.set_dataFormat(flash.net.URLLoaderDataFormat.BINARY);
-	ApplicationMain.urlLoaders.set("assets/test2.data",urlLoader2);
+	ApplicationMain.urlLoaders.set("assets/openfl.svg",urlLoader2);
+	ApplicationMain.total++;
+	var urlLoader3 = new flash.net.URLLoader();
+	urlLoader3.set_dataFormat(flash.net.URLLoaderDataFormat.BINARY);
+	ApplicationMain.urlLoaders.set("assets/test.data",urlLoader3);
+	ApplicationMain.total++;
+	var urlLoader4 = new flash.net.URLLoader();
+	urlLoader4.set_dataFormat(flash.net.URLLoaderDataFormat.BINARY);
+	ApplicationMain.urlLoaders.set("assets/test2.data",urlLoader4);
 	ApplicationMain.total++;
 	if(ApplicationMain.total == 0) ApplicationMain.start(); else {
 		var $it0 = ApplicationMain.urlLoaders.keys();
 		while( $it0.hasNext() ) {
 			var path = $it0.next();
-			var urlLoader3 = ApplicationMain.urlLoaders.get(path);
-			urlLoader3.addEventListener("complete",ApplicationMain.loader_onComplete);
-			urlLoader3.load(new flash.net.URLRequest(path));
+			var urlLoader5 = ApplicationMain.urlLoaders.get(path);
+			urlLoader5.addEventListener("complete",ApplicationMain.loader_onComplete);
+			urlLoader5.load(new flash.net.URLRequest(path));
 		}
 		var _g = 0;
 		while(_g < sounds.length) {
@@ -81,8 +89,8 @@ ApplicationMain.preloader_onComplete = function(event) {
 	if(hasMain) Reflect.callMethod(Main,Reflect.field(Main,"main"),[]); else {
 		var instance = Type.createInstance(DocumentClass,[]);
 		if(js.Boot.__instanceof(instance,flash.display.DisplayObject)) flash.Lib.current.addChild(instance); else {
-			haxe.Log.trace("Error: No entry point found",{ fileName : "ApplicationMain.hx", lineNumber : 175, className : "ApplicationMain", methodName : "preloader_onComplete"});
-			haxe.Log.trace("If you are using DCE with a static main, you may need to @:keep the function",{ fileName : "ApplicationMain.hx", lineNumber : 176, className : "ApplicationMain", methodName : "preloader_onComplete"});
+			haxe.Log.trace("Error: No entry point found",{ fileName : "ApplicationMain.hx", lineNumber : 189, className : "ApplicationMain", methodName : "preloader_onComplete"});
+			haxe.Log.trace("If you are using DCE with a static main, you may need to @:keep the function",{ fileName : "ApplicationMain.hx", lineNumber : 190, className : "ApplicationMain", methodName : "preloader_onComplete"});
 		}
 	}
 };
@@ -957,8 +965,8 @@ Main.prototype = $extend(flash.display.Sprite.prototype,{
 	,init: function() {
 		if(this.inited) return;
 		this.inited = true;
-		var byteArray = openfl.Assets.getBytes("assets/test.data");
-		haxe.Log.trace(byteArray.length,{ fileName : "Main.hx", lineNumber : 45, className : "Main", methodName : "init"});
+		var byteArray = openfl.Assets.getBytes("assets/60.data");
+		haxe.Log.trace(byteArray.length,{ fileName : "Main.hx", lineNumber : 50, className : "Main", methodName : "init"});
 		var bytesData = new Array();
 		var _g1 = 0;
 		var _g = byteArray.length;
@@ -1058,6 +1066,8 @@ openfl.AssetLibrary.prototype = {
 };
 var DefaultAssetLibrary = function() {
 	openfl.AssetLibrary.call(this);
+	this.addExternal("assets/60.data","binary","assets/60.data");
+	this.addExternal("assets/chromatic.data","binary","assets/chromatic.data");
 	this.addExternal("assets/openfl.svg","text","assets/openfl.svg");
 	this.addExternal("assets/test.data","binary","assets/test.data");
 	this.addExternal("assets/test2.data","binary","assets/test2.data");
@@ -1490,12 +1500,59 @@ Type.getEnumConstructs = function(e) {
 	var a = e.__constructs__;
 	return a.slice();
 };
+var alab = {};
+alab.WavClip = function(data) {
+	var wave = this.waveFromBytearry(data);
+	this.data = this.fromBytes(wave.data);
+	this.header = wave.header;
+};
+$hxClasses["alab.WavClip"] = alab.WavClip;
+alab.WavClip.__name__ = ["alab","WavClip"];
+alab.WavClip.prototype = {
+	toBytes: function(byteArray) {
+		var arrayBytes = new Array();
+		var _g1 = 0;
+		var _g = byteArray.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			arrayBytes.push(byteArray.readByte());
+		}
+		var bytes = haxe.io.Bytes.ofData(arrayBytes);
+		return bytes;
+	}
+	,fromBytes: function(bytes) {
+		var bytesData = bytes.b;
+		var byteArray = new flash.utils.ByteArray();
+		var _g1 = 0;
+		var _g = bytesData.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			byteArray.writeByte(bytesData[i]);
+		}
+		return byteArray;
+	}
+	,waveFromBytearry: function(data) {
+		var bytes = this.toBytes(data);
+		var input = new haxe.io.BytesInput(bytes);
+		var reader = new format.wav.Reader(input);
+		var wave = reader.read();
+		return wave;
+	}
+	,__class__: alab.WavClip
+};
 var cx = {};
 cx.ByteArrayTools = function() { };
 $hxClasses["cx.ByteArrayTools"] = cx.ByteArrayTools;
 cx.ByteArrayTools.__name__ = ["cx","ByteArrayTools"];
 cx.ByteArrayTools.toBytes = function(byteArray) {
-	var bytes = haxe.io.Bytes.ofData(cx.ByteArrayTools.toBytesData(byteArray));
+	var arrayBytes = new Array();
+	var _g1 = 0;
+	var _g = byteArray.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		arrayBytes.push(byteArray.readByte());
+	}
+	var bytes = haxe.io.Bytes.ofData(arrayBytes);
 	return bytes;
 };
 cx.ByteArrayTools.toBytesData = function(byteArray) {
@@ -5079,6 +5136,13 @@ flash.utils.ByteArray.prototype = {
 		this.position = cachePosition;
 		return value;
 	}
+	,uncompress: function() {
+		var bytes = haxe.io.Bytes.ofData(this.byteView);
+		var buf = format.tools.Inflate.run(bytes).getData();
+		this.byteView = new Uint8Array(buf);
+		this.data = new DataView(this.byteView.buffer);
+		this.set_length(this.allocated = this.byteView.buffer.byteLength);
+	}
 	,writeBoolean: function(value) {
 		this.writeByte(value?1:0);
 	}
@@ -5246,6 +5310,552 @@ flash.utils.ByteArray.prototype = {
 flash.utils.Endian = function() { };
 $hxClasses["flash.utils.Endian"] = flash.utils.Endian;
 flash.utils.Endian.__name__ = ["flash","utils","Endian"];
+var format = {};
+format.tools = {};
+format.tools.Adler32 = function() {
+	this.a1 = 1;
+	this.a2 = 0;
+};
+$hxClasses["format.tools.Adler32"] = format.tools.Adler32;
+format.tools.Adler32.__name__ = ["format","tools","Adler32"];
+format.tools.Adler32.read = function(i) {
+	var a = new format.tools.Adler32();
+	var a2a = i.readByte();
+	var a2b = i.readByte();
+	var a1a = i.readByte();
+	var a1b = i.readByte();
+	a.a1 = a1a << 8 | a1b;
+	a.a2 = a2a << 8 | a2b;
+	return a;
+};
+format.tools.Adler32.prototype = {
+	update: function(b,pos,len) {
+		var a1 = this.a1;
+		var a2 = this.a2;
+		var _g1 = pos;
+		var _g = pos + len;
+		while(_g1 < _g) {
+			var p = _g1++;
+			var c = b.b[p];
+			a1 = (a1 + c) % 65521;
+			a2 = (a2 + a1) % 65521;
+		}
+		this.a1 = a1;
+		this.a2 = a2;
+	}
+	,equals: function(a) {
+		return a.a1 == this.a1 && a.a2 == this.a2;
+	}
+	,__class__: format.tools.Adler32
+};
+format.tools.Huffman = $hxClasses["format.tools.Huffman"] = { __ename__ : true, __constructs__ : ["Found","NeedBit","NeedBits"] };
+format.tools.Huffman.Found = function(i) { var $x = ["Found",0,i]; $x.__enum__ = format.tools.Huffman; $x.toString = $estr; return $x; };
+format.tools.Huffman.NeedBit = function(left,right) { var $x = ["NeedBit",1,left,right]; $x.__enum__ = format.tools.Huffman; $x.toString = $estr; return $x; };
+format.tools.Huffman.NeedBits = function(n,table) { var $x = ["NeedBits",2,n,table]; $x.__enum__ = format.tools.Huffman; $x.toString = $estr; return $x; };
+format.tools.HuffTools = function() {
+};
+$hxClasses["format.tools.HuffTools"] = format.tools.HuffTools;
+format.tools.HuffTools.__name__ = ["format","tools","HuffTools"];
+format.tools.HuffTools.prototype = {
+	treeDepth: function(t) {
+		switch(t[1]) {
+		case 0:
+			return 0;
+		case 2:
+			throw "assert";
+			break;
+		case 1:
+			var b = t[3];
+			var a = t[2];
+			var da = this.treeDepth(a);
+			var db = this.treeDepth(b);
+			return 1 + (da < db?da:db);
+		}
+	}
+	,treeCompress: function(t) {
+		var d = this.treeDepth(t);
+		if(d == 0) return t;
+		if(d == 1) switch(t[1]) {
+		case 1:
+			var b = t[3];
+			var a = t[2];
+			return format.tools.Huffman.NeedBit(this.treeCompress(a),this.treeCompress(b));
+		default:
+			throw "assert";
+		}
+		var size = 1 << d;
+		var table = new Array();
+		var _g = 0;
+		while(_g < size) {
+			var i = _g++;
+			table.push(format.tools.Huffman.Found(-1));
+		}
+		this.treeWalk(table,0,0,d,t);
+		return format.tools.Huffman.NeedBits(d,table);
+	}
+	,treeWalk: function(table,p,cd,d,t) {
+		switch(t[1]) {
+		case 1:
+			var b = t[3];
+			var a = t[2];
+			if(d > 0) {
+				this.treeWalk(table,p,cd + 1,d - 1,a);
+				this.treeWalk(table,p | 1 << cd,cd + 1,d - 1,b);
+			} else table[p] = this.treeCompress(t);
+			break;
+		default:
+			table[p] = this.treeCompress(t);
+		}
+	}
+	,treeMake: function(bits,maxbits,v,len) {
+		if(len > maxbits) throw "Invalid huffman";
+		var idx = v << 5 | len;
+		if(bits.exists(idx)) return format.tools.Huffman.Found(bits.get(idx));
+		v <<= 1;
+		len += 1;
+		return format.tools.Huffman.NeedBit(this.treeMake(bits,maxbits,v,len),this.treeMake(bits,maxbits,v | 1,len));
+	}
+	,make: function(lengths,pos,nlengths,maxbits) {
+		var counts = new Array();
+		var tmp = new Array();
+		if(maxbits > 32) throw "Invalid huffman";
+		var _g = 0;
+		while(_g < maxbits) {
+			var i = _g++;
+			counts.push(0);
+			tmp.push(0);
+		}
+		var _g1 = 0;
+		while(_g1 < nlengths) {
+			var i1 = _g1++;
+			var p = lengths[i1 + pos];
+			if(p >= maxbits) throw "Invalid huffman";
+			counts[p]++;
+		}
+		var code = 0;
+		var _g11 = 1;
+		var _g2 = maxbits - 1;
+		while(_g11 < _g2) {
+			var i2 = _g11++;
+			code = code + counts[i2] << 1;
+			tmp[i2] = code;
+		}
+		var bits = new haxe.ds.IntMap();
+		var _g3 = 0;
+		while(_g3 < nlengths) {
+			var i3 = _g3++;
+			var l = lengths[i3 + pos];
+			if(l != 0) {
+				var n = tmp[l - 1];
+				tmp[l - 1] = n + 1;
+				bits.set(n << 5 | l,i3);
+			}
+		}
+		return this.treeCompress(format.tools.Huffman.NeedBit(this.treeMake(bits,maxbits,0,1),this.treeMake(bits,maxbits,1,1)));
+	}
+	,__class__: format.tools.HuffTools
+};
+format.tools.Inflate = function() { };
+$hxClasses["format.tools.Inflate"] = format.tools.Inflate;
+format.tools.Inflate.__name__ = ["format","tools","Inflate"];
+format.tools.Inflate.run = function(bytes) {
+	return format.tools.InflateImpl.run(new haxe.io.BytesInput(bytes));
+};
+format.tools._InflateImpl = {};
+format.tools._InflateImpl.Window = function(hasCrc) {
+	this.buffer = haxe.io.Bytes.alloc(65536);
+	this.pos = 0;
+	if(hasCrc) this.crc = new format.tools.Adler32();
+};
+$hxClasses["format.tools._InflateImpl.Window"] = format.tools._InflateImpl.Window;
+format.tools._InflateImpl.Window.__name__ = ["format","tools","_InflateImpl","Window"];
+format.tools._InflateImpl.Window.prototype = {
+	slide: function() {
+		if(this.crc != null) this.crc.update(this.buffer,0,32768);
+		var b = haxe.io.Bytes.alloc(65536);
+		this.pos -= 32768;
+		b.blit(0,this.buffer,32768,this.pos);
+		this.buffer = b;
+	}
+	,addBytes: function(b,p,len) {
+		if(this.pos + len > 65536) this.slide();
+		this.buffer.blit(this.pos,b,p,len);
+		this.pos += len;
+	}
+	,addByte: function(c) {
+		if(this.pos == 65536) this.slide();
+		this.buffer.b[this.pos] = c & 255;
+		this.pos++;
+	}
+	,getLastChar: function() {
+		return this.buffer.b[this.pos - 1];
+	}
+	,available: function() {
+		return this.pos;
+	}
+	,checksum: function() {
+		if(this.crc != null) this.crc.update(this.buffer,0,this.pos);
+		return this.crc;
+	}
+	,__class__: format.tools._InflateImpl.Window
+};
+format.tools._InflateImpl.State = $hxClasses["format.tools._InflateImpl.State"] = { __ename__ : true, __constructs__ : ["Head","Block","CData","Flat","Crc","Dist","DistOne","Done"] };
+format.tools._InflateImpl.State.Head = ["Head",0];
+format.tools._InflateImpl.State.Head.toString = $estr;
+format.tools._InflateImpl.State.Head.__enum__ = format.tools._InflateImpl.State;
+format.tools._InflateImpl.State.Block = ["Block",1];
+format.tools._InflateImpl.State.Block.toString = $estr;
+format.tools._InflateImpl.State.Block.__enum__ = format.tools._InflateImpl.State;
+format.tools._InflateImpl.State.CData = ["CData",2];
+format.tools._InflateImpl.State.CData.toString = $estr;
+format.tools._InflateImpl.State.CData.__enum__ = format.tools._InflateImpl.State;
+format.tools._InflateImpl.State.Flat = ["Flat",3];
+format.tools._InflateImpl.State.Flat.toString = $estr;
+format.tools._InflateImpl.State.Flat.__enum__ = format.tools._InflateImpl.State;
+format.tools._InflateImpl.State.Crc = ["Crc",4];
+format.tools._InflateImpl.State.Crc.toString = $estr;
+format.tools._InflateImpl.State.Crc.__enum__ = format.tools._InflateImpl.State;
+format.tools._InflateImpl.State.Dist = ["Dist",5];
+format.tools._InflateImpl.State.Dist.toString = $estr;
+format.tools._InflateImpl.State.Dist.__enum__ = format.tools._InflateImpl.State;
+format.tools._InflateImpl.State.DistOne = ["DistOne",6];
+format.tools._InflateImpl.State.DistOne.toString = $estr;
+format.tools._InflateImpl.State.DistOne.__enum__ = format.tools._InflateImpl.State;
+format.tools._InflateImpl.State.Done = ["Done",7];
+format.tools._InflateImpl.State.Done.toString = $estr;
+format.tools._InflateImpl.State.Done.__enum__ = format.tools._InflateImpl.State;
+format.tools.InflateImpl = function(i,header,crc) {
+	if(crc == null) crc = true;
+	if(header == null) header = true;
+	this["final"] = false;
+	this.htools = new format.tools.HuffTools();
+	this.huffman = this.buildFixedHuffman();
+	this.huffdist = null;
+	this.len = 0;
+	this.dist = 0;
+	if(header) this.state = format.tools._InflateImpl.State.Head; else this.state = format.tools._InflateImpl.State.Block;
+	this.input = i;
+	this.bits = 0;
+	this.nbits = 0;
+	this.needed = 0;
+	this.output = null;
+	this.outpos = 0;
+	this.lengths = new Array();
+	var _g = 0;
+	while(_g < 19) {
+		var i1 = _g++;
+		this.lengths.push(-1);
+	}
+	this.window = new format.tools._InflateImpl.Window(crc);
+};
+$hxClasses["format.tools.InflateImpl"] = format.tools.InflateImpl;
+format.tools.InflateImpl.__name__ = ["format","tools","InflateImpl"];
+format.tools.InflateImpl.run = function(i,bufsize) {
+	if(bufsize == null) bufsize = 65536;
+	var buf = haxe.io.Bytes.alloc(bufsize);
+	var output = new haxe.io.BytesBuffer();
+	var inflate = new format.tools.InflateImpl(i);
+	while(true) {
+		var len = inflate.readBytes(buf,0,bufsize);
+		output.addBytes(buf,0,len);
+		if(len < bufsize) break;
+	}
+	return output.getBytes();
+};
+format.tools.InflateImpl.prototype = {
+	buildFixedHuffman: function() {
+		if(format.tools.InflateImpl.FIXED_HUFFMAN != null) return format.tools.InflateImpl.FIXED_HUFFMAN;
+		var a = new Array();
+		var _g = 0;
+		while(_g < 288) {
+			var n = _g++;
+			a.push(n <= 143?8:n <= 255?9:n <= 279?7:8);
+		}
+		format.tools.InflateImpl.FIXED_HUFFMAN = this.htools.make(a,0,288,10);
+		return format.tools.InflateImpl.FIXED_HUFFMAN;
+	}
+	,readBytes: function(b,pos,len) {
+		this.needed = len;
+		this.outpos = pos;
+		this.output = b;
+		if(len > 0) while(this.inflateLoop()) {
+		}
+		return len - this.needed;
+	}
+	,getBits: function(n) {
+		while(this.nbits < n) {
+			this.bits |= this.input.readByte() << this.nbits;
+			this.nbits += 8;
+		}
+		var b = this.bits & (1 << n) - 1;
+		this.nbits -= n;
+		this.bits >>= n;
+		return b;
+	}
+	,getBit: function() {
+		if(this.nbits == 0) {
+			this.nbits = 8;
+			this.bits = this.input.readByte();
+		}
+		var b = (this.bits & 1) == 1;
+		this.nbits--;
+		this.bits >>= 1;
+		return b;
+	}
+	,getRevBits: function(n) {
+		if(n == 0) return 0; else if(this.getBit()) return 1 << n - 1 | this.getRevBits(n - 1); else return this.getRevBits(n - 1);
+	}
+	,resetBits: function() {
+		this.bits = 0;
+		this.nbits = 0;
+	}
+	,addBytes: function(b,p,len) {
+		this.window.addBytes(b,p,len);
+		this.output.blit(this.outpos,b,p,len);
+		this.needed -= len;
+		this.outpos += len;
+	}
+	,addByte: function(b) {
+		this.window.addByte(b);
+		this.output.b[this.outpos] = b & 255;
+		this.needed--;
+		this.outpos++;
+	}
+	,addDistOne: function(n) {
+		var c = this.window.getLastChar();
+		var _g = 0;
+		while(_g < n) {
+			var i = _g++;
+			this.addByte(c);
+		}
+	}
+	,addDist: function(d,len) {
+		this.addBytes(this.window.buffer,this.window.pos - d,len);
+	}
+	,applyHuffman: function(h) {
+		switch(h[1]) {
+		case 0:
+			var n = h[2];
+			return n;
+		case 1:
+			var b = h[3];
+			var a = h[2];
+			return this.applyHuffman(this.getBit()?b:a);
+		case 2:
+			var tbl = h[3];
+			var n1 = h[2];
+			return this.applyHuffman(tbl[this.getBits(n1)]);
+		}
+	}
+	,inflateLengths: function(a,max) {
+		var i = 0;
+		var prev = 0;
+		while(i < max) {
+			var n = this.applyHuffman(this.huffman);
+			switch(n) {
+			case 0:case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:case 11:case 12:case 13:case 14:case 15:
+				prev = n;
+				a[i] = n;
+				i++;
+				break;
+			case 16:
+				var end = i + 3 + this.getBits(2);
+				if(end > max) throw "Invalid data";
+				while(i < end) {
+					a[i] = prev;
+					i++;
+				}
+				break;
+			case 17:
+				i += 3 + this.getBits(3);
+				if(i > max) throw "Invalid data";
+				break;
+			case 18:
+				i += 11 + this.getBits(7);
+				if(i > max) throw "Invalid data";
+				break;
+			default:
+				throw "Invalid data";
+			}
+		}
+	}
+	,inflateLoop: function() {
+		var _g = this.state;
+		switch(_g[1]) {
+		case 0:
+			var cmf = this.input.readByte();
+			var cm = cmf & 15;
+			var cinfo = cmf >> 4;
+			if(cm != 8 || cinfo != 7) throw "Invalid data";
+			var flg = this.input.readByte();
+			var fdict = (flg & 32) != 0;
+			if(((cmf << 8) + flg) % 31 != 0) throw "Invalid data";
+			if(fdict) throw "Unsupported dictionary";
+			this.state = format.tools._InflateImpl.State.Block;
+			return true;
+		case 4:
+			var calc = this.window.checksum();
+			if(calc == null) {
+				this.state = format.tools._InflateImpl.State.Done;
+				return true;
+			}
+			var crc = format.tools.Adler32.read(this.input);
+			if(!calc.equals(crc)) throw "Invalid CRC";
+			this.state = format.tools._InflateImpl.State.Done;
+			return true;
+		case 7:
+			return false;
+		case 1:
+			this["final"] = this.getBit();
+			var _g1 = this.getBits(2);
+			switch(_g1) {
+			case 0:
+				this.len = this.input.readUInt16();
+				var nlen = this.input.readUInt16();
+				if(nlen != 65535 - this.len) throw "Invalid data";
+				this.state = format.tools._InflateImpl.State.Flat;
+				var r = this.inflateLoop();
+				this.resetBits();
+				return r;
+			case 1:
+				this.huffman = this.buildFixedHuffman();
+				this.huffdist = null;
+				this.state = format.tools._InflateImpl.State.CData;
+				return true;
+			case 2:
+				var hlit = this.getBits(5) + 257;
+				var hdist = this.getBits(5) + 1;
+				var hclen = this.getBits(4) + 4;
+				var _g2 = 0;
+				while(_g2 < hclen) {
+					var i = _g2++;
+					this.lengths[format.tools.InflateImpl.CODE_LENGTHS_POS[i]] = this.getBits(3);
+				}
+				var _g21 = hclen;
+				while(_g21 < 19) {
+					var i1 = _g21++;
+					this.lengths[format.tools.InflateImpl.CODE_LENGTHS_POS[i1]] = 0;
+				}
+				this.huffman = this.htools.make(this.lengths,0,19,8);
+				var lengths = new Array();
+				var _g3 = 0;
+				var _g22 = hlit + hdist;
+				while(_g3 < _g22) {
+					var i2 = _g3++;
+					lengths.push(0);
+				}
+				this.inflateLengths(lengths,hlit + hdist);
+				this.huffdist = this.htools.make(lengths,hlit,hdist,16);
+				this.huffman = this.htools.make(lengths,0,hlit,16);
+				this.state = format.tools._InflateImpl.State.CData;
+				return true;
+			default:
+				throw "Invalid data";
+			}
+			break;
+		case 3:
+			var rlen;
+			if(this.len < this.needed) rlen = this.len; else rlen = this.needed;
+			var bytes = this.input.read(rlen);
+			this.len -= rlen;
+			this.addBytes(bytes,0,rlen);
+			if(this.len == 0) if(this["final"]) this.state = format.tools._InflateImpl.State.Crc; else this.state = format.tools._InflateImpl.State.Block;
+			return this.needed > 0;
+		case 6:
+			var rlen1;
+			if(this.len < this.needed) rlen1 = this.len; else rlen1 = this.needed;
+			this.addDistOne(rlen1);
+			this.len -= rlen1;
+			if(this.len == 0) this.state = format.tools._InflateImpl.State.CData;
+			return this.needed > 0;
+		case 5:
+			while(this.len > 0 && this.needed > 0) {
+				var rdist;
+				if(this.len < this.dist) rdist = this.len; else rdist = this.dist;
+				var rlen2;
+				if(this.needed < rdist) rlen2 = this.needed; else rlen2 = rdist;
+				this.addDist(this.dist,rlen2);
+				this.len -= rlen2;
+			}
+			if(this.len == 0) this.state = format.tools._InflateImpl.State.CData;
+			return this.needed > 0;
+		case 2:
+			var n = this.applyHuffman(this.huffman);
+			if(n < 256) {
+				this.addByte(n);
+				return this.needed > 0;
+			} else if(n == 256) {
+				if(this["final"]) this.state = format.tools._InflateImpl.State.Crc; else this.state = format.tools._InflateImpl.State.Block;
+				return true;
+			} else {
+				n -= 257;
+				var extra_bits = format.tools.InflateImpl.LEN_EXTRA_BITS_TBL[n];
+				if(extra_bits == -1) throw "Invalid data";
+				this.len = format.tools.InflateImpl.LEN_BASE_VAL_TBL[n] + this.getBits(extra_bits);
+				var dist_code;
+				if(this.huffdist == null) dist_code = this.getRevBits(5); else dist_code = this.applyHuffman(this.huffdist);
+				extra_bits = format.tools.InflateImpl.DIST_EXTRA_BITS_TBL[dist_code];
+				if(extra_bits == -1) throw "Invalid data";
+				this.dist = format.tools.InflateImpl.DIST_BASE_VAL_TBL[dist_code] + this.getBits(extra_bits);
+				if(this.dist > this.window.available()) throw "Invalid data";
+				if(this.dist == 1) this.state = format.tools._InflateImpl.State.DistOne; else this.state = format.tools._InflateImpl.State.Dist;
+				return true;
+			}
+			break;
+		}
+	}
+	,__class__: format.tools.InflateImpl
+};
+format.wav = {};
+format.wav.WAVEFormat = $hxClasses["format.wav.WAVEFormat"] = { __ename__ : true, __constructs__ : ["WF_PCM"] };
+format.wav.WAVEFormat.WF_PCM = ["WF_PCM",0];
+format.wav.WAVEFormat.WF_PCM.toString = $estr;
+format.wav.WAVEFormat.WF_PCM.__enum__ = format.wav.WAVEFormat;
+format.wav.Reader = function(i) {
+	this.i = i;
+	i.set_bigEndian(false);
+};
+$hxClasses["format.wav.Reader"] = format.wav.Reader;
+format.wav.Reader.__name__ = ["format","wav","Reader"];
+format.wav.Reader.prototype = {
+	readInt: function() {
+		return this.i.readInt32();
+	}
+	,read: function() {
+		var c = 1;
+		if(this.i.readString(4) != "RIFF") throw "RIFF header expected";
+		var len = this.i.readInt32();
+		if(this.i.readString(4) != "WAVE") throw "WAVE signature not found";
+		if(this.i.readString(4) != "fmt ") throw "expected fmt subchunk";
+		var fmtlen = this.i.readInt32();
+		var format1;
+		var _g = this.i.readUInt16();
+		switch(_g) {
+		case 1:
+			format1 = format.wav.WAVEFormat.WF_PCM;
+			break;
+		default:
+			throw "only PCM (uncompressed) WAV files are supported";
+		}
+		var channels = this.i.readUInt16();
+		var samplingRate = this.i.readInt32();
+		var byteRate = this.i.readInt32();
+		var blockAlign = this.i.readUInt16();
+		var bitsPerSample = this.i.readUInt16();
+		if(fmtlen > 16) this.i.read(fmtlen - 16);
+		var nextChunk = this.i.readString(4);
+		while(nextChunk != "data") {
+			this.i.read(this.i.readInt32());
+			nextChunk = this.i.readString(4);
+		}
+		if(nextChunk != "data") throw "expected data subchunk";
+		var datalen = this.i.readInt32();
+		var data = this.i.readAll();
+		if(data.length > datalen) data = data.sub(0,datalen);
+		return { header : { format : format1, channels : channels, samplingRate : samplingRate, byteRate : byteRate, blockAlign : blockAlign, bitsPerSample : bitsPerSample}, data : data};
+	}
+	,__class__: format.wav.Reader
+};
 haxe.StackItem = $hxClasses["haxe.StackItem"] = { __ename__ : true, __constructs__ : ["CFunction","Module","FilePos","Method","LocalFunction"] };
 haxe.StackItem.CFunction = ["CFunction",0];
 haxe.StackItem.CFunction.toString = $estr;
@@ -5628,6 +6238,12 @@ haxe.ds.IntMap.prototype = {
 	set: function(key,value) {
 		this.h[key] = value;
 	}
+	,get: function(key) {
+		return this.h[key];
+	}
+	,exists: function(key) {
+		return this.h.hasOwnProperty(key);
+	}
 	,__class__: haxe.ds.IntMap
 };
 haxe.ds.ObjectMap = function() {
@@ -5733,6 +6349,28 @@ haxe.io.Bytes.prototype = {
 	,set: function(pos,v) {
 		this.b[pos] = v & 255;
 	}
+	,blit: function(pos,src,srcpos,len) {
+		if(pos < 0 || srcpos < 0 || len < 0 || pos + len > this.length || srcpos + len > src.length) throw haxe.io.Error.OutsideBounds;
+		var b1 = this.b;
+		var b2 = src.b;
+		if(b1 == b2 && pos > srcpos) {
+			var i = len;
+			while(i > 0) {
+				i--;
+				b1[i + pos] = b2[i + srcpos];
+			}
+			return;
+		}
+		var _g = 0;
+		while(_g < len) {
+			var i1 = _g++;
+			b1[i1 + pos] = b2[i1 + srcpos];
+		}
+	}
+	,sub: function(pos,len) {
+		if(pos < 0 || len < 0 || pos + len > this.length) throw haxe.io.Error.OutsideBounds;
+		return new haxe.io.Bytes(len,this.b.slice(pos,pos + len));
+	}
 	,readString: function(pos,len) {
 		if(pos < 0 || len < 0 || pos + len > this.length) throw haxe.io.Error.OutsideBounds;
 		var s = "";
@@ -5759,9 +6397,147 @@ haxe.io.Bytes.prototype = {
 	,toString: function() {
 		return this.readString(0,this.length);
 	}
+	,getData: function() {
+		return this.b;
+	}
 	,__class__: haxe.io.Bytes
 };
-haxe.io.Eof = function() { };
+haxe.io.BytesBuffer = function() {
+	this.b = new Array();
+};
+$hxClasses["haxe.io.BytesBuffer"] = haxe.io.BytesBuffer;
+haxe.io.BytesBuffer.__name__ = ["haxe","io","BytesBuffer"];
+haxe.io.BytesBuffer.prototype = {
+	addBytes: function(src,pos,len) {
+		if(pos < 0 || len < 0 || pos + len > src.length) throw haxe.io.Error.OutsideBounds;
+		var b1 = this.b;
+		var b2 = src.b;
+		var _g1 = pos;
+		var _g = pos + len;
+		while(_g1 < _g) {
+			var i = _g1++;
+			this.b.push(b2[i]);
+		}
+	}
+	,getBytes: function() {
+		var bytes = new haxe.io.Bytes(this.b.length,this.b);
+		this.b = null;
+		return bytes;
+	}
+	,__class__: haxe.io.BytesBuffer
+};
+haxe.io.Input = function() { };
+$hxClasses["haxe.io.Input"] = haxe.io.Input;
+haxe.io.Input.__name__ = ["haxe","io","Input"];
+haxe.io.Input.prototype = {
+	readByte: function() {
+		throw "Not implemented";
+	}
+	,readBytes: function(s,pos,len) {
+		var k = len;
+		var b = s.b;
+		if(pos < 0 || len < 0 || pos + len > s.length) throw haxe.io.Error.OutsideBounds;
+		while(k > 0) {
+			b[pos] = this.readByte();
+			pos++;
+			k--;
+		}
+		return len;
+	}
+	,set_bigEndian: function(b) {
+		this.bigEndian = b;
+		return b;
+	}
+	,readAll: function(bufsize) {
+		if(bufsize == null) bufsize = 16384;
+		var buf = haxe.io.Bytes.alloc(bufsize);
+		var total = new haxe.io.BytesBuffer();
+		try {
+			while(true) {
+				var len = this.readBytes(buf,0,bufsize);
+				if(len == 0) throw haxe.io.Error.Blocked;
+				total.addBytes(buf,0,len);
+			}
+		} catch( e ) {
+			if( js.Boot.__instanceof(e,haxe.io.Eof) ) {
+			} else throw(e);
+		}
+		return total.getBytes();
+	}
+	,readFullBytes: function(s,pos,len) {
+		while(len > 0) {
+			var k = this.readBytes(s,pos,len);
+			pos += k;
+			len -= k;
+		}
+	}
+	,read: function(nbytes) {
+		var s = haxe.io.Bytes.alloc(nbytes);
+		var p = 0;
+		while(nbytes > 0) {
+			var k = this.readBytes(s,p,nbytes);
+			if(k == 0) throw haxe.io.Error.Blocked;
+			p += k;
+			nbytes -= k;
+		}
+		return s;
+	}
+	,readUInt16: function() {
+		var ch1 = this.readByte();
+		var ch2 = this.readByte();
+		if(this.bigEndian) return ch2 | ch1 << 8; else return ch1 | ch2 << 8;
+	}
+	,readInt32: function() {
+		var ch1 = this.readByte();
+		var ch2 = this.readByte();
+		var ch3 = this.readByte();
+		var ch4 = this.readByte();
+		if(this.bigEndian) return ch4 | ch3 << 8 | ch2 << 16 | ch1 << 24; else return ch1 | ch2 << 8 | ch3 << 16 | ch4 << 24;
+	}
+	,readString: function(len) {
+		var b = haxe.io.Bytes.alloc(len);
+		this.readFullBytes(b,0,len);
+		return b.toString();
+	}
+	,__class__: haxe.io.Input
+};
+haxe.io.BytesInput = function(b,pos,len) {
+	if(pos == null) pos = 0;
+	if(len == null) len = b.length - pos;
+	if(pos < 0 || len < 0 || pos + len > b.length) throw haxe.io.Error.OutsideBounds;
+	this.b = b.b;
+	this.pos = pos;
+	this.len = len;
+	this.totlen = len;
+};
+$hxClasses["haxe.io.BytesInput"] = haxe.io.BytesInput;
+haxe.io.BytesInput.__name__ = ["haxe","io","BytesInput"];
+haxe.io.BytesInput.__super__ = haxe.io.Input;
+haxe.io.BytesInput.prototype = $extend(haxe.io.Input.prototype,{
+	readByte: function() {
+		if(this.len == 0) throw new haxe.io.Eof();
+		this.len--;
+		return this.b[this.pos++];
+	}
+	,readBytes: function(buf,pos,len) {
+		if(pos < 0 || len < 0 || pos + len > buf.length) throw haxe.io.Error.OutsideBounds;
+		if(this.len == 0 && len > 0) throw new haxe.io.Eof();
+		if(this.len < len) len = this.len;
+		var b1 = this.b;
+		var b2 = buf.b;
+		var _g = 0;
+		while(_g < len) {
+			var i = _g++;
+			b2[pos + i] = b1[this.pos + i];
+		}
+		this.pos += len;
+		this.len -= len;
+		return len;
+	}
+	,__class__: haxe.io.BytesInput
+});
+haxe.io.Eof = function() {
+};
 $hxClasses["haxe.io.Eof"] = haxe.io.Eof;
 haxe.io.Eof.__name__ = ["haxe","io","Eof"];
 haxe.io.Eof.prototype = {
@@ -6023,6 +6799,8 @@ nx3.audio.PlayerFactory.prototype = {
 			srcAudio.connect(nx3.audio.PlayerFactory.html5AudioContext.destination);
 			srcAudio.loop = false;
 			srcAudio.start(0);
+			var currentTime = nx3.audio.PlayerFactory.html5AudioContext.currentTime;
+			haxe.Log.trace(currentTime,{ fileName : "PlayerFactory.hx", lineNumber : 153, className : "nx3.audio.PlayerFactory", methodName : "makePlayer"});
 		};
 		nx3.audio.PlayerFactory.html5AudioContext.decodeAudioData(buffer,function(b) {
 			audioBuffer = b;
@@ -7402,6 +8180,14 @@ flash.ui.Keyboard.DOM_VK_EXECUTE = 43;
 flash.ui.Keyboard.DOM_VK_SLEEP = 95;
 flash.utils.Endian.BIG_ENDIAN = "bigEndian";
 flash.utils.Endian.LITTLE_ENDIAN = "littleEndian";
+format.tools._InflateImpl.Window.SIZE = 32768;
+format.tools._InflateImpl.Window.BUFSIZE = 65536;
+format.tools.InflateImpl.LEN_EXTRA_BITS_TBL = [0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0,-1,-1];
+format.tools.InflateImpl.LEN_BASE_VAL_TBL = [3,4,5,6,7,8,9,10,11,13,15,17,19,23,27,31,35,43,51,59,67,83,99,115,131,163,195,227,258];
+format.tools.InflateImpl.DIST_EXTRA_BITS_TBL = [0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,-1,-1];
+format.tools.InflateImpl.DIST_BASE_VAL_TBL = [1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577];
+format.tools.InflateImpl.CODE_LENGTHS_POS = [16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15];
+format.tools.InflateImpl.FIXED_HUFFMAN = null;
 haxe.Unserializer.DEFAULT_RESOLVER = Type;
 haxe.Unserializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
 haxe.Unserializer.CODES = null;

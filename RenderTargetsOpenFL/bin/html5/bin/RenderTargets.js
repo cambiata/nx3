@@ -12,7 +12,7 @@ ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.preloader = null;
 ApplicationMain.main = function() {
 	var element = window.document.getElementById("openfl-embed");
-	flash.Lib.create(1200,1000,element,16777215);
+	flash.Lib.create(1400,1000,element,16777215);
 	ApplicationMain.preloader = new NMEPreloader();
 	flash.Lib.current.addChild(ApplicationMain.preloader);
 	ApplicationMain.preloader.onInit();
@@ -1016,16 +1016,24 @@ Main.prototype = $extend(flash.display.Sprite.prototype,{
 	,init: function() {
 		if(this.inited) return;
 		this.inited = true;
-		nx3.test.Unittests.performTests();
-		var target = new nx3.render.TargetSprite(null,nx3.render.scaling.Scaling.SMALL);
-		nx3.test.TestRenderer.testRenderP(new nx3.render.Renderer(target,10,80));
-		this.addChild(target.getTargetSprite(0,0));
-		var target1 = new nx3.render.TargetSprite(null,nx3.render.scaling.Scaling.NORMAL);
-		nx3.test.TestRenderer.testRenderP(new nx3.render.Renderer(target1,10,80));
-		this.addChild(target1.getTargetSprite(200,0));
-		var target2 = new nx3.render.TargetSprite(null,nx3.render.scaling.Scaling.BIG);
-		nx3.test.TestRenderer.testRenderP(new nx3.render.Renderer(target2,10,80));
-		this.addChild(target2.getTargetSprite(600,0));
+		var hs = new cx.flash.HandlespriteDelayed();
+		hs.setSize(1350,800);
+		flash.Lib.current.addChild(hs);
+		var targetHS = new nx3.render.TargetSprite(hs.getBackground(),nx3.render.scaling.Scaling.NORMAL);
+		var rendererHS = new nx3.render.Renderer(targetHS,0,0);
+		rendererHS.addInteraction(new nx3.action.TestInteractivity());
+		rendererHS.addInteraction(new nx3.action.SoundInteractivity());
+		hs.setRepaintCallback(function(x,y,width,height,background) {
+			targetHS.clear();
+			background.get_graphics().clear();
+			background.get_graphics().beginFill(255,0.1);
+			background.get_graphics().drawRect(0,0,width,height);
+		});
+		hs.setRepaintDelayedCallback(function(x1,y1,width1,height1,background1) {
+			targetHS.clear();
+			var renderWidth = Math.max(60,rendererHS.xToUnitX(width1));
+			rendererHS.renderScore(nx3.test.TestItems.scoreBachSinfonia4(),0,100,renderWidth);
+		},200);
 	}
 	,added: function(e) {
 		this.removeEventListener(flash.events.Event.ADDED_TO_STAGE,$bind(this,this.added));
@@ -1058,6 +1066,7 @@ openfl.AssetLibrary.prototype = {
 		return null;
 	}
 	,getBytes: function(id) {
+		haxe.Log.trace("AssetLibrary getBytes",{ fileName : "Assets.hx", lineNumber : 1139, className : "openfl.AssetLibrary", methodName : "getBytes"});
 		return null;
 	}
 	,getFont: function(id) {
@@ -1147,7 +1156,21 @@ DefaultAssetLibrary.prototype = $extend(openfl.AssetLibrary.prototype,{
 		}(this)));
 	}
 	,getBytes: function(id) {
-		return null;
+		var bytes = null;
+		var data = ((function($this) {
+			var $r;
+			var key = DefaultAssetLibrary.path.get(id);
+			$r = ApplicationMain.urlLoaders.get(key);
+			return $r;
+		}(this))).data;
+		if(typeof(data) == "string") {
+			bytes = new flash.utils.ByteArray();
+			bytes.writeUTFBytes(data);
+		} else if(js.Boot.__instanceof(data,flash.utils.ByteArray)) bytes = data; else bytes = null;
+		if(bytes != null) {
+			bytes.position = 0;
+			return bytes;
+		} else return null;
 	}
 	,getFont: function(id) {
 		return js.Boot.__cast(Type.createInstance(DefaultAssetLibrary.className.get(id),[]) , flash.text.Font);
@@ -1420,7 +1443,7 @@ NMEPreloader.prototype = $extend(flash.display.Sprite.prototype,{
 		if(height > 0) return height; else return flash.Lib.current.stage.stageHeight;
 	}
 	,getWidth: function() {
-		var width = 1200;
+		var width = 1400;
 		if(width > 0) return width; else return flash.Lib.current.stage.stageWidth;
 	}
 	,onInit: function() {
@@ -1526,6 +1549,25 @@ StringTools.htmlEscape = function(s,quotes) {
 };
 StringTools.startsWith = function(s,start) {
 	return s.length >= start.length && HxOverrides.substr(s,0,start.length) == start;
+};
+StringTools.isSpace = function(s,pos) {
+	var c = HxOverrides.cca(s,pos);
+	return c > 8 && c < 14 || c == 32;
+};
+StringTools.ltrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,r)) r++;
+	if(r > 0) return HxOverrides.substr(s,r,l - r); else return s;
+};
+StringTools.rtrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,l - r - 1)) r++;
+	if(r > 0) return HxOverrides.substr(s,0,l - r); else return s;
+};
+StringTools.trim = function(s) {
+	return StringTools.ltrim(StringTools.rtrim(s));
 };
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
@@ -1747,6 +1789,32 @@ Xml.prototype = {
 				if(n.nodeType == Xml.Element) {
 					this.cur = k1;
 					return n;
+				}
+			}
+			return null;
+		}};
+	}
+	,elementsNamed: function(name) {
+		if(this._children == null) throw "bad nodetype";
+		return { cur : 0, x : this._children, hasNext : function() {
+			var k = this.cur;
+			var l = this.x.length;
+			while(k < l) {
+				var n = this.x[k];
+				if(n.nodeType == Xml.Element && n._nodeName == name) break;
+				k++;
+			}
+			this.cur = k;
+			return k < l;
+		}, next : function() {
+			var k1 = this.cur;
+			var l1 = this.x.length;
+			while(k1 < l1) {
+				var n1 = this.x[k1];
+				k1++;
+				if(n1.nodeType == Xml.Element && n1._nodeName == name) {
+					this.cur = k1;
+					return n1;
 				}
 			}
 			return null;
@@ -1981,6 +2049,65 @@ cx.ArrayTools.range = function(start,stop,step) {
 	if(step < 0) while((j = start + step * ++i) > stop) range.push(j); else while((j = start + step * ++i) < stop) range.push(j);
 	return range;
 };
+cx.ByteArrayTools = function() { };
+$hxClasses["cx.ByteArrayTools"] = cx.ByteArrayTools;
+cx.ByteArrayTools.__name__ = ["cx","ByteArrayTools"];
+cx.ByteArrayTools.toBytes = function(byteArray) {
+	var arrayBytes = new Array();
+	var _g1 = 0;
+	var _g = byteArray.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		arrayBytes.push(byteArray.readByte());
+	}
+	var bytes = haxe.io.Bytes.ofData(arrayBytes);
+	return bytes;
+};
+cx.ByteArrayTools.fromBytes = function(bytes) {
+	var bytesData = bytes.b;
+	var byteArray = new flash.utils.ByteArray();
+	var _g1 = 0;
+	var _g = bytesData.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		byteArray.writeByte(bytesData[i]);
+	}
+	return byteArray;
+};
+cx.EnumTools = function() { };
+$hxClasses["cx.EnumTools"] = cx.EnumTools;
+cx.EnumTools.__name__ = ["cx","EnumTools"];
+cx.EnumTools.createFromString = function(e,str) {
+	try {
+		var type = str;
+		var params = [];
+		if(cx.StrTools.has(str,"(")) {
+			var parIdx = str.indexOf("(");
+			type = HxOverrides.substr(str,0,parIdx);
+			params = StringTools.replace(StringTools.replace(HxOverrides.substr(str,parIdx,null),"(",""),")","").split(",");
+		}
+		return Type.createEnum(e,type,params);
+	} catch( e1 ) {
+	}
+	return null;
+};
+cx.MapTools = function() { };
+$hxClasses["cx.MapTools"] = cx.MapTools;
+cx.MapTools.__name__ = ["cx","MapTools"];
+cx.MapTools.keysToArray = function(it) {
+	var result = [];
+	while( it.hasNext() ) {
+		var v = it.next();
+		result.push(v);
+	}
+	return result;
+};
+cx.MapTools.sortarray = function(a) {
+	a.sort(function(a1,b) {
+		return Reflect.compare(a1,b);
+	});
+	return a;
+};
 cx.MathTools = function() { };
 $hxClasses["cx.MathTools"] = cx.MathTools;
 cx.MathTools.__name__ = ["cx","MathTools"];
@@ -2010,7 +2137,7 @@ cx.MathTools.floatRange = function(min,value,max) {
 	return value;
 };
 cx.MathTools.round2 = function(number,precision) {
-	if(precision == null) precision = 8;
+	if(precision == null) precision = 6;
 	number = number * Math.pow(10,precision);
 	number = Math.round(number) / Math.pow(10,precision);
 	return number;
@@ -2031,12 +2158,457 @@ cx.MathTools.intMax = function(a,b) {
 cx.MathTools.ipol = function(a,b,delta) {
 	return delta * (b - a) + a;
 };
+cx.StrTools = function() { };
+$hxClasses["cx.StrTools"] = cx.StrTools;
+cx.StrTools.__name__ = ["cx","StrTools"];
+cx.StrTools.countSub = function(str,lookForStr) {
+	return str.split(lookForStr).length - 1;
+};
+cx.StrTools.until = function(str,untilStr,includeUntilStr) {
+	if(includeUntilStr == null) includeUntilStr = false;
+	var pos = str.indexOf(untilStr);
+	if(includeUntilStr) pos++;
+	return str.substring(0,pos);
+};
+cx.StrTools.untilLast = function(str,untilStr,includeUntilStr) {
+	if(includeUntilStr == null) includeUntilStr = false;
+	var pos = str.lastIndexOf(untilStr);
+	if(includeUntilStr) pos++;
+	return str.substring(0,pos);
+};
+cx.StrTools.tab = function(str) {
+	return str + "\t";
+};
+cx.StrTools.newline = function(str) {
+	return str + "\n";
+};
+cx.StrTools.repeat = function(repeatString,count) {
+	var result = "";
+	var _g = 0;
+	while(_g < count) {
+		var i = _g++;
+		result += repeatString;
+	}
+	return result;
+};
+cx.StrTools.fill = function(str,toLength,$with,replaceNull) {
+	if(replaceNull == null) replaceNull = "-";
+	if($with == null) $with = " ";
+	if(toLength == null) toLength = 32;
+	if(str == null) str = replaceNull;
+	do str += $with; while(str.length < toLength);
+	return HxOverrides.substr(str,0,toLength);
+};
+cx.StrTools.splitTrim = function(str,delimiter) {
+	if(delimiter == null) delimiter = ",";
+	if(str == null) return [];
+	var a = str.split(delimiter);
+	var a2 = new Array();
+	var _g = 0;
+	while(_g < a.length) {
+		var part = a[_g];
+		++_g;
+		var part2 = StringTools.trim(part);
+		if(part2.length > 0) a2.push(part2);
+	}
+	return a2;
+};
+cx.StrTools.replaceNull = function(str,$with) {
+	if($with == null) $with = "-";
+	if(str == null) return $with; else return str;
+};
+cx.StrTools.firstUpperCase = function(str,restToLowercase) {
+	if(restToLowercase == null) restToLowercase = true;
+	var rest;
+	if(restToLowercase) rest = HxOverrides.substr(str,1,null).toLowerCase(); else rest = HxOverrides.substr(str,1,null);
+	return HxOverrides.substr(str,0,1).toUpperCase() + rest;
+};
+cx.StrTools.afterLast = function(str,$char,includeChar) {
+	if(includeChar == null) includeChar = false;
+	var idx = str.lastIndexOf($char);
+	if(idx == -1) return str;
+	if(!includeChar) idx += $char.length;
+	return HxOverrides.substr(str,idx,null);
+};
+cx.StrTools.similarityCaseIgnore = function(strA,strB) {
+	return cx.StrTools.similarity(strA.toLowerCase(),strB.toLowerCase());
+};
+cx.StrTools.similarityCaseBalance = function(strA,strB) {
+	return (cx.StrTools.similarity(strA,strB) + cx.StrTools.similarity(strA.toLowerCase(),strB.toLowerCase())) / 2;
+};
+cx.StrTools.similarity = function(strA,strB) {
+	if(strA == strB) return 1;
+	var sim = function(strA1,strB1) {
+		var score = cx.StrTools._similarity(strA1,strB1);
+		if(strA1.length != strB1.length) score = (score + cx.StrTools._similarity(strB1,strA1)) / 2;
+		return score;
+	};
+	return sim(strA,strB);
+};
+cx.StrTools.similarityAssymetric = function(strShorter,strLonger) {
+	if(strShorter == strLonger) return 1;
+	return cx.StrTools._similarity(strShorter,strShorter);
+};
+cx.StrTools._similarity = function(strA,strB) {
+	var lengthA = strA.length;
+	var lengthB = strB.length;
+	var i = 0;
+	var segmentCount = 0;
+	var segmentsInfos = new Array();
+	var segment = "";
+	while(i < lengthA) {
+		var $char = strA.charAt(i);
+		if(strB.indexOf($char) > -1) {
+			segment += $char;
+			if(strB.indexOf(segment) > -1) {
+				var segmentPosA = i - segment.length + 1;
+				var segmentPosB = strB.indexOf(segment);
+				var positionDiff = Math.abs(segmentPosA - segmentPosB);
+				var posFactor = (lengthA - positionDiff) / lengthB;
+				var lengthFactor = segment.length / lengthA;
+				segmentsInfos[segmentCount] = { segment : segment, score : posFactor * lengthFactor};
+			} else {
+				segment = "";
+				segmentCount++;
+				i--;
+			}
+		} else {
+			segment = "";
+			segmentCount++;
+		}
+		i++;
+	}
+	var usedSegmentsCount = -2;
+	var totalScore = 0.0;
+	var _g = 0;
+	while(_g < segmentsInfos.length) {
+		var si = segmentsInfos[_g];
+		++_g;
+		if(si != null) {
+			totalScore += si.score;
+			usedSegmentsCount++;
+		}
+	}
+	totalScore = totalScore - Math.max(usedSegmentsCount,0) * 0.02;
+	return Math.max(0,Math.min(totalScore,1));
+};
+cx.StrTools.has = function(str,substr) {
+	return str.indexOf(substr) > -1;
+};
+cx.StrTools.reverse = function(string) {
+	var result = "";
+	var _g1 = 0;
+	var _g = string.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		result = string.charAt(i) + result;
+	}
+	return result;
+};
+cx.StrTools.intToChar = function($int,offset) {
+	if(offset == null) offset = 65;
+	if($int > 9) throw "int to char error";
+	if($int < 0) throw "int to char error";
+	var c = $int + offset;
+	var $char = String.fromCharCode(c);
+	return $char;
+};
+cx.StrTools.charToInt = function($char,offset) {
+	if(offset == null) offset = 65;
+	if($char.length > 1) throw "char to int error";
+	return HxOverrides.cca($char,0) - offset;
+};
+cx.StrTools.numToStr = function(numStr,offset) {
+	if(offset == null) offset = 65;
+	var testParse = Std.parseInt(numStr);
+	var result = "";
+	var _g1 = 0;
+	var _g = numStr.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var $int = Std.parseInt(numStr.charAt(i));
+		var $char = cx.StrTools.intToChar($int,offset);
+		result += $char;
+	}
+	return result;
+};
+cx.StrTools.strToNum = function(str,offset) {
+	if(offset == null) offset = 65;
+	var result = "";
+	var _g1 = 0;
+	var _g = str.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var $char = str.charAt(i);
+		var $int = cx.StrTools.charToInt($char,offset);
+		if($int == null) result += "null"; else result += "" + $int;
+	}
+	return result;
+};
+cx.StrTools.rotate = function(str,positions) {
+	if(positions == null) positions = 1;
+	var result = str;
+	var _g = 0;
+	while(_g < positions) {
+		var i = _g++;
+		result = HxOverrides.substr(result,1,result.length) + HxOverrides.substr(result,0,1);
+	}
+	return result;
+};
+cx.StrTools.rotateBack = function(str,positions) {
+	if(positions == null) positions = 1;
+	var result = str;
+	var _g = 0;
+	while(_g < positions) {
+		var i = _g++;
+		result = HxOverrides.substr(result,-1,null) + HxOverrides.substr(result,0,result.length - 1);
+	}
+	return result;
+};
+cx.StrTools.toLatin1 = function(str) {
+	return haxe.Utf8.decode(str);
+	return str;
+};
+cx.StrTools.lastIdxOf = function(str,search,lastPos) {
+	if(lastPos == null) lastPos = 0;
+	if(lastPos == 0) return str.lastIndexOf(search);
+	var _g = 0;
+	while(_g < lastPos) {
+		var i = _g++;
+		var len = str.lastIndexOf(search);
+		str = HxOverrides.substr(str,0,len);
+	}
+	return str.lastIndexOf(search);
+};
+cx.StrTools.toInt = function(str) {
+	return Std.parseInt(str);
+};
+cx.StrTools.toFloat = function(str) {
+	return Std.parseFloat(str);
+};
+cx.TimerTools = function() { };
+$hxClasses["cx.TimerTools"] = cx.TimerTools;
+cx.TimerTools.__name__ = ["cx","TimerTools"];
+cx.TimerTools.timeout = function(func,milliSeconds) {
+	if(milliSeconds == null) milliSeconds = 500;
+	if(cx.TimerTools._timer != null) cx.TimerTools._timer.stop();
+	cx.TimerTools._timer = haxe.Timer.delay(func,milliSeconds);
+};
+cx.TimerTools.delay = function(func,milliSeconds) {
+	if(milliSeconds == null) milliSeconds = 500;
+	haxe.Timer.delay(func,milliSeconds);
+};
+cx.TimerTools.timer = function(func,milliSeconds) {
+	if(milliSeconds == null) milliSeconds = 500;
+	var timer = new haxe.Timer(milliSeconds);
+	timer.run = func;
+	return timer;
+};
+cx.data = {};
+cx.data.BytesLoader = function(filename,callbck) {
+	this.filename = filename;
+	this.callbck = callbck;
+};
+$hxClasses["cx.data.BytesLoader"] = cx.data.BytesLoader;
+cx.data.BytesLoader.__name__ = ["cx","data","BytesLoader"];
+cx.data.BytesLoader.prototype = {
+	filename: null
+	,callbck: null
+	,loadBytes: function() {
+		var _g = this;
+		var request = new XMLHttpRequest();
+		request.open("GET",this.filename,true);
+		request.responseType = "arraybuffer";
+		request.onload = function(e) {
+			var arrayBuffer = request.response;
+			if(arrayBuffer != null) {
+				var dataview = new DataView(arrayBuffer);
+				var bytesData = new Array();
+				var _g1 = 0;
+				var _g2 = dataview.byteLength;
+				while(_g1 < _g2) {
+					var i = _g1++;
+					bytesData.push(dataview.getUint8(i));
+				}
+				var bytes = haxe.io.Bytes.ofData(bytesData);
+				_g.callbck(bytes);
+			}
+		};
+		request.send(null);
+	}
+	,__class__: cx.data.BytesLoader
+};
+cx.flash = {};
+cx.flash.Handle = function(changeHandler) {
+	flash.display.Sprite.call(this);
+	this.get_graphics().beginFill(14722893);
+	this.get_graphics().drawCircle(0,0,5);
+	this.changeHandler = changeHandler;
+	this.addEventListener(flash.events.MouseEvent.MOUSE_DOWN,$bind(this,this.onMouseDown));
+};
+$hxClasses["cx.flash.Handle"] = cx.flash.Handle;
+cx.flash.Handle.__name__ = ["cx","flash","Handle"];
+cx.flash.Handle.__super__ = flash.display.Sprite;
+cx.flash.Handle.prototype = $extend(flash.display.Sprite.prototype,{
+	changeHandler: null
+	,dragX: null
+	,dragY: null
+	,onMouseDown: function(e) {
+		this.stage.addEventListener(flash.events.MouseEvent.MOUSE_MOVE,$bind(this,this.onMouseMove));
+		this.stage.addEventListener(flash.events.MouseEvent.MOUSE_UP,$bind(this,this.onMouseUp));
+		this.dragX = this.stage.get_mouseX();
+		this.dragY = this.stage.get_mouseY();
+	}
+	,onMouseMove: function(e) {
+		this.changeHandler(this.stage.get_mouseX() - this.dragX,this.stage.get_mouseY() - this.dragY);
+		this.dragX = this.stage.get_mouseX();
+		this.dragY = this.stage.get_mouseY();
+	}
+	,onMouseUp: function(e) {
+		this.stage.removeEventListener(flash.events.MouseEvent.MOUSE_MOVE,$bind(this,this.onMouseMove));
+		this.stage.removeEventListener(flash.events.MouseEvent.MOUSE_UP,$bind(this,this.onMouseUp));
+	}
+	,__class__: cx.flash.Handle
+});
+cx.flash.Handlesprite = function() {
+	flash.display.Sprite.call(this);
+	this.backing = new flash.display.Sprite();
+	this.addChild(this.backing);
+	this._width = 200;
+	this._height = 200;
+	this.set_x(20);
+	this.set_y(20);
+	this.handleTL = new cx.flash.Handle($bind(this,this.shiftTL));
+	this.addChild(this.handleTL);
+	this.handleTR = new cx.flash.Handle($bind(this,this.shiftTR));
+	this.addChild(this.handleTR);
+	this.handleBL = new cx.flash.Handle($bind(this,this.shiftBL));
+	this.addChild(this.handleBL);
+	this.handleBR = new cx.flash.Handle($bind(this,this.shiftBR));
+	this.addChild(this.handleBR);
+	this.repaint = $bind(this,this._repaint);
+	this.__adjust();
+};
+$hxClasses["cx.flash.Handlesprite"] = cx.flash.Handlesprite;
+cx.flash.Handlesprite.__name__ = ["cx","flash","Handlesprite"];
+cx.flash.Handlesprite.__super__ = flash.display.Sprite;
+cx.flash.Handlesprite.prototype = $extend(flash.display.Sprite.prototype,{
+	handleTL: null
+	,handleTR: null
+	,handleBL: null
+	,handleBR: null
+	,backing: null
+	,_width: null
+	,_height: null
+	,repaint: null
+	,setSize: function(width,height) {
+		this._width = width;
+		this._height = height;
+		this.__adjust();
+	}
+	,setPosition: function(x,y) {
+		this.set_x(x);
+		this.set_y(y);
+	}
+	,getBackground: function() {
+		return this.backing;
+	}
+	,setRepaintCallback: function(repaintFunction) {
+		this.repaint = repaintFunction;
+		this.__adjust();
+	}
+	,shift: function(x,y,w,h) {
+		var _g = this;
+		_g.set_x(_g.get_x() + x);
+		var _g1 = this;
+		_g1.set_y(_g1.get_y() + y);
+		this._width += w - x;
+		this._height += h - y;
+		this.__adjust();
+	}
+	,shiftTL: function(byX,byY) {
+		this.shift(byX,byY,0,0);
+	}
+	,shiftTR: function(byX,byY) {
+		this.shift(0,byY,byX,0);
+	}
+	,shiftBL: function(byX,byY) {
+		this.shift(byX,0,0,byY);
+	}
+	,shiftBR: function(byX,byY) {
+		this.shift(0,0,byX,byY);
+	}
+	,__adjust: function() {
+		this.handleTR.set_x(this.handleBR.set_x(this._width));
+		this.handleBL.set_y(this.handleBR.set_y(this._height));
+		this.backing.set_width(this._width);
+		this.backing.set_height(this._height);
+		if(this.repaint == null) return;
+		this.repaint(this.backing.get_x(),this.backing.get_y(),this._width,this._height,this.backing);
+	}
+	,_repaint: function(x,y,width,height,background) {
+		haxe.Log.trace("repaint method - should be set dynamically from outside",{ fileName : "Handlesprite.hx", lineNumber : 113, className : "cx.flash.Handlesprite", methodName : "_repaint"});
+		this.backing.get_graphics().clear();
+		this.backing.get_graphics().beginFill(16711680,.2);
+		this.backing.get_graphics().drawRect(0,0,this._width,this._height);
+	}
+	,__class__: cx.flash.Handlesprite
+});
+cx.flash.HandlespriteDelayed = function() {
+	cx.flash.Handlesprite.call(this);
+	this.repaintDelayed = null;
+	this.timeoutMS = 500;
+};
+$hxClasses["cx.flash.HandlespriteDelayed"] = cx.flash.HandlespriteDelayed;
+cx.flash.HandlespriteDelayed.__name__ = ["cx","flash","HandlespriteDelayed"];
+cx.flash.HandlespriteDelayed.__super__ = cx.flash.Handlesprite;
+cx.flash.HandlespriteDelayed.prototype = $extend(cx.flash.Handlesprite.prototype,{
+	repaintDelayed: null
+	,timeoutMS: null
+	,__adjust: function() {
+		var _g = this;
+		cx.flash.Handlesprite.prototype.__adjust.call(this);
+		cx.TimerTools.timeout(function() {
+			if(_g.repaintDelayed == null) return;
+			_g.repaintDelayed(_g.backing.get_x(),_g.backing.get_y(),_g._width,_g._height,_g.backing);
+		},this.timeoutMS);
+	}
+	,setRepaintDelayedCallback: function(repaintFunction,timeoutMS) {
+		if(timeoutMS == null) timeoutMS = 500;
+		this.repaintDelayed = repaintFunction;
+	}
+	,__class__: cx.flash.HandlespriteDelayed
+});
 var haxe = {};
-haxe.Timer = function() { };
+haxe.Timer = function(time_ms) {
+	var me = this;
+	this.id = setInterval(function() {
+		me.run();
+	},time_ms);
+};
 $hxClasses["haxe.Timer"] = haxe.Timer;
 haxe.Timer.__name__ = ["haxe","Timer"];
+haxe.Timer.delay = function(f,time_ms) {
+	var t = new haxe.Timer(time_ms);
+	t.run = function() {
+		t.stop();
+		f();
+	};
+	return t;
+};
 haxe.Timer.stamp = function() {
 	return new Date().getTime() / 1000;
+};
+haxe.Timer.prototype = {
+	id: null
+	,stop: function() {
+		if(this.id == null) return;
+		clearInterval(this.id);
+		this.id = null;
+	}
+	,run: function() {
+	}
+	,__class__: haxe.Timer
 };
 flash.Lib = function() { };
 $hxClasses["flash.Lib"] = flash.Lib;
@@ -8587,6 +9159,13 @@ haxe.Unserializer.prototype = {
 	}
 	,__class__: haxe.Unserializer
 };
+haxe.Utf8 = function() { };
+$hxClasses["haxe.Utf8"] = haxe.Utf8;
+haxe.Utf8.__name__ = ["haxe","Utf8"];
+haxe.Utf8.decode = function(s) {
+	throw "Not implemented";
+	return s;
+};
 haxe.crypto = {};
 haxe.crypto.BaseCode = function(base) {
 	var len = base.length;
@@ -9577,9 +10156,6 @@ nx3.EDisplayALN.Layout.__enum__ = nx3.EDisplayALN;
 nx3.EDisplayALN.Never = ["Never",2];
 nx3.EDisplayALN.Never.toString = $estr;
 nx3.EDisplayALN.Never.__enum__ = nx3.EDisplayALN;
-nx3.EDot = $hxClasses["nx3.EDot"] = { __ename__ : true, __constructs__ : ["Normal","Double"] };
-nx3.EDot.Normal = function(level) { var $x = ["Normal",0,level]; $x.__enum__ = nx3.EDot; $x.toString = $estr; return $x; };
-nx3.EDot.Double = function(level) { var $x = ["Double",1,level]; $x.__enum__ = nx3.EDot; $x.toString = $estr; return $x; };
 nx3.EHeadPosition = $hxClasses["nx3.EHeadPosition"] = { __ename__ : true, __constructs__ : ["Left","Center","Right"] };
 nx3.EHeadPosition.Left = ["Left",0];
 nx3.EHeadPosition.Left.toString = $estr;
@@ -9656,6 +10232,80 @@ nx3.EKey.Flat5.__enum__ = nx3.EKey;
 nx3.EKey.Flat6 = ["Flat6",12];
 nx3.EKey.Flat6.toString = $estr;
 nx3.EKey.Flat6.__enum__ = nx3.EKey;
+nx3.EKeysTools = function() { };
+$hxClasses["nx3.EKeysTools"] = nx3.EKeysTools;
+nx3.EKeysTools.__name__ = ["nx3","EKeysTools"];
+nx3.EKeysTools.getLevels = function(key,clef) {
+	var result = new Array();
+	switch(key[1]) {
+	case 7:
+		result = [0];
+		break;
+	case 8:
+		result = [0,-3];
+		break;
+	case 9:
+		result = [0,-3,1,-2];
+		break;
+	case 10:
+		result = [0,-3,1,-2];
+		break;
+	case 11:
+		result = [0,-3,1,-2,2,-1];
+		break;
+	case 12:
+		result = [0,-3,1,-2,2,-1,3];
+		break;
+	case 5:
+		result = [-4];
+		break;
+	case 4:
+		result = [-4,-1];
+		break;
+	case 3:
+		result = [-4,-1,-5];
+		break;
+	case 2:
+		result = [-4,-1,-5,-2];
+		break;
+	case 1:
+		result = [-4,-1,-5,-2,1];
+		break;
+	case 0:
+		result = [-4,-1,-5,-2,1,-3];
+		break;
+	default:
+		result = [];
+	}
+	var adjust;
+	switch(clef[1]) {
+	case 0:
+		adjust = -1;
+		break;
+	case 1:
+		adjust = 1;
+		break;
+	default:
+		adjust = 0;
+	}
+	var _g1 = 0;
+	var _g = result.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		result[i] = result[i] + adjust;
+	}
+	return result;
+};
+nx3.EKeysTools.getSigncode = function(key) {
+	switch(key[1]) {
+	case 7:case 8:case 9:case 10:case 11:case 12:
+		return -1;
+	case 5:case 4:case 3:case 2:case 1:case 0:
+		return 1;
+	default:
+		return 0;
+	}
+};
 nx3.ELyricContinuation = $hxClasses["nx3.ELyricContinuation"] = { __ename__ : true, __constructs__ : ["Hyphen","Melisma"] };
 nx3.ELyricContinuation.Hyphen = ["Hyphen",0];
 nx3.ELyricContinuation.Hyphen.toString = $estr;
@@ -10070,16 +10720,16 @@ nx3.ENoteValTools.fromValString = function(valString) {
 		throw "unhandled note value: " + valString;
 	}
 };
-nx3.EPartType = $hxClasses["nx3.EPartType"] = { __ename__ : true, __constructs__ : ["Normal","Lyrics","Tpl","Tplchain","Dynamics","Chords","Ignore","Hidden"] };
+nx3.EPartType = $hxClasses["nx3.EPartType"] = { __ename__ : true, __constructs__ : ["Normal","Lyrics","Tplrow","Tplchain","Dynamics","Chords","Ignore","Hidden"] };
 nx3.EPartType.Normal = ["Normal",0];
 nx3.EPartType.Normal.toString = $estr;
 nx3.EPartType.Normal.__enum__ = nx3.EPartType;
 nx3.EPartType.Lyrics = ["Lyrics",1];
 nx3.EPartType.Lyrics.toString = $estr;
 nx3.EPartType.Lyrics.__enum__ = nx3.EPartType;
-nx3.EPartType.Tpl = ["Tpl",2];
-nx3.EPartType.Tpl.toString = $estr;
-nx3.EPartType.Tpl.__enum__ = nx3.EPartType;
+nx3.EPartType.Tplrow = ["Tplrow",2];
+nx3.EPartType.Tplrow.toString = $estr;
+nx3.EPartType.Tplrow.__enum__ = nx3.EPartType;
 nx3.EPartType.Tplchain = ["Tplchain",3];
 nx3.EPartType.Tplchain.toString = $estr;
 nx3.EPartType.Tplchain.__enum__ = nx3.EPartType;
@@ -10229,9 +10879,9 @@ nx3.ETimeUtils.toString = function(time) {
 	case 16:
 		return "12/8";
 	case 17:
-		return "Common";
+		return "C";
 	case 18:
-		return "Allabreve";
+		return "AllaBreve";
 	}
 	return "time-unknown";
 };
@@ -10272,9 +10922,9 @@ nx3.ETimeUtils.fromString = function(str) {
 		return nx3.ETime.Time9_8;
 	case "12/8":
 		return nx3.ETime.Time12_8;
-	case "Common":
+	case "C":
 		return nx3.ETime.TimeCommon;
-	case "Allabreve":
+	case "AllaBreve":
 		return nx3.ETime.TimeAllabreve;
 	default:
 		return null;
@@ -10285,9 +10935,7 @@ nx3.EVoiceType = $hxClasses["nx3.EVoiceType"] = { __ename__ : true, __constructs
 nx3.EVoiceType.Normal = ["Normal",0];
 nx3.EVoiceType.Normal.toString = $estr;
 nx3.EVoiceType.Normal.__enum__ = nx3.EVoiceType;
-nx3.EVoiceType.Barpause = ["Barpause",1];
-nx3.EVoiceType.Barpause.toString = $estr;
-nx3.EVoiceType.Barpause.__enum__ = nx3.EVoiceType;
+nx3.EVoiceType.Barpause = function(level) { var $x = ["Barpause",1,level]; $x.__enum__ = nx3.EVoiceType; $x.toString = $estr; return $x; };
 nx3.IBarWidthCalculator = function() { };
 $hxClasses["nx3.IBarWidthCalculator"] = nx3.IBarWidthCalculator;
 nx3.IBarWidthCalculator.__name__ = ["nx3","IBarWidthCalculator"];
@@ -10306,6 +10954,12 @@ nx3.IBarWidthCalculator.prototype = {
 nx3.NBar = function(parts,type,time,timeDisplay,allotment,spacing) {
 	if(spacing == null) spacing = 8;
 	this.nparts = parts;
+	var _g = 0;
+	while(_g < parts.length) {
+		var part = parts[_g];
+		++_g;
+		part.nbar = this;
+	}
 	if(type == null) this.type = nx3.EBarType.Normal; else this.type = type;
 	this.time = time;
 	if(timeDisplay == null) this.timeDisplay = nx3.EDisplayALN.Layout; else this.timeDisplay = timeDisplay;
@@ -10315,12 +10969,19 @@ nx3.NBar = function(parts,type,time,timeDisplay,allotment,spacing) {
 $hxClasses["nx3.NBar"] = nx3.NBar;
 nx3.NBar.__name__ = ["nx3","NBar"];
 nx3.NBar.prototype = {
-	nparts: null
+	nscore: null
+	,nparts: null
 	,type: null
 	,time: null
 	,timeDisplay: null
 	,allotment: null
 	,spacing: null
+	,getNNote: function(partIdx,voiceIdx,noteIdx) {
+		return this.getNPart(partIdx).getNVoice(voiceIdx).getNNote(noteIdx);
+	}
+	,getNPart: function(idx) {
+		if(idx < 0 || idx > this.nparts.length) return null; else return this.nparts[idx];
+	}
 	,__class__: nx3.NBar
 };
 nx3.NHead = function(type,level,sign,tie,tieTo) {
@@ -10339,10 +11000,25 @@ nx3.NHead.prototype = {
 	,sign: null
 	,tie: null
 	,tieTo: null
+	,nnote: null
+	,toString: function() {
+		var str = "" + this.level;
+		if(this.type != nx3.EHeadType.Normal) str += " " + this.type[0]; else str += "";
+		if(this.sign != nx3.ESign.None) str += " " + this.sign[0]; else str += "";
+		return "NHead(" + str + ")";
+	}
 	,__class__: nx3.NHead
 };
 nx3.NNote = function(type,heads,value,direction) {
 	if(type == null) if(heads != null) type = nx3.ENoteType.Note(heads); else type = nx3.ENoteType.Note([new nx3.NHead()]);
+	if(heads != null) {
+		var _g = 0;
+		while(_g < heads.length) {
+			var head = heads[_g];
+			++_g;
+			head.nnote = this;
+		}
+	}
 	if(type == null) this.type = nx3.ENoteType.Note(heads); else this.type = type;
 	if(value == null) this.value = nx3.ENoteVal.Nv4; else this.value = value;
 	if(direction == null) this.direction = nx3.EDirectionUAD.Auto; else this.direction = direction;
@@ -10354,6 +11030,7 @@ nx3.NNote.prototype = {
 	,value: null
 	,direction: null
 	,nheads: null
+	,nvoice: null
 	,nheads_: null
 	,get_nheads: function() {
 		if(this.nheads_ != null) return this.nheads_;
@@ -10379,6 +11056,9 @@ nx3.NNote.prototype = {
 			}
 		}
 		return this.nheads_;
+	}
+	,getNHead: function(idx) {
+		if(idx < 0 || idx > this.get_nheads().length) return null; else return this.get_nheads()[idx];
 	}
 	,headLevels: null
 	,getHeadLevels: function() {
@@ -10412,10 +11092,29 @@ nx3.NNote.prototype = {
 		}
 		return this.ties;
 	}
+	,toString: function() {
+		var str = "";
+		if(this.type[0] != "Note") str += " " + this.type[0]; else str += "";
+		var heads = "";
+		var _g = 0;
+		var _g1 = this.get_nheads();
+		while(_g < _g1.length) {
+			var head = _g1[_g];
+			++_g;
+			heads += head.toString();
+		}
+		return "NNote(" + str + "):" + heads;
+	}
 	,__class__: nx3.NNote
 };
 nx3.NPart = function(voices,type,clef,clefDisplay,key,keyDisplay) {
 	this.nvoices = voices;
+	var _g = 0;
+	while(_g < voices.length) {
+		var voice = voices[_g];
+		++_g;
+		voice.npart = this;
+	}
 	if(this.nvoices.length > 2) throw "For now, NPart can't have more than two voices";
 	if(type == null) this.type = nx3.EPartType.Normal; else this.type = type;
 	this.clef = clef;
@@ -10426,30 +11125,103 @@ nx3.NPart = function(voices,type,clef,clefDisplay,key,keyDisplay) {
 $hxClasses["nx3.NPart"] = nx3.NPart;
 nx3.NPart.__name__ = ["nx3","NPart"];
 nx3.NPart.prototype = {
-	type: null
+	nbar: null
+	,type: null
 	,nvoices: null
 	,clef: null
 	,clefDisplay: null
 	,key: null
 	,keyDisplay: null
+	,getNVoice: function(idx) {
+		if(idx < 0 || idx > this.nvoices.length) return null; else return this.nvoices[idx];
+	}
 	,__class__: nx3.NPart
+};
+nx3.NRefTools = function() { };
+$hxClasses["nx3.NRefTools"] = nx3.NRefTools;
+nx3.NRefTools.__name__ = ["nx3","NRefTools"];
+nx3.NRefTools.refNote = function(score,barIdx,partIdx,voiceIdx,noteIdx) {
+	if(noteIdx == null) noteIdx = 0;
+	if(voiceIdx == null) voiceIdx = 0;
+	if(partIdx == null) partIdx = 0;
+	if(barIdx == null) barIdx = 0;
+	return { score : score, bar : barIdx, part : partIdx, voice : voiceIdx, note : noteIdx, head : 0};
+};
+nx3.NRefTools.refHead = function(score,barIdx,partIdx,voiceIdx,noteIdx,headIdx) {
+	if(headIdx == null) headIdx = 0;
+	if(noteIdx == null) noteIdx = 0;
+	if(voiceIdx == null) voiceIdx = 0;
+	if(partIdx == null) partIdx = 0;
+	if(barIdx == null) barIdx = 0;
+	return { score : score, bar : barIdx, part : partIdx, voice : voiceIdx, note : noteIdx, head : headIdx};
+};
+nx3.NRefTools.checkRefNoteError = function(ref) {
+	if(nx3.NRefTools.getNote(ref) == null) return true;
+	return false;
+};
+nx3.NRefTools.getNote = function(ref) {
+	var targetnote;
+	try {
+		targetnote = ref.score.getNBar(ref.bar).getNPart(ref.part).getNVoice(ref.voice).getNNote(ref.note);
+	} catch( e ) {
+		return null;
+	}
+	return targetnote;
+};
+nx3.NRefTools.getHead = function(ref) {
+	var targethead;
+	try {
+		targethead = ref.score.getNBar(ref.bar).getNPart(ref.part).getNVoice(ref.voice).getNNote(ref.note).getNHead(ref.head);
+	} catch( e ) {
+		return null;
+	}
+	return targethead;
 };
 nx3.NScore = function(nbars) {
 	this.nbars = nbars;
+	var _g = 0;
+	while(_g < nbars.length) {
+		var bar = nbars[_g];
+		++_g;
+		bar.nscore = this;
+	}
 };
 $hxClasses["nx3.NScore"] = nx3.NScore;
 nx3.NScore.__name__ = ["nx3","NScore"];
 nx3.NScore.prototype = {
 	nbars: null
+	,getNBar: function(idx) {
+		if(idx < 0 || idx > this.nbars.length) return null; else return this.nbars[idx];
+	}
 	,__class__: nx3.NScore
+};
+nx3.NTools = function() { };
+$hxClasses["nx3.NTools"] = nx3.NTools;
+nx3.NTools.__name__ = ["nx3","NTools"];
+nx3.NTools.noteRef = function(nnote) {
+	var nvoice = nnote.nvoice;
+	var noteIdx = HxOverrides.indexOf(nvoice.nnotes,nnote,0);
+	var npart = nvoice.npart;
+	var voiceIdx = HxOverrides.indexOf(npart.nvoices,nvoice,0);
+	var nbar = npart.nbar;
+	var partIdx = HxOverrides.indexOf(nbar.nparts,npart,0);
+	var nscore = nbar.nscore;
+	var barIdx = HxOverrides.indexOf(nscore.nbars,nbar,0);
+	return { score : nscore, bar : barIdx, part : partIdx, voice : voiceIdx, note : noteIdx, head : 0};
 };
 nx3.NVoice = function(notes,type,direction) {
 	if(notes == null || notes == []) {
 		this.nnotes = null;
-		this.type = nx3.EVoiceType.Barpause;
+		this.type = nx3.EVoiceType.Barpause(0);
 	} else {
 		this.nnotes = notes;
 		if(type != null) this.type = type; else this.type = nx3.EVoiceType.Normal;
+	}
+	var _g = 0;
+	while(_g < notes.length) {
+		var note = notes[_g];
+		++_g;
+		note.nvoice = this;
 	}
 	if(direction != null) this.direction = direction; else this.direction = nx3.EDirectionUAD.Auto;
 };
@@ -10459,6 +11231,10 @@ nx3.NVoice.prototype = {
 	direction: null
 	,nnotes: null
 	,type: null
+	,npart: null
+	,getNNote: function(idx) {
+		if(idx < 0 || idx > this.nnotes.length) return null; else return this.nnotes[idx];
+	}
 	,__class__: nx3.NVoice
 };
 nx3.PAttributesRectsCalculator = function() { };
@@ -10467,11 +11243,11 @@ nx3.PAttributesRectsCalculator.__name__ = ["nx3","PAttributesRectsCalculator"];
 nx3.PAttributesRectsCalculator.getClefRect = function(clef) {
 	switch(clef[1]) {
 	case 2:
-		return new flash.geom.Rectangle(0,-3,5,6);
+		return new flash.geom.Rectangle(0,-3,9,6);
 	case 1:
-		return new flash.geom.Rectangle(0,-4,6,8);
+		return new flash.geom.Rectangle(0,-4,9,8);
 	case 0:
-		return new flash.geom.Rectangle(0,-5,6,10);
+		return new flash.geom.Rectangle(0,-5,9,10);
 	}
 };
 nx3.PAttributesRectsCalculator.getKeyRect = function(key) {
@@ -10479,15 +11255,15 @@ nx3.PAttributesRectsCalculator.getKeyRect = function(key) {
 	case 6:
 		return new flash.geom.Rectangle(0,-3,1,6);
 	case 7:case 5:
-		return new flash.geom.Rectangle(0,-3,2,6);
+		return new flash.geom.Rectangle(0,-3,4.4,6);
 	case 8:case 4:
-		return new flash.geom.Rectangle(0,-3,3,6);
+		return new flash.geom.Rectangle(0,-3,6.8,6);
 	case 9:case 3:
-		return new flash.geom.Rectangle(0,-3,4,6);
+		return new flash.geom.Rectangle(0,-3,9.2,6);
 	case 10:case 2:
-		return new flash.geom.Rectangle(0,-3,5,6);
+		return new flash.geom.Rectangle(0,-3,11.6,6);
 	case 11:case 1:
-		return new flash.geom.Rectangle(0,-3,6,6);
+		return new flash.geom.Rectangle(0,-3,14.,6);
 	default:
 		return new flash.geom.Rectangle(0,-2,.5,4);
 	}
@@ -10524,7 +11300,7 @@ nx3.PBamegroupFrameTipCalculator.intMin = function(levels) {
 	while(_g < levels.length) {
 		var level = levels[_g];
 		++_g;
-		result = Std["int"](Math.min(result,level));
+		result = Math.min(result,level);
 	}
 	return result;
 };
@@ -10547,9 +11323,12 @@ nx3.PBamegroupFrameTipCalculator.prototype = {
 		var min = nx3.PBamegroupFrameTipCalculator.intMin(this.notelevels);
 		var leftTip = this.notelevels[0];
 		var rightTip = cx.ArrayTools.last(this.notelevels);
-		leftTip = nx3.PBamegroupFrameTipCalculator.intMin([leftTip,rightTip + 2,stemLength]);
-		rightTip = nx3.PBamegroupFrameTipCalculator.intMin([rightTip,leftTip + 2,stemLength]);
-		if(this.notelevels.length > 2) {
+		if(this.notelevels.length == 2) {
+			var slopevalue = 1;
+			leftTip = nx3.PBamegroupFrameTipCalculator.intMin([leftTip,rightTip + slopevalue,stemLength]);
+			rightTip = nx3.PBamegroupFrameTipCalculator.intMin([rightTip,leftTip + slopevalue,stemLength]);
+		} else {
+			var slopevalue1 = this.notelevels.length * .25;
 			var inlevels = this.notelevels.slice();
 			inlevels.shift();
 			inlevels.pop();
@@ -10557,7 +11336,7 @@ nx3.PBamegroupFrameTipCalculator.prototype = {
 			if(leftTip >= inmin && rightTip >= inmin) {
 				leftTip = inmin;
 				rightTip = inmin;
-			} else if(rightTip < leftTip && min < leftTip) leftTip = nx3.PBamegroupFrameTipCalculator.intMin([min + 2,leftTip]); else if(leftTip < rightTip && min < rightTip) rightTip = nx3.PBamegroupFrameTipCalculator.intMin([min + 2,rightTip]);
+			} else if(rightTip < leftTip && min < leftTip) leftTip = nx3.PBamegroupFrameTipCalculator.intMin([min + slopevalue1,leftTip]); else if(leftTip < rightTip && min < rightTip) rightTip = nx3.PBamegroupFrameTipCalculator.intMin([min + slopevalue1,rightTip]);
 		}
 		leftTip = Std["int"](Math.min(stemLength,leftTip));
 		rightTip = Std["int"](Math.min(stemLength,rightTip));
@@ -10580,6 +11359,10 @@ nx3.PBar.prototype = {
 	,score: null
 	,getScore: function() {
 		return this.score;
+	}
+	,systembar: null
+	,getSystembar: function() {
+		return this.systembar;
 	}
 	,clefs: null
 	,keys: null
@@ -10668,6 +11451,9 @@ nx3.PBar.prototype = {
 		}
 		return this.parts;
 	}
+	,getPart: function(idx) {
+		if(idx < 0 || idx > this.getParts().length) return null; else return this.getParts()[idx];
+	}
 	,columns: null
 	,getColumns: function() {
 		if(this.columns != null) return this.columns;
@@ -10675,6 +11461,10 @@ nx3.PBar.prototype = {
 		this.columns = generator.getColumns();
 		this.calculateMDistances();
 		return this.columns;
+	}
+	,getIndex: function() {
+		var _this = this.getScore().getBars();
+		return HxOverrides.indexOf(_this,this,0);
 	}
 	,calculateMDistances: function() {
 		if(this.columns == null) this.getColumns();
@@ -10718,6 +11508,57 @@ nx3.PBar.prototype = {
 	,getStretchWidth: function() {
 		return this.stretchwidth;
 	}
+	,tieconnections: null
+	,getTieConnections: function() {
+		if(this.tieconnections != null) return this.tieconnections;
+		this.tieconnections = [];
+		var nextBar = cx.ArrayTools.indexOrNull(this.score.getBars(),this.getIndex() + 1);
+		if(nextBar == null) return this.tieconnections;
+		var _g = 0;
+		var _g1 = this.getParts();
+		while(_g < _g1.length) {
+			var part = _g1[_g];
+			++_g;
+			var nextPart = cx.ArrayTools.indexOrNull(nextBar.getParts(),part.getIndex());
+			var _g2 = 0;
+			var _g3 = part.getVoices();
+			while(_g2 < _g3.length) {
+				var voice = _g3[_g2];
+				++_g2;
+				var lastnote = cx.ArrayTools.last(voice.getNotes());
+				if(!lastnote.getHasTie()) continue;
+				var _g4 = 0;
+				var _g5 = lastnote.nnote.get_nheads();
+				while(_g4 < _g5.length) {
+					var nhead = _g5[_g4];
+					++_g4;
+					if(nhead.tie != null) {
+						var level = nhead.level;
+						var nextPart1 = cx.ArrayTools.indexOrNull(nextBar.getParts(),part.getIndex());
+						if(nextPart1 == null) break;
+						var _g6 = 0;
+						var _g7 = nextPart1.getVoices();
+						while(_g6 < _g7.length) {
+							var voice1 = _g7[_g6];
+							++_g6;
+							var nextnote = cx.ArrayTools.first(voice1.getNotes());
+							var _g8 = 0;
+							var _g9 = nextnote.nnote.get_nheads();
+							while(_g8 < _g9.length) {
+								var nnhead = _g9[_g8];
+								++_g8;
+								if(nnhead.level == nhead.level) {
+									this.tieconnections.push({ from : lastnote, to : nextnote, level : nhead.level, tie : nhead.tie});
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return this.tieconnections;
+	}
 	,__class__: nx3.PBar
 };
 nx3.PBarConfig = function(showClef,showKey,showTime,showCautClef,showCautKey,showCautTime) {
@@ -10754,8 +11595,7 @@ nx3.PBarStretchCalculator.__name__ = ["nx3","PBarStretchCalculator"];
 nx3.PBarStretchCalculator.prototype = {
 	systembar: null
 	,stretch: function(amount) {
-		this.systembar.getBarWidths().contentWidth += amount;
-		this.systembar.getBarWidths().width += amount;
+		this.systembar.getBarMeasurements().setContentWidth(this.systembar.getBarMeasurements().getContentWidth() + amount);
 		if(this.systembar.bar.getColumns().length < 2) return;
 		var columns = this.systembar.bar.getColumns();
 		var firstcolumn = columns[0];
@@ -10830,7 +11670,7 @@ nx3.PBarWidthCalculator.prototype = {
 		return nx3.PAttributesRectsCalculator.getTimeRect(time).width;
 	}
 	,getContentLeftMarginWidth: function(bar) {
-		return 1;
+		return 3;
 	}
 	,getContentWidth: function(bar) {
 		return bar.getContentwidth();
@@ -11436,7 +12276,7 @@ nx3.PColumnsGenerator.prototype = {
 			var vpart = vparts[_g];
 			++_g;
 			var poss;
-			var _this = nx3.VMapTools.keysToArray(vpart.getPositionsComplexes().keys());
+			var _this = cx.MapTools.keysToArray(vpart.getPositionsComplexes().keys());
 			poss = _this.slice();
 			var _g1 = 0;
 			while(_g1 < poss.length) {
@@ -11445,7 +12285,7 @@ nx3.PColumnsGenerator.prototype = {
 				positionsMap.set(pos,true);
 			}
 		}
-		var positions = nx3.VMapTools.keysToArray(positionsMap.keys());
+		var positions = cx.MapTools.keysToArray(positionsMap.keys());
 		positions.sort(function(a,b) {
 			return Reflect.compare(a,b);
 		});
@@ -11643,6 +12483,41 @@ nx3.PComplex.prototype = {
 		}
 		return result;
 	}
+	,hasTie: null
+	,getHasTie: function() {
+		if(this.hasTie != null) return this.hasTie;
+		var _g = 0;
+		var _g1 = this.getNotes();
+		while(_g < _g1.length) {
+			var note = _g1[_g];
+			++_g;
+			if(note.getHasTie() == true) {
+				this.hasTie = true;
+				return this.hasTie;
+			}
+		}
+		this.hasTie = false;
+		return this.hasTie;
+	}
+	,headlevels: null
+	,getHeadLevels: function() {
+		if(this.headlevels != null) return this.headlevels;
+		this.headlevels = [];
+		var _g = 0;
+		var _g1 = this.getNotes();
+		while(_g < _g1.length) {
+			var note = _g1[_g];
+			++_g;
+			var _g2 = 0;
+			var _g3 = note.nnote.get_nheads();
+			while(_g2 < _g3.length) {
+				var nhead = _g3[_g2];
+				++_g2;
+				this.headlevels.push(nhead.level);
+			}
+		}
+		return this.headlevels;
+	}
 	,toString: function() {
 		var str = "PComplex: \r";
 		var _g = 0;
@@ -11799,7 +12674,19 @@ nx3.PComplexTierectsCalculator.prototype = {
 				dotidx++;
 			}
 			if(head.nhead.tie != null) {
-				var level = head.nhead.level;
+				var tielevel = 0;
+				{
+					var _g2 = head.nhead.tie;
+					switch(_g2[1]) {
+					case 0:
+						var tlevel = _g2[3];
+						var tiedir = _g2[2];
+						tielevel = tlevel;
+						break;
+					default:
+					}
+				}
+				var level = head.nhead.level + tielevel;
 				var direction = nx3.EDirectionUD.Up;
 				if(firstties.length == 1) {
 					if(secondnote == null) {
@@ -11820,11 +12707,11 @@ nx3.PComplexTierectsCalculator.prototype = {
 		}
 		tiewidth = 3.2;
 		if(secondnote != null) {
-			var _g2 = 0;
+			var _g3 = 0;
 			var _g11 = secondnote.getHeads();
-			while(_g2 < _g11.length) {
-				var head1 = _g11[_g2];
-				++_g2;
+			while(_g3 < _g11.length) {
+				var head1 = _g11[_g3];
+				++_g3;
 				if(head1.nhead.tie != null) {
 					var level1 = head1.nhead.level;
 					var headrect1 = this.complex.getHeadsRects()[headIdx];
@@ -12105,9 +12992,37 @@ nx3.PNote.prototype = {
 		this.next = cx.ArrayTools.indexOrNull(this.voice.getNotes(),idx + 1);
 		return this.next;
 	}
+	,hasTie: null
+	,getHasTie: function() {
+		if(this.hasTie != null) return this.hasTie;
+		var _g = 0;
+		var _g1 = this.nnote.get_nheads();
+		while(_g < _g1.length) {
+			var nhead = _g1[_g];
+			++_g;
+			if(nhead.tie != null) {
+				this.hasTie = true;
+				return this.hasTie;
+			}
+		}
+		this.hasTie = false;
+		return this.hasTie;
+	}
 	,setTiesInfo: function(info) {
 	}
 	,__class__: nx3.PNote
+};
+nx3.PNoteHeadsRectTplCalculator = function(note) {
+	this.note = note;
+};
+$hxClasses["nx3.PNoteHeadsRectTplCalculator"] = nx3.PNoteHeadsRectTplCalculator;
+nx3.PNoteHeadsRectTplCalculator.__name__ = ["nx3","PNoteHeadsRectTplCalculator"];
+nx3.PNoteHeadsRectTplCalculator.prototype = {
+	note: null
+	,getHeadsRects: function() {
+		return [new flash.geom.Rectangle(-6,-5.3,10,8.8)];
+	}
+	,__class__: nx3.PNoteHeadsRectTplCalculator
 };
 nx3.PNoteHeadsRectsLyricsCalculator = function(note,text,font) {
 	this.note = note;
@@ -12138,15 +13053,31 @@ nx3.PNoteHeadsRectsPausesCalculator.__name__ = ["nx3","PNoteHeadsRectsPausesCalc
 nx3.PNoteHeadsRectsPausesCalculator.prototype = {
 	vnote: null
 	,getHeadsRects: function() {
+		var rects;
 		var _g = nx3.ENoteValTools.beaminglevel(this.vnote.nnote.value);
 		switch(_g) {
 		case 1:
-			return [new flash.geom.Rectangle(-1.8,-3,3.6,6)];
+			rects = [new flash.geom.Rectangle(-1.8,-3,3.6,6)];
+			break;
 		case 2:
-			return [new flash.geom.Rectangle(-2,-3,4,6)];
+			rects = [new flash.geom.Rectangle(-2,-3,4,6)];
+			break;
 		default:
-			return [new flash.geom.Rectangle(-1.6,-3.3,3.2,6.6)];
+			rects = [new flash.geom.Rectangle(-1.6,-3.3,3.2,6.6)];
 		}
+		var level = 0;
+		{
+			var _g1 = this.vnote.nnote.type;
+			switch(_g1[1]) {
+			case 1:
+				var l = _g1[2];
+				level = l;
+				break;
+			default:
+			}
+		}
+		rects[0].offset(0,level);
+		return rects;
 	}
 	,__class__: nx3.PNoteHeadsRectsPausesCalculator
 };
@@ -12202,6 +13133,9 @@ nx3.PNoteheadsRectsCalculator.prototype = {
 				var o = _g[3];
 				var text = _g[2];
 				return new nx3.PNoteHeadsRectsLyricsCalculator(this.note,text,font).getHeadsRects();
+			case 3:
+				var l1 = _g[2];
+				return new nx3.PNoteHeadsRectTplCalculator(this.note).getHeadsRects();
 			default:
 				throw "Non implemented ENoteType: " + this.note.nnote.type[0];
 				return [];
@@ -12236,6 +13170,9 @@ nx3.PPart.prototype = {
 			this.voices.push(voice);
 		}
 		return this.voices;
+	}
+	,getVoice: function(idx) {
+		if(idx < 0 || idx > this.getVoices().length) return null; else return this.getVoices()[idx];
 	}
 	,complexes: null
 	,getComplexes: function() {
@@ -12296,8 +13233,8 @@ nx3.PPartComplexesGenerator.prototype = {
 	}
 	,calcComplexes: function(positions) {
 		this.complexes = [];
-		var poskeys = nx3.VMapTools.keysToArray(positions.keys());
-		poskeys = nx3.VMapTools.sortarray(poskeys);
+		var poskeys = cx.MapTools.keysToArray(positions.keys());
+		poskeys = cx.MapTools.sortarray(poskeys);
 		var _g = 0;
 		while(_g < poskeys.length) {
 			var pos = poskeys[_g];
@@ -12445,6 +13382,17 @@ nx3.PScore.prototype = {
 		}
 		return this.bars;
 	}
+	,getNBars: function() {
+		var result = [];
+		var _g = 0;
+		var _g1 = this.getBars();
+		while(_g < _g1.length) {
+			var bar = _g1[_g];
+			++_g;
+			result.push(bar.nbar);
+		}
+		return result;
+	}
 	,systems: null
 	,prevSystemwidth: null
 	,getSystems: function(systemwidth) {
@@ -12468,6 +13416,9 @@ nx3.PScore.prototype = {
 			new nx3.PScoreSystemStretcher(system1).stretchTo(system1.getSystemBreakWidth(),ifMoreThan);
 		}
 		return this.systems;
+	}
+	,getBar: function(idx) {
+		if(idx < 0 || idx > this.getBars().length) return null; else return this.getBars()[idx];
 	}
 	,__class__: nx3.PScore
 };
@@ -12513,7 +13464,7 @@ nx3.PScoreSystemsGenerator.prototype = {
 		while(tempbars.length > 0) {
 			var syswidth;
 			if((sysidx < 0 || sysidx > systemwidths.length - 1?null:systemwidths[sysidx]) != null) syswidth = systemwidths[sysidx]; else syswidth = systemwidths[0];
-			var generator = new nx3.PSystemGenerator(tempbars,{ showFirstClef : true, showFirstKey : true, showFirstTime : sysidx == 0},prevbarAttributes,syswidth,new nx3.PBarWidthCalculator());
+			var generator = new nx3.PSystemBarsGenerator(tempbars,{ showFirstClef : true, showFirstKey : true, showFirstTime : sysidx == 0},prevbarAttributes,syswidth,new nx3.PBarWidthCalculator());
 			var system = generator.getSystem();
 			prevbarAttributes = system.getLastBarAttributes();
 			result.push(system);
@@ -12552,7 +13503,7 @@ nx3.PSignsCalculator.prototype = {
 		return visibleSigns;
 	}
 	,calcUnsortedSigns: function(notes) {
-		var vsigns = [];
+		var PSigns = [];
 		var _g = 0;
 		while(_g < notes.length) {
 			var note = notes[_g];
@@ -12563,16 +13514,16 @@ nx3.PSignsCalculator.prototype = {
 				var nhead = _g2[_g1];
 				++_g1;
 				var tsign = { sign : nhead.sign, level : nhead.level, position : 0};
-				vsigns.push(tsign);
+				PSigns.push(tsign);
 			}
 		}
-		return vsigns;
+		return PSigns;
 	}
-	,calcSortSigns: function(vsigns) {
-		vsigns.sort(function(a,b) {
+	,calcSortSigns: function(PSigns) {
+		PSigns.sort(function(a,b) {
 			return Reflect.compare(a.level,b.level);
 		});
-		return vsigns;
+		return PSigns;
 	}
 	,__class__: nx3.PSignsCalculator
 };
@@ -12735,17 +13686,18 @@ nx3.PSystem.prototype = {
 		while(_g < _g1.length) {
 			var systemBar = _g1[_g];
 			++_g;
-			systemBar.getBarWidths().x = x;
-			x += systemBar.getBarWidths().width;
+			systemBar.xposition = x;
+			x += systemBar.getBarMeasurements().getTotalWidth();
 		}
 	}
 	,__class__: nx3.PSystem
 };
-nx3.PSystemBar = function(bar,barConfig,barWidths,actAttributes,caAttributes) {
+nx3.PSystemBar = function(bar,barConfig,barMeasurements,actAttributes,caAttributes) {
 	this.stretchamount = 0;
 	this.bar = bar;
+	this.bar.systembar = this;
 	this.barConfig = barConfig;
-	this.barWidths = barWidths;
+	this.barMeasurements = barMeasurements;
 	this.actAttributes = actAttributes;
 	this.caAttributes = caAttributes;
 };
@@ -12762,51 +13714,19 @@ nx3.PSystemBar.prototype = {
 		var calculator = new nx3.PBarStretchCalculator(this);
 		if(amount == 0) calculator.resetStretch(); else calculator.stretch(amount);
 	}
-	,barWidths: null
-	,getBarWidths: function() {
-		if(this.barWidths != null) return this.barWidths;
-		this.barWidths = new nx3.PSystemBarWidthCalculator().getBarWidth(this.bar,this.actAttributes,this.barConfig,this.caAttributes);
-		return this.barWidths;
+	,barMeasurements: null
+	,getBarMeasurements: function() {
+		if(this.barMeasurements != null) return this.barMeasurements;
+		this.barMeasurements = new nx3.PSystembarMeasurements(this.bar).init(this.actAttributes,this.barConfig,this.caAttributes);
+		return this.barMeasurements;
+	}
+	,xposition: null
+	,getXPosition: function() {
+		return this.xposition;
 	}
 	,__class__: nx3.PSystemBar
 };
-nx3.PSystemBarWidthCalculator = function(barWidthCalculator) {
-	if(barWidthCalculator != null) this.barWidthCalculator = barWidthCalculator; else this.barWidthCalculator = new nx3.PSimpleBarWidthCalculator();
-};
-$hxClasses["nx3.PSystemBarWidthCalculator"] = nx3.PSystemBarWidthCalculator;
-nx3.PSystemBarWidthCalculator.__name__ = ["nx3","PSystemBarWidthCalculator"];
-nx3.PSystemBarWidthCalculator.prototype = {
-	barWidthCalculator: null
-	,getBarWidth: function(bar,barAttributes,barConfig,cautAttributes) {
-		var result = { width : 0, x : 0, ackoladeWidth : 0, clefWidth : 0, keyWidth : 0, timeWidth : 0, contentLeftMargin : 0, contentWidth : 0, contentXZero : 0, cautClefWidth : 0, cautKeyWidth : 0, cautTimeWidth : 0, barlineWidth : 0};
-		var totalwidth = 0.0;
-		result.ackoladeWidth = this.barWidthCalculator.getLeftBarlineWidth(nx3.EBarlineLeft.None);
-		totalwidth += result.ackoladeWidth;
-		if(barConfig.showClef) result.clefWidth = this.barWidthCalculator.getClefsWidth(barAttributes.clefs);
-		totalwidth += result.clefWidth;
-		if(barConfig.showKey) result.keyWidth = this.barWidthCalculator.getKeysWidth(barAttributes.keys);
-		totalwidth += result.keyWidth;
-		if(barConfig.showTime) result.timeWidth += this.barWidthCalculator.getTimeWidth(barAttributes.time);
-		totalwidth += result.timeWidth;
-		result.contentLeftMargin = this.barWidthCalculator.getContentLeftMarginWidth(bar);
-		totalwidth += result.contentLeftMargin;
-		result.contentWidth = this.barWidthCalculator.getContentWidth(bar);
-		totalwidth += result.contentWidth;
-		result.contentXZero = bar.getContentXZero();
-		if(barConfig.showCautClef && cautAttributes != null) result.cautClefWidth = this.barWidthCalculator.getClefsWidth(cautAttributes.clefs);
-		totalwidth += result.cautClefWidth;
-		if(barConfig.showCautKey && cautAttributes != null) result.cautKeyWidth = this.barWidthCalculator.getKeysWidth(cautAttributes.keys);
-		totalwidth += result.cautKeyWidth;
-		if(barConfig.showCautTime && cautAttributes != null) result.cautTimeWidth += this.barWidthCalculator.getTimeWidth(cautAttributes.time);
-		totalwidth += result.cautTimeWidth;
-		result.barlineWidth = this.barWidthCalculator.getBarlineWidth(nx3.EBarline.Normal);
-		totalwidth += result.barlineWidth;
-		result.width = totalwidth;
-		return result;
-	}
-	,__class__: nx3.PSystemBarWidthCalculator
-};
-nx3.PSystemGenerator = function(bars,systemConfig,prevBarAttributes,breakSystemwidth,barWidthCalculator) {
+nx3.PSystemBarsGenerator = function(bars,systemConfig,prevBarAttributes,breakSystemwidth,barWidthCalculator) {
 	this.bars = bars;
 	this.systemConfig = systemConfig;
 	this.prevBarAttributes = prevBarAttributes;
@@ -12814,9 +13734,9 @@ nx3.PSystemGenerator = function(bars,systemConfig,prevBarAttributes,breakSystemw
 	this.system = new nx3.PSystem();
 	this.barWidthCalculator = barWidthCalculator;
 };
-$hxClasses["nx3.PSystemGenerator"] = nx3.PSystemGenerator;
-nx3.PSystemGenerator.__name__ = ["nx3","PSystemGenerator"];
-nx3.PSystemGenerator.prototype = {
+$hxClasses["nx3.PSystemBarsGenerator"] = nx3.PSystemBarsGenerator;
+nx3.PSystemBarsGenerator.__name__ = ["nx3","PSystemBarsGenerator"];
+nx3.PSystemBarsGenerator.prototype = {
 	bars: null
 	,systemConfig: null
 	,prevBarAttributes: null
@@ -12833,14 +13753,14 @@ nx3.PSystemGenerator.prototype = {
 			if(this.prevBarAttributes != null) this.overrideActualAttributesFromPrevBarAttributes(currentBarAttributes,currentBar,this.prevBarAttributes);
 			this.overrideActualAttributesWithDefaultsIfStillNotSet(currentBarAttributes);
 			if(this.system.getSystembars().length == 0) this.adaptBarConfig(currentBar,currentBarConfig,this.prevBarAttributes,this.systemConfig.showFirstClef,this.systemConfig.showFirstKey,this.systemConfig.showFirstTime); else this.adaptBarConfig(currentBar,currentBarConfig,this.prevBarAttributes,this.systemConfig.showFollowingClef,this.systemConfig.showFollowingKey,this.systemConfig.showFollowingTime);
-			var currentBarMeasurements = this.getBarWidth(currentBar,currentBarAttributes,currentBarConfig);
-			var testSystemWidth = this.system.width + currentBarMeasurements.width;
+			var currentMeasurements = new nx3.PSystembarMeasurements(currentBar).init(currentBarAttributes,currentBarConfig);
+			var testSystemWidth = this.system.width + currentMeasurements.getTotalWidth();
 			if(testSystemWidth > this.breakSystemwidth) {
 				this.takeCareOfLastBarCautions();
 				return this.system;
 			}
-			this.system.width += currentBarMeasurements.width;
-			this.system.getSystembars().push(new nx3.PSystemBar(currentBar,currentBarConfig,currentBarMeasurements,currentBarAttributes,null));
+			this.system.width += currentMeasurements.getTotalWidth();
+			this.system.getSystembars().push(new nx3.PSystemBar(currentBar,currentBarConfig,currentMeasurements,currentBarAttributes,null));
 			this.bars.shift();
 			this.prevBarAttributes = this.copyBarAttributes(currentBarAttributes);
 			if(this.bars.length < 1) tryAnotherBar = false;
@@ -12861,18 +13781,17 @@ nx3.PSystemGenerator.prototype = {
 			if(newClef || newKey || newTime) {
 				var sysBarCautAttributes = this.copyAndRemoveRedundantAttributes(sysBarAttributes,nextBarAttributes);
 				var sysBarConfig = cx.ArrayTools.last(this.system.getSystembars()).barConfig;
-				var sysBarWidth = cx.ArrayTools.last(this.system.getSystembars()).barWidths.width;
+				var sysBarWidth = cx.ArrayTools.last(this.system.getSystembars()).getBarMeasurements().getTotalWidth();
 				var systemWidthWithoutLastBar = this.system.width - sysBarWidth;
 				var sysBarConfigWithCautions = new nx3.PBarConfig(sysBarConfig.showClef,sysBarConfig.showKey,sysBarConfig.showTime);
 				if(newClef) sysBarConfigWithCautions.showCautClef = true;
 				if(newKey) sysBarConfigWithCautions.showCautKey = true;
 				if(newTime) sysBarConfigWithCautions.showCautTime = true;
-				var measurementsWithCautions = this.getBarWidth(sysBar,sysBarAttributes,sysBarConfigWithCautions,sysBarCautAttributes);
-				if(systemWidthWithoutLastBar + measurementsWithCautions.width <= this.breakSystemwidth) {
+				var measurementsWithCautions = new nx3.PSystembarMeasurements(sysBar).init(sysBarAttributes,sysBarConfigWithCautions,sysBarCautAttributes);
+				if(systemWidthWithoutLastBar + measurementsWithCautions.getTotalWidth() <= this.breakSystemwidth) {
 					cx.ArrayTools.last(this.system.getSystembars()).caAttributes = sysBarCautAttributes;
 					cx.ArrayTools.last(this.system.getSystembars()).barConfig = sysBarConfigWithCautions;
-					cx.ArrayTools.last(this.system.getSystembars()).barWidths.width = measurementsWithCautions.width;
-					this.system.width = this.system.getWidth() - sysBarWidth + measurementsWithCautions.width;
+					this.system.width = this.system.getWidth() - sysBarWidth + cx.ArrayTools.last(this.system.getSystembars()).getBarMeasurements().getTotalWidth();
 				} else {
 					this.system.status = nx3.PSystemStatus.Problem(101,"Last bar fits without caution attributes but not with them");
 					if(this.system.getSystembars().length == 1) {
@@ -12970,10 +13889,6 @@ nx3.PSystemGenerator.prototype = {
 			}
 		}
 	}
-	,getBarWidth: function(bar,barAttributes,barConfig,cautAttributes) {
-		var calculator = new nx3.PSystemBarWidthCalculator(this.barWidthCalculator);
-		return calculator.getBarWidth(bar,barAttributes,barConfig,cautAttributes);
-	}
 	,copyBarAttributes: function(barAttributes) {
 		var result = { clefs : new Array(), keys : new Array(), time : null};
 		result.clefs = barAttributes.clefs.slice();
@@ -12986,15 +13901,15 @@ nx3.PSystemGenerator.prototype = {
 		var _g = currentBarAttributes.clefs.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			if(currentBarAttributes.clefs[i] == null) currentBarAttributes.clefs[i] = nx3.PSystemGenerator.defaultClef;
+			if(currentBarAttributes.clefs[i] == null) currentBarAttributes.clefs[i] = nx3.PSystemBarsGenerator.defaultClef;
 		}
 		var _g11 = 0;
 		var _g2 = currentBarAttributes.keys.length;
 		while(_g11 < _g2) {
 			var i1 = _g11++;
-			if(currentBarAttributes.keys[i1] == null) currentBarAttributes.keys[i1] = nx3.PSystemGenerator.defaultKey;
+			if(currentBarAttributes.keys[i1] == null) currentBarAttributes.keys[i1] = nx3.PSystemBarsGenerator.defaultKey;
 		}
-		if(currentBarAttributes.time == null) currentBarAttributes.time = nx3.PSystemGenerator.defaultTime;
+		if(currentBarAttributes.time == null) currentBarAttributes.time = nx3.PSystemBarsGenerator.defaultTime;
 	}
 	,overrideActualAttributesFromPrevBarAttributes: function(currentBarAttributes,currentBar,prevBarAttributes) {
 		if(!this.compareBarAttributesValidity(currentBarAttributes,prevBarAttributes)) throw "Attributes non compatible";
@@ -13051,7 +13966,7 @@ nx3.PSystemGenerator.prototype = {
 		if(itemB == null) return false;
 		return itemB != itemA;
 	}
-	,__class__: nx3.PSystemGenerator
+	,__class__: nx3.PSystemBarsGenerator
 };
 nx3.PSimpleBarWidthCalculator = function() {
 };
@@ -13127,6 +14042,94 @@ nx3.PSystemStatus.Ok = ["Ok",0];
 nx3.PSystemStatus.Ok.toString = $estr;
 nx3.PSystemStatus.Ok.__enum__ = nx3.PSystemStatus;
 nx3.PSystemStatus.Problem = function(code,msg) { var $x = ["Problem",1,code,msg]; $x.__enum__ = nx3.PSystemStatus; $x.toString = $estr; return $x; };
+nx3.PSystembarMeasurements = function(bar) {
+	this.barlineWidth = 0;
+	this.cautTimeWidth = 0;
+	this.cautKeyWidth = 0;
+	this.cautClefWidth = 0;
+	this.contentWidth = 0;
+	this.contentXZero = 0;
+	this.leftContentMarginWidth = 0;
+	this.timeWidth = 0;
+	this.keyWidth = 0;
+	this.clefWidth = 0;
+	this.ackoladeWidth = 0;
+	this.bar = bar;
+};
+$hxClasses["nx3.PSystembarMeasurements"] = nx3.PSystembarMeasurements;
+nx3.PSystembarMeasurements.__name__ = ["nx3","PSystembarMeasurements"];
+nx3.PSystembarMeasurements.prototype = {
+	bar: null
+	,ackoladeWidth: null
+	,getAckoladeXPosition: function() {
+		return 0;
+	}
+	,clefWidth: null
+	,getClefXPosition: function() {
+		return this.getAckoladeXPosition() + this.ackoladeWidth;
+	}
+	,keyWidth: null
+	,getKeyXPosition: function() {
+		return this.getClefXPosition() + this.clefWidth;
+	}
+	,timeWidth: null
+	,getTimeXPosition: function() {
+		return this.getKeyXPosition() + this.keyWidth;
+	}
+	,leftContentMarginWidth: null
+	,getLeftContentMarginXPosition: function() {
+		return this.getTimeXPosition() + this.timeWidth;
+	}
+	,contentXZero: null
+	,getContentXZero: function() {
+		return this.contentXZero;
+	}
+	,contentWidth: null
+	,getContentXPosition: function() {
+		return this.getLeftContentMarginXPosition() + this.leftContentMarginWidth;
+	}
+	,getContentWidth: function() {
+		return this.contentWidth;
+	}
+	,setContentWidth: function(val) {
+		this.contentWidth = val;
+	}
+	,cautClefWidth: null
+	,getCautClefXPosition: function() {
+		return this.getContentXPosition() + this.contentWidth;
+	}
+	,cautKeyWidth: null
+	,getCautKeyXPosition: function() {
+		return this.getCautClefXPosition() + this.cautClefWidth;
+	}
+	,cautTimeWidth: null
+	,getCautTimeXPosition: function() {
+		return this.getCautKeyXPosition() + this.cautKeyWidth;
+	}
+	,barlineWidth: null
+	,getBarlineXPosition: function() {
+		return this.getCautTimeXPosition() + this.cautTimeWidth;
+	}
+	,getTotalWidth: function() {
+		return this.getBarlineXPosition() + this.barlineWidth;
+	}
+	,init: function(barAttributes,barConfig,cautAttributes) {
+		var calculator = new nx3.PBarWidthCalculator();
+		this.ackoladeWidth = calculator.getLeftBarlineWidth(nx3.EBarlineLeft.None);
+		if(barConfig.showClef) this.clefWidth = calculator.getClefsWidth(barAttributes.clefs);
+		if(barConfig.showKey) this.keyWidth = calculator.getKeysWidth(barAttributes.keys);
+		if(barConfig.showTime) this.timeWidth += calculator.getTimeWidth(barAttributes.time);
+		this.leftContentMarginWidth = calculator.getContentLeftMarginWidth(this.bar);
+		this.contentWidth = calculator.getContentWidth(this.bar);
+		this.contentXZero = this.bar.getContentXZero();
+		if(barConfig.showCautClef && cautAttributes != null) this.cautClefWidth = calculator.getClefsWidth(cautAttributes.clefs);
+		if(barConfig.showCautKey && cautAttributes != null) this.cautKeyWidth = calculator.getKeysWidth(cautAttributes.keys);
+		if(barConfig.showCautTime && cautAttributes != null) this.cautTimeWidth += calculator.getTimeWidth(cautAttributes.time);
+		this.barlineWidth = calculator.getBarlineWidth(nx3.EBarline.Normal);
+		return this;
+	}
+	,__class__: nx3.PSystembarMeasurements
+};
 nx3.PVoice = function(nvoice) {
 	this.nvoice = nvoice;
 };
@@ -13152,6 +14155,9 @@ nx3.PVoice.prototype = {
 			this.notes.push(pnote);
 		}
 		return this.notes;
+	}
+	,getNote: function(idx) {
+		if(idx < 0 || idx > this.getNotes().length) return null; else return this.getNotes()[idx];
 	}
 	,value: null
 	,getValue: function() {
@@ -13670,2196 +14676,310 @@ nx3.QVoiceUp.__super__ = nx3.QVoice;
 nx3.QVoiceUp.prototype = $extend(nx3.QVoice.prototype,{
 	__class__: nx3.QVoiceUp
 });
-nx3.VBamegroupFrameTipCalculator = function(notelevels,direction) {
-	if(direction == nx3.EDirectionUD.Down) {
-		var invertedLevels = new Array();
-		var _g = 0;
-		while(_g < notelevels.length) {
-			var level = notelevels[_g];
-			++_g;
-			invertedLevels.push(level * -1);
-		}
-		notelevels = invertedLevels;
-	}
-	this.notelevels = notelevels;
-	this.direction = direction;
+nx3.action = {};
+nx3.action.EActionInfo = $hxClasses["nx3.action.EActionInfo"] = { __ename__ : true, __constructs__ : ["TargetInfo"] };
+nx3.action.EActionInfo.TargetInfo = function(target,objectRect) { var $x = ["TargetInfo",0,target,objectRect]; $x.__enum__ = nx3.action.EActionInfo; $x.toString = $estr; return $x; };
+nx3.action.EActionType = $hxClasses["nx3.action.EActionType"] = { __ename__ : true, __constructs__ : ["HeadAction","NoteAction"] };
+nx3.action.EActionType.HeadAction = function(type,head,info) { var $x = ["HeadAction",0,type,head,info]; $x.__enum__ = nx3.action.EActionType; $x.toString = $estr; return $x; };
+nx3.action.EActionType.NoteAction = function(type,note,info) { var $x = ["NoteAction",1,type,note,info]; $x.__enum__ = nx3.action.EActionType; $x.toString = $estr; return $x; };
+nx3.action.EActivityType = $hxClasses["nx3.action.EActivityType"] = { __ename__ : true, __constructs__ : ["MouseDown","MouseUp","MouseOver","MouseOut"] };
+nx3.action.EActivityType.MouseDown = ["MouseDown",0];
+nx3.action.EActivityType.MouseDown.toString = $estr;
+nx3.action.EActivityType.MouseDown.__enum__ = nx3.action.EActivityType;
+nx3.action.EActivityType.MouseUp = ["MouseUp",1];
+nx3.action.EActivityType.MouseUp.toString = $estr;
+nx3.action.EActivityType.MouseUp.__enum__ = nx3.action.EActivityType;
+nx3.action.EActivityType.MouseOver = ["MouseOver",2];
+nx3.action.EActivityType.MouseOver.toString = $estr;
+nx3.action.EActivityType.MouseOver.__enum__ = nx3.action.EActivityType;
+nx3.action.EActivityType.MouseOut = ["MouseOut",3];
+nx3.action.EActivityType.MouseOut.toString = $estr;
+nx3.action.EActivityType.MouseOut.__enum__ = nx3.action.EActivityType;
+nx3.action.IInteractivity = function() { };
+$hxClasses["nx3.action.IInteractivity"] = nx3.action.IInteractivity;
+nx3.action.IInteractivity.__name__ = ["nx3","action","IInteractivity"];
+nx3.action.IInteractivity.prototype = {
+	handleAction: null
+	,__class__: nx3.action.IInteractivity
 };
-$hxClasses["nx3.VBamegroupFrameTipCalculator"] = nx3.VBamegroupFrameTipCalculator;
-nx3.VBamegroupFrameTipCalculator.__name__ = ["nx3","VBamegroupFrameTipCalculator"];
-nx3.VBamegroupFrameTipCalculator.intMin = function(levels) {
-	var result = levels[0];
-	if(levels.length == 1) return result;
-	var _g = 0;
-	while(_g < levels.length) {
-		var level = levels[_g];
-		++_g;
-		result = Std["int"](Math.min(result,level));
-	}
-	return result;
+nx3.action.InteractivityBase = function() {
 };
-nx3.VBamegroupFrameTipCalculator.intMax = function(levels) {
-	var result = levels[0];
-	if(levels.length == 1) return result;
-	var _g = 0;
-	while(_g < levels.length) {
-		var level = levels[_g];
-		++_g;
-		result = Std["int"](Math.max(result,level));
-	}
-	return result;
-};
-nx3.VBamegroupFrameTipCalculator.prototype = {
-	notelevels: null
-	,direction: null
-	,getTips: function() {
-		var stemLength = 7;
-		var min = nx3.VBamegroupFrameTipCalculator.intMin(this.notelevels);
-		var leftTip = this.notelevels[0];
-		var rightTip = cx.ArrayTools.last(this.notelevels);
-		leftTip = nx3.VBamegroupFrameTipCalculator.intMin([leftTip,rightTip + 2,stemLength]);
-		rightTip = nx3.VBamegroupFrameTipCalculator.intMin([rightTip,leftTip + 2,stemLength]);
-		if(this.notelevels.length > 2) {
-			var inlevels = this.notelevels.slice();
-			inlevels.shift();
-			inlevels.pop();
-			var inmin = nx3.VBamegroupFrameTipCalculator.intMin(inlevels);
-			if(leftTip >= inmin && rightTip >= inmin) {
-				leftTip = inmin;
-				rightTip = inmin;
-			} else if(rightTip < leftTip && min < leftTip) leftTip = nx3.VBamegroupFrameTipCalculator.intMin([min + 2,leftTip]); else if(leftTip < rightTip && min < rightTip) rightTip = nx3.VBamegroupFrameTipCalculator.intMin([min + 2,rightTip]);
-		}
-		leftTip = Std["int"](Math.min(stemLength,leftTip));
-		rightTip = Std["int"](Math.min(stemLength,rightTip));
-		if(this.direction == nx3.EDirectionUD.Down) return { leftTip : -leftTip, rightTip : -rightTip};
-		return { leftTip : leftTip, rightTip : rightTip};
-	}
-	,__class__: nx3.VBamegroupFrameTipCalculator
-};
-nx3.VBar = function(nbar) {
-	this._keys = null;
-	this._clefs = null;
-	this.nbar = nbar;
-};
-$hxClasses["nx3.VBar"] = nx3.VBar;
-nx3.VBar.__name__ = ["nx3","VBar"];
-nx3.VBar.prototype = {
-	nbar: null
-	,clefs: null
-	,keys: null
-	,time: null
-	,_clefs: null
-	,get_clefs: function() {
-		if(this._clefs != null) return this._clefs;
-		this._clefs = new Array();
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			this._clefs.push(vpart.npart.clef);
-		}
-		return this._clefs;
-	}
-	,_keys: null
-	,get_keys: function() {
-		if(this._keys != null) return this._keys;
-		this._keys = new Array();
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			this._keys.push(vpart.npart.key);
-		}
-		return this._keys;
-	}
-	,get_time: function() {
-		return this.nbar.time;
-	}
-	,displayClefs: null
-	,displayKeys: null
-	,displayTime: null
-	,get_displayClefs: function() {
-		var result = nx3.EDisplayALN.Never;
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			if(vpart.npart.clefDisplay == null) result = nx3.EDisplayALN.Layout;
-			if(vpart.npart.clefDisplay == nx3.EDisplayALN.Layout) result = nx3.EDisplayALN.Layout;
-			if(vpart.npart.clefDisplay == nx3.EDisplayALN.Always) {
-				result = nx3.EDisplayALN.Always;
-				break;
-			}
-		}
-		return result;
-	}
-	,get_displayKeys: function() {
-		var result = nx3.EDisplayALN.Never;
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			if(vpart.npart.keyDisplay == null) result = nx3.EDisplayALN.Layout;
-			if(vpart.npart.keyDisplay == nx3.EDisplayALN.Layout) result = nx3.EDisplayALN.Layout;
-			if(vpart.npart.keyDisplay == nx3.EDisplayALN.Always) {
-				result = nx3.EDisplayALN.Always;
-				break;
-			}
-		}
-		return result;
-	}
-	,get_displayTime: function() {
-		var result;
-		if(this.nbar.timeDisplay != null) result = this.nbar.timeDisplay; else result = nx3.EDisplayALN.Layout;
-		return this.nbar.timeDisplay;
-	}
-	,vparts: null
-	,getVParts: function() {
-		if(this.vparts != null) return this.vparts;
-		this.vparts = [];
-		var _g = 0;
-		var _g1 = this.nbar.nparts;
-		while(_g < _g1.length) {
-			var npart = _g1[_g];
-			++_g;
-			this.vparts.push(new nx3.VPart(npart));
-		}
-		return this.vparts;
-	}
-	,vcolumns: null
-	,getVColumns: function() {
-		if(this.vcolumns != null) return this.vcolumns;
-		if(this.vparts == null) this.getVParts();
-		var generator = new nx3.VBarColumnsGenerator(this.vparts);
-		this.vcolumns = generator.getColumns();
-		this.positionsVColumns = generator.getPositionsColumns();
-		return this.vcolumns;
-	}
-	,positionsVColumns: null
-	,getPositionsColumns: function() {
-		if(this.positionsVColumns == null) this.getVColumns();
-		return this.positionsVColumns;
-	}
-	,vcolumnsPositions: null
-	,getVColumnsPositions: function() {
-		if(this.positionsVColumns == null) this.getVColumns();
-		this.vcolumnsPositions = new haxe.ds.ObjectMap();
-		var $it0 = this.positionsVColumns.keys();
-		while( $it0.hasNext() ) {
-			var pos = $it0.next();
-			var vcolumn = this.positionsVColumns.get(pos);
-			this.vcolumnsPositions.set(vcolumn,pos);
-		}
-		return this.vcolumnsPositions;
-	}
-	,value: null
-	,getValue: function() {
-		if(this.value != null) return this.value;
-		var value = .0;
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			value = Math.max(value,vpart.getValue());
-		}
-		this.value = value | 0;
-		return this.value;
-	}
-	,vnotesVColumns: null
-	,getVNotesVColumns: function() {
-		if(this.vnotesVColumns != null) return this.vnotesVColumns;
-		this.vnotesVColumns = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vpart.getVVoices();
-			while(_g2 < _g3.length) {
-				var vvoice = _g3[_g2];
-				++_g2;
-				var _g4 = 0;
-				var _g5 = vvoice.getVNotes();
-				while(_g4 < _g5.length) {
-					var vnote = _g5[_g4];
-					++_g4;
-					var pos;
-					var this1 = vvoice.getVNotePositions();
-					pos = this1.get(vnote);
-					var vcolumn = this.getPositionsColumns().get(pos);
-					this.vnotesVColumns.set(vnote,vcolumn);
-				}
-			}
-		}
-		return this.vnotesVColumns;
-	}
-	,vcomplexesVColumns: null
-	,getVComplexesVColumns: function() {
-		if(this.vcomplexesVColumns != null) return this.vcomplexesVColumns;
-		this.vcomplexesVColumns = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vpart.getVComplexes();
-			while(_g2 < _g3.length) {
-				var vcomplex = _g3[_g2];
-				++_g2;
-				var pos;
-				var this1 = vpart.getVComplexesPositions();
-				pos = this1.get(vcomplex);
-				var vcolumn = this.getPositionsColumns().get(pos);
-				this.vcomplexesVColumns.set(vcomplex,vcolumn);
-			}
-		}
-		return this.vcomplexesVColumns;
-	}
-	,vcolumnsMinDistances: null
-	,vcolumnsMinPositions: null
-	,getVColumnsMinDistances: function() {
-		if(this.vcolumnsMinDistances != null) return this.vcolumnsMinDistances;
-		var distancesData = new nx3.VBarColumnsMinDistancesGenerator(this).getDistancesData();
-		this.vcolumnsMinDistances = distancesData.distances;
-		this.vcolumnsMinPositions = distancesData.positions;
-		return this.vcolumnsMinDistances;
-	}
-	,getVColumnsMinPositions: function() {
-		if(this.vcolumnsMinPositions != null) return this.vcolumnsMinPositions;
-		if(this.vcolumnsMinDistances == null) this.getVColumnsMinDistances();
-		return this.vcolumnsMinPositions;
-	}
-	,vcolumnsMinWidth: null
-	,getVColumnsMinWidth: function() {
-		if(this.vcolumnsMinWidth != null) return this.vcolumnsMinWidth;
-		if(this.vcolumnsMinDistances == null) this.getVColumnsMinDistances();
-		var lastColumn = cx.ArrayTools.last(this.getVColumns());
-		var lastPosition;
-		var this1 = this.getVColumnsMinPositions();
-		lastPosition = this1.get(lastColumn);
-		var lastDistance;
-		var this2 = this.getVColumnsMinDistances();
-		lastDistance = this2.get(lastColumn);
-		this.vcolumnsMinWidth = lastPosition + lastDistance;
-		return this.vcolumnsMinWidth;
-	}
-	,__class__: nx3.VBar
-};
-nx3.VBarColumnsGenerator = function(vparts) {
-	this.vparts = vparts;
-};
-$hxClasses["nx3.VBarColumnsGenerator"] = nx3.VBarColumnsGenerator;
-nx3.VBarColumnsGenerator.__name__ = ["nx3","VBarColumnsGenerator"];
-nx3.VBarColumnsGenerator.prototype = {
-	vparts: null
-	,positions: null
-	,columns: null
-	,positionsColumns: null
-	,getColumns: function() {
-		if(this.columns != null) return this.columns;
-		this.positions = this.calcPositions(this.vparts);
-		this.calcColumns(this.positions,this.vparts);
-		return this.columns;
-	}
-	,getPositionsColumns: function() {
-		if(this.columns == null) this.getColumns();
-		return this.positionsColumns;
-	}
-	,vcomplexesVColumns: null
-	,getVComplexesVColumns: function() {
-		if(this.columns == null) this.getColumns();
-		return this.vcomplexesVColumns;
-	}
-	,calcColumns: function(positions,vparts) {
-		var partsCount = vparts.length;
-		this.columns = [];
-		this.positionsColumns = new haxe.ds.IntMap();
-		var _g = 0;
-		while(_g < positions.length) {
-			var pos = positions[_g];
-			++_g;
-			var vcomplexes = [];
-			var _g1 = 0;
-			while(_g1 < vparts.length) {
-				var vpart = vparts[_g1];
-				++_g1;
-				var complex = vpart.getPositionsVComplexes().get(pos);
-				vcomplexes.push(complex);
-			}
-			var vcolumn = new nx3.VColumn(vcomplexes);
-			this.columns.push(vcolumn);
-			this.positionsColumns.set(pos,vcolumn);
-		}
-	}
-	,calcPositions: function(vparts) {
-		var positionsMap = new haxe.ds.IntMap();
-		var _g = 0;
-		while(_g < vparts.length) {
-			var vpart = vparts[_g];
-			++_g;
-			var poss = nx3.VMapTools.keysToArray(vpart.getPositionsVComplexes().keys());
-			var _g1 = 0;
-			while(_g1 < poss.length) {
-				var pos = poss[_g1];
-				++_g1;
-				positionsMap.set(pos,true);
-			}
-		}
-		var positions = nx3.VMapTools.keysToArray(positionsMap.keys());
-		positions.sort(function(a,b) {
-			return Reflect.compare(a,b);
-		});
-		return positions;
-	}
-	,__class__: nx3.VBarColumnsGenerator
-};
-nx3.VBarColumnsMinDistancesGenerator = function(vbar) {
-	this.vbar = vbar;
-};
-$hxClasses["nx3.VBarColumnsMinDistancesGenerator"] = nx3.VBarColumnsMinDistancesGenerator;
-nx3.VBarColumnsMinDistancesGenerator.__name__ = ["nx3","VBarColumnsMinDistancesGenerator"];
-nx3.VBarColumnsMinDistancesGenerator.prototype = {
-	vbar: null
-	,getDistancesData: function() {
-		var distances = this.getDistances();
-		var positions = this.getPositions(distances);
-		return { distances : distances, positions : positions};
-	}
-	,getDistances: function() {
-		var distances = new haxe.ds.ObjectMap();
-		var positions = new haxe.ds.ObjectMap();
-		var nrOfColumns = this.vbar.getVColumns().length;
-		var nrOfParts = this.vbar.getVParts().length;
-		var prevComplexBucket = new haxe.ds.IntMap();
-		var prevColumnBucket = new haxe.ds.IntMap();
-		var curpos = 0;
-		var _g = 0;
-		while(_g < nrOfColumns) {
-			var ic = _g++;
-			var column = this.vbar.getVColumns()[ic];
-			var nextColumn = cx.ArrayTools.indexOrNull(this.vbar.getVColumns(),ic + 1);
-			var maxdist = 0;
-			var _g1 = 0;
-			while(_g1 < nrOfParts) {
-				var ip = _g1++;
-				var vpart = this.vbar.getVParts()[ip];
-				var complex = column.vcomplexes[ip];
-				var nextcomplex;
-				if(nextColumn != null) nextcomplex = nextColumn.vcomplexes[ip]; else nextcomplex = null;
-				if(complex != null && nextcomplex != null) {
-					var dist = new nx3.VPartComplexesMinDistancesCalculator(vpart).getDistance(complex,nextcomplex);
-					maxdist = Math.max(maxdist,dist);
-					prevComplexBucket.set(ip,complex);
-					prevColumnBucket.set(ip,column);
-				} else if(complex == null && nextcomplex != null) maxdist = Math.max(3.2,maxdist); else if(complex != null && nextcomplex == null) {
-					var dist1 = new nx3.VPartComplexesMinDistancesCalculator(vpart).getDistance(complex,nextcomplex);
-					maxdist = Math.max(maxdist,dist1);
-					prevComplexBucket.set(ip,complex);
-					prevColumnBucket.set(ip,column);
-				} else {
-				}
-			}
-			distances.set(column,maxdist);
-			positions.set(column,curpos);
-			curpos = curpos + maxdist;
-		}
-		return distances;
-	}
-	,getPositions: function(distances) {
-		var positions = new haxe.ds.ObjectMap();
-		var curpos = this.getFirstColumnPosition();
-		var _g = 0;
-		var _g1 = this.vbar.getVColumns();
-		while(_g < _g1.length) {
-			var vcolumn = _g1[_g];
-			++_g;
-			var distance = distances.h[vcolumn.__id__];
-			positions.set(vcolumn,curpos);
-			curpos = curpos + distance;
-		}
-		return positions;
-	}
-	,getFirstColumnPosition: function() {
-		var pos = 0;
-		var _g = 0;
-		var _g1 = this.vbar.getVParts();
-		while(_g < _g1.length) {
-			var vpart = _g1[_g];
-			++_g;
-			var distanceCalculator = new nx3.VPartComplexesMinDistancesCalculator(vpart);
-			var firstcomplex = cx.ArrayTools.first(vpart.getVComplexes());
-			var distancedata = distanceCalculator.getComplexLeftside(firstcomplex);
-			var _g2 = 0;
-			var _g3 = distancedata.rects;
-			while(_g2 < _g3.length) {
-				var rect = _g3[_g2];
-				++_g2;
-				pos = Math.max(pos,-rect.x);
-			}
-		}
-		return pos;
-	}
-	,__class__: nx3.VBarColumnsMinDistancesGenerator
-};
-nx3.VBeamgroup = function(vnotes) {
-	this.value = null;
-	this.vnotes = vnotes;
-};
-$hxClasses["nx3.VBeamgroup"] = nx3.VBeamgroup;
-nx3.VBeamgroup.__name__ = ["nx3","VBeamgroup"];
-nx3.VBeamgroup.prototype = {
-	vnotes: null
-	,direction: null
-	,getDirection: function() {
-		if(this.direction != null) return this.direction;
-		this.direction = new nx3.VBeamgroupDirectionCalculator(this).getDirection();
-		return this.direction;
-	}
-	,setDirection: function(val) {
-		return this.direction = val;
-	}
-	,calculatedDirection: null
-	,getCalculatedDirection: function() {
-		if(this.calculatedDirection == null) throw "direction is not calculated";
-		return this.calculatedDirection;
-	}
-	,setCalculatedDirection: function(direction) {
-		this.calculatedDirection = direction;
-	}
-	,calculator: null
-	,frame: null
-	,getFrame: function() {
-		if(this.frame != null) return this.frame;
-		var firstnote = this.vnotes[0].nnote;
-		if(firstnote.type[0] != "Note") return null;
-		if(this.vnotes.length == 1) {
-			var stavinglevel = nx3.ENoteValTools.stavinglevel(firstnote.value);
-			if(stavinglevel <= 0) return null;
-		}
-		if(this.calculatedDirection == null) {
-			throw "error";
-			haxe.Log.trace("direction should be calculated befor getting frame",{ fileName : "VBeamgroup.hx", lineNumber : 66, className : "nx3.VBeamgroup", methodName : "getFrame"});
-			this.calculatedDirection = this.getDirection();
-		}
-		this.calculator = new nx3.VBeamgroupFrameCalculator(this);
-		this.frame = this.calculator.getFrame();
-		return this.frame;
-	}
-	,value: null
-	,getValue: function() {
-		if(this.value != null) return this.value;
-		this.value = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			this.value += nx3.ENoteValTools.value(vnote.nnote.value);
-		}
-		return this.value;
-	}
-	,__class__: nx3.VBeamgroup
-};
-nx3.VBeamgroupDirectionCalculator = function(beamgroup) {
-	this.beamgroup = beamgroup;
-};
-$hxClasses["nx3.VBeamgroupDirectionCalculator"] = nx3.VBeamgroupDirectionCalculator;
-nx3.VBeamgroupDirectionCalculator.__name__ = ["nx3","VBeamgroupDirectionCalculator"];
-nx3.VBeamgroupDirectionCalculator.prototype = {
-	beamgroup: null
-	,getDirection: function() {
-		this.topLevel = this.findTopLevel();
-		this.bottomLevel = this.findBottomLevel();
-		if(this.topLevel + this.bottomLevel <= 0) return nx3.EDirectionUD.Down;
-		return nx3.EDirectionUD.Up;
-	}
-	,topLevel: null
-	,findTopLevel: function() {
-		var topLevel = this.beamgroup.vnotes[0].nnote.getTopLevel();
-		if(this.beamgroup.vnotes.length == 1) return topLevel;
-		var _g1 = 1;
-		var _g = this.beamgroup.vnotes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var level = this.beamgroup.vnotes[i].nnote.getTopLevel();
-			topLevel = Std["int"](Math.min(topLevel,level));
-		}
-		return topLevel;
-	}
-	,bottomLevel: null
-	,findBottomLevel: function() {
-		var bottomLevel = this.beamgroup.vnotes[0].nnote.getBottomLevel();
-		if(this.beamgroup.vnotes.length == 1) return bottomLevel;
-		var _g1 = 1;
-		var _g = this.beamgroup.vnotes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var level = this.beamgroup.vnotes[i].nnote.getBottomLevel();
-			bottomLevel = Std["int"](Math.max(bottomLevel,level));
-		}
-		return bottomLevel;
-	}
-	,__class__: nx3.VBeamgroupDirectionCalculator
-};
-nx3.VBeamgroupFrameCalculator = function(beamgroup) {
-	this.beamgroup = beamgroup;
-};
-$hxClasses["nx3.VBeamgroupFrameCalculator"] = nx3.VBeamgroupFrameCalculator;
-nx3.VBeamgroupFrameCalculator.__name__ = ["nx3","VBeamgroupFrameCalculator"];
-nx3.VBeamgroupFrameCalculator.prototype = {
-	beamgroup: null
-	,outerLevels: null
-	,innerLevels: null
-	,getFrame: function() {
-		this.calcLevelArrays();
-		var frame = this.calcFramePrototype();
-		return frame;
-	}
-	,calcFramePrototype: function() {
-		var count = this.innerLevels.length;
-		var tips = this.calcTips();
-		return { leftInnerY : this.innerLevels[0], leftOuterY : this.outerLevels[0], rightInnerY : this.innerLevels[count - 1], rightOuterY : this.outerLevels[count - 1], leftTipY : tips.leftTip, rightTipY : tips.rightTip, outerLevels : this.outerLevels, innerLevels : this.innerLevels};
-	}
-	,getTopLevels: function() {
-		var levels = [];
-		var _g = 0;
-		var _g1 = this.beamgroup.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			levels.push(vnote.nnote.getTopLevel());
-		}
-		return levels;
-	}
-	,getBottomLevels: function() {
-		var levels = [];
-		var _g = 0;
-		var _g1 = this.beamgroup.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			levels.push(vnote.nnote.getBottomLevel());
-		}
-		return levels;
-	}
-	,calcLevelArrays: function() {
-		var _g = this.beamgroup.getCalculatedDirection();
-		switch(_g[1]) {
-		case 0:
-			this.outerLevels = this.getTopLevels();
-			this.innerLevels = this.getBottomLevels();
-			break;
+$hxClasses["nx3.action.InteractivityBase"] = nx3.action.InteractivityBase;
+nx3.action.InteractivityBase.__name__ = ["nx3","action","InteractivityBase"];
+nx3.action.InteractivityBase.__interfaces__ = [nx3.action.IInteractivity];
+nx3.action.InteractivityBase.prototype = {
+	handleAction: function(action) {
+		switch(action[1]) {
 		case 1:
-			this.outerLevels = this.getBottomLevels();
-			this.innerLevels = this.getTopLevels();
+			var info = action[4];
+			var note = action[3];
+			var type = action[2];
+			switch(type[1]) {
+			case 0:
+				this.onNoteMouseDown(note,info);
+				break;
+			case 1:
+				this.onNoteMouseUp(note,info);
+				break;
+			default:
+			}
 			break;
+		default:
 		}
 	}
-	,calcTips: function() {
-		var stemLenght = 7;
-		var direction = this.beamgroup.getCalculatedDirection();
-		var calculator = new nx3.VBamegroupFrameTipCalculator(this.outerLevels,direction);
-		var tips = calculator.getTips();
-		if(direction == nx3.EDirectionUD.Up) tips.leftTip = tips.leftTip - stemLenght; else tips.leftTip = tips.leftTip + stemLenght;
-		if(direction == nx3.EDirectionUD.Up) tips.rightTip = tips.rightTip - stemLenght; else tips.rightTip = tips.rightTip + stemLenght;
-		return tips;
+	,onNoteMouseDown: function(note,info) {
 	}
-	,__class__: nx3.VBeamgroupFrameCalculator
+	,onNoteMouseUp: function(note,info) {
+	}
+	,__class__: nx3.action.InteractivityBase
 };
-nx3.VColumn = function(vcomplexes) {
-	this.vcomplexes = vcomplexes;
+nx3.action.SoundInteractivity = function() {
+	nx3.action.InteractivityBase.call(this);
+	this.wavCache = new haxe.ds.StringMap();
 };
-$hxClasses["nx3.VColumn"] = nx3.VColumn;
-nx3.VColumn.__name__ = ["nx3","VColumn"];
-nx3.VColumn.prototype = {
-	vcomplexes: null
-	,__class__: nx3.VColumn
-};
-nx3.VComplex = function(vnotes,directions) {
-	this.notesHeadsRects = null;
-	this.notesHeadsRectsDirCheck = null;
-	if(vnotes.length > 2) throw "VComplex nr of VNote(s) limited to max 2 - for now";
-	this.vnotes = vnotes;
-};
-$hxClasses["nx3.VComplex"] = nx3.VComplex;
-nx3.VComplex.__name__ = ["nx3","VComplex"];
-nx3.VComplex.prototype = {
-	vnotes: null
-	,signs: null
-	,visibleSigns: null
-	,calculator: null
-	,getVNotes: function() {
-		return this.vnotes;
+$hxClasses["nx3.action.SoundInteractivity"] = nx3.action.SoundInteractivity;
+nx3.action.SoundInteractivity.__name__ = ["nx3","action","SoundInteractivity"];
+nx3.action.SoundInteractivity.__super__ = nx3.action.InteractivityBase;
+nx3.action.SoundInteractivity.prototype = $extend(nx3.action.InteractivityBase.prototype,{
+	onNoteMouseDown: function(note,info) {
+		haxe.Log.trace("SOUND On: " + Std.string(note.nnote.getHeadLevels()),{ fileName : "SoundInteractivity.hx", lineNumber : 46, className : "nx3.action.SoundInteractivity", methodName : "onNoteMouseDown"});
+		var level = cx.ArrayTools.first(note.nnote.getHeadLevels());
+		this.play(level);
 	}
-	,getSigns: function() {
-		this.calculator = new nx3.VComplexSignsCalculator(this.vnotes);
-		this.signs = this.calculator.getSigns();
-		this.visibleSigns = this.calculator.getVisibleSigns();
-		return this.signs;
+	,onNoteMouseUp: function(note,info) {
+		haxe.Log.trace("SOUND Off",{ fileName : "SoundInteractivity.hx", lineNumber : 54, className : "nx3.action.SoundInteractivity", methodName : "onNoteMouseUp"});
 	}
-	,getVisibleSigns: function() {
-		if(this.visibleSigns != null) return this.visibleSigns;
-		this.getSigns();
-		return this.visibleSigns;
-	}
-	,signRects: null
-	,getSignsRects: function(headsRects) {
-		if(this.signRects != null) return this.signRects;
-		if(this.getVisibleSigns().length == 0) return [];
-		this.signRects = new nx3.VComplexSignsRectsCalculator(this.getVisibleSigns()).getSignRects(headsRects);
-		return this.signRects;
-	}
-	,tiestoRects: null
-	,getTiestoRects: function(headsRects) {
-		if(this.signRects == null) this.getSignsRects(headsRects);
-		if(this.tiestoRects != null) return this.tiestoRects;
-		var rects;
-		if(this.signRects != null && this.signRects.length > 0) rects = this.signRects; else rects = headsRects;
-		this.tiestoRects = new nx3.VComplexTiestoRectsCalculator(this.getComplexTiestos()).getTiestoRects(rects);
-		return this.tiestoRects;
-	}
-	,getComplexTiestos: function() {
-		return null;
-	}
-	,dotsRects: null
-	,getDotsRects: function(headsRects,directions) {
-		if(this.dotsRects != null) return this.dotsRects;
-		this.dotsRects = new nx3.VComplexDotsRectsCalculator(this.getDots(directions)).getDotsRects(headsRects);
-		return this.dotsRects;
-	}
-	,getDots: function(directions) {
-		var result = null;
-		var _g = 0;
-		var _g1 = this.getVNotes();
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			var dotlevel = nx3.ENoteValTools.dotlevel(vnote.nnote.value);
-			if(dotlevel != 0) {
-				if(result == null) result = new Array();
-				var _g2 = 0;
-				var _g3 = vnote.nnote.get_nheads();
-				while(_g2 < _g3.length) {
-					var nhead = _g3[_g2];
-					++_g2;
-					var dot = nx3.EDot.Normal(nhead.level);
-					if(dotlevel == 2) dot = nx3.EDot.Double(nhead.level);
-					result.push(dot);
-				}
-			}
+	,wavCache: null
+	,getWavAndPlay: function(id) {
+		var _g = this;
+		if(this.wavCache.exists(id)) {
+			haxe.Log.trace("getFromCache",{ fileName : "SoundInteractivity.hx", lineNumber : 65, className : "nx3.action.SoundInteractivity", methodName : "getWavAndPlay"});
+			var ba = this.wavCache.get(id);
+			this.playWav(ba);
+		} else {
+			var bytesloader = new cx.data.BytesLoader(id,function(bytes) {
+				haxe.Log.trace("loadToCache!",{ fileName : "SoundInteractivity.hx", lineNumber : 72, className : "nx3.action.SoundInteractivity", methodName : "getWavAndPlay"});
+				haxe.Log.trace(bytes.length,{ fileName : "SoundInteractivity.hx", lineNumber : 73, className : "nx3.action.SoundInteractivity", methodName : "getWavAndPlay"});
+				_g.wavCache.set(id,bytes);
+				_g.playWav(bytes);
+			});
+			bytesloader.loadBytes();
 		}
-		return result;
 	}
-	,getHeadsCollisionOffsetX: function(note,direction) {
-		if(this.vnotes.length == 1) return 0;
-		if(note == this.vnotes[0]) return 0;
-		var firstnote = this.vnotes[0];
-		var secondnote = note;
-		var diff = secondnote.nnote.getTopLevel() - firstnote.nnote.getBottomLevel();
-		var offsetX = 0.0;
-		if(diff < 1) if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 4.4; else offsetX = 3.2;
-		if(diff == 1) {
-			if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 4.4; else offsetX = 3.2;
-			if(nx3.ENoteValTools.head(firstnote.nnote.value) == nx3.EHeadValueType.HVT1) offsetX = 0.9 * offsetX; else offsetX = 0.7 * offsetX;
-		}
-		return offsetX;
+	,play: function(level) {
+		var filename = "wav/" + Std.string(60 + -level) + ".wav";
+		haxe.Log.trace(filename,{ fileName : "SoundInteractivity.hx", lineNumber : 84, className : "nx3.action.SoundInteractivity", methodName : "play"});
+		this.getWavAndPlay(filename);
 	}
-	,getRectanglesXIntersection: function(rectsA,rectsB) {
-		var rectsB2 = new Array();
-		var _g = 0;
-		while(_g < rectsB.length) {
-			var r = rectsB[_g];
-			++_g;
-			rectsB2.push(r.clone());
-		}
-		var check = function() {
+	,playWav: function(bytes) {
+		var bytesdata = bytes.b;
+		var pf = new nx3.audio.PlayerFactory();
+		var play = pf.getPlayFunction(bytesdata);
+		play();
+	}
+	,__class__: nx3.action.SoundInteractivity
+});
+nx3.action.TestInteractivity = function() {
+	nx3.action.InteractivityBase.call(this);
+};
+$hxClasses["nx3.action.TestInteractivity"] = nx3.action.TestInteractivity;
+nx3.action.TestInteractivity.__name__ = ["nx3","action","TestInteractivity"];
+nx3.action.TestInteractivity.__super__ = nx3.action.InteractivityBase;
+nx3.action.TestInteractivity.prototype = $extend(nx3.action.InteractivityBase.prototype,{
+	onNoteMouseDown: function(note,info) {
+		haxe.Log.trace("mouse down on note with levels " + Std.string(note.nnote.getHeadLevels()),{ fileName : "TestInteractivity.hx", lineNumber : 13, className : "nx3.action.TestInteractivity", methodName : "onNoteMouseDown"});
+	}
+	,__class__: nx3.action.TestInteractivity
+});
+nx3.audio = {};
+nx3.audio.PlayerFactory = function() {
+};
+$hxClasses["nx3.audio.PlayerFactory"] = nx3.audio.PlayerFactory;
+nx3.audio.PlayerFactory.__name__ = ["nx3","audio","PlayerFactory"];
+nx3.audio.PlayerFactory.prototype = {
+	getPlayFunction: function(wave) {
+		return this.makePlayer(wave);
+	}
+	,makePlayer: function(wave) {
+		var wav_freq = 44100;
+		var wav_bits = 16;
+		var stereo = false;
+		var buffer = new ArrayBuffer(44 + wave.length);
+		var bv = new Uint8Array(buffer);
+		var p = 0;
+		var writeString = function(s) {
 			var _g1 = 0;
-			while(_g1 < rectsA.length) {
-				var ra = rectsA[_g1];
-				++_g1;
-				var _g11 = 0;
-				while(_g11 < rectsB2.length) {
-					var rb = rectsB2[_g11];
-					++_g11;
-					var i = ra.intersection(rb);
-					if(i.width > 0) return i.width;
-				}
-			}
-			return 0;
-		};
-		var x = 0;
-		var moveX = check();
-		while(moveX > 0) {
-			x += moveX;
-			var _g2 = 0;
-			while(_g2 < rectsB2.length) {
-				var r1 = rectsB2[_g2];
-				++_g2;
-				r1.offset(moveX,0);
-			}
-			moveX = check();
-		}
-		return x;
-	}
-	,getNoteHeadsRects: function(note,dir) {
-		if(dir == null) dir = new nx3.VNoteInternalDirectionCalculator(note.getVHeads()).getDirection();
-		if(note == this.vnotes[0]) return note.getVHeadsRectanglesDir(dir);
-		var rects = note.getVHeadsRectanglesDir(dir);
-		var offsetX = this.getHeadsCollisionOffsetX(note,dir);
-		var _g = 0;
-		while(_g < rects.length) {
-			var rect = rects[_g];
-			++_g;
-			rect.offset(offsetX,0);
-		}
-		return rects;
-	}
-	,getNoteRect: function(note,dir) {
-		var result = null;
-		if(note == this.vnotes[0]) {
-			if(dir == null) dir = new nx3.VNoteInternalDirectionCalculator(note.getVHeads()).getDirection();
-			var rects = note.getVHeadsRectanglesDir(dir);
-			result = rects[0].clone();
-			var _g1 = 1;
-			var _g = rects.length;
+			var _g = s.length;
 			while(_g1 < _g) {
 				var i = _g1++;
-				result = result.union(rects[i]);
+				bv[p++] = s.charCodeAt(i);
 			}
-			return result;
-		}
-		if(dir == null) dir = new nx3.VNoteInternalDirectionCalculator(note.getVHeads()).getDirection();
-		var rects1 = note.getVHeadsRectanglesDir(dir);
-		result = rects1[0].clone();
-		var _g11 = 1;
-		var _g2 = rects1.length;
-		while(_g11 < _g2) {
-			var i1 = _g11++;
-			result = result.union(rects1[i1]);
-		}
-		var offsetX = this.getHeadsCollisionOffsetX(note,dir);
-		result.offset(offsetX,0);
-		return result;
-	}
-	,getNotesRects: function(directions) {
-		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
-		var result = new Array();
-		var _g1 = 0;
-		var _g = this.getVNotes().length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var vnote = this.getVNotes()[i];
-			var rect = this.getNoteRect(vnote,directions[i]);
-			result.push(rect);
-		}
-		return result;
-	}
-	,notesHeadsRectsDirCheck: null
-	,notesHeadsRects: null
-	,getNotesHeadsRects: function(directions) {
-		if(this.notesHeadsRects != null && this.notesHeadsRectsDirCheck == directions) return this.notesHeadsRects;
-		this.notesHeadsRectsDirCheck = directions;
-		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
-		this.notesHeadsRects = new Array();
-		var _g1 = 0;
-		var _g = this.getVNotes().length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var vnote = this.getVNotes()[i];
-			var rects = this.getNoteHeadsRects(vnote,directions[i]);
-			var _g2 = 0;
-			while(_g2 < rects.length) {
-				var rect = rects[_g2];
-				++_g2;
-				this.notesHeadsRects.push(rect);
-			}
-		}
-		return this.notesHeadsRects;
-	}
-	,getStaveBasicRects: function(directions,beamgroups) {
-		if(directions.length != this.getVNotes().length) throw "Directions.length != vnotes.length";
-		var firstnote = cx.ArrayTools.first(this.getVNotes());
-		var result = new Array();
-		var flags = new Array();
-		var _g1 = 0;
-		var _g = this.getVNotes().length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var vnote = this.getVNotes()[i];
-			if(nx3.ENoteValTools.stavinglevel(vnote.nnote.value) == 0) continue;
-			if(vnote.nnote.type[0] != "Note") continue;
-			var beamgroup;
-			if(beamgroups != null) beamgroup = beamgroups[i]; else beamgroup = null;
-			var direction = directions[i];
-			var rect = null;
-			var headw;
-			var _g2 = nx3.ENoteValTools.head(vnote.nnote.value);
-			switch(_g2[1]) {
-			case 2:
-				headw = 2.2;
-				break;
-			default:
-				headw = 1.6;
-			}
-			var offset = 0.0;
-			if(vnote != firstnote) offset = this.getHeadsCollisionOffsetX(vnote,direction);
-			if(direction == nx3.EDirectionUD.Up) rect = new flash.geom.Rectangle(0,vnote.nnote.getBottomLevel() - 7,headw,7); else rect = new flash.geom.Rectangle(-headw,vnote.nnote.getTopLevel(),headw,7);
-			if(offset != 0) rect.offset(offset,0);
-			result.push(rect);
-			if(beamgroup != null && beamgroup.vnotes.length == 1) {
-				if(nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) {
-					var flagrect = null;
-					if(direction == nx3.EDirectionUD.Up) flagrect = new flash.geom.Rectangle(headw,vnote.nnote.getBottomLevel() - 7,2.6,4.8); else flagrect = new flash.geom.Rectangle(-headw,vnote.nnote.getTopLevel() + 7 - 4.8,2.6,4.8);
-					if(offset != 0) flagrect.offset(offset,0);
-					flags.push(flagrect);
-				}
-			}
-		}
-		if(flags != []) result = result.concat(flags);
-		return result;
-	}
-	,getStaveNoteBasicRectAndDirections: function(note,directions) {
-		var rects = this.getStaveBasicRects(directions);
-		if(note == cx.ArrayTools.first(this.getVNotes())) return { rect : rects[0], dir : directions[0]};
-		return { rect : rects[1], dir : directions[1]};
-	}
-	,getStavesBasicX: function(directions) {
-		var rects = this.getStaveBasicRects(directions);
-		var result = new Array();
-		var _g1 = 0;
-		var _g = this.getVNotes().length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var vnote = this.getVNotes()[i];
-			var rectDir = this.getStaveNoteBasicRectAndDirections(vnote,directions);
-			var direction = rectDir.dir;
-			var rect = rectDir.rect;
-			if(rect == null) {
-				result.push({ x : 0, y : 0});
-				continue;
-			}
-			var x = 0.0;
-			var y = 0.0;
-			if(direction == nx3.EDirectionUD.Up) {
-				x += rect.width;
-				y = vnote.nnote.getBottomLevel();
-			} else {
-				x = rect.x;
-				y = vnote.nnote.getTopLevel();
-			}
-			result.push({ x : x, y : y});
-		}
-		return result;
-	}
-	,__class__: nx3.VComplex
-};
-nx3.VComplexDotsRectsCalculator = function(dots) {
-	this.dots = dots;
-};
-$hxClasses["nx3.VComplexDotsRectsCalculator"] = nx3.VComplexDotsRectsCalculator;
-nx3.VComplexDotsRectsCalculator.__name__ = ["nx3","VComplexDotsRectsCalculator"];
-nx3.VComplexDotsRectsCalculator.prototype = {
-	dots: null
-	,getDotsRects: function(headsRects) {
-		if(this.dots == null || this.dots == []) return [];
-		if(headsRects == null) headsRects = [];
-		var rects = [];
-		var _g = 0;
-		var _g1 = this.dots;
-		while(_g < _g1.length) {
-			var dot = _g1[_g];
-			++_g;
-			var rect = null;
-			switch(dot[1]) {
-			case 0:
-				var level = dot[2];
-				rect = new flash.geom.Rectangle(0,level - 1,2.0,2);
-				break;
-			case 1:
-				var level1 = dot[2];
-				rect = new flash.geom.Rectangle(0,level1 - 1,3.0,2);
-				break;
-			}
-			var _g2 = 0;
-			while(_g2 < headsRects.length) {
-				var hr = headsRects[_g2];
-				++_g2;
-				var i = rect.intersection(hr);
-				if(i.width > 0) rect.offset(i.width,0);
-			}
-			rects.push(rect);
-		}
-		return rects;
-	}
-	,__class__: nx3.VComplexDotsRectsCalculator
-};
-nx3.VComplexSignsCalculator = function(vnotes) {
-	this.vnotes = vnotes;
-};
-$hxClasses["nx3.VComplexSignsCalculator"] = nx3.VComplexSignsCalculator;
-nx3.VComplexSignsCalculator.__name__ = ["nx3","VComplexSignsCalculator"];
-nx3.VComplexSignsCalculator.prototype = {
-	vnotes: null
-	,getSigns: function() {
-		var signs;
-		signs = this.calcUnsortedSigns(this.vnotes);
-		signs = this.calcSortSigns(signs);
-		return signs;
-	}
-	,visibleSigns: null
-	,getVisibleSigns: function() {
-		return this.calcVisibleSigns(this.getSigns());
-	}
-	,calcVisibleSigns: function(signs) {
-		var visibleSigns = [];
-		var _g = 0;
-		while(_g < signs.length) {
-			var sign = signs[_g];
-			++_g;
-			if(sign.sign == nx3.ESign.None) continue;
-			visibleSigns.push(sign);
-		}
-		return visibleSigns;
-	}
-	,calcUnsortedSigns: function(vnotes) {
-		var vsigns = [];
-		var _g = 0;
-		while(_g < vnotes.length) {
-			var vnote = vnotes[_g];
-			++_g;
-			var _g1 = 0;
-			var _g2 = vnote.nnote.get_nheads();
-			while(_g1 < _g2.length) {
-				var nhead = _g2[_g1];
-				++_g1;
-				var tsign = { sign : nhead.sign, level : nhead.level, position : 0};
-				vsigns.push(tsign);
-			}
-		}
-		return vsigns;
-	}
-	,calcSortSigns: function(vsigns) {
-		vsigns.sort(function(a,b) {
-			return Reflect.compare(a.level,b.level);
-		});
-		return vsigns;
-	}
-	,__class__: nx3.VComplexSignsCalculator
-};
-nx3.VComplexSignsRectsCalculator = function(vsigns) {
-	this.vsigns = vsigns;
-};
-$hxClasses["nx3.VComplexSignsRectsCalculator"] = nx3.VComplexSignsRectsCalculator;
-nx3.VComplexSignsRectsCalculator.__name__ = ["nx3","VComplexSignsRectsCalculator"];
-nx3.VComplexSignsRectsCalculator.prototype = {
-	vsigns: null
-	,getSignRects: function(headsRects) {
-		var rects = new Array();
-		if(headsRects == null) headsRects = [];
-		var _g = 0;
-		var _g1 = this.vsigns;
-		while(_g < _g1.length) {
-			var vsign = _g1[_g];
-			++_g;
-			var rect = this.getSignRect(vsign.sign);
-			rect.offset(-rect.width,vsign.level);
-			var _g2 = 0;
-			while(_g2 < headsRects.length) {
-				var hr = headsRects[_g2];
-				++_g2;
-				var i = rect.intersection(hr);
-				var count = 0;
-				while(i.width > 0.0000001) {
-					rect.offset(-i.width,0);
-					i = rect.intersection(hr);
-					if(count > 5) break;
-					count++;
-				}
-			}
-			var _g21 = 0;
-			while(_g21 < rects.length) {
-				var r = rects[_g21];
-				++_g21;
-				var i1 = r.intersection(rect);
-				while(i1.width > 0 || i1.height > 0) {
-					rect.x = r.x - rect.width;
-					i1 = r.intersection(rect);
-				}
-			}
-			rects.push(rect);
-		}
-		return rects;
-	}
-	,getSignRect: function(sign) {
-		switch(sign[1]) {
-		case 0:
-			return null;
-		case 5:
-			return new flash.geom.Rectangle(0,-1.5,2.6,3);
-		case 7:case 8:case 6:
-			return new flash.geom.Rectangle(0,-2,4.4,4);
-		case 2:
-			return new flash.geom.Rectangle(0,-3,2.6,5);
-		default:
-			return new flash.geom.Rectangle(0,-3,2.6,6);
-		}
-		throw "This shouldn't happen!";
-		return null;
-	}
-	,__class__: nx3.VComplexSignsRectsCalculator
-};
-nx3.VComplexTiestoRectsCalculator = function(ties) {
-};
-$hxClasses["nx3.VComplexTiestoRectsCalculator"] = nx3.VComplexTiestoRectsCalculator;
-nx3.VComplexTiestoRectsCalculator.__name__ = ["nx3","VComplexTiestoRectsCalculator"];
-nx3.VComplexTiestoRectsCalculator.prototype = {
-	getTiestoRects: function(rects) {
-		return null;
-	}
-	,__class__: nx3.VComplexTiestoRectsCalculator
-};
-nx3.VHead = function(nhead) {
-	this.nhead = nhead;
-};
-$hxClasses["nx3.VHead"] = nx3.VHead;
-nx3.VHead.__name__ = ["nx3","VHead"];
-nx3.VHead.prototype = {
-	nhead: null
-	,__class__: nx3.VHead
-};
-nx3.VHeadPlacementCalculator = function(vheads,direction) {
-	this.vheads = vheads;
-	this.direction = direction;
-};
-$hxClasses["nx3.VHeadPlacementCalculator"] = nx3.VHeadPlacementCalculator;
-nx3.VHeadPlacementCalculator.__name__ = ["nx3","VHeadPlacementCalculator"];
-nx3.VHeadPlacementCalculator.prototype = {
-	vheads: null
-	,direction: null
-	,getHeadsPlacements: function() {
-		if(this.vheads.length == 1) return [{ level : this.vheads[0].nhead.level, pos : nx3.EHeadPosition.Center}];
-		var len = this.vheads.length;
-		var placements = [];
-		var tempArray = [];
-		var _g = 0;
-		var _g1 = this.vheads;
-		while(_g < _g1.length) {
-			var vhead = _g1[_g];
-			++_g;
-			var placement = { level : vhead.nhead.level, pos : nx3.EHeadPosition.Center};
-			placements.push(placement);
-			tempArray.push(0);
-		}
-		if(this.direction == nx3.EDirectionUD.Up) {
-			var _g11 = 0;
-			var _g2 = len - 1;
-			while(_g11 < _g2) {
-				var j = _g11++;
-				var i = len - j - 1;
-				var vhead1 = this.vheads[i];
-				var vheadNext = this.vheads[i - 1];
-				var lDiff = vhead1.nhead.level - vheadNext.nhead.level;
-				if(lDiff < 2) {
-					if(tempArray[i] == tempArray[i - 1]) {
-						tempArray[i - 1] = 1;
-						placements[i - 1].pos = nx3.EHeadPosition.Right;
-					}
-				}
-			}
-		} else {
-			var _g12 = 0;
-			var _g3 = len - 1;
-			while(_g12 < _g3) {
-				var i1 = _g12++;
-				var vhead2 = this.vheads[i1];
-				var vheadNext1 = this.vheads[i1 + 1];
-				var lDiff1 = vheadNext1.nhead.level - vhead2.nhead.level;
-				if(lDiff1 < 2) {
-					if(tempArray[i1] == tempArray[i1 + 1]) {
-						tempArray[i1 + 1] = -1;
-						placements[i1 + 1].pos = nx3.EHeadPosition.Left;
-					}
-				}
-			}
-		}
-		return placements;
-	}
-	,__class__: nx3.VHeadPlacementCalculator
-};
-nx3.VHeadsRectsCalculator = function(vheads,placements,notevalue) {
-	this.vheads = vheads;
-	this.placements = placements;
-	this.notevalue = notevalue;
-};
-$hxClasses["nx3.VHeadsRectsCalculator"] = nx3.VHeadsRectsCalculator;
-nx3.VHeadsRectsCalculator.__name__ = ["nx3","VHeadsRectsCalculator"];
-nx3.VHeadsRectsCalculator.prototype = {
-	vheads: null
-	,placements: null
-	,notevalue: null
-	,notetype: null
-	,getHeadsRects: function() {
-		var rects = new Array();
-		var i = 0;
-		var _g = 0;
-		var _g1 = this.placements;
-		while(_g < _g1.length) {
-			var placement = _g1[_g];
-			++_g;
-			var headtype = this.vheads[i].nhead.type;
-			var rect = null;
-			var headw = 0;
-			this.headRect(headtype,this.notevalue);
-			var _g2 = nx3.ENoteValTools.head(this.notevalue);
-			switch(_g2[1]) {
-			case 2:
-				headw = 2.2;
-				break;
-			default:
-				headw = 1.6;
-			}
-			var rect1 = new flash.geom.Rectangle(-headw,-1,2 * headw,2);
-			var pos = 0.0;
-			var _g21 = placement.pos;
-			switch(_g21[1]) {
-			case 0:
-				pos = -2 * headw;
-				break;
-			case 2:
-				pos = 2 * headw;
-				break;
-			default:
-				pos = 0;
-			}
-			rect1.offset(pos,placement.level);
-			rects.push(rect1);
-			i++;
-		}
-		return rects;
-	}
-	,headRect: function(type,notevalue) {
-		var headw = 2;
-		var headh = 2;
-		switch(type[1]) {
-		case 0:
-			var _g = nx3.ENoteValTools.head(this.notevalue);
-			switch(_g[1]) {
-			case 2:
-				return new flash.geom.Rectangle(-2.2,-1,4.4,2);
-			default:
-				return new flash.geom.Rectangle(-1.6,-1,3.2,2);
-			}
-			break;
-		case 3:
-			var _g1 = nx3.ENoteValTools.beaminglevel(this.notevalue);
-			switch(_g1) {
-			case 1:
-				return new flash.geom.Rectangle(-1.8,-3,3.6,6);
-			case 2:
-				return new flash.geom.Rectangle(-2,-3,4,6);
-			default:
-				return new flash.geom.Rectangle(-1.6,-3.3,3.2,6.6);
-			}
-			break;
-		default:
-			return new flash.geom.Rectangle(-2,-2,4,4);
-		}
-		return new flash.geom.Rectangle(-2,-2,4,4);
-	}
-	,__class__: nx3.VHeadsRectsCalculator
-};
-nx3.VMapTools = function() { };
-$hxClasses["nx3.VMapTools"] = nx3.VMapTools;
-nx3.VMapTools.__name__ = ["nx3","VMapTools"];
-nx3.VMapTools.keysToArray = function(it) {
-	var result = [];
-	while( it.hasNext() ) {
-		var v = it.next();
-		result.push(v);
-	}
-	return result;
-};
-nx3.VMapTools.sortarray = function(a) {
-	a.sort(function(a1,b) {
-		return Reflect.compare(a1,b);
-	});
-	return a;
-};
-nx3.VNote = function(nnote) {
-	this.nnote = nnote;
-};
-$hxClasses["nx3.VNote"] = nx3.VNote;
-nx3.VNote.__name__ = ["nx3","VNote"];
-nx3.VNote.prototype = {
-	nnote: null
-	,vheads: null
-	,getVHeads: function() {
-		if(this.vheads != null) return this.vheads;
-		this.vheads = [];
-		var _g = 0;
-		var _g1 = this.nnote.get_nheads();
-		while(_g < _g1.length) {
-			var nhead = _g1[_g];
-			++_g;
-			this.vheads.push(new nx3.VHead(nhead));
-		}
-		return this.vheads;
-	}
-	,vheadsPlacements: null
-	,getVHeadsPlacements: function() {
-		if(this.vheadsPlacements != null) return this.vheadsPlacements;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadPlacementCalculator(this.vheads,this.getDirection());
-		this.vheadsPlacements = calculator.getHeadsPlacements();
-		return this.vheadsPlacements;
-	}
-	,vheadsPlacementsUp: null
-	,getVHeadPlacementsUp: function() {
-		if(this.vheadsPlacementsUp != null) return this.vheadsPlacementsUp;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadPlacementCalculator(this.vheads,nx3.EDirectionUD.Up);
-		this.vheadsPlacementsUp = calculator.getHeadsPlacements();
-		return this.vheadsPlacementsUp;
-	}
-	,vheadsPlacementsDown: null
-	,getVHeadPlacementsDown: function() {
-		if(this.vheadsPlacementsDown != null) return this.vheadsPlacementsDown;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadPlacementCalculator(this.vheads,nx3.EDirectionUD.Down);
-		this.vheadsPlacementsDown = calculator.getHeadsPlacements();
-		return this.vheadsPlacementsDown;
-	}
-	,getVHeadPlacementsDir: function(dir) {
-		if(dir == nx3.EDirectionUD.Up) return this.getVHeadPlacementsUp(); else return this.getVHeadPlacementsDown();
-	}
-	,getVHeadsRectanglesDir: function(dir) {
-		if(dir == nx3.EDirectionUD.Up) return this.getVHeadsRectanglesUp(); else return this.getVHeadsRectanglesDown();
-	}
-	,vheadsRectanglesUp: null
-	,getVHeadsRectanglesUp: function() {
-		if(this.vheadsRectanglesUp != null) return this.vheadsRectanglesUp;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadsRectsCalculator(this.getVHeads(),this.getVHeadPlacementsUp(),this.nnote.value);
-		var calculator1 = new nx3.VNoteHeadsRectsCalculator(this,this.getVHeadPlacementsUp());
-		this.vheadsRectanglesUp = calculator1.getHeadsRects();
-		return this.vheadsRectanglesUp;
-	}
-	,vheadsRectanglesDown: null
-	,getVHeadsRectanglesDown: function() {
-		if(this.vheadsRectanglesDown != null) return this.vheadsRectanglesDown;
-		if(this.vheads == null) this.getVHeads();
-		var calculator = new nx3.VHeadsRectsCalculator(this.getVHeads(),this.getVHeadPlacementsDown(),this.nnote.value);
-		var calculator1 = new nx3.VNoteHeadsRectsCalculator(this,this.getVHeadPlacementsDown());
-		this.vheadsRectanglesDown = calculator1.getHeadsRects();
-		return this.vheadsRectanglesDown;
-	}
-	,config: null
-	,setConfig: function(newConfig) {
-		if(Std.string(this.config) == Std.string(newConfig)) return; else {
-			this.direction = null;
-			this.vheadsPlacements = null;
-		}
-		this.config = newConfig;
-	}
-	,direction: null
-	,getDirection: function() {
-		if(this.direction != null) return this.direction;
-		var calculator = new nx3.VNoteDirectionCalculator(this);
-		var configDirection;
-		if(this.config != null) configDirection = this.config.direction; else configDirection = null;
-		this.direction = calculator.getDirection(configDirection);
-		return this.direction;
-	}
-	,__class__: nx3.VNote
-};
-nx3.VNoteDirectionCalculator = function(vnote) {
-	this.vnote = vnote;
-};
-$hxClasses["nx3.VNoteDirectionCalculator"] = nx3.VNoteDirectionCalculator;
-nx3.VNoteDirectionCalculator.__name__ = ["nx3","VNoteDirectionCalculator"];
-nx3.VNoteDirectionCalculator.prototype = {
-	vnote: null
-	,getDirection: function(directionConfig) {
-		if(this.vnote.nnote.type[1] != 0) return nx3.EDirectionUD.Down;
-		var direction;
-		if(this.vnote.nnote.direction != null) {
-			var _g = this.vnote.nnote.direction;
-			switch(_g[1]) {
-			case 0:
-				direction = nx3.EDirectionUD.Up;
-				return direction;
-			case 2:
-				direction = nx3.EDirectionUD.Down;
-				return direction;
-			default:
-			}
-		}
-		if(directionConfig != null) return directionConfig;
-		var calculator = new nx3.VNoteInternalDirectionCalculator(this.vnote.getVHeads());
-		return calculator.getDirection();
-	}
-	,__class__: nx3.VNoteDirectionCalculator
-};
-nx3.VNoteHeadsRectsCalculator = function(vnote,placements) {
-	this.vnote = vnote;
-	this.heads = vnote.getVHeads();
-	if(placements != null) this.placements = placements; else this.placements = vnote.getVHeadsPlacements();
-};
-$hxClasses["nx3.VNoteHeadsRectsCalculator"] = nx3.VNoteHeadsRectsCalculator;
-nx3.VNoteHeadsRectsCalculator.__name__ = ["nx3","VNoteHeadsRectsCalculator"];
-nx3.VNoteHeadsRectsCalculator.prototype = {
-	vnote: null
-	,placements: null
-	,heads: null
-	,getHeadsRects: function() {
-		{
-			var _g = this.vnote.nnote.type;
-			switch(_g[1]) {
-			case 0:
-				var a2 = _g[5];
-				var a = _g[4];
-				var v = _g[3];
-				var h = _g[2];
-				return new nx3.VHeadsRectsCalculator(this.heads,this.placements,this.vnote.nnote.value).getHeadsRects();
-			case 1:
-				var l = _g[2];
-				return new nx3.VNoteHeadsRectsPausesCalculator(this.vnote).getHeadsRects();
-			case 4:
-				var font = _g[5];
-				var c = _g[4];
-				var o = _g[3];
-				var text = _g[2];
-				return new nx3.VNoteHeadsRectsLyricsCalculator(this.vnote,text,font).getHeadsRects();
-			case 3:
-				return new nx3.VNoteHeadsRectsTplCalculator(this.vnote).getHeadsRects();
-			default:
-				throw "Non implemented ENoteType: " + this.vnote.nnote.type[0];
-				return [];
-			}
-		}
-	}
-	,__class__: nx3.VNoteHeadsRectsCalculator
-};
-nx3.VNoteHeadsRectsLyricsCalculator = function(vnote,text,font) {
-	this.vnote = vnote;
-	this.text = text;
-	this.font = font;
-};
-$hxClasses["nx3.VNoteHeadsRectsLyricsCalculator"] = nx3.VNoteHeadsRectsLyricsCalculator;
-nx3.VNoteHeadsRectsLyricsCalculator.__name__ = ["nx3","VNoteHeadsRectsLyricsCalculator"];
-nx3.VNoteHeadsRectsLyricsCalculator.prototype = {
-	vnote: null
-	,text: null
-	,font: null
-	,getHeadsRects: function() {
-		var target = new nx3.render.TargetSprite();
-		if(this.font != null) target.setFont(this.font);
-		var width = target.textwidth(this.text);
-		var height = target.textheight(this.text);
-		return [new flash.geom.Rectangle(-width / 2,-height / 2,width,height)];
-		return null;
-	}
-	,__class__: nx3.VNoteHeadsRectsLyricsCalculator
-};
-nx3.VNoteHeadsRectsPausesCalculator = function(vnote) {
-	this.vnote = vnote;
-};
-$hxClasses["nx3.VNoteHeadsRectsPausesCalculator"] = nx3.VNoteHeadsRectsPausesCalculator;
-nx3.VNoteHeadsRectsPausesCalculator.__name__ = ["nx3","VNoteHeadsRectsPausesCalculator"];
-nx3.VNoteHeadsRectsPausesCalculator.prototype = {
-	vnote: null
-	,getHeadsRects: function() {
-		var _g = nx3.ENoteValTools.beaminglevel(this.vnote.nnote.value);
-		switch(_g) {
-		case 1:
-			return [new flash.geom.Rectangle(-1.8,-3,3.6,6)];
-		case 2:
-			return [new flash.geom.Rectangle(-2,-3,4,6)];
-		default:
-			return [new flash.geom.Rectangle(-1.6,-3.3,3.2,6.6)];
-		}
-	}
-	,__class__: nx3.VNoteHeadsRectsPausesCalculator
-};
-nx3.VNoteHeadsRectsTplCalculator = function(vnote) {
-	this.vnote = vnote;
-};
-$hxClasses["nx3.VNoteHeadsRectsTplCalculator"] = nx3.VNoteHeadsRectsTplCalculator;
-nx3.VNoteHeadsRectsTplCalculator.__name__ = ["nx3","VNoteHeadsRectsTplCalculator"];
-nx3.VNoteHeadsRectsTplCalculator.prototype = {
-	vnote: null
-	,getHeadsRects: function() {
-		return [new flash.geom.Rectangle(-6,-5.3,12,10.6)];
-	}
-	,__class__: nx3.VNoteHeadsRectsTplCalculator
-};
-nx3.VNoteInternalDirectionCalculator = function(vheads) {
-	this.vheads = vheads;
-};
-$hxClasses["nx3.VNoteInternalDirectionCalculator"] = nx3.VNoteInternalDirectionCalculator;
-nx3.VNoteInternalDirectionCalculator.__name__ = ["nx3","VNoteInternalDirectionCalculator"];
-nx3.VNoteInternalDirectionCalculator.prototype = {
-	vheads: null
-	,getDirection: function() {
-		var headsCount = this.vheads.length;
-		switch(headsCount) {
-		case 0:
-			return nx3.EDirectionUD.Down;
-		case 1:
-			return this.weightToDirection(this.vheads[0].nhead.level);
-		default:
-		}
-		var weight = this.vheads[0].nhead.level + this.vheads[headsCount - 1].nhead.level;
-		return this.weightToDirection(weight);
-	}
-	,weightToDirection: function(weight) {
-		if(weight <= 0) return nx3.EDirectionUD.Down; else return nx3.EDirectionUD.Up;
-	}
-	,__class__: nx3.VNoteInternalDirectionCalculator
-};
-nx3.VPart = function(npart) {
-	this.caluclateBeamgropuDirectionsFlag = false;
-	this.npart = npart;
-};
-$hxClasses["nx3.VPart"] = nx3.VPart;
-nx3.VPart.__name__ = ["nx3","VPart"];
-nx3.VPart.prototype = {
-	npart: null
-	,vvoices: null
-	,getVVoices: function() {
-		if(this.vvoices != null) return this.vvoices;
-		this.vvoices = [];
-		var _g = 0;
-		var _g1 = this.npart.nvoices;
-		while(_g < _g1.length) {
-			var nvoice = _g1[_g];
-			++_g;
-			this.vvoices.push(new nx3.VVoice(nvoice));
-		}
-		return this.vvoices;
-	}
-	,vcomplexes: null
-	,vcomplexesPositions: null
-	,positionsVComplexes: null
-	,generator: null
-	,getVComplexes: function() {
-		if(this.vcomplexes != null) return this.vcomplexes;
-		this.generator = new nx3.VPartComplexesGenerator(this.getVVoices());
-		this.vcomplexes = this.generator.getComplexes();
-		this.vcomplexesPositions = this.generator.getComplexesPositions();
-		this.positionsVComplexes = this.generator.getPositionsComplexes();
-		return this.vcomplexes;
-	}
-	,vnotesVComplexes: null
-	,getVNotesVComplexes: function() {
-		if(this.vnotesVComplexes != null) return this.vnotesVComplexes;
-		if(this.vcomplexes == null) this.getVComplexes();
-		this.vnotesVComplexes = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.vcomplexes;
-		while(_g < _g1.length) {
-			var vcomplex = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vcomplex.getVNotes();
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				this.vnotesVComplexes.set(vnote,vcomplex);
-			}
-		}
-		return this.vnotesVComplexes;
-	}
-	,getPositionsVComplexes: function() {
-		if(this.vcomplexes == null) this.getVComplexes();
-		return this.positionsVComplexes;
-	}
-	,getVComplexesPositions: function() {
-		if(this.vcomplexes == null) this.getVComplexes();
-		return this.vcomplexesPositions;
-	}
-	,vcomplexesMinDistances: null
-	,getVComplexesMinDistances: function() {
-		if(this.vcomplexesMinDistances != null) return this.vcomplexesMinDistances;
-		this.vcomplexesMinDistances = new haxe.ds.ObjectMap();
-		var complexes = this.getVComplexes();
-		this.getBeamgroupsDirections();
-		var i = 0;
-		var _g1 = 0;
-		var _g = complexes.length;
-		while(_g1 < _g) {
-			var i1 = _g1++;
-			var leftComplex = complexes[i1];
-			var rightComplex;
-			if(i1 < complexes.length) rightComplex = complexes[i1 + 1]; else rightComplex = null;
-			var distance = new nx3.VPartComplexesMinDistancesCalculator(this).getDistance(leftComplex,rightComplex);
-			this.vcomplexesMinDistances.set(leftComplex,distance);
-		}
-		return this.vcomplexesMinDistances;
-	}
-	,value: null
-	,getValue: function() {
-		if(this.value != null) return this.value;
-		if(this.getVVoices().length == 1) this.value = this.vvoices[0].getValue();
-		var value = .0;
-		var _g = 0;
-		var _g1 = this.vvoices;
-		while(_g < _g1.length) {
-			var vvoice = _g1[_g];
-			++_g;
-			value = Math.max(value,vvoice.getValue());
-		}
-		this.value = value | 0;
-		return this.value;
-	}
-	,voicesbeamgroups: null
-	,getVoicesBeamgroups: function() {
-		if(this.voicesbeamgroups != null) return this.voicesbeamgroups;
-		this.voicesbeamgroups = new Array();
-		var _g = 0;
-		var _g1 = this.getVVoices();
-		while(_g < _g1.length) {
-			var vvoice = _g1[_g];
-			++_g;
-			this.voicesbeamgroups.push(vvoice.getBeamgroups());
-		}
-		this.calculateBeamgropusDirections();
-		return this.voicesbeamgroups;
-	}
-	,getVoiceBeamgroups: function(vvoice) {
-		if(this.voicesbeamgroups == null) this.getVoicesBeamgroups();
-		var voiceIdx;
-		var _this = this.getVVoices();
-		voiceIdx = HxOverrides.indexOf(_this,vvoice,0);
-		return this.voicesbeamgroups[voiceIdx];
-	}
-	,beamgroupsDirections: null
-	,getBeamgroupsDirections: function() {
-		if(this.beamgroupsDirections != null) return this.beamgroupsDirections;
-		if(this.voicesbeamgroups == null) this.getVoicesBeamgroups();
-		var calculator = new nx3.VPartbeamgroupsDirectionCalculator(this);
-		this.beamgroupsDirections = calculator.getBeamgroupsDirections();
-		return this.beamgroupsDirections;
-	}
-	,caluclateBeamgropuDirectionsFlag: null
-	,calculateBeamgropusDirections: function(force) {
-		if(force == null) force = false;
-		if(this.caluclateBeamgropuDirectionsFlag == true && force == false) return;
-		var calculator = new nx3.VPartbeamgroupsDirectionCalculator(this);
-		calculator.calculateBeamgroupsDirections();
-		this.caluclateBeamgropuDirectionsFlag = true;
-	}
-	,vnotesVVoices: null
-	,getVNotesVVoices: function() {
-		if(this.vnotesVVoices != null) return this.vnotesVVoices;
-		this.vnotesVVoices = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.getVVoices();
-		while(_g < _g1.length) {
-			var vvoice = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vvoice.getVNotes();
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				this.vnotesVVoices.set(vnote,vvoice);
-			}
-		}
-		return this.vnotesVVoices;
-	}
-	,vcomplexDirections: null
-	,getVComplexDirections: function() {
-		if(this.vcomplexDirections != null) return this.vcomplexDirections;
-		this.vcomplexDirections = new haxe.ds.ObjectMap();
-		var beamgroupsDirections = this.getBeamgroupsDirections();
-		var _g = 0;
-		var _g1 = this.getVComplexes();
-		while(_g < _g1.length) {
-			var vcomplex = _g1[_g];
-			++_g;
-			var directions = new Array();
-			var _g2 = 0;
-			var _g3 = vcomplex.getVNotes();
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				var vvoice;
-				var this1 = this.getVNotesVVoices();
-				vvoice = this1.get(vnote);
-				var beamgroup;
-				var this2 = vvoice.getNotesBeamgroups();
-				beamgroup = this2.get(vnote);
-				var direction = beamgroupsDirections.h[beamgroup.__id__];
-				directions.push(direction);
-			}
-			this.vcomplexDirections.set(vcomplex,directions);
-		}
-		return this.vcomplexDirections;
-	}
-	,__class__: nx3.VPart
-};
-nx3.VPartComplexesGenerator = function(vvoices) {
-	this.vvoices = vvoices;
-};
-$hxClasses["nx3.VPartComplexesGenerator"] = nx3.VPartComplexesGenerator;
-nx3.VPartComplexesGenerator.__name__ = ["nx3","VPartComplexesGenerator"];
-nx3.VPartComplexesGenerator.prototype = {
-	vvoices: null
-	,complexes: null
-	,getComplexes: function() {
-		if(this.complexes != null) return this.complexes;
-		this.positionsMap = this.calcPositionsMap();
-		this.calcComplexes(this.positionsMap);
-		return this.complexes;
-	}
-	,positionsComplexes: null
-	,getPositionsComplexes: function() {
-		if(this.complexes == null) this.getComplexes();
-		return this.positionsComplexes;
-	}
-	,complexesPositions: null
-	,getComplexesPositions: function() {
-		if(this.complexes == null) this.getComplexes();
-		return this.complexesPositions;
-	}
-	,calcComplexes: function(positions) {
-		this.complexes = [];
-		this.positionsComplexes = new haxe.ds.IntMap();
-		this.complexesPositions = new haxe.ds.ObjectMap();
-		var poskeys = nx3.VMapTools.keysToArray(positions.keys());
-		poskeys = nx3.VMapTools.sortarray(poskeys);
-		var _g = 0;
-		while(_g < poskeys.length) {
-			var pos = poskeys[_g];
-			++_g;
-			var vnotes = positions.get(pos);
-			var vcomplex = new nx3.VComplex(vnotes);
-			this.complexes.push(vcomplex);
-			this.positionsComplexes.set(pos,vcomplex);
-			this.complexesPositions.set(vcomplex,pos);
-		}
-	}
-	,positionsMap: null
-	,calcPositionsMap: function() {
-		var positionsMap = new haxe.ds.IntMap();
-		var _g = 0;
-		var _g1 = this.vvoices;
-		while(_g < _g1.length) {
-			var vvoice = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = vvoice.getVNotes();
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				var npos;
-				var this1 = vvoice.getVNotePositions();
-				npos = this1.get(vnote);
-				if(!positionsMap.exists(npos)) positionsMap.set(npos,[]);
-				positionsMap.get(npos).push(vnote);
-			}
-		}
-		return positionsMap;
-	}
-	,__class__: nx3.VPartComplexesGenerator
-};
-nx3.VPartComplexesMinDistancesCalculator = function(vpart) {
-	this.vpart = vpart;
-};
-$hxClasses["nx3.VPartComplexesMinDistancesCalculator"] = nx3.VPartComplexesMinDistancesCalculator;
-nx3.VPartComplexesMinDistancesCalculator.__name__ = ["nx3","VPartComplexesMinDistancesCalculator"];
-nx3.VPartComplexesMinDistancesCalculator.prototype = {
-	vpart: null
-	,getDistance: function(leftComplex,rightComplex) {
-		var left = this.getComplexRightside(leftComplex);
-		var right = this.getComplexLeftside(rightComplex);
-		if(rightComplex == null && leftComplex != null) {
-			var vnotes = leftComplex.getVNotes();
-			var hasflag = false;
-			var _g = 0;
-			while(_g < vnotes.length) {
-				var vnote = vnotes[_g];
-				++_g;
-				if(vnote.nnote.type[0] == "Note" && nx3.ENoteValTools.beaminglevel(vnote.nnote.value) > 0) hasflag = true;
-			}
-			if(hasflag) right = this.getComplexRightside(leftComplex);
-		}
-		var minDistance = left.minrect.width + left.minrect.x + -right.minrect.x;
-		var rectsDistance = cx.MathTools.round2(nx3.geom.RectanglesTools.getXIntersection(left.rects,right.rects),null);
-		return Math.max(minDistance,rectsDistance);
-	}
-	,getComplexRightside: function(complex) {
-		if(complex == null) return { minrect : new flash.geom.Rectangle(0,0,0,0), rects : []};
-		var directions;
-		var this1 = this.vpart.getVComplexDirections();
-		directions = this1.get(complex);
-		var noterects = complex.getNotesHeadsRects(directions);
-		var minrect = nx3.geom.RectanglesTools.unionAll(noterects);
-		minrect.y = -5;
-		minrect.height = 10;
-		var rects = noterects;
-		var beamgroups = [];
-		var firstnote = cx.ArrayTools.first(complex.getVNotes());
-		var firstbeamgroup;
-		var this2 = cx.ArrayTools.first(this.vpart.getVVoices()).getNotesBeamgroups();
-		firstbeamgroup = this2.get(firstnote);
-		beamgroups.push(firstbeamgroup);
-		if(complex.getVNotes().length == 2) {
-			var secondnote = cx.ArrayTools.second(complex.getVNotes());
-			var secondbeamgroup;
-			var this3 = cx.ArrayTools.second(this.vpart.getVVoices()).getNotesBeamgroups();
-			secondbeamgroup = this3.get(secondnote);
-			beamgroups.push(secondbeamgroup);
-		}
-		rects = rects.concat(complex.getStaveBasicRects(directions,beamgroups));
-		var dotrects = complex.getDotsRects(noterects,directions);
-		if(dotrects != null && dotrects != []) rects = rects.concat(dotrects);
-		return { minrect : minrect, rects : rects};
-	}
-	,getComplexLeftside: function(complex) {
-		if(complex == null) return { minrect : new flash.geom.Rectangle(0,0,0,0), rects : []};
-		var directions;
-		var this1 = this.vpart.getVComplexDirections();
-		directions = this1.get(complex);
-		var noterects = complex.getNotesHeadsRects(directions);
-		var minrect = nx3.geom.RectanglesTools.unionAll(noterects);
-		minrect.y = -5;
-		minrect.height = 10;
-		var rects = noterects;
-		var vnotes = complex.getVNotes();
-		var beamgroups = [];
-		var firstnote = cx.ArrayTools.first(complex.getVNotes());
-		var firstbeamgroup;
-		var this2 = cx.ArrayTools.first(this.vpart.getVVoices()).getNotesBeamgroups();
-		firstbeamgroup = this2.get(firstnote);
-		beamgroups.push(firstbeamgroup);
-		if(complex.getVNotes().length == 2) {
-			var secondnote = cx.ArrayTools.second(complex.getVNotes());
-			var secondbeamgroup;
-			var this3 = cx.ArrayTools.second(this.vpart.getVVoices()).getNotesBeamgroups();
-			secondbeamgroup = this3.get(secondnote);
-			beamgroups.push(secondbeamgroup);
-		}
-		rects = rects.concat(complex.getStaveBasicRects(directions,beamgroups));
-		var signsrects = complex.getSignsRects(noterects);
-		if(signsrects != null && signsrects != []) rects = rects.concat(signsrects);
-		return { minrect : minrect, rects : rects};
-	}
-	,__class__: nx3.VPartComplexesMinDistancesCalculator
-};
-nx3.VPartbeamgroupsDirectionCalculator = function(vpart) {
-	this.vpart = vpart;
-};
-$hxClasses["nx3.VPartbeamgroupsDirectionCalculator"] = nx3.VPartbeamgroupsDirectionCalculator;
-nx3.VPartbeamgroupsDirectionCalculator.__name__ = ["nx3","VPartbeamgroupsDirectionCalculator"];
-nx3.VPartbeamgroupsDirectionCalculator.prototype = {
-	vpart: null
-	,getBeamgroupsDirections: function() {
-		var beamgroupsDirections = new haxe.ds.ObjectMap();
-		var partbeamgroups = this.vpart.getVoicesBeamgroups();
-		var beamgroups0 = partbeamgroups[0];
-		var voiceDirection0 = this.vpart.getVVoices()[0].nvoice.direction;
-		if(voiceDirection0 == null) voiceDirection0 = nx3.EDirectionUAD.Auto;
-		if(partbeamgroups.length == 1) {
-			var _g = 0;
-			while(_g < beamgroups0.length) {
-				var beamgroup = beamgroups0[_g];
-				++_g;
-				var direction = null;
-				switch(voiceDirection0[1]) {
-				case 0:
-					direction = nx3.EDirectionUD.Up;
-					break;
-				case 2:
-					direction = nx3.EDirectionUD.Down;
-					break;
-				case 1:
-					var calculator = new nx3.VBeamgroupDirectionCalculator(beamgroup);
-					direction = calculator.getDirection();
-					break;
-				}
-				beamgroupsDirections.set(beamgroup,direction);
-			}
-		} else if(partbeamgroups.length == 2) {
-			var beamgroups1 = partbeamgroups[1];
-			var voiceDirection1 = this.vpart.getVVoices()[1].nvoice.direction;
-			if(voiceDirection1 == null) voiceDirection0 = nx3.EDirectionUAD.Auto;
-			var voice0 = this.vpart.getVVoices()[0];
-			var voice1 = this.vpart.getVVoices()[1];
-			if(voiceDirection0 == nx3.EDirectionUAD.Auto && voiceDirection1 == nx3.EDirectionUAD.Auto) {
-				var voice0value = voice0.getValue();
-				var voice1value = voice1.getValue();
-				var direction1 = null;
-				var bgPosition = 0;
-				var _g1 = 0;
-				while(_g1 < beamgroups0.length) {
-					var beamgroup1 = beamgroups0[_g1];
-					++_g1;
-					if(bgPosition < voice1value) direction1 = nx3.EDirectionUD.Up; else {
-						var calculator1 = new nx3.VBeamgroupDirectionCalculator(beamgroup1);
-						direction1 = calculator1.getDirection();
-					}
-					beamgroupsDirections.set(beamgroup1,direction1);
-					bgPosition += beamgroup1.getValue();
-				}
-				var bgPosition1 = 0;
-				var _g2 = 0;
-				while(_g2 < beamgroups1.length) {
-					var beamgroup2 = beamgroups1[_g2];
-					++_g2;
-					if(bgPosition1 < voice0value) direction1 = nx3.EDirectionUD.Down; else {
-						var calculator2 = new nx3.VBeamgroupDirectionCalculator(beamgroup2);
-						direction1 = calculator2.getDirection();
-					}
-					beamgroupsDirections.set(beamgroup2,direction1);
-					bgPosition1 += beamgroup2.getValue();
-				}
-			} else {
-				var _g3 = 0;
-				while(_g3 < beamgroups0.length) {
-					var beamgroup3 = beamgroups0[_g3];
-					++_g3;
-					var value = nx3.EDirectionTools.uadToUd(voice0.nvoice.direction);
-					beamgroupsDirections.set(beamgroup3,value);
-				}
-				var _g4 = 0;
-				while(_g4 < beamgroups1.length) {
-					var beamgroup4 = beamgroups1[_g4];
-					++_g4;
-					var value1 = nx3.EDirectionTools.uadToUd(voice1.nvoice.direction);
-					beamgroupsDirections.set(beamgroup4,value1);
-				}
-			}
-		} else throw "SHOULDN'T HAPPEN";
-		return beamgroupsDirections;
-	}
-	,calculateBeamgroupsDirections: function() {
-		var partbeamgroups = this.vpart.getVoicesBeamgroups();
-		var beamgroups0 = partbeamgroups[0];
-		var voiceDirection0 = this.vpart.getVVoices()[0].nvoice.direction;
-		if(voiceDirection0 == null) voiceDirection0 = nx3.EDirectionUAD.Auto;
-		if(partbeamgroups.length == 1) {
-			var _g = 0;
-			while(_g < beamgroups0.length) {
-				var beamgroup = beamgroups0[_g];
-				++_g;
-				var direction = null;
-				switch(voiceDirection0[1]) {
-				case 0:
-					direction = nx3.EDirectionUD.Up;
-					break;
-				case 2:
-					direction = nx3.EDirectionUD.Down;
-					break;
-				case 1:
-					var calculator = new nx3.VBeamgroupDirectionCalculator(beamgroup);
-					direction = calculator.getDirection();
-					break;
-				}
-				beamgroup.setCalculatedDirection(direction);
-			}
-		} else if(partbeamgroups.length == 2) {
-			var beamgroups1 = partbeamgroups[1];
-			var voiceDirection1 = this.vpart.getVVoices()[1].nvoice.direction;
-			if(voiceDirection1 == null) voiceDirection0 = nx3.EDirectionUAD.Auto;
-			var voice0 = this.vpart.getVVoices()[0];
-			var voice1 = this.vpart.getVVoices()[1];
-			if(voiceDirection0 == nx3.EDirectionUAD.Auto && voiceDirection1 == nx3.EDirectionUAD.Auto) {
-				var voice0value = voice0.getValue();
-				var voice1value = voice1.getValue();
-				var direction1 = null;
-				var bgPosition = 0;
-				var _g1 = 0;
-				while(_g1 < beamgroups0.length) {
-					var beamgroup1 = beamgroups0[_g1];
-					++_g1;
-					if(bgPosition < voice1value) direction1 = nx3.EDirectionUD.Up; else {
-						var calculator1 = new nx3.VBeamgroupDirectionCalculator(beamgroup1);
-						direction1 = calculator1.getDirection();
-					}
-					beamgroup1.setCalculatedDirection(direction1);
-					bgPosition += beamgroup1.getValue();
-				}
-				var bgPosition1 = 0;
-				var _g2 = 0;
-				while(_g2 < beamgroups1.length) {
-					var beamgroup2 = beamgroups1[_g2];
-					++_g2;
-					if(bgPosition1 < voice0value) direction1 = nx3.EDirectionUD.Down; else {
-						var calculator2 = new nx3.VBeamgroupDirectionCalculator(beamgroup2);
-						direction1 = calculator2.getDirection();
-					}
-					beamgroup2.setCalculatedDirection(direction1);
-					bgPosition1 += beamgroup2.getValue();
-				}
-			} else {
-				var _g3 = 0;
-				while(_g3 < beamgroups0.length) {
-					var beamgroup3 = beamgroups0[_g3];
-					++_g3;
-					beamgroup3.setCalculatedDirection(nx3.EDirectionTools.uadToUd(voice0.nvoice.direction));
-				}
-				var _g4 = 0;
-				while(_g4 < beamgroups1.length) {
-					var beamgroup4 = beamgroups1[_g4];
-					++_g4;
-					beamgroup4.setCalculatedDirection(nx3.EDirectionTools.uadToUd(voice1.nvoice.direction));
-				}
-			}
-		} else throw "SHOULDN'T HAPPEN";
-	}
-	,__class__: nx3.VPartbeamgroupsDirectionCalculator
-};
-nx3.VVoice = function(nvoice) {
-	this.nvoice = nvoice;
-};
-$hxClasses["nx3.VVoice"] = nx3.VVoice;
-nx3.VVoice.__name__ = ["nx3","VVoice"];
-nx3.VVoice.prototype = {
-	nvoice: null
-	,vnotes: null
-	,getVNotes: function() {
-		if(this.vnotes != null) return this.vnotes;
-		this.vnotes = [];
-		var _g = 0;
-		var _g1 = this.nvoice.nnotes;
-		while(_g < _g1.length) {
-			var nnote = _g1[_g];
-			++_g;
-			this.vnotes.push(new nx3.VNote(nnote));
-		}
-		return this.vnotes;
-	}
-	,vnotePositions: null
-	,getVNotePositions: function() {
-		if(this.vnotePositions != null) return this.vnotePositions;
-		if(this.vnotes == null) this.getVNotes();
-		this.vnotePositions = new haxe.ds.ObjectMap();
-		var pos = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			this.vnotePositions.set(vnote,pos);
-			pos += nx3.ENoteValTools.value(vnote.nnote.value);
-		}
-		return this.vnotePositions;
-	}
-	,value: null
-	,getValue: function() {
-		if(this.value != null) return this.value;
-		if(this.vnotes == null) this.getVNotes();
-		this.value = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			this.value += nx3.ENoteValTools.value(vnote.nnote.value);
-		}
-		return this.value;
-	}
-	,beamgroups: null
-	,beampattern: null
-	,getBeamgroups: function(pattern) {
-		if(pattern != null && pattern != this.beampattern) {
-			this.beampattern = pattern;
-			this.beamgroups = null;
-		}
-		if(this.beamgroups != null) return this.beamgroups;
-		this.beamgroups = new nx3.VVoiceBeamgroupsGenerator(this.getVNotes(),pattern).getBeamgroups();
-		return this.beamgroups;
-	}
-	,notesBeamgroups: null
-	,getNotesBeamgroups: function(pattern) {
-		if(pattern != null && pattern != this.beampattern) this.notesBeamgroups = null;
-		if(this.notesBeamgroups != null) return this.notesBeamgroups;
-		if(this.beamgroups == null) this.getBeamgroups(pattern);
-		this.notesBeamgroups = new haxe.ds.ObjectMap();
-		var _g = 0;
-		var _g1 = this.beamgroups;
-		while(_g < _g1.length) {
-			var beamgroup = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = beamgroup.vnotes;
-			while(_g2 < _g3.length) {
-				var vnote = _g3[_g2];
-				++_g2;
-				this.notesBeamgroups.set(vnote,beamgroup);
-			}
-		}
-		return this.notesBeamgroups;
-	}
-	,__class__: nx3.VVoice
-};
-nx3.VVoiceBeamgroupsGenerator = function(vnotes,pattern) {
-	if(pattern == null) pattern = [nx3.ENoteVal.Nv4];
-	this.vnotes = vnotes;
-	this.pattern = pattern;
-	this.adjustPatternLenght();
-};
-$hxClasses["nx3.VVoiceBeamgroupsGenerator"] = nx3.VVoiceBeamgroupsGenerator;
-nx3.VVoiceBeamgroupsGenerator.__name__ = ["nx3","VVoiceBeamgroupsGenerator"];
-nx3.VVoiceBeamgroupsGenerator.prototype = {
-	vnotes: null
-	,pattern: null
-	,getBeamgroups: function() {
-		var patternPositions = this.getPatternPositions();
-		var notesPositions = this.getNotesPositions();
-		var notesBeamgroupPosIndexes = this.getNotesBeamgroupPosIndexes(patternPositions,notesPositions);
-		var beamgroups = this.createBeamgroups(notesBeamgroupPosIndexes);
-		return beamgroups;
-	}
-	,createBeamgroups: function(indexes) {
-		var noteIdx = 0;
-		var prevBeamgroupPosIdx = -1;
-		var groupIdx = -1;
-		var result = [];
-		var vnoteGroupIdx = [];
-		var groupIdxVNotes = [];
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			var beamgroupPosIdx = indexes[noteIdx];
-			if(beamgroupPosIdx == -1) {
-				groupIdx++;
-				vnoteGroupIdx.push(groupIdx);
-			} else {
-				if(prevBeamgroupPosIdx != beamgroupPosIdx) groupIdx++;
-				vnoteGroupIdx.push(groupIdx);
-			}
-			prevBeamgroupPosIdx = beamgroupPosIdx;
-			noteIdx++;
-		}
-		var noteIdx1 = 0;
-		var groupVNotes = [];
-		var vnotes = null;
-		var _g2 = 0;
-		var _g11 = this.vnotes;
-		while(_g2 < _g11.length) {
-			var vnote1 = _g11[_g2];
-			++_g2;
-			var groupIdx1 = vnoteGroupIdx[noteIdx1];
-			if(groupVNotes[groupIdx1] == null) groupVNotes[groupIdx1] = [];
-			groupVNotes[groupIdx1].push(vnote1);
-			noteIdx1++;
-		}
-		var _g3 = 0;
-		while(_g3 < groupVNotes.length) {
-			var group = groupVNotes[_g3];
-			++_g3;
-			var beamgroup = new nx3.VBeamgroup(group);
-			result.push(beamgroup);
-		}
-		return result;
-	}
-	,getNotesBeamgroupPosIndexes: function(patternPositions,notesPositions) {
-		var findPatternIdxForNote = function(curNotePos) {
-			var _g1 = 0;
-			var _g = patternPositions.length;
-			while(_g1 < _g) {
-				var p = _g1++;
-				var curPatternPos = patternPositions[p];
-				if(curNotePos.start >= curPatternPos.start && curNotePos.end <= curPatternPos.end) return p;
-			}
-			return -1;
 		};
-		var result = [];
-		var p1 = 0;
-		var curPatternPos1 = patternPositions[p1];
-		var _g11 = 0;
-		var _g2 = this.vnotes.length;
-		while(_g11 < _g2) {
-			var n = _g11++;
-			var curNotePos1 = notesPositions[n];
-			var nnote = this.vnotes[n].nnote;
-			var patternIdx;
-			{
-				var _g21 = nnote.type;
-				switch(_g21[1]) {
-				case 0:
-					var attributes = _g21[5];
-					var articluation = _g21[4];
-					var variant = _g21[3];
-					var heads = _g21[2];
-					if(nx3.ENoteValTools.beaminglevel(nnote.value) <= 0) patternIdx = -1; else patternIdx = findPatternIdxForNote(curNotePos1);
-					break;
-				case 1:
-					var level = _g21[2];
-					patternIdx = -1;
-					break;
-				default:
-					patternIdx = -1;
-				}
+		var writeShort = function(s1) {
+			bv[p++] = s1 & 255;
+			bv[p++] = s1 >> 8 & 255;
+		};
+		var writeLong = function(s2) {
+			bv[p++] = s2 & 255;
+			bv[p++] = s2 >> 8 & 255;
+			bv[p++] = s2 >> 16 & 255;
+			bv[p++] = s2 >> 24 & 255;
+		};
+		writeString("RIFF");
+		writeLong(0);
+		writeString("WAVE");
+		writeString("fmt ");
+		writeLong(16);
+		writeShort(1);
+		var channels;
+		if(stereo) channels = 2; else channels = 1;
+		writeShort(channels);
+		writeLong(wav_freq);
+		var bps = wav_freq * channels * (wav_bits / 8 | 0);
+		writeLong(bps);
+		var align = channels * (wav_bits / 8 | 0);
+		writeShort(align);
+		writeShort(wav_bits);
+		writeString("data");
+		writeLong(wave.length);
+		bv.set(wave,p);
+		var audioBuffer = null;
+		var wantsToPlay = false;
+		if(nx3.audio.PlayerFactory.html5AudioContext == null) {
+			var creator = window.webkitAudioContext || window.AudioContext || null;
+			if(creator == null) return function() {
+			};
+			nx3.audio.PlayerFactory.html5AudioContext = new creator();;
+		}
+		var play = function() {
+			if(audioBuffer == null) {
+				wantsToPlay = true;
+				return;
 			}
-			result.push(patternIdx);
-		}
-		return result;
+			var srcAudio = nx3.audio.PlayerFactory.html5AudioContext.createBufferSource();
+			srcAudio.buffer = audioBuffer;
+			srcAudio.connect(nx3.audio.PlayerFactory.html5AudioContext.destination);
+			srcAudio.loop = false;
+			srcAudio.start(0);
+			var currentTime = nx3.audio.PlayerFactory.html5AudioContext.currentTime;
+			haxe.Log.trace(currentTime,{ fileName : "PlayerFactory.hx", lineNumber : 153, className : "nx3.audio.PlayerFactory", methodName : "makePlayer"});
+		};
+		nx3.audio.PlayerFactory.html5AudioContext.decodeAudioData(buffer,function(b) {
+			audioBuffer = b;
+			if(wantsToPlay) play();
+		});
+		return play;
 	}
-	,getNotesPositions: function() {
-		var result = [];
-		var currPos = 0;
+	,__class__: nx3.audio.PlayerFactory
+};
+nx3.events = {};
+nx3.events.BarEvent = $hxClasses["nx3.events.BarEvent"] = { __ename__ : true, __constructs__ : ["NotesChange","NotesDelete","NotesAdd"] };
+nx3.events.BarEvent.NotesChange = function(notes,action) { var $x = ["NotesChange",0,notes,action]; $x.__enum__ = nx3.events.BarEvent; $x.toString = $estr; return $x; };
+nx3.events.BarEvent.NotesDelete = function(notes,removedNotes) { var $x = ["NotesDelete",1,notes,removedNotes]; $x.__enum__ = nx3.events.BarEvent; $x.toString = $estr; return $x; };
+nx3.events.BarEvent.NotesAdd = function(notes,noteinfos) { var $x = ["NotesAdd",2,notes,noteinfos]; $x.__enum__ = nx3.events.BarEvent; $x.toString = $estr; return $x; };
+nx3.events.NoteChange = $hxClasses["nx3.events.NoteChange"] = { __ename__ : true, __constructs__ : ["LevelRel","LevelAbs","Tie","ValAbs","ValRel","Dot","HeadLevelRel","HeadLevelAbs","Pause","Sign"] };
+nx3.events.NoteChange.LevelRel = function(level) { var $x = ["LevelRel",0,level]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.LevelAbs = function(level) { var $x = ["LevelAbs",1,level]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.Tie = function(useTie) { var $x = ["Tie",2,useTie]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.ValAbs = function(val) { var $x = ["ValAbs",3,val]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.ValRel = function(factor) { var $x = ["ValRel",4,factor]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.Dot = function(useDot) { var $x = ["Dot",5,useDot]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.HeadLevelRel = function(headIdx,level) { var $x = ["HeadLevelRel",6,headIdx,level]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.HeadLevelAbs = function(headIdx,level) { var $x = ["HeadLevelAbs",7,headIdx,level]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.Pause = function(on) { var $x = ["Pause",8,on]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteChange.Sign = function(type) { var $x = ["Sign",9,type]; $x.__enum__ = nx3.events.NoteChange; $x.toString = $estr; return $x; };
+nx3.events.NoteInfo = $hxClasses["nx3.events.NoteInfo"] = { __ename__ : true, __constructs__ : ["Note","Pause","Lyric"] };
+nx3.events.NoteInfo.Note = function(val,levels,signs,ties) { var $x = ["Note",0,val,levels,signs,ties]; $x.__enum__ = nx3.events.NoteInfo; $x.toString = $estr; return $x; };
+nx3.events.NoteInfo.Pause = function(val,level) { var $x = ["Pause",1,val,level]; $x.__enum__ = nx3.events.NoteInfo; $x.toString = $estr; return $x; };
+nx3.events.NoteInfo.Lyric = function(val,text) { var $x = ["Lyric",2,val,text]; $x.__enum__ = nx3.events.NoteInfo; $x.toString = $estr; return $x; };
+nx3.events.IEvent = function() { };
+$hxClasses["nx3.events.IEvent"] = nx3.events.IEvent;
+nx3.events.IEvent.__name__ = ["nx3","events","IEvent"];
+nx3.events.IEvent.prototype = {
+	doEvent: null
+	,undoEvent: null
+	,__class__: nx3.events.IEvent
+};
+nx3.events.EvAddNote = function(ref,notes) {
+	this.status = false;
+	this.ref = ref;
+	this.notes = notes;
+};
+$hxClasses["nx3.events.EvAddNote"] = nx3.events.EvAddNote;
+nx3.events.EvAddNote.__name__ = ["nx3","events","EvAddNote"];
+nx3.events.EvAddNote.__interfaces__ = [nx3.events.IEvent];
+nx3.events.EvAddNote.prototype = {
+	ref: null
+	,notes: null
+	,status: null
+	,doEvent: function() {
+		if(this.status == true) throw "Cant perform doEvent() twice";
+		if(nx3.NRefTools.checkRefNoteError(this.ref)) throw "Reference note error";
+		var newnotes = [];
+		var tnote = this.ref.score.getNBar(this.ref.bar).getNPart(this.ref.part).getNVoice(this.ref.voice).getNNote(this.ref.note);
+		var tvoice = tnote.nvoice;
+		var tnoteidx = HxOverrides.indexOf(tvoice.nnotes,tnote,0) + 1;
 		var _g = 0;
-		var _g1 = this.vnotes;
+		var _g1 = this.notes;
 		while(_g < _g1.length) {
-			var vnote = _g1[_g];
+			var note = _g1[_g];
 			++_g;
-			var value = nx3.ENoteValTools.value(vnote.nnote.value);
-			var posinfo = { start : currPos, end : currPos + value};
-			result.push(posinfo);
-			currPos += value;
+			var newnote = nx3.xml.NoteXML.clone(note);
+			tvoice.nnotes.splice(tnoteidx,0,newnote);
+			newnote.nvoice = tvoice;
+			newnotes.push(newnote);
+			tnoteidx++;
 		}
-		return result;
+		this.notes = newnotes;
+		this.status = true;
 	}
-	,getPatternPositions: function() {
-		var result = [];
-		var currPos = 0;
+	,undoEvent: function() {
+		if(this.status == false) throw "Cant perform undoEvent() twice";
+		var refs = new haxe.ds.ObjectMap();
 		var _g = 0;
-		var _g1 = this.pattern;
+		var _g1 = this.notes;
 		while(_g < _g1.length) {
-			var segment = _g1[_g];
+			var note = _g1[_g];
 			++_g;
-			var value = nx3.ENoteValTools.value(segment);
-			var posinfo = { start : currPos, end : currPos + value};
-			result.push(posinfo);
-			currPos += value;
+			if(note == null) throw "Note to delete can not be null";
+			var voice = note.nvoice;
+			if(voice == null) throw "Note to delete does not seem to belong to the current score voice";
+			HxOverrides.remove(voice.nnotes,note);
 		}
-		return result;
+		this.status = false;
 	}
-	,adjustPatternLenght: function() {
-		var notesValue = 0;
-		var _g = 0;
-		var _g1 = this.vnotes;
-		while(_g < _g1.length) {
-			var vnote = _g1[_g];
-			++_g;
-			notesValue += nx3.ENoteValTools.value(vnote.nnote.value);
-		}
-		var patternValue = 0;
-		var _g2 = 0;
-		var _g11 = this.pattern;
-		while(_g2 < _g11.length) {
-			var value = _g11[_g2];
-			++_g2;
-			patternValue += nx3.ENoteValTools.value(value);
-		}
-		while(patternValue < notesValue) {
-			this.pattern = this.pattern.concat(this.pattern);
-			patternValue *= 2;
-		}
+	,__class__: nx3.events.EvAddNote
+};
+nx3.events.EvHeadSign = function(ref,sign) {
+	this.ref = ref;
+	this.status = false;
+	this.sign = sign;
+	this.prevsign = null;
+};
+$hxClasses["nx3.events.EvHeadSign"] = nx3.events.EvHeadSign;
+nx3.events.EvHeadSign.__name__ = ["nx3","events","EvHeadSign"];
+nx3.events.EvHeadSign.__interfaces__ = [nx3.events.IEvent];
+nx3.events.EvHeadSign.prototype = {
+	ref: null
+	,sign: null
+	,prevsign: null
+	,status: null
+	,changedhead: null
+	,doEvent: function() {
+		if(this.status == true) throw "Cant perform doEvent() twice";
+		if(nx3.NRefTools.checkRefNoteError(this.ref)) throw "Reference note error";
+		var targethead = this.ref.score.getNBar(this.ref.bar).getNPart(this.ref.part).getNVoice(this.ref.voice).getNNote(this.ref.note).getNHead(this.ref.head);
+		this.prevsign = targethead.sign;
+		targethead.sign = this.sign;
+		this.changedhead = targethead;
+		this.status = true;
 	}
-	,__class__: nx3.VVoiceBeamgroupsGenerator
+	,undoEvent: function() {
+		if(this.status == false) throw "Cant perform undoEvent() twice";
+		this.changedhead.sign = this.prevsign;
+		this.status = false;
+	}
+	,__class__: nx3.events.EvHeadSign
 };
 nx3.geom = {};
 nx3.geom.BezieerTool = function() { };
@@ -16134,6 +15254,10 @@ nx3.qs.BarParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 			_g.sendEvent(nx3.qs.ParserEvents.SetOctave(0));
 			_g.sendEvent(nx3.qs.ParserEvents.SetNoteVal(nx3.ENoteVal.Nv4));
 			return HxOverrides.substr(token5,1,null);
+		});
+		this.functions.set("clef:G",function(token6) {
+			_g.sendEvent(nx3.qs.ParserEvents.SetBarClef(nx3.EClef.ClefG));
+			return HxOverrides.substr(token6,6,null);
 		});
 	}
 	,tokenFinished: function(originaltoken) {
@@ -16585,11 +15709,12 @@ nx3.qs.NoteParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 	}
 	,__class__: nx3.qs.NoteParser
 });
-nx3.qs.ParserEvents = $hxClasses["nx3.qs.ParserEvents"] = { __ename__ : true, __constructs__ : ["SetGuessOctave","SetOctave","SetNoteVal","SetMode"] };
+nx3.qs.ParserEvents = $hxClasses["nx3.qs.ParserEvents"] = { __ename__ : true, __constructs__ : ["SetGuessOctave","SetOctave","SetNoteVal","SetMode","SetBarClef"] };
 nx3.qs.ParserEvents.SetGuessOctave = function(mode) { var $x = ["SetGuessOctave",0,mode]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.ParserEvents.SetOctave = function(octave) { var $x = ["SetOctave",1,octave]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.ParserEvents.SetNoteVal = function(value) { var $x = ["SetNoteVal",2,value]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.ParserEvents.SetMode = function(mode) { var $x = ["SetMode",3,mode]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
+nx3.qs.ParserEvents.SetBarClef = function(clef) { var $x = ["SetBarClef",4,clef]; $x.__enum__ = nx3.qs.ParserEvents; $x.toString = $estr; return $x; };
 nx3.qs.QSyntaxTools = function() { };
 $hxClasses["nx3.qs.QSyntaxTools"] = nx3.qs.QSyntaxTools;
 nx3.qs.QSyntaxTools.__name__ = ["nx3","qs","QSyntaxTools"];
@@ -16790,13 +15915,16 @@ nx3.render.ITarget.prototype = {
 	,parallellogram: null
 	,polyline: null
 	,polyfill: null
+	,interactiveEllipse: null
+	,scaleRect: null
 	,__class__: nx3.render.ITarget
 };
-nx3.render.RendererBase = function(target,targetX,targetY) {
+nx3.render.RendererBase = function(target,targetX,targetY,interactions) {
 	this.target = target;
 	this.targetX = targetX;
 	this.targetY = targetY;
 	this.scaling = this.target.getScaling();
+	if(interactions != null) this.interactions = interactions; else this.interactions = [];
 };
 $hxClasses["nx3.render.RendererBase"] = nx3.render.RendererBase;
 nx3.render.RendererBase.__name__ = ["nx3","render","RendererBase"];
@@ -16805,15 +15933,117 @@ nx3.render.RendererBase.prototype = {
 	,targetY: null
 	,targetX: null
 	,scaling: null
+	,interactions: null
+	,addInteraction: function(interaction) {
+		this.interactions.push(interaction);
+	}
 	,psystems: function(systems) {
 		var ny = 0.0;
 		var _g = 0;
 		while(_g < systems.length) {
 			var system = systems[_g];
 			++_g;
-			haxe.Log.trace("system",{ fileName : "RendererBase.hx", lineNumber : 46, className : "nx3.render.RendererBase", methodName : "psystems"});
 			this.psystem(system,0,ny);
-			ny += 40;
+			this.psystemExtras(systems,system,0,ny);
+			ny += 50;
+		}
+	}
+	,psystemExtras: function(systems,system,nx,ny) {
+		if(ny == null) ny = 0;
+		if(nx == null) nx = 0;
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var _g = 0;
+		var _g1 = system.getSystembars();
+		while(_g < _g1.length) {
+			var systembar = _g1[_g];
+			++_g;
+			if(systembar == cx.ArrayTools.first(system.getSystembars())) {
+				if(system != systems[0]) {
+					var prevSystem = cx.ArrayTools.prev(systems,system);
+					var prevSystembar = cx.ArrayTools.last(prevSystem.getSystembars());
+					var tieconnections = prevSystembar.bar.getTieConnections();
+					var _g2 = 0;
+					while(_g2 < tieconnections.length) {
+						var connection = tieconnections[_g2];
+						++_g2;
+						var fromBarX = systembar.getXPosition();
+						var fromNoteX = systembar.getBarMeasurements().getLeftContentMarginXPosition() + connection.from.getXPosition();
+						var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+						var tielevel = 0;
+						{
+							var _g3 = connection.tie;
+							switch(_g3[1]) {
+							case 0:
+								var tlevel = _g3[3];
+								var tdir = _g3[2];
+								tielevel = tlevel;
+								break;
+							default:
+							}
+						}
+						var xshift = -5;
+						var tiewidth = 3;
+						var tierect = new flash.geom.Rectangle(fromBarX + fromNoteX + xshift,connection.level + tielevel,tiewidth,1);
+						this.drawTie(tx,ty + party,tierect,nx3.EDirectionUD.Down);
+					}
+				}
+			}
+			if(systembar == cx.ArrayTools.last(system.getSystembars())) {
+				var tieconnections1 = systembar.bar.getTieConnections();
+				var _g21 = 0;
+				while(_g21 < tieconnections1.length) {
+					var connection1 = tieconnections1[_g21];
+					++_g21;
+					var fromBarX1 = systembar.getXPosition();
+					var fromNoteX1 = systembar.getBarMeasurements().getLeftContentMarginXPosition() + connection1.from.getXPosition();
+					var toBarX = systembar.getXPosition() + systembar.getBarMeasurements().getTotalWidth();
+					var party1 = connection1.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+					var tielevel1 = 0;
+					{
+						var _g31 = connection1.tie;
+						switch(_g31[1]) {
+						case 0:
+							var tlevel1 = _g31[3];
+							var tdir1 = _g31[2];
+							tielevel1 = tlevel1;
+							break;
+						default:
+						}
+					}
+					var xshift1 = 2;
+					var tierect1 = new flash.geom.Rectangle(fromBarX1 + fromNoteX1 + xshift1,connection1.level + tielevel1,toBarX - (fromBarX1 + fromNoteX1),2);
+					this.drawTie(tx,ty + party1,tierect1,nx3.EDirectionUD.Down);
+				}
+			} else {
+				var tieconnections2 = systembar.bar.getTieConnections();
+				var _g22 = 0;
+				while(_g22 < tieconnections2.length) {
+					var connection2 = tieconnections2[_g22];
+					++_g22;
+					var fromBarX2 = systembar.getXPosition();
+					var nextsystembar = connection2.to.getComplex().getPart().getBar().getSystembar();
+					var toBarX1 = nextsystembar.getXPosition();
+					var fromNoteX2 = systembar.getBarMeasurements().getLeftContentMarginXPosition() + connection2.from.getXPosition();
+					var toNoteX = nextsystembar.getBarMeasurements().getLeftContentMarginXPosition() + connection2.to.getXPosition();
+					var party2 = connection2.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+					var xshift2 = 2;
+					var tielevel2 = 0;
+					{
+						var _g32 = connection2.tie;
+						switch(_g32[1]) {
+						case 0:
+							var tlevel2 = _g32[3];
+							var tdir2 = _g32[2];
+							tielevel2 = tlevel2;
+							break;
+						default:
+						}
+					}
+					var tierect2 = new flash.geom.Rectangle(fromBarX2 + fromNoteX2 + xshift2,connection2.level + tielevel2,toBarX1 + toNoteX - (fromBarX2 + fromNoteX2) - xshift2 - xshift2,2);
+					this.drawTie(tx,ty + party2,tierect2,nx3.EDirectionUD.Down);
+				}
+			}
 		}
 	}
 	,psystem: function(system,nx,ny) {
@@ -16821,38 +16051,51 @@ nx3.render.RendererBase.prototype = {
 		if(nx == null) nx = 0;
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY + ny * this.scaling.unitY;
-		this.target.rectangle(tx,ty,new flash.geom.Rectangle(0,-10,system.getSystemBreakWidth(),40),2,65280);
+		var barx = 0.0;
 		var _g = 0;
 		var _g1 = system.getSystembars();
 		while(_g < _g1.length) {
 			var systembar = _g1[_g];
 			++_g;
-			var meas = systembar.getBarWidths();
-			var barX = meas.x;
-			var barWidth = meas.width;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(barX,-10,barWidth,40),2);
-			var leftBarlineX = barX;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(leftBarlineX,-10,meas.ackoladeWidth,40));
-			var clefX = barX + meas.ackoladeWidth;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(clefX,-9,meas.clefWidth,38),1,16711680);
-			var keyX = clefX + meas.clefWidth;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(keyX,-9,meas.keyWidth,38),1,16711680);
-			var timeX = keyX + meas.keyWidth;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(timeX,-9,meas.timeWidth,38),1,16711680);
-			var contentLeftMarginX = timeX + meas.timeWidth;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(contentLeftMarginX,-10,meas.contentLeftMargin,40),1,16711680);
-			var contentX = contentLeftMarginX + meas.contentLeftMargin;
-			var cautClefX = contentX + meas.contentWidth;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(cautClefX,-9,meas.cautClefWidth,38),1,16711680);
-			var cautKeyX = cautClefX + meas.cautClefWidth;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(cautKeyX,-9,meas.cautKeyWidth,38),1,16711680);
-			var cautTimeX = cautKeyX + meas.cautKeyWidth;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(cautTimeX,-9,meas.cautTimeWidth,38),1,16711680);
-			var barlineX = cautTimeX + meas.cautTimeWidth;
-			this.target.rectangle(tx,ty,new flash.geom.Rectangle(barlineX,-10,meas.barlineWidth,40),1,16711680);
-			this.barAttributes(systembar,barX,ny);
-			this.barContent(systembar.bar,contentX,ny);
+			var meas = systembar.getBarMeasurements();
+			this.barAttributes(systembar,barx,ny);
+			this.barContent(systembar,barx,ny);
+			barx += systembar.getBarMeasurements().getTotalWidth();
 		}
+		this.barBarlines(system.getSystembars(),nx,ny);
+	}
+	,barBarlines: function(systembars,nx,ny) {
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var partFirstY = (cx.ArrayTools.first(systembars[0].bar.getParts()).getYPosition() - 4) * this.scaling.unitY;
+		var partY = 0.0;
+		var barX = 0.0;
+		var _g = 0;
+		while(_g < systembars.length) {
+			var systembar = systembars[_g];
+			++_g;
+			var barWidth = systembar.getBarMeasurements().getTotalWidth();
+			var _g1 = 0;
+			var _g2 = systembar.bar.getParts();
+			while(_g1 < _g2.length) {
+				var part = _g2[_g1];
+				++_g1;
+				var _g3 = part.npart.type;
+				switch(_g3[1]) {
+				case 0:
+					var barlineTop = (part.getYPosition() - 4) * this.scaling.unitY;
+					var barlineBottom = (part.getYPosition() + 4) * this.scaling.unitY;
+					var barlineX = tx + (barX + barWidth) * this.scaling.unitX;
+					this.target.line(barlineX,ty + barlineTop,barlineX,ty + barlineBottom,1.4,0);
+					partY = part.getYPosition();
+					break;
+				default:
+				}
+			}
+			barX += barWidth;
+		}
+		var partLastY = (partY + 4) * this.scaling.unitY;
+		this.target.line(tx,ty + partFirstY,tx,ty + partLastY,2,0);
 	}
 	,barAttributes: function(systembar,nx,ny) {
 		if(ny == null) ny = 0;
@@ -16864,12 +16107,94 @@ nx3.render.RendererBase.prototype = {
 		while(_g < _g1.length) {
 			var part = _g1[_g];
 			++_g;
-			this.target.testLines(tx,ty + part.getYPosition() * this.scaling.unitY,systembar.getBarWidths().width * this.scaling.unitX);
+			if(part.npart.type[0] != "Normal") continue;
+			var partIdx;
+			var _this = systembar.bar.getParts();
+			partIdx = HxOverrides.indexOf(_this,part,0);
+			this.target.testLines(tx,ty + part.getYPosition() * this.scaling.unitY,systembar.getBarMeasurements().getTotalWidth() * this.scaling.unitX);
+			this.barAttributeClef(systembar,part,nx,ny,systembar.getBarMeasurements().getClefXPosition());
+			this.barAttributeKey(systembar,part,nx,ny,systembar.getBarMeasurements().getKeyXPosition());
+			this.barAttributeTime(systembar,part,nx,ny,systembar.getBarMeasurements().getTimeXPosition());
 		}
 	}
-	,barContent: function(bar,nx,ny) {
+	,barAttributeTime: function(systembar,part,nx,ny,timeX) {
+		if(timeX == null) timeX = 0;
+		var showTime = systembar.barConfig.showTime;
+		if(!showTime) return;
+		var acttime = systembar.actAttributes.time;
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		timeX = timeX * this.scaling.unitX;
+		var timeChars = nx3.ETimeUtils.toString(acttime).split("/");
+		if(timeChars.length == 2) {
+			var upperXmlStr = this.getSvgNumber(timeChars[0]);
+			var timeY = -3 * this.scaling.unitY;
+			this.target.shape(tx + timeX,ty + timeY + part.getYPosition() * this.scaling.unitY,upperXmlStr);
+			var lowerXmlStr = this.getSvgNumber(timeChars[1]);
+			var timeY1 = this.scaling.unitY;
+			this.target.shape(tx + timeX,ty + timeY1 + part.getYPosition() * this.scaling.unitY,lowerXmlStr);
+		} else {
+			var midXmlStr = this.getSvgNumber(timeChars[0]);
+			var timeY2 = -1 * this.scaling.unitY;
+			this.target.shape(tx + timeX,ty + timeY2 + part.getYPosition() * this.scaling.unitY,midXmlStr);
+		}
+	}
+	,barAttributeKey: function(systembar,part,nx,ny,keyX) {
+		if(keyX == null) keyX = 0;
+		var showkey = systembar.barConfig.showKey;
+		if(!showkey) return;
+		var partidx;
+		var _this = systembar.bar.getParts();
+		partidx = HxOverrides.indexOf(_this,part,0);
+		var actkey = systembar.actAttributes.keys[partidx];
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var keyX1 = systembar.getBarMeasurements().getKeyXPosition() * this.scaling.unitX;
+		var keyY = this.scaling.unitY;
+		var keyCode = nx3.EKeysTools.getSigncode(actkey);
+		var svgXmlstr;
+		if(keyCode == -1) svgXmlstr = nx3.render.svg.SvgElements.signFlat; else svgXmlstr = nx3.render.svg.SvgElements.signSharp;
+		var keyLevels = nx3.EKeysTools.getLevels(actkey,systembar.actAttributes.clefs[partidx]);
+		var _g = 0;
+		while(_g < keyLevels.length) {
+			var level = keyLevels[_g];
+			++_g;
+			var keyY1 = level * this.scaling.unitY;
+			this.target.shape(tx + keyX1,ty + keyY1 + part.getYPosition() * this.scaling.unitY,svgXmlstr);
+			keyX1 += 2.4 * this.target.getScaling().unitX;
+		}
+	}
+	,barAttributeClef: function(systembar,part,nx,ny,clefX) {
+		if(clefX == null) clefX = 0;
+		var showclef = systembar.barConfig.showClef;
+		if(!showclef) return;
+		var partidx;
+		var _this = systembar.bar.getParts();
+		partidx = HxOverrides.indexOf(_this,part,0);
+		var actclef = systembar.actAttributes.clefs[partidx];
+		var tx = this.targetX + nx * this.scaling.unitX;
+		var ty = this.targetY + ny * this.scaling.unitY;
+		var clefX1 = systembar.getBarMeasurements().getClefXPosition() * this.scaling.unitX;
+		var clefY = this.scaling.unitY;
+		var svgXmlstr;
+		switch(actclef[1]) {
+		case 2:
+			svgXmlstr = nx3.render.svg.SvgElements.clefC;
+			break;
+		case 0:
+			svgXmlstr = nx3.render.svg.SvgElements.clefG;
+			break;
+		case 1:
+			svgXmlstr = nx3.render.svg.SvgElements.clefF;
+			break;
+		}
+		this.target.shape(tx + clefX1,ty + clefY + part.getYPosition() * this.scaling.unitY,svgXmlstr);
+	}
+	,barContent: function(systembar,nx,ny) {
 		if(ny == null) ny = 0;
 		if(nx == null) nx = 0;
+		var bar = systembar.bar;
+		nx = nx + systembar.getBarMeasurements().getContentXPosition();
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY + ny * this.scaling.unitY;
 		var contentwidth = bar.getContentwidth();
@@ -16890,6 +16215,16 @@ nx3.render.RendererBase.prototype = {
 					++_g4;
 					this.pbeamgroup(beamgroup,nx,ny);
 				}
+				{
+					var _g41 = voice.nvoice.type;
+					switch(_g41[1]) {
+					case 0:
+						break;
+					case 1:
+						var bplevel = _g41[2];
+						break;
+					}
+				}
 			}
 		}
 		var _g6 = 0;
@@ -16903,12 +16238,14 @@ nx3.render.RendererBase.prototype = {
 				var complex = _g31[_g21];
 				++_g21;
 				this.pcomplex(complex,nx,ny);
+				this.interactiveComplex(complex,nx,ny);
 			}
 		}
 	}
 	,pnoteHeads: function(note,nx,ny) {
 		if(ny == null) ny = 0;
 		if(nx == null) nx = 0;
+		var _g3 = this;
 		var x = this.targetX + (nx + note.getComplex().getXPosition()) * this.target.getScaling().unitX;
 		var y = this.targetY + (ny + note.getComplex().getPart().getYPosition()) * this.target.getScaling().unitY;
 		{
@@ -16926,7 +16263,18 @@ nx3.render.RendererBase.prototype = {
 				var level = _g[2];
 				var rect1 = cx.ArrayTools.first(note.getHeadsRects()).clone();
 				rect1.inflate(-0.8,-0.8);
-				this.target.filledellipse(x,y,rect1,5,11184810,16777215);
+				var textlevel = (level * -1 + 21) % 7 + 1;
+				var text1;
+				if(textlevel == null) text1 = "null"; else text1 = "" + textlevel;
+				this.target.setFont({ name : "Arial", size : 24, bold : false, italic : false});
+				var textwidth = this.target.textwidth(text1) * this.scaling.unitX;
+				var textheight = this.target.textheight(text1) * this.scaling.unitY;
+				var ny1;
+				if(note.getVoice().getPart().npart.type[0] == "Tplchain") ny1 = y + level * 3 * this.scaling.unitY; else ny1 = y;
+				this.target.filledellipse(x,ny1,rect1,3,0,16777215);
+				var tx = x - textwidth / 2 - this.scaling.unitX;
+				var ty = ny1 - textheight / 5;
+				this.target.text(tx,ty,text1);
 				break;
 			default:
 				var svginfo = nx3.render.RendererTools.getHeadSvgInfo(note.nnote);
@@ -16935,9 +16283,20 @@ nx3.render.RendererBase.prototype = {
 				var _g1 = 0;
 				var _g2 = note.getHeadsRects();
 				while(_g1 < _g2.length) {
-					var rect2 = _g2[_g1];
+					var rect2 = [_g2[_g1]];
 					++_g1;
-					this.target.shape(x + rect2.x * this.scaling.unitX,y + (rect2.y + svginfo.y) * this.scaling.unitY,svginfo.xmlStr);
+					this.target.shape(x + rect2[0].x * this.scaling.unitX,y + (rect2[0].y + svginfo.y) * this.scaling.unitY,svginfo.xmlStr);
+					this.target.interactiveEllipse(x,y,rect2[0],5 * this.scaling.linesWidth,3585587,null,(function(rect2) {
+						return function(activityType) {
+							var _g4 = 0;
+							var _g5 = _g3.interactions;
+							while(_g4 < _g5.length) {
+								var interaction = _g5[_g4];
+								++_g4;
+								interaction.handleAction(nx3.action.EActionType.NoteAction(activityType,note,nx3.action.EActionInfo.TargetInfo(_g3.target,rect2[0])));
+							}
+						};
+					})(rect2));
 				}
 				var i = 0;
 				var _g11 = 0;
@@ -16963,9 +16322,9 @@ nx3.render.RendererBase.prototype = {
 					if(level2 < 0) lev1 = level2; else lev1 = 5;
 					var lev2;
 					if(level2 < 0) lev2 = -4; else lev2 = level2 + 1;
-					var _g3 = lev1;
-					while(_g3 < lev2) {
-						var l = _g3++;
+					var _g31 = lev1;
+					while(_g31 < lev2) {
+						var l = _g31++;
 						if((l + 100) % 2 == 1) continue;
 						var hy = y + l * this.scaling.unitY;
 						this.target.line(hx1,hy,hx2,hy,1,0);
@@ -16991,6 +16350,22 @@ nx3.render.RendererBase.prototype = {
 		this.pdots(complex,nx,ny);
 		this.pties(complex,nx,ny);
 	}
+	,interactiveComplex: function(complex,nx,ny) {
+		if(complex == null) return;
+		var x = this.targetX + (nx + complex.getXPosition()) * this.target.getScaling().unitX;
+		var y = this.targetY + (ny + complex.getPart().getYPosition()) * this.target.getScaling().unitY;
+		var _g = 0;
+		var _g1 = complex.getNotes();
+		while(_g < _g1.length) {
+			var note = _g1[_g];
+			++_g;
+			this.interactiveNote(note,nx,ny);
+		}
+	}
+	,interactiveNote: function(note,nx,ny) {
+		var x = this.targetX + (nx + note.getComplex().getXPosition()) * this.target.getScaling().unitX;
+		var y = this.targetY + (ny + note.getComplex().getPart().getYPosition()) * this.target.getScaling().unitY;
+	}
 	,pties: function(complex,nx,ny) {
 		if(ny == null) ny = 0;
 		if(nx == null) nx = 0;
@@ -17008,9 +16383,10 @@ nx3.render.RendererBase.prototype = {
 				var thisx = complex.getXPosition() + rect.x;
 				var targetAllRect = nx3.geom.RectanglesTools.unionAll(targetcomplex.getAllRects());
 				var targetx = targetcomplex.getXPosition() + targetAllRect.x;
+				var xshift = .5 * this.scaling.unitX;
 				rect.width = targetx - thisx - 0.5;
-			}
-			this.drawTie(x,y,rect,direction);
+				this.drawTie(x + xshift,y,rect,direction);
+			} else rect.width = 6;
 		}
 	}
 	,pdots: function(complex,nx,ny) {
@@ -17283,6 +16659,36 @@ nx3.render.RendererBase.prototype = {
 		var coords = coords1.concat(coords2);
 		this.target.polyfill(x,y,coords);
 	}
+	,getSvgNumber: function($char) {
+		switch($char) {
+		case "0":
+			return nx3.render.svg.SvgElements.time0;
+		case "1":
+			return nx3.render.svg.SvgElements.time1;
+		case "2":
+			return nx3.render.svg.SvgElements.time2;
+		case "3":
+			return nx3.render.svg.SvgElements.time3;
+		case "4":
+			return nx3.render.svg.SvgElements.time4;
+		case "5":
+			return nx3.render.svg.SvgElements.time5;
+		case "6":
+			return nx3.render.svg.SvgElements.time6;
+		case "7":
+			return nx3.render.svg.SvgElements.time7;
+		case "8":
+			return nx3.render.svg.SvgElements.time8;
+		case "9":
+			return nx3.render.svg.SvgElements.time9;
+		case "C":
+			return nx3.render.svg.SvgElements.timeCommon;
+		case "AllaBreve":
+			return nx3.render.svg.SvgElements.timeAllabreve;
+		default:
+			return "";
+		}
+	}
 	,__class__: nx3.render.RendererBase
 };
 nx3.render.Renderer = function(target,targetX,targetY) {
@@ -17297,12 +16703,11 @@ nx3.render.Renderer.prototype = $extend(nx3.render.RendererBase.prototype,{
 	,getTarget: function() {
 		return this.target;
 	}
-	,renderPBar: function(bar,newX,newY) {
-		if(newY == null) newY = -1;
-		if(newX == null) newX = -1;
-		if(newX != -1) this.targetX = newX;
-		if(newY != -1) this.targetY = newY;
-		this.barContent(bar);
+	,xToUnitX: function(x) {
+		return x * (1 / this.scaling.unitX);
+	}
+	,yToUnitY: function(y) {
+		return y * (1 / this.scaling.unitY);
 	}
 	,renderSystem: function(system,newX,newY) {
 		if(newY == null) newY = -1;
@@ -17499,6 +16904,7 @@ nx3.render.TargetSprite.prototype = {
 	}
 	,clear: function() {
 		this.sprite.get_graphics().clear();
+		while(this.sprite.get_numChildren() > 0) this.sprite.removeChildAt(0);
 	}
 	,drawShape: function(shape,x,y,rect) {
 		if(shape == null) return;
@@ -17556,8 +16962,151 @@ nx3.render.TargetSprite.prototype = {
 		this.polyline(x,y,coordinates,lineWidth,lineColor);
 		this.sprite.get_graphics().endFill();
 	}
+	,interactiveEllipse: function(x,y,rect,lineWidth,lineColor,fillColor,cb) {
+		if(fillColor == null) fillColor = 65280;
+		var rect1 = this.scaleRect(rect,1,1.2);
+		var s = new nx3.render.el.HoverSprite(rect1,lineColor,lineWidth);
+		s.set_x(x);
+		s.set_y(y);
+		this.sprite.addChild(s);
+		s.addEventListener(flash.events.MouseEvent.ROLL_OVER,function(e) {
+			if(cb != null) cb(nx3.action.EActivityType.MouseOver);
+		});
+		s.addEventListener(flash.events.MouseEvent.ROLL_OUT,function(e1) {
+			if(cb != null) cb(nx3.action.EActivityType.MouseOver);
+		});
+		s.addEventListener(flash.events.MouseEvent.MOUSE_DOWN,function(e2) {
+			if(cb != null) cb(nx3.action.EActivityType.MouseDown);
+		});
+		s.addEventListener(flash.events.MouseEvent.MOUSE_UP,function(e3) {
+			if(cb != null) cb(nx3.action.EActivityType.MouseUp);
+		});
+	}
+	,scaleRect: function(rect,inflateX,inflateY) {
+		if(inflateY == null) inflateY = 0;
+		if(inflateX == null) inflateX = 0;
+		var result = new flash.geom.Rectangle(rect.x * this.scaling.unitX,rect.y * this.scaling.unitY,rect.width * this.scaling.unitX,rect.height * this.scaling.unitX);
+		if(inflateX != 0 || inflateY != 0) result.inflate(inflateX * this.scaling.unitX,inflateY * this.scaling.unitY);
+		return result;
+	}
 	,__class__: nx3.render.TargetSprite
 };
+nx3.render.TargetSvgXml = function(svgId,scaling) {
+	this.svg = Xml.createElement("svg");
+	this.svg.set("id",svgId);
+	if(scaling != null) this.scaling = scaling; else this.scaling = nx3.render.scaling.Scaling.NORMAL;
+};
+$hxClasses["nx3.render.TargetSvgXml"] = nx3.render.TargetSvgXml;
+nx3.render.TargetSvgXml.__name__ = ["nx3","render","TargetSvgXml"];
+nx3.render.TargetSvgXml.__interfaces__ = [nx3.render.ITarget];
+nx3.render.TargetSvgXml.hex = function($int) {
+	if($int == 0) return "#000"; else return "#" + StringTools.hex($int);
+};
+nx3.render.TargetSvgXml.prototype = {
+	svg: null
+	,scaling: null
+	,getXml: function() {
+		return this.svg;
+	}
+	,getScaling: function() {
+		return this.scaling;
+	}
+	,testLines: function(x,y,width) {
+	}
+	,rect: function(x,y,rect,lineWidth,lineColor) {
+	}
+	,rectangle: function(x,y,rect,lineWidth,lineColor) {
+	}
+	,rectangles: function(x,y,rects,lineWidth,lineColor) {
+	}
+	,filledrectangle: function(x,y,rect,lineWidth,lineColor,fillColor) {
+	}
+	,filledellipse: function(x,y,rect,lineWidth,lineColor,fillColor) {
+	}
+	,line: function(x,y,x2,y2,lineWidth,lineColor) {
+		if(lineColor == null) lineColor = 16711680;
+		if(lineWidth == null) lineWidth = 1;
+		var el = Xml.createElement("line");
+		el.set("x",x == null?"null":"" + x);
+		el.set("y",y == null?"null":"" + y);
+		el.set("x1",x2 == null?"null":"" + x2);
+		el.set("y1",y2 == null?"null":"" + y2);
+		el.set("stroke",lineColor == 0?"#000":"#" + StringTools.hex(lineColor));
+		el.set("style","stroke-width:" + lineWidth * this.scaling.linesWidth);
+		this.svg.addChild(el);
+	}
+	,shape: function(x,y,xmlStr,fillColor) {
+	}
+	,text: function(x,y,text) {
+	}
+	,textwidth: function(text) {
+		return 0;
+	}
+	,textheight: function(text) {
+		return 0;
+	}
+	,setFont: function(font) {
+	}
+	,parallellogram: function(x,y,width,y2,pheight,lineWidth,lineColor,fillColor) {
+	}
+	,clear: function() {
+	}
+	,polyline: function(x,y,coordinates,lineWidth,lineColor) {
+		if(lineColor == null) lineColor = 0;
+		if(lineWidth == null) lineWidth = 1;
+	}
+	,polyfill: function(x,y,coordinates,lineWidth,lineColor,fillColor) {
+		if(fillColor == null) fillColor = 255;
+		if(lineColor == null) lineColor = 0;
+		if(lineWidth == null) lineWidth = 1;
+	}
+	,sline: function(x,y,start,end,lineWidth,lineColor) {
+	}
+	,interactiveEllipse: function(x,y,rect,lineWidth,lineColor,fillColor,cb) {
+	}
+	,scaleRect: function(rect,inflateX,inflateY) {
+		if(inflateY == null) inflateY = 0;
+		if(inflateX == null) inflateX = 0;
+		return null;
+	}
+	,__class__: nx3.render.TargetSvgXml
+};
+nx3.render.el = {};
+nx3.render.el.HoverSprite = function(rect,lineColor,lineWidth) {
+	if(lineWidth == null) lineWidth = 1;
+	if(lineColor == null) lineColor = 5132490;
+	var _g = this;
+	this.lineWidth = lineWidth;
+	this.lineColor = lineColor;
+	flash.display.Sprite.call(this);
+	this.rect = rect;
+	this.redraw(0,this.lineWidth / 3,0.2);
+	this.get_graphics().lineStyle(lineWidth,lineColor);
+	this.addEventListener(flash.events.MouseEvent.ROLL_OVER,function(e) {
+		_g.redraw(_g.lineColor,_g.lineWidth,0.6);
+	});
+	this.addEventListener(flash.events.MouseEvent.ROLL_OUT,function(e1) {
+		_g.redraw(0,_g.lineWidth / 3,0.2);
+	});
+};
+$hxClasses["nx3.render.el.HoverSprite"] = nx3.render.el.HoverSprite;
+nx3.render.el.HoverSprite.__name__ = ["nx3","render","el","HoverSprite"];
+nx3.render.el.HoverSprite.__super__ = flash.display.Sprite;
+nx3.render.el.HoverSprite.prototype = $extend(flash.display.Sprite.prototype,{
+	rect: null
+	,lineWidth: null
+	,lineColor: null
+	,redraw: function(lineColor,lineWidth,alpha) {
+		if(alpha == null) alpha = 1;
+		if(lineWidth == null) lineWidth = 1;
+		if(lineColor == null) lineColor = 16711680;
+		this.get_graphics().clear();
+		this.get_graphics().lineStyle(lineWidth,lineColor,alpha);
+		this.get_graphics().beginFill(0,0.0);
+		this.get_graphics().drawEllipse(this.rect.x,this.rect.y,this.rect.width,this.rect.height);
+	}
+	,__class__: nx3.render.el.HoverSprite
+});
 nx3.render.scaling = {};
 nx3.render.scaling.Scaling = function() { };
 $hxClasses["nx3.render.scaling.Scaling"] = nx3.render.scaling.Scaling;
@@ -17590,63 +17139,60 @@ nx3.render.svg.SvgElements = function() { };
 $hxClasses["nx3.render.svg.SvgElements"] = nx3.render.svg.SvgElements;
 nx3.render.svg.SvgElements.__name__ = ["nx3","render","svg","SvgElements"];
 nx3.test = {};
+nx3.test.TestEvents = function() {
+	haxe.unit.TestCase.call(this);
+};
+$hxClasses["nx3.test.TestEvents"] = nx3.test.TestEvents;
+nx3.test.TestEvents.__name__ = ["nx3","test","TestEvents"];
+nx3.test.TestEvents.__super__ = haxe.unit.TestCase;
+nx3.test.TestEvents.prototype = $extend(haxe.unit.TestCase.prototype,{
+	score1: function() {
+		var nbar0 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.Flat)])])])]);
+		var score = new nx3.NScore([nbar0]);
+		return score;
+	}
+	,testEventAddNote: function() {
+		var score = this.score1();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,1,{ fileName : "TestEvents.hx", lineNumber : 48, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+		var notestoadd = [new nx3.NNote(null,[new nx3.NHead(null,1)]),new nx3.NNote(null,[new nx3.NHead(null,2)])];
+		var target = nx3.NRefTools.refNote(score,0,0,0,0);
+		var event = new nx3.events.EvAddNote(target,notestoadd);
+		event.doEvent();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,3,{ fileName : "TestEvents.hx", lineNumber : 53, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+		event.undoEvent();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,1,{ fileName : "TestEvents.hx", lineNumber : 55, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+		event.doEvent();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,3,{ fileName : "TestEvents.hx", lineNumber : 57, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+		event.undoEvent();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,1,{ fileName : "TestEvents.hx", lineNumber : 59, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+	}
+	,testEventHeadSign: function() {
+		var score = this.score1();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.Flat,{ fileName : "TestEvents.hx", lineNumber : 65, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+		var target = nx3.NRefTools.refHead(score,0,0,0,0,0);
+		var event = new nx3.events.EvHeadSign(target,nx3.ESign.None);
+		event.doEvent();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.None,{ fileName : "TestEvents.hx", lineNumber : 69, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+		event.undoEvent();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.Flat,{ fileName : "TestEvents.hx", lineNumber : 71, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+		event.doEvent();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.None,{ fileName : "TestEvents.hx", lineNumber : 73, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+		event.undoEvent();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.Flat,{ fileName : "TestEvents.hx", lineNumber : 75, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+	}
+	,__class__: nx3.test.TestEvents
+});
 nx3.test.TestItems = function() { };
 $hxClasses["nx3.test.TestItems"] = nx3.test.TestItems;
 nx3.test.TestItems.__name__ = ["nx3","test","TestItems"];
 nx3.test.TestItems.nbar1 = function() {
 	return new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote8(null,3),new nx3.QPause8(0),new nx3.QNote8(null,-2),new nx3.QNote8(null,4),new nx3.QPause16(),new nx3.QPause8(),new nx3.QPause4(),new nx3.QPause2(),new nx3.QPause1()])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote16(null,[-1,0]),new nx3.QNote16(null,[0,1],"#"),new nx3.QNote16(null,[1,2]),new nx3.QNote16(null,[5,7]),new nx3.QNote16(null,[0,1]),new nx3.QNote16(null,[0,2]),new nx3.QNote16(null,[0,3]),new nx3.QNote16(null,[0,2])])])]);
 };
-nx3.test.TestItems.vbar1 = function() {
-	return new nx3.VBar(nx3.test.TestItems.nbar1());
-};
-nx3.test.TestItems.vbarSigns = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,1,null,"#"),new nx3.QNote4(null,null,[-1,0],"#b"),new nx3.QNote4(null,null,[3,4,5],"nb#"),new nx3.QNote4(null,null,[-5,-2,-1],"nb#"),new nx3.QNote4(null,null,[0,3,6],"nb#")])]),new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,-1,null,"#"),new nx3.QNote4(null,0,null,"#"),new nx3.QNote4(null,-4,null,"n")]),new nx3.NVoice([new nx3.QNote2(null,null,[1,5],"bn")])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarPauses = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,-1),new nx3.NHead(null,1)],nx3.ENoteVal.Nv1),new nx3.QNote4(null,0),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv1),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv2),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv16)])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarLyrics = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Lyric("Hello")),new nx3.NNote(nx3.ENoteType.Lyric("World!")),new nx3.NNote(nx3.ENoteType.Lyric("Verylongword")),new nx3.NNote(nx3.ENoteType.Lyric("&")),new nx3.NNote(nx3.ENoteType.Lyric("&"))])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarTpl = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0)])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Tpl(0)),new nx3.NNote(nx3.ENoteType.Tpl(1)),new nx3.NNote(nx3.ENoteType.Tpl(2)),new nx3.NNote(nx3.ENoteType.Tpl(3))])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarFlags = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote8(null,0),new nx3.QNote4(null,-1),new nx3.QNote8(null,0),new nx3.QNote8(null,0),new nx3.QNote8(null,1)]),new nx3.NVoice([new nx3.QNote8(null,2),new nx3.QNote8(null,3),new nx3.QNote8(null,4),new nx3.QNote4(null,3),new nx3.QNote8(null,2)])])]));
-	return vbar;
-};
-nx3.test.TestItems.vbarSignBug = function() {
-	var vbar = new nx3.VBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0)]),new nx3.NVoice([new nx3.QNote4(null,2,null,"#")])])]));
-	return vbar;
-};
 nx3.test.TestItems.nvoicePause1 = function() {
 	return new nx3.NVoice([new nx3.QNote4(null,0),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4)]);
 };
-nx3.test.TestItems.vvoicePause1 = function() {
-	return new nx3.VVoice(nx3.test.TestItems.nvoicePause1());
-};
-nx3.test.TestItems.vvoicePausesEights = function() {
-	return new nx3.VVoice(new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv8)]));
-};
 nx3.test.TestItems.nvoiceLyrics1 = function() {
 	return new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Lyric("Hello"),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Lyric("World!"),null,nx3.ENoteVal.Nv8)]);
-};
-nx3.test.TestItems.vvoiceLyrics1 = function() {
-	return new nx3.VVoice(nx3.test.TestItems.nvoiceLyrics1());
-};
-nx3.test.TestItems.vbarQSyntax1 = function() {
-	var str = " b % c# ";
-	var parser = new nx3.qs.QuickSyntaxParser(str);
-	var qsnotes = parser.parseToQSyntaxNotes();
-	var builder = new nx3.qs.QuickSyntaxBuilder(qsnotes);
-	var nbars = builder.getNBars();
-	var nbar = nbars[0];
-	var vbar = new nx3.VBar(nbar);
-	return vbar;
 };
 nx3.test.TestItems.ppartComplex1 = function() {
 	var part = new nx3.PPart(new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,null,[-3,-1,0],"#"),new nx3.QNote4(null,null,[-1,-2]),new nx3.QNote4(null,2,null,"b")]),new nx3.NVoice([new nx3.QNote4(null,null,[0,2],"#b"),new nx3.QNote4(null,null,[2,3])])]));
@@ -17706,7 +17252,7 @@ nx3.test.TestItems.systemTest1 = function() {
 	var n1 = new nx3.NPart([new nx3.QVoice([4,.4,8],null,[2,3,4],null,".#")]);
 	bars.push(new nx3.PBar(new nx3.NBar([n1])));
 	var calculator = new nx3.PBarWidthCalculator();
-	var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400,calculator);
+	var generator = new nx3.PSystemBarsGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400,calculator);
 	var system = generator.getSystem();
 	return system;
 };
@@ -17724,8 +17270,8 @@ nx3.test.TestItems.scoreStretch = function(systemwidth) {
 	cx.ArrayTools.first(cx.ArrayTools.first(score.getSystems(systemwidth)).getSystembars());
 	return score;
 };
-nx3.test.TestItems.scoreLinebreak = function() {
-	var b0 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")],null,nx3.EClef.ClefC,null,nx3.EKey.Flat2)],null,nx3.ETime.Time3_4);
+nx3.test.TestItems.scoreLinebreakX = function() {
+	var b0 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")],null,nx3.EClef.ClefC,null,nx3.EKey.Sharp5)],null,nx3.ETime.Time3_4);
 	var b1 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4,4],null,null,null,"")])]);
 	var b2 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4],null,null,null,"")])]);
 	var b3 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4],null,null,null,"")])]);
@@ -17733,6 +17279,19 @@ nx3.test.TestItems.scoreLinebreak = function() {
 	var b5 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4,4],null,null,null,"")])]);
 	var b6 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")])]);
 	var b7 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4],null,null,null,"")])]);
+	var nscore = new nx3.NScore([b0,b1,b2,b3,b4,b5,b6,b7]);
+	var score = new nx3.PScore(nscore);
+	return score;
+};
+nx3.test.TestItems.scoreLinebreak = function() {
+	var b0 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Pause(2),null,nx3.ENoteVal.Nv4),new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])],null,nx3.EClef.ClefG,null,nx3.EKey.Sharp5)],null,nx3.ETime.Time3_4);
+	var b1 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
+	var b2 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
+	var b3 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
+	var b4 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
+	var b5 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
+	var b6 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
+	var b7 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
 	var nscore = new nx3.NScore([b0,b1,b2,b3,b4,b5,b6,b7]);
 	var score = new nx3.PScore(nscore);
 	return score;
@@ -17749,128 +17308,83 @@ nx3.test.TestItems.scoreFromCode = function(code) {
 	var score = new nx3.PScore(nscore);
 	return score;
 };
-nx3.test.TestPBars = function() {
+nx3.test.TestItems.scoreBachSinfonia4 = function() {
+	var xmlStr = "<bars><bar time=\"C\"><part key=\"Flat1\" clef=\"ClefG\"><voice><pause level=\"-5\" val=\"16\"/><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"8\"><headx level=\"1\"/></note><note val=\"8\"><headx level=\"-4\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"8\"><headx level=\"1\"/></note><note val=\"8\"><headx level=\"-5\" tie=\"true\"/></note></voice><voice><pause level=\"2\" val=\"1\"/></voice></part><part clef=\"ClefF\" key=\"Flat1\"><voice><note val=\"8\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"-1\"/></note><note val=\"8\"><headx level=\"-2\"/></note><note val=\"8\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"-4\"/></note><note val=\"8\"><headx level=\"-5\" sign=\"Natural\"/></note><note val=\"8\"><headx level=\"-6\" sign=\"Sharp\"/></note><note val=\"8\"><headx level=\"-4\"/></note></voice></part></bar><bar><part><voice><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note><headx level=\"-6\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-6\"/></note><note val=\"16\"><headx level=\"-5\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-4\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"8.\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-6\"/></note></voice><voice><pause val=\"16\"/><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"2\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"8\"><headx level=\"4\"/></note><note val=\"8\"><headx level=\"-1\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"4\"/></note><note val=\"8\"><headx level=\"-2\" tie=\"true\"/></note></voice></part><part><voice><note><headx level=\"-7\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-7\"/></note><note val=\"16\"><headx level=\"-6\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-5\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note><headx level=\"-8\"/></note><note><headx level=\"-1\"/></note></voice></part></bar><bar><part><voice><note><headx level=\"-6\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-6\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note><headx level=\"-5\" sign=\"Natural\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-1\"/></note></voice><voice><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note><headx level=\"-4\" tie=\"true\" tielevel=\"4\" /></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note><headx level=\"-3\" tie=\"true\" tielevel=\"5\" /></note></voice></part><part><voice><note><headx level=\"3\"/></note><pause/><pause val=\"2\"/></voice></part></bar><bar><part><voice><note val=\"4.\"><headx level=\"-4\"/></note><note val=\"8\"><headx level=\"-6\"/></note><note><headx level=\"-5\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-4\"/></note></voice><voice><note val=\"8\"><headx level=\"-3\"/></note><note val=\"8\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Natural\"/></note><note val=\"8.\"><headx level=\"0\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note><headx level=\"-1\"/></note></voice></part><part><voice><pause val=\"16\"/><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"3\"/></note><note val=\"8\"><headx level=\"-2\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"8\"><headx level=\"3\"/></note><note val=\"8\"><headx level=\"-3\" tie=\"true\"/></note></voice></part></bar><bar><part><voice><note><headx level=\"-2\"/></note><pause val=\"16\"/><note val=\"16\"><headx level=\"-7\"/></note><note val=\"16\"><headx level=\"-6\"/></note><note val=\"16\"><headx level=\"-7\"/></note><note><headx level=\"-3\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-6\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-6\"/></note></voice><voice><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note><headx level=\"2\" tie=\"true\"/></note><note val=\"16\"><headx level=\"2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note><headx level=\"3\" tie=\"true\"/></note></voice></part><part><voice><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note><headx level=\"-5\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note><headx level=\"-4\" tie=\"true\"/></note></voice></part></bar><bar><part><voice><note><headx level=\"-2\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note><headx level=\"-5\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note></voice><voice><note val=\"16\"><headx level=\"3\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note><headx level=\"0\" tie=\"true\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"2\"/></note><note val=\"16\"><headx level=\"3\"/></note></voice></part><part><voice><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"4\"/></note><note val=\"8\"><headx level=\"-2\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"8\"><headx level=\"1\"/></note><note val=\"8\"><headx level=\"-5\" tie=\"true\"/></note></voice></part></bar></bars>";
+	var nbars = nx3.xml.BarsXML.fromXmlStr(xmlStr);
+	var nscore = new nx3.NScore(nbars);
+	var score = new nx3.PScore(nscore);
+	var xmlStr2 = nx3.xml.BarsXML.toXml(nbars).toString();
+	return score;
+};
+nx3.test.TestItems.scoreTpl = function() {
+	var nbars = [new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,2),new nx3.QNote4(null,4),new nx3.QNote4(null,3),new nx3.QNote4(null,-1)])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Tpl(0)),new nx3.NNote(nx3.ENoteType.Tpl(2)),new nx3.NNote(nx3.ENoteType.Tpl(1)),new nx3.NNote(nx3.ENoteType.Tpl(-3))])],nx3.EPartType.Tplchain)])];
+	var nscore = new nx3.NScore(nbars);
+	var score = new nx3.PScore(nscore);
+	return score;
+};
+nx3.test.TestItems.scoreTies = function() {
+	var nbar0 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,1,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,-1))]),new nx3.NNote(null,[new nx3.NHead(null,1,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,1))])]),new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,1))])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,5,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,1))])])])]);
+	var nbar1 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3)]),new nx3.NNote(null,[new nx3.NHead(null,0)])]),new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,5)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
+	var score = new nx3.PScore(new nx3.NScore([nbar0,nbar1]));
+	var xmlstr = nx3.xml.BarsXML.toXml(score.getNBars()).toString();
+	haxe.Log.trace(xmlstr,{ fileName : "TestItems.hx", lineNumber : 660, className : "nx3.test.TestItems", methodName : "scoreTies"});
+	var bars2 = nx3.xml.BarsXML.fromXmlStr(xmlstr);
+	var xmlstr2 = nx3.xml.BarsXML.toXml(bars2).toString();
+	haxe.Log.trace(xmlstr,{ fileName : "TestItems.hx", lineNumber : 663, className : "nx3.test.TestItems", methodName : "scoreTies"});
+	return score;
+};
+nx3.test.TestN = function() {
 	haxe.unit.TestCase.call(this);
 };
-$hxClasses["nx3.test.TestPBars"] = nx3.test.TestPBars;
-nx3.test.TestPBars.__name__ = ["nx3","test","TestPBars"];
-nx3.test.TestPBars.__super__ = haxe.unit.TestCase;
-nx3.test.TestPBars.prototype = $extend(haxe.unit.TestCase.prototype,{
-	testSystemGeneratorOneBar: function() {
-		var bars = [];
-		var n0 = new nx3.NPart([new nx3.QVoice([4,4,4,4])],null,nx3.EClef.ClefC,null,nx3.EKey.Flat2);
-		bars.push(new nx3.PBar(new nx3.NBar([n0],null,nx3.ETime.Time2_4)));
-		var calculator = new nx3.PBarWidthCalculator();
-		var generator = new nx3.PSystemGenerator(bars,{ showFirstClef : true, showFirstKey : true, showFirstTime : true},null,400,calculator);
-		var system = generator.getSystem();
-		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.clefs.toString(),[nx3.EClef.ClefC].toString(),{ fileName : "TestPBars.hx", lineNumber : 35, className : "nx3.test.TestPBars", methodName : "testSystemGeneratorOneBar"});
-		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.keys.toString(),[nx3.EKey.Flat2].toString(),{ fileName : "TestPBars.hx", lineNumber : 36, className : "nx3.test.TestPBars", methodName : "testSystemGeneratorOneBar"});
-		this.assertEquals(cx.ArrayTools.first(system.getSystembars()).actAttributes.time,nx3.ETime.Time2_4,{ fileName : "TestPBars.hx", lineNumber : 37, className : "nx3.test.TestPBars", methodName : "testSystemGeneratorOneBar"});
-		this.assertEquals(system.getSystembars().length,1,{ fileName : "TestPBars.hx", lineNumber : 38, className : "nx3.test.TestPBars", methodName : "testSystemGeneratorOneBar"});
+$hxClasses["nx3.test.TestN"] = nx3.test.TestN;
+nx3.test.TestN.__name__ = ["nx3","test","TestN"];
+nx3.test.TestN.__super__ = haxe.unit.TestCase;
+nx3.test.TestN.prototype = $extend(haxe.unit.TestCase.prototype,{
+	testHeadXml: function() {
+		var item1 = new nx3.NHead(null,2,nx3.ESign.Flat);
+		var xmlstr1 = nx3.xml.HeadXML.toXml(item1).toString();
+		var item2 = nx3.xml.HeadXML.fromXmlStr(xmlstr1);
+		var xmlstr2 = nx3.xml.HeadXML.toXml(item2).toString();
+		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 46, className : "nx3.test.TestN", methodName : "testHeadXml"});
 	}
-	,testValueDelta: function() {
-		var nbar = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4])])]);
-		var pbar = new nx3.PBar(nbar);
-		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 47, className : "nx3.test.TestPBars", methodName : "testValueDelta"});
-		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 48, className : "nx3.test.TestPBars", methodName : "testValueDelta"});
-		var nbar1 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,2])])]);
-		var pbar1 = new nx3.PBar(nbar1);
-		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getDistanceDelta(),0.4,{ fileName : "TestPBars.hx", lineNumber : 52, className : "nx3.test.TestPBars", methodName : "testValueDelta"});
-		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getDistanceDelta(),0.6,{ fileName : "TestPBars.hx", lineNumber : 53, className : "nx3.test.TestPBars", methodName : "testValueDelta"});
+	,testNoteXml: function() {
+		var item1 = new nx3.NNote(null,[new nx3.NHead(null,-3),new nx3.NHead(null,-2,nx3.ESign.Flat),new nx3.NHead(null,4,nx3.ESign.Natural),new nx3.NHead(null,1)],nx3.ENoteVal.Nv2dot,nx3.EDirectionUAD.Down);
+		var xmlstr1 = nx3.xml.NoteXML.toXml(item1).toString();
+		var item2 = nx3.xml.NoteXML.fromXmlStr(xmlstr1);
+		var xmlstr2 = nx3.xml.NoteXML.toXml(item2).toString();
+		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 57, className : "nx3.test.TestN", methodName : "testNoteXml"});
+		this.assertEquals([-3,-2,1,4].toString(),item1.getHeadLevels().toString(),{ fileName : "TestN.hx", lineNumber : 60, className : "nx3.test.TestN", methodName : "testNoteXml"});
 	}
-	,testStretchTwoNotesBenefit: function() {
-		var nbar = new nx3.NBar([new nx3.NPart([new nx3.QVoice([16,16],null,null,null,"#")])]);
-		var pbar = new nx3.PBar(nbar);
-		var calculator = new nx3.PBarWidthCalculator();
-		var generator = new nx3.PSystemGenerator([pbar],{ showFirstClef : false, showFirstKey : false, showFirstTime : false},null,400,calculator);
-		var system = generator.getSystem();
-		var systembar = cx.ArrayTools.first(system.getSystembars());
-		this.assertEquals(cx.MathTools.round2(systembar.getBarWidths().contentWidth,null),15.6,{ fileName : "TestPBars.hx", lineNumber : 148, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getAPostion(),4.2,{ fileName : "TestPBars.hx", lineNumber : 149, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getSPosition(),4.2,{ fileName : "TestPBars.hx", lineNumber : 150, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.first(pbar.getColumns()).getADistanceBenefit(),null),1.4,{ fileName : "TestPBars.hx", lineNumber : 151, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 153, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 154, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar.getColumns()).getAPostion(),null),10.6,{ fileName : "TestPBars.hx", lineNumber : 156, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar.getColumns()).getSPosition(),null),10.6,{ fileName : "TestPBars.hx", lineNumber : 157, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getADistanceBenefit(),0,{ fileName : "TestPBars.hx", lineNumber : 158, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 159, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		systembar.setBarStretch(2);
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.first(pbar.getColumns()).getSPosition(),null),4.2,{ fileName : "TestPBars.hx", lineNumber : 162, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar.getColumns()).getSPosition(),null),11.6,{ fileName : "TestPBars.hx", lineNumber : 163, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		systembar.setBarStretch(0);
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.first(pbar.getColumns()).getSPosition(),null),4.2,{ fileName : "TestPBars.hx", lineNumber : 166, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar.getColumns()).getSPosition(),null),10.6,{ fileName : "TestPBars.hx", lineNumber : 167, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		var nbar1 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([16,16],null,null,null,".#")])]);
-		var pbar1 = new nx3.PBar(nbar1);
-		var calculator1 = new nx3.PBarWidthCalculator();
-		var generator1 = new nx3.PSystemGenerator([pbar1],{ showFirstClef : false, showFirstKey : false, showFirstTime : false},null,400,calculator1);
-		var system1 = generator1.getSystem();
-		var systembar1 = cx.ArrayTools.first(system1.getSystembars());
-		this.assertEquals(cx.MathTools.round2(systembar1.getBarWidths().contentWidth,null),13,{ fileName : "TestPBars.hx", lineNumber : 176, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getAPostion(),1.6,{ fileName : "TestPBars.hx", lineNumber : 177, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getSPosition(),1.6,{ fileName : "TestPBars.hx", lineNumber : 178, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.first(pbar1.getColumns()).getADistanceBenefit(),null),1.4,{ fileName : "TestPBars.hx", lineNumber : 179, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 181, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 182, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar1.getColumns()).getAPostion(),null),8,{ fileName : "TestPBars.hx", lineNumber : 184, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar1.getColumns()).getSPosition(),null),8,{ fileName : "TestPBars.hx", lineNumber : 185, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getADistanceBenefit(),0,{ fileName : "TestPBars.hx", lineNumber : 186, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar1.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 187, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		systembar1.setBarStretch(2);
-		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getSPosition(),1.6,{ fileName : "TestPBars.hx", lineNumber : 190, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar1.getColumns()).getAPostion(),null),8,{ fileName : "TestPBars.hx", lineNumber : 191, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(systembar1.getBarWidths().contentWidth,null),15,{ fileName : "TestPBars.hx", lineNumber : 192, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		systembar1.setBarStretch(0);
-		this.assertEquals(cx.ArrayTools.first(pbar1.getColumns()).getSPosition(),1.6,{ fileName : "TestPBars.hx", lineNumber : 195, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar1.getColumns()).getSPosition(),null),8,{ fileName : "TestPBars.hx", lineNumber : 196, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		var nbar2 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([16,16],null,null,null,"##")])]);
-		var pbar2 = new nx3.PBar(nbar2);
-		var calculator2 = new nx3.PBarWidthCalculator();
-		var generator2 = new nx3.PSystemGenerator([pbar2],{ showFirstClef : false, showFirstKey : false, showFirstTime : false},null,400,calculator2);
-		var system2 = generator2.getSystem();
-		var systembar2 = cx.ArrayTools.first(system2.getSystembars());
-		this.assertEquals(cx.MathTools.round2(systembar2.getBarWidths().contentWidth,null),15.6,{ fileName : "TestPBars.hx", lineNumber : 207, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getAPostion(),4.2,{ fileName : "TestPBars.hx", lineNumber : 208, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getSPosition(),4.2,{ fileName : "TestPBars.hx", lineNumber : 209, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.first(pbar2.getColumns()).getADistanceBenefit(),null),1.4,{ fileName : "TestPBars.hx", lineNumber : 210, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 212, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar2.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 213, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar2.getColumns()).getAPostion(),null),10.6,{ fileName : "TestPBars.hx", lineNumber : 215, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar2.getColumns()).getSPosition(),null),10.6,{ fileName : "TestPBars.hx", lineNumber : 216, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar2.getColumns()).getADistanceBenefit(),0,{ fileName : "TestPBars.hx", lineNumber : 217, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.ArrayTools.second(pbar2.getColumns()).getDistanceDelta(),0.5,{ fileName : "TestPBars.hx", lineNumber : 218, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		systembar2.setBarStretch(2);
-		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getSPosition(),4.2,{ fileName : "TestPBars.hx", lineNumber : 221, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar2.getColumns()).getAPostion(),null),10.6,{ fileName : "TestPBars.hx", lineNumber : 222, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(systembar2.getBarWidths().contentWidth,null),17.6,{ fileName : "TestPBars.hx", lineNumber : 223, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		systembar2.setBarStretch(0);
-		this.assertEquals(cx.ArrayTools.first(pbar2.getColumns()).getAPostion(),4.2,{ fileName : "TestPBars.hx", lineNumber : 226, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
-		this.assertEquals(cx.MathTools.round2(cx.ArrayTools.second(pbar2.getColumns()).getSPosition(),null),10.6,{ fileName : "TestPBars.hx", lineNumber : 227, className : "nx3.test.TestPBars", methodName : "testStretchTwoNotesBenefit"});
+	,testNotePause: function() {
+		var note = new nx3.NNote(nx3.ENoteType.Pause(1),null,nx3.ENoteVal.Nv4);
+		var xmlStr = nx3.xml.NoteXML.toXml(note).toString();
+		var note2 = nx3.xml.NoteXML.fromXmlStr(xmlStr);
+		var xmlStr2 = nx3.xml.NoteXML.toXml(note2).toString();
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 69, className : "nx3.test.TestN", methodName : "testNotePause"});
 	}
-	,testLinebreak: function() {
-		var b0 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")],null,nx3.EClef.ClefC,null,nx3.EKey.Flat2)],null,nx3.ETime.Time3_4);
-		var b1 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")])]);
-		var b2 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")])]);
-		var b3 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")])]);
-		var b4 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")])]);
-		var b5 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,4,4],null,null,null,"")])]);
-		var nscore = new nx3.NScore([b0,b1,b2,b3,b4,b5]);
-		var score = new nx3.PScore(nscore);
-		var systems = score.getSystems(500);
-		this.assertEquals(systems[0].getWidth(),207.6,{ fileName : "TestPBars.hx", lineNumber : 243, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
-		this.assertEquals(systems[0].getSystembars().length,6,{ fileName : "TestPBars.hx", lineNumber : 244, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
-		this.assertEquals(systems.length,1,{ fileName : "TestPBars.hx", lineNumber : 245, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
-		var systems1 = score.getSystems(200);
-		this.assertEquals(systems1[0].getWidth(),175.0,{ fileName : "TestPBars.hx", lineNumber : 248, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
-		this.assertEquals(systems1[0].getSystembars().length,5,{ fileName : "TestPBars.hx", lineNumber : 249, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
-		this.assertEquals(systems1.length,2,{ fileName : "TestPBars.hx", lineNumber : 250, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
-		var systems2 = score.getSystems(170);
-		this.assertEquals(systems2[0].getWidth(),142.4,{ fileName : "TestPBars.hx", lineNumber : 253, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
-		this.assertEquals(systems2[0].getSystembars().length,4,{ fileName : "TestPBars.hx", lineNumber : 254, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
-		this.assertEquals(systems2.length,2,{ fileName : "TestPBars.hx", lineNumber : 255, className : "nx3.test.TestPBars", methodName : "testLinebreak"});
+	,testNoteXml2: function() {
+		var item = new nx3.NNote(nx3.ENoteType.Pause(0),null,nx3.ENoteVal.Nv4);
+		this.assertEquals(item.type[1],1,{ fileName : "TestN.hx", lineNumber : 75, className : "nx3.test.TestN", methodName : "testNoteXml2"});
+		var item1 = new nx3.NNote(nx3.ENoteType.Lyric("Hello"),null,nx3.ENoteVal.Nv4);
+		this.assertEquals(item1.type[1],4,{ fileName : "TestN.hx", lineNumber : 77, className : "nx3.test.TestN", methodName : "testNoteXml2"});
 	}
-	,__class__: nx3.test.TestPBars
+	,testVoiceXml: function() {
+		var nvoice = new nx3.NVoice([new nx3.QNote4(null,1),new nx3.NNote(nx3.ENoteType.Pause(1),null,nx3.ENoteVal.Nv4)]);
+		var xmlStr = nx3.xml.VoiceXML.toXml(nvoice).toString();
+		var nvoice2 = nx3.xml.VoiceXML.fromXmlStr(xmlStr);
+		var xmlStr2 = nx3.xml.VoiceXML.toXml(nvoice2).toString();
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 93, className : "nx3.test.TestN", methodName : "testVoiceXml"});
+	}
+	,testBarXml: function() {
+		var nbar = nx3.test.TestItems.nbar1();
+		var xmlStr = nx3.xml.BarXML.toXml(nbar).toString();
+		var nbar2 = nx3.xml.BarXML.fromXmlStr(xmlStr);
+		var xmlStr2 = nx3.xml.BarXML.toXml(nbar2).toString();
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 103, className : "nx3.test.TestN", methodName : "testBarXml"});
+	}
+	,xmlStrExport: function(filename,xmlStr) {
+	}
+	,__class__: nx3.test.TestN
 });
 nx3.test.TestRenderer = function() { };
 $hxClasses["nx3.test.TestRenderer"] = nx3.test.TestRenderer;
@@ -17879,18 +17393,471 @@ nx3.test.TestRenderer.testRenderer = function(r) {
 	var target = r.getTarget();
 };
 nx3.test.TestRenderer.testRenderP = function(r) {
-	r.renderScore(nx3.test.TestItems.scoreLinebreak(),10,100,120);
+	r.addInteraction(new nx3.action.TestInteractivity());
+	r.addInteraction(new nx3.action.SoundInteractivity());
+	r.renderScore(nx3.test.TestItems.scoreBachSinfonia4(),10,100,300);
 };
+nx3.test.TestTargetSvgXml = function() {
+	haxe.unit.TestCase.call(this);
+};
+$hxClasses["nx3.test.TestTargetSvgXml"] = nx3.test.TestTargetSvgXml;
+nx3.test.TestTargetSvgXml.__name__ = ["nx3","test","TestTargetSvgXml"];
+nx3.test.TestTargetSvgXml.__super__ = haxe.unit.TestCase;
+nx3.test.TestTargetSvgXml.prototype = $extend(haxe.unit.TestCase.prototype,{
+	testNew: function() {
+		this.assertTrue(true,{ fileName : "TestTargetSvgXml.hx", lineNumber : 13, className : "nx3.test.TestTargetSvgXml", methodName : "testNew"});
+		var svg = new nx3.render.TargetSvgXml("test");
+		svg.line(10,10,20,20);
+		var xmlStr = svg.getXml().toString();
+	}
+	,__class__: nx3.test.TestTargetSvgXml
+});
 nx3.test.Unittests = function() { };
 $hxClasses["nx3.test.Unittests"] = nx3.test.Unittests;
 nx3.test.Unittests.__name__ = ["nx3","test","Unittests"];
 nx3.test.Unittests.performTests = function() {
 	var runner = new haxe.unit.TestRunner();
 	var start_time = new Date();
-	runner.add(new nx3.test.TestPBars());
+	runner.add(new nx3.test.TestN());
+	runner.add(new nx3.test.TestTargetSvgXml());
+	runner.add(new nx3.test.TestEvents());
 	var end_time = new Date();
 	var success = runner.run();
 	haxe.unit.TestRunner.print("Testing time: " + Std["int"](end_time.getTime() - start_time.getTime()) + "ms");
+};
+nx3.xml = {};
+nx3.xml.BarXML = function() { };
+$hxClasses["nx3.xml.BarXML"] = nx3.xml.BarXML;
+nx3.xml.BarXML.__name__ = ["nx3","xml","BarXML"];
+nx3.xml.BarXML.toXml = function(bar) {
+	var xml = Xml.createElement("bar");
+	var _g = 0;
+	var _g1 = bar.nparts;
+	while(_g < _g1.length) {
+		var part = _g1[_g];
+		++_g;
+		var partXml = nx3.xml.PartXML.toXml(part);
+		xml.addChild(partXml);
+	}
+	var _g2 = bar.type;
+	switch(_g2[1]) {
+	case 0:
+		break;
+	default:
+		xml.set("type",Std.string(bar.type));
+	}
+	if(bar.time != null) {
+		var _g3 = bar.time;
+		switch(_g3[1]) {
+		case 5:
+			break;
+		default:
+			xml.set("time",Std.string(nx3.ETimeUtils.toString(bar.time)));
+		}
+	}
+	var _g4 = bar.timeDisplay;
+	switch(_g4[1]) {
+	case 1:
+		break;
+	default:
+		xml.set("timedisplay",Std.string(bar.timeDisplay));
+	}
+	return xml;
+};
+nx3.xml.BarXML.fromXmlStr = function(xmlStr) {
+	var xml = Xml.parse(xmlStr).firstElement();
+	var parts = [];
+	var $it0 = xml.elements();
+	while( $it0.hasNext() ) {
+		var p = $it0.next();
+		var part = nx3.xml.PartXML.fromXmlStr(p.toString());
+		parts.push(part);
+	}
+	var typeStr = xml.get("type");
+	var type;
+	if(typeStr == null) type = nx3.EBarType.Normal; else type = cx.EnumTools.createFromString(nx3.EBarType,typeStr);
+	var time = null;
+	var timeStr = xml.get("time");
+	if(timeStr != null) time = nx3.ETimeUtils.fromString(timeStr);
+	var timeDisplayStr = xml.get("timedisplay");
+	var timeDisplay;
+	if(timeDisplayStr == null) timeDisplay = nx3.EDisplayALN.Layout; else timeDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,timeDisplayStr);
+	return new nx3.NBar(parts,type,time,timeDisplay);
+};
+nx3.xml.BarXML.test = function(item) {
+	var str = nx3.xml.BarXML.toXml(item).toString();
+	var item2 = nx3.xml.BarXML.fromXmlStr(str);
+	var str2 = nx3.xml.BarXML.toXml(item2).toString();
+	haxe.Log.trace(str,{ fileName : "BarXML.hx", lineNumber : 100, className : "nx3.xml.BarXML", methodName : "test"});
+	haxe.Log.trace(str2,{ fileName : "BarXML.hx", lineNumber : 101, className : "nx3.xml.BarXML", methodName : "test"});
+	return str == str2;
+	return false;
+};
+nx3.xml.BarsXML = function() { };
+$hxClasses["nx3.xml.BarsXML"] = nx3.xml.BarsXML;
+nx3.xml.BarsXML.__name__ = ["nx3","xml","BarsXML"];
+nx3.xml.BarsXML.toXml = function(bars) {
+	var xml = Xml.createElement("bars");
+	var _g = 0;
+	while(_g < bars.length) {
+		var bar = bars[_g];
+		++_g;
+		var barXml = nx3.xml.BarXML.toXml(bar);
+		xml.addChild(barXml);
+	}
+	return xml;
+};
+nx3.xml.BarsXML.fromXmlStr = function(xmlStr) {
+	var xml = Xml.parse(xmlStr).firstElement();
+	var bars = [];
+	var $it0 = xml.elements();
+	while( $it0.hasNext() ) {
+		var b = $it0.next();
+		var bar = nx3.xml.BarXML.fromXmlStr(b.toString());
+		bars.push(bar);
+	}
+	return bars;
+};
+nx3.xml.HeadXML = function() { };
+$hxClasses["nx3.xml.HeadXML"] = nx3.xml.HeadXML;
+nx3.xml.HeadXML.__name__ = ["nx3","xml","HeadXML"];
+nx3.xml.HeadXML.toXml = function(head) {
+	var xml = Xml.createElement(nx3.xml.HeadXML.XHEAD);
+	var _g = head.type;
+	switch(_g[1]) {
+	case 2:case 1:
+		xml.set(nx3.xml.HeadXML.XHEAD_TYPE,Std.string(head.type));
+		break;
+	default:
+	}
+	xml.set(nx3.xml.HeadXML.XHEAD_LEVEL,head.level == null?"null":"" + head.level);
+	if(head.sign != nx3.ESign.None) xml.set(nx3.xml.HeadXML.XHEAD_SIGN,Std.string(head.sign));
+	if(head.tie != null) {
+		var _g1 = head.tie;
+		switch(_g1[1]) {
+		case 0:
+			var level = _g1[3];
+			var direction = _g1[2];
+			xml.set(nx3.xml.HeadXML.XHEAD_TIE,"true");
+			if(level != 0) xml.set(nx3.xml.HeadXML.XHEAD_TIE_LEVEL,level == null?"null":"" + level);
+			if(direction != nx3.EDirectionUAD.Auto) xml.set(nx3.xml.HeadXML.XHEAD_TIE_DIRECTION,Std.string(direction[0]));
+			break;
+		case 1:
+			var levelRight = _g1[4];
+			var levelLeft = _g1[3];
+			var direction1 = _g1[2];
+			xml.set(nx3.xml.HeadXML.XHEAD_TIE,levelLeft == null?"null":"" + levelLeft);
+			break;
+		}
+	}
+	if(head.tieTo != null) {
+		var _g2 = head.tieTo;
+		switch(_g2[1]) {
+		case 0:
+			var level1 = _g2[3];
+			var direction2 = _g2[2];
+			xml.set(nx3.xml.HeadXML.XHEAD_TIETO,Std.string(head.tieTo));
+			break;
+		case 1:
+			var levelRight1 = _g2[4];
+			var levelLeft1 = _g2[3];
+			var direction3 = _g2[2];
+			xml.set(nx3.xml.HeadXML.XHEAD_TIETO,Std.string(head.tieTo));
+			break;
+		}
+	}
+	return xml;
+};
+nx3.xml.HeadXML.fromXmlStr = function(xmlStr) {
+	var xml = Xml.parse(xmlStr).firstElement();
+	var typeStr = xml.get(nx3.xml.HeadXML.XHEAD_TYPE);
+	var type = cx.EnumTools.createFromString(nx3.EHeadType,typeStr);
+	var level = Std.parseInt(xml.get(nx3.xml.HeadXML.XHEAD_LEVEL));
+	var sign = cx.EnumTools.createFromString(nx3.ESign,xml.get(nx3.xml.HeadXML.XHEAD_SIGN));
+	var tie = null;
+	if(xml.get(nx3.xml.HeadXML.XHEAD_TIE) != null) {
+		var tiedirection;
+		if(xml.get(nx3.xml.HeadXML.XHEAD_TIE_DIRECTION) == null) tiedirection = nx3.EDirectionUAD.Auto; else tiedirection = nx3.EDirectionUAD.Up;
+		var tielevel;
+		if(xml.get(nx3.xml.HeadXML.XHEAD_TIE_LEVEL) == null) tielevel = 0; else tielevel = Std.parseInt(xml.get(nx3.xml.HeadXML.XHEAD_TIE_LEVEL));
+		tie = nx3.ETie.Tie(tiedirection,tielevel);
+	}
+	var tieTo = cx.EnumTools.createFromString(nx3.ETie,xml.get(nx3.xml.HeadXML.XHEAD_TIETO));
+	return new nx3.NHead(type,level,sign,tie,tieTo);
+};
+nx3.xml.HeadXML.test = function(item) {
+	var str = nx3.xml.HeadXML.toXml(item).toString();
+	var item2 = nx3.xml.HeadXML.fromXmlStr(str);
+	var str2 = nx3.xml.HeadXML.toXml(item2).toString();
+	haxe.Log.trace(str,{ fileName : "HeadXML.hx", lineNumber : 152, className : "nx3.xml.HeadXML", methodName : "test"});
+	haxe.Log.trace(str2,{ fileName : "HeadXML.hx", lineNumber : 153, className : "nx3.xml.HeadXML", methodName : "test"});
+	return str == str2;
+};
+nx3.xml.NoteXML = function() { };
+$hxClasses["nx3.xml.NoteXML"] = nx3.xml.NoteXML;
+nx3.xml.NoteXML.__name__ = ["nx3","xml","NoteXML"];
+nx3.xml.NoteXML.toXml = function(note) {
+	var xml = null;
+	{
+		var _g = note.type;
+		switch(_g[1]) {
+		case 0:
+			var attributes = _g[5];
+			var articulations = _g[4];
+			var variant = _g[3];
+			var heads = _g[2];
+			xml = Xml.createElement("note");
+			var _g1 = 0;
+			while(_g1 < heads.length) {
+				var head = heads[_g1];
+				++_g1;
+				var headXml = nx3.xml.HeadXML.toXml(head);
+				xml.addChild(headXml);
+			}
+			if(variant != null) xml.set("variant",Std.string(variant));
+			if(articulations != null) {
+				var articulationStrings = [];
+				var _g11 = 0;
+				while(_g11 < articulations.length) {
+					var articulation = articulations[_g11];
+					++_g11;
+					articulationStrings.push(Std.string(articulation));
+				}
+				xml.set("articulations",articulationStrings.join(";"));
+			}
+			if(attributes != null) {
+				var attributesStrings = [];
+				var _g12 = 0;
+				while(_g12 < attributes.length) {
+					var attribute = attributes[_g12];
+					++_g12;
+					attributesStrings.push(Std.string(attribute));
+				}
+				xml.set("attributes",attributesStrings.join(";"));
+			}
+			break;
+		case 1:
+			var level = _g[2];
+			xml = Xml.createElement("pause");
+			if(level != 0) xml.set("level",level == null?"null":"" + level);
+			break;
+		case 4:
+			var format = _g[5];
+			var continuation = _g[4];
+			var offset = _g[3];
+			var text = _g[2];
+			xml = Xml.createElement("lyric");
+			xml.set("text",text);
+			if(continuation != null) xml.set("continuation",Std.string(continuation));
+			if(offset != null) xml.set("offset",Std.string(offset));
+			if(format != null) xml.set("format",Std.string(format));
+			break;
+		default:
+			xml = Xml.createElement("undefined");
+		}
+	}
+	if(nx3.ENoteValTools.value(note.value) != nx3.ENoteValTools.value(nx3.ENoteVal.Nv4)) xml.set("val",Std.string(nx3.ENoteValTools.toValString(note.value)));
+	if(note.direction != nx3.EDirectionUAD.Auto) xml.set("direction",Std.string(note.direction));
+	return xml;
+};
+nx3.xml.NoteXML.fromXmlStr = function(xmlStr) {
+	var xml = Xml.parse(xmlStr).firstElement();
+	var xmlType = xml.get_nodeName();
+	var type = null;
+	switch(xmlType) {
+	case "note":
+		var heads = [];
+		var $it0 = xml.elementsNamed(nx3.xml.HeadXML.XHEAD);
+		while( $it0.hasNext() ) {
+			var h = $it0.next();
+			var head = nx3.xml.HeadXML.fromXmlStr(h.toString());
+			heads.push(head);
+		}
+		var variant = cx.EnumTools.createFromString(nx3.ENotationVariant,xml.get("variant"));
+		var articulations = [];
+		var articulationsStr = xml.get("articulations");
+		if(articulationsStr != null) {
+			var articulationStrings = articulationsStr.split(";");
+			var _g = 0;
+			while(_g < articulationStrings.length) {
+				var articulationStr = articulationStrings[_g];
+				++_g;
+				articulations.push(cx.EnumTools.createFromString(nx3.ENoteArticulation,articulationStr));
+			}
+		}
+		if(articulations.length == 0) articulations = null;
+		var attributes = [];
+		var attributesStr = xml.get("attributes");
+		if(attributesStr != null) {
+			var attributesStrings = attributesStr.split(";");
+			var _g1 = 0;
+			while(_g1 < attributesStrings.length) {
+				var attributeStr = attributesStrings[_g1];
+				++_g1;
+				attributes.push(cx.EnumTools.createFromString(nx3.ENoteAttributes,attributeStr));
+			}
+		}
+		if(attributes.length == 0) attributes = null;
+		type = nx3.ENoteType.Note(heads,variant,articulations,attributes);
+		break;
+	case "pause":
+		var pauseLevelStr = xml.get("level");
+		var levelInt;
+		if(pauseLevelStr == null) levelInt = 0; else levelInt = Std.parseInt(pauseLevelStr);
+		type = nx3.ENoteType.Pause(levelInt);
+		break;
+	case "lyric":
+		var text = xml.get("text");
+		var offsetStr = xml.get("offset");
+		var offset = cx.EnumTools.createFromString(nx3.EPosition,offsetStr);
+		var continuationStr = xml.get("continuation");
+		var continuation = cx.EnumTools.createFromString(nx3.ELyricContinuation,continuationStr);
+		type = nx3.ENoteType.Lyric(text,offset,continuation);
+		break;
+	}
+	var valStr = xml.get("val");
+	var value = nx3.ENoteValTools.fromValString(valStr);
+	var direction = cx.EnumTools.createFromString(nx3.EDirectionUAD,xml.get("direction"));
+	return new nx3.NNote(type,null,value,direction);
+};
+nx3.xml.NoteXML.test = function(item) {
+	var str = nx3.xml.NoteXML.toXml(item).toString();
+	var item2 = nx3.xml.NoteXML.fromXmlStr(str);
+	var str2 = nx3.xml.NoteXML.toXml(item2).toString();
+	haxe.Log.trace(str,{ fileName : "NoteXML.hx", lineNumber : 204, className : "nx3.xml.NoteXML", methodName : "test"});
+	haxe.Log.trace(str2,{ fileName : "NoteXML.hx", lineNumber : 205, className : "nx3.xml.NoteXML", methodName : "test"});
+	return str == str2;
+};
+nx3.xml.NoteXML.clone = function(nnote) {
+	return nx3.xml.NoteXML.fromXmlStr(nx3.xml.NoteXML.toXml(nnote).toString());
+};
+nx3.xml.PartXML = function() { };
+$hxClasses["nx3.xml.PartXML"] = nx3.xml.PartXML;
+nx3.xml.PartXML.__name__ = ["nx3","xml","PartXML"];
+nx3.xml.PartXML.toXml = function(part) {
+	var xml = Xml.createElement("part");
+	var _g = 0;
+	var _g1 = part.nvoices;
+	while(_g < _g1.length) {
+		var voice = _g1[_g];
+		++_g;
+		var voiceXml = nx3.xml.VoiceXML.toXml(voice);
+		xml.addChild(voiceXml);
+	}
+	var _g2 = part.type;
+	switch(_g2[1]) {
+	case 0:
+		break;
+	default:
+		xml.set("type",Std.string(part.type));
+	}
+	if(part.clef != null) {
+		var _g3 = part.clef;
+		switch(_g3[1]) {
+		case 0:
+			break;
+		default:
+			xml.set("clef",Std.string(part.clef));
+		}
+	}
+	if(part.key != null) {
+		var _g4 = part.key;
+		switch(_g4[1]) {
+		case 6:
+			break;
+		default:
+			xml.set("key",Std.string(part.key));
+		}
+	}
+	var _g5 = part.clefDisplay;
+	switch(_g5[1]) {
+	case 1:
+		break;
+	default:
+		xml.set("clefdisplay",Std.string(part.clefDisplay));
+	}
+	var _g6 = part.keyDisplay;
+	switch(_g6[1]) {
+	case 1:
+		break;
+	default:
+		xml.set("keydisplay",Std.string(part.keyDisplay));
+	}
+	return xml;
+};
+nx3.xml.PartXML.fromXmlStr = function(xmlStr) {
+	var xml = Xml.parse(xmlStr).firstElement();
+	var voices = [];
+	var $it0 = xml.elements();
+	while( $it0.hasNext() ) {
+		var v = $it0.next();
+		var voice = nx3.xml.VoiceXML.fromXmlStr(v.toString());
+		voices.push(voice);
+	}
+	var typeStr = xml.get("type");
+	var type = cx.EnumTools.createFromString(nx3.EPartType,typeStr);
+	var str = xml.get("clef");
+	var clef = null;
+	if(str != null) clef = cx.EnumTools.createFromString(nx3.EClef,str);
+	var clefDisplayStr = xml.get("clefdisplay");
+	var clefDisplay;
+	if(clefDisplayStr == null) clefDisplay = nx3.EDisplayALN.Layout; else clefDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,clefDisplayStr);
+	var str1 = xml.get("key");
+	var key = null;
+	if(str1 != null) key = cx.EnumTools.createFromString(nx3.EKey,str1);
+	var keyDisplayStr = xml.get("keydisplay");
+	var keyDisplay;
+	if(keyDisplayStr == null) keyDisplay = nx3.EDisplayALN.Layout; else keyDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,keyDisplayStr);
+	return new nx3.NPart(voices,type,clef,clefDisplay,key,keyDisplay);
+};
+nx3.xml.VoiceXML = function() { };
+$hxClasses["nx3.xml.VoiceXML"] = nx3.xml.VoiceXML;
+nx3.xml.VoiceXML.__name__ = ["nx3","xml","VoiceXML"];
+nx3.xml.VoiceXML.toXml = function(voice) {
+	var xml = Xml.createElement("voice");
+	var _g = voice.type;
+	switch(_g[1]) {
+	case 1:
+		xml.set("type",Std.string(voice.type));
+		break;
+	default:
+	}
+	if(voice.direction != nx3.EDirectionUAD.Auto) xml.set("direction",Std.string(voice.direction));
+	if(voice.nnotes != null) {
+		var _g1 = 0;
+		var _g11 = voice.nnotes;
+		while(_g1 < _g11.length) {
+			var note = _g11[_g1];
+			++_g1;
+			var noteXml = nx3.xml.NoteXML.toXml(note);
+			xml.addChild(noteXml);
+		}
+	}
+	return xml;
+};
+nx3.xml.VoiceXML.fromXmlStr = function(xmlStr) {
+	var xml = Xml.parse(xmlStr).firstElement();
+	var typeStr = xml.get("type");
+	var type = cx.EnumTools.createFromString(nx3.EVoiceType,typeStr);
+	var directionStr = xml.get("direction");
+	var direction = null;
+	if(directionStr == null) direction = nx3.EDirectionUAD.Auto; else direction = cx.EnumTools.createFromString(nx3.EDirectionUAD,directionStr);
+	var notes = [];
+	var $it0 = xml.elements();
+	while( $it0.hasNext() ) {
+		var n = $it0.next();
+		var note = nx3.xml.NoteXML.fromXmlStr(n.toString());
+		notes.push(note);
+	}
+	return new nx3.NVoice(notes,type,direction);
+};
+nx3.xml.VoiceXML.test = function(item) {
+	var str = nx3.xml.VoiceXML.toXml(item).toString();
+	var item2 = nx3.xml.VoiceXML.fromXmlStr(str);
+	var str2 = nx3.xml.VoiceXML.toXml(item2).toString();
+	haxe.Log.trace(str,{ fileName : "VoiceXML.hx", lineNumber : 76, className : "nx3.xml.VoiceXML", methodName : "test"});
+	haxe.Log.trace(str2,{ fileName : "VoiceXML.hx", lineNumber : 77, className : "nx3.xml.VoiceXML", methodName : "test"});
+	return str == str2;
 };
 openfl.AssetCache = function() {
 	this.enabled = true;
@@ -17944,9 +17911,9 @@ openfl.Assets.getBitmapData = function(id,useCache) {
 				var bitmapData1 = library.getBitmapData(symbolName);
 				if(useCache && openfl.Assets.cache.enabled) openfl.Assets.cache.bitmapData.set(id,bitmapData1);
 				return bitmapData1;
-			} else haxe.Log.trace("[openfl.Assets] BitmapData asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 118, className : "openfl.Assets", methodName : "getBitmapData"});
-		} else haxe.Log.trace("[openfl.Assets] There is no BitmapData asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 124, className : "openfl.Assets", methodName : "getBitmapData"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 130, className : "openfl.Assets", methodName : "getBitmapData"});
+			} else haxe.Log.trace("[openfl.Assets] BitmapData asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 119, className : "openfl.Assets", methodName : "getBitmapData"});
+		} else haxe.Log.trace("[openfl.Assets] There is no BitmapData asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 125, className : "openfl.Assets", methodName : "getBitmapData"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 131, className : "openfl.Assets", methodName : "getBitmapData"});
 	return null;
 };
 openfl.Assets.getBytes = function(id) {
@@ -17956,11 +17923,16 @@ openfl.Assets.getBytes = function(id) {
 	var pos = id.indexOf(":") + 1;
 	symbolName = HxOverrides.substr(id,pos,null);
 	var library = openfl.Assets.getLibrary(libraryName);
+	haxe.Log.trace(symbolName,{ fileName : "Assets.hx", lineNumber : 158, className : "openfl.Assets", methodName : "getBytes"});
 	if(library != null) {
+		haxe.Log.trace(" exists",{ fileName : "Assets.hx", lineNumber : 164, className : "openfl.Assets", methodName : "getBytes"});
 		if(library.exists(symbolName,openfl.AssetType.BINARY)) {
-			if(library.isLocal(symbolName,openfl.AssetType.BINARY)) return library.getBytes(symbolName); else haxe.Log.trace("[openfl.Assets] String or ByteArray asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 167, className : "openfl.Assets", methodName : "getBytes"});
-		} else haxe.Log.trace("[openfl.Assets] There is no String or ByteArray asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 173, className : "openfl.Assets", methodName : "getBytes"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 179, className : "openfl.Assets", methodName : "getBytes"});
+			if(library.isLocal(symbolName,openfl.AssetType.BINARY)) {
+				haxe.Log.trace("library getBytes",{ fileName : "Assets.hx", lineNumber : 171, className : "openfl.Assets", methodName : "getBytes"});
+				return library.getBytes(symbolName);
+			} else haxe.Log.trace("[openfl.Assets] String or ByteArray asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 176, className : "openfl.Assets", methodName : "getBytes"});
+		} else haxe.Log.trace("[openfl.Assets] There is no String or ByteArray asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 182, className : "openfl.Assets", methodName : "getBytes"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 188, className : "openfl.Assets", methodName : "getBytes"});
 	return null;
 };
 openfl.Assets.getFont = function(id,useCache) {
@@ -17978,9 +17950,9 @@ openfl.Assets.getFont = function(id,useCache) {
 				var font = library.getFont(symbolName);
 				if(useCache && openfl.Assets.cache.enabled) openfl.Assets.cache.font.set(id,font);
 				return font;
-			} else haxe.Log.trace("[openfl.Assets] Font asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 230, className : "openfl.Assets", methodName : "getFont"});
-		} else haxe.Log.trace("[openfl.Assets] There is no Font asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 236, className : "openfl.Assets", methodName : "getFont"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 242, className : "openfl.Assets", methodName : "getFont"});
+			} else haxe.Log.trace("[openfl.Assets] Font asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 239, className : "openfl.Assets", methodName : "getFont"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Font asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 245, className : "openfl.Assets", methodName : "getFont"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 251, className : "openfl.Assets", methodName : "getFont"});
 	return null;
 };
 openfl.Assets.getLibrary = function(name) {
@@ -17996,9 +17968,9 @@ openfl.Assets.getMovieClip = function(id) {
 	var library = openfl.Assets.getLibrary(libraryName);
 	if(library != null) {
 		if(library.exists(symbolName,openfl.AssetType.MOVIE_CLIP)) {
-			if(library.isLocal(symbolName,openfl.AssetType.MOVIE_CLIP)) return library.getMovieClip(symbolName); else haxe.Log.trace("[openfl.Assets] MovieClip asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 292, className : "openfl.Assets", methodName : "getMovieClip"});
-		} else haxe.Log.trace("[openfl.Assets] There is no MovieClip asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 298, className : "openfl.Assets", methodName : "getMovieClip"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 304, className : "openfl.Assets", methodName : "getMovieClip"});
+			if(library.isLocal(symbolName,openfl.AssetType.MOVIE_CLIP)) return library.getMovieClip(symbolName); else haxe.Log.trace("[openfl.Assets] MovieClip asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 301, className : "openfl.Assets", methodName : "getMovieClip"});
+		} else haxe.Log.trace("[openfl.Assets] There is no MovieClip asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 307, className : "openfl.Assets", methodName : "getMovieClip"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 313, className : "openfl.Assets", methodName : "getMovieClip"});
 	return null;
 };
 openfl.Assets.getMusic = function(id,useCache) {
@@ -18019,9 +17991,9 @@ openfl.Assets.getMusic = function(id,useCache) {
 				var sound1 = library.getMusic(symbolName);
 				if(useCache && openfl.Assets.cache.enabled) openfl.Assets.cache.sound.set(id,sound1);
 				return sound1;
-			} else haxe.Log.trace("[openfl.Assets] Sound asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 361, className : "openfl.Assets", methodName : "getMusic"});
-		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 367, className : "openfl.Assets", methodName : "getMusic"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 373, className : "openfl.Assets", methodName : "getMusic"});
+			} else haxe.Log.trace("[openfl.Assets] Sound asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 370, className : "openfl.Assets", methodName : "getMusic"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 376, className : "openfl.Assets", methodName : "getMusic"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 382, className : "openfl.Assets", methodName : "getMusic"});
 	return null;
 };
 openfl.Assets.getPath = function(id) {
@@ -18032,8 +18004,8 @@ openfl.Assets.getPath = function(id) {
 	symbolName = HxOverrides.substr(id,pos,null);
 	var library = openfl.Assets.getLibrary(libraryName);
 	if(library != null) {
-		if(library.exists(symbolName,null)) return library.getPath(symbolName); else haxe.Log.trace("[openfl.Assets] There is no asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 408, className : "openfl.Assets", methodName : "getPath"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 414, className : "openfl.Assets", methodName : "getPath"});
+		if(library.exists(symbolName,null)) return library.getPath(symbolName); else haxe.Log.trace("[openfl.Assets] There is no asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 417, className : "openfl.Assets", methodName : "getPath"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 423, className : "openfl.Assets", methodName : "getPath"});
 	return null;
 };
 openfl.Assets.getSound = function(id,useCache) {
@@ -18054,9 +18026,9 @@ openfl.Assets.getSound = function(id,useCache) {
 				var sound1 = library.getSound(symbolName);
 				if(useCache && openfl.Assets.cache.enabled) openfl.Assets.cache.sound.set(id,sound1);
 				return sound1;
-			} else haxe.Log.trace("[openfl.Assets] Sound asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 471, className : "openfl.Assets", methodName : "getSound"});
-		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 477, className : "openfl.Assets", methodName : "getSound"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 483, className : "openfl.Assets", methodName : "getSound"});
+			} else haxe.Log.trace("[openfl.Assets] Sound asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 480, className : "openfl.Assets", methodName : "getSound"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 486, className : "openfl.Assets", methodName : "getSound"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 492, className : "openfl.Assets", methodName : "getSound"});
 	return null;
 };
 openfl.Assets.getText = function(id) {
@@ -18068,9 +18040,9 @@ openfl.Assets.getText = function(id) {
 	var library = openfl.Assets.getLibrary(libraryName);
 	if(library != null) {
 		if(library.exists(symbolName,openfl.AssetType.TEXT)) {
-			if(library.isLocal(symbolName,openfl.AssetType.TEXT)) return library.getText(symbolName); else haxe.Log.trace("[openfl.Assets] String asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 520, className : "openfl.Assets", methodName : "getText"});
-		} else haxe.Log.trace("[openfl.Assets] There is no String asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 526, className : "openfl.Assets", methodName : "getText"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 532, className : "openfl.Assets", methodName : "getText"});
+			if(library.isLocal(symbolName,openfl.AssetType.TEXT)) return library.getText(symbolName); else haxe.Log.trace("[openfl.Assets] String asset \"" + id + "\" exists, but only asynchronously",{ fileName : "Assets.hx", lineNumber : 529, className : "openfl.Assets", methodName : "getText"});
+		} else haxe.Log.trace("[openfl.Assets] There is no String asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 535, className : "openfl.Assets", methodName : "getText"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 541, className : "openfl.Assets", methodName : "getText"});
 	return null;
 };
 openfl.Assets.initialize = function() {
@@ -18130,8 +18102,8 @@ openfl.Assets.loadBitmapData = function(id,handler,useCache) {
 				handler(bitmapData1);
 			}); else library.loadBitmapData(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no BitmapData asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 697, className : "openfl.Assets", methodName : "loadBitmapData"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 703, className : "openfl.Assets", methodName : "loadBitmapData"});
+		} else haxe.Log.trace("[openfl.Assets] There is no BitmapData asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 706, className : "openfl.Assets", methodName : "loadBitmapData"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 712, className : "openfl.Assets", methodName : "loadBitmapData"});
 	handler(null);
 };
 openfl.Assets.loadBytes = function(id,handler) {
@@ -18145,8 +18117,8 @@ openfl.Assets.loadBytes = function(id,handler) {
 		if(library.exists(symbolName,openfl.AssetType.BINARY)) {
 			library.loadBytes(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no String or ByteArray asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 733, className : "openfl.Assets", methodName : "loadBytes"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 739, className : "openfl.Assets", methodName : "loadBytes"});
+		} else haxe.Log.trace("[openfl.Assets] There is no String or ByteArray asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 744, className : "openfl.Assets", methodName : "loadBytes"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 750, className : "openfl.Assets", methodName : "loadBytes"});
 	handler(null);
 };
 openfl.Assets.loadFont = function(id,handler,useCache) {
@@ -18168,8 +18140,8 @@ openfl.Assets.loadFont = function(id,handler,useCache) {
 				handler(font);
 			}); else library.loadFont(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no Font asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 790, className : "openfl.Assets", methodName : "loadFont"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 796, className : "openfl.Assets", methodName : "loadFont"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Font asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 801, className : "openfl.Assets", methodName : "loadFont"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 807, className : "openfl.Assets", methodName : "loadFont"});
 	handler(null);
 };
 openfl.Assets.loadLibrary = function(name,handler) {
@@ -18181,7 +18153,7 @@ openfl.Assets.loadLibrary = function(name,handler) {
 		var library = unserializer.unserialize();
 		openfl.Assets.libraries.set(name,library);
 		library.load(handler);
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + name + "\"",{ fileName : "Assets.hx", lineNumber : 826, className : "openfl.Assets", methodName : "loadLibrary"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + name + "\"",{ fileName : "Assets.hx", lineNumber : 837, className : "openfl.Assets", methodName : "loadLibrary"});
 };
 openfl.Assets.loadMusic = function(id,handler,useCache) {
 	if(useCache == null) useCache = true;
@@ -18205,8 +18177,8 @@ openfl.Assets.loadMusic = function(id,handler,useCache) {
 				handler(sound1);
 			}); else library.loadMusic(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 881, className : "openfl.Assets", methodName : "loadMusic"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 887, className : "openfl.Assets", methodName : "loadMusic"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 892, className : "openfl.Assets", methodName : "loadMusic"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 898, className : "openfl.Assets", methodName : "loadMusic"});
 	handler(null);
 };
 openfl.Assets.loadMovieClip = function(id,handler) {
@@ -18220,8 +18192,8 @@ openfl.Assets.loadMovieClip = function(id,handler) {
 		if(library.exists(symbolName,openfl.AssetType.MOVIE_CLIP)) {
 			library.loadMovieClip(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no MovieClip asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 917, className : "openfl.Assets", methodName : "loadMovieClip"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 923, className : "openfl.Assets", methodName : "loadMovieClip"});
+		} else haxe.Log.trace("[openfl.Assets] There is no MovieClip asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 928, className : "openfl.Assets", methodName : "loadMovieClip"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 934, className : "openfl.Assets", methodName : "loadMovieClip"});
 	handler(null);
 };
 openfl.Assets.loadSound = function(id,handler,useCache) {
@@ -18246,8 +18218,8 @@ openfl.Assets.loadSound = function(id,handler,useCache) {
 				handler(sound1);
 			}); else library.loadSound(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 980, className : "openfl.Assets", methodName : "loadSound"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 986, className : "openfl.Assets", methodName : "loadSound"});
+		} else haxe.Log.trace("[openfl.Assets] There is no Sound asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 991, className : "openfl.Assets", methodName : "loadSound"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 997, className : "openfl.Assets", methodName : "loadSound"});
 	handler(null);
 };
 openfl.Assets.loadText = function(id,handler) {
@@ -18261,8 +18233,8 @@ openfl.Assets.loadText = function(id,handler) {
 		if(library.exists(symbolName,openfl.AssetType.TEXT)) {
 			library.loadText(symbolName,handler);
 			return;
-		} else haxe.Log.trace("[openfl.Assets] There is no String asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 1016, className : "openfl.Assets", methodName : "loadText"});
-	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 1022, className : "openfl.Assets", methodName : "loadText"});
+		} else haxe.Log.trace("[openfl.Assets] There is no String asset with an ID of \"" + id + "\"",{ fileName : "Assets.hx", lineNumber : 1027, className : "openfl.Assets", methodName : "loadText"});
+	} else haxe.Log.trace("[openfl.Assets] There is no asset library named \"" + libraryName + "\"",{ fileName : "Assets.hx", lineNumber : 1033, className : "openfl.Assets", methodName : "loadText"});
 	handler(null);
 };
 openfl.Assets.registerLibrary = function(name,library) {
@@ -18420,6 +18392,7 @@ flash.display.DisplayObject.__worldTransformDirty = 0;
 DefaultAssetLibrary.className = new haxe.ds.StringMap();
 DefaultAssetLibrary.path = new haxe.ds.StringMap();
 DefaultAssetLibrary.type = new haxe.ds.StringMap();
+cx.TimerTools._timer = null;
 flash.Lib.__startTime = haxe.Timer.stamp();
 flash.display.BitmapData.__base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 flash.display.BitmapDataChannel.ALPHA = 8;
@@ -18865,6 +18838,7 @@ nx3.Constants.TIE_WIDTH_SINGLE = 3;
 nx3.Constants.TIE_HEIGHT = 1.6;
 nx3.Constants.LEGER_MARGIN = 0.6;
 nx3.Constants.OBJECT_XMARGIN = 0.6;
+nx3.Constants.ATTRIBUTE_SIGN_WIDTH = 2.4;
 nx3.ENoteValTools.DOT = 1.5;
 nx3.ENoteValTools.DOTDOT = 1.75;
 nx3.ENoteValTools.TRI = 0.66666666;
@@ -18903,9 +18877,10 @@ nx3.PBaseRectCalculator.BASERECT_HEIGHT_X_2 = 3 * 2;
 nx3.PBaseRectCalculator.BASERECT_MARGIN = 0.6;
 nx3.PBaseRectCalculator.BASERECT_MARGIN_X_2 = 1.2;
 nx3.PColumnsAllotmentCalculator.delta = 0.5;
-nx3.PSystemGenerator.defaultClef = nx3.EClef.ClefF;
-nx3.PSystemGenerator.defaultKey = nx3.EKey.Flat2;
-nx3.PSystemGenerator.defaultTime = nx3.ETime.Time6_4;
+nx3.PSystemBarsGenerator.defaultClef = nx3.EClef.ClefF;
+nx3.PSystemBarsGenerator.defaultKey = nx3.EKey.Flat2;
+nx3.PSystemBarsGenerator.defaultTime = nx3.ETime.Time6_4;
+nx3.audio.PlayerFactory.html5AudioContext = null;
 nx3.render.scaling.Scaling.MID = { linesWidth : 0.8, space : 12.0, unitY : 6.0, noteWidth : 10, unitX : 5, quarterNoteWidth : 2.5, signPosWidth : 14.0, svgScale : .27, svgX : 0, svgY : -55.0, fontScaling : 1.5};
 nx3.render.scaling.Scaling.NORMAL = { linesWidth : .5, space : 8.0, unitY : 4.0, noteWidth : 7.0, unitX : 3.5, quarterNoteWidth : 1.75, signPosWidth : 9.5, svgScale : .175, svgX : 0, svgY : -36.0, fontScaling : 1.0};
 nx3.render.scaling.Scaling.SMALL = { linesWidth : .5, space : 6.0, unitY : 3.0, noteWidth : 5.0, unitX : 2.5, quarterNoteWidth : 1.25, signPosWidth : 7.0, svgScale : .14, svgX : 0, svgY : -28.5, fontScaling : 0.75};
@@ -18956,6 +18931,48 @@ nx3.render.svg.SvgElements.tpl5 = "\r\n<svg ><g visibility=\"visible\" id=\"page
 nx3.render.svg.SvgElements.tpl6x = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 124,150 L 111,151 C 110,146 108,143 106,141 103,138 99,136 94,136 90,136 86,137 83,139 80,142 77,145 74,150 72,155 71,162 71,172 74,168 78,165 82,162 86,160 91,159 96,159 104,159 111,162 117,168 123,174 126,182 126,192 126,198 125,204 122,209 119,215 115,219 110,222 105,225 100,226 94,226 83,226 75,222 68,215 61,207 58,195 58,178 58,158 62,144 69,135 75,128 84,124 95,124 103,124 110,126 115,131 120,136 123,142 124,150 Z M 71,191 C 71,195 72,199 74,203 76,206 78,209 82,211 85,213 89,214 93,214 99,214 103,212 107,208 111,204 113,199 113,192 113,186 111,180 107,177 104,173 99,171 92,171 86,171 81,173 77,177 73,180 71,185 71,191 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"58\" y=\"124\" width=\"69\" height=\"104\"/></g><g/></g></g></g></svg>\t\r\n\t";
 nx3.render.svg.SvgElements.tpl6 = "\r\n<svg ><g style=\"stroke:none;fill:#000000\"><path d=\"M 124,150 L 111,151 C 110,146 108,143 106,141 103,138 99,136 94,136 90,136 86,137 83,139 80,142 77,145 74,150 72,155 71,162 71,172 74,168 78,165 82,162 86,160 91,159 96,159 104,159 111,162 117,168 123,174 126,182 126,192 126,198 125,204 122,209 119,215 115,219 110,222 105,225 100,226 94,226 83,226 75,222 68,215 61,207 58,195 58,178 58,158 62,144 69,135 75,128 84,124 95,124 103,124 110,126 115,131 120,136 123,142 124,150 Z M 71,191 C 71,195 72,199 74,203 76,206 78,209 82,211 85,213 89,214 93,214 99,214 103,212 107,208 111,204 113,199 113,192 113,186 111,180 107,177 104,173 99,171 92,171 86,171 81,173 77,177 73,180 71,185 71,191 Z\"/></g></svg>\t\r\n\t";
 nx3.render.svg.SvgElements.tpl7 = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 61,138 L 61,125 126,125 126,136 C 120,142 114,152 108,163 102,174 97,186 94,197 91,206 90,215 89,225 L 76,225 C 76,217 78,208 81,196 83,185 87,175 93,164 98,154 104,145 110,138 L 61,138 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"61\" y=\"125\" width=\"67\" height=\"101\"/></g><g/></g></g></g></svg>\t\r\n\t";
+nx3.xml.BarXML.XBAR = "bar";
+nx3.xml.BarXML.XBAR_TYPE = "type";
+nx3.xml.BarXML.XBAR_TIME = "time";
+nx3.xml.BarXML.XBAR_TIMEDISPLAY = "timedisplay";
+nx3.xml.BarsXML.XBARS = "bars";
+nx3.xml.HeadXML.XHEAD = "headx";
+nx3.xml.HeadXML.XHEAD_TYPE = "type";
+nx3.xml.HeadXML.XHEAD_LEVEL = "level";
+nx3.xml.HeadXML.XHEAD_SIGN = "sign";
+nx3.xml.HeadXML.XHEAD_TIE = "tie";
+nx3.xml.HeadXML.XHEAD_TIETO = "tieto";
+nx3.xml.HeadXML.XHEAD_TIE_DIRECTION = "tiedirection";
+nx3.xml.HeadXML.XHEAD_TIE_LEVEL = "tielevel";
+nx3.xml.NoteXML.XNOTE = "note";
+nx3.xml.NoteXML.XPAUSE = "pause";
+nx3.xml.NoteXML.XPAUSE_LEVEL = "level";
+nx3.xml.NoteXML.XLYRIC = "lyric";
+nx3.xml.NoteXML.XLYRIC_TEXT = "text";
+nx3.xml.NoteXML.XUNDEFINED = "undefined";
+nx3.xml.NoteXML.XNOTE_TYPE = "type";
+nx3.xml.NoteXML.XNOTE_TYPE_NOTE = "note";
+nx3.xml.NoteXML.XNOTE_TYPE_NOTATION_VARIANT = "variant";
+nx3.xml.NoteXML.XNOTE_VALUE = "value";
+nx3.xml.NoteXML.XNOTE_VAL = "val";
+nx3.xml.NoteXML.XNOTE_DIRECTION = "direction";
+nx3.xml.NoteXML.XNOTE_TYPE_PAUSE = "pause";
+nx3.xml.NoteXML.XNOTE_TYPE_NOTE_ARTICULATIONS = "articulations";
+nx3.xml.NoteXML.LIST_DELIMITER = ";";
+nx3.xml.NoteXML.XNOTE_TYPE_NOTE_ATTRIBUTES = "attributes";
+nx3.xml.NoteXML.XOFFSET = "offset";
+nx3.xml.NoteXML.XLYRIC_CONTINUATION = "continuation";
+nx3.xml.NoteXML.XLYRIC_FORMAT = "format";
+nx3.xml.PartXML.XPART = "part";
+nx3.xml.PartXML.XPART_TYPE = "type";
+nx3.xml.PartXML.XPART_CLEF = "clef";
+nx3.xml.PartXML.XPART_CLEFDISPLAY = "clefdisplay";
+nx3.xml.PartXML.XPART_KEY = "key";
+nx3.xml.PartXML.XPART_KEYDISPLAY = "keydisplay";
+nx3.xml.VoiceXML.XVOICE = "voice";
+nx3.xml.VoiceXML.XVOICE_TYPE = "type";
+nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
+nx3.xml.VoiceXML.XVOICE_DIRECTION = "direction";
 openfl.Assets.cache = new openfl.AssetCache();
 openfl.Assets.libraries = new haxe.ds.StringMap();
 openfl.Assets.initialized = false;
@@ -18970,3 +18987,5 @@ openfl.display.Tilesheet.TILE_BLEND_MULTIPLY = 131072;
 openfl.display.Tilesheet.TILE_BLEND_SCREEN = 262144;
 ApplicationMain.main();
 })();
+
+//# sourceMappingURL=RenderTargets.js.map

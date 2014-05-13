@@ -9,6 +9,11 @@
    <depend name="include/haxe/io/Output.h"/>
    <depend name="include/sys/io/FileOutput.h"/>
   </file>
+  <file name="src/sys/io/File.cpp">
+   <depend name="include/cpp/Lib.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/sys/io/File.h"/>
+  </file>
   <file name="src/openfl/utils/WeakRef.cpp">
    <depend name="include/Std.h"/>
    <depend name="include/flash/Lib.h"/>
@@ -273,96 +278,27 @@
    <depend name="include/haxe/unit/TestRunner.h"/>
    <depend name="include/nx3/test/TestEvents.h"/>
    <depend name="include/nx3/test/TestN.h"/>
-   <depend name="include/nx3/test/TestP.h"/>
-   <depend name="include/nx3/test/TestPBars.h"/>
+   <depend name="include/nx3/test/TestTargetSvgXml.h"/>
    <depend name="include/nx3/test/Unittests.h"/>
+  </file>
+  <file name="src/nx3/test/TestTargetSvgXml.cpp">
+   <depend name="include/Xml.h"/>
+   <depend name="include/haxe/unit/TestCase.h"/>
+   <depend name="include/nx3/render/ITarget.h"/>
+   <depend name="include/nx3/render/TargetSvgXml.h"/>
+   <depend name="include/nx3/test/TestTargetSvgXml.h"/>
   </file>
   <file name="src/nx3/test/TestRenderer.cpp">
    <depend name="include/nx3/PScore.h"/>
+   <depend name="include/nx3/action/IInteractivity.h"/>
+   <depend name="include/nx3/action/InteractivityBase.h"/>
+   <depend name="include/nx3/action/SoundInteractivity.h"/>
+   <depend name="include/nx3/action/TestInteractivity.h"/>
    <depend name="include/nx3/render/ITarget.h"/>
    <depend name="include/nx3/render/Renderer.h"/>
    <depend name="include/nx3/render/RendererBase.h"/>
    <depend name="include/nx3/test/TestItems.h"/>
    <depend name="include/nx3/test/TestRenderer.h"/>
-  </file>
-  <file name="src/nx3/test/TestPBars.cpp">
-   <depend name="include/haxe/unit/TestCase.h"/>
-   <depend name="include/nx3/EAllotment.h"/>
-   <depend name="include/nx3/EBarType.h"/>
-   <depend name="include/nx3/EClef.h"/>
-   <depend name="include/nx3/EDirectionUAD.h"/>
-   <depend name="include/nx3/EDisplayALN.h"/>
-   <depend name="include/nx3/EKey.h"/>
-   <depend name="include/nx3/EPartType.h"/>
-   <depend name="include/nx3/ETime.h"/>
-   <depend name="include/nx3/IBarWidthCalculator.h"/>
-   <depend name="include/nx3/NBar.h"/>
-   <depend name="include/nx3/NPart.h"/>
-   <depend name="include/nx3/NScore.h"/>
-   <depend name="include/nx3/NVoice.h"/>
-   <depend name="include/nx3/PBar.h"/>
-   <depend name="include/nx3/PBarWidthCalculator.h"/>
-   <depend name="include/nx3/PColumn.h"/>
-   <depend name="include/nx3/PScore.h"/>
-   <depend name="include/nx3/PSysbarMeasurements.h"/>
-   <depend name="include/nx3/PSystem.h"/>
-   <depend name="include/nx3/PSystemBar.h"/>
-   <depend name="include/nx3/PSystemBarsGenerator.h"/>
-   <depend name="include/nx3/QVoice.h"/>
-   <depend name="include/nx3/test/TestPBars.h"/>
-  </file>
-  <file name="src/nx3/test/TestP.cpp">
-   <depend name="include/Std.h"/>
-   <depend name="include/flash/geom/Rectangle.h"/>
-   <depend name="include/haxe/Log.h"/>
-   <depend name="include/haxe/unit/TestCase.h"/>
-   <depend name="include/nx3/EAllotment.h"/>
-   <depend name="include/nx3/EBarType.h"/>
-   <depend name="include/nx3/EBeamflagType.h"/>
-   <depend name="include/nx3/EClef.h"/>
-   <depend name="include/nx3/EDirectionUAD.h"/>
-   <depend name="include/nx3/EDirectionUD.h"/>
-   <depend name="include/nx3/EDisplayALN.h"/>
-   <depend name="include/nx3/EHeadType.h"/>
-   <depend name="include/nx3/EKey.h"/>
-   <depend name="include/nx3/ENoteType.h"/>
-   <depend name="include/nx3/ENoteVal.h"/>
-   <depend name="include/nx3/EPartType.h"/>
-   <depend name="include/nx3/ESign.h"/>
-   <depend name="include/nx3/ETie.h"/>
-   <depend name="include/nx3/ETime.h"/>
-   <depend name="include/nx3/EVoiceType.h"/>
-   <depend name="include/nx3/IBarWidthCalculator.h"/>
-   <depend name="include/nx3/NBar.h"/>
-   <depend name="include/nx3/NHead.h"/>
-   <depend name="include/nx3/NNote.h"/>
-   <depend name="include/nx3/NPart.h"/>
-   <depend name="include/nx3/NScore.h"/>
-   <depend name="include/nx3/NVoice.h"/>
-   <depend name="include/nx3/PAttributesRectsCalculator.h"/>
-   <depend name="include/nx3/PBar.h"/>
-   <depend name="include/nx3/PBarConfig.h"/>
-   <depend name="include/nx3/PBeamgroup.h"/>
-   <depend name="include/nx3/PBeamgroupDirectionCalculator.h"/>
-   <depend name="include/nx3/PColumn.h"/>
-   <depend name="include/nx3/PComplex.h"/>
-   <depend name="include/nx3/PComplexTieTargetCalculator.h"/>
-   <depend name="include/nx3/PHead.h"/>
-   <depend name="include/nx3/PNote.h"/>
-   <depend name="include/nx3/PPart.h"/>
-   <depend name="include/nx3/PScore.h"/>
-   <depend name="include/nx3/PSysbarMeasurements.h"/>
-   <depend name="include/nx3/PSystem.h"/>
-   <depend name="include/nx3/PSystemBar.h"/>
-   <depend name="include/nx3/PSystemBarsGenerator.h"/>
-   <depend name="include/nx3/PVoice.h"/>
-   <depend name="include/nx3/QNote.h"/>
-   <depend name="include/nx3/QNote1.h"/>
-   <depend name="include/nx3/QNote2.h"/>
-   <depend name="include/nx3/QNote4.h"/>
-   <depend name="include/nx3/QNote8.h"/>
-   <depend name="include/nx3/QVoice.h"/>
-   <depend name="include/nx3/test/TestP.h"/>
   </file>
   <file name="src/nx3/test/TestN.cpp">
    <depend name="include/Xml.h"/>
@@ -491,6 +427,33 @@
    <depend name="include/flash/geom/Rectangle.h"/>
    <depend name="include/nx3/render/scaling/Scaling.h"/>
   </file>
+  <file name="src/nx3/render/el/HoverSprite.cpp">
+   <depend name="include/flash/display/CapsStyle.h"/>
+   <depend name="include/flash/display/DisplayObject.h"/>
+   <depend name="include/flash/display/DisplayObjectContainer.h"/>
+   <depend name="include/flash/display/Graphics.h"/>
+   <depend name="include/flash/display/IBitmapDrawable.h"/>
+   <depend name="include/flash/display/InteractiveObject.h"/>
+   <depend name="include/flash/display/JointStyle.h"/>
+   <depend name="include/flash/display/LineScaleMode.h"/>
+   <depend name="include/flash/display/Sprite.h"/>
+   <depend name="include/flash/events/Event.h"/>
+   <depend name="include/flash/events/EventDispatcher.h"/>
+   <depend name="include/flash/events/IEventDispatcher.h"/>
+   <depend name="include/flash/events/MouseEvent.h"/>
+   <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/nx3/render/el/HoverSprite.h"/>
+  </file>
+  <file name="src/nx3/render/TargetSvgXml.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/StringTools.h"/>
+   <depend name="include/Xml.h"/>
+   <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/nx3/action/EActivityType.h"/>
+   <depend name="include/nx3/render/ITarget.h"/>
+   <depend name="include/nx3/render/TargetSvgXml.h"/>
+   <depend name="include/nx3/render/scaling/Scaling.h"/>
+  </file>
   <file name="src/nx3/render/TargetSprite.cpp">
    <depend name="include/flash/display/CapsStyle.h"/>
    <depend name="include/flash/display/DisplayObject.h"/>
@@ -502,16 +465,20 @@
    <depend name="include/flash/display/LineScaleMode.h"/>
    <depend name="include/flash/display/Shape.h"/>
    <depend name="include/flash/display/Sprite.h"/>
+   <depend name="include/flash/events/Event.h"/>
    <depend name="include/flash/events/EventDispatcher.h"/>
    <depend name="include/flash/events/IEventDispatcher.h"/>
+   <depend name="include/flash/events/MouseEvent.h"/>
    <depend name="include/flash/geom/Rectangle.h"/>
    <depend name="include/flash/text/TextField.h"/>
    <depend name="include/flash/text/TextFieldAutoSize.h"/>
    <depend name="include/flash/text/TextFormat.h"/>
    <depend name="include/nx3/Constants.h"/>
+   <depend name="include/nx3/action/EActivityType.h"/>
    <depend name="include/nx3/geom/Point.h"/>
    <depend name="include/nx3/render/ITarget.h"/>
    <depend name="include/nx3/render/TargetSprite.h"/>
+   <depend name="include/nx3/render/el/HoverSprite.h"/>
    <depend name="include/nx3/render/scaling/Scaling.h"/>
    <depend name="include/nx3/render/svg/ShapeTools.h"/>
   </file>
@@ -530,9 +497,9 @@
   </file>
   <file name="src/nx3/render/Renderer.cpp">
    <depend name="include/Std.h"/>
-   <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PScore.h"/>
    <depend name="include/nx3/PSystem.h"/>
+   <depend name="include/nx3/action/IInteractivity.h"/>
    <depend name="include/nx3/render/ITarget.h"/>
    <depend name="include/nx3/render/Renderer.h"/>
    <depend name="include/nx3/render/RendererBase.h"/>
@@ -570,10 +537,14 @@
    <depend name="include/nx3/PHead.h"/>
    <depend name="include/nx3/PNote.h"/>
    <depend name="include/nx3/PPart.h"/>
-   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystem.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
+   <depend name="include/nx3/PSystembarMeasurements.h"/>
    <depend name="include/nx3/PVoice.h"/>
+   <depend name="include/nx3/action/EActionInfo.h"/>
+   <depend name="include/nx3/action/EActionType.h"/>
+   <depend name="include/nx3/action/EActivityType.h"/>
+   <depend name="include/nx3/action/IInteractivity.h"/>
    <depend name="include/nx3/geom/BezieerTool.h"/>
    <depend name="include/nx3/geom/RectanglesTools.h"/>
    <depend name="include/nx3/render/ITarget.h"/>
@@ -583,6 +554,7 @@
   </file>
   <file name="src/nx3/render/ITarget.cpp">
    <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/nx3/action/EActivityType.h"/>
    <depend name="include/nx3/render/ITarget.h"/>
   </file>
   <file name="src/nx3/qs/QuickSyntaxParser.cpp">
@@ -751,6 +723,79 @@
    <depend name="include/nx3/events/BarEvent.h"/>
    <depend name="include/nx3/events/NoteChange.h"/>
    <depend name="include/nx3/events/NoteInfo.h"/>
+  </file>
+  <file name="src/nx3/audio/PlayerFactory.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/flash/events/EventDispatcher.h"/>
+   <depend name="include/flash/events/IEventDispatcher.h"/>
+   <depend name="include/flash/media/Sound.h"/>
+   <depend name="include/flash/media/SoundChannel.h"/>
+   <depend name="include/flash/media/SoundLoaderContext.h"/>
+   <depend name="include/flash/media/SoundTransform.h"/>
+   <depend name="include/flash/net/URLRequest.h"/>
+   <depend name="include/flash/utils/ByteArray.h"/>
+   <depend name="include/flash/utils/IDataInput.h"/>
+   <depend name="include/flash/utils/IDataOutput.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/nx3/audio/PlayerFactory.h"/>
+   <depend name="include/openfl/utils/IMemoryRange.h"/>
+  </file>
+  <file name="src/nx3/action/TestInteractivity.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/PNote.h"/>
+   <depend name="include/nx3/action/EActionInfo.h"/>
+   <depend name="include/nx3/action/IInteractivity.h"/>
+   <depend name="include/nx3/action/InteractivityBase.h"/>
+   <depend name="include/nx3/action/TestInteractivity.h"/>
+  </file>
+  <file name="src/nx3/action/SoundInteractivity.cpp">
+   <depend name="include/IMap.h"/>
+   <depend name="include/Std.h"/>
+   <depend name="include/cx/ByteArrayTools.h"/>
+   <depend name="include/cx/data/BytesLoader.h"/>
+   <depend name="include/flash/utils/ByteArray.h"/>
+   <depend name="include/flash/utils/IDataInput.h"/>
+   <depend name="include/flash/utils/IDataOutput.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/haxe/ds/StringMap.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/nx3/NNote.h"/>
+   <depend name="include/nx3/PNote.h"/>
+   <depend name="include/nx3/action/EActionInfo.h"/>
+   <depend name="include/nx3/action/IInteractivity.h"/>
+   <depend name="include/nx3/action/InteractivityBase.h"/>
+   <depend name="include/nx3/action/SoundInteractivity.h"/>
+   <depend name="include/nx3/audio/PlayerFactory.h"/>
+   <depend name="include/openfl/utils/IMemoryRange.h"/>
+  </file>
+  <file name="src/nx3/action/InteractivityBase.cpp">
+   <depend name="include/nx3/PNote.h"/>
+   <depend name="include/nx3/action/EActionInfo.h"/>
+   <depend name="include/nx3/action/EActionType.h"/>
+   <depend name="include/nx3/action/EActivityType.h"/>
+   <depend name="include/nx3/action/IInteractivity.h"/>
+   <depend name="include/nx3/action/InteractivityBase.h"/>
+  </file>
+  <file name="src/nx3/action/IInteractivity.cpp">
+   <depend name="include/nx3/action/EActionType.h"/>
+   <depend name="include/nx3/action/IInteractivity.h"/>
+  </file>
+  <file name="src/nx3/action/EActivityType.cpp">
+   <depend name="include/nx3/action/EActivityType.h"/>
+  </file>
+  <file name="src/nx3/action/EActionType.cpp">
+   <depend name="include/nx3/PHead.h"/>
+   <depend name="include/nx3/PNote.h"/>
+   <depend name="include/nx3/action/EActionInfo.h"/>
+   <depend name="include/nx3/action/EActionType.h"/>
+   <depend name="include/nx3/action/EActivityType.h"/>
+  </file>
+  <file name="src/nx3/action/EActionInfo.cpp">
+   <depend name="include/flash/geom/Rectangle.h"/>
+   <depend name="include/nx3/action/EActionInfo.h"/>
+   <depend name="include/nx3/render/ITarget.h"/>
   </file>
   <file name="src/nx3/QVoiceUp.cpp">
    <depend name="include/nx3/EDirectionUAD.h"/>
@@ -949,6 +994,18 @@
    <depend name="include/nx3/PVoice.h"/>
    <depend name="include/nx3/PVoiceBeamgroupsGenerator.h"/>
   </file>
+  <file name="src/nx3/PSystembarMeasurements.cpp">
+   <depend name="include/nx3/EBarline.h"/>
+   <depend name="include/nx3/EBarlineLeft.h"/>
+   <depend name="include/nx3/EClef.h"/>
+   <depend name="include/nx3/EKey.h"/>
+   <depend name="include/nx3/ETime.h"/>
+   <depend name="include/nx3/IBarWidthCalculator.h"/>
+   <depend name="include/nx3/PBar.h"/>
+   <depend name="include/nx3/PBarConfig.h"/>
+   <depend name="include/nx3/PBarWidthCalculator.h"/>
+   <depend name="include/nx3/PSystembarMeasurements.h"/>
+  </file>
   <file name="src/nx3/PSystemStatus.cpp">
    <depend name="include/nx3/PSystemStatus.h"/>
   </file>
@@ -972,37 +1029,25 @@
    <depend name="include/nx3/IBarWidthCalculator.h"/>
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PBarConfig.h"/>
-   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystem.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
    <depend name="include/nx3/PSystemBarsGenerator.h"/>
    <depend name="include/nx3/PSystemStatus.h"/>
+   <depend name="include/nx3/PSystembarMeasurements.h"/>
   </file>
   <file name="src/nx3/PSystemBar.cpp">
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PBarConfig.h"/>
    <depend name="include/nx3/PBarStretchCalculator.h"/>
-   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
+   <depend name="include/nx3/PSystembarMeasurements.h"/>
   </file>
   <file name="src/nx3/PSystem.cpp">
    <depend name="include/nx3/PBar.h"/>
-   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystem.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
    <depend name="include/nx3/PSystemStatus.h"/>
-  </file>
-  <file name="src/nx3/PSysbarMeasurements.cpp">
-   <depend name="include/nx3/EBarline.h"/>
-   <depend name="include/nx3/EBarlineLeft.h"/>
-   <depend name="include/nx3/EClef.h"/>
-   <depend name="include/nx3/EKey.h"/>
-   <depend name="include/nx3/ETime.h"/>
-   <depend name="include/nx3/IBarWidthCalculator.h"/>
-   <depend name="include/nx3/PBar.h"/>
-   <depend name="include/nx3/PBarConfig.h"/>
-   <depend name="include/nx3/PBarWidthCalculator.h"/>
-   <depend name="include/nx3/PSysbarMeasurements.h"/>
+   <depend name="include/nx3/PSystembarMeasurements.h"/>
   </file>
   <file name="src/nx3/PStaveRectCalculator.cpp">
    <depend name="include/Type.h"/>
@@ -1364,8 +1409,8 @@
    <depend name="include/nx3/PBar.h"/>
    <depend name="include/nx3/PBarStretchCalculator.h"/>
    <depend name="include/nx3/PColumn.h"/>
-   <depend name="include/nx3/PSysbarMeasurements.h"/>
    <depend name="include/nx3/PSystemBar.h"/>
+   <depend name="include/nx3/PSystembarMeasurements.h"/>
   </file>
   <file name="src/nx3/PBarConfig.cpp">
    <depend name="include/nx3/PBarConfig.h"/>
@@ -2614,6 +2659,11 @@
    <depend name="include/flash/events/IEventDispatcher.h"/>
    <depend name="include/flash/events/MouseEvent.h"/>
   </file>
+  <file name="src/cx/data/BytesLoader.cpp">
+   <depend name="include/cx/data/BytesLoader.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/sys/io/File.h"/>
+  </file>
   <file name="src/cx/TimerTools.cpp">
    <depend name="include/cx/TimerTools.h"/>
    <depend name="include/haxe/Timer.h"/>
@@ -2638,6 +2688,14 @@
    <depend name="include/Type.h"/>
    <depend name="include/cx/EnumTools.h"/>
    <depend name="include/cx/StrTools.h"/>
+  </file>
+  <file name="src/cx/ByteArrayTools.cpp">
+   <depend name="include/cx/ByteArrayTools.h"/>
+   <depend name="include/flash/utils/ByteArray.h"/>
+   <depend name="include/flash/utils/IDataInput.h"/>
+   <depend name="include/flash/utils/IDataOutput.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/openfl/utils/IMemoryRange.h"/>
   </file>
   <file name="src/cx/ArrayTools.cpp">
    <depend name="include/Lambda.h"/>
@@ -2779,6 +2837,10 @@
    <depend name="include/flash/events/EventDispatcher.h"/>
    <depend name="include/flash/events/IEventDispatcher.h"/>
    <depend name="include/nx3/PScore.h"/>
+   <depend name="include/nx3/action/IInteractivity.h"/>
+   <depend name="include/nx3/action/InteractivityBase.h"/>
+   <depend name="include/nx3/action/SoundInteractivity.h"/>
+   <depend name="include/nx3/action/TestInteractivity.h"/>
    <depend name="include/nx3/render/ITarget.h"/>
    <depend name="include/nx3/render/Renderer.h"/>
    <depend name="include/nx3/render/RendererBase.h"/>

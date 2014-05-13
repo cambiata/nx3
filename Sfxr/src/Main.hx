@@ -1,12 +1,17 @@
 package ;
 
+import alab.WavClip;
 import cx.ByteArrayTools;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import format.wav.Data.WAVE;
+import format.wav.Reader;
 import haxe.Http;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
+import haxe.io.BytesInput;
+import haxe.macro.Format;
 import nx3.audio.PlayerFactory;
 import openfl.Assets;
 import vault.Sfxr;
@@ -34,26 +39,55 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 
-		// (your code here)
-		
+		// (your code here)		
 		// Stage:
 		// stage.stageWidth x stage.stageHeight @ stage.dpiScale
 		// Assets:
 		// nme.Assets.getBitmapData("img/assetname.jpg");
 		
-	var byteArray:flash.utils.ByteArray = Assets.getBytes('assets/test.data');
+	var byteArray:flash.utils.ByteArray = Assets.getBytes('assets/60.data');
 	trace(byteArray.length);
-	
+
 	#if html5
 	var bytesData = new BytesData();
 	for (i in 0...byteArray.length) bytesData.push(byteArray.readByte());	
 	var byteArray = bytesData;
-	#end
+	#end	
 	
 	var pf = new PlayerFactory();
 	var play = pf.getPlayFunction(byteArray);				
-	play();
+	play();		
 	
+	
+	/*
+	var pf = new PlayerFactory();
+	var play = pf.getPlayFunction(byteArray);				
+	play();
+	*/
+	
+	//var wc = new WavClip(byteArray);
+	
+	/*
+	var bytes = ByteArrayTools.toBytes(byteArray);
+	trace(bytes.length);
+	var input = new BytesInput(bytes);
+	trace(input.length);
+	var reader = new Reader(input);
+	var wav:WAVE = reader.read();
+	trace(wav.data.length);
+	trace(wav.header);
+	*/
+	
+	/*
+	var bytesShort = new flash.utils.ByteArray();
+	bytesShort.writeBytes(byteArray, 0, 176480);
+	var byteArray = bytesShort;
+	trace(byteArray.length);
+	*/
+	//176480
+
+	
+
 	
 	
 	//trace(Assets.exists('assets/test.data'));  // true

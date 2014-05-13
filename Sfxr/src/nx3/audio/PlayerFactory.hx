@@ -20,7 +20,6 @@ typedef ByteArray = haxe.io.BytesData;
 #end
  
  
- 
 class PlayerFactory
 {
 	public function new() 
@@ -128,32 +127,41 @@ class PlayerFactory
 		bv.set(wave, p);
 
 		// Data is all set. Time to call AudioContext.
-
 		var audioBuffer = null;
 		var wantsToPlay = false;
-		if (html5AudioContext == null) {
-		  var creator = untyped __js__("window.webkitAudioContext || window.AudioContext || null");
-		  if (creator == null) return function() {};
-		  html5AudioContext = untyped __js__("new creator();");
+
+		if (html5AudioContext == null) 
+		{
+			var creator = untyped __js__("window.webkitAudioContext || window.AudioContext || null");
+			if (creator == null) return function() {};
+			html5AudioContext = untyped __js__("new creator();");
 		}
-		var play = function() {
-		  if (audioBuffer == null) {
-			wantsToPlay = true;
-			return;
-		  }
-		  var srcAudio = html5AudioContext.createBufferSource();
-		  srcAudio.buffer = audioBuffer;
-		  srcAudio.connect(html5AudioContext.destination);
-		  srcAudio.loop = false;
-		  srcAudio.start(0);
+		
+		var play = function() 
+		{
+			  if (audioBuffer == null) {
+				wantsToPlay = true;
+				return;
+			  }
+			  var srcAudio = html5AudioContext.createBufferSource();
+			  srcAudio.buffer = audioBuffer;
+			  
+			  srcAudio.connect(html5AudioContext.destination);
+			  srcAudio.loop = false;
+			  srcAudio.start(0);
+			  var currentTime = html5AudioContext.currentTime;
+			  trace(currentTime);		  
 		};
+		
 		untyped html5AudioContext.decodeAudioData(buffer, function(b) {
-		  audioBuffer = b;
-		  if (wantsToPlay) {
+		audioBuffer = b;
+		 if (wantsToPlay) {
 			play();
 		  }
 		});
+		
 		return play;
+		
 	  }
 	#end
 

@@ -2,6 +2,7 @@
 -lib openfl
 -lib openfl-html5
 -lib actuate
+-lib format
 -cp src
 -D tools=1.4.0
 -D html5

@@ -23,10 +23,10 @@ import nx3.PSystem;
 import nx3.PSystemBar;
 import nx3.PSystemBars;
 import nx3.PSystems;
-import nx3.render.action.EActionInfo;
-import nx3.render.action.EActionType;
-import nx3.render.action.EActivityType;
-import nx3.render.action.IInteractivity;
+import nx3.action.EActionInfo;
+import nx3.action.EActionType;
+import nx3.action.EActivityType;
+import nx3.action.IInteractivity;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
 using cx.ArrayTools;
@@ -451,8 +451,8 @@ class RendererBase
 				{
 					this.target.shape(x + rect.x * scaling.unitX, y + (rect.y + svginfo.y) * scaling.unitY, svginfo.xmlStr);					
 					this.target.interactiveEllipse(x, y, rect, 5 * this.scaling.linesWidth, 0x36b633, function(activityType:EActivityType) {
-						trace(activityType.getName());
-						for (interaction in this.interactions) interaction.handleAction(EActionType.NoteAction(activityType, note, EActionInfo.TargetInfo(this.target, rect)));
+						//trace(activityType.getName());
+						for (interaction in this.interactions) interaction.handleAction(EActionType.NoteAction(activityType, note, EActionInfo.TargetXY(this.target, x + rect.x * scaling.unitX, y + rect.y * scaling.unitY)));
 					});
 				}				
 
