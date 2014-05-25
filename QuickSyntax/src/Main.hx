@@ -12,7 +12,6 @@ import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.TargetSvg;
 import nx3.test.TestItems;
-import nx3.VBar;
 import nx3.xml.BarsXML;
 import nx3.xml.BarXML;
 using cx.ArrayTools;

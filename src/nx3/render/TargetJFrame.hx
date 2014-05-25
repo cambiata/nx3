@@ -1,5 +1,6 @@
 package nx3.render;
 import letters.targetJava.Surface;
+import nx3.action.EActivityType;
 import nx3.geom.Pnts;
 import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
@@ -121,6 +122,28 @@ class TargetJFrame extends JFrame implements ITarget
 	}
 	
 	public function polyfill(x:Float, y:Float, coordinates:Pnts, ?lineWidth:Float = 1, ?lineColor:Int = 0x000000, fillColor:Int = 0x000000):Void 
+	{
+		
+	}
+	
+	/* INTERFACE nx3.render.ITarget */
+	
+	public function interactiveEllipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int, cb:EActivityType -> Void = null):Void 
+	{
+		
+	}
+	
+	public function scaleRect(rect:Rectangle, inflateX:Float = 0, inflateY:Float = 0):Rectangle 
+	{
+		return null;
+	}
+	
+	public function tooltipShow(rect:Rectangle, text:String):Void 
+	{
+		
+	}
+	
+	public function tooltipHide():Void 
 	{
 		
 	}

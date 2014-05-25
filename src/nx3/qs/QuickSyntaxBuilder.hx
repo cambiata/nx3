@@ -1,5 +1,6 @@
 package nx3.qs;
 
+import nx3.EAllotment;
 import nx3.NBar;
 import nx3.NBars;
 import nx3.NNote;
@@ -76,7 +77,7 @@ class QuickSyntaxBuilder
 					nparts.push(npart);
 			}
 			
-			var nbar:NBar = new NBar(nparts);
+			var nbar:NBar = new NBar(nparts, null, null, null, EAllotment.Logaritmic);
 			nbars.push(nbar);
 		}
 		

@@ -5,7 +5,7 @@ import nx3.EBarlineLeft;
 import nx3.EClefs;
 import nx3.PBar;
 import nx3.geom.Size;
-import nx3.PSystemBarsGenerator.PSimpleBarWidthCalculator;
+//import nx3.PSystemBarsGenerator.PSimpleBarWidthCalculator;
 using cx.ArrayTools;
 
 /**
@@ -313,27 +313,29 @@ class PSystemBarsGenerator
 	}	
 }
 
+
+/*
  class PSimpleBarWidthCalculator implements IBarWidthCalculator
  {
 	 public function new() { };
 	 public function getClefWidth(clef:EClef):Float
 	 {
-		 if (clef == null) return 0;
-		 return 20;		 
+		 if (clef == null) return 0.0;
+		 return 20.0;		 
 	 }
 	 
 	 public function getKeyWidth(key:EKey):Float
 	 {
-		 if (key == null) return 0;
+		 if (key == null) return 0.0;
 		 return switch key
 		 {
-			case EKey.Sharp1, EKey.Flat1: 10;
-			case EKey.Sharp2, EKey.Flat2: 20;
-			case EKey.Sharp3, EKey.Flat3: 30;
-			case EKey.Sharp4, EKey.Flat4: 40;
-			case EKey.Sharp5, EKey.Flat5: 50;
-			case EKey.Sharp6, EKey.Flat6: 60;
-			 default: 0;
+			case EKey.Sharp1, EKey.Flat1: 10.0;
+			case EKey.Sharp2, EKey.Flat2: 20.0;
+			case EKey.Sharp3, EKey.Flat3: 30.0;
+			case EKey.Sharp4, EKey.Flat4: 40.0;
+			case EKey.Sharp5, EKey.Flat5: 50.0;
+			case EKey.Sharp6, EKey.Flat6: 60.0;
+			 default: 0.0;
 		 }		 
 	 }
 	 
@@ -348,7 +350,6 @@ class PSystemBarsGenerator
 		 return Std.int(bar.getValue() / 100);		
 	 }
 	 
-	 /* INTERFACE nx3.IBarWidthCalculator */
 	 
 	 public function getLeftBarlineWidth(barline:EBarlineLeft):Float 
 	 {
@@ -360,7 +361,6 @@ class PSystemBarsGenerator
 		 return 0;
 	 }
 	 
-	 /* INTERFACE nx3.IBarWidthCalculator */
 	 
 	 public function getClefsWidth(clefs:EClefs):Float 
 	 {
@@ -384,7 +384,6 @@ class PSystemBarsGenerator
 		return result;		
 	 }
 	 
-	 /* INTERFACE nx3.IBarWidthCalculator */
 	 
 	 public function getContentLeftMarginWidth(bar:PBar) 
 	 {
@@ -392,3 +391,4 @@ class PSystemBarsGenerator
 	 }
 	 
  }
+ */

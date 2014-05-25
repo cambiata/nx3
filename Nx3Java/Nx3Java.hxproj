@@ -25,7 +25,7 @@
     <option noInlineOnDebug="False" />
     <option mainClass="Main" />
     <option enabledebug="False" />
-    <option additional="-cp src" />
+    <option additional="-cp src&#xA;-java-lib batik-all.jar&#xA;-java-lib svg2java.jar&#xA;-java-lib org.w3c.css.sac-1.3.0.jar&#xA;-java-lib org.w3c.dom.svg-1.1.0&#xA;-java-lib xalan-2.1.0.jar&#xA;-java-lib xml-apis-ext-1.3.04.jar" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

@@ -1,1 +1,2 @@
 Main-Class: haxe.root.Main
+Class-Path: lib/xml-apis-ext-1.3.04.jar lib/xalan-2.1.0.jar lib/org.w3c.dom.svg-1.1.0.jar lib/org.w3c.css.sac-1.3.0.jar lib/svg2java.jar lib/batik-all.jar

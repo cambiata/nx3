@@ -3393,16 +3393,16 @@ nx3.PBarWidthCalculator.prototype = {
 		return nx3.PAttributesRectsCalculator.getTimeRect(time).width;
 	}
 	,getContentLeftMarginWidth: function(bar) {
-		return 3;
+		return 3.0;
 	}
 	,getContentWidth: function(bar) {
 		return bar.getContentwidth();
 	}
 	,getBarlineWidth: function(barline) {
-		return 1;
+		return 1.0;
 	}
 	,getLeftBarlineWidth: function(barline) {
-		return 1;
+		return 1.0;
 	}
 	,getClefsWidth: function(clefs) {
 		var result = 0.0;
@@ -5656,74 +5656,6 @@ nx3.PSystemBarsGenerator.prototype = {
 	}
 	,__class__: nx3.PSystemBarsGenerator
 };
-nx3.PSimpleBarWidthCalculator = function() {
-};
-nx3.PSimpleBarWidthCalculator.__name__ = ["nx3","PSimpleBarWidthCalculator"];
-nx3.PSimpleBarWidthCalculator.__interfaces__ = [nx3.IBarWidthCalculator];
-nx3.PSimpleBarWidthCalculator.prototype = {
-	getClefWidth: function(clef) {
-		if(clef == null) return 0;
-		return 20;
-	}
-	,getKeyWidth: function(key) {
-		if(key == null) return 0;
-		switch(key[1]) {
-		case 5:case 7:
-			return 10;
-		case 4:case 8:
-			return 20;
-		case 3:case 9:
-			return 30;
-		case 2:case 10:
-			return 40;
-		case 1:case 11:
-			return 50;
-		case 0:case 12:
-			return 60;
-		default:
-			return 0;
-		}
-	}
-	,getTimeWidth: function(time) {
-		if(time == null) return 0;
-		return 10;
-	}
-	,getContentWidth: function(bar) {
-		return Std["int"](bar.getValue() / 100);
-	}
-	,getLeftBarlineWidth: function(barline) {
-		return 0;
-	}
-	,getBarlineWidth: function(barline) {
-		return 0;
-	}
-	,getClefsWidth: function(clefs) {
-		var result = 0.0;
-		var _g = 0;
-		while(_g < clefs.length) {
-			var clef = clefs[_g];
-			++_g;
-			if(clef == null) continue;
-			result = Math.max(result,this.getClefWidth(clef));
-		}
-		return result;
-	}
-	,getKeysWidth: function(keys) {
-		var result = 0.0;
-		var _g = 0;
-		while(_g < keys.length) {
-			var key = keys[_g];
-			++_g;
-			if(key == null) continue;
-			result = Math.max(result,this.getKeyWidth(key));
-		}
-		return result;
-	}
-	,getContentLeftMarginWidth: function(bar) {
-		return 0;
-	}
-	,__class__: nx3.PSimpleBarWidthCalculator
-};
 nx3.PSystemStatus = { __ename__ : true, __constructs__ : ["Ok","Problem"] };
 nx3.PSystemStatus.Ok = ["Ok",0];
 nx3.PSystemStatus.Ok.toString = $estr;
@@ -6485,6 +6417,8 @@ nx3.action.TestInteractivity.prototype = $extend(nx3.action.InteractivityBase.pr
 				return "Helpaus";
 			case 4:
 				return "Halvpaus";
+			case 8:
+				return "Fjärdelspaus";
 			case 12:
 				return "Åttondelspaus";
 			case 16:
@@ -7689,7 +7623,7 @@ nx3.qs.QuickSyntaxBuilder.prototype = {
 				var npart = new nx3.NPart(nvoices);
 				nparts.push(npart);
 			}
-			var nbar = new nx3.NBar(nparts);
+			var nbar = new nx3.NBar(nparts,null,null,null,nx3.EAllotment.Logaritmic);
 			nbars.push(nbar);
 		}
 		return nbars;
@@ -8846,7 +8780,7 @@ nx3.render.TargetSvg.prototype = {
 		var toolBackground = this.snap.rect(0,0,rect.width,rect.height);
 		toolBackground.attr({ fill : "#fff2ca", stroke : "#666666", rx : 4, ry : 4, strokeWidth : 1});
 		this.tooltip.append(toolBackground);
-		this.toolText = this.snap.text(8,18,"");
+		this.toolText = this.snap.text(8,19,"");
 		this.toolText.attr({ fontSize : "13px ", fontFamily : "Open Sans"});
 		this.tooltip.append(this.toolText);
 		this.tooltip.attr({ visibility : "hidden"});
@@ -9903,3 +9837,5 @@ nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
 nx3.xml.VoiceXML.XVOICE_DIRECTION = "direction";
 Main.main();
 })();
+
+//# sourceMappingURL=RenderTargetSvg.js.map

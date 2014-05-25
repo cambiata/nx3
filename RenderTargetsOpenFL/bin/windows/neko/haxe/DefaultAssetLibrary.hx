@@ -36,13 +36,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
-		className.set ("img/dummy.txt", __ASSET__img_dummy_txt);
+		path.set ("img/dummy.txt", "img/dummy.txt");
 		type.set ("img/dummy.txt", Reflect.field (AssetType, "text".toUpperCase ()));
 		
 		
 		#elseif html5
 		
-		addExternal("img/dummy.txt", "text", "img/dummy.txt");
 		
 		
 		#else
@@ -50,9 +49,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var loadManifest = false;
-		
-		className.set ("img/dummy.txt", __ASSET__img_dummy_txt);
-		type.set ("img/dummy.txt", Reflect.field (AssetType, "text".toUpperCase ()));
+		loadManifest = true;
 		
 		
 		#else
@@ -217,21 +214,21 @@ class DefaultAssetLibrary extends AssetLibrary {
 	
 	
 	public override function getBytes (id:String):ByteArray {
-
+		
 		#if pixi
-		trace('pixi');
+		
 		return null;
 		
 		#elseif (flash)
 		
 		return cast (Type.createInstance (className.get (id), []), ByteArray);
 		
-		//#elseif openfl_html5
-		//trace('openfl_html5');
-		//return null;
+		#elseif openfl_html5
 		
-		#elseif (openfl_html5 || js)
-		trace('js');
+		return null;
+		
+		#elseif js
+		
 		var bytes:ByteArray = null;
 		var data = ApplicationMain.urlLoaders.get (path.get (id)).data;
 		
@@ -636,7 +633,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if pixi
 #elseif flash
 
-@:keep class __ASSET__img_dummy_txt extends flash.utils.ByteArray { }
+
 
 
 #elseif html5
@@ -647,7 +644,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 #elseif (windows || mac || linux)
 
 
-@:file("assets/img/dummy.txt") class __ASSET__img_dummy_txt extends flash.utils.ByteArray {}
 
 
 #end
