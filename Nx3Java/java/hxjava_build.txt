@@ -318,6 +318,7 @@ M nx3.PBaseRectCalculator
 C nx3.PBaseRectCalculator
 M java.lang.reflect.Method
 M java.awt.TextField
+M java.io.FileReader
 M java.org.w3c.dom.xpath.XPathExpression
 M org.apache.batik.dom.svg.ExtendedTraitAccess
 M org.apache.batik.parser.PointsParser
@@ -336,6 +337,7 @@ M nx3.PSystemBars
 M java.javax.swing.event.MenuDragMouseEvent
 M java.org.w3c.dom.Text
 M org.apache.batik.dom.AbstractParentNode
+M java.io.InputStreamReader
 M java.awt.peer.ListPeer
 M org.apache.batik.dom.svg.SVGOMAngle
 M org.apache.batik.dom.svg.AbstractSVGAnimatedValue
@@ -358,7 +360,7 @@ M java.awt.ScrollPane
 M java.org.w3c.dom.stylesheets.StyleSheetList
 M haxe.root.Main
 C haxe.root.Main
-C haxe.root.Main_new_104__Fun
+C haxe.root.Main_new_110__Fun
 C haxe.root.FontElements
 M java.org.w3c.dom.svg.SVGPathSegCurvetoCubicSmoothAbs
 M java.org.w3c.css.sac.Selector

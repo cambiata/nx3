@@ -69,4 +69,39 @@ class SvgTranscoder
 		return 'static public function $fieldName():GeneralPath { \r $shapeCode  \r\t shape0.closePath(); \r \t return shape0; \r }';
 	}
 	
+	
+	
+	
 }
+
+
+/*
+		var classCode = '';
+		var fields = Reflect.fields(SvgElements);
+		for (field in fields)
+		{
+			trace(field);
+			var svgString:String  = cast Reflect.field(SvgElements, field);
+			svgString  =  SvgTranscoder.addNamespace(svgString);
+			try {
+				var transcoder:SvgTranscoder = new SvgTranscoder(svgString);
+				var classString = transcoder.toClassCode();
+				var shapeCode = SvgTranscoder.extractShapeCode(classString);
+				//trace(shapeCode);
+				var procedureCode = SvgTranscoder.getShapeProcedureCode(shapeCode, field);
+				trace(procedureCode);
+				classCode += procedureCode + '\r\r';
+				
+			} catch (e:Dynamic)
+			{
+				trace(e);
+			}
+		}
+		
+		trace(fields);
+		
+		FileTools.saveContent('Elements.hx', classCode);
+*/
+
+
+

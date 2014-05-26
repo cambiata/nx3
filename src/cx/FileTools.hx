@@ -1,6 +1,7 @@
 package cx;
 import haxe.io.BytesData;
 import haxe.io.Eof;
+import java.Lib;
 //import neko.FileSystem;
 //import neko.io.File;
 import haxe.io.Bytes;
@@ -48,8 +49,42 @@ class FileTools
 		}
 
 		static public function getContent(filename:String):String {
-			return '';
-		}
+
+			try {
+				var bufferReader = new java.io.BufferedReader(new java.io.FileReader(filename));
+				var stringBuilder = new java.lang.StringBuilder();
+				var line = bufferReader.readLine();
+				while (line != null)
+				{
+					stringBuilder.append(line);
+					stringBuilder.append('\n');
+					line = bufferReader.readLine();
+				}
+				return stringBuilder.toString();
+			} catch (e : Dynamic) {
+				trace(e);
+			}
+			throw 'Could not read the file $filename';
+		}		
+			/*
+			    BufferedReader br = new BufferedReader(new FileReader("file.txt"));
+    try {
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+
+        while (line != null) {
+            sb.append(line);
+            sb.append(System.lineSeparator());
+            line = br.readLine();
+        }
+        String everything = sb.toString();
+    } finally {
+        br.close();
+    }
+			*/
+			
+			
+		
 	#end
 	
 	

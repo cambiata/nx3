@@ -2,15 +2,15 @@ package haxe.root;
 import haxe.root.*;
 
 @SuppressWarnings(value={"rawtypes", "unchecked"})
-public  class Main_new_109__Fun extends haxe.lang.Function
+public  class Main_new_110__Fun extends haxe.lang.Function
 {
-	public    Main_new_109__Fun()
+	public    Main_new_110__Fun()
 	{
 		super(1, 0);
 	}
 	
 	
-	public static  haxe.root.Main_new_109__Fun __hx_current;
+	public static  haxe.root.Main_new_110__Fun __hx_current;
 	
 	@Override public   java.lang.Object __hx_invoke1_o(double __fn_float1, java.lang.Object __fn_dyn1)
 	{

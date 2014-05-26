@@ -224,9 +224,9 @@ public  class Xml extends haxe.lang.HxObject
 		haxe.root.Array<java.lang.Object> cur = new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{0});
 		haxe.root.Array<haxe.root.Array> x = new haxe.root.Array<haxe.root.Array>(new haxe.root.Array[]{((haxe.root.Array) (this._children) )});
 		{
-			haxe.lang.Function __temp_odecl305 = new haxe.root.Xml_iterator_178__Fun(((haxe.root.Array<haxe.root.Array>) (x) ), ((haxe.root.Array<java.lang.Object>) (cur) ));
-			haxe.lang.Function __temp_odecl306 = new haxe.root.Xml_iterator_181__Fun(((haxe.root.Array<haxe.root.Array>) (x) ), ((haxe.root.Array<java.lang.Object>) (cur) ));
-			return new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"hasNext", "next"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl305, __temp_odecl306}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
+			haxe.lang.Function __temp_odecl303 = new haxe.root.Xml_iterator_178__Fun(((haxe.root.Array<java.lang.Object>) (cur) ), ((haxe.root.Array<haxe.root.Array>) (x) ));
+			haxe.lang.Function __temp_odecl304 = new haxe.root.Xml_iterator_181__Fun(((haxe.root.Array<java.lang.Object>) (cur) ), ((haxe.root.Array<haxe.root.Array>) (x) ));
+			return new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"hasNext", "next"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl303, __temp_odecl304}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
 		}
 		
 	}
@@ -242,9 +242,9 @@ public  class Xml extends haxe.lang.HxObject
 		haxe.root.Array<java.lang.Object> cur = new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{0});
 		haxe.root.Array<haxe.root.Array> x = new haxe.root.Array<haxe.root.Array>(new haxe.root.Array[]{((haxe.root.Array) (this._children) )});
 		{
-			haxe.lang.Function __temp_odecl307 = new haxe.root.Xml_elements_192__Fun(((haxe.root.Array<java.lang.Object>) (cur) ), ((haxe.root.Array<haxe.root.Array>) (x) ));
-			haxe.lang.Function __temp_odecl308 = new haxe.root.Xml_elements_203__Fun(((haxe.root.Array<java.lang.Object>) (cur) ), ((haxe.root.Array<haxe.root.Array>) (x) ));
-			return new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"hasNext", "next"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl307, __temp_odecl308}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
+			haxe.lang.Function __temp_odecl305 = new haxe.root.Xml_elements_192__Fun(((haxe.root.Array<haxe.root.Array>) (x) ), ((haxe.root.Array<java.lang.Object>) (cur) ));
+			haxe.lang.Function __temp_odecl306 = new haxe.root.Xml_elements_203__Fun(((haxe.root.Array<haxe.root.Array>) (x) ), ((haxe.root.Array<java.lang.Object>) (cur) ));
+			return new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"hasNext", "next"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl305, __temp_odecl306}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
 		}
 		
 	}
@@ -261,9 +261,9 @@ public  class Xml extends haxe.lang.HxObject
 		haxe.root.Array<haxe.root.Array> x = new haxe.root.Array<haxe.root.Array>(new haxe.root.Array[]{((haxe.root.Array) (this._children) )});
 		haxe.root.Array<java.lang.Object> cur = new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{0});
 		{
-			haxe.lang.Function __temp_odecl309 = new haxe.root.Xml_elementsNamed_226__Fun(((haxe.root.Array<haxe.root.Array>) (x) ), ((haxe.root.Array<java.lang.String>) (name1) ), ((haxe.root.Array<java.lang.Object>) (cur) ));
-			haxe.lang.Function __temp_odecl310 = new haxe.root.Xml_elementsNamed_238__Fun(((haxe.root.Array<haxe.root.Array>) (x) ), ((haxe.root.Array<java.lang.String>) (name1) ), ((haxe.root.Array<java.lang.Object>) (cur) ));
-			return new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"hasNext", "next", "x"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl309, __temp_odecl310, this._children}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"cur"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (0) )) )}));
+			haxe.lang.Function __temp_odecl307 = new haxe.root.Xml_elementsNamed_226__Fun(((haxe.root.Array<java.lang.String>) (name1) ), ((haxe.root.Array<haxe.root.Array>) (x) ), ((haxe.root.Array<java.lang.Object>) (cur) ));
+			haxe.lang.Function __temp_odecl308 = new haxe.root.Xml_elementsNamed_238__Fun(((haxe.root.Array<java.lang.String>) (name1) ), ((haxe.root.Array<haxe.root.Array>) (x) ), ((haxe.root.Array<java.lang.Object>) (cur) ));
+			return new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"hasNext", "next", "x"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl307, __temp_odecl308, this._children}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"cur"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (0) )) )}));
 		}
 		
 	}
@@ -389,14 +389,14 @@ public  class Xml extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef311 = true;
+			boolean __temp_executeDef309 = true;
 			switch (field.hashCode())
 			{
 				case 1713046985:
 				{
 					if (field.equals("_parent")) 
 					{
-						__temp_executeDef311 = false;
+						__temp_executeDef309 = false;
 						this._parent = ((haxe.root.Xml) (value) );
 						return value;
 					}
@@ -409,7 +409,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("nodeType")) 
 					{
-						__temp_executeDef311 = false;
+						__temp_executeDef309 = false;
 						this.nodeType = ((_Xml.RealXmlType) (value) );
 						return value;
 					}
@@ -422,7 +422,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_children")) 
 					{
-						__temp_executeDef311 = false;
+						__temp_executeDef309 = false;
 						this._children = ((haxe.root.Array<haxe.root.Xml>) (value) );
 						return value;
 					}
@@ -435,7 +435,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_nodeName")) 
 					{
-						__temp_executeDef311 = false;
+						__temp_executeDef309 = false;
 						this._nodeName = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -448,7 +448,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_attributes")) 
 					{
-						__temp_executeDef311 = false;
+						__temp_executeDef309 = false;
 						this._attributes = ((haxe.ds.StringMap<java.lang.String>) (value) );
 						return value;
 					}
@@ -461,7 +461,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_nodeValue")) 
 					{
-						__temp_executeDef311 = false;
+						__temp_executeDef309 = false;
 						this._nodeValue = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -472,7 +472,7 @@ public  class Xml extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef311) 
+			if (__temp_executeDef309) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -489,14 +489,14 @@ public  class Xml extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef312 = true;
+			boolean __temp_executeDef310 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("toString"))) );
 					}
 					
@@ -508,7 +508,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("nodeType")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return this.nodeType;
 					}
 					
@@ -520,7 +520,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("addChild")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("addChild"))) );
 					}
 					
@@ -532,7 +532,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_nodeName")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return this._nodeName;
 					}
 					
@@ -544,7 +544,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("firstElement")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("firstElement"))) );
 					}
 					
@@ -556,7 +556,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_nodeValue")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return this._nodeValue;
 					}
 					
@@ -568,7 +568,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("elementsNamed")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("elementsNamed"))) );
 					}
 					
@@ -580,7 +580,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_attributes")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return this._attributes;
 					}
 					
@@ -592,7 +592,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("elements")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("elements"))) );
 					}
 					
@@ -604,7 +604,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_children")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return this._children;
 					}
 					
@@ -616,7 +616,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("iterator")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("iterator"))) );
 					}
 					
@@ -628,7 +628,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("_parent")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return this._parent;
 					}
 					
@@ -640,7 +640,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("exists")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("exists"))) );
 					}
 					
@@ -652,7 +652,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("get_nodeName")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_nodeName"))) );
 					}
 					
@@ -664,7 +664,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("set")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("set"))) );
 					}
 					
@@ -676,7 +676,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("set_nodeName")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("set_nodeName"))) );
 					}
 					
@@ -688,7 +688,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("get")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get"))) );
 					}
 					
@@ -700,7 +700,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("set_nodeValue")) 
 					{
-						__temp_executeDef312 = false;
+						__temp_executeDef310 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("set_nodeValue"))) );
 					}
 					
@@ -710,7 +710,7 @@ public  class Xml extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef312) 
+			if (__temp_executeDef310) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -727,14 +727,14 @@ public  class Xml extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef313 = true;
+			boolean __temp_executeDef311 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.toString();
 					}
 					
@@ -746,7 +746,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("get_nodeName")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.get_nodeName();
 					}
 					
@@ -758,7 +758,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("addChild")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						this.addChild(((haxe.root.Xml) (dynargs.__get(0)) ));
 					}
 					
@@ -770,7 +770,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("set_nodeName")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.set_nodeName(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -782,7 +782,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("firstElement")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.firstElement();
 					}
 					
@@ -794,7 +794,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("set_nodeValue")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.set_nodeValue(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -806,7 +806,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("elementsNamed")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.elementsNamed(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -818,7 +818,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("get")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.get(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -830,7 +830,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("elements")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.elements();
 					}
 					
@@ -842,7 +842,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("set")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						this.set(haxe.lang.Runtime.toString(dynargs.__get(0)), haxe.lang.Runtime.toString(dynargs.__get(1)));
 					}
 					
@@ -854,7 +854,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("iterator")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.iterator();
 					}
 					
@@ -866,7 +866,7 @@ public  class Xml extends haxe.lang.HxObject
 				{
 					if (field.equals("exists")) 
 					{
-						__temp_executeDef313 = false;
+						__temp_executeDef311 = false;
 						return this.exists(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -876,7 +876,7 @@ public  class Xml extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef313) 
+			if (__temp_executeDef311) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

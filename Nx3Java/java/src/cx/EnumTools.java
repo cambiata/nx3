@@ -41,16 +41,16 @@ public  class EnumTools extends haxe.lang.HxObject
 			
 			return haxe.root.Type.createEnum(e, type, ((haxe.root.Array) (params) ));
 		}
-		catch (java.lang.Throwable __temp_catchallException317)
+		catch (java.lang.Throwable __temp_catchallException315)
 		{
-			java.lang.Object __temp_catchall318 = __temp_catchallException317;
-			if (( __temp_catchall318 instanceof haxe.lang.HaxeException )) 
+			java.lang.Object __temp_catchall316 = __temp_catchallException315;
+			if (( __temp_catchall316 instanceof haxe.lang.HaxeException )) 
 			{
-				__temp_catchall318 = ((haxe.lang.HaxeException) (__temp_catchallException317) ).obj;
+				__temp_catchall316 = ((haxe.lang.HaxeException) (__temp_catchallException315) ).obj;
 			}
 			
 			{
-				java.lang.Object e1 = __temp_catchall318;
+				java.lang.Object e1 = __temp_catchall316;
 				{
 				}
 				
