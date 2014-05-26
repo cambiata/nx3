@@ -51,13 +51,14 @@ class SvgTranscoder
 	
 	static public function addNamespace(svgString:String):String
 	{
-		try {
-			
+		try 
+		{
 			var xml = Xml.parse(svgString);
 			if (!xml.firstElement().exists('xmlns')) 
 				xml.firstElement().set('xmlns', 'http://www.w3.org/2000/svg');
 			return xml.toString();
-		} catch (e:Dynamic)
+		} 
+		catch (e:Dynamic)
 		{
 			return svgString;
 		}

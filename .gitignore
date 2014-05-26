@@ -5,8 +5,6 @@
 *.h
 *.cpp
 *.pdb
-*.java
-*.jar
 *.class
 *.wav
 *.data
