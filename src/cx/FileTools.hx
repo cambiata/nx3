@@ -1,7 +1,7 @@
 package cx;
 import haxe.io.BytesData;
 import haxe.io.Eof;
-import java.Lib;
+
 //import neko.FileSystem;
 //import neko.io.File;
 import haxe.io.Bytes;
@@ -13,6 +13,7 @@ import sys.io.File;
 #end
 
 #if java
+import java.Lib;
 import java.io.File;
 import java.io.Writer;
 import java.io.InputStream;

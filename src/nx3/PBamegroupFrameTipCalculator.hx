@@ -40,8 +40,9 @@ class PBamegroupFrameTipCalculator
 		if (this.notelevels.length == 2)
 		{
 			var slopevalue = 1; 
-			leftTip = intMin([leftTip, rightTip + slopevalue, stemLength]);
-			rightTip = intMin([rightTip, leftTip + slopevalue, stemLength]); 			
+			leftTip = floatMin([leftTip, rightTip + slopevalue, stemLength]);
+			
+			rightTip = floatMin([rightTip, leftTip + slopevalue, stemLength]); 			
 			
 		}	
 		else
@@ -59,11 +60,11 @@ class PBamegroupFrameTipCalculator
 			}			
 			else if (rightTip < leftTip  && min < leftTip) 
 			{
-				leftTip = intMin([min+slopevalue, leftTip]);			
+				leftTip = floatMin([min+slopevalue, leftTip]);			
 			}
 			else if (leftTip < rightTip && min < rightTip) 
 			{
-				rightTip = intMin([min + slopevalue, rightTip]);
+				rightTip = floatMin([min + slopevalue, rightTip]);
 			}
 		}
 		 
@@ -76,13 +77,24 @@ class PBamegroupFrameTipCalculator
 		return {leftTip:leftTip, rightTip:rightTip};
 	 }
 	 
-	 static public inline function intMin(levels:Array<Float>):Float
+	 static public inline function floatMin(levels:Array<Float>):Float
 	 {
 		var result = levels.first();
 		if (levels.length == 1) return result;
 		for (level in levels)
 		{
 			result = Math.min(result, level);
+		}
+		return result;		 
+	 }
+	 
+	 static public inline function intMin(levels:Array<Int>):Int
+	 {
+		var result = levels.first();
+		if (levels.length == 1) return result;
+		for (level in levels)
+		{
+			result = Std.int(Math.min(result, level));
 		}
 		return result;
 	 }
