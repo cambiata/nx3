@@ -25,11 +25,11 @@ class PBeamgroupDirectionCalculator
 	 var topLevel:Int;
 	 function findTopLevel()
 	 {
-		var topLevel = this.beamgroup.pnotes[0].nnote.getTopLevel();
+		var topLevel = this.beamgroup.pnotes[0].nnote.topLevel;
 		if (this.beamgroup.pnotes.length == 1) return topLevel;
 		for (i in 1...this.beamgroup.pnotes.length)
 		{
-			var level = this.beamgroup.pnotes[i].nnote.getTopLevel();
+			var level = this.beamgroup.pnotes[i].nnote.topLevel;
 			topLevel = Std.int(Math.min(topLevel, level));
 		}
 		return topLevel;
@@ -38,11 +38,11 @@ class PBeamgroupDirectionCalculator
 	 var bottomLevel:Int;
 	 function findBottomLevel()
 	 {
-		 var bottomLevel = this.beamgroup.pnotes[0].nnote.getBottomLevel();
+		 var bottomLevel = this.beamgroup.pnotes[0].nnote.bottomLevel;
 		if (this.beamgroup.pnotes.length == 1) return bottomLevel;
 		for (i in 1...this.beamgroup.pnotes.length)
 		{
-			var level = this.beamgroup.pnotes[i].nnote.getBottomLevel();
+			var level = this.beamgroup.pnotes[i].nnote.bottomLevel;
 			bottomLevel = Std.int(Math.max(bottomLevel, level));
 		}
 		return bottomLevel;

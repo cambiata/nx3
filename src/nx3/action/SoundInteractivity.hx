@@ -44,8 +44,8 @@ class SoundInteractivity extends InteractivityBase
 	}
 	override public function onNoteMouseDown(note:PNote, info:EActionInfo)
 	{
-		trace('SOUND On: ' + note.nnote.getHeadLevels());
-		var level = note.nnote.getHeadLevels().first();
+		trace('SOUND On: ' + note.nnote.headLevels);
+		var level = note.nnote.headLevels.first();
 		play(level);
 		
 	}

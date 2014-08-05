@@ -134,7 +134,7 @@ class PNote
 	
 	public function getTies():ETies
 	{
-		return this.nnote.getTies();		
+		return this.nnote.ties;
 	}
 	
 	var next:PNote;

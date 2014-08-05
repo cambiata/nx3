@@ -48,14 +48,14 @@ class PBeamgroupFrameCalculator
 	 function getTopLevels():Array<Int>
 	 {
 		 var levels:Array<Int> = [];
-		 for (note in this.beamgroup.pnotes) levels.push( note.nnote.getTopLevel());
+		 for (note in this.beamgroup.pnotes) levels.push( note.nnote.topLevel);
 		 return levels;
 	 }
 	 
 	 function getBottomLevels():Array<Int>
 	 {
 		 var levels:Array<Int> = [];
-		 for (note in this.beamgroup.pnotes) levels.push(note.nnote.getBottomLevel());
+		 for (note in this.beamgroup.pnotes) levels.push(note.nnote.bottomLevel);
 		 return levels;		 
 	 }
 	 

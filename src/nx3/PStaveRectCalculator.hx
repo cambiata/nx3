@@ -30,11 +30,11 @@ class PStaveRectCalculator
 		var rect:Rectangle = null;
 		if (note.getDirection() == EDirectionUD.Up) 
 		{
-			rect = new Rectangle( 0, note.nnote.getBottomLevel() - Constants.STAVE_BASIC_LENGTH, headw, Constants.STAVE_BASIC_LENGTH);
+			rect = new Rectangle( 0, note.nnote.bottomLevel - Constants.STAVE_BASIC_LENGTH, headw, Constants.STAVE_BASIC_LENGTH);
 		}
 		else
 		{
-			rect = new Rectangle( -headw, note.nnote.getTopLevel(), headw, Constants.STAVE_BASIC_LENGTH);
+			rect = new Rectangle( -headw, note.nnote.topLevel, headw, Constants.STAVE_BASIC_LENGTH);
 		}		
 		rect.offset(this.note.getXOffset(), 0);
 		return rect;
@@ -59,11 +59,11 @@ class PStaveRectCalculator
 					var rect:Rectangle = null; 
 					if (note.getDirection() == EDirectionUD.Up) 
 					{				
-						rect = new Rectangle(headw, note.nnote.getBottomLevel() - Constants.STAVE_BASIC_LENGTH, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
+						rect = new Rectangle(headw, note.nnote.bottomLevel - Constants.STAVE_BASIC_LENGTH, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
 					}
 					else
 					{
-						rect = new Rectangle( -headw, note.nnote.getTopLevel() + Constants.STAVE_BASIC_LENGTH - Constants.FLAG_HEIGHT, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
+						rect = new Rectangle( -headw, note.nnote.topLevel + Constants.STAVE_BASIC_LENGTH - Constants.FLAG_HEIGHT, Constants.FLAG_WIDTH, Constants.FLAG_HEIGHT);
 					}			
 					rect.offset(this.note.getXOffset(), 0);					
 					return rect;

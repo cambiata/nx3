@@ -32,7 +32,7 @@ import nx3.xml.NoteXML;
  * ...
  * @author Jonas Nyström
  */
-//class TestN extends  shohei909.nanotest.NanoTestCase
+
 class TestN extends   TestCase 
 {
 
@@ -57,7 +57,7 @@ class TestN extends   TestCase
 		this.assertEquals(xmlstr1, xmlstr2);		
 		
 		// verify head level sorting...
-		this.assertEquals([ -3, -2, 1, 4].toString(), item1.getHeadLevels().toString());
+		this.assertEquals([ -3, -2, 1, 4].toString(), item1.headLevels.toString());
 	}
 	
 	public function testNotePause()

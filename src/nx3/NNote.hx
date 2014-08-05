@@ -1,4 +1,6 @@
 package nx3;
+import hxlazy.Lazy;
+using Lambda;
 //import jasononeil.CleverSort;
 
 
@@ -11,7 +13,7 @@ package nx3;
  */
 
  @:access(nx3.NHead)
-class NNote
+class NNote implements Lazy
 {
 	
 	public var type(default, null):ENoteType;
@@ -63,36 +65,10 @@ class NNote
 	
 	public function getNHead(idx:Int):NHead return (idx < 0 || idx > this.nheads.length) ? null : this.nheads[idx];
 	
-	var headLevels:Array<Int>;
-	public function getHeadLevels():Array<Int>
-	{
-		if (headLevels != null) return this.headLevels;
-		this.headLevels = [];
-		for (head in this.nheads) this.headLevels.push(head.level);
-		return this.headLevels;
-	}
-	
-	public function getTopLevel():Int
-	{
-		return this.nheads[0].level;
-	}
-	
-	public function getBottomLevel():Int
-	{
-		return this.nheads[this.nheads.length-1].level;
-	}
-	
-	var ties:ETies;
-	public function getTies():ETies
-	{
-		if (this.ties != null) return this.ties;
-		this.ties =  new ETies();
-		for (head in this.nheads) 
-		{
-			if (head.tie != null) ties.push(head.tie);
-		}
-		return this.ties;
-	}
+	@lazy public function headLevels():Array<Int> { return this.map(function(head) return head.level).array(); };
+	@lazy public function topLevel():Int  { return this.nheads[0].level; }
+	@lazy public function bottomLevel():Int  { return this.nheads[this.nheads.length-1].level; }
+	@lazy public function ties():ETies {  return this.filter(function(head) return head.tie != null).map(function(head) return head.tie).array(); 	}	
 	
 	public function toString():String
 	{
@@ -101,7 +77,6 @@ class NNote
 		var heads = '';
 		for (head in this.nheads) heads += head.toString();
 		return 'NNote($str):$heads';
-	}
-	
+	}	
 	
 }

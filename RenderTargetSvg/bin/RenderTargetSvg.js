@@ -70,6 +70,15 @@ Lambda.array = function(it) {
 	}
 	return a;
 };
+Lambda.map = function(it,f) {
+	var l = new List();
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		l.add(f(x));
+	}
+	return l;
+};
 Lambda.has = function(it,elt) {
 	var $it0 = $iterator(it)();
 	while( $it0.hasNext() ) {
@@ -77,6 +86,15 @@ Lambda.has = function(it,elt) {
 		if(x == elt) return true;
 	}
 	return false;
+};
+Lambda.filter = function(it,f) {
+	var l = new List();
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		if(f(x)) l.add(x);
+	}
+	return l;
 };
 Lambda.indexOf = function(it,v) {
 	var i = 0;
@@ -111,6 +129,16 @@ List.prototype = {
 			this.h = this.h[1];
 			return x;
 		}};
+	}
+	,map: function(f) {
+		var b = new List();
+		var l = this.h;
+		while(l != null) {
+			var v = l[0];
+			l = l[1];
+			b.add(f(v));
+		}
+		return b;
 	}
 	,__class__: List
 };
@@ -1618,6 +1646,9 @@ haxe.xml.Parser.doParse = function(str,p,parent) {
 	}
 	throw "Unexpected end";
 };
+var hxlazy = {};
+hxlazy.Lazy = function() { };
+hxlazy.Lazy.__name__ = ["hxlazy","Lazy"];
 var js = {};
 js.Boot = function() { };
 js.Boot.__name__ = ["js","Boot"];
@@ -2766,6 +2797,7 @@ nx3.NNote = function(type,heads,value,direction) {
 	if(direction == null) this.direction = nx3.EDirectionUAD.Auto; else this.direction = direction;
 };
 nx3.NNote.__name__ = ["nx3","NNote"];
+nx3.NNote.__interfaces__ = [hxlazy.Lazy];
 nx3.NNote.prototype = {
 	type: null
 	,value: null
@@ -2809,38 +2841,6 @@ nx3.NNote.prototype = {
 	,getNHead: function(idx) {
 		if(idx < 0 || idx > this.get_nheads().length) return null; else return this.get_nheads()[idx];
 	}
-	,headLevels: null
-	,getHeadLevels: function() {
-		if(this.headLevels != null) return this.headLevels;
-		this.headLevels = [];
-		var _g = 0;
-		var _g1 = this.get_nheads();
-		while(_g < _g1.length) {
-			var head = _g1[_g];
-			++_g;
-			this.headLevels.push(head.level);
-		}
-		return this.headLevels;
-	}
-	,getTopLevel: function() {
-		return this.get_nheads()[0].level;
-	}
-	,getBottomLevel: function() {
-		return this.get_nheads()[this.get_nheads().length - 1].level;
-	}
-	,ties: null
-	,getTies: function() {
-		if(this.ties != null) return this.ties;
-		this.ties = new Array();
-		var _g = 0;
-		var _g1 = this.get_nheads();
-		while(_g < _g1.length) {
-			var head = _g1[_g];
-			++_g;
-			if(head.tie != null) this.ties.push(head.tie);
-		}
-		return this.ties;
-	}
 	,toString: function() {
 		var str = "";
 		if(this.type[0] != "Note") str += " " + this.type[0]; else str += "";
@@ -2853,6 +2853,32 @@ nx3.NNote.prototype = {
 			heads += head.toString();
 		}
 		return "NNote(" + str + "):" + heads;
+	}
+	,__lazyheadLevels: null
+	,get_headLevels: function() {
+		if(this.__lazyheadLevels != null) return this.__lazyheadLevels;
+		return this.__lazyheadLevels = Lambda.array(Lambda.map(this,function(head) {
+			return head.level;
+		}));
+	}
+	,__lazytopLevel: null
+	,get_topLevel: function() {
+		if(this.__lazytopLevel != null) return this.__lazytopLevel;
+		return this.__lazytopLevel = this.get_nheads()[0].level;
+	}
+	,__lazybottomLevel: null
+	,get_bottomLevel: function() {
+		if(this.__lazybottomLevel != null) return this.__lazybottomLevel;
+		return this.__lazybottomLevel = this.get_nheads()[this.get_nheads().length - 1].level;
+	}
+	,__lazyties: null
+	,get_ties: function() {
+		if(this.__lazyties != null) return this.__lazyties;
+		return this.__lazyties = Lambda.array(Lambda.filter(this,function(head) {
+			return head.tie != null;
+		}).map(function(head1) {
+			return head1.tie;
+		}));
 	}
 	,__class__: nx3.NNote
 };
@@ -3600,26 +3626,26 @@ nx3.PBeamgroupDirectionCalculator.prototype = {
 	}
 	,topLevel: null
 	,findTopLevel: function() {
-		var topLevel = this.beamgroup.pnotes[0].nnote.getTopLevel();
+		var topLevel = this.beamgroup.pnotes[0].nnote.get_topLevel();
 		if(this.beamgroup.pnotes.length == 1) return topLevel;
 		var _g1 = 1;
 		var _g = this.beamgroup.pnotes.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var level = this.beamgroup.pnotes[i].nnote.getTopLevel();
+			var level = this.beamgroup.pnotes[i].nnote.get_topLevel();
 			topLevel = Std["int"](Math.min(topLevel,level));
 		}
 		return topLevel;
 	}
 	,bottomLevel: null
 	,findBottomLevel: function() {
-		var bottomLevel = this.beamgroup.pnotes[0].nnote.getBottomLevel();
+		var bottomLevel = this.beamgroup.pnotes[0].nnote.get_bottomLevel();
 		if(this.beamgroup.pnotes.length == 1) return bottomLevel;
 		var _g1 = 1;
 		var _g = this.beamgroup.pnotes.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var level = this.beamgroup.pnotes[i].nnote.getBottomLevel();
+			var level = this.beamgroup.pnotes[i].nnote.get_bottomLevel();
 			bottomLevel = Std["int"](Math.max(bottomLevel,level));
 		}
 		return bottomLevel;
@@ -3652,7 +3678,7 @@ nx3.PBeamgroupFrameCalculator.prototype = {
 		while(_g < _g1.length) {
 			var note = _g1[_g];
 			++_g;
-			levels.push(note.nnote.getTopLevel());
+			levels.push(note.nnote.get_topLevel());
 		}
 		return levels;
 	}
@@ -3663,7 +3689,7 @@ nx3.PBeamgroupFrameCalculator.prototype = {
 		while(_g < _g1.length) {
 			var note = _g1[_g];
 			++_g;
-			levels.push(note.nnote.getBottomLevel());
+			levels.push(note.nnote.get_bottomLevel());
 		}
 		return levels;
 	}
@@ -4697,7 +4723,7 @@ nx3.PNote.prototype = {
 		return this.xposition;
 	}
 	,getTies: function() {
-		return this.nnote.getTies();
+		return this.nnote.get_ties();
 	}
 	,next: null
 	,getNext: function() {
@@ -4808,7 +4834,7 @@ nx3.PNoteOffsetCalculator.prototype = {
 		secondrects = _this.slice();
 		var secondoffset = nx3.geom.RectanglesTools.getXIntersection(firstrects,secondrects);
 		var firstnote = cx.ArrayTools.first(this.complex.getNotes());
-		var diff = note.nnote.getTopLevel() - firstnote.nnote.getBottomLevel();
+		var diff = note.nnote.get_topLevel() - firstnote.nnote.get_bottomLevel();
 		if(diff == 1) secondoffset = secondoffset * 0.8;
 		if(diff < 1) {
 			if(nx3.ENoteValTools.dotlevel(firstnote.nnote.value) > 0) if(nx3.ENoteValTools.dotlevel(firstnote.nnote.value) == 1) secondoffset += 2.0; else secondoffset += 3.0;
@@ -5319,7 +5345,7 @@ nx3.PStaveRectCalculator.prototype = {
 			headw = 1.6;
 		}
 		var rect = null;
-		if(this.note.getDirection() == nx3.EDirectionUD.Up) rect = new nx3.geom.Rectangle(0,this.note.nnote.getBottomLevel() - 7,headw,7); else rect = new nx3.geom.Rectangle(-headw,this.note.nnote.getTopLevel(),headw,7);
+		if(this.note.getDirection() == nx3.EDirectionUD.Up) rect = new nx3.geom.Rectangle(0,this.note.nnote.get_bottomLevel() - 7,headw,7); else rect = new nx3.geom.Rectangle(-headw,this.note.nnote.get_topLevel(),headw,7);
 		rect.offset(this.note.getXOffset(),0);
 		return rect;
 	}
@@ -5339,7 +5365,7 @@ nx3.PStaveRectCalculator.prototype = {
 					headw = 1.6;
 				}
 				var rect = null;
-				if(this.note.getDirection() == nx3.EDirectionUD.Up) rect = new nx3.geom.Rectangle(headw,this.note.nnote.getBottomLevel() - 7,2.6,4.8); else rect = new nx3.geom.Rectangle(-headw,this.note.nnote.getTopLevel() + 7 - 4.8,2.6,4.8);
+				if(this.note.getDirection() == nx3.EDirectionUD.Up) rect = new nx3.geom.Rectangle(headw,this.note.nnote.get_bottomLevel() - 7,2.6,4.8); else rect = new nx3.geom.Rectangle(-headw,this.note.nnote.get_topLevel() + 7 - 4.8,2.6,4.8);
 				rect.offset(this.note.getXOffset(),0);
 				return rect;
 			}
@@ -6370,8 +6396,8 @@ nx3.action.SoundInteractivity.__name__ = ["nx3","action","SoundInteractivity"];
 nx3.action.SoundInteractivity.__super__ = nx3.action.InteractivityBase;
 nx3.action.SoundInteractivity.prototype = $extend(nx3.action.InteractivityBase.prototype,{
 	onNoteMouseDown: function(note,info) {
-		haxe.Log.trace("SOUND On: " + Std.string(note.nnote.getHeadLevels()),{ fileName : "SoundInteractivity.hx", lineNumber : 47, className : "nx3.action.SoundInteractivity", methodName : "onNoteMouseDown"});
-		var level = cx.ArrayTools.first(note.nnote.getHeadLevels());
+		haxe.Log.trace("SOUND On: " + Std.string(note.nnote.get_headLevels()),{ fileName : "SoundInteractivity.hx", lineNumber : 47, className : "nx3.action.SoundInteractivity", methodName : "onNoteMouseDown"});
+		var level = cx.ArrayTools.first(note.nnote.get_headLevels());
 		this.play(level);
 	}
 	,onNoteMouseUp: function(note,info) {
@@ -8993,6 +9019,21 @@ nx3.test.TestIterators.prototype = $extend(haxe.unit.TestCase.prototype,{
 	}
 	,__class__: nx3.test.TestIterators
 });
+nx3.test.TestLazy = function() {
+	haxe.unit.TestCase.call(this);
+};
+nx3.test.TestLazy.__name__ = ["nx3","test","TestLazy"];
+nx3.test.TestLazy.__super__ = haxe.unit.TestCase;
+nx3.test.TestLazy.prototype = $extend(haxe.unit.TestCase.prototype,{
+	testNote: function() {
+		var item = new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))]);
+		this.assertEquals(item.get_headLevels().toString(),[0].toString(),{ fileName : "TestLazy.hx", lineNumber : 19, className : "nx3.test.TestLazy", methodName : "testNote"});
+		this.assertEquals(item.get_topLevel(),0,{ fileName : "TestLazy.hx", lineNumber : 20, className : "nx3.test.TestLazy", methodName : "testNote"});
+		this.assertEquals(item.get_bottomLevel(),0,{ fileName : "TestLazy.hx", lineNumber : 21, className : "nx3.test.TestLazy", methodName : "testNote"});
+		this.assertEquals(Std.string(cx.ArrayTools.first(item.get_ties())),Std.string(nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),{ fileName : "TestLazy.hx", lineNumber : 22, className : "nx3.test.TestLazy", methodName : "testNote"});
+	}
+	,__class__: nx3.test.TestLazy
+});
 nx3.test.TestN = function() {
 	haxe.unit.TestCase.call(this);
 };
@@ -9012,7 +9053,7 @@ nx3.test.TestN.prototype = $extend(haxe.unit.TestCase.prototype,{
 		var item2 = nx3.xml.NoteXML.fromXmlStr(xmlstr1);
 		var xmlstr2 = nx3.xml.NoteXML.toXml(item2).toString();
 		this.assertEquals(xmlstr1,xmlstr2,{ fileName : "TestN.hx", lineNumber : 57, className : "nx3.test.TestN", methodName : "testNoteXml"});
-		this.assertEquals([-3,-2,1,4].toString(),item1.getHeadLevels().toString(),{ fileName : "TestN.hx", lineNumber : 60, className : "nx3.test.TestN", methodName : "testNoteXml"});
+		this.assertEquals([-3,-2,1,4].toString(),item1.get_headLevels().toString(),{ fileName : "TestN.hx", lineNumber : 60, className : "nx3.test.TestN", methodName : "testNoteXml"});
 	}
 	,testNotePause: function() {
 		var note = new nx3.NNote(nx3.ENoteType.Pause(1),null,nx3.ENoteVal.Nv4);
@@ -9061,6 +9102,7 @@ nx3.test.Unittests.performTests = function() {
 	var runner = new haxe.unit.TestRunner();
 	runner.add(new nx3.test.TestIterators());
 	runner.add(new nx3.test.TestN());
+	runner.add(new nx3.test.TestLazy());
 	var success = runner.run();
 };
 nx3.xml = {};

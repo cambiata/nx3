@@ -26,7 +26,7 @@ class PNoteOffsetCalculator
 		
 		var firstnote = this.complex.getNotes().first();
 		
-		var diff = note.nnote.getTopLevel() - firstnote.nnote.getBottomLevel();
+		var diff = note.nnote.topLevel - firstnote.nnote.bottomLevel;
 		
 		if (diff  == 1)
 		{
