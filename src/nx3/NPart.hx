@@ -13,7 +13,6 @@ class NPart
 		this.nvoices = voices;
 		for (voice in voices) voice.npart = this;
 		
-		
 		if (this.nvoices.length > 2)
 		{
 			throw "For now, NPart can't have more than two voices";
@@ -25,11 +24,12 @@ class NPart
 		//this.key = (key == null) ? EKey.Natural : key;
 		this.key = key;
 		this.keyDisplay = (keyDisplay == null) ? EDisplayALN.Layout : keyDisplay;
-		
-		
-		
 	}
 
+	public function iterator() return this.nvoices.iterator();
+	public var length (get, null):Int;
+	private function get_length():Int return this.nvoices.length;		
+	
 	var nbar:NBar;
 	
 	public var type(default, default):EPartType;

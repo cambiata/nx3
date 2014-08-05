@@ -35,6 +35,11 @@ class NVoice
 		this.direction = (direction != null) ? direction : EDirectionUAD.Auto ;
 	}
 	
+	public function iterator() return this.nnotes.iterator();
+	public var length (get, null):Int;
+	private function get_length():Int return this.nnotes.length;		
+	
+	
 	public function getNNote(idx:Int):NNote return (idx < 0 || idx > this.nnotes.length) ? null : this.nnotes[idx];
 	
 	

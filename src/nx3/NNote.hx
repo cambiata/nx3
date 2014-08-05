@@ -34,6 +34,11 @@ class NNote
 		this.direction = (direction == null) ? EDirectionUAD.Auto : direction;
 	}
 	
+	public function iterator() return this.nheads_.iterator();
+	public var length (get, null):Int;
+	private function get_length():Int return this.nheads_.length;	
+	
+	
 	var nheads_:Array<NHead>;
 	function get_nheads():Array<NHead> 
 	{
