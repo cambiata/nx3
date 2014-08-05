@@ -7,7 +7,19 @@ import haxe.unit.TestRunner;
  */
 class Unittests
 {
-
+	
+	static public function performTests()
+	{
+		var runner = new TestRunner();
+	
+		runner.add(new TestIterators());
+		runner.add(new TestN());
+		//runner.add(new TestP());
+		//runner.add(new TestPBars());
+	
+		var success = runner.run();	
+	}	
+	/*
 	static public function performTests() 
 	{
 		var runner = new  TestRunner(); 
@@ -26,5 +38,5 @@ class Unittests
 		var success = runner.run();		
 		
 	}
-	
+	*/
 }
