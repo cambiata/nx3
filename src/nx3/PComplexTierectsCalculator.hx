@@ -43,7 +43,7 @@ class PComplexTierectsCalculator
 		
 		//--------------------------------------------------------------------------------
 		
-		for (head in firstnote.getHeads())
+		for (head in firstnote.heads)
 		{
 			//trace(headIdx);
 			var headrect = this.complex.getHeadsRects()[headIdx];
@@ -86,7 +86,7 @@ class PComplexTierectsCalculator
 				}
 				else 
 				{
-					if (secondnote == null && (head == firstnote.getHeads().last()))
+					if (secondnote == null && (head == firstnote.heads.last()))
 					{
 						direction = EDirectionUD.Down;
 						adjusty = .5;
@@ -107,7 +107,7 @@ class PComplexTierectsCalculator
 		tiewidth = Constants.TIE_WIDTH_CHORD;
 		if (secondnote != null)
 		{
-			for (head in secondnote.getHeads())
+			for (head in secondnote.heads)
 			{
 				if (head.nhead.tie != null) 
 				{					

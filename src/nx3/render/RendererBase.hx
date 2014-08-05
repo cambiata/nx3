@@ -463,7 +463,7 @@ class RendererBase
 				for (rect in note.getHeadsRects())
 				{
 					
-					var level = note.getHeads()[i].nhead.level;
+					var level = note.heads[i].nhead.level;
 					if (level > 5 || level < -5)
 					{
 						hx1 = Math.min(hx1, x + (rect.x - Constants.LEGER_MARGIN) * scaling.unitX);
@@ -473,7 +473,7 @@ class RendererBase
 				}						
 				
 				
-				for (head in note.getHeads())
+				for (head in note.heads)
 				{					
 					var level = head.nhead.level;
 					if (level <  5 && level >-5) continue;					

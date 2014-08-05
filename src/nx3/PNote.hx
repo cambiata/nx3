@@ -1,15 +1,17 @@
 package nx3;
 import cx.ArrayTools;
+import hxlazy.Lazy;
 import nx3.geom.Rectangle;
 import nx3.geom.Rectangles;
 using nx3.geom.Rectangles.RectanglesTools;
+using Lambda;
 
 /**
  * ...
  * @author Jonas Nyström
  */
 @:access(nx3.PHead)
-class PNote 
+class PNote implements Lazy
 {
 	public var nnote:NNote;
 	
@@ -20,9 +22,9 @@ class PNote
 		this.nnote = nnote;		
 	}	
 	
-	public function iterator() return this.getHeads().iterator();
+	public function iterator() return this.heads.iterator();
 	public var length (get, null):Int;
-	private function get_length():Int return this.getHeads().length;			
+	private function get_length():Int return this.heads.length;			
 	
 	
 	var voice: PVoice;
@@ -32,7 +34,7 @@ class PNote
 	}
 	
 	
-	
+	/*
 	var heads:PHeads;
 	public function getHeads():PHeads
 	{
@@ -47,12 +49,21 @@ class PNote
 		}
 		return this.heads;
 	}
+	*/
+	
+	@lazy public function heads():PHeads	{ return this.nnote.map(function(nhead) {var phead = new PHead(nhead); phead.note = this;  return phead; } ).array(); }
+	
+	
 	
 	//----------------------------------------------------------------------------------
+	
+	
+	
 	
 	var beamgroup:PBeamgroup;
 	public function getBeamgroup():PBeamgroup
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (this.beamgroup == null)
 		{
 			this.voice.getBeamgroups();
@@ -60,6 +71,9 @@ class PNote
 		if (this.beamgroup == null) throw "this should not happen";
 		return this.beamgroup;
 	}
+	
+	
+
 	
 	public function getDirection():EDirectionUD
 	{
@@ -69,6 +83,7 @@ class PNote
 	var complex:PComplex;
 	public function getComplex():PComplex
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (this.complex == null)
 		{			
 			this.voice.getPart().getComplexes();
@@ -77,9 +92,11 @@ class PNote
 		return this.complex;
 	}
 	
+	
 	var headsRects:Rectangles;
 	public function getHeadsRects():Rectangles
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (this.headsRects != null) return this.headsRects;
 		var calculator = new PNoteheadsRectsCalculator(this);		
 		this.headsRects = calculator.getHeadsRects();		
@@ -90,6 +107,7 @@ class PNote
 	var staveRectChecked:Bool;
 	public function getStaveRect():Rectangle
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (staveRectChecked) return this.staveRect;
 		this.staveRect = this.getComplex().getStaveRect(this);
 		this.staveRectChecked = true;
@@ -99,6 +117,7 @@ class PNote
 	var staveXPosition:Null<Float>;
 	public function getStaveXPosition():Float
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (this.staveXPosition != null) return this.staveXPosition;
 		
 		var staverect = this.getStaveRect();
@@ -111,6 +130,7 @@ class PNote
 	var baserect:Rectangle;
 	public function getBaseRect():Rectangle
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (baserect != null) return this.baserect;
 		this.baserect =  new PBaseRectCalculator(this).getBaseRect();		
 		return this.baserect;		
@@ -119,6 +139,7 @@ class PNote
 	var xoffset:Null<Float>;
 	public function getXOffset():Float
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (xoffset != null) return xoffset;
 		xoffset = this.getComplex().getNoteXOffset(this);
 		return xoffset;
@@ -127,6 +148,7 @@ class PNote
 	var xposition:Null<Float>;
 	public function getXPosition():Float
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (this.xposition != null) return this.xposition;
 		this.xposition = this.getComplex().getXPosition() + this.getXOffset();
 		return this.xposition;		
@@ -140,34 +162,17 @@ class PNote
 	var next:PNote;
 	public function getNext():PNote
 	{
+		if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
 		if (this.next != null) return this.next;
 		var idx = this.voice.getNotes().indexOf(this);
 		this.next = ArrayTools.indexOrNull(this.voice.getNotes(), idx + 1);
 		return this.next;
 	}
 	
+
 	
-	var hasTie:Null<Bool>;
-	public function getHasTie():Bool
-	{
-		if (this.hasTie != null) return this.hasTie;
-		for (nhead in this.nnote.nheads)
-		{
-			if (nhead.tie != null) 
-			{
-				this.hasTie = true;
-				return this.hasTie;
-			}
-		}
-		this.hasTie = false;
-		return this.hasTie;
-	}
+	@lazyGet public function hasTie():Bool { return !this.nnote.foreach(function(nhead) { return !(nhead.tie != null) ; } ); };
 	
-	
-	public function setTiesInfo(info:ETies)
-	{
-		
-		
-	}
+
 	
 }

@@ -222,7 +222,7 @@ class PComplex
 	public function getHeads():PHeads
 	{
 		var result:PHeads = [];
-		for (note in this.getNotes()) result = result.concat(note.getHeads());
+		for (note in this.getNotes()) result = result.concat(note.heads);
 		return result;		
 	}
 	

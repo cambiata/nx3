@@ -43,7 +43,6 @@ class PBeamgroupFrameCalculator
 			beamflags: beamflags,
 		}
 	 }
-	 
 
 	 function getTopLevels():Array<Int>
 	 {

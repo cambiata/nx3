@@ -87,6 +87,14 @@ Lambda.has = function(it,elt) {
 	}
 	return false;
 };
+Lambda.foreach = function(it,f) {
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		if(!f(x)) return false;
+	}
+	return true;
+};
 Lambda.filter = function(it,f) {
 	var l = new List();
 	var $it0 = $iterator(it)();
@@ -4221,7 +4229,7 @@ nx3.PComplex.prototype = {
 		while(_g < _g1.length) {
 			var note = _g1[_g];
 			++_g;
-			result = result.concat(note.getHeads());
+			result = result.concat(note.get_heads());
 		}
 		return result;
 	}
@@ -4360,7 +4368,7 @@ nx3.PComplexTieTargetCalculator.prototype = {
 			var headlevel = head.nhead.level;
 			var nextnote = head.getNote().getNext();
 			if(nextnote == null) continue;
-			var nextheads = nextnote.getHeads();
+			var nextheads = nextnote.get_heads();
 			var _g2 = 0;
 			while(_g2 < nextheads.length) {
 				var nexthead = nextheads[_g2];
@@ -4400,7 +4408,7 @@ nx3.PComplexTierectsCalculator.prototype = {
 		var tiewidth = 3.2;
 		var tieheight = 1.6;
 		var _g = 0;
-		var _g1 = firstnote.getHeads();
+		var _g1 = firstnote.get_heads();
 		while(_g < _g1.length) {
 			var head = _g1[_g];
 			++_g;
@@ -4433,7 +4441,7 @@ nx3.PComplexTierectsCalculator.prototype = {
 						if(firstnote.getDirection() == nx3.EDirectionUD.Up) adjusty = .8; else adjusty = -.8;
 					} else if(firstnote.getDirection() == nx3.EDirectionUD.Up) level = level - 1; else level = level - 1;
 					tiewidth = 3;
-				} else if(secondnote == null && head == cx.ArrayTools.last(firstnote.getHeads())) {
+				} else if(secondnote == null && head == cx.ArrayTools.last(firstnote.get_heads())) {
 					direction = nx3.EDirectionUD.Down;
 					adjusty = .5;
 				} else adjusty = -.5;
@@ -4446,7 +4454,7 @@ nx3.PComplexTierectsCalculator.prototype = {
 		tiewidth = 3.2;
 		if(secondnote != null) {
 			var _g3 = 0;
-			var _g11 = secondnote.getHeads();
+			var _g11 = secondnote.get_heads();
 			while(_g3 < _g11.length) {
 				var head1 = _g11[_g3];
 				++_g3;
@@ -4552,7 +4560,7 @@ nx3.PHeadPlacementsCalculator.prototype = {
 };
 nx3.PHeadsRectsCalculator = function(note,direction) {
 	if(direction != null) this.direction = direction; else this.direction = note.getDirection();
-	this.vheads = note.getHeads();
+	this.vheads = note.get_heads();
 	this.placements = new nx3.PHeadPlacementsCalculator(this.vheads,this.direction).getHeadsPlacements();
 	this.notevalue = note.nnote.value;
 };
@@ -4637,37 +4645,24 @@ nx3.PNote = function(nnote) {
 	this.nnote = nnote;
 };
 nx3.PNote.__name__ = ["nx3","PNote"];
+nx3.PNote.__interfaces__ = [hxlazy.Lazy];
 nx3.PNote.prototype = {
 	nnote: null
 	,iterator: function() {
-		var _this = this.getHeads();
+		var _this = this.get_heads();
 		return HxOverrides.iter(_this);
 	}
 	,length: null
 	,get_length: function() {
-		return this.getHeads().length;
+		return this.get_heads().length;
 	}
 	,voice: null
 	,getVoice: function() {
 		return this.voice;
 	}
-	,heads: null
-	,getHeads: function() {
-		if(this.heads != null) return this.heads;
-		this.heads = [];
-		var _g = 0;
-		var _g1 = this.nnote.get_nheads();
-		while(_g < _g1.length) {
-			var nhead = _g1[_g];
-			++_g;
-			var phead = new nx3.PHead(nhead);
-			phead.note = this;
-			this.heads.push(phead);
-		}
-		return this.heads;
-	}
 	,beamgroup: null
 	,getBeamgroup: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.beamgroup == null) this.voice.getBeamgroups();
 		if(this.beamgroup == null) throw "this should not happen";
 		return this.beamgroup;
@@ -4677,12 +4672,14 @@ nx3.PNote.prototype = {
 	}
 	,complex: null
 	,getComplex: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.complex == null) this.voice.getPart().getComplexes();
 		if(this.complex == null) throw "Shouldn't happen";
 		return this.complex;
 	}
 	,headsRects: null
 	,getHeadsRects: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.headsRects != null) return this.headsRects;
 		var calculator = new nx3.PNoteheadsRectsCalculator(this);
 		this.headsRects = calculator.getHeadsRects();
@@ -4691,6 +4688,7 @@ nx3.PNote.prototype = {
 	,staveRect: null
 	,staveRectChecked: null
 	,getStaveRect: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.staveRectChecked) return this.staveRect;
 		this.staveRect = this.getComplex().getStaveRect(this);
 		this.staveRectChecked = true;
@@ -4698,6 +4696,7 @@ nx3.PNote.prototype = {
 	}
 	,staveXPosition: null
 	,getStaveXPosition: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.staveXPosition != null) return this.staveXPosition;
 		var staverect = this.getStaveRect();
 		if(staverect == null) return 0;
@@ -4706,18 +4705,21 @@ nx3.PNote.prototype = {
 	}
 	,baserect: null
 	,getBaseRect: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.baserect != null) return this.baserect;
 		this.baserect = new nx3.PBaseRectCalculator(this).getBaseRect();
 		return this.baserect;
 	}
 	,xoffset: null
 	,getXOffset: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.xoffset != null) return this.xoffset;
 		this.xoffset = this.getComplex().getNoteXOffset(this);
 		return this.xoffset;
 	}
 	,xposition: null
 	,getXPosition: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.xposition != null) return this.xposition;
 		this.xposition = this.getComplex().getXPosition() + this.getXOffset();
 		return this.xposition;
@@ -4727,6 +4729,7 @@ nx3.PNote.prototype = {
 	}
 	,next: null
 	,getNext: function() {
+		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
 		if(this.next != null) return this.next;
 		var idx;
 		var _this = this.voice.getNotes();
@@ -4734,23 +4737,22 @@ nx3.PNote.prototype = {
 		this.next = cx.ArrayTools.indexOrNull(this.voice.getNotes(),idx + 1);
 		return this.next;
 	}
-	,hasTie: null
-	,getHasTie: function() {
-		if(this.hasTie != null) return this.hasTie;
-		var _g = 0;
-		var _g1 = this.nnote.get_nheads();
-		while(_g < _g1.length) {
-			var nhead = _g1[_g];
-			++_g;
-			if(nhead.tie != null) {
-				this.hasTie = true;
-				return this.hasTie;
-			}
-		}
-		this.hasTie = false;
-		return this.hasTie;
+	,__lazyheads: null
+	,get_heads: function() {
+		var _g = this;
+		if(this.__lazyheads != null) return this.__lazyheads;
+		return this.__lazyheads = Lambda.array(Lambda.map(this.nnote,function(nhead) {
+			var phead = new nx3.PHead(nhead);
+			phead.note = _g;
+			return phead;
+		}));
 	}
-	,setTiesInfo: function(info) {
+	,__lazyhasTie: null
+	,getHasTie: function() {
+		if(this.__lazyhasTie != null) return this.__lazyhasTie;
+		return this.__lazyhasTie = !Lambda.foreach(this.nnote,function(nhead) {
+			return !(nhead.tie != null);
+		});
 	}
 	,__class__: nx3.PNote
 };
@@ -8092,7 +8094,7 @@ nx3.render.RendererBase.prototype = {
 				while(_g11 < _g21.length) {
 					var rect3 = _g21[_g11];
 					++_g11;
-					var level1 = note.getHeads()[i].nhead.level;
+					var level1 = note.get_heads()[i].nhead.level;
 					if(level1 > 5 || level1 < -5) {
 						hx1 = Math.min(hx1,x + (rect3.x - 0.6) * this.scaling.unitX);
 						hx2 = Math.max(hx2,x + (rect3.x + rect3.width + 0.6) * this.scaling.unitX);
@@ -8100,7 +8102,7 @@ nx3.render.RendererBase.prototype = {
 					i++;
 				}
 				var _g12 = 0;
-				var _g22 = note.getHeads();
+				var _g22 = note.get_heads();
 				while(_g12 < _g22.length) {
 					var head = _g22[_g12];
 					++_g12;
@@ -9027,10 +9029,18 @@ nx3.test.TestLazy.__super__ = haxe.unit.TestCase;
 nx3.test.TestLazy.prototype = $extend(haxe.unit.TestCase.prototype,{
 	testNote: function() {
 		var item = new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))]);
-		this.assertEquals(item.get_headLevels().toString(),[0].toString(),{ fileName : "TestLazy.hx", lineNumber : 19, className : "nx3.test.TestLazy", methodName : "testNote"});
-		this.assertEquals(item.get_topLevel(),0,{ fileName : "TestLazy.hx", lineNumber : 20, className : "nx3.test.TestLazy", methodName : "testNote"});
-		this.assertEquals(item.get_bottomLevel(),0,{ fileName : "TestLazy.hx", lineNumber : 21, className : "nx3.test.TestLazy", methodName : "testNote"});
-		this.assertEquals(Std.string(cx.ArrayTools.first(item.get_ties())),Std.string(nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),{ fileName : "TestLazy.hx", lineNumber : 22, className : "nx3.test.TestLazy", methodName : "testNote"});
+		this.assertEquals(item.get_headLevels().toString(),[0].toString(),{ fileName : "TestLazy.hx", lineNumber : 20, className : "nx3.test.TestLazy", methodName : "testNote"});
+		this.assertEquals(item.get_topLevel(),0,{ fileName : "TestLazy.hx", lineNumber : 21, className : "nx3.test.TestLazy", methodName : "testNote"});
+		this.assertEquals(item.get_bottomLevel(),0,{ fileName : "TestLazy.hx", lineNumber : 22, className : "nx3.test.TestLazy", methodName : "testNote"});
+		this.assertEquals(Std.string(cx.ArrayTools.first(item.get_ties())),Std.string(nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),{ fileName : "TestLazy.hx", lineNumber : 23, className : "nx3.test.TestLazy", methodName : "testNote"});
+	}
+	,testPNote: function() {
+		var item = new nx3.PNote(new nx3.NNote(null,[new nx3.NHead(null,0),new nx3.NHead(null,0)]));
+		this.assertEquals(item.getHasTie(),false,{ fileName : "TestLazy.hx", lineNumber : 29, className : "nx3.test.TestLazy", methodName : "testPNote"});
+		var item1 = new nx3.PNote(new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),new nx3.NHead(null,0)]));
+		this.assertEquals(item1.getHasTie(),true,{ fileName : "TestLazy.hx", lineNumber : 32, className : "nx3.test.TestLazy", methodName : "testPNote"});
+		var item2 = new nx3.PNote(new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))]));
+		this.assertEquals(item2.getHasTie(),true,{ fileName : "TestLazy.hx", lineNumber : 35, className : "nx3.test.TestLazy", methodName : "testPNote"});
 	}
 	,__class__: nx3.test.TestLazy
 });

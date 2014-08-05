@@ -22,7 +22,7 @@ class PHeadsRectsCalculator
 	public function new(note:PNote, ?direction:EDirectionUD = null/*, vheads:PHeads, placements:PHeadPlacements, notevalue:ENoteVal*/ )
 	{
 		this.direction = (direction != null) ? direction : note.getDirection();
-		this.vheads = note.getHeads();
+		this.vheads = note.heads;
 		this.placements = new PHeadPlacementsCalculator(this.vheads, this.direction).getHeadsPlacements();
 		this.notevalue = note.nnote.value;
 	}
