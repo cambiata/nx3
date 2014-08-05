@@ -13,7 +13,7 @@ class Unittests
 		var runner = new  TestRunner(); 
 		
 		runner.add(new TestIterators());
-		//runner.add(new TestN());
+		runner.add(new TestN());
 		//runner.add(new TestP());
 		//runner.add(new TestPBars());		
 		

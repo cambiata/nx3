@@ -13,7 +13,11 @@ class PBar
 	{
 		this.nbar = nbar;		
 		this.value = 0;
-	}		
+	}	
+	
+	public function iterator() return this.getParts().iterator();
+	public var length (get, null):Int;
+	private function get_length():Int return this.getParts().length;		
 	
 	// parent
 	var score:PScore;

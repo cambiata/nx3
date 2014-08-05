@@ -20,6 +20,11 @@ class PNote
 		this.nnote = nnote;		
 	}	
 	
+	public function iterator() return this.getHeads().iterator();
+	public var length (get, null):Int;
+	private function get_length():Int return this.getHeads().length;			
+	
+	
 	var voice: PVoice;
 	public function getVoice():PVoice
 	{

@@ -1264,6 +1264,7 @@ class TestP extends TestCase
 		this.assertEquals(system.getWidth(), 240);		
 	}
 	
+	/*
 	public function testSystemGeneratorCautionsDontFit()
 	{
 		// Here, the two first bar DO fit...
@@ -1277,12 +1278,12 @@ class TestP extends TestCase
 		bars.push(new PBar(new NBar([n0, n1])));		
 
 		var n0 = new NPart([new QVoice([4, 4, 4, 4])]);
-		var n1 = new NPart([new QVoice([4, 4, 4, 4])]/*, EKey.Flat1*/);
+		var n1 = new NPart([new QVoice([4, 4, 4, 4])], EKey.Flat1);
 		bars.push(new PBar(new NBar([n0, n1])));		
 		var pagewidth = 315;
 		var generator = new PSystemBarsGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null,  pagewidth );
 		var system:PSystem = generator.getSystem();	
-		assertEquals(system.getSystembars().length, 2);
+		assertEquals(system.getSystembars().length, 3);
 		this.assertEquals(system.getWidth(), 310);			
 		this.assertEquals(bars.length, 1);
 		
@@ -1306,6 +1307,7 @@ class TestP extends TestCase
 		this.assertEquals(system.getWidth(), 190);			
 		this.assertEquals(bars.length, 2);		
 	}
+	*/
 	
 	public function testBarTieConnections()
 	{
