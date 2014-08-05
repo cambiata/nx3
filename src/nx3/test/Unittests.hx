@@ -14,6 +14,7 @@ class Unittests
 		
 		var start_time : Date = Date.now();
 		//runner.add(new TestQ());
+		
 		runner.add(new TestN());
 		//runner.add(new TestQuickSyntax());
 		runner.add(new TestTargetSvgXml());
