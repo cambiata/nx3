@@ -16,6 +16,11 @@ class PPart
 		this.value = 0;
 	}		
 	
+	public function iterator() return this.getVoices().iterator();
+	public var length (get, null):Int;
+	private function get_length():Int return this.getVoices().length;		
+	
+	
 	// parent
 	var bar: PBar;
 	public function getBar():PBar

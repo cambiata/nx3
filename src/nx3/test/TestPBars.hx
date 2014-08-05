@@ -164,7 +164,7 @@ class TestPBars extends TestCase
 		
 		systembar.setBarStretch(0);
 		this.assertEquals(pbar.getColumns().first().getSPosition().round2(), 4.2);
-		this.assertEquals(pbar.getColumns().second().getSPosition().round2(), 10.6);		
+		this.assertEquals(pbar.getColumns().second().getSPosition().round2(), 11.6);		
 			
 		var nbar = new NBar([new NPart([new QVoice([16, 16], '.#')])]);
 		var pbar = new PBar(nbar);
@@ -193,7 +193,7 @@ class TestPBars extends TestCase
 		
 		systembar.setBarStretch(0);
 		this.assertEquals(pbar.getColumns().first().getSPosition(), 1.6);	
-		this.assertEquals(pbar.getColumns().second().getSPosition().round2(), 8);				
+		this.assertEquals(pbar.getColumns().second().getSPosition().round2(), 9);				
 		
 	
 		var nbar = new NBar([new NPart([new QVoice([16, 16], '##')])]);
@@ -224,7 +224,7 @@ class TestPBars extends TestCase
 		
 		systembar.setBarStretch(0);
 		this.assertEquals(pbar.getColumns().first().getAPostion(), 4.2);		
-		this.assertEquals(pbar.getColumns().second().getSPosition().round2(), 10.6);		
+		this.assertEquals(pbar.getColumns().second().getSPosition().round2(), 11.6);		
 		
 	}
 	

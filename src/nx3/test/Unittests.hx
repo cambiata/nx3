@@ -12,19 +12,19 @@ class Unittests
 	{
 		var runner = new  TestRunner(); 
 		
+<<<<<<< HEAD
 		var start_time : Date = Date.now();
 		//runner.add(new TestQ());
 		
+=======
+		runner.add(new TestIterators());
+>>>>>>> iterators
 		runner.add(new TestN());
-		//runner.add(new TestQuickSyntax());
-		runner.add(new TestTargetSvgXml());
 		//runner.add(new TestP());
-		//runner.add(new TestPBars());
-		runner.add(new TestEvents());
+		//runner.add(new TestPBars());		
 		
-		var end_time: Date = Date.now();
 		var success = runner.run();		
-		TestRunner.print('Testing time: ' + Std.int(end_time.getTime() - start_time.getTime()) + 'ms');
+		
 	}
 	
 }

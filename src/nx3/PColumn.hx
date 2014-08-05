@@ -23,7 +23,6 @@ class PColumn
 		this.value = value;
 		this.mposition = 0.0;
 		this.mdistanceBenefit = 0;
-		//this.sposition = 0.0;
 	 }
 	 
 	 public function getComplexes():PComplexes

@@ -1,20 +1,26 @@
 package;
 
 
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.display.MovieClip;
-import flash.text.Font;
-import flash.media.Sound;
-import flash.net.URLRequest;
-import flash.utils.ByteArray;
+import haxe.Timer;
 import haxe.Unserializer;
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
+import openfl.display.MovieClip;
+import openfl.events.Event;
+import openfl.text.Font;
+import openfl.media.Sound;
+import openfl.net.URLRequest;
+import openfl.utils.ByteArray;
 import openfl.Assets;
 
 #if (flash || js)
-import flash.display.Loader;
-import flash.events.Event;
-import flash.net.URLLoader;
+import openfl.display.Loader;
+import openfl.events.Event;
+import openfl.net.URLLoader;
+#end
+
+#if sys
+import sys.FileSystem;
 #end
 
 #if ios
@@ -22,13 +28,17 @@ import openfl.utils.SystemPath;
 #end
 
 
-@:access(flash.media.Sound)
+@:access(openfl.media.Sound)
 class DefaultAssetLibrary extends AssetLibrary {
 	
 	
-	public static var className (default, null) = new Map <String, Dynamic> ();
-	public static var path (default, null) = new Map <String, String> ();
-	public static var type (default, null) = new Map <String, AssetType> ();
+	public var className (default, null) = new Map <String, Dynamic> ();
+	public var path (default, null) = new Map <String, String> ();
+	public var type (default, null) = new Map <String, AssetType> ();
+	
+	private var lastModified:Float;
+	private var timer:Timer;
+	
 	
 	public function new () {
 		
@@ -37,105 +47,73 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if flash
 		
 		className.set ("img/dummy.txt", __ASSET__img_dummy_txt);
-		type.set ("img/dummy.txt", Reflect.field (AssetType, "text".toUpperCase ()));
+		type.set ("img/dummy.txt", AssetType.TEXT);
 		
 		
 		#elseif html5
 		
-		addExternal("img/dummy.txt", "text", "img/dummy.txt");
+		var id;
+		id = "img/dummy.txt";
+		path.set (id, id);
+		type.set (id, AssetType.TEXT);
 		
 		
 		#else
 		
 		#if (windows || mac || linux)
 		
-		var loadManifest = false;
+		var useManifest = false;
 		
 		className.set ("img/dummy.txt", __ASSET__img_dummy_txt);
-		type.set ("img/dummy.txt", Reflect.field (AssetType, "text".toUpperCase ()));
+		type.set ("img/dummy.txt", AssetType.TEXT);
 		
+		
+		if (useManifest) {
+			
+			loadManifest ();
+			
+			if (Sys.args ().indexOf ("-livereload") > -1) {
+				
+				var path = FileSystem.fullPath ("manifest");
+				lastModified = FileSystem.stat (path).mtime.getTime ();
+				
+				timer = new Timer (2000);
+				timer.run = function () {
+					
+					var modified = FileSystem.stat (path).mtime.getTime ();
+					
+					if (modified > lastModified) {
+						
+						lastModified = modified;
+						loadManifest ();
+						
+						if (eventCallback != null) {
+							
+							eventCallback (this, "change");
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		}
 		
 		#else
 		
-		var loadManifest = true;
+		loadManifest ();
 		
 		#end
-		
-		if (loadManifest) {
-			try {
-				
-				#if blackberry
-				var bytes = ByteArray.readFile ("app/native/manifest");
-				#elseif tizen
-				var bytes = ByteArray.readFile ("../res/manifest");
-				#elseif emscripten
-				var bytes = ByteArray.readFile ("assets/manifest");
-				#else
-				var bytes = ByteArray.readFile ("manifest");
-				#end
-				
-				if (bytes != null) {
-					
-					bytes.position = 0;
-					
-					if (bytes.length > 0) {
-						
-						var data = bytes.readUTFBytes (bytes.length);
-						
-						if (data != null && data.length > 0) {
-							
-							var manifest:Array<AssetData> = Unserializer.run (data);
-							
-							for (asset in manifest) {
-								
-								if (!className.exists(asset.id)) {
-									
-									path.set (asset.id, asset.path);
-									type.set (asset.id, asset.type);
-									
-								}
-							}
-						
-						}
-					
-					}
-				
-				} else {
-				
-					trace ("Warning: Could not load asset manifest");
-				
-				}
-			
-			} catch (e:Dynamic) {
-			
-				trace ("Warning: Could not load asset manifest");
-			
-			}
-		
-		}
-		
 		#end
 		
 	}
-	
-	
-	#if html5
-	private function addEmbed(id:String, kind:String, value:Dynamic):Void {
-		className.set(id, value);
-		type.set(id, Reflect.field(AssetType, kind.toUpperCase()));
-	}
-	
-	
-	private function addExternal(id:String, kind:String, value:String):Void {
-		path.set(id, value);
-		type.set(id, Reflect.field(AssetType, kind.toUpperCase()));
-	}
-	#end
 	
 	
 	public override function exists (id:String, type:AssetType):Bool {
 		
-		var assetType = DefaultAssetLibrary.type.get (id);
+		var assetType = this.type.get (id);
 		
 		#if pixi
 		
@@ -217,21 +195,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 	
 	
 	public override function getBytes (id:String):ByteArray {
-
-		#if pixi
-		trace('pixi');
-		return null;
 		
-		#elseif (flash)
+		#if (flash)
 		
 		return cast (Type.createInstance (className.get (id), []), ByteArray);
+
+		#elseif (js || openfl_html5 || pixi)
 		
-		//#elseif openfl_html5
-		//trace('openfl_html5');
-		//return null;
-		
-		#elseif (openfl_html5 || js)
-		trace('js');
 		var bytes:ByteArray = null;
 		var data = ApplicationMain.urlLoaders.get (path.get (id)).data;
 		
@@ -430,6 +400,25 @@ class DefaultAssetLibrary extends AssetLibrary {
 	}
 	
 	
+	public override function list (type:AssetType):Array<String> {
+		
+		var items = [];
+		
+		for (id in this.type.keys ()) {
+			
+			if (type == null || exists (id, type)) {
+				
+				items.push (id);
+				
+			}
+			
+		}
+		
+		return items;
+		
+	}
+	
+	
 	public override function loadBitmapData (id:String, handler:BitmapData -> Void):Void {
 		
 		#if pixi
@@ -527,6 +516,64 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#end
 		
 	}
+	
+	
+	#if (!flash && !html5)
+	private function loadManifest ():Void {
+		
+		try {
+			
+			#if blackberry
+			var bytes = ByteArray.readFile ("app/native/manifest");
+			#elseif tizen
+			var bytes = ByteArray.readFile ("../res/manifest");
+			#elseif emscripten
+			var bytes = ByteArray.readFile ("assets/manifest");
+			#else
+			var bytes = ByteArray.readFile ("manifest");
+			#end
+			
+			if (bytes != null) {
+				
+				bytes.position = 0;
+				
+				if (bytes.length > 0) {
+					
+					var data = bytes.readUTFBytes (bytes.length);
+					
+					if (data != null && data.length > 0) {
+						
+						var manifest:Array<Dynamic> = Unserializer.run (data);
+						
+						for (asset in manifest) {
+							
+							if (!className.exists (asset.id)) {
+								
+								path.set (asset.id, asset.path);
+								type.set (asset.id, Type.createEnum (AssetType, asset.type));
+								
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			} else {
+				
+				trace ("Warning: Could not load asset manifest (bytes was null)");
+				
+			}
+		
+		} catch (e:Dynamic) {
+			
+			trace ('Warning: Could not load asset manifest (${e})');
+			
+		}
+		
+	}
+	#end
 	
 	
 	public override function loadMusic (id:String, handler:Sound -> Void):Void {
@@ -636,7 +683,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if pixi
 #elseif flash
 
-@:keep class __ASSET__img_dummy_txt extends flash.utils.ByteArray { }
+@:keep class __ASSET__img_dummy_txt extends openfl.utils.ByteArray { }
 
 
 #elseif html5

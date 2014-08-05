@@ -20,6 +20,7 @@ import flash.display.InterpolationMethod;
 import flash.display.CapsStyle;
 import flash.display.JointStyle;
 import flash.display.LineScaleMode;
+
 #end
 
 class GfxGraphics extends Gfx
@@ -34,6 +35,8 @@ class GfxGraphics extends Gfx
 
    override public function beginGradientFill(grad:Gradient)
    {
+	   
+	
       graphics.beginGradientFill(grad.type,grad.colors,grad.alphas,grad.ratios,grad.matrix,grad.spread,grad.interp,grad.focus);
    }
 

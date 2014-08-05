@@ -14,6 +14,11 @@ class PVoice
 		this.nvoice = nvoice;		
 	}		
 	
+	public function iterator() return this.getNotes().iterator();
+	public var length (get, null):Int;
+	private function get_length():Int return this.getNotes().length;				
+	
+	
 	var part:PPart;
 	public function getPart():PPart return this.part;
 	

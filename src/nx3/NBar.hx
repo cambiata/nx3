@@ -36,5 +36,10 @@ class NBar
 	
 	public function getNPart(idx:Int):NPart return (idx < 0 || idx > this.nparts.length) ? null : this.nparts[idx];
 	
+	public function iterator() return this.nparts.iterator();
+	public var length (get, null):Int;
+	private function get_length():Int return this.nparts.length;		
+	
+	
 }
 
