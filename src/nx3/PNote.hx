@@ -49,12 +49,18 @@ class PNote implements Lazy
 	}
 	*/
 	
-	@lazy public function heads():PHeads	{ return this.nnote.map(function(nhead) {var phead = new PHead(nhead); phead.note = this;  return phead; } ).array(); }
+	@lazy public function heads():PHeads	
+	{ 
+		return this.nnote.map(function(nhead) { 
+			var phead = new PHead(nhead); phead.note = this;  return phead; 
+		} ).array(); 
+	}
 	
 	
 	
 	//----------------------------------------------------------------------------------
 	
+
 	var beamgroup:PBeamgroup;
 	public function getBeamgroup():PBeamgroup
 	{
@@ -66,6 +72,7 @@ class PNote implements Lazy
 		if (this.beamgroup == null) throw "this should not happen";
 		return this.beamgroup;
 	}
+
 	
 	public function getDirection():EDirectionUD
 	{
@@ -136,14 +143,9 @@ class PNote implements Lazy
 	
 	@lazyGet public function staveXPosition():Float
 	{
-		//if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
-		//if (this.staveXPosition != null) return this.staveXPosition;
-		
 		var staverect = this.getStaveRect();
 		if (staverect == null) return 0;
-
-		 var staveXPosition = (this.getDirection() == EDirectionUD.Up) ? staverect.width : staverect.x;
-		return staveXPosition;
+		return (this.getDirection() == EDirectionUD.Up) ? staverect.width : staverect.x;
 	}	
 	
 	/*
@@ -194,17 +196,12 @@ class PNote implements Lazy
 	
 	@lazyGet public function xPosition():Float
 	{
-		//if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
-		//if (this.xposition != null) return this.xposition;		
 		return this.getComplex().getXPosition() + this.getXOffset();
 	}
 	
 	
 	
-	public function getTies():ETies
-	{
-		return this.nnote.ties;
-	}
+	public function getTies():ETies return this.nnote.ties;
 	
 	/*
 	var next:PNote;
@@ -220,8 +217,6 @@ class PNote implements Lazy
 
 	@lazyGet public function next():PNote
 	{
-		//if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
-		//if (this.next != null) return this.next;
 		var idx = this.voice.getNotes().indexOf(this);
 		return ArrayTools.indexOrNull(this.voice.getNotes(), idx + 1);
 	}	
