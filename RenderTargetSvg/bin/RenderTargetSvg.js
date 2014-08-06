@@ -4677,65 +4677,8 @@ nx3.PNote.prototype = {
 		if(this.complex == null) throw "Shouldn't happen";
 		return this.complex;
 	}
-	,headsRects: null
-	,getHeadsRects: function() {
-		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
-		if(this.headsRects != null) return this.headsRects;
-		var calculator = new nx3.PNoteheadsRectsCalculator(this);
-		this.headsRects = calculator.getHeadsRects();
-		return this.headsRects;
-	}
-	,staveRect: null
-	,staveRectChecked: null
-	,getStaveRect: function() {
-		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
-		if(this.staveRectChecked) return this.staveRect;
-		this.staveRect = this.getComplex().getStaveRect(this);
-		this.staveRectChecked = true;
-		return this.staveRect;
-	}
-	,staveXPosition: null
-	,getStaveXPosition: function() {
-		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
-		if(this.staveXPosition != null) return this.staveXPosition;
-		var staverect = this.getStaveRect();
-		if(staverect == null) return 0;
-		if(this.getDirection() == nx3.EDirectionUD.Up) this.staveXPosition = staverect.width; else this.staveXPosition = staverect.x;
-		return this.staveXPosition;
-	}
-	,baserect: null
-	,getBaseRect: function() {
-		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
-		if(this.baserect != null) return this.baserect;
-		this.baserect = new nx3.PBaseRectCalculator(this).getBaseRect();
-		return this.baserect;
-	}
-	,xoffset: null
-	,getXOffset: function() {
-		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
-		if(this.xoffset != null) return this.xoffset;
-		this.xoffset = this.getComplex().getNoteXOffset(this);
-		return this.xoffset;
-	}
-	,xposition: null
-	,getXPosition: function() {
-		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
-		if(this.xposition != null) return this.xposition;
-		this.xposition = this.getComplex().getXPosition() + this.getXOffset();
-		return this.xposition;
-	}
 	,getTies: function() {
 		return this.nnote.get_ties();
-	}
-	,next: null
-	,getNext: function() {
-		if(this.voice == null) throw "PNote doesn't have a parent PVoice";
-		if(this.next != null) return this.next;
-		var idx;
-		var _this = this.voice.getNotes();
-		idx = HxOverrides.indexOf(_this,this,0);
-		this.next = cx.ArrayTools.indexOrNull(this.voice.getNotes(),idx + 1);
-		return this.next;
 	}
 	,__lazyheads: null
 	,get_heads: function() {
@@ -4746,6 +4689,48 @@ nx3.PNote.prototype = {
 			phead.note = _g;
 			return phead;
 		}));
+	}
+	,__lazyheadsRects: null
+	,getHeadsRects: function() {
+		if(this.__lazyheadsRects != null) return this.__lazyheadsRects;
+		return this.__lazyheadsRects = new nx3.PNoteheadsRectsCalculator(this).getHeadsRects();
+	}
+	,__lazystaveRect: null
+	,getStaveRect: function() {
+		if(this.__lazystaveRect != null) return this.__lazystaveRect;
+		return this.__lazystaveRect = this.getComplex().getStaveRect(this);
+	}
+	,__lazystaveXPosition: null
+	,getStaveXPosition: function() {
+		if(this.__lazystaveXPosition != null) return this.__lazystaveXPosition;
+		var staverect = this.getStaveRect();
+		if(staverect == null) return this.__lazystaveXPosition = 0;
+		var staveXPosition;
+		if(this.getDirection() == nx3.EDirectionUD.Up) staveXPosition = staverect.width; else staveXPosition = staverect.x;
+		return this.__lazystaveXPosition = staveXPosition;
+	}
+	,__lazybaseRect: null
+	,getBaseRect: function() {
+		if(this.__lazybaseRect != null) return this.__lazybaseRect;
+		return this.__lazybaseRect = new nx3.PBaseRectCalculator(this).getBaseRect();
+	}
+	,__lazyxOffset: null
+	,getXOffset: function() {
+		if(this.__lazyxOffset != null) return this.__lazyxOffset;
+		return this.__lazyxOffset = this.getComplex().getNoteXOffset(this);
+	}
+	,__lazyxPosition: null
+	,getXPosition: function() {
+		if(this.__lazyxPosition != null) return this.__lazyxPosition;
+		return this.__lazyxPosition = this.getComplex().getXPosition() + this.getXOffset();
+	}
+	,__lazynext: null
+	,getNext: function() {
+		if(this.__lazynext != null) return this.__lazynext;
+		var idx;
+		var _this = this.voice.getNotes();
+		idx = HxOverrides.indexOf(_this,this,0);
+		return this.__lazynext = cx.ArrayTools.indexOrNull(this.voice.getNotes(),idx + 1);
 	}
 	,__lazyhasTie: null
 	,getHasTie: function() {
@@ -9041,6 +9026,7 @@ nx3.test.TestLazy.prototype = $extend(haxe.unit.TestCase.prototype,{
 		this.assertEquals(item1.getHasTie(),true,{ fileName : "TestLazy.hx", lineNumber : 32, className : "nx3.test.TestLazy", methodName : "testPNote"});
 		var item2 = new nx3.PNote(new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))]));
 		this.assertEquals(item2.getHasTie(),true,{ fileName : "TestLazy.hx", lineNumber : 35, className : "nx3.test.TestLazy", methodName : "testPNote"});
+		var pbar = nx3.test.TestItems.pbarTest();
 	}
 	,__class__: nx3.test.TestLazy
 });
