@@ -1,9 +1,13 @@
 package nx3;
 using nx3.ENoteValTools;
+
+
 /**
  * ...
  * @author Jonas Nyström
  */
+
+ 
 @:access(nx3.PNote)
 class PVoice
 {
@@ -18,11 +22,8 @@ class PVoice
 	public var length (get, null):Int;
 	private function get_length():Int return this.getNotes().length;				
 	
-	
 	var part:PPart;
 	public function getPart():PPart return this.part;
-	
-	
 	
 	var notes:PNotes;
 	public function getNotes():PNotes

@@ -74,6 +74,11 @@ class TestEvents extends TestCase
 		event.undoEvent();
 		this.assertEquals(NRefTools.getHead(NRefTools.refHead(score, 0, 0, 0, 0, 0)).sign, ESign.Flat);
 	}	
+	
+	public function testEventAddBar()
+	{
+		
+	}
 }
 
 

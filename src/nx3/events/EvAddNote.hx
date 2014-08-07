@@ -53,5 +53,4 @@ class EvAddNote implements IEvent
 		}		
 		this.status = false;
 	}
-
 }
