@@ -4,6 +4,7 @@ import cx.data.BytesLoader;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.Timer;
+import nx3.audio.NoteSoundCalculator;
 import nx3.audio.PlayerFactory;
 import nx3.PNote;
 import nx3.action.EActionType;
@@ -21,7 +22,6 @@ typedef ByteArray = haxe.io.BytesData;
 typedef ByteArray = haxe.io.BytesData;
 #end
 
-
  #if (neko || cpp)
  import cx.ByteArrayTools;
 import flash.utils.ByteArray;
@@ -32,8 +32,6 @@ import flash.utils.ByteArray;
  * @author Jonas Nyström
  */
 
- 
- 
 class SoundInteractivity extends InteractivityBase
 {
 	public function new()
@@ -46,16 +44,19 @@ class SoundInteractivity extends InteractivityBase
 	{
 		trace('SOUND On: ' + note.nnote.headLevels);
 		var level = note.nnote.headLevels.first();
-		play(level);
 		
+		var c = new NoteSoundCalculator();
+		
+		var tones = c.getMidiNotes(note);
+		play(tones[0]);	
 	}
 	
 	override public function onNoteMouseUp(note:PNote, info:EActionInfo)
 	{
 		trace('SOUND Off');
 	}	
-	var wavCache:Map<String, Bytes>;
 	
+	var wavCache:Map<String, Bytes>;
 	
 	function getWavAndPlay(id:String)
 	{
@@ -77,9 +78,9 @@ class SoundInteractivity extends InteractivityBase
 		}
 	}
 	
-	function play(level:Int)
+	function play(midinote:Int)
 	{
-		var filename = 'wav/' + Std.string(60 + -level) + '.wav';	
+		var filename = 'wav/' + Std.string(midinote) + '.wav';	
 		trace(filename);
 		getWavAndPlay(filename);
 	}
@@ -93,6 +94,5 @@ class SoundInteractivity extends InteractivityBase
 		var pf = new PlayerFactory();
 		var play = pf.getPlayFunction(bytesdata);				
 		play();						
-	}
-	
+	}	
 }

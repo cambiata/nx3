@@ -15,7 +15,10 @@ class Unittests
 		//runner.add(new TestIterators());
 		runner.add(new TestN());
 		//runner.add(new TestLazy());
-		runner.add(new TestEvents());
+		//runner.add(new TestEvents());
+		
+		runner.add(new TestSound());
+		
 		//runner.add(new TestP());
 		//runner.add(new TestPBars());
 	

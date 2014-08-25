@@ -2926,6 +2926,58 @@ nx3.NPart.prototype = {
 	}
 	,__class__: nx3.NPart
 };
+nx3.NRefTools = function() { };
+nx3.NRefTools.__name__ = ["nx3","NRefTools"];
+nx3.NRefTools.refNote = function(score,barIdx,partIdx,voiceIdx,noteIdx) {
+	if(noteIdx == null) noteIdx = 0;
+	if(voiceIdx == null) voiceIdx = 0;
+	if(partIdx == null) partIdx = 0;
+	if(barIdx == null) barIdx = 0;
+	return { score : score, bar : barIdx, part : partIdx, voice : voiceIdx, note : noteIdx, head : 0};
+};
+nx3.NRefTools.refHead = function(score,barIdx,partIdx,voiceIdx,noteIdx,headIdx) {
+	if(headIdx == null) headIdx = 0;
+	if(noteIdx == null) noteIdx = 0;
+	if(voiceIdx == null) voiceIdx = 0;
+	if(partIdx == null) partIdx = 0;
+	if(barIdx == null) barIdx = 0;
+	return { score : score, bar : barIdx, part : partIdx, voice : voiceIdx, note : noteIdx, head : headIdx};
+};
+nx3.NRefTools.refBar = function(score,barIdx) {
+	if(barIdx == null) barIdx = 0;
+	return { score : score, bar : barIdx, part : 0, voice : 0, note : 0, head : 0};
+};
+nx3.NRefTools.checkRefNoteError = function(ref) {
+	if(nx3.NRefTools.getNote(ref) == null) return true;
+	return false;
+};
+nx3.NRefTools.getNote = function(ref) {
+	var targetnote;
+	try {
+		targetnote = ref.score.getNBar(ref.bar).getNPart(ref.part).getNVoice(ref.voice).getNNote(ref.note);
+	} catch( e ) {
+		return null;
+	}
+	return targetnote;
+};
+nx3.NRefTools.getHead = function(ref) {
+	var targethead;
+	try {
+		targethead = ref.score.getNBar(ref.bar).getNPart(ref.part).getNVoice(ref.voice).getNNote(ref.note).getNHead(ref.head);
+	} catch( e ) {
+		return null;
+	}
+	return targethead;
+};
+nx3.NRefTools.getBar = function(ref) {
+	var target;
+	try {
+		target = ref.score.getNBar(ref.bar);
+	} catch( e ) {
+		return null;
+	}
+	return target;
+};
 nx3.NScore = function(nbars) {
 	this.nbars = nbars;
 	var _g = 0;
@@ -2950,9 +3002,22 @@ nx3.NScore.prototype = {
 	}
 	,__class__: nx3.NScore
 };
+nx3.NTools = function() { };
+nx3.NTools.__name__ = ["nx3","NTools"];
+nx3.NTools.noteRef = function(nnote) {
+	var nvoice = nnote.nvoice;
+	var noteIdx = HxOverrides.indexOf(nvoice.nnotes,nnote,0);
+	var npart = nvoice.npart;
+	var voiceIdx = HxOverrides.indexOf(npart.nvoices,nvoice,0);
+	var nbar = npart.nbar;
+	var partIdx = HxOverrides.indexOf(nbar.nparts,npart,0);
+	var nscore = nbar.nscore;
+	var barIdx = HxOverrides.indexOf(nscore.nbars,nbar,0);
+	return { score : nscore, bar : barIdx, part : partIdx, voice : voiceIdx, note : noteIdx, head : 0};
+};
 nx3.NVoice = function(notes,type,direction) {
-	if(notes == null || notes == []) {
-		this.nnotes = null;
+	if(notes == null || notes.length == 0) {
+		this.nnotes = [];
 		this.type = nx3.EVoiceType.Barpause(0);
 	} else {
 		this.nnotes = notes;
@@ -4705,9 +4770,7 @@ nx3.PNote.prototype = {
 		if(this.__lazystaveXPosition != null) return this.__lazystaveXPosition;
 		var staverect = this.getStaveRect();
 		if(staverect == null) return this.__lazystaveXPosition = 0;
-		var staveXPosition;
-		if(this.getDirection() == nx3.EDirectionUD.Up) staveXPosition = staverect.width; else staveXPosition = staverect.x;
-		return this.__lazystaveXPosition = staveXPosition;
+		return this.getDirection() == nx3.EDirectionUD.Up?this.__lazystaveXPosition = staverect.width:this.__lazystaveXPosition = staverect.x;
 	}
 	,__lazybaseRect: null
 	,getBaseRect: function() {
@@ -6595,6 +6658,115 @@ nx3.events.NoteInfo = { __ename__ : true, __constructs__ : ["Note","Pause","Lyri
 nx3.events.NoteInfo.Note = function(val,levels,signs,ties) { var $x = ["Note",0,val,levels,signs,ties]; $x.__enum__ = nx3.events.NoteInfo; $x.toString = $estr; return $x; };
 nx3.events.NoteInfo.Pause = function(val,level) { var $x = ["Pause",1,val,level]; $x.__enum__ = nx3.events.NoteInfo; $x.toString = $estr; return $x; };
 nx3.events.NoteInfo.Lyric = function(val,text) { var $x = ["Lyric",2,val,text]; $x.__enum__ = nx3.events.NoteInfo; $x.toString = $estr; return $x; };
+nx3.events.IEvent = function() { };
+nx3.events.IEvent.__name__ = ["nx3","events","IEvent"];
+nx3.events.IEvent.prototype = {
+	doEvent: null
+	,undoEvent: null
+	,__class__: nx3.events.IEvent
+};
+nx3.events.EvAddNote = function(ref,notes) {
+	this.status = false;
+	this.ref = ref;
+	this.notes = notes;
+};
+nx3.events.EvAddNote.__name__ = ["nx3","events","EvAddNote"];
+nx3.events.EvAddNote.__interfaces__ = [nx3.events.IEvent];
+nx3.events.EvAddNote.prototype = {
+	ref: null
+	,notes: null
+	,status: null
+	,doEvent: function() {
+		if(this.status == true) throw "Cant perform doEvent() twice";
+		if(nx3.NRefTools.checkRefNoteError(this.ref)) throw "Reference note error";
+		var newnotes = [];
+		var tnote = this.ref.score.getNBar(this.ref.bar).getNPart(this.ref.part).getNVoice(this.ref.voice).getNNote(this.ref.note);
+		var tvoice = tnote.nvoice;
+		var tnoteidx = HxOverrides.indexOf(tvoice.nnotes,tnote,0) + 1;
+		var _g = 0;
+		var _g1 = this.notes;
+		while(_g < _g1.length) {
+			var note = _g1[_g];
+			++_g;
+			var newnote = nx3.xml.NoteXML.clone(note);
+			tvoice.nnotes.splice(tnoteidx,0,newnote);
+			newnote.nvoice = tvoice;
+			newnotes.push(newnote);
+			tnoteidx++;
+		}
+		this.notes = newnotes;
+		this.status = true;
+	}
+	,undoEvent: function() {
+		if(this.status == false) throw "Cant perform undoEvent() twice";
+		var refs = new haxe.ds.ObjectMap();
+		var _g = 0;
+		var _g1 = this.notes;
+		while(_g < _g1.length) {
+			var note = _g1[_g];
+			++_g;
+			if(note == null) throw "Note to delete can not be null";
+			var voice = note.nvoice;
+			if(voice == null) throw "Note to delete does not seem to belong to the current score voice";
+			HxOverrides.remove(voice.nnotes,note);
+		}
+		this.status = false;
+	}
+	,__class__: nx3.events.EvAddNote
+};
+nx3.events.EvCopyBar = function(ref) {
+	this.status = false;
+	this.ref = ref;
+};
+nx3.events.EvCopyBar.__name__ = ["nx3","events","EvCopyBar"];
+nx3.events.EvCopyBar.__interfaces__ = [nx3.events.IEvent];
+nx3.events.EvCopyBar.prototype = {
+	ref: null
+	,status: null
+	,doEvent: function() {
+		if(this.status == true) throw "Cant perform doEvent() twice";
+		if(nx3.NRefTools.checkRefNoteError(this.ref)) throw "Reference note error";
+		var targetbar = this.ref.score.getNBar(this.ref.bar);
+		var targetbarIdx = HxOverrides.indexOf(this.ref.score.nbars,targetbar,0);
+		haxe.Log.trace(targetbarIdx,{ fileName : "EvCopyBar.hx", lineNumber : 28, className : "nx3.events.EvCopyBar", methodName : "doEvent"});
+		var xmlString = nx3.xml.BarXML.toXml(targetbar).toString();
+		var newbar = nx3.xml.BarXML.fromXmlStr(xmlString);
+		this.ref.score.nbars.splice(targetbarIdx + 1,0,newbar);
+	}
+	,undoEvent: function() {
+	}
+	,__class__: nx3.events.EvCopyBar
+};
+nx3.events.EvHeadSign = function(ref,sign) {
+	this.ref = ref;
+	this.status = false;
+	this.sign = sign;
+	this.prevsign = null;
+};
+nx3.events.EvHeadSign.__name__ = ["nx3","events","EvHeadSign"];
+nx3.events.EvHeadSign.__interfaces__ = [nx3.events.IEvent];
+nx3.events.EvHeadSign.prototype = {
+	ref: null
+	,sign: null
+	,prevsign: null
+	,status: null
+	,changedhead: null
+	,doEvent: function() {
+		if(this.status == true) throw "Cant perform doEvent() twice";
+		if(nx3.NRefTools.checkRefNoteError(this.ref)) throw "Reference note error";
+		var targethead = this.ref.score.getNBar(this.ref.bar).getNPart(this.ref.part).getNVoice(this.ref.voice).getNNote(this.ref.note).getNHead(this.ref.head);
+		this.prevsign = targethead.sign;
+		targethead.sign = this.sign;
+		this.changedhead = targethead;
+		this.status = true;
+	}
+	,undoEvent: function() {
+		if(this.status == false) throw "Cant perform undoEvent() twice";
+		this.changedhead.sign = this.prevsign;
+		this.status = false;
+	}
+	,__class__: nx3.events.EvHeadSign
+};
 nx3.geom = {};
 nx3.geom.BezieerTool = function() { };
 nx3.geom.BezieerTool.__name__ = ["nx3","geom","BezieerTool"];
@@ -8767,6 +8939,54 @@ nx3.render.svg = {};
 nx3.render.svg.SvgElements = function() { };
 nx3.render.svg.SvgElements.__name__ = ["nx3","render","svg","SvgElements"];
 nx3.test = {};
+nx3.test.TestEvents = function() {
+	haxe.unit.TestCase.call(this);
+};
+nx3.test.TestEvents.__name__ = ["nx3","test","TestEvents"];
+nx3.test.TestEvents.__super__ = haxe.unit.TestCase;
+nx3.test.TestEvents.prototype = $extend(haxe.unit.TestCase.prototype,{
+	score1: function() {
+		var nbar0 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.Flat)])])])]);
+		var score = new nx3.NScore([nbar0]);
+		return score;
+	}
+	,testEventAddNote: function() {
+		var score = this.score1();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,1,{ fileName : "TestEvents.hx", lineNumber : 49, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+		var notestoadd = [new nx3.NNote(null,[new nx3.NHead(null,1)]),new nx3.NNote(null,[new nx3.NHead(null,2)])];
+		var target = nx3.NRefTools.refNote(score,0,0,0,0);
+		var event = new nx3.events.EvAddNote(target,notestoadd);
+		event.doEvent();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,3,{ fileName : "TestEvents.hx", lineNumber : 54, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+		event.undoEvent();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,1,{ fileName : "TestEvents.hx", lineNumber : 56, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+		event.doEvent();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,3,{ fileName : "TestEvents.hx", lineNumber : 58, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+		event.undoEvent();
+		this.assertEquals(score.getNBar(0).getNPart(0).getNVoice(0).nnotes.length,1,{ fileName : "TestEvents.hx", lineNumber : 60, className : "nx3.test.TestEvents", methodName : "testEventAddNote"});
+	}
+	,testEventHeadSign: function() {
+		var score = this.score1();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.Flat,{ fileName : "TestEvents.hx", lineNumber : 66, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+		var target = nx3.NRefTools.refHead(score,0,0,0,0,0);
+		var event = new nx3.events.EvHeadSign(target,nx3.ESign.None);
+		event.doEvent();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.None,{ fileName : "TestEvents.hx", lineNumber : 70, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+		event.undoEvent();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.Flat,{ fileName : "TestEvents.hx", lineNumber : 72, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+		event.doEvent();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.None,{ fileName : "TestEvents.hx", lineNumber : 74, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+		event.undoEvent();
+		this.assertEquals(nx3.NRefTools.getHead(nx3.NRefTools.refHead(score,0,0,0,0,0)).sign,nx3.ESign.Flat,{ fileName : "TestEvents.hx", lineNumber : 76, className : "nx3.test.TestEvents", methodName : "testEventHeadSign"});
+	}
+	,testEventAddBar: function() {
+		var score = this.score1();
+		var target = nx3.NRefTools.refBar(score,0);
+		var event = new nx3.events.EvCopyBar(target);
+		event.doEvent();
+	}
+	,__class__: nx3.test.TestEvents
+});
 nx3.test.TestItems = function() { };
 nx3.test.TestItems.__name__ = ["nx3","test","TestItems"];
 nx3.test.TestItems.nbar1 = function() {
@@ -8843,7 +9063,8 @@ nx3.test.TestItems.systemTest1 = function() {
 nx3.test.TestItems.scoreTest1 = function() {
 	var n0 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([.4,16,16,4,4],null,null,null,"#.b.")],null,nx3.EClef.ClefC,null,nx3.EKey.Flat2)],null,nx3.ETime.Time2_4);
 	var n1 = new nx3.NBar([new nx3.NPart([new nx3.QVoice([4,.4,8],null,[2,3,4],null,".#")])]);
-	var nscore = new nx3.NScore([n0,n1]);
+	var n2 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([])])]);
+	var nscore = new nx3.NScore([n0,n1,n2]);
 	var score = new nx3.PScore(nscore);
 	return score;
 };
@@ -8911,125 +9132,12 @@ nx3.test.TestItems.scoreTies = function() {
 	var nbar1 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3)]),new nx3.NNote(null,[new nx3.NHead(null,0)])]),new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,5)]),new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
 	var score = new nx3.PScore(new nx3.NScore([nbar0,nbar1]));
 	var xmlstr = nx3.xml.BarsXML.toXml(score.getNBars()).toString();
-	haxe.Log.trace(xmlstr,{ fileName : "TestItems.hx", lineNumber : 660, className : "nx3.test.TestItems", methodName : "scoreTies"});
+	haxe.Log.trace(xmlstr,{ fileName : "TestItems.hx", lineNumber : 661, className : "nx3.test.TestItems", methodName : "scoreTies"});
 	var bars2 = nx3.xml.BarsXML.fromXmlStr(xmlstr);
 	var xmlstr2 = nx3.xml.BarsXML.toXml(bars2).toString();
-	haxe.Log.trace(xmlstr,{ fileName : "TestItems.hx", lineNumber : 663, className : "nx3.test.TestItems", methodName : "scoreTies"});
+	haxe.Log.trace(xmlstr,{ fileName : "TestItems.hx", lineNumber : 664, className : "nx3.test.TestItems", methodName : "scoreTies"});
 	return score;
 };
-nx3.test.TestIterators = function() {
-	haxe.unit.TestCase.call(this);
-};
-nx3.test.TestIterators.__name__ = ["nx3","test","TestIterators"];
-nx3.test.TestIterators.__super__ = haxe.unit.TestCase;
-nx3.test.TestIterators.prototype = $extend(haxe.unit.TestCase.prototype,{
-	testNote: function() {
-		var item = new nx3.NNote(null,[new nx3.NHead(null,0)]);
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 25, className : "nx3.test.TestIterators", methodName : "testNote"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 26, className : "nx3.test.TestIterators", methodName : "testNote"});
-		}
-	}
-	,testVoice: function() {
-		var item = new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])]);
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 32, className : "nx3.test.TestIterators", methodName : "testVoice"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 33, className : "nx3.test.TestIterators", methodName : "testVoice"});
-		}
-	}
-	,testPart: function() {
-		var item = new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])]);
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 39, className : "nx3.test.TestIterators", methodName : "testPart"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 40, className : "nx3.test.TestIterators", methodName : "testPart"});
-		}
-	}
-	,testBar: function() {
-		var item = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])])]);
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 46, className : "nx3.test.TestIterators", methodName : "testBar"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 47, className : "nx3.test.TestIterators", methodName : "testBar"});
-		}
-	}
-	,testScore: function() {
-		var item = new nx3.NScore([new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])])])]);
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 53, className : "nx3.test.TestIterators", methodName : "testScore"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 54, className : "nx3.test.TestIterators", methodName : "testScore"});
-		}
-	}
-	,testPNote: function() {
-		var item = new nx3.PNote(new nx3.NNote(null,[new nx3.NHead(null,0)]));
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 61, className : "nx3.test.TestIterators", methodName : "testPNote"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 62, className : "nx3.test.TestIterators", methodName : "testPNote"});
-		}
-	}
-	,testPVoice: function() {
-		var item = new nx3.PVoice(new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])]));
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 68, className : "nx3.test.TestIterators", methodName : "testPVoice"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 69, className : "nx3.test.TestIterators", methodName : "testPVoice"});
-		}
-	}
-	,testPPart: function() {
-		var item = new nx3.PPart(new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])]));
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 75, className : "nx3.test.TestIterators", methodName : "testPPart"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 76, className : "nx3.test.TestIterators", methodName : "testPPart"});
-		}
-	}
-	,testPBar: function() {
-		var item = new nx3.PBar(new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])])]));
-		this.assertEquals(item.get_length(),1,{ fileName : "TestIterators.hx", lineNumber : 82, className : "nx3.test.TestIterators", methodName : "testPBar"});
-		var $it0 = item.iterator();
-		while( $it0.hasNext() ) {
-			var child = $it0.next();
-			this.assertTrue(true,{ fileName : "TestIterators.hx", lineNumber : 83, className : "nx3.test.TestIterators", methodName : "testPBar"});
-		}
-	}
-	,__class__: nx3.test.TestIterators
-});
-nx3.test.TestLazy = function() {
-	haxe.unit.TestCase.call(this);
-};
-nx3.test.TestLazy.__name__ = ["nx3","test","TestLazy"];
-nx3.test.TestLazy.__super__ = haxe.unit.TestCase;
-nx3.test.TestLazy.prototype = $extend(haxe.unit.TestCase.prototype,{
-	testNote: function() {
-		var item = new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))]);
-		this.assertEquals(item.get_headLevels().toString(),[0].toString(),{ fileName : "TestLazy.hx", lineNumber : 20, className : "nx3.test.TestLazy", methodName : "testNote"});
-		this.assertEquals(item.get_topLevel(),0,{ fileName : "TestLazy.hx", lineNumber : 21, className : "nx3.test.TestLazy", methodName : "testNote"});
-		this.assertEquals(item.get_bottomLevel(),0,{ fileName : "TestLazy.hx", lineNumber : 22, className : "nx3.test.TestLazy", methodName : "testNote"});
-		this.assertEquals(Std.string(cx.ArrayTools.first(item.get_ties())),Std.string(nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),{ fileName : "TestLazy.hx", lineNumber : 23, className : "nx3.test.TestLazy", methodName : "testNote"});
-	}
-	,testPNote: function() {
-		var item = new nx3.PNote(new nx3.NNote(null,[new nx3.NHead(null,0),new nx3.NHead(null,0)]));
-		this.assertEquals(item.getHasTie(),false,{ fileName : "TestLazy.hx", lineNumber : 29, className : "nx3.test.TestLazy", methodName : "testPNote"});
-		var item1 = new nx3.PNote(new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),new nx3.NHead(null,0)]));
-		this.assertEquals(item1.getHasTie(),true,{ fileName : "TestLazy.hx", lineNumber : 32, className : "nx3.test.TestLazy", methodName : "testPNote"});
-		var item2 = new nx3.PNote(new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0)),new nx3.NHead(null,0,null,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))]));
-		this.assertEquals(item2.getHasTie(),true,{ fileName : "TestLazy.hx", lineNumber : 35, className : "nx3.test.TestLazy", methodName : "testPNote"});
-		var pbar = nx3.test.TestItems.pbarTest();
-	}
-	,__class__: nx3.test.TestLazy
-});
 nx3.test.TestN = function() {
 	haxe.unit.TestCase.call(this);
 };
@@ -9071,12 +9179,17 @@ nx3.test.TestN.prototype = $extend(haxe.unit.TestCase.prototype,{
 		var xmlStr2 = nx3.xml.VoiceXML.toXml(nvoice2).toString();
 		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 93, className : "nx3.test.TestN", methodName : "testVoiceXml"});
 	}
+	,testVoiceBarpause: function() {
+		var nvoice = new nx3.NVoice([]);
+		haxe.Log.trace(nvoice.type,{ fileName : "TestN.hx", lineNumber : 100, className : "nx3.test.TestN", methodName : "testVoiceBarpause"});
+		this.assertTrue(true,{ fileName : "TestN.hx", lineNumber : 101, className : "nx3.test.TestN", methodName : "testVoiceBarpause"});
+	}
 	,testBarXml: function() {
 		var nbar = nx3.test.TestItems.nbar1();
 		var xmlStr = nx3.xml.BarXML.toXml(nbar).toString();
 		var nbar2 = nx3.xml.BarXML.fromXmlStr(xmlStr);
 		var xmlStr2 = nx3.xml.BarXML.toXml(nbar2).toString();
-		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 103, className : "nx3.test.TestN", methodName : "testBarXml"});
+		this.assertEquals(xmlStr,xmlStr2,{ fileName : "TestN.hx", lineNumber : 113, className : "nx3.test.TestN", methodName : "testBarXml"});
 	}
 	,xmlStrExport: function(filename,xmlStr) {
 	}
@@ -9096,9 +9209,8 @@ nx3.test.Unittests = function() { };
 nx3.test.Unittests.__name__ = ["nx3","test","Unittests"];
 nx3.test.Unittests.performTests = function() {
 	var runner = new haxe.unit.TestRunner();
-	runner.add(new nx3.test.TestIterators());
 	runner.add(new nx3.test.TestN());
-	runner.add(new nx3.test.TestLazy());
+	runner.add(new nx3.test.TestEvents());
 	var success = runner.run();
 };
 nx3.xml = {};

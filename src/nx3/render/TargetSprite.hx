@@ -1,6 +1,6 @@
 package nx3.render;
-import cx.flash.Tooltipsprite;
-import flash.events.MouseEvent;
+
+
 import nx3.Constants;
 import nx3.EDirectionUD;
 import nx3.geom.Pnt;
@@ -10,7 +10,7 @@ import nx3.geom.Rectangles;
 import nx3.geom.Rectangle;
 import nx3.action.EActionType;
 import nx3.action.EActivityType;
-import nx3.render.el.HoverSprite;
+
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
@@ -28,6 +28,9 @@ import nme.display.Sprite;
 import nme.display.Graphics;
 import nme.Lib;
 #else
+import nx3.render.el.HoverSprite;
+import cx.flash.Tooltipsprite;
+import flash.events.MouseEvent;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 import flash.text.TextField;

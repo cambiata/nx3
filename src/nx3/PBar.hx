@@ -181,7 +181,12 @@ class PBar
 	 public function getContentwidth():Float
 	 {
 		if (this.contentwidth != null) return this.contentwidth;
-		var lastcolumn = this.getColumns().last();				
+		trace(this.getColumns());
+		var lastcolumn = this.getColumns().last();	
+		
+		// HACK!
+		//if (lastcolumn == null) return 0;
+		trace(lastcolumn);
 		this.contentwidth = lastcolumn.getAPostion() + Math.max(lastcolumn.getADistance(), lastcolumn.getRightX()) /* + this.getContentXZero()*/;
 		
 		return this.contentwidth;
