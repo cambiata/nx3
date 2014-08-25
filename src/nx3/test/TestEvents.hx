@@ -1,6 +1,7 @@
 package nx3.test;
 import haxe.unit.TestCase;
 import nx3.ESign;
+import nx3.events.EvCopyBar;
 import nx3.events.EvAddNote;
 import nx3.events.EvHeadSign;
 import nx3.NBar;
@@ -77,7 +78,10 @@ class TestEvents extends TestCase
 	
 	public function testEventAddBar()
 	{
-		
+		var score:NScore = score1();	
+		var target = NRefTools.refBar(score, 0);
+		var event = new EvCopyBar(target);
+		event.doEvent();
 	}
 }
 

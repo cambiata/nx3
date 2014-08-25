@@ -19,9 +19,10 @@ class NVoice
 		
 	public function new(notes:Array<NNote>=null, ?type:EVoiceType, ?direction:EDirectionUAD) 
 	{
-		if (notes == null || notes == []) 
+		
+		if (notes == null || notes.length == 0)
 		{
-			this.nnotes = null;
+			this.nnotes = [];
 			this.type = EVoiceType.Barpause(0);
 		}
 		else

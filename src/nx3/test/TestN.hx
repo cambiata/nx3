@@ -35,7 +35,7 @@ import nx3.xml.NoteXML;
 
 class TestN extends   TestCase 
 {
-
+	
 	public function testHeadXml()
 	{
 		var item1 = new NHead(2, ESign.Flat);
@@ -94,6 +94,16 @@ class TestN extends   TestCase
 	}
 	
 	
+	public function testVoiceBarpause()
+	{
+		var nvoice = new NVoice([]);
+		trace(nvoice.type);
+		this.assertTrue(true);
+		//this.assertEquals(nvoice.type, null);
+	}
+	
+	
+	
 	public function testBarXml()
 	{
 		var nbar = TestItems.nbar1();
@@ -109,7 +119,7 @@ class TestN extends   TestCase
 			FileTools.saveContent(filename, xmlStr);
 		#end	
 	}
-
+	
 /*
 #if neko
 	public function testBarXmlExport()

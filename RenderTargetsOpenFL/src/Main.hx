@@ -79,7 +79,8 @@ class Main extends Sprite
 		{
 			targetHS.clear();
 			var renderWidth =  Math.max(60, rendererHS.xToUnitX(width));
-			rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);												
+			//rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);												
+			rendererHS.renderScore(TestItems.scoreTest1(), 0, 100, renderWidth);												
 		}, 200);		
 		
 		

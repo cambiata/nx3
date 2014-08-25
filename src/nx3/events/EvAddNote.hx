@@ -1,5 +1,6 @@
 package nx3.events;
 import nx3.NNotes;
+import nx3.NRef;
 import nx3.xml.NoteXML;
 
 /**

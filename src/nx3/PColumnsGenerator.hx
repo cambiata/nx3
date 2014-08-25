@@ -79,8 +79,7 @@ class PColumnsGenerator
 			var vcolumn = new PColumn(this.bar, vcomplexes, pos, value);
 
 			
-		   this.columns.push(vcolumn);
-			
+			this.columns.push(vcolumn);
 			
 			for (complex in vcomplexes) 
 			{
