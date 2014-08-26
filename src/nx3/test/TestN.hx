@@ -11,11 +11,13 @@ import nx3.xml.Nx3XmlTools;
 import haxe.unit.TestCase;
 import nx3.NBar;
 import nx3.NPart;
+import nx3.NScore;
 import nx3.NVoice;
 import nx3.QNote.QNote4;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
 import nx3.xml.BarXML;
+import nx3.xml.ScoreXML;
 import nx3.xml.VoiceXML;
 
 import nx3.EDirectionUAD;
@@ -112,6 +114,18 @@ class TestN extends   TestCase
 		var xmlStr2 = BarXML.toXml(nbar2).toString();
 		this.assertEquals(xmlStr, xmlStr2);		
 	}
+	
+	public function testScoreXml()
+	{
+		var nscore:NScore = TestItems.scoreTest1().nscore;
+		var xmlStr = ScoreXML.toXml(nscore).toString();
+		xmlStrExport('nscore.xml', xmlStr);
+		var nscore2 = ScoreXML.fromXmlStr(xmlStr);
+		var xmlStr2 = ScoreXML.toXml(nscore2).toString();
+		this.assertEquals(xmlStr, xmlStr2);		
+	}
+	
+	
 
 	public function xmlStrExport(filename:String, xmlStr:String)
 	{

@@ -11,10 +11,15 @@ class NScore
 {
 	public var nbars(default, null):NBars;
 
+	public var configuration(default, default): Dynamic;
+	
+	
 	public function new(nbars:NBars) 
 	{
 		this.nbars = nbars;
 		for (bar in nbars) bar.nscore = this;
+		this.configuration = { };
+		this.configuration.test = 123;
 	}
 	
 	public function getNBar(idx:Int):NBar return (idx < 0 || idx > this.nbars.length) ? null : this.nbars[idx];

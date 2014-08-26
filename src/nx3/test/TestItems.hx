@@ -458,9 +458,8 @@ class TestItems
 	static public function scoreTest1():PScore
 	{
 		var n0 = new NBar([ new NPart([new QVoice([.4, 16, 16, 4, 4], '#.b.')], EClef.ClefC, EKey.Flat2)], ETime.Time2_4);	
-		var n1 =  new NBar([new NPart([new QVoice([4, .4, 8], [2, 3, 4], '.#')])]);
-		var n2 = new NBar([new NPart([new NVoice([])])]);
-		var nscore:NScore = new NScore([n0, n1, n2]);
+		var n1 =  new NBar([new NPart([new QVoice([4, .4, 8], [2, 3, 4], '.#')])]);		
+		var nscore:NScore = new NScore([n0, n1]);
 		var score = new PScore(nscore);
 		return score;
 	}

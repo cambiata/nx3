@@ -9,7 +9,7 @@ using cx.ArrayTools;
 @:access(nx3.PBar)
 class PScore
 {
-	var nscore(default, null):NScore;
+	public var nscore(default, null):NScore;
 
 	public function new(nscore:NScore) 
 	{
