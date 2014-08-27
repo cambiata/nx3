@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vbox width="100%" padding="10">
+	<text id="txtInfo" text="Ifall det inte finns PNG-filer med skärmstorlek (890x630) så kan dessa skapas här. "></text>
+	<vbox width="100" height="240" id="score" />
+	<hbox >
+		<button id="btnPlayFacit" text="Spela exempel" />
+		<button id="btnPlayResult" text="Spela din lösning" />
+	</hbox>
+	<vbox width="100" height="250"  />
+	<hbox>
+		<button id="btnRandomize" text="Nytt exempel" />
+		<button id="btnClear" text="Rensa" />
+		<button id="btnRemoveLast" text="Ta bort sista" />
+	</hbox>	
+	
+</vbox>

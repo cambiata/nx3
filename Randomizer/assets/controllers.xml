@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<tabview width="100%" height="100%" id="tabs">
+	
+	<vbox text="Palette">
+		<scorepalettecontroller width="400" />
+	</vbox>	
+	
+	<vbox text="Material">
+		<scorematerialcontroller width="400" />
+	</vbox>
+	
+	<vbox text="Random">
+		<scorerandomcontroller width="400" />
+	</vbox>	
+	
+</tabview>

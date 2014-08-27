@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vbox width="100%" padding="10">
+	<text id="txtInfo" text="Ifall det inte finns PNG-filer med skärmstorlek (890x630) så kan dessa skapas här. "></text>
+	<scorespri width="100" height="100" id="nisse" />
+	<button id="btn" text="Hello" />
+</vbox>

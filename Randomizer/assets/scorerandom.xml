@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vbox width="100%" padding="10">
+	<text id="txtInfo" text="Detta är det slumpgenererade övningsexemplet"></text>
+	<vbox width="100" height="100" id="score" />	
+</vbox>

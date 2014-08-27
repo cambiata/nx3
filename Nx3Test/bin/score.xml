@@ -1,0 +1,119 @@
+<score>
+	<config test="12345" />
+	<bar>
+		<part>
+			<voice>
+				<note val="8">
+					<headx level="3" />
+				</note>
+				<pause val="8" />
+				<note val="8">
+					<headx level="-2" />
+				</note>
+				<note val="8">
+					<headx level="4" />
+				</note>
+				<pause val="16" />
+				<pause val="8" />
+				<pause />
+				<pause val="2" />
+				<pause val="1" />
+			</voice>
+		</part>
+		<part>
+			<voice>
+				<note val="16">
+					<headx level="-1" />
+					<headx level="0" />
+				</note>
+				<note val="16">
+					<headx sign="Sharp"
+					       level="0" />
+					<headx level="1" />
+				</note>
+				<note val="16">
+					<headx level="1" />
+					<headx level="2" />
+				</note>
+				<note val="16">
+					<headx level="5" />
+					<headx level="7" />
+				</note>
+				<note val="16">
+					<headx level="0" />
+					<headx level="1" />
+				</note>
+				<note val="16">
+					<headx level="0" />
+					<headx level="2" />
+				</note>
+				<note val="16">
+					<headx level="0" />
+					<headx level="3" />
+				</note>
+				<note val="16">
+					<headx level="0" />
+					<headx level="2" />
+				</note>
+			</voice>
+		</part>
+	</bar>
+	<bar>
+		<part>
+			<voice>
+				<note val="8">
+					<headx level="3" />
+				</note>
+				<pause val="8" />
+				<note val="8">
+					<headx level="-2" />
+				</note>
+				<note val="8">
+					<headx level="4" />
+				</note>
+				<pause val="16" />
+				<pause val="8" />
+				<pause />
+				<pause val="2" />
+				<pause val="1" />
+			</voice>
+		</part>
+		<part>
+			<voice>
+				<note val="16">
+					<headx level="-1" />
+					<headx level="0" />
+				</note>
+				<note val="16">
+					<headx sign="Sharp"
+					       level="0" />
+					<headx level="1" />
+				</note>
+				<note val="16">
+					<headx level="1" />
+					<headx level="2" />
+				</note>
+				<note val="16">
+					<headx level="5" />
+					<headx level="7" />
+				</note>
+				<note val="16">
+					<headx level="0" />
+					<headx level="1" />
+				</note>
+				<note val="16">
+					<headx level="0" />
+					<headx level="2" />
+				</note>
+				<note val="16">
+					<headx level="0" />
+					<headx level="3" />
+				</note>
+				<note val="16">
+					<headx level="0" />
+					<headx level="2" />
+				</note>
+			</voice>
+		</part>
+	</bar>
+</score>

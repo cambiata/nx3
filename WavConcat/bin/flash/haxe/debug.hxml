@@ -1,0 +1,21 @@
+-main ApplicationMain 
+-cp f:\_haxelib/openfl/2,0,1/
+-D openfl=2.0.1
+-cp f:\_haxelib/actuate/1,7,5/
+-D actuate=1.7.5
+-D thx_core=
+-cp f:\_haxelib/thx,core/0,5,1/src/
+-D thx.core=
+-cp ../src
+-cp src
+-cp f:\_haxelib/openfl/2,0,1/backends/flash
+-cp f:\_haxelib/openfl/2,0,1/backends/flash
+-D tools=1.5.7
+-D openfl-flash
+-D fdb
+-D web
+-swf-version 11.2
+-swf bin/flash/bin/WavConcat.swf
+-swf-header 800:480:60:FFFFFF
+-cp bin/flash/haxe
+-debug
