@@ -93,13 +93,14 @@ class StrTools
 	
 	static public function similarity(strA:String, strB:String):Float {
 		if (strA == strB) return 1;
-		function sim(strA:String, strB:String) {
-			var score = _similarity(strA, strB);
-			// if different length, swap and run a second pass...	
-			if (strA.length != strB.length) score = (score + _similarity(strB, strA)) / 2;
-			return score;
+
+		if (strA.length > strB.length) {
+			var strC = strA;
+			strA = strB;
+			strB = strC;
 		}
-		return sim(strA, strB);
+		
+		return _similarity(strA, strB);
 	}
 	
 	static public function similarityAssymetric(strShorter:String, strLonger:String):Float {

@@ -32,6 +32,12 @@ class PlayerFactory
 		return this.makePlayer(wave);
 	}
 	
+	/*
+	public function stripWavHeader(wave:ByteArray):ByteArray
+	{
+		return wave.slice(46); 
+	}
+	*/
 	
 #if (cpp || neko)
 	  function makePlayer(wave: ByteArray): Void -> Void {

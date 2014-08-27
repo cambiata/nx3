@@ -16,6 +16,7 @@ import nx3.NVoice;
 import nx3.QNote.QNote4;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
+import nx3.utils.ScoreModifier;
 import nx3.xml.BarXML;
 import nx3.xml.ScoreXML;
 import nx3.xml.VoiceXML;
@@ -83,28 +84,20 @@ class TestN extends   TestCase
 	{
 		var nvoice = new NVoice([
 			new QNote4(1),
-			//new QNote4(1),
 			new NNote(ENoteType.Pause(1), ENoteVal.Nv4),
 		]);
 		
 		var xmlStr = VoiceXML.toXml(nvoice).toString();
-		//xmlStrExport('xml/voiceIncludingPause.xml', xmlStr);
-		
 		var nvoice2 = VoiceXML.fromXmlStr(xmlStr);
 		var xmlStr2 = VoiceXML.toXml(nvoice2).toString();
 		this.assertEquals(xmlStr, xmlStr2);
 	}
 	
-	
 	public function testVoiceBarpause()
 	{
 		var nvoice = new NVoice([]);
-		trace(nvoice.type);
 		this.assertTrue(true);
-		//this.assertEquals(nvoice.type, null);
 	}
-	
-	
 	
 	public function testBarXml()
 	{
@@ -119,11 +112,19 @@ class TestN extends   TestCase
 	{
 		var nscore:NScore = TestItems.scoreTest1().nscore;
 		var xmlStr = ScoreXML.toXml(nscore).toString();
-		xmlStrExport('nscore.xml', xmlStr);
 		var nscore2 = ScoreXML.fromXmlStr(xmlStr);
 		var xmlStr2 = ScoreXML.toXml(nscore2).toString();
 		this.assertEquals(xmlStr, xmlStr2);		
 	}
+	
+	public function testScoreModifyer()
+	{
+		var score = TestItems.scoreTest1().nscore;
+		var m:ScoreModifier = new ScoreModifier(score);		
+		var barScore = m.getBarNrAsScore(1);
+		this.assertEquals(barScore.length, 1);
+	}
+	
 	
 	
 

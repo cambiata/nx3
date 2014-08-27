@@ -27,7 +27,7 @@ class NBar
 	
 	public var nparts(default, null):Array<NPart>;
 	public var type(default, null):EBarType;
-	public var time(default, null):ETime;
+	public var time(default, default):ETime;
 	public var timeDisplay(default, null):EDisplayALN;
 	public var allotment(default, null):EAllotment;
 	public var spacing(default, null):Float;
