@@ -33,6 +33,7 @@ import haxe.ui.toolkit.core.interfaces.IDisplayObject;
 import openfl.Assets;
 import openfl.display.Loader;
 import openfl.events.IOErrorEvent;
+import openfl.events.MouseEvent;
 import openfl.net.URLLoader;
 import openfl.net.URLLoaderDataFormat;
 /**
@@ -328,17 +329,28 @@ class ScorepaletteController extends XMLController
 			var bss = new ScoreSprite(barscore, Scaling.MID);
 			bss.x = barx;
 			comp.sprite.addChild(bss);		
-			bss.barClickHandler = function (baridx:Int, nbar:NBar, nscore:NScore) {		
+			bss.barClickHandler = function (e:MouseEvent, baridx:Int, nbar:NBar, nscore:NScore) {		
+				
+				if (e.ctrlKey) {
+					trace('play');
+					var snotes = nsc.getPlayableNotesFromTopVoice(nscore);
+					var wav = conc.getWav(snotes, 120);
+					var play = player.getPlayFunction(wav);
+					play();					
+					return;
+				}
+				
 				resultstr += Std.string(barnr);
 				trace(baridx);
 				var nscore2 = modadd.addBarToScore(nbar);
 				ssnew.setScore(nscore2);
 				presentResult();
+				
 			}		
 			barx += bss.sysWidth + 20;
 		}	
 		
-		ssnew.barClickHandler = function (barNr:Int, nbar:NBar, nscore:NScore) {
+		ssnew.barClickHandler = function (e:MouseEvent, barNr:Int, nbar:NBar, nscore:NScore) {
 			
 			var snotes = nsc.getPlayableNotesFromTopVoice(nscore);
 			var wav = conc.getWav(snotes, 120);

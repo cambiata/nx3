@@ -19,7 +19,7 @@ class ScoreSprite extends Sprite
 {
 	var score:nx3.PScore;
 	var scaling:TScaling;
-	public var barClickHandler(default, default): Int->NBar->NScore->Void;
+	public var barClickHandler(default, default): MouseEvent->Int->NBar->NScore->Void;
 	public function new(nscore:NScore, ?scaling:TScaling) 
 	{
 		super();
@@ -63,14 +63,14 @@ class ScoreSprite extends Sprite
 		for (sys in this.score.getSystems(10000))
 		{
 			var syswidth = sys.getWidth() * this.scaling.unitX;
-			trace('syswidth ' + syswidth);
+			//trace('syswidth ' + syswidth);
 			var barx = 0.0;
 			var barnr = 0;
 			for (sysbar in sys.getSystembars())
 			{
 				var barwidth = sysbar.getBarMeasurements().getTotalWidth() * this.scaling.unitX;
 				//barx += sysbar.getBarMeasurements().getAckoladeXPosition() * this.scaling.unitX;
-				trace(' - barwidth ' + barwidth);						
+				//trace(' - barwidth ' + barwidth);						
 				var clicksprite = new Sprite();
 				clicksprite.graphics.beginFill(0x0000ff, 0);
 				clicksprite.graphics.lineStyle(1, 0x00FF00, 0);
@@ -79,10 +79,10 @@ class ScoreSprite extends Sprite
 				clicksprite.useHandCursor = true;
 				clicksprite.addEventListener(MouseEvent.MOUSE_DOWN, function(e) {
 					var baridx = sys.getSystembars().indexOf(sysbar);
-					trace(baridx);
+					//trace(baridx);
 					var nbar = sysbar.bar.nbar;
 					try {
-					if (this.barClickHandler != null) this.barClickHandler(baridx, nbar, this.score.nscore);					
+					if (this.barClickHandler != null) this.barClickHandler(e, baridx, nbar, this.score.nscore);					
 					} catch(e:Dynamic) {}
 				});				
 				this.addChild(clicksprite);				
