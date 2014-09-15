@@ -18,20 +18,20 @@
   <classpaths>
     <class path="F:\_lib\openfl\2,0,1" />
     <class path="F:\_lib\actuate\1,7,5" />
-    <class path="F:\_lib\haxeui\1,4,11" />
+    <class path="F:\_lib\haxeui\1,4,14" />
     <class path="F:\_lib\svg\1,0,8" />
     <class path="F:\_lib\hscript\2,0,1" />
-    <class path="F:\_lib\thx,core\0,5,2\src" />
+    <class path="F:\_lib\thx,core\0,5,4\src" />
     <class path="..\src" />
     <class path="src" />
     <class path="F:\_lib\openfl\2,0,1\backends\flash" />
-    <class path="F:\_lib\haxeui\1,4,11\styles" />
-    <class path="F:\_lib\haxeui\1,4,11\fonts" />
+    <class path="F:\_lib\haxeui\1,4,14\styles" />
+    <class path="F:\_lib\haxeui\1,4,14\fonts" />
     <class path="bin\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="haxeui=1.4.11&#xA;actuate=1.7.5&#xA;svg=1.0.8&#xA;openfl=2.0.1&#xA;hscript=2.0.1&#xA;thx_core=&#xA;thx.core=&#xA;tools=1.5.7&#xA;openfl-flash&#xA;display&#xA;web" />
+    <option directives="haxeui=1.4.14&#xA;actuate=1.7.5&#xA;svg=1.0.8&#xA;openfl=2.0.1&#xA;hscript=2.0.1&#xA;thx_core=&#xA;thx.core=&#xA;tools=1.5.7&#xA;openfl-flash&#xA;display&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />

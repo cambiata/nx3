@@ -50,10 +50,10 @@ class WavConcatenator
 			result.writeBytes(sw);
 			
 			//result.writeBytes(w);
-			trace(result.length);
+			//trace(result.length);
 		}
 		
-		trace(result.length);
+		//trace(result.length);
 		
 		return result;
 	}
@@ -71,10 +71,5 @@ class WavConcatenator
 			}			
 		}
 	}
-	
-	
-	
-	
-	
 	
 }
