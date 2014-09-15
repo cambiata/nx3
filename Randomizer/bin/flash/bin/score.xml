@@ -17,9 +17,9 @@
 	<bar>
 		<part >
 			<voice>
-				<note val="4">
+				<pause val="4">
 					<headx level="1" />
-				</note>
+				</pause>
 				<note val="4">
 					<headx level="1" />
 				</note>

@@ -72,9 +72,4 @@ class WavConcatenator
 		}
 	}
 	
-	
-	
-	
-	
-	
 }

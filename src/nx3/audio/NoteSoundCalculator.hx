@@ -1,6 +1,7 @@
 package nx3.audio;
 import nx3.EClef;
 import nx3.EKey;
+import nx3.ENoteType;
 import nx3.ESign;
 import nx3.NBar;
 import nx3.NNote;
@@ -31,15 +32,22 @@ class NoteSoundCalculator
 		
 		var level = note.nnote.topLevel;
 		
-		var tone = getMidiNote(key, clef, level, null);		
+		var tone = getMidiNote(key, clef, level, null, note.nnote.type);		
 		
 		return [tone];
 	}
 	
-	public function getMidiNote(key:EKey, clef:EClef, level:Int, sign:ESign)
+	public function getMidiNote(key:EKey, clef:EClef, level:Int, sign:ESign, type:ENoteType=null)
 	{
 		var stamton = levelToStamton(clef, level);
 		var tone = toneFromKey(stamton, key);
+		
+		switch type 
+		{
+			case ENoteType.Pause(l): tone = 0;
+			default: 
+		}
+		
 		return tone;
 	}
 	
@@ -102,7 +110,7 @@ class NoteSoundCalculator
 			{
 				var level = nnote.nheads[0].level;
 				var sign = nnote.nheads[0].sign;
-				var midinote = this.getMidiNote(key, clef, level, sign);
+				var midinote = this.getMidiNote(key, clef, level, sign, nnote.type);
 				var length = ENoteValTools.value(nnote.value);
 				snotes.push(new Tuple2(midinote, length));
 			}

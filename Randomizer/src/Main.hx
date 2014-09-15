@@ -91,7 +91,7 @@ class Main extends Sprite
 	static private function onLoadXml(e:Event):Void 
 	{
 		var loader:URLLoader = cast e.target;
-		trace(loader.data);
+		//trace(loader.data);
 		var scoreXmlStr:String = cast loader.data;
 		initScore(scoreXmlStr);	
 			
