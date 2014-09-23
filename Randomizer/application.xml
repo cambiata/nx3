@@ -16,6 +16,7 @@
 	<source path="../src" />
 	<source path="src" />
 	<haxelib name="openfl" />
+	<haxelib name="format" />
 	<haxelib name="actuate" />
 	<haxelib name="haxeui" />
 	<haxelib name="thx.core" />

@@ -46,6 +46,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
+		className.set ("wav/0.data", __ASSET__wav_0_data);
+		type.set ("wav/0.data", AssetType.BINARY);
 		className.set ("wav/79.data", __ASSET__wav_79_data);
 		type.set ("wav/79.data", AssetType.BINARY);
 		className.set ("wav/80.data", __ASSET__wav_80_data);
@@ -63,6 +65,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#elseif html5
 		
 		var id;
+		id = "wav/0.data";
+		path.set (id, id);
+		type.set (id, AssetType.BINARY);
 		id = "wav/79.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
@@ -88,6 +93,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
+		
+		className.set ("wav/0.data", __ASSET__wav_0_data);
+		type.set ("wav/0.data", AssetType.BINARY);
 		
 		className.set ("wav/79.data", __ASSET__wav_79_data);
 		type.set ("wav/79.data", AssetType.BINARY);
@@ -723,6 +731,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if pixi
 #elseif flash
 
+@:keep class __ASSET__wav_0_data extends openfl.utils.ByteArray { }
 @:keep class __ASSET__wav_79_data extends openfl.utils.ByteArray { }
 @:keep class __ASSET__wav_80_data extends openfl.utils.ByteArray { }
 @:keep class __ASSET__wav_81_data extends openfl.utils.ByteArray { }
@@ -741,9 +750,11 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
 #elseif (windows || mac || linux)
 
 
+@:file("assets/wav/0.data") class __ASSET__wav_0_data extends flash.utils.ByteArray {}
 @:file("assets/wav/79.data") class __ASSET__wav_79_data extends flash.utils.ByteArray {}
 @:file("assets/wav/80.data") class __ASSET__wav_80_data extends flash.utils.ByteArray {}
 @:file("assets/wav/81.data") class __ASSET__wav_81_data extends flash.utils.ByteArray {}

@@ -2,5 +2,4 @@
 <vbox width="100%" padding="10">
 	<text id="txtInfo" text="Detta är de takter (laddade från scorx.xml) som slumpgeneratorn skapar övningsexempel utifrån."></text>
 	<vbox width="100" height="200" id="score" />
-	<button id="btn" text="Hello" />
 </vbox>

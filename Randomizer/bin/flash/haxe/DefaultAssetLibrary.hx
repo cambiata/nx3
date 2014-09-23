@@ -90,8 +90,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("styles/gradient/gradient.min.css", AssetType.TEXT);
 		className.set ("styles/gradient/gradient_mobile.css", __ASSET__styles_gradient_gradient_mobile_css);
 		type.set ("styles/gradient/gradient_mobile.css", AssetType.TEXT);
-		className.set ("styles/gradient/gradient_mobile.min.css", __ASSET__styles_gradient_gradient_mobile_min_css);
-		type.set ("styles/gradient/gradient_mobile.min.css", AssetType.TEXT);
 		className.set ("styles/gradient/gripper_horizontal.png", __ASSET__styles_gradient_gripper_horizontal_png);
 		type.set ("styles/gradient/gripper_horizontal.png", AssetType.IMAGE);
 		className.set ("styles/gradient/gripper_horizontal_disabled.png", __ASSET__styles_gradient_gripper_horizontal_disabled_png);
@@ -174,6 +172,22 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("styles/windows/vscroll.png", AssetType.IMAGE);
 		className.set ("styles/windows/windows.css", __ASSET__styles_windows_windows_css);
 		type.set ("styles/windows/windows.css", AssetType.TEXT);
+		className.set ("img/rtfview/edit-alignment-center.png", __ASSET__img_rtfview_edit_alignment_center_png);
+		type.set ("img/rtfview/edit-alignment-center.png", AssetType.IMAGE);
+		className.set ("img/rtfview/edit-alignment-justify.png", __ASSET__img_rtfview_edit_alignment_justify_png);
+		type.set ("img/rtfview/edit-alignment-justify.png", AssetType.IMAGE);
+		className.set ("img/rtfview/edit-alignment-left.png", __ASSET__img_rtfview_edit_alignment_left_png);
+		type.set ("img/rtfview/edit-alignment-left.png", AssetType.IMAGE);
+		className.set ("img/rtfview/edit-alignment-right.png", __ASSET__img_rtfview_edit_alignment_right_png);
+		type.set ("img/rtfview/edit-alignment-right.png", AssetType.IMAGE);
+		className.set ("img/rtfview/edit-bold.png", __ASSET__img_rtfview_edit_bold_png);
+		type.set ("img/rtfview/edit-bold.png", AssetType.IMAGE);
+		className.set ("img/rtfview/edit-italic.png", __ASSET__img_rtfview_edit_italic_png);
+		type.set ("img/rtfview/edit-italic.png", AssetType.IMAGE);
+		className.set ("img/rtfview/edit-list.png", __ASSET__img_rtfview_edit_list_png);
+		type.set ("img/rtfview/edit-list.png", AssetType.IMAGE);
+		className.set ("img/rtfview/edit-underline.png", __ASSET__img_rtfview_edit_underline_png);
+		type.set ("img/rtfview/edit-underline.png", AssetType.IMAGE);
 		className.set ("img/slinky_small.jpg", __ASSET__img_slinky_small_jpg);
 		type.set ("img/slinky_small.jpg", AssetType.IMAGE);
 		className.set ("img/slinky_tiny.jpg", __ASSET__img_slinky_tiny_jpg);
@@ -184,106 +198,16 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("fonts/Oxygen.ttf", AssetType.FONT);
 		className.set ("wav/0.data", __ASSET__wav_0_data);
 		type.set ("wav/0.data", AssetType.BINARY);
-		className.set ("wav/0.wav", __ASSET__wav_0_wav);
-		type.set ("wav/0.wav", AssetType.SOUND);
-		className.set ("wav/48.data", __ASSET__wav_48_data);
-		type.set ("wav/48.data", AssetType.BINARY);
-		className.set ("wav/49.data", __ASSET__wav_49_data);
-		type.set ("wav/49.data", AssetType.BINARY);
-		className.set ("wav/50.data", __ASSET__wav_50_data);
-		type.set ("wav/50.data", AssetType.BINARY);
-		className.set ("wav/51.data", __ASSET__wav_51_data);
-		type.set ("wav/51.data", AssetType.BINARY);
-		className.set ("wav/52.data", __ASSET__wav_52_data);
-		type.set ("wav/52.data", AssetType.BINARY);
-		className.set ("wav/53.data", __ASSET__wav_53_data);
-		type.set ("wav/53.data", AssetType.BINARY);
-		className.set ("wav/54.data", __ASSET__wav_54_data);
-		type.set ("wav/54.data", AssetType.BINARY);
-		className.set ("wav/55.data", __ASSET__wav_55_data);
-		type.set ("wav/55.data", AssetType.BINARY);
-		className.set ("wav/56.data", __ASSET__wav_56_data);
-		type.set ("wav/56.data", AssetType.BINARY);
-		className.set ("wav/57.data", __ASSET__wav_57_data);
-		type.set ("wav/57.data", AssetType.BINARY);
-		className.set ("wav/58.data", __ASSET__wav_58_data);
-		type.set ("wav/58.data", AssetType.BINARY);
-		className.set ("wav/59.data", __ASSET__wav_59_data);
-		type.set ("wav/59.data", AssetType.BINARY);
-		className.set ("wav/60.data", __ASSET__wav_60_data);
-		type.set ("wav/60.data", AssetType.BINARY);
-		className.set ("wav/61.data", __ASSET__wav_61_data);
-		type.set ("wav/61.data", AssetType.BINARY);
-		className.set ("wav/62.data", __ASSET__wav_62_data);
-		type.set ("wav/62.data", AssetType.BINARY);
-		className.set ("wav/63.data", __ASSET__wav_63_data);
-		type.set ("wav/63.data", AssetType.BINARY);
-		className.set ("wav/64.data", __ASSET__wav_64_data);
-		type.set ("wav/64.data", AssetType.BINARY);
-		className.set ("wav/65.data", __ASSET__wav_65_data);
-		type.set ("wav/65.data", AssetType.BINARY);
-		className.set ("wav/66.data", __ASSET__wav_66_data);
-		type.set ("wav/66.data", AssetType.BINARY);
-		className.set ("wav/67.data", __ASSET__wav_67_data);
-		type.set ("wav/67.data", AssetType.BINARY);
-		className.set ("wav/68.data", __ASSET__wav_68_data);
-		type.set ("wav/68.data", AssetType.BINARY);
-		className.set ("wav/69.data", __ASSET__wav_69_data);
-		type.set ("wav/69.data", AssetType.BINARY);
-		className.set ("wav/70.data", __ASSET__wav_70_data);
-		type.set ("wav/70.data", AssetType.BINARY);
-		className.set ("wav/71.data", __ASSET__wav_71_data);
-		type.set ("wav/71.data", AssetType.BINARY);
-		className.set ("wav/72.data", __ASSET__wav_72_data);
-		type.set ("wav/72.data", AssetType.BINARY);
-		className.set ("wav/73.data", __ASSET__wav_73_data);
-		type.set ("wav/73.data", AssetType.BINARY);
-		className.set ("wav/74.data", __ASSET__wav_74_data);
-		type.set ("wav/74.data", AssetType.BINARY);
-		className.set ("wav/75.data", __ASSET__wav_75_data);
-		type.set ("wav/75.data", AssetType.BINARY);
-		className.set ("wav/76.data", __ASSET__wav_76_data);
-		type.set ("wav/76.data", AssetType.BINARY);
-		className.set ("wav/77.data", __ASSET__wav_77_data);
-		type.set ("wav/77.data", AssetType.BINARY);
-		className.set ("wav/78.data", __ASSET__wav_78_data);
-		type.set ("wav/78.data", AssetType.BINARY);
-		className.set ("wav/79.data", __ASSET__wav_79_data);
-		type.set ("wav/79.data", AssetType.BINARY);
-		className.set ("wav/80.data", __ASSET__wav_80_data);
-		type.set ("wav/80.data", AssetType.BINARY);
+		className.set ("wav/1.data", __ASSET__wav_1_data);
+		type.set ("wav/1.data", AssetType.BINARY);
+		className.set ("wav/2.data", __ASSET__wav_2_data);
+		type.set ("wav/2.data", AssetType.BINARY);
+		className.set ("wav/3.data", __ASSET__wav_3_data);
+		type.set ("wav/3.data", AssetType.BINARY);
+		className.set ("wav/4.data", __ASSET__wav_4_data);
+		type.set ("wav/4.data", AssetType.BINARY);
 		className.set ("wav/81.data", __ASSET__wav_81_data);
 		type.set ("wav/81.data", AssetType.BINARY);
-		className.set ("wav/82.data", __ASSET__wav_82_data);
-		type.set ("wav/82.data", AssetType.BINARY);
-		className.set ("wav/83.data", __ASSET__wav_83_data);
-		type.set ("wav/83.data", AssetType.BINARY);
-		className.set ("wav/84.data", __ASSET__wav_84_data);
-		type.set ("wav/84.data", AssetType.BINARY);
-		className.set ("wav/85.data", __ASSET__wav_85_data);
-		type.set ("wav/85.data", AssetType.BINARY);
-		className.set ("wav/86.data", __ASSET__wav_86_data);
-		type.set ("wav/86.data", AssetType.BINARY);
-		className.set ("wav/87.data", __ASSET__wav_87_data);
-		type.set ("wav/87.data", AssetType.BINARY);
-		className.set ("wav/88.data", __ASSET__wav_88_data);
-		type.set ("wav/88.data", AssetType.BINARY);
-		className.set ("wav/89.data", __ASSET__wav_89_data);
-		type.set ("wav/89.data", AssetType.BINARY);
-		className.set ("wav/90.data", __ASSET__wav_90_data);
-		type.set ("wav/90.data", AssetType.BINARY);
-		className.set ("wav/91.data", __ASSET__wav_91_data);
-		type.set ("wav/91.data", AssetType.BINARY);
-		className.set ("wav/92.data", __ASSET__wav_92_data);
-		type.set ("wav/92.data", AssetType.BINARY);
-		className.set ("wav/93.data", __ASSET__wav_93_data);
-		type.set ("wav/93.data", AssetType.BINARY);
-		className.set ("wav/94.data", __ASSET__wav_94_data);
-		type.set ("wav/94.data", AssetType.BINARY);
-		className.set ("wav/95.data", __ASSET__wav_95_data);
-		type.set ("wav/95.data", AssetType.BINARY);
-		className.set ("wav/96.data", __ASSET__wav_96_data);
-		type.set ("wav/96.data", AssetType.BINARY);
 		className.set ("assets/controllers.xml", __ASSET__assets_controllers_xml);
 		type.set ("assets/controllers.xml", AssetType.TEXT);
 		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
@@ -300,106 +224,16 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/scorexml.xml", AssetType.TEXT);
 		className.set ("assets/wav/0.data", __ASSET__assets_wav_0_data);
 		type.set ("assets/wav/0.data", AssetType.BINARY);
-		className.set ("assets/wav/0.wav", __ASSET__assets_wav_0_wav);
-		type.set ("assets/wav/0.wav", AssetType.SOUND);
-		className.set ("assets/wav/48.data", __ASSET__assets_wav_48_data);
-		type.set ("assets/wav/48.data", AssetType.BINARY);
-		className.set ("assets/wav/49.data", __ASSET__assets_wav_49_data);
-		type.set ("assets/wav/49.data", AssetType.BINARY);
-		className.set ("assets/wav/50.data", __ASSET__assets_wav_50_data);
-		type.set ("assets/wav/50.data", AssetType.BINARY);
-		className.set ("assets/wav/51.data", __ASSET__assets_wav_51_data);
-		type.set ("assets/wav/51.data", AssetType.BINARY);
-		className.set ("assets/wav/52.data", __ASSET__assets_wav_52_data);
-		type.set ("assets/wav/52.data", AssetType.BINARY);
-		className.set ("assets/wav/53.data", __ASSET__assets_wav_53_data);
-		type.set ("assets/wav/53.data", AssetType.BINARY);
-		className.set ("assets/wav/54.data", __ASSET__assets_wav_54_data);
-		type.set ("assets/wav/54.data", AssetType.BINARY);
-		className.set ("assets/wav/55.data", __ASSET__assets_wav_55_data);
-		type.set ("assets/wav/55.data", AssetType.BINARY);
-		className.set ("assets/wav/56.data", __ASSET__assets_wav_56_data);
-		type.set ("assets/wav/56.data", AssetType.BINARY);
-		className.set ("assets/wav/57.data", __ASSET__assets_wav_57_data);
-		type.set ("assets/wav/57.data", AssetType.BINARY);
-		className.set ("assets/wav/58.data", __ASSET__assets_wav_58_data);
-		type.set ("assets/wav/58.data", AssetType.BINARY);
-		className.set ("assets/wav/59.data", __ASSET__assets_wav_59_data);
-		type.set ("assets/wav/59.data", AssetType.BINARY);
-		className.set ("assets/wav/60.data", __ASSET__assets_wav_60_data);
-		type.set ("assets/wav/60.data", AssetType.BINARY);
-		className.set ("assets/wav/61.data", __ASSET__assets_wav_61_data);
-		type.set ("assets/wav/61.data", AssetType.BINARY);
-		className.set ("assets/wav/62.data", __ASSET__assets_wav_62_data);
-		type.set ("assets/wav/62.data", AssetType.BINARY);
-		className.set ("assets/wav/63.data", __ASSET__assets_wav_63_data);
-		type.set ("assets/wav/63.data", AssetType.BINARY);
-		className.set ("assets/wav/64.data", __ASSET__assets_wav_64_data);
-		type.set ("assets/wav/64.data", AssetType.BINARY);
-		className.set ("assets/wav/65.data", __ASSET__assets_wav_65_data);
-		type.set ("assets/wav/65.data", AssetType.BINARY);
-		className.set ("assets/wav/66.data", __ASSET__assets_wav_66_data);
-		type.set ("assets/wav/66.data", AssetType.BINARY);
-		className.set ("assets/wav/67.data", __ASSET__assets_wav_67_data);
-		type.set ("assets/wav/67.data", AssetType.BINARY);
-		className.set ("assets/wav/68.data", __ASSET__assets_wav_68_data);
-		type.set ("assets/wav/68.data", AssetType.BINARY);
-		className.set ("assets/wav/69.data", __ASSET__assets_wav_69_data);
-		type.set ("assets/wav/69.data", AssetType.BINARY);
-		className.set ("assets/wav/70.data", __ASSET__assets_wav_70_data);
-		type.set ("assets/wav/70.data", AssetType.BINARY);
-		className.set ("assets/wav/71.data", __ASSET__assets_wav_71_data);
-		type.set ("assets/wav/71.data", AssetType.BINARY);
-		className.set ("assets/wav/72.data", __ASSET__assets_wav_72_data);
-		type.set ("assets/wav/72.data", AssetType.BINARY);
-		className.set ("assets/wav/73.data", __ASSET__assets_wav_73_data);
-		type.set ("assets/wav/73.data", AssetType.BINARY);
-		className.set ("assets/wav/74.data", __ASSET__assets_wav_74_data);
-		type.set ("assets/wav/74.data", AssetType.BINARY);
-		className.set ("assets/wav/75.data", __ASSET__assets_wav_75_data);
-		type.set ("assets/wav/75.data", AssetType.BINARY);
-		className.set ("assets/wav/76.data", __ASSET__assets_wav_76_data);
-		type.set ("assets/wav/76.data", AssetType.BINARY);
-		className.set ("assets/wav/77.data", __ASSET__assets_wav_77_data);
-		type.set ("assets/wav/77.data", AssetType.BINARY);
-		className.set ("assets/wav/78.data", __ASSET__assets_wav_78_data);
-		type.set ("assets/wav/78.data", AssetType.BINARY);
-		className.set ("assets/wav/79.data", __ASSET__assets_wav_79_data);
-		type.set ("assets/wav/79.data", AssetType.BINARY);
-		className.set ("assets/wav/80.data", __ASSET__assets_wav_80_data);
-		type.set ("assets/wav/80.data", AssetType.BINARY);
+		className.set ("assets/wav/1.data", __ASSET__assets_wav_1_data);
+		type.set ("assets/wav/1.data", AssetType.BINARY);
+		className.set ("assets/wav/2.data", __ASSET__assets_wav_2_data);
+		type.set ("assets/wav/2.data", AssetType.BINARY);
+		className.set ("assets/wav/3.data", __ASSET__assets_wav_3_data);
+		type.set ("assets/wav/3.data", AssetType.BINARY);
+		className.set ("assets/wav/4.data", __ASSET__assets_wav_4_data);
+		type.set ("assets/wav/4.data", AssetType.BINARY);
 		className.set ("assets/wav/81.data", __ASSET__assets_wav_81_data);
 		type.set ("assets/wav/81.data", AssetType.BINARY);
-		className.set ("assets/wav/82.data", __ASSET__assets_wav_82_data);
-		type.set ("assets/wav/82.data", AssetType.BINARY);
-		className.set ("assets/wav/83.data", __ASSET__assets_wav_83_data);
-		type.set ("assets/wav/83.data", AssetType.BINARY);
-		className.set ("assets/wav/84.data", __ASSET__assets_wav_84_data);
-		type.set ("assets/wav/84.data", AssetType.BINARY);
-		className.set ("assets/wav/85.data", __ASSET__assets_wav_85_data);
-		type.set ("assets/wav/85.data", AssetType.BINARY);
-		className.set ("assets/wav/86.data", __ASSET__assets_wav_86_data);
-		type.set ("assets/wav/86.data", AssetType.BINARY);
-		className.set ("assets/wav/87.data", __ASSET__assets_wav_87_data);
-		type.set ("assets/wav/87.data", AssetType.BINARY);
-		className.set ("assets/wav/88.data", __ASSET__assets_wav_88_data);
-		type.set ("assets/wav/88.data", AssetType.BINARY);
-		className.set ("assets/wav/89.data", __ASSET__assets_wav_89_data);
-		type.set ("assets/wav/89.data", AssetType.BINARY);
-		className.set ("assets/wav/90.data", __ASSET__assets_wav_90_data);
-		type.set ("assets/wav/90.data", AssetType.BINARY);
-		className.set ("assets/wav/91.data", __ASSET__assets_wav_91_data);
-		type.set ("assets/wav/91.data", AssetType.BINARY);
-		className.set ("assets/wav/92.data", __ASSET__assets_wav_92_data);
-		type.set ("assets/wav/92.data", AssetType.BINARY);
-		className.set ("assets/wav/93.data", __ASSET__assets_wav_93_data);
-		type.set ("assets/wav/93.data", AssetType.BINARY);
-		className.set ("assets/wav/94.data", __ASSET__assets_wav_94_data);
-		type.set ("assets/wav/94.data", AssetType.BINARY);
-		className.set ("assets/wav/95.data", __ASSET__assets_wav_95_data);
-		type.set ("assets/wav/95.data", AssetType.BINARY);
-		className.set ("assets/wav/96.data", __ASSET__assets_wav_96_data);
-		type.set ("assets/wav/96.data", AssetType.BINARY);
 		
 		
 		#elseif html5
@@ -469,9 +303,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
 		id = "styles/gradient/gradient_mobile.css";
-		path.set (id, id);
-		type.set (id, AssetType.TEXT);
-		id = "styles/gradient/gradient_mobile.min.css";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
 		id = "styles/gradient/gripper_horizontal.png";
@@ -597,6 +428,30 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "styles/windows/windows.css";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
+		id = "img/rtfview/edit-alignment-center.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/rtfview/edit-alignment-justify.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/rtfview/edit-alignment-left.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/rtfview/edit-alignment-right.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/rtfview/edit-bold.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/rtfview/edit-italic.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/rtfview/edit-list.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "img/rtfview/edit-underline.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
 		id = "img/slinky_small.jpg";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
@@ -612,154 +467,19 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "wav/0.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "wav/0.wav";
-		path.set (id, id);
-		type.set (id, AssetType.SOUND);
-		id = "wav/48.data";
+		id = "wav/1.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "wav/49.data";
+		id = "wav/2.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "wav/50.data";
+		id = "wav/3.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "wav/51.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/52.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/53.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/54.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/55.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/56.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/57.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/58.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/59.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/60.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/61.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/62.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/63.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/64.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/65.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/66.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/67.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/68.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/69.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/70.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/71.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/72.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/73.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/74.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/75.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/76.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/77.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/78.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/79.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/80.data";
+		id = "wav/4.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
 		id = "wav/81.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/82.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/83.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/84.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/85.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/86.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/87.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/88.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/89.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/90.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/91.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/92.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/93.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/94.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/95.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/96.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
 		id = "assets/controllers.xml";
@@ -786,154 +506,19 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "assets/wav/0.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "assets/wav/0.wav";
-		path.set (id, id);
-		type.set (id, AssetType.SOUND);
-		id = "assets/wav/48.data";
+		id = "assets/wav/1.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "assets/wav/49.data";
+		id = "assets/wav/2.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "assets/wav/50.data";
+		id = "assets/wav/3.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "assets/wav/51.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/52.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/53.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/54.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/55.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/56.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/57.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/58.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/59.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/60.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/61.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/62.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/63.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/64.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/65.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/66.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/67.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/68.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/69.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/70.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/71.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/72.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/73.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/74.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/75.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/76.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/77.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/78.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/79.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/80.data";
+		id = "assets/wav/4.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
 		id = "assets/wav/81.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/82.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/83.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/84.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/85.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/86.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/87.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/88.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/89.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/90.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/91.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/92.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/93.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/94.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/95.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "assets/wav/96.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
 		
@@ -1009,9 +594,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("styles/gradient/gradient_mobile.css", __ASSET__styles_gradient_gradient_mobile_css);
 		type.set ("styles/gradient/gradient_mobile.css", AssetType.TEXT);
-		
-		className.set ("styles/gradient/gradient_mobile.min.css", __ASSET__styles_gradient_gradient_mobile_min_css);
-		type.set ("styles/gradient/gradient_mobile.min.css", AssetType.TEXT);
 		
 		className.set ("styles/gradient/gripper_horizontal.png", __ASSET__styles_gradient_gripper_horizontal_png);
 		type.set ("styles/gradient/gripper_horizontal.png", AssetType.IMAGE);
@@ -1136,6 +718,30 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("styles/windows/windows.css", __ASSET__styles_windows_windows_css);
 		type.set ("styles/windows/windows.css", AssetType.TEXT);
 		
+		className.set ("img/rtfview/edit-alignment-center.png", __ASSET__img_rtfview_edit_alignment_center_png);
+		type.set ("img/rtfview/edit-alignment-center.png", AssetType.IMAGE);
+		
+		className.set ("img/rtfview/edit-alignment-justify.png", __ASSET__img_rtfview_edit_alignment_justify_png);
+		type.set ("img/rtfview/edit-alignment-justify.png", AssetType.IMAGE);
+		
+		className.set ("img/rtfview/edit-alignment-left.png", __ASSET__img_rtfview_edit_alignment_left_png);
+		type.set ("img/rtfview/edit-alignment-left.png", AssetType.IMAGE);
+		
+		className.set ("img/rtfview/edit-alignment-right.png", __ASSET__img_rtfview_edit_alignment_right_png);
+		type.set ("img/rtfview/edit-alignment-right.png", AssetType.IMAGE);
+		
+		className.set ("img/rtfview/edit-bold.png", __ASSET__img_rtfview_edit_bold_png);
+		type.set ("img/rtfview/edit-bold.png", AssetType.IMAGE);
+		
+		className.set ("img/rtfview/edit-italic.png", __ASSET__img_rtfview_edit_italic_png);
+		type.set ("img/rtfview/edit-italic.png", AssetType.IMAGE);
+		
+		className.set ("img/rtfview/edit-list.png", __ASSET__img_rtfview_edit_list_png);
+		type.set ("img/rtfview/edit-list.png", AssetType.IMAGE);
+		
+		className.set ("img/rtfview/edit-underline.png", __ASSET__img_rtfview_edit_underline_png);
+		type.set ("img/rtfview/edit-underline.png", AssetType.IMAGE);
+		
 		className.set ("img/slinky_small.jpg", __ASSET__img_slinky_small_jpg);
 		type.set ("img/slinky_small.jpg", AssetType.IMAGE);
 		
@@ -1151,155 +757,20 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("wav/0.data", __ASSET__wav_0_data);
 		type.set ("wav/0.data", AssetType.BINARY);
 		
-		className.set ("wav/0.wav", __ASSET__wav_0_wav);
-		type.set ("wav/0.wav", AssetType.SOUND);
+		className.set ("wav/1.data", __ASSET__wav_1_data);
+		type.set ("wav/1.data", AssetType.BINARY);
 		
-		className.set ("wav/48.data", __ASSET__wav_48_data);
-		type.set ("wav/48.data", AssetType.BINARY);
+		className.set ("wav/2.data", __ASSET__wav_2_data);
+		type.set ("wav/2.data", AssetType.BINARY);
 		
-		className.set ("wav/49.data", __ASSET__wav_49_data);
-		type.set ("wav/49.data", AssetType.BINARY);
+		className.set ("wav/3.data", __ASSET__wav_3_data);
+		type.set ("wav/3.data", AssetType.BINARY);
 		
-		className.set ("wav/50.data", __ASSET__wav_50_data);
-		type.set ("wav/50.data", AssetType.BINARY);
-		
-		className.set ("wav/51.data", __ASSET__wav_51_data);
-		type.set ("wav/51.data", AssetType.BINARY);
-		
-		className.set ("wav/52.data", __ASSET__wav_52_data);
-		type.set ("wav/52.data", AssetType.BINARY);
-		
-		className.set ("wav/53.data", __ASSET__wav_53_data);
-		type.set ("wav/53.data", AssetType.BINARY);
-		
-		className.set ("wav/54.data", __ASSET__wav_54_data);
-		type.set ("wav/54.data", AssetType.BINARY);
-		
-		className.set ("wav/55.data", __ASSET__wav_55_data);
-		type.set ("wav/55.data", AssetType.BINARY);
-		
-		className.set ("wav/56.data", __ASSET__wav_56_data);
-		type.set ("wav/56.data", AssetType.BINARY);
-		
-		className.set ("wav/57.data", __ASSET__wav_57_data);
-		type.set ("wav/57.data", AssetType.BINARY);
-		
-		className.set ("wav/58.data", __ASSET__wav_58_data);
-		type.set ("wav/58.data", AssetType.BINARY);
-		
-		className.set ("wav/59.data", __ASSET__wav_59_data);
-		type.set ("wav/59.data", AssetType.BINARY);
-		
-		className.set ("wav/60.data", __ASSET__wav_60_data);
-		type.set ("wav/60.data", AssetType.BINARY);
-		
-		className.set ("wav/61.data", __ASSET__wav_61_data);
-		type.set ("wav/61.data", AssetType.BINARY);
-		
-		className.set ("wav/62.data", __ASSET__wav_62_data);
-		type.set ("wav/62.data", AssetType.BINARY);
-		
-		className.set ("wav/63.data", __ASSET__wav_63_data);
-		type.set ("wav/63.data", AssetType.BINARY);
-		
-		className.set ("wav/64.data", __ASSET__wav_64_data);
-		type.set ("wav/64.data", AssetType.BINARY);
-		
-		className.set ("wav/65.data", __ASSET__wav_65_data);
-		type.set ("wav/65.data", AssetType.BINARY);
-		
-		className.set ("wav/66.data", __ASSET__wav_66_data);
-		type.set ("wav/66.data", AssetType.BINARY);
-		
-		className.set ("wav/67.data", __ASSET__wav_67_data);
-		type.set ("wav/67.data", AssetType.BINARY);
-		
-		className.set ("wav/68.data", __ASSET__wav_68_data);
-		type.set ("wav/68.data", AssetType.BINARY);
-		
-		className.set ("wav/69.data", __ASSET__wav_69_data);
-		type.set ("wav/69.data", AssetType.BINARY);
-		
-		className.set ("wav/70.data", __ASSET__wav_70_data);
-		type.set ("wav/70.data", AssetType.BINARY);
-		
-		className.set ("wav/71.data", __ASSET__wav_71_data);
-		type.set ("wav/71.data", AssetType.BINARY);
-		
-		className.set ("wav/72.data", __ASSET__wav_72_data);
-		type.set ("wav/72.data", AssetType.BINARY);
-		
-		className.set ("wav/73.data", __ASSET__wav_73_data);
-		type.set ("wav/73.data", AssetType.BINARY);
-		
-		className.set ("wav/74.data", __ASSET__wav_74_data);
-		type.set ("wav/74.data", AssetType.BINARY);
-		
-		className.set ("wav/75.data", __ASSET__wav_75_data);
-		type.set ("wav/75.data", AssetType.BINARY);
-		
-		className.set ("wav/76.data", __ASSET__wav_76_data);
-		type.set ("wav/76.data", AssetType.BINARY);
-		
-		className.set ("wav/77.data", __ASSET__wav_77_data);
-		type.set ("wav/77.data", AssetType.BINARY);
-		
-		className.set ("wav/78.data", __ASSET__wav_78_data);
-		type.set ("wav/78.data", AssetType.BINARY);
-		
-		className.set ("wav/79.data", __ASSET__wav_79_data);
-		type.set ("wav/79.data", AssetType.BINARY);
-		
-		className.set ("wav/80.data", __ASSET__wav_80_data);
-		type.set ("wav/80.data", AssetType.BINARY);
+		className.set ("wav/4.data", __ASSET__wav_4_data);
+		type.set ("wav/4.data", AssetType.BINARY);
 		
 		className.set ("wav/81.data", __ASSET__wav_81_data);
 		type.set ("wav/81.data", AssetType.BINARY);
-		
-		className.set ("wav/82.data", __ASSET__wav_82_data);
-		type.set ("wav/82.data", AssetType.BINARY);
-		
-		className.set ("wav/83.data", __ASSET__wav_83_data);
-		type.set ("wav/83.data", AssetType.BINARY);
-		
-		className.set ("wav/84.data", __ASSET__wav_84_data);
-		type.set ("wav/84.data", AssetType.BINARY);
-		
-		className.set ("wav/85.data", __ASSET__wav_85_data);
-		type.set ("wav/85.data", AssetType.BINARY);
-		
-		className.set ("wav/86.data", __ASSET__wav_86_data);
-		type.set ("wav/86.data", AssetType.BINARY);
-		
-		className.set ("wav/87.data", __ASSET__wav_87_data);
-		type.set ("wav/87.data", AssetType.BINARY);
-		
-		className.set ("wav/88.data", __ASSET__wav_88_data);
-		type.set ("wav/88.data", AssetType.BINARY);
-		
-		className.set ("wav/89.data", __ASSET__wav_89_data);
-		type.set ("wav/89.data", AssetType.BINARY);
-		
-		className.set ("wav/90.data", __ASSET__wav_90_data);
-		type.set ("wav/90.data", AssetType.BINARY);
-		
-		className.set ("wav/91.data", __ASSET__wav_91_data);
-		type.set ("wav/91.data", AssetType.BINARY);
-		
-		className.set ("wav/92.data", __ASSET__wav_92_data);
-		type.set ("wav/92.data", AssetType.BINARY);
-		
-		className.set ("wav/93.data", __ASSET__wav_93_data);
-		type.set ("wav/93.data", AssetType.BINARY);
-		
-		className.set ("wav/94.data", __ASSET__wav_94_data);
-		type.set ("wav/94.data", AssetType.BINARY);
-		
-		className.set ("wav/95.data", __ASSET__wav_95_data);
-		type.set ("wav/95.data", AssetType.BINARY);
-		
-		className.set ("wav/96.data", __ASSET__wav_96_data);
-		type.set ("wav/96.data", AssetType.BINARY);
 		
 		className.set ("assets/controllers.xml", __ASSET__assets_controllers_xml);
 		type.set ("assets/controllers.xml", AssetType.TEXT);
@@ -1325,155 +796,20 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("assets/wav/0.data", __ASSET__assets_wav_0_data);
 		type.set ("assets/wav/0.data", AssetType.BINARY);
 		
-		className.set ("assets/wav/0.wav", __ASSET__assets_wav_0_wav);
-		type.set ("assets/wav/0.wav", AssetType.SOUND);
+		className.set ("assets/wav/1.data", __ASSET__assets_wav_1_data);
+		type.set ("assets/wav/1.data", AssetType.BINARY);
 		
-		className.set ("assets/wav/48.data", __ASSET__assets_wav_48_data);
-		type.set ("assets/wav/48.data", AssetType.BINARY);
+		className.set ("assets/wav/2.data", __ASSET__assets_wav_2_data);
+		type.set ("assets/wav/2.data", AssetType.BINARY);
 		
-		className.set ("assets/wav/49.data", __ASSET__assets_wav_49_data);
-		type.set ("assets/wav/49.data", AssetType.BINARY);
+		className.set ("assets/wav/3.data", __ASSET__assets_wav_3_data);
+		type.set ("assets/wav/3.data", AssetType.BINARY);
 		
-		className.set ("assets/wav/50.data", __ASSET__assets_wav_50_data);
-		type.set ("assets/wav/50.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/51.data", __ASSET__assets_wav_51_data);
-		type.set ("assets/wav/51.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/52.data", __ASSET__assets_wav_52_data);
-		type.set ("assets/wav/52.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/53.data", __ASSET__assets_wav_53_data);
-		type.set ("assets/wav/53.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/54.data", __ASSET__assets_wav_54_data);
-		type.set ("assets/wav/54.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/55.data", __ASSET__assets_wav_55_data);
-		type.set ("assets/wav/55.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/56.data", __ASSET__assets_wav_56_data);
-		type.set ("assets/wav/56.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/57.data", __ASSET__assets_wav_57_data);
-		type.set ("assets/wav/57.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/58.data", __ASSET__assets_wav_58_data);
-		type.set ("assets/wav/58.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/59.data", __ASSET__assets_wav_59_data);
-		type.set ("assets/wav/59.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/60.data", __ASSET__assets_wav_60_data);
-		type.set ("assets/wav/60.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/61.data", __ASSET__assets_wav_61_data);
-		type.set ("assets/wav/61.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/62.data", __ASSET__assets_wav_62_data);
-		type.set ("assets/wav/62.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/63.data", __ASSET__assets_wav_63_data);
-		type.set ("assets/wav/63.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/64.data", __ASSET__assets_wav_64_data);
-		type.set ("assets/wav/64.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/65.data", __ASSET__assets_wav_65_data);
-		type.set ("assets/wav/65.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/66.data", __ASSET__assets_wav_66_data);
-		type.set ("assets/wav/66.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/67.data", __ASSET__assets_wav_67_data);
-		type.set ("assets/wav/67.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/68.data", __ASSET__assets_wav_68_data);
-		type.set ("assets/wav/68.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/69.data", __ASSET__assets_wav_69_data);
-		type.set ("assets/wav/69.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/70.data", __ASSET__assets_wav_70_data);
-		type.set ("assets/wav/70.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/71.data", __ASSET__assets_wav_71_data);
-		type.set ("assets/wav/71.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/72.data", __ASSET__assets_wav_72_data);
-		type.set ("assets/wav/72.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/73.data", __ASSET__assets_wav_73_data);
-		type.set ("assets/wav/73.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/74.data", __ASSET__assets_wav_74_data);
-		type.set ("assets/wav/74.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/75.data", __ASSET__assets_wav_75_data);
-		type.set ("assets/wav/75.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/76.data", __ASSET__assets_wav_76_data);
-		type.set ("assets/wav/76.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/77.data", __ASSET__assets_wav_77_data);
-		type.set ("assets/wav/77.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/78.data", __ASSET__assets_wav_78_data);
-		type.set ("assets/wav/78.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/79.data", __ASSET__assets_wav_79_data);
-		type.set ("assets/wav/79.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/80.data", __ASSET__assets_wav_80_data);
-		type.set ("assets/wav/80.data", AssetType.BINARY);
+		className.set ("assets/wav/4.data", __ASSET__assets_wav_4_data);
+		type.set ("assets/wav/4.data", AssetType.BINARY);
 		
 		className.set ("assets/wav/81.data", __ASSET__assets_wav_81_data);
 		type.set ("assets/wav/81.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/82.data", __ASSET__assets_wav_82_data);
-		type.set ("assets/wav/82.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/83.data", __ASSET__assets_wav_83_data);
-		type.set ("assets/wav/83.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/84.data", __ASSET__assets_wav_84_data);
-		type.set ("assets/wav/84.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/85.data", __ASSET__assets_wav_85_data);
-		type.set ("assets/wav/85.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/86.data", __ASSET__assets_wav_86_data);
-		type.set ("assets/wav/86.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/87.data", __ASSET__assets_wav_87_data);
-		type.set ("assets/wav/87.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/88.data", __ASSET__assets_wav_88_data);
-		type.set ("assets/wav/88.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/89.data", __ASSET__assets_wav_89_data);
-		type.set ("assets/wav/89.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/90.data", __ASSET__assets_wav_90_data);
-		type.set ("assets/wav/90.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/91.data", __ASSET__assets_wav_91_data);
-		type.set ("assets/wav/91.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/92.data", __ASSET__assets_wav_92_data);
-		type.set ("assets/wav/92.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/93.data", __ASSET__assets_wav_93_data);
-		type.set ("assets/wav/93.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/94.data", __ASSET__assets_wav_94_data);
-		type.set ("assets/wav/94.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/95.data", __ASSET__assets_wav_95_data);
-		type.set ("assets/wav/95.data", AssetType.BINARY);
-		
-		className.set ("assets/wav/96.data", __ASSET__assets_wav_96_data);
-		type.set ("assets/wav/96.data", AssetType.BINARY);
 		
 		
 		if (useManifest) {
@@ -2113,7 +1449,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep class __ASSET__styles_gradient_gradient_css extends openfl.utils.ByteArray { }
 @:keep class __ASSET__styles_gradient_gradient_min_css extends openfl.utils.ByteArray { }
 @:keep class __ASSET__styles_gradient_gradient_mobile_css extends openfl.utils.ByteArray { }
-@:keep class __ASSET__styles_gradient_gradient_mobile_min_css extends openfl.utils.ByteArray { }
 @:keep class __ASSET__styles_gradient_gripper_horizontal_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__styles_gradient_gripper_horizontal_disabled_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__styles_gradient_gripper_vertical_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -2155,61 +1490,24 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep class __ASSET__styles_windows_vprogress_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__styles_windows_vscroll_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__styles_windows_windows_css extends openfl.utils.ByteArray { }
+@:keep class __ASSET__img_rtfview_edit_alignment_center_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep class __ASSET__img_rtfview_edit_alignment_justify_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep class __ASSET__img_rtfview_edit_alignment_left_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep class __ASSET__img_rtfview_edit_alignment_right_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep class __ASSET__img_rtfview_edit_bold_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep class __ASSET__img_rtfview_edit_italic_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep class __ASSET__img_rtfview_edit_list_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep class __ASSET__img_rtfview_edit_underline_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__img_slinky_small_jpg extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__img_slinky_tiny_jpg extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__fonts_oxygen_bold_ttf extends openfl.text.Font { }
 @:keep class __ASSET__fonts_oxygen_ttf extends openfl.text.Font { }
 @:keep class __ASSET__wav_0_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_0_wav extends openfl.media.Sound { }
-@:keep class __ASSET__wav_48_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_49_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_50_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_51_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_52_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_53_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_54_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_55_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_56_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_57_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_58_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_59_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_60_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_61_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_62_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_63_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_64_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_65_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_66_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_67_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_68_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_69_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_70_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_71_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_72_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_73_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_74_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_75_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_76_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_77_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_78_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_79_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_80_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_1_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_2_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_3_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_4_data extends openfl.utils.ByteArray { }
 @:keep class __ASSET__wav_81_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_82_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_83_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_84_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_85_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_86_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_87_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_88_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_89_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_90_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_91_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_92_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_93_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_94_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_95_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_96_data extends openfl.utils.ByteArray { }
 @:keep class __ASSET__assets_controllers_xml extends openfl.utils.ByteArray { }
 @:keep class __ASSET__assets_openfl_svg extends openfl.utils.ByteArray { }
 @:keep class __ASSET__assets_scorematerial_xml extends openfl.utils.ByteArray { }
@@ -2218,59 +1516,21 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep class __ASSET__assets_scoresprite_xml extends openfl.utils.ByteArray { }
 @:keep class __ASSET__assets_scorexml_xml extends openfl.utils.ByteArray { }
 @:keep class __ASSET__assets_wav_0_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_0_wav extends openfl.media.Sound { }
-@:keep class __ASSET__assets_wav_48_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_49_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_50_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_51_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_52_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_53_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_54_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_55_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_56_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_57_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_58_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_59_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_60_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_61_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_62_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_63_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_64_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_65_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_66_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_67_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_68_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_69_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_70_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_71_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_72_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_73_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_74_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_75_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_76_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_77_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_78_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_79_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_80_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__assets_wav_1_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__assets_wav_2_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__assets_wav_3_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__assets_wav_4_data extends openfl.utils.ByteArray { }
 @:keep class __ASSET__assets_wav_81_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_82_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_83_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_84_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_85_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_86_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_87_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_88_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_89_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_90_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_91_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_92_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_93_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_94_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_95_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__assets_wav_96_data extends openfl.utils.ByteArray { }
 
 
 #elseif html5
+
+
+
+
+
+
+
 
 
 
@@ -2361,218 +1621,90 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #elseif (windows || mac || linux)
 
 
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/default/circle.png") class __ASSET__styles_default_circle_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/default/collapse.png") class __ASSET__styles_default_collapse_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/default/cross.png") class __ASSET__styles_default_cross_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/default/expand.png") class __ASSET__styles_default_expand_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/default/up_down.png") class __ASSET__styles_default_up_down_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_down.png") class __ASSET__styles_gradient_arrow_down_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_down_dark.png") class __ASSET__styles_gradient_arrow_down_dark_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_down_disabled.png") class __ASSET__styles_gradient_arrow_down_disabled_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_left.png") class __ASSET__styles_gradient_arrow_left_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_left_disabled.png") class __ASSET__styles_gradient_arrow_left_disabled_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_right.png") class __ASSET__styles_gradient_arrow_right_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_right2.png") class __ASSET__styles_gradient_arrow_right2_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_right_dark.png") class __ASSET__styles_gradient_arrow_right_dark_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_right_disabled.png") class __ASSET__styles_gradient_arrow_right_disabled_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_up.png") class __ASSET__styles_gradient_arrow_up_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/arrow_up_disabled.png") class __ASSET__styles_gradient_arrow_up_disabled_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/circle_dark.png") class __ASSET__styles_gradient_circle_dark_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/cross_dark.png") class __ASSET__styles_gradient_cross_dark_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/cross_dark_disabled.png") class __ASSET__styles_gradient_cross_dark_disabled_png extends flash.display.BitmapData {}
-@:file("F:/_lib/haxeui/1,4,14/styles/gradient/gradient.css") class __ASSET__styles_gradient_gradient_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/gradient/gradient.min.css") class __ASSET__styles_gradient_gradient_min_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/gradient/gradient_mobile.css") class __ASSET__styles_gradient_gradient_mobile_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/gradient/gradient_mobile.min.css") class __ASSET__styles_gradient_gradient_mobile_min_css extends flash.utils.ByteArray {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/gripper_horizontal.png") class __ASSET__styles_gradient_gripper_horizontal_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/gripper_horizontal_disabled.png") class __ASSET__styles_gradient_gripper_horizontal_disabled_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/gripper_vertical.png") class __ASSET__styles_gradient_gripper_vertical_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/gradient/gripper_vertical_disabled.png") class __ASSET__styles_gradient_gripper_vertical_disabled_png extends flash.display.BitmapData {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/accordion.css") class __ASSET__styles_windows_accordion_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/accordion.min.css") class __ASSET__styles_windows_accordion_min_css extends flash.utils.ByteArray {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/button.png") class __ASSET__styles_windows_button_png extends flash.display.BitmapData {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/buttons.css") class __ASSET__styles_windows_buttons_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/buttons.min.css") class __ASSET__styles_windows_buttons_min_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/calendar.css") class __ASSET__styles_windows_calendar_css extends flash.utils.ByteArray {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/checkbox.png") class __ASSET__styles_windows_checkbox_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/container.png") class __ASSET__styles_windows_container_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/down_arrow.png") class __ASSET__styles_windows_glyphs_down_arrow_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/hscroll_thumb_gripper_down.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_down_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/hscroll_thumb_gripper_over.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_over_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/hscroll_thumb_gripper_up.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_up_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/left_arrow.png") class __ASSET__styles_windows_glyphs_left_arrow_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/right_arrow.png") class __ASSET__styles_windows_glyphs_right_arrow_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/up_arrow.png") class __ASSET__styles_windows_glyphs_up_arrow_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/vscroll_thumb_gripper_down.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_down_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/vscroll_thumb_gripper_over.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_over_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/glyphs/vscroll_thumb_gripper_up.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_up_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/hprogress.png") class __ASSET__styles_windows_hprogress_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/hscroll.png") class __ASSET__styles_windows_hscroll_png extends flash.display.BitmapData {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/listview.css") class __ASSET__styles_windows_listview_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/listview.min.css") class __ASSET__styles_windows_listview_min_css extends flash.utils.ByteArray {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/listview.png") class __ASSET__styles_windows_listview_png extends flash.display.BitmapData {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/menus.css") class __ASSET__styles_windows_menus_css extends flash.utils.ByteArray {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/optionbox.png") class __ASSET__styles_windows_optionbox_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/popup.png") class __ASSET__styles_windows_popup_png extends flash.display.BitmapData {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/popups.css") class __ASSET__styles_windows_popups_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/rtf.css") class __ASSET__styles_windows_rtf_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/scrolls.css") class __ASSET__styles_windows_scrolls_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/scrolls.min.css") class __ASSET__styles_windows_scrolls_min_css extends flash.utils.ByteArray {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/sliders.css") class __ASSET__styles_windows_sliders_css extends flash.utils.ByteArray {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/tab.png") class __ASSET__styles_windows_tab_png extends flash.display.BitmapData {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/tabs.css") class __ASSET__styles_windows_tabs_css extends flash.utils.ByteArray {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/textinput.png") class __ASSET__styles_windows_textinput_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/vprogress.png") class __ASSET__styles_windows_vprogress_png extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/styles/windows/vscroll.png") class __ASSET__styles_windows_vscroll_png extends flash.display.BitmapData {}
-@:file("F:/_lib/haxeui/1,4,14/styles/windows/windows.css") class __ASSET__styles_windows_windows_css extends flash.utils.ByteArray {}
-@:bitmap("F:/_lib/haxeui/1,4,14/img/slinky_small.jpg") class __ASSET__img_slinky_small_jpg extends flash.display.BitmapData {}
-@:bitmap("F:/_lib/haxeui/1,4,14/img/slinky_tiny.jpg") class __ASSET__img_slinky_tiny_jpg extends flash.display.BitmapData {}
-@:font("F:/_lib/haxeui/1,4,14/fonts/Oxygen-Bold.ttf") class __ASSET__fonts_oxygen_bold_ttf extends flash.text.Font {}
-@:font("F:/_lib/haxeui/1,4,14/fonts/Oxygen.ttf") class __ASSET__fonts_oxygen_ttf extends flash.text.Font {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/circle.png") class __ASSET__styles_default_circle_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/collapse.png") class __ASSET__styles_default_collapse_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/cross.png") class __ASSET__styles_default_cross_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/expand.png") class __ASSET__styles_default_expand_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/up_down.png") class __ASSET__styles_default_up_down_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_down.png") class __ASSET__styles_gradient_arrow_down_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_down_dark.png") class __ASSET__styles_gradient_arrow_down_dark_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_down_disabled.png") class __ASSET__styles_gradient_arrow_down_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_left.png") class __ASSET__styles_gradient_arrow_left_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_left_disabled.png") class __ASSET__styles_gradient_arrow_left_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_right.png") class __ASSET__styles_gradient_arrow_right_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_right2.png") class __ASSET__styles_gradient_arrow_right2_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_right_dark.png") class __ASSET__styles_gradient_arrow_right_dark_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_right_disabled.png") class __ASSET__styles_gradient_arrow_right_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_up.png") class __ASSET__styles_gradient_arrow_up_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_up_disabled.png") class __ASSET__styles_gradient_arrow_up_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/circle_dark.png") class __ASSET__styles_gradient_circle_dark_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/cross_dark.png") class __ASSET__styles_gradient_cross_dark_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/cross_dark_disabled.png") class __ASSET__styles_gradient_cross_dark_disabled_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/gradient/gradient.css") class __ASSET__styles_gradient_gradient_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/gradient/gradient.min.css") class __ASSET__styles_gradient_gradient_min_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/gradient/gradient_mobile.css") class __ASSET__styles_gradient_gradient_mobile_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/gripper_horizontal.png") class __ASSET__styles_gradient_gripper_horizontal_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/gripper_horizontal_disabled.png") class __ASSET__styles_gradient_gripper_horizontal_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/gripper_vertical.png") class __ASSET__styles_gradient_gripper_vertical_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/gripper_vertical_disabled.png") class __ASSET__styles_gradient_gripper_vertical_disabled_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/accordion.css") class __ASSET__styles_windows_accordion_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/accordion.min.css") class __ASSET__styles_windows_accordion_min_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/button.png") class __ASSET__styles_windows_button_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/buttons.css") class __ASSET__styles_windows_buttons_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/buttons.min.css") class __ASSET__styles_windows_buttons_min_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/calendar.css") class __ASSET__styles_windows_calendar_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/checkbox.png") class __ASSET__styles_windows_checkbox_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/container.png") class __ASSET__styles_windows_container_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/down_arrow.png") class __ASSET__styles_windows_glyphs_down_arrow_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/hscroll_thumb_gripper_down.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_down_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/hscroll_thumb_gripper_over.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_over_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/hscroll_thumb_gripper_up.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_up_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/left_arrow.png") class __ASSET__styles_windows_glyphs_left_arrow_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/right_arrow.png") class __ASSET__styles_windows_glyphs_right_arrow_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/up_arrow.png") class __ASSET__styles_windows_glyphs_up_arrow_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/vscroll_thumb_gripper_down.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_down_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/vscroll_thumb_gripper_over.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_over_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/vscroll_thumb_gripper_up.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_up_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/hprogress.png") class __ASSET__styles_windows_hprogress_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/hscroll.png") class __ASSET__styles_windows_hscroll_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/listview.css") class __ASSET__styles_windows_listview_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/listview.min.css") class __ASSET__styles_windows_listview_min_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/listview.png") class __ASSET__styles_windows_listview_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/menus.css") class __ASSET__styles_windows_menus_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/optionbox.png") class __ASSET__styles_windows_optionbox_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/popup.png") class __ASSET__styles_windows_popup_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/popups.css") class __ASSET__styles_windows_popups_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/rtf.css") class __ASSET__styles_windows_rtf_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/scrolls.css") class __ASSET__styles_windows_scrolls_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/scrolls.min.css") class __ASSET__styles_windows_scrolls_min_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/sliders.css") class __ASSET__styles_windows_sliders_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/tab.png") class __ASSET__styles_windows_tab_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/tabs.css") class __ASSET__styles_windows_tabs_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/textinput.png") class __ASSET__styles_windows_textinput_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/vprogress.png") class __ASSET__styles_windows_vprogress_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/vscroll.png") class __ASSET__styles_windows_vscroll_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/windows.css") class __ASSET__styles_windows_windows_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-alignment-center.png") class __ASSET__img_rtfview_edit_alignment_center_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-alignment-justify.png") class __ASSET__img_rtfview_edit_alignment_justify_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-alignment-left.png") class __ASSET__img_rtfview_edit_alignment_left_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-alignment-right.png") class __ASSET__img_rtfview_edit_alignment_right_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-bold.png") class __ASSET__img_rtfview_edit_bold_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-italic.png") class __ASSET__img_rtfview_edit_italic_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-list.png") class __ASSET__img_rtfview_edit_list_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-underline.png") class __ASSET__img_rtfview_edit_underline_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/slinky_small.jpg") class __ASSET__img_slinky_small_jpg extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,3,4/img/slinky_tiny.jpg") class __ASSET__img_slinky_tiny_jpg extends flash.display.BitmapData {}
+@:font("f:/_haxelib/haxeui/1,3,4/fonts/Oxygen-Bold.ttf") class __ASSET__fonts_oxygen_bold_ttf extends flash.text.Font {}
+@:font("f:/_haxelib/haxeui/1,3,4/fonts/Oxygen.ttf") class __ASSET__fonts_oxygen_ttf extends flash.text.Font {}
 @:file("assets/wav/0.data") class __ASSET__wav_0_data extends flash.utils.ByteArray {}
-@:sound("assets/wav/0.wav") class __ASSET__wav_0_wav extends flash.media.Sound {}
-@:file("assets/wav/48.data") class __ASSET__wav_48_data extends flash.utils.ByteArray {}
-@:file("assets/wav/49.data") class __ASSET__wav_49_data extends flash.utils.ByteArray {}
-@:file("assets/wav/50.data") class __ASSET__wav_50_data extends flash.utils.ByteArray {}
-@:file("assets/wav/51.data") class __ASSET__wav_51_data extends flash.utils.ByteArray {}
-@:file("assets/wav/52.data") class __ASSET__wav_52_data extends flash.utils.ByteArray {}
-@:file("assets/wav/53.data") class __ASSET__wav_53_data extends flash.utils.ByteArray {}
-@:file("assets/wav/54.data") class __ASSET__wav_54_data extends flash.utils.ByteArray {}
-@:file("assets/wav/55.data") class __ASSET__wav_55_data extends flash.utils.ByteArray {}
-@:file("assets/wav/56.data") class __ASSET__wav_56_data extends flash.utils.ByteArray {}
-@:file("assets/wav/57.data") class __ASSET__wav_57_data extends flash.utils.ByteArray {}
-@:file("assets/wav/58.data") class __ASSET__wav_58_data extends flash.utils.ByteArray {}
-@:file("assets/wav/59.data") class __ASSET__wav_59_data extends flash.utils.ByteArray {}
-@:file("assets/wav/60.data") class __ASSET__wav_60_data extends flash.utils.ByteArray {}
-@:file("assets/wav/61.data") class __ASSET__wav_61_data extends flash.utils.ByteArray {}
-@:file("assets/wav/62.data") class __ASSET__wav_62_data extends flash.utils.ByteArray {}
-@:file("assets/wav/63.data") class __ASSET__wav_63_data extends flash.utils.ByteArray {}
-@:file("assets/wav/64.data") class __ASSET__wav_64_data extends flash.utils.ByteArray {}
-@:file("assets/wav/65.data") class __ASSET__wav_65_data extends flash.utils.ByteArray {}
-@:file("assets/wav/66.data") class __ASSET__wav_66_data extends flash.utils.ByteArray {}
-@:file("assets/wav/67.data") class __ASSET__wav_67_data extends flash.utils.ByteArray {}
-@:file("assets/wav/68.data") class __ASSET__wav_68_data extends flash.utils.ByteArray {}
-@:file("assets/wav/69.data") class __ASSET__wav_69_data extends flash.utils.ByteArray {}
-@:file("assets/wav/70.data") class __ASSET__wav_70_data extends flash.utils.ByteArray {}
-@:file("assets/wav/71.data") class __ASSET__wav_71_data extends flash.utils.ByteArray {}
-@:file("assets/wav/72.data") class __ASSET__wav_72_data extends flash.utils.ByteArray {}
-@:file("assets/wav/73.data") class __ASSET__wav_73_data extends flash.utils.ByteArray {}
-@:file("assets/wav/74.data") class __ASSET__wav_74_data extends flash.utils.ByteArray {}
-@:file("assets/wav/75.data") class __ASSET__wav_75_data extends flash.utils.ByteArray {}
-@:file("assets/wav/76.data") class __ASSET__wav_76_data extends flash.utils.ByteArray {}
-@:file("assets/wav/77.data") class __ASSET__wav_77_data extends flash.utils.ByteArray {}
-@:file("assets/wav/78.data") class __ASSET__wav_78_data extends flash.utils.ByteArray {}
-@:file("assets/wav/79.data") class __ASSET__wav_79_data extends flash.utils.ByteArray {}
-@:file("assets/wav/80.data") class __ASSET__wav_80_data extends flash.utils.ByteArray {}
+@:file("assets/wav/1.data") class __ASSET__wav_1_data extends flash.utils.ByteArray {}
+@:file("assets/wav/2.data") class __ASSET__wav_2_data extends flash.utils.ByteArray {}
+@:file("assets/wav/3.data") class __ASSET__wav_3_data extends flash.utils.ByteArray {}
+@:file("assets/wav/4.data") class __ASSET__wav_4_data extends flash.utils.ByteArray {}
 @:file("assets/wav/81.data") class __ASSET__wav_81_data extends flash.utils.ByteArray {}
-@:file("assets/wav/82.data") class __ASSET__wav_82_data extends flash.utils.ByteArray {}
-@:file("assets/wav/83.data") class __ASSET__wav_83_data extends flash.utils.ByteArray {}
-@:file("assets/wav/84.data") class __ASSET__wav_84_data extends flash.utils.ByteArray {}
-@:file("assets/wav/85.data") class __ASSET__wav_85_data extends flash.utils.ByteArray {}
-@:file("assets/wav/86.data") class __ASSET__wav_86_data extends flash.utils.ByteArray {}
-@:file("assets/wav/87.data") class __ASSET__wav_87_data extends flash.utils.ByteArray {}
-@:file("assets/wav/88.data") class __ASSET__wav_88_data extends flash.utils.ByteArray {}
-@:file("assets/wav/89.data") class __ASSET__wav_89_data extends flash.utils.ByteArray {}
-@:file("assets/wav/90.data") class __ASSET__wav_90_data extends flash.utils.ByteArray {}
-@:file("assets/wav/91.data") class __ASSET__wav_91_data extends flash.utils.ByteArray {}
-@:file("assets/wav/92.data") class __ASSET__wav_92_data extends flash.utils.ByteArray {}
-@:file("assets/wav/93.data") class __ASSET__wav_93_data extends flash.utils.ByteArray {}
-@:file("assets/wav/94.data") class __ASSET__wav_94_data extends flash.utils.ByteArray {}
-@:file("assets/wav/95.data") class __ASSET__wav_95_data extends flash.utils.ByteArray {}
-@:file("assets/wav/96.data") class __ASSET__wav_96_data extends flash.utils.ByteArray {}
 @:file("assets/controllers.xml") class __ASSET__assets_controllers_xml extends flash.utils.ByteArray {}
 @:file("assets/openfl.svg") class __ASSET__assets_openfl_svg extends flash.utils.ByteArray {}
 @:file("assets/scorematerial.xml") class __ASSET__assets_scorematerial_xml extends flash.utils.ByteArray {}
@@ -2581,56 +1713,11 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:file("assets/scoresprite.xml") class __ASSET__assets_scoresprite_xml extends flash.utils.ByteArray {}
 @:file("assets/scorexml.xml") class __ASSET__assets_scorexml_xml extends flash.utils.ByteArray {}
 @:file("assets/wav/0.data") class __ASSET__assets_wav_0_data extends flash.utils.ByteArray {}
-@:sound("assets/wav/0.wav") class __ASSET__assets_wav_0_wav extends flash.media.Sound {}
-@:file("assets/wav/48.data") class __ASSET__assets_wav_48_data extends flash.utils.ByteArray {}
-@:file("assets/wav/49.data") class __ASSET__assets_wav_49_data extends flash.utils.ByteArray {}
-@:file("assets/wav/50.data") class __ASSET__assets_wav_50_data extends flash.utils.ByteArray {}
-@:file("assets/wav/51.data") class __ASSET__assets_wav_51_data extends flash.utils.ByteArray {}
-@:file("assets/wav/52.data") class __ASSET__assets_wav_52_data extends flash.utils.ByteArray {}
-@:file("assets/wav/53.data") class __ASSET__assets_wav_53_data extends flash.utils.ByteArray {}
-@:file("assets/wav/54.data") class __ASSET__assets_wav_54_data extends flash.utils.ByteArray {}
-@:file("assets/wav/55.data") class __ASSET__assets_wav_55_data extends flash.utils.ByteArray {}
-@:file("assets/wav/56.data") class __ASSET__assets_wav_56_data extends flash.utils.ByteArray {}
-@:file("assets/wav/57.data") class __ASSET__assets_wav_57_data extends flash.utils.ByteArray {}
-@:file("assets/wav/58.data") class __ASSET__assets_wav_58_data extends flash.utils.ByteArray {}
-@:file("assets/wav/59.data") class __ASSET__assets_wav_59_data extends flash.utils.ByteArray {}
-@:file("assets/wav/60.data") class __ASSET__assets_wav_60_data extends flash.utils.ByteArray {}
-@:file("assets/wav/61.data") class __ASSET__assets_wav_61_data extends flash.utils.ByteArray {}
-@:file("assets/wav/62.data") class __ASSET__assets_wav_62_data extends flash.utils.ByteArray {}
-@:file("assets/wav/63.data") class __ASSET__assets_wav_63_data extends flash.utils.ByteArray {}
-@:file("assets/wav/64.data") class __ASSET__assets_wav_64_data extends flash.utils.ByteArray {}
-@:file("assets/wav/65.data") class __ASSET__assets_wav_65_data extends flash.utils.ByteArray {}
-@:file("assets/wav/66.data") class __ASSET__assets_wav_66_data extends flash.utils.ByteArray {}
-@:file("assets/wav/67.data") class __ASSET__assets_wav_67_data extends flash.utils.ByteArray {}
-@:file("assets/wav/68.data") class __ASSET__assets_wav_68_data extends flash.utils.ByteArray {}
-@:file("assets/wav/69.data") class __ASSET__assets_wav_69_data extends flash.utils.ByteArray {}
-@:file("assets/wav/70.data") class __ASSET__assets_wav_70_data extends flash.utils.ByteArray {}
-@:file("assets/wav/71.data") class __ASSET__assets_wav_71_data extends flash.utils.ByteArray {}
-@:file("assets/wav/72.data") class __ASSET__assets_wav_72_data extends flash.utils.ByteArray {}
-@:file("assets/wav/73.data") class __ASSET__assets_wav_73_data extends flash.utils.ByteArray {}
-@:file("assets/wav/74.data") class __ASSET__assets_wav_74_data extends flash.utils.ByteArray {}
-@:file("assets/wav/75.data") class __ASSET__assets_wav_75_data extends flash.utils.ByteArray {}
-@:file("assets/wav/76.data") class __ASSET__assets_wav_76_data extends flash.utils.ByteArray {}
-@:file("assets/wav/77.data") class __ASSET__assets_wav_77_data extends flash.utils.ByteArray {}
-@:file("assets/wav/78.data") class __ASSET__assets_wav_78_data extends flash.utils.ByteArray {}
-@:file("assets/wav/79.data") class __ASSET__assets_wav_79_data extends flash.utils.ByteArray {}
-@:file("assets/wav/80.data") class __ASSET__assets_wav_80_data extends flash.utils.ByteArray {}
+@:file("assets/wav/1.data") class __ASSET__assets_wav_1_data extends flash.utils.ByteArray {}
+@:file("assets/wav/2.data") class __ASSET__assets_wav_2_data extends flash.utils.ByteArray {}
+@:file("assets/wav/3.data") class __ASSET__assets_wav_3_data extends flash.utils.ByteArray {}
+@:file("assets/wav/4.data") class __ASSET__assets_wav_4_data extends flash.utils.ByteArray {}
 @:file("assets/wav/81.data") class __ASSET__assets_wav_81_data extends flash.utils.ByteArray {}
-@:file("assets/wav/82.data") class __ASSET__assets_wav_82_data extends flash.utils.ByteArray {}
-@:file("assets/wav/83.data") class __ASSET__assets_wav_83_data extends flash.utils.ByteArray {}
-@:file("assets/wav/84.data") class __ASSET__assets_wav_84_data extends flash.utils.ByteArray {}
-@:file("assets/wav/85.data") class __ASSET__assets_wav_85_data extends flash.utils.ByteArray {}
-@:file("assets/wav/86.data") class __ASSET__assets_wav_86_data extends flash.utils.ByteArray {}
-@:file("assets/wav/87.data") class __ASSET__assets_wav_87_data extends flash.utils.ByteArray {}
-@:file("assets/wav/88.data") class __ASSET__assets_wav_88_data extends flash.utils.ByteArray {}
-@:file("assets/wav/89.data") class __ASSET__assets_wav_89_data extends flash.utils.ByteArray {}
-@:file("assets/wav/90.data") class __ASSET__assets_wav_90_data extends flash.utils.ByteArray {}
-@:file("assets/wav/91.data") class __ASSET__assets_wav_91_data extends flash.utils.ByteArray {}
-@:file("assets/wav/92.data") class __ASSET__assets_wav_92_data extends flash.utils.ByteArray {}
-@:file("assets/wav/93.data") class __ASSET__assets_wav_93_data extends flash.utils.ByteArray {}
-@:file("assets/wav/94.data") class __ASSET__assets_wav_94_data extends flash.utils.ByteArray {}
-@:file("assets/wav/95.data") class __ASSET__assets_wav_95_data extends flash.utils.ByteArray {}
-@:file("assets/wav/96.data") class __ASSET__assets_wav_96_data extends flash.utils.ByteArray {}
 
 
 #end

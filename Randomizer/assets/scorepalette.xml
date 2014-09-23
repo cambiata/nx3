@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <vbox width="100%" padding="0">
-	<text id="txtInfo" text="Instruktioner..."></text>
-	<vbox width="100" height="240" id="score" />
+	<text id="txtInfo" text="..."></text>
+	<vbox width="100" height="220" id="score" />
 	<hbox >
-		<button id="btnPlayFacit" text="Spela exempel" />
+		<button id="btnPlayFacit" text="Spela övningsexempel" />
 		<button id="btnPlayResult" text="Spela din lösning" />
+
+		
+		
 		<button id="btnCompare" text="Kontrollera din lösning" />
 		<text id="txtResult" text="..." />
 	</hbox>
-	<vbox width="100" height="250"  />
+	<vbox width="100" height="260"  />
 	<hbox>
-		<button id="btnRandomize" text="Nytt exempel" />
-		<button id="btnClear" text="Rensa" />
-		<button id="btnRemoveLast" text="Ta bort sista" />
+		<button id="btnClear" text="Rensa lösning" />
+		<button id="btnRemoveLast" text="Ta bort sista i lösning" />		
+		
+		<button id="btnRandomize" text="Skapa nytt övningsexempel" />
 	</hbox>	
 	
 </vbox>

@@ -20,6 +20,9 @@ class NScore
 		for (bar in nbars) bar.nscore = this;
 		this.configuration = { };
 		this.configuration.test = 123;
+		this.configuration.rtempo = 80;
+		this.configuration.rlength = 3;		
+		this.configuration.rcountin = 2;		
 	}
 	
 	public function getNBar(idx:Int):NBar return (idx < 0 || idx > this.nbars.length) ? null : this.nbars[idx];

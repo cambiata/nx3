@@ -1,5 +1,9 @@
 package nx3.audio;
+import cx.ByteArrayTools;
+import format.wav.Reader;
 import haxe.io.Bytes;
+import haxe.io.BytesInput;
+import haxe.macro.Format;
 import nx3.Constants;
 import openfl.Assets;
 import openfl.utils.ByteArray;
@@ -23,7 +27,6 @@ class WavConcatenator
 	public function getWav(notes:Array<Tuple2<Int, Int>>, bpm:Float = 60):ByteArray
 	{
 		this.notesToMap(notes);
-		
 		var result:ByteArray = new ByteArray();
 		
 		for (note in notes)
@@ -35,19 +38,28 @@ class WavConcatenator
 			
 			var sw = new ByteArray();
 			sw.position = 0;
-			var bytesLenght = Std.int((length / Constants.BASE_NOTE_VALUE) * (60 / bpm) * 100000);
-			bytesLenght -= bytesLenght % 4;	
+			var bytesLenght = Std.int((length / Constants.BASE_NOTE_VALUE) * (60 / bpm) * 88200);
+			trace(bytesLenght);
+			bytesLenght -= bytesLenght % 4;				
 			
-			/*
-			if (w.length < bytesLenght)
+			if (Std.int(w.length) < bytesLenght)
 			{			
-				trace('OOOPS');	
+				trace('OOOPS');
+				var l = bytesLenght - Std.int(w.length) + 1000000;
+				w.position = w.length;
+				for (i in 0...l) w.writeByte(0);
 			}
-			*/
-			w.readBytes(sw, 0, bytesLenght);
-			sw.position = 0;
+						
+			w.readBytes(sw, 0, bytesLenght - 44);
+			trace(sw.length);
+			var r:Reader = new Reader(new BytesInput(ByteArrayTools.toBytes(sw)));
+			var wave = r.read();
+			var wavedata = wave.data;
+			trace(wavedata.length);
 			
-			result.writeBytes(sw);
+			sw.position = 0;
+			//result.writeBytes(sw);
+			result.writeBytes(ByteArrayTools.fromBytes(wavedata));
 			
 			//result.writeBytes(w);
 			//trace(result.length);

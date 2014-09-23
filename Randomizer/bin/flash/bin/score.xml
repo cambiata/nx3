@@ -1,5 +1,5 @@
 <score>
-	<config test="12345" />
+	<config test="12345" rtempo="60" rlength="4" rcountin="2" />
 	<bar time="2/4">
 		<part clef="ClefG"
 		      key="Natural">
