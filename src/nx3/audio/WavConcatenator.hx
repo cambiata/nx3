@@ -59,7 +59,8 @@ class WavConcatenator
 			
 			sw.position = 0;
 			//result.writeBytes(sw);
-			result.writeBytes(ByteArrayTools.fromBytes(wavedata));
+			//result.writeBytes(ByteArrayTools.fromBytes(wavedata));
+			result.writeBytes(sw);
 			
 			//result.writeBytes(w);
 			//trace(result.length);
