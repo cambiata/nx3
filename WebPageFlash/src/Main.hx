@@ -53,7 +53,7 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 		
-		
+		/*
 		var bytes:ByteArray = Assets.getBytes('wav/81.data');
 		trace(bytes.length);		
 		var w = new WavPlayerLoader();
@@ -61,7 +61,7 @@ class Main extends Sprite
 		var wave:WAVE = r.read();
 		var data = wave.data;		
 		w.loadBytes(ByteArrayTools.fromBytes(data), PCMFormat.mono16format(bytes.length));
-
+		*/
 		
 		
 		
@@ -88,8 +88,11 @@ class Main extends Sprite
 			var coords = ncc.getCoordinatesFromTopVoice(score);
 			var wav = conc.getWav(snotes, 60);			
 			//var play = player.getPlayFunction(wav);
-			var play = player.makePlayer(wav, loader);
-			play();	
+			//var play = player.makePlayer(wav, loader);
+			//play();	
+			
+			var w = new WavPlayerLoader();
+			w.loadBytes(wav, PCMFormat.mono16format(wav.length));
 			
 		}		
 		

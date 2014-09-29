@@ -45,6 +45,7 @@ class Main extends Sprite
 		
 		// Assets:
 		// nme.Assets.getBitmapData("img/assetname.jpg");
+		
 		icyDecoder = new ICYDecoder();
 			icyDecoder.addEventListener(ProgressEvent.PROGRESS, function(e:ProgressEvent):Void {
 					trace(icyDecoder.xBuffer.length + ' - ' + Std.string(e.bytesLoaded / e.bytesTotal));
@@ -71,13 +72,14 @@ class Main extends Sprite
 			#end
 			
 			#if (neko || cpp)
+	
 			var ba = Assets.getBytes('assets/test.mp3');
 			trace(ba.length);
 			icyDecoder.loadBytes(ba);
-			icyDecoder.startProcessingByEnterFrame();
-			//icyDecoder.startProcessingByLoop();
+			//icyDecoder.startProcessingByEnterFrame();
+			icyDecoder.startProcessingByLoop();
 			#end
-			
+			/*
 			var testSound:Sound = new Sound();
 			var icyHandler:ICYHandler = new ICYHandler(icyDecoder);				
 			testSound.addEventListener(SampleDataEvent.SAMPLE_DATA, icyHandler.sampleDataHandler);
@@ -87,7 +89,7 @@ class Main extends Sprite
 				trace('Start playback...');
 				testSound.play();
 			});			
-			
+			*/
 	}
 
 	/* SETUP */

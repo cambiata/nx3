@@ -85,6 +85,8 @@ class ICYDecoder extends EventDispatcher
 
 	public function startProcessingByLoop():Void {
 		trace('start');
+		trace( _bytesSource.position);
+		trace( _bytesSource.length);
 		while (_bytesSource.position < _bytesSource.length) {
 			processMpegFrame();
 		}

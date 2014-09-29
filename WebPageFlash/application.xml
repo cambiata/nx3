@@ -21,10 +21,9 @@
 	<haxelib name="actuate" />
 	<haxelib name="thx.core" />
 	
-	
+	 
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
-	<assets path="assets/img" rename="img" />
 	<assets path="assets/wav" rename="wav" />
 	
 	<!-- optimize output
