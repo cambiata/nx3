@@ -1,4 +1,6 @@
 package nx3.audio;
+import flash.display.BitmapData;
+import flash.events.Event;
 
 /**
  * ...
@@ -173,8 +175,10 @@ class PlayerFactory
 
 
 	#if flash
+	
+	 
 	  // based on BadSector's DynSound.hx
-	  function makePlayer(wave: ByteArray): Void -> Void {
+	  public  function makePlayer(wave: ByteArray, loader:flash.display.Loader=null): Void -> Void {
 		var rate = 3;
 		var is16bits = 1;
 		var stereo = 0;
@@ -233,12 +237,22 @@ class PlayerFactory
 		swf.writeUnsignedInt(swf.length);
 		swf.position = 0;
 
+		
+		
 		// load it
 		return function() {
-		  var ldr = new flash.display.Loader();
-		  ldr.loadBytes (swf);
+			var ldr = (loader != null) ? loader : new flash.display.Loader();
+			  ldr.loadBytes (swf);
 		};
 	  }
+		
+	  public function getWavSoundPlay(wav:ByteArray)
+	  {
+		  
+		  
+	  }
+	  
+
 	#end
 	
 }

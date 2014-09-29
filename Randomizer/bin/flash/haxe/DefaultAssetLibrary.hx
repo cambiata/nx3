@@ -90,6 +90,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("styles/gradient/gradient.min.css", AssetType.TEXT);
 		className.set ("styles/gradient/gradient_mobile.css", __ASSET__styles_gradient_gradient_mobile_css);
 		type.set ("styles/gradient/gradient_mobile.css", AssetType.TEXT);
+		className.set ("styles/gradient/gradient_mobile.min.css", __ASSET__styles_gradient_gradient_mobile_min_css);
+		type.set ("styles/gradient/gradient_mobile.min.css", AssetType.TEXT);
 		className.set ("styles/gradient/gripper_horizontal.png", __ASSET__styles_gradient_gripper_horizontal_png);
 		type.set ("styles/gradient/gripper_horizontal.png", AssetType.IMAGE);
 		className.set ("styles/gradient/gripper_horizontal_disabled.png", __ASSET__styles_gradient_gripper_horizontal_disabled_png);
@@ -172,22 +174,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("styles/windows/vscroll.png", AssetType.IMAGE);
 		className.set ("styles/windows/windows.css", __ASSET__styles_windows_windows_css);
 		type.set ("styles/windows/windows.css", AssetType.TEXT);
-		className.set ("img/rtfview/edit-alignment-center.png", __ASSET__img_rtfview_edit_alignment_center_png);
-		type.set ("img/rtfview/edit-alignment-center.png", AssetType.IMAGE);
-		className.set ("img/rtfview/edit-alignment-justify.png", __ASSET__img_rtfview_edit_alignment_justify_png);
-		type.set ("img/rtfview/edit-alignment-justify.png", AssetType.IMAGE);
-		className.set ("img/rtfview/edit-alignment-left.png", __ASSET__img_rtfview_edit_alignment_left_png);
-		type.set ("img/rtfview/edit-alignment-left.png", AssetType.IMAGE);
-		className.set ("img/rtfview/edit-alignment-right.png", __ASSET__img_rtfview_edit_alignment_right_png);
-		type.set ("img/rtfview/edit-alignment-right.png", AssetType.IMAGE);
-		className.set ("img/rtfview/edit-bold.png", __ASSET__img_rtfview_edit_bold_png);
-		type.set ("img/rtfview/edit-bold.png", AssetType.IMAGE);
-		className.set ("img/rtfview/edit-italic.png", __ASSET__img_rtfview_edit_italic_png);
-		type.set ("img/rtfview/edit-italic.png", AssetType.IMAGE);
-		className.set ("img/rtfview/edit-list.png", __ASSET__img_rtfview_edit_list_png);
-		type.set ("img/rtfview/edit-list.png", AssetType.IMAGE);
-		className.set ("img/rtfview/edit-underline.png", __ASSET__img_rtfview_edit_underline_png);
-		type.set ("img/rtfview/edit-underline.png", AssetType.IMAGE);
 		className.set ("img/slinky_small.jpg", __ASSET__img_slinky_small_jpg);
 		type.set ("img/slinky_small.jpg", AssetType.IMAGE);
 		className.set ("img/slinky_tiny.jpg", __ASSET__img_slinky_tiny_jpg);
@@ -303,6 +289,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
 		id = "styles/gradient/gradient_mobile.css";
+		path.set (id, id);
+		type.set (id, AssetType.TEXT);
+		id = "styles/gradient/gradient_mobile.min.css";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
 		id = "styles/gradient/gripper_horizontal.png";
@@ -428,30 +417,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "styles/windows/windows.css";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
-		id = "img/rtfview/edit-alignment-center.png";
-		path.set (id, id);
-		type.set (id, AssetType.IMAGE);
-		id = "img/rtfview/edit-alignment-justify.png";
-		path.set (id, id);
-		type.set (id, AssetType.IMAGE);
-		id = "img/rtfview/edit-alignment-left.png";
-		path.set (id, id);
-		type.set (id, AssetType.IMAGE);
-		id = "img/rtfview/edit-alignment-right.png";
-		path.set (id, id);
-		type.set (id, AssetType.IMAGE);
-		id = "img/rtfview/edit-bold.png";
-		path.set (id, id);
-		type.set (id, AssetType.IMAGE);
-		id = "img/rtfview/edit-italic.png";
-		path.set (id, id);
-		type.set (id, AssetType.IMAGE);
-		id = "img/rtfview/edit-list.png";
-		path.set (id, id);
-		type.set (id, AssetType.IMAGE);
-		id = "img/rtfview/edit-underline.png";
-		path.set (id, id);
-		type.set (id, AssetType.IMAGE);
 		id = "img/slinky_small.jpg";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
@@ -595,6 +560,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("styles/gradient/gradient_mobile.css", __ASSET__styles_gradient_gradient_mobile_css);
 		type.set ("styles/gradient/gradient_mobile.css", AssetType.TEXT);
 		
+		className.set ("styles/gradient/gradient_mobile.min.css", __ASSET__styles_gradient_gradient_mobile_min_css);
+		type.set ("styles/gradient/gradient_mobile.min.css", AssetType.TEXT);
+		
 		className.set ("styles/gradient/gripper_horizontal.png", __ASSET__styles_gradient_gripper_horizontal_png);
 		type.set ("styles/gradient/gripper_horizontal.png", AssetType.IMAGE);
 		
@@ -717,30 +685,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("styles/windows/windows.css", __ASSET__styles_windows_windows_css);
 		type.set ("styles/windows/windows.css", AssetType.TEXT);
-		
-		className.set ("img/rtfview/edit-alignment-center.png", __ASSET__img_rtfview_edit_alignment_center_png);
-		type.set ("img/rtfview/edit-alignment-center.png", AssetType.IMAGE);
-		
-		className.set ("img/rtfview/edit-alignment-justify.png", __ASSET__img_rtfview_edit_alignment_justify_png);
-		type.set ("img/rtfview/edit-alignment-justify.png", AssetType.IMAGE);
-		
-		className.set ("img/rtfview/edit-alignment-left.png", __ASSET__img_rtfview_edit_alignment_left_png);
-		type.set ("img/rtfview/edit-alignment-left.png", AssetType.IMAGE);
-		
-		className.set ("img/rtfview/edit-alignment-right.png", __ASSET__img_rtfview_edit_alignment_right_png);
-		type.set ("img/rtfview/edit-alignment-right.png", AssetType.IMAGE);
-		
-		className.set ("img/rtfview/edit-bold.png", __ASSET__img_rtfview_edit_bold_png);
-		type.set ("img/rtfview/edit-bold.png", AssetType.IMAGE);
-		
-		className.set ("img/rtfview/edit-italic.png", __ASSET__img_rtfview_edit_italic_png);
-		type.set ("img/rtfview/edit-italic.png", AssetType.IMAGE);
-		
-		className.set ("img/rtfview/edit-list.png", __ASSET__img_rtfview_edit_list_png);
-		type.set ("img/rtfview/edit-list.png", AssetType.IMAGE);
-		
-		className.set ("img/rtfview/edit-underline.png", __ASSET__img_rtfview_edit_underline_png);
-		type.set ("img/rtfview/edit-underline.png", AssetType.IMAGE);
 		
 		className.set ("img/slinky_small.jpg", __ASSET__img_slinky_small_jpg);
 		type.set ("img/slinky_small.jpg", AssetType.IMAGE);
@@ -1449,6 +1393,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep class __ASSET__styles_gradient_gradient_css extends openfl.utils.ByteArray { }
 @:keep class __ASSET__styles_gradient_gradient_min_css extends openfl.utils.ByteArray { }
 @:keep class __ASSET__styles_gradient_gradient_mobile_css extends openfl.utils.ByteArray { }
+@:keep class __ASSET__styles_gradient_gradient_mobile_min_css extends openfl.utils.ByteArray { }
 @:keep class __ASSET__styles_gradient_gripper_horizontal_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__styles_gradient_gripper_horizontal_disabled_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__styles_gradient_gripper_vertical_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -1490,14 +1435,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep class __ASSET__styles_windows_vprogress_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__styles_windows_vscroll_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__styles_windows_windows_css extends openfl.utils.ByteArray { }
-@:keep class __ASSET__img_rtfview_edit_alignment_center_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep class __ASSET__img_rtfview_edit_alignment_justify_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep class __ASSET__img_rtfview_edit_alignment_left_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep class __ASSET__img_rtfview_edit_alignment_right_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep class __ASSET__img_rtfview_edit_bold_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep class __ASSET__img_rtfview_edit_italic_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep class __ASSET__img_rtfview_edit_list_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep class __ASSET__img_rtfview_edit_underline_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__img_slinky_small_jpg extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__img_slinky_tiny_jpg extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep class __ASSET__fonts_oxygen_bold_ttf extends openfl.text.Font { }
@@ -1591,13 +1528,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
-
-
-
-
-
-
-
 @:keep class __ASSET__fonts_oxygen_bold_ttf extends flash.text.Font { #if (!openfl_html5_dom) public function new () { super (); fontName = "fonts/Oxygen-Bold.ttf"; } #end }
 @:keep class __ASSET__fonts_oxygen_ttf extends flash.text.Font { #if (!openfl_html5_dom) public function new () { super (); fontName = "fonts/Oxygen.ttf"; } #end }
 
@@ -1624,81 +1554,74 @@ class DefaultAssetLibrary extends AssetLibrary {
 #elseif (windows || mac || linux)
 
 
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/circle.png") class __ASSET__styles_default_circle_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/collapse.png") class __ASSET__styles_default_collapse_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/cross.png") class __ASSET__styles_default_cross_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/expand.png") class __ASSET__styles_default_expand_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/default/up_down.png") class __ASSET__styles_default_up_down_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_down.png") class __ASSET__styles_gradient_arrow_down_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_down_dark.png") class __ASSET__styles_gradient_arrow_down_dark_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_down_disabled.png") class __ASSET__styles_gradient_arrow_down_disabled_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_left.png") class __ASSET__styles_gradient_arrow_left_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_left_disabled.png") class __ASSET__styles_gradient_arrow_left_disabled_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_right.png") class __ASSET__styles_gradient_arrow_right_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_right2.png") class __ASSET__styles_gradient_arrow_right2_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_right_dark.png") class __ASSET__styles_gradient_arrow_right_dark_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_right_disabled.png") class __ASSET__styles_gradient_arrow_right_disabled_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_up.png") class __ASSET__styles_gradient_arrow_up_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/arrow_up_disabled.png") class __ASSET__styles_gradient_arrow_up_disabled_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/circle_dark.png") class __ASSET__styles_gradient_circle_dark_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/cross_dark.png") class __ASSET__styles_gradient_cross_dark_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/cross_dark_disabled.png") class __ASSET__styles_gradient_cross_dark_disabled_png extends flash.display.BitmapData {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/gradient/gradient.css") class __ASSET__styles_gradient_gradient_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/gradient/gradient.min.css") class __ASSET__styles_gradient_gradient_min_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/gradient/gradient_mobile.css") class __ASSET__styles_gradient_gradient_mobile_css extends flash.utils.ByteArray {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/gripper_horizontal.png") class __ASSET__styles_gradient_gripper_horizontal_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/gripper_horizontal_disabled.png") class __ASSET__styles_gradient_gripper_horizontal_disabled_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/gripper_vertical.png") class __ASSET__styles_gradient_gripper_vertical_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/gradient/gripper_vertical_disabled.png") class __ASSET__styles_gradient_gripper_vertical_disabled_png extends flash.display.BitmapData {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/accordion.css") class __ASSET__styles_windows_accordion_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/accordion.min.css") class __ASSET__styles_windows_accordion_min_css extends flash.utils.ByteArray {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/button.png") class __ASSET__styles_windows_button_png extends flash.display.BitmapData {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/buttons.css") class __ASSET__styles_windows_buttons_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/buttons.min.css") class __ASSET__styles_windows_buttons_min_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/calendar.css") class __ASSET__styles_windows_calendar_css extends flash.utils.ByteArray {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/checkbox.png") class __ASSET__styles_windows_checkbox_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/container.png") class __ASSET__styles_windows_container_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/down_arrow.png") class __ASSET__styles_windows_glyphs_down_arrow_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/hscroll_thumb_gripper_down.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_down_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/hscroll_thumb_gripper_over.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_over_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/hscroll_thumb_gripper_up.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_up_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/left_arrow.png") class __ASSET__styles_windows_glyphs_left_arrow_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/right_arrow.png") class __ASSET__styles_windows_glyphs_right_arrow_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/up_arrow.png") class __ASSET__styles_windows_glyphs_up_arrow_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/vscroll_thumb_gripper_down.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_down_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/vscroll_thumb_gripper_over.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_over_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/glyphs/vscroll_thumb_gripper_up.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_up_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/hprogress.png") class __ASSET__styles_windows_hprogress_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/hscroll.png") class __ASSET__styles_windows_hscroll_png extends flash.display.BitmapData {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/listview.css") class __ASSET__styles_windows_listview_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/listview.min.css") class __ASSET__styles_windows_listview_min_css extends flash.utils.ByteArray {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/listview.png") class __ASSET__styles_windows_listview_png extends flash.display.BitmapData {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/menus.css") class __ASSET__styles_windows_menus_css extends flash.utils.ByteArray {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/optionbox.png") class __ASSET__styles_windows_optionbox_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/popup.png") class __ASSET__styles_windows_popup_png extends flash.display.BitmapData {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/popups.css") class __ASSET__styles_windows_popups_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/rtf.css") class __ASSET__styles_windows_rtf_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/scrolls.css") class __ASSET__styles_windows_scrolls_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/scrolls.min.css") class __ASSET__styles_windows_scrolls_min_css extends flash.utils.ByteArray {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/sliders.css") class __ASSET__styles_windows_sliders_css extends flash.utils.ByteArray {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/tab.png") class __ASSET__styles_windows_tab_png extends flash.display.BitmapData {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/tabs.css") class __ASSET__styles_windows_tabs_css extends flash.utils.ByteArray {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/textinput.png") class __ASSET__styles_windows_textinput_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/vprogress.png") class __ASSET__styles_windows_vprogress_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/styles/windows/vscroll.png") class __ASSET__styles_windows_vscroll_png extends flash.display.BitmapData {}
-@:file("f:/_haxelib/haxeui/1,3,4/styles/windows/windows.css") class __ASSET__styles_windows_windows_css extends flash.utils.ByteArray {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-alignment-center.png") class __ASSET__img_rtfview_edit_alignment_center_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-alignment-justify.png") class __ASSET__img_rtfview_edit_alignment_justify_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-alignment-left.png") class __ASSET__img_rtfview_edit_alignment_left_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-alignment-right.png") class __ASSET__img_rtfview_edit_alignment_right_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-bold.png") class __ASSET__img_rtfview_edit_bold_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-italic.png") class __ASSET__img_rtfview_edit_italic_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-list.png") class __ASSET__img_rtfview_edit_list_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/rtfview/edit-underline.png") class __ASSET__img_rtfview_edit_underline_png extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/slinky_small.jpg") class __ASSET__img_slinky_small_jpg extends flash.display.BitmapData {}
-@:bitmap("f:/_haxelib/haxeui/1,3,4/img/slinky_tiny.jpg") class __ASSET__img_slinky_tiny_jpg extends flash.display.BitmapData {}
-@:font("f:/_haxelib/haxeui/1,3,4/fonts/Oxygen-Bold.ttf") class __ASSET__fonts_oxygen_bold_ttf extends flash.text.Font {}
-@:font("f:/_haxelib/haxeui/1,3,4/fonts/Oxygen.ttf") class __ASSET__fonts_oxygen_ttf extends flash.text.Font {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/default/circle.png") class __ASSET__styles_default_circle_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/default/collapse.png") class __ASSET__styles_default_collapse_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/default/cross.png") class __ASSET__styles_default_cross_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/default/expand.png") class __ASSET__styles_default_expand_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/default/up_down.png") class __ASSET__styles_default_up_down_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_down.png") class __ASSET__styles_gradient_arrow_down_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_down_dark.png") class __ASSET__styles_gradient_arrow_down_dark_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_down_disabled.png") class __ASSET__styles_gradient_arrow_down_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_left.png") class __ASSET__styles_gradient_arrow_left_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_left_disabled.png") class __ASSET__styles_gradient_arrow_left_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_right.png") class __ASSET__styles_gradient_arrow_right_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_right2.png") class __ASSET__styles_gradient_arrow_right2_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_right_dark.png") class __ASSET__styles_gradient_arrow_right_dark_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_right_disabled.png") class __ASSET__styles_gradient_arrow_right_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_up.png") class __ASSET__styles_gradient_arrow_up_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/arrow_up_disabled.png") class __ASSET__styles_gradient_arrow_up_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/circle_dark.png") class __ASSET__styles_gradient_circle_dark_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/cross_dark.png") class __ASSET__styles_gradient_cross_dark_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/cross_dark_disabled.png") class __ASSET__styles_gradient_cross_dark_disabled_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/gradient/gradient.css") class __ASSET__styles_gradient_gradient_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/gradient/gradient.min.css") class __ASSET__styles_gradient_gradient_min_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/gradient/gradient_mobile.css") class __ASSET__styles_gradient_gradient_mobile_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/gradient/gradient_mobile.min.css") class __ASSET__styles_gradient_gradient_mobile_min_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/gripper_horizontal.png") class __ASSET__styles_gradient_gripper_horizontal_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/gripper_horizontal_disabled.png") class __ASSET__styles_gradient_gripper_horizontal_disabled_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/gripper_vertical.png") class __ASSET__styles_gradient_gripper_vertical_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/gradient/gripper_vertical_disabled.png") class __ASSET__styles_gradient_gripper_vertical_disabled_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/accordion.css") class __ASSET__styles_windows_accordion_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/accordion.min.css") class __ASSET__styles_windows_accordion_min_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/button.png") class __ASSET__styles_windows_button_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/buttons.css") class __ASSET__styles_windows_buttons_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/buttons.min.css") class __ASSET__styles_windows_buttons_min_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/calendar.css") class __ASSET__styles_windows_calendar_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/checkbox.png") class __ASSET__styles_windows_checkbox_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/container.png") class __ASSET__styles_windows_container_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/down_arrow.png") class __ASSET__styles_windows_glyphs_down_arrow_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/hscroll_thumb_gripper_down.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_down_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/hscroll_thumb_gripper_over.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_over_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/hscroll_thumb_gripper_up.png") class __ASSET__styles_windows_glyphs_hscroll_thumb_gripper_up_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/left_arrow.png") class __ASSET__styles_windows_glyphs_left_arrow_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/right_arrow.png") class __ASSET__styles_windows_glyphs_right_arrow_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/up_arrow.png") class __ASSET__styles_windows_glyphs_up_arrow_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/vscroll_thumb_gripper_down.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_down_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/vscroll_thumb_gripper_over.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_over_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/glyphs/vscroll_thumb_gripper_up.png") class __ASSET__styles_windows_glyphs_vscroll_thumb_gripper_up_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/hprogress.png") class __ASSET__styles_windows_hprogress_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/hscroll.png") class __ASSET__styles_windows_hscroll_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/listview.css") class __ASSET__styles_windows_listview_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/listview.min.css") class __ASSET__styles_windows_listview_min_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/listview.png") class __ASSET__styles_windows_listview_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/menus.css") class __ASSET__styles_windows_menus_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/optionbox.png") class __ASSET__styles_windows_optionbox_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/popup.png") class __ASSET__styles_windows_popup_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/popups.css") class __ASSET__styles_windows_popups_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/rtf.css") class __ASSET__styles_windows_rtf_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/scrolls.css") class __ASSET__styles_windows_scrolls_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/scrolls.min.css") class __ASSET__styles_windows_scrolls_min_css extends flash.utils.ByteArray {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/sliders.css") class __ASSET__styles_windows_sliders_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/tab.png") class __ASSET__styles_windows_tab_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/tabs.css") class __ASSET__styles_windows_tabs_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/textinput.png") class __ASSET__styles_windows_textinput_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/vprogress.png") class __ASSET__styles_windows_vprogress_png extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/styles/windows/vscroll.png") class __ASSET__styles_windows_vscroll_png extends flash.display.BitmapData {}
+@:file("f:/_haxelib/haxeui/1,4,14/styles/windows/windows.css") class __ASSET__styles_windows_windows_css extends flash.utils.ByteArray {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/img/slinky_small.jpg") class __ASSET__img_slinky_small_jpg extends flash.display.BitmapData {}
+@:bitmap("f:/_haxelib/haxeui/1,4,14/img/slinky_tiny.jpg") class __ASSET__img_slinky_tiny_jpg extends flash.display.BitmapData {}
+@:font("f:/_haxelib/haxeui/1,4,14/fonts/Oxygen-Bold.ttf") class __ASSET__fonts_oxygen_bold_ttf extends flash.text.Font {}
+@:font("f:/_haxelib/haxeui/1,4,14/fonts/Oxygen.ttf") class __ASSET__fonts_oxygen_ttf extends flash.text.Font {}
 @:file("assets/wav/0.data") class __ASSET__wav_0_data extends flash.utils.ByteArray {}
 @:file("assets/wav/1.data") class __ASSET__wav_1_data extends flash.utils.ByteArray {}
 @:file("assets/wav/2.data") class __ASSET__wav_2_data extends flash.utils.ByteArray {}

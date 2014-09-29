@@ -11,6 +11,7 @@ import nx3.flash.ScoreSprite;
 import nx3.NBar;
 import nx3.NScore;
 import nx3.PNote;
+import nx3.PScore;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.TargetSprite;
@@ -196,8 +197,8 @@ var xmlStr = '
 		var ssrandom = new ScoreSprite(randomscore, Scaling.NORMAL);
 		this.addChild(ssrandom);
 		ssrandom.y = 50;
-		ssrandom.barClickHandler = function (barNr:Int, nbar:NBar, nscore:NScore) {
-			var snotes = nsc.getPlayableNotesFromTopVoice(nscore);
+		ssrandom.barClickHandler = function (barNr:Int, nbar:NBar, score:PScore) {
+			var snotes = nsc.getPlayableNotesFromTopVoice(score.nscore);
 			var wav = conc.getWav(snotes, 120);
 			var play = player.getPlayFunction(wav);
 			play();

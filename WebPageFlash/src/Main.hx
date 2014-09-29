@@ -6,14 +6,19 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
 import flash.net.URLRequest;
+import nx3.audio.NoteCoordCalculator;
 import nx3.audio.NoteSoundCalculator;
 import nx3.audio.PlayerFactory;
 import nx3.audio.WavConcatenator;
+
 import nx3.flash.ScoreSprite;
 import nx3.NBar;
 import nx3.NScore;
+import nx3.PScore;
 import nx3.xml.ScoreXML;
+import openfl.display.Loader;
 import openfl.events.MouseEvent;
+import openfl.media.Sound;
 import openfl.net.URLLoader;
 import openfl.text.TextField;
 
@@ -25,6 +30,7 @@ import openfl.text.TextField;
 class Main extends Sprite 
 {
 	var inited:Bool;
+	var loader:Loader;
 
 	/* ENTRY POINT */
 	
@@ -38,6 +44,8 @@ class Main extends Sprite
 	{
 		if (inited) return;
 		inited = true;
+		
+		
 
 		var ss = new ScoreSprite(null);
 		this.addChild(ss);
@@ -45,19 +53,26 @@ class Main extends Sprite
 		ss.x = 8;
 		
 		var nsc:NoteSoundCalculator = new NoteSoundCalculator();
+		var ncc:NoteCoordCalculator = new NoteCoordCalculator();
 		var conc:WavConcatenator = new WavConcatenator();
 		var player:PlayerFactory = new PlayerFactory();		
-		
+		this.loader = new Loader();
+		this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, function(e) {
+			trace('loaded');	
+		});
 		
 		var text = new TextField();
 		text.text = 'Ladding pågår...';
 		this.addChild(text);
 		
-		ss.barClickHandler = function (e:MouseEvent, barNr:Int, nbar:NBar, nscore:NScore) {			
-			var snotes = nsc.getPlayableNotesFromTopVoice(nscore);
-			var wav = conc.getWav(snotes, 120);
-			var play = player.getPlayFunction(wav);
-			play();
+		ss.barClickHandler = function (e:MouseEvent, barNr:Int, nbar:NBar, score:PScore) {			
+			var snotes = nsc.getPlayableNotesFromTopVoice(score.nscore);
+			var coords = ncc.getCoordinatesFromTopVoice(score);
+			var wav = conc.getWav(snotes, 60);			
+			//var play = player.getPlayFunction(wav);
+			var play = player.makePlayer(wav, loader);
+			play();	
+			
 		}		
 		
 		var parameters = { };

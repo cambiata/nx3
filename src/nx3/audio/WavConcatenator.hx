@@ -39,7 +39,7 @@ class WavConcatenator
 			var sw = new ByteArray();
 			sw.position = 0;
 			var bytesLenght = Std.int((length / Constants.BASE_NOTE_VALUE) * (60 / bpm) * 88200);
-			trace(bytesLenght);
+			//trace(bytesLenght);
 			bytesLenght -= bytesLenght % 4;				
 			
 			if (Std.int(w.length) < bytesLenght)
@@ -50,14 +50,15 @@ class WavConcatenator
 				for (i in 0...l) w.writeByte(0);
 			}
 						
-			w.readBytes(sw, 0, bytesLenght - 44);
-			trace(sw.length);
+			w.readBytes(sw, 0, bytesLenght );
+			//trace(sw.length);
+			
 			var r:Reader = new Reader(new BytesInput(ByteArrayTools.toBytes(sw)));
 			var wave = r.read();
 			var wavedata = wave.data;
 			trace(wavedata.length);
 			
-			sw.position = 0;
+			//sw.position = 0;
 			//result.writeBytes(sw);
 			result.writeBytes(ByteArrayTools.fromBytes(wavedata));
 			

@@ -19,7 +19,7 @@ class ScoreSprite extends Sprite
 {
 	var score:nx3.PScore;
 	var scaling:TScaling;
-	public var barClickHandler(default, default): MouseEvent->Int->NBar->NScore->Void;
+	public var barClickHandler(default, default): MouseEvent->Int->NBar->PScore->Void;
 	public function new(nscore:NScore, ?scaling:TScaling) 
 	{
 		super();
@@ -81,9 +81,9 @@ class ScoreSprite extends Sprite
 					var baridx = sys.getSystembars().indexOf(sysbar);
 					//trace(baridx);
 					var nbar = sysbar.bar.nbar;
-					try {
-					if (this.barClickHandler != null) this.barClickHandler(e, baridx, nbar, this.score.nscore);					
-					} catch(e:Dynamic) {}
+					//try {
+					if (this.barClickHandler != null) this.barClickHandler(e, baridx, nbar, this.score);					
+					//} catch(e:Dynamic) {}
 				});				
 				this.addChild(clicksprite);				
 				barx += barwidth;
