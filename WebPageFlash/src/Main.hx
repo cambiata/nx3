@@ -1,15 +1,23 @@
 package ;
 
+import audio.flash.PCMFormat;
+import audio.flash.WavPlayerLoader;
+import cx.ByteArrayTools;
 import cx.ConfigTools;
 import cx.ReflectTools;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
 import flash.net.URLRequest;
+import format.wav.Data.WAVE;
+import format.wav.Reader;
+import haxe.io.BytesInput;
+import haxe.macro.Format;
 import nx3.audio.NoteCoordCalculator;
 import nx3.audio.NoteSoundCalculator;
 import nx3.audio.PlayerFactory;
 import nx3.audio.WavConcatenator;
+import openfl.Assets;
 
 import nx3.flash.ScoreSprite;
 import nx3.NBar;
@@ -46,7 +54,17 @@ class Main extends Sprite
 		inited = true;
 		
 		
+		var bytes:ByteArray = Assets.getBytes('wav/81.data');
+		trace(bytes.length);		
+		var w = new WavPlayerLoader();
+		var r = new Reader(new BytesInput(ByteArrayTools.toBytes(bytes)));		
+		var wave:WAVE = r.read();
+		var data = wave.data;		
+		w.loadBytes(ByteArrayTools.fromBytes(data), PCMFormat.mono16format(bytes.length));
 
+		
+		
+		
 		var ss = new ScoreSprite(null);
 		this.addChild(ss);
 		ss.y = - 40;

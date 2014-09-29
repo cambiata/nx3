@@ -16,7 +16,7 @@ class BitTools {
 	        }
 	        
 	        var i = maxPow - 1;
-	        while (i > = 0) 
+	        while (i >= 0) 
 	        {
 		var basePow = Math.pow(base, i);
 		var pow = Math.floor(num / basePow);

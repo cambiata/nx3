@@ -1,4 +1,5 @@
 package nx3.audio;
+import audio.flash.WavPlayerLoader;
 import flash.display.BitmapData;
 import flash.events.Event;
 
@@ -246,9 +247,9 @@ class PlayerFactory
 		};
 	  }
 		
-	  public function getWavSoundPlay(wav:ByteArray)
+	  public function getWavSoundPlay(wave:ByteArray)
 	  {
-		  
+		  var w = new WavPlayerLoader();
 		  
 	  }
 	  

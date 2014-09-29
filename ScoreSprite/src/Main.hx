@@ -18,6 +18,7 @@ import nx3.render.TargetSprite;
 import nx3.test.TestItems;
 import nx3.utils.ScoreModifier;
 import nx3.xml.ScoreXML;
+import openfl.Assets;
 import thx.core.Tuple.Tuple2;
 
 /**
@@ -181,6 +182,11 @@ var xmlStr = '
 	
 </score>
 ';	
+
+
+
+
+
 
 		var nsc:NoteSoundCalculator = new NoteSoundCalculator();
 		var conc:WavConcatenator = new WavConcatenator();

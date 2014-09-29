@@ -36,11 +36,12 @@ class PCMFormat
         _fullDataLength = byteArray.readUnsignedInt() + 8;
         byteArray.position = 0x10;
         var chunkSize : Float = byteArray.readUnsignedInt();
-        
+        trace('chunkSize ' + chunkSize);
         if (chunkSize != 0x10) 
         {
-            throw ("Error: incorrect chunk size");
-            return;
+            trace ("Error: incorrect chunk size: " + chunkSize);
+            //return;
+	chunkSize = 0x10;
         }
         
         
@@ -49,8 +50,9 @@ class PCMFormat
         
         if (pcmTest != 1) 
         {
-            throw("Error: this file is not PCM wave file");
-            return;
+            trace("Error: this file is not PCM wave file");
+            //return;
+	pcmTest = 1;
         }
         
         _channels = byteArray.readShort();
@@ -78,4 +80,20 @@ class PCMFormat
         
         byteArray.position = 0;
     }
+    
+    public static function mono16format(fullDataLength:Int):PCMFormat
+    {
+        var mono16Format = new PCMFormat();
+        mono16Format._bitsPerSample = 16;
+        mono16Format._blockAlign = 2;
+        mono16Format._byteRate = 88200;
+        mono16Format._channels = 1;
+        mono16Format._sampleRate = 44100;
+        mono16Format._fullDataLength = fullDataLength;
+        mono16Format._waveDataLength = fullDataLength - 84;
+        return mono16Format;
+	    
+    }
+    
+    
 }
