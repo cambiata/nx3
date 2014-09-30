@@ -1,5 +1,5 @@
 package nx3.audio;
-import audio.flash.WavPlayerLoader;
+import audio.flash.WavePlayer;
 import flash.display.BitmapData;
 import flash.events.Event;
 
@@ -249,7 +249,7 @@ class PlayerFactory
 		
 	  public function getWavSoundPlay(wave:ByteArray)
 	  {
-		  var w = new WavPlayerLoader();
+		  var w = new WavePlayer();
 		  
 	  }
 	  

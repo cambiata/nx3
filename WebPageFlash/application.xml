@@ -20,6 +20,7 @@
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
 	<haxelib name="thx.core" />
+	<haxelib name="thx.promise" />
 	
 	 
 	<!-- assets -->
