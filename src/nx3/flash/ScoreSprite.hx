@@ -54,6 +54,12 @@ class ScoreSprite extends Sprite
 		if (this.score == null) return null;
 		return this.score.nscore;
 	}
+
+	public function getPScore():PScore
+	{
+		if (this.score == null) return null;
+		return this.score;
+	}
 	
 	public function renderScore()
 	{

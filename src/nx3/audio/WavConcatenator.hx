@@ -49,22 +49,12 @@ class WavConcatenator
 				w.position = w.length;
 				for (i in 0...l) w.writeByte(0);
 			}
-						
 			w.readBytes(sw, 0, bytesLenght );
-			//trace(sw.length);
 			
 			var r:Reader = new Reader(new BytesInput(ByteArrayTools.toBytes(sw)));
 			var wave = r.read();
 			var wavedata = wave.data;
-			trace(wavedata.length);
-			
-			//sw.position = 0;
-			//result.writeBytes(sw);
 			result.writeBytes(ByteArrayTools.fromBytes(wavedata));
-			//result.writeBytes(sw);
-			
-			//result.writeBytes(w);
-			//trace(result.length);
 		}
 		
 		//trace(result.length);

@@ -2,6 +2,7 @@ package ;
 
 import audio.flash.PCMFormat;
 import audio.flash.SWFFormat;
+import audio.flash.ui.PlayButton;
 import audio.flash.WavePlayer;
 import cx.ByteArrayTools;
 import cx.ConfigTools;
@@ -46,6 +47,12 @@ class Main extends Sprite
 
 	var sound:Sound = null;
 	var channel:SoundChannel = null;
+	var nsc:NoteSoundCalculator;
+	var ncc:NoteCoordCalculator;
+	var conc:WavConcatenator;
+	var player:PlayerFactory;
+	var scoreSprite:nx3.flash.ScoreSprite;
+	var playButton:audio.flash.ui.PlayButton;
 	
 	
 	/* ENTRY POINT */
@@ -72,68 +79,25 @@ class Main extends Sprite
 		*/
 		
 		
-		
-		var ss = new ScoreSprite(null);
-		this.addChild(ss);
-		ss.y = - 40;
-		ss.x = 8;
-		
-		var nsc:NoteSoundCalculator = new NoteSoundCalculator();
-		var ncc:NoteCoordCalculator = new NoteCoordCalculator();
-		var conc:WavConcatenator = new WavConcatenator();
-		var player:PlayerFactory = new PlayerFactory();		
+
 		
 		var text = new TextField();
 		text.text = 'Ladding pågår...';
 		this.addChild(text);
 		
 		
-		ss.barClickHandler = function (e:MouseEvent, barNr:Int, nbar:NBar, score:PScore) {			
+		scoreSprite.barClickHandler = function (e:MouseEvent, barNr:Int, nbar:NBar, score:PScore) {			
+			playScore(score);
 			
-			if (this.sound != null)
-			{
-				if (this.channel != null) this.channel.stop();
-				this.channel = this.sound.play();
-			}
+		}	
+
+			
+		playButton.onPlayingChange = function(playing:Bool)
+		{
+			if (playing) 
+				this.playScore(scoreSprite.getPScore());
 			else
-			{
-				//var play = player.getPlayFunction(wav);
-				//var play = player.makePlayer(wav, loader);
-				//play();	
-				
-				//var w = new WavePlayer();
-				//w.loadBytes(wav, PCMFormat.mono16format(wav.length));
-				
-				var promise = thx.promise.Promise.create(function(resolve: Sound->Void, reject: Error->Void) {
-					trace('hello');
-					//Timer.delay(function() {
-						var snotes = nsc.getPlayableNotesFromTopVoice(score.nscore);
-						var coords = ncc.getCoordinatesFromTopVoice(score);
-						var wav = conc.getWav(snotes, 60);			
-						
-						var swf : SWFFormat = new SWFFormat(PCMFormat.mono16format(wav.length));
-						var compiledSWF : ByteArray = swf.compileSWF(wav);
-						var compiledSWFLoader : Loader = new Loader();
-						compiledSWFLoader.loadBytes(compiledSWF);
-						compiledSWFLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event) {
-							var loaderInfo:LoaderInfo = cast(e.target, LoaderInfo);        
-							var definition = loaderInfo.applicationDomain.getDefinition(SWFFormat.CLASS_NAME);
-							var instance = Type.createInstance(definition, []);
-							var sound:Sound = cast instance;							
-							resolve(sound);
-						});	    						
-					//	resolve(new Sound());
-					//}, 500);
-				});
-				
-				promise.success(function(sound:Sound) {
-					this.sound = sound;
-					this.channel = sound.play();
-				});				
-				
-				
-			}
-			
+				this.stopScore();
 		}		
 		
 		var parameters = { };
@@ -147,7 +111,7 @@ class Main extends Sprite
 			//trace('complete');
 			var xmlStr:String = loader.data;
 			//trace(xmlStr);
-			ss.setScore(ScoreXML.fromXmlStr(xmlStr));
+			scoreSprite.setScore(ScoreXML.fromXmlStr(xmlStr));
 			this.removeChild(text);
 		});
 		loader.addEventListener(flash.events.IOErrorEvent.IO_ERROR, function(e) {
@@ -155,18 +119,85 @@ class Main extends Sprite
 		});
 		loader.load(new URLRequest(score));
 		
-		
-		
-		
-		
 	}
+	
+		function ssPlay(pscore:PScore, resolve:Sound->Void) 
+		{
+							var snotes = nsc.getPlayableNotesFromTopVoice(pscore.nscore);
+							var coords = ncc.getCoordinatesFromTopVoice(pscore);
+							var wav = conc.getWav(snotes, 60);			
+							
+							var swf : SWFFormat = new SWFFormat(PCMFormat.mono16format(wav.length));
+							var compiledSWF : ByteArray = swf.compileSWF(wav);
+							var compiledSWFLoader : Loader = new Loader();
+							compiledSWFLoader.loadBytes(compiledSWF);
+							compiledSWFLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event) {
+								var loaderInfo:LoaderInfo = cast(e.target, LoaderInfo);        
+								var definition = loaderInfo.applicationDomain.getDefinition(SWFFormat.CLASS_NAME);
+								var instance = Type.createInstance(definition, []);
+								var sound:Sound = cast instance;							
+								resolve(sound);
+							});	    						
+			
+		}
+		
+		function playScore(pscore:PScore)
+		{
+			if (this.sound != null)
+			{
+				if (this.channel != null) this.channel.stop();
+				this.channel = this.sound.play();
+			}
+			else
+			{
+				var promise = thx.promise.Promise.create(function(resolve: Sound->Void, reject: Error->Void) {
+					this.ssPlay(pscore, resolve);
+				});
+				
+				promise.success(function(sound:Sound) {
+					this.sound = sound;
+					this.channel = sound.play();
+					this.sound.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) trace('COMPLETE') );
+					this.channel.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) this.endScore() );
+				});				
+			}
+		}
+		
+		function stopScore()
+		{
+				if (this.channel != null) this.channel.stop();
+		}
 
+		function endScore()
+		{
+			this.playButton.playing = false;
+		}
+
+
+	
+	
+	
 	/* SETUP */
 
 	public function new() 
 	{
 		super();	
 		addEventListener(Event.ADDED_TO_STAGE, added);
+		
+		this.nsc = new NoteSoundCalculator();
+		this.ncc = new NoteCoordCalculator();
+		this.conc = new WavConcatenator();
+		this.player = new PlayerFactory();				
+
+		this.scoreSprite = new ScoreSprite(null);
+		this.addChild(scoreSprite);
+		scoreSprite.y = - 40;
+		scoreSprite.x = 8;
+
+		this.playButton = new PlayButton();
+		this.addChild(playButton);
+		
+		
 	}
 
 	function added(e) 
