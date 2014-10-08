@@ -1,4 +1,4 @@
-package audio.flash.ui ;
+package audio.flash.ui;
 
 import flash.display.Sprite;
 import flash.events.MouseEvent;
@@ -12,7 +12,7 @@ class PlayButton extends Sprite
 	public function new() 
 	{
 		super();
-		draw();
+		draw(this._playing);
 		this.addEventListener(MouseEvent.MOUSE_DOWN, onMouseClick, false, 0, true);
 	}
 	
@@ -31,21 +31,23 @@ class PlayButton extends Sprite
 		
 			this._playing = val;
 			this.onPlayingChange(this._playing);
-			draw();
+			draw(this._playing);
 			return this._playing;
 	}	
 	
-	static var buttonWidth:Int = 24;
-	static var buttonHeight:Int = 24;
 	
-	private function draw()
+	private var _currentPlaying:Null<Bool> = null;
+	public function draw(playing:Bool)
 	{
-			if (this._playing)
+		//if (_currentPlaying == playing) return;
+		
+			if (playing)
 				this.graphics.beginFill(0xFF0000);
 			else
 				this.graphics.beginFill(0x00aa00);
-			this.graphics.drawEllipse(0, 0, buttonWidth, buttonHeight);
-		this.useHandCursor = true;			
+				
+		this.graphics.drawRoundRect(0, 0, 30, 30, 8);
+		//this._currentPlaying = playing;			
 	}
 	
 	dynamic public function onPlayingChange(playing:Bool)
