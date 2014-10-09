@@ -1,5 +1,6 @@
 package nx3.audio;
 import haxe.ds.ObjectMap;
+import nx3.Constants;
 import nx3.geom.Point;
 import nx3.PScore;
 import nx3.PSystem;
@@ -62,8 +63,8 @@ class NoteCoordCalculator
 			var pos = coord.pos;
 			var posDelta = pos / noteValue;
 			var soundPos = Std.int(soundLenght * posDelta);
-			result.set(soundPos, new Point(coord.x * scaling.unitX, coord.y * scaling.unitY ) );
-			trace([soundPos, result.get(soundPos)]);
+			result.set(soundPos, new Point((Constants.HEAD_HALFWIDTH_NORMAL+coord.x) * scaling.unitX , coord.y * scaling.unitY ) );
+			//trace([soundPos, result.get(soundPos)]);
 		}
 		
 		return result;

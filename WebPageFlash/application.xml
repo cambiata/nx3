@@ -6,7 +6,7 @@
 	<meta title="WebPageFlash" package="WebPageFlash" version="1.0.0" company="Jonas Nyström" />
 	
 	<!-- output -->
-	<app main="Main" file="WebPageFlash" path="bin" />
+	<app main="Main" file="score" path="bin" />
 	
 	<window background="#ffffff" fps="60" />
 	<window width="1000" height="400" unless="mobile" />

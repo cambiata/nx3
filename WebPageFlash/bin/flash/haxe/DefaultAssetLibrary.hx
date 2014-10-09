@@ -48,18 +48,22 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("wav/0.data", __ASSET__wav_0_data);
 		type.set ("wav/0.data", AssetType.BINARY);
-		className.set ("wav/1.data", __ASSET__wav_1_data);
-		type.set ("wav/1.data", AssetType.BINARY);
-		className.set ("wav/2.data", __ASSET__wav_2_data);
-		type.set ("wav/2.data", AssetType.BINARY);
-		className.set ("wav/3.data", __ASSET__wav_3_data);
-		type.set ("wav/3.data", AssetType.BINARY);
-		className.set ("wav/4.data", __ASSET__wav_4_data);
-		type.set ("wav/4.data", AssetType.BINARY);
+		className.set ("wav/79.data", __ASSET__wav_79_data);
+		type.set ("wav/79.data", AssetType.BINARY);
+		className.set ("wav/80.data", __ASSET__wav_80_data);
+		type.set ("wav/80.data", AssetType.BINARY);
 		className.set ("wav/81.data", __ASSET__wav_81_data);
 		type.set ("wav/81.data", AssetType.BINARY);
+		className.set ("wav/82.data", __ASSET__wav_82_data);
+		type.set ("wav/82.data", AssetType.BINARY);
+		className.set ("wav/83.data", __ASSET__wav_83_data);
+		type.set ("wav/83.data", AssetType.BINARY);
+		className.set ("wav/84.data", __ASSET__wav_84_data);
+		type.set ("wav/84.data", AssetType.BINARY);
 		className.set ("wav/dummy.txt", __ASSET__wav_dummy_txt);
 		type.set ("wav/dummy.txt", AssetType.TEXT);
+		className.set ("wav/test2.data", __ASSET__wav_test2_data);
+		type.set ("wav/test2.data", AssetType.BINARY);
 		
 		
 		#elseif html5
@@ -68,24 +72,30 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "wav/0.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "wav/1.data";
+		id = "wav/79.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
-		id = "wav/2.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/3.data";
-		path.set (id, id);
-		type.set (id, AssetType.BINARY);
-		id = "wav/4.data";
+		id = "wav/80.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
 		id = "wav/81.data";
 		path.set (id, id);
 		type.set (id, AssetType.BINARY);
+		id = "wav/82.data";
+		path.set (id, id);
+		type.set (id, AssetType.BINARY);
+		id = "wav/83.data";
+		path.set (id, id);
+		type.set (id, AssetType.BINARY);
+		id = "wav/84.data";
+		path.set (id, id);
+		type.set (id, AssetType.BINARY);
 		id = "wav/dummy.txt";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
+		id = "wav/test2.data";
+		path.set (id, id);
+		type.set (id, AssetType.BINARY);
 		
 		
 		#else
@@ -97,23 +107,29 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("wav/0.data", __ASSET__wav_0_data);
 		type.set ("wav/0.data", AssetType.BINARY);
 		
-		className.set ("wav/1.data", __ASSET__wav_1_data);
-		type.set ("wav/1.data", AssetType.BINARY);
+		className.set ("wav/79.data", __ASSET__wav_79_data);
+		type.set ("wav/79.data", AssetType.BINARY);
 		
-		className.set ("wav/2.data", __ASSET__wav_2_data);
-		type.set ("wav/2.data", AssetType.BINARY);
-		
-		className.set ("wav/3.data", __ASSET__wav_3_data);
-		type.set ("wav/3.data", AssetType.BINARY);
-		
-		className.set ("wav/4.data", __ASSET__wav_4_data);
-		type.set ("wav/4.data", AssetType.BINARY);
+		className.set ("wav/80.data", __ASSET__wav_80_data);
+		type.set ("wav/80.data", AssetType.BINARY);
 		
 		className.set ("wav/81.data", __ASSET__wav_81_data);
 		type.set ("wav/81.data", AssetType.BINARY);
 		
+		className.set ("wav/82.data", __ASSET__wav_82_data);
+		type.set ("wav/82.data", AssetType.BINARY);
+		
+		className.set ("wav/83.data", __ASSET__wav_83_data);
+		type.set ("wav/83.data", AssetType.BINARY);
+		
+		className.set ("wav/84.data", __ASSET__wav_84_data);
+		type.set ("wav/84.data", AssetType.BINARY);
+		
 		className.set ("wav/dummy.txt", __ASSET__wav_dummy_txt);
 		type.set ("wav/dummy.txt", AssetType.TEXT);
+		
+		className.set ("wav/test2.data", __ASSET__wav_test2_data);
+		type.set ("wav/test2.data", AssetType.BINARY);
 		
 		
 		if (useManifest) {
@@ -732,15 +748,19 @@ class DefaultAssetLibrary extends AssetLibrary {
 #elseif flash
 
 @:keep class __ASSET__wav_0_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_1_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_2_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_3_data extends openfl.utils.ByteArray { }
-@:keep class __ASSET__wav_4_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_79_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_80_data extends openfl.utils.ByteArray { }
 @:keep class __ASSET__wav_81_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_82_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_83_data extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_84_data extends openfl.utils.ByteArray { }
 @:keep class __ASSET__wav_dummy_txt extends openfl.utils.ByteArray { }
+@:keep class __ASSET__wav_test2_data extends openfl.utils.ByteArray { }
 
 
 #elseif html5
+
+
 
 
 
@@ -755,12 +775,14 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 @:file("assets/wav/0.data") class __ASSET__wav_0_data extends flash.utils.ByteArray {}
-@:file("assets/wav/1.data") class __ASSET__wav_1_data extends flash.utils.ByteArray {}
-@:file("assets/wav/2.data") class __ASSET__wav_2_data extends flash.utils.ByteArray {}
-@:file("assets/wav/3.data") class __ASSET__wav_3_data extends flash.utils.ByteArray {}
-@:file("assets/wav/4.data") class __ASSET__wav_4_data extends flash.utils.ByteArray {}
+@:file("assets/wav/79.data") class __ASSET__wav_79_data extends flash.utils.ByteArray {}
+@:file("assets/wav/80.data") class __ASSET__wav_80_data extends flash.utils.ByteArray {}
 @:file("assets/wav/81.data") class __ASSET__wav_81_data extends flash.utils.ByteArray {}
+@:file("assets/wav/82.data") class __ASSET__wav_82_data extends flash.utils.ByteArray {}
+@:file("assets/wav/83.data") class __ASSET__wav_83_data extends flash.utils.ByteArray {}
+@:file("assets/wav/84.data") class __ASSET__wav_84_data extends flash.utils.ByteArray {}
 @:file("assets/wav/dummy.txt") class __ASSET__wav_dummy_txt extends flash.utils.ByteArray {}
+@:file("assets/wav/test2.data") class __ASSET__wav_test2_data extends flash.utils.ByteArray {}
 
 
 #end

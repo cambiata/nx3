@@ -16,14 +16,14 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="F:\_lib\format\3,1,1" />
-    <class path="F:\_lib\openfl\2,0,1" />
-    <class path="F:\_lib\actuate\1,7,5" />
-    <class path="F:\_lib\thx,core\0,6,1\src" />
-    <class path="F:\_lib\thx,promise\0,2,1\src" />
+    <class path="f:\_haxelib\format\3,1,1" />
+    <class path="f:\_haxelib\openfl\2,0,1" />
+    <class path="f:\_haxelib\actuate\1,7,5" />
+    <class path="f:\_haxelib\thx,core\0,6,0\src" />
+    <class path="f:\_haxelib\thx,promise\0,2,1\src" />
     <class path="src" />
     <class path="..\src" />
-    <class path="F:\_lib\openfl\2,0,1\backends\flash" />
+    <class path="f:\_haxelib\openfl\2,0,1\backends\flash" />
     <class path="bin\flash\haxe" />
   </classpaths>
   <!-- Build options -->

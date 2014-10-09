@@ -24,7 +24,7 @@ class ApplicationMain {
 		
 		
 		
-		//nme.Lib.setPackage("Jonas Nyström", "WebPageFlash", "WebPageFlash", "1.0.0");
+		//nme.Lib.setPackage("Jonas Nyström", "score", "WebPageFlash", "1.0.0");
 		
 		loaderInfo = openfl.Lib.current.loaderInfo;
 		

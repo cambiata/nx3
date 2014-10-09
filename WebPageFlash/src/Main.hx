@@ -194,13 +194,10 @@ class Main extends Sprite
 
 			var coords = ncc.getCoordinatesFromTopVoice(pscore);
 			var value = ncc.getValueLenghtForTopVoice(pscore);
-			trace([value, coords]);
-			trace(this.soundLenght);
 		
 			this.playCoordinates = ncc.getPlayCoordinates(coords, value, this.soundLenght);
 			this.playPositions = Iterators.toArray(this.playCoordinates.keys());
 			this.playPositions.sort(function(a, b) return Reflect.compare(a, b) );
-			trace(this.playPositions);
 			
 			
 			if (this.channel != null) this.channel.stop();
@@ -216,7 +213,6 @@ class Main extends Sprite
 			//trace(this.channel.position);
 			if (this.channel.position > this.playPositions[0])
 			{
-				trace ('Found ' + this.channel.position);
 				var pos = this.playCoordinates.get(this.playPositions[0]);
 				this.pointerSprite.x = pos.x;
 				this.playPositions.shift();
@@ -233,7 +229,8 @@ class Main extends Sprite
 		function endScore()
 		{
 			this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-				this.playButton.draw(false);
+			this.playButton.playing = false;
+			this.pointerSprite.x = -100;
 		}
 
 
@@ -262,10 +259,10 @@ class Main extends Sprite
 		
 		this.pointerSprite = new Sprite();
 		this.addChild(this.pointerSprite);
-		this.pointerSprite.graphics.lineStyle(2, 0xFF0000);
+		this.pointerSprite.graphics.lineStyle(2, 0xFF8800, .5);
 		this.pointerSprite.graphics.moveTo(0, 0);
 		this.pointerSprite.graphics.lineTo(0, 100);
-		this.pointerSprite.x = 20;
+		this.pointerSprite.x = -100;
 	}
 
 	function added(e) 
