@@ -8,6 +8,8 @@ import nx3.NNote;
 import nx3.NScore;
 import thx.core.Tuple.Tuple2;
 
+using cx.ArrayTools;
+
 /**
  * ...
  * @author Jonas Nyström
@@ -102,6 +104,8 @@ class NoteSoundCalculator
 
 		var snotes:Array<Tuple2<Int, Int>> = [];
 		
+		var prevNoteTie: Bool = false;
+		
 		for (nbar in nscore.nbars)
 		{
 			var part = nbar.nparts[0];
@@ -110,11 +114,30 @@ class NoteSoundCalculator
 			{
 				var level = nnote.nheads[0].level;
 				var sign = nnote.nheads[0].sign;
+				var tie = nnote.nheads[0].tie != null;
+				
 				var midinote = this.getMidiNote(key, clef, level, sign, nnote.type);
 				var length = ENoteValTools.value(nnote.value);
-				snotes.push(new Tuple2(midinote, length));
+				
+				if (! prevNoteTie)
+					snotes.push(new Tuple2(midinote, length));
+				else {
+					var snote = snotes.last();
+					snote._1 = snote._1 + length;
+				}
+				
+				prevNoteTie = tie;
+				
 			}
 		}		
+		trace(nscore.configuration);
+		var countin = (nscore.configuration.countin != null) ? nscore.configuration.countin : 3;	
+		trace(countin);
+		var countinnotes = new Array<Tuple2<Int, Int>>();
+		for (i in 1...countin+1) countinnotes.push(new Tuple2(i, 3024) );
+		snotes = Lambda.array(Lambda.concat(countinnotes, snotes));		
+		
+		
 		
 		return snotes;
 	}

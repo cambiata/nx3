@@ -1,12 +1,12 @@
 <score>
-	<config test="12345" />
+	<config test="12345" tempo="120" countin="4" />
 	<bar time="4/4">
 		<part clef="ClefG"
 		      key="Natural">
 			<voice>
+				<note val="4"><headx level="1" tie="true" /></note>
+				<note val="4"><headx level="1" tie="true" /></note>
 				<note val="4"><headx level="1" /></note>
-				<note val="4"><headx level="1" /></note>
-				<pause val="4"><headx level="1" /></pause>
 				<note val="4"><headx level="1" /></note>
 			</voice>
 		</part>
