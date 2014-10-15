@@ -1,4 +1,5 @@
 package nx3.audio;
+import nx3.Constants;
 import nx3.EClef;
 import nx3.EKey;
 import nx3.ENoteType;
@@ -130,11 +131,11 @@ class NoteSoundCalculator
 				
 			}
 		}		
-		trace(nscore.configuration);
-		var countin = (nscore.configuration.countin != null) ? nscore.configuration.countin : 3;	
-		trace(countin);
+		
+		// Countin
+		var countin = (nscore.configuration.countin != null) ? nscore.configuration.countin : Constants.SCORE_DEFAULT_COUNTIN;	
 		var countinnotes = new Array<Tuple2<Int, Int>>();
-		for (i in 1...countin+1) countinnotes.push(new Tuple2(i, 3024) );
+		for (i in 1...countin+1) countinnotes.push(new Tuple2(i, Constants.BASE_NOTE_VALUE) );
 		snotes = Lambda.array(Lambda.concat(countinnotes, snotes));		
 		
 		

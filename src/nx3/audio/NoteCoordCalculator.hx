@@ -51,23 +51,63 @@ class NoteCoordCalculator
 		return sys.getValue();
 	}
 	
-	public function getPlayCoordinates(coords:Array<{pnote:PNote, x:Float, y:Float, pos:Int}>, noteValue:Int, soundLenght:Float, scaling:TScaling=null)
+	public function getCountinLength(pscore:PScore, soundValue:Int,  soundLenght:Float)
 	{
-		
+		var nscore = pscore.nscore;
+		var countin = (nscore.configuration.countin != null) ? nscore.configuration.countin :Constants.SCORE_DEFAULT_COUNTIN;	
+		var countinValue = countin * Constants.BASE_NOTE_VALUE;
+		var totalValue = soundValue + countinValue;
+		var countinLength = (countinValue / totalValue) * soundLenght;
+		/*
+		trace(countinLength);
+		trace(soundLenght);
+		trace(countinValue);
+		trace(value);
+		*/
+		return countinLength;
+	}
+	
+	public function getPlayCoordinates(coords:Array<{pnote:PNote, x:Float, y:Float, pos:Int}>, noteValue:Int, soundLenght:Float, countinLength:Float=0, scaling:TScaling=null)
+	{
+		var musicLength = soundLenght  - countinLength;
 		if (scaling == null) scaling = Scaling.NORMAL;
-		
 		var result = new Map<Int, Point>();
 		
 		for (coord in coords)
 		{
 			var pos = coord.pos;
 			var posDelta = pos / noteValue;
-			var soundPos = Std.int(soundLenght * posDelta);
+			var soundPos = Std.int(musicLength * posDelta + countinLength);
 			result.set(soundPos, new Point((Constants.HEAD_HALFWIDTH_NORMAL+coord.x) * scaling.unitX , coord.y * scaling.unitY ) );
-			//trace([soundPos, result.get(soundPos)]);
 		}
-		
 		return result;
 	}
+
+	public function getKeyCoordinates(coords:Array<{pnote:PNote, x:Float, y:Float, pos:Int}>, noteValue:Int, soundLenght:Float, countinLength:Float=0, scaling:TScaling=null)
+	{
+		var musicLength = soundLenght  - countinLength;
+		if (scaling == null) scaling = Scaling.NORMAL;
+		var result = new Map<Int, Point>();
+		
+		var previousTie:Bool = false;
+		for (coord in coords)
+		{
+			var pos = coord.pos;
+			var posDelta = pos / noteValue;
+			var soundPos = Std.int(musicLength * posDelta + countinLength);
+			var tie = coord.pnote.nnote.nheads[0].tie != null;
+			
+			if (! previousTie)
+				result.set(soundPos, new Point((Constants.HEAD_HALFWIDTH_NORMAL + coord.x) * scaling.unitX , coord.y * scaling.unitY ) );
+			else {
+				
+			}
+			previousTie = tie;
+		}
+		return result;
+	}
+	
+	
+	
 	
 }

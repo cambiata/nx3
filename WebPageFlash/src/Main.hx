@@ -17,10 +17,12 @@ import format.wav.Data.WAVE;
 import format.wav.Reader;
 import haxe.io.BytesInput;
 import haxe.macro.Format;
+import haxe.remoting.FlashJsConnection;
 import nx3.audio.NoteCoordCalculator;
 import nx3.audio.NoteSoundCalculator;
 import nx3.audio.PlayerFactory;
 import nx3.audio.WavConcatenator;
+import nx3.Constants;
 import nx3.geom.Point;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
@@ -59,6 +61,7 @@ class Main extends Sprite
 	var player:PlayerFactory;
 	var scoreSprite:nx3.flash.ScoreSprite;
 	var playButton:audio.flash.ui.PlayButton;
+	var klickResultSprite:Sprite;
 	var scaling:TScaling;
 	
 	
@@ -85,7 +88,14 @@ class Main extends Sprite
 		w.loadBytes(ByteArrayTools.fromBytes(data), PCMFormat.mono16format(bytes.length));
 		*/
 		
-		
+		Lib.current.stage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, function(e:flash.events.KeyboardEvent) {
+			//trace('key: ' + e.keyCode);
+			if (this.channel == null) return;
+			if (! this.playButton.playing) return;
+			var pos = this.channel.position;
+			checkKlickPosition(pos);
+			//trace(pos);
+		});		
 
 		
 		var text = new TextField();
@@ -94,11 +104,16 @@ class Main extends Sprite
 		
 		
 		scoreSprite.barClickHandler = function (e:MouseEvent, barNr:Int, nbar:NBar, score:PScore) {			
-			playScore(score);
-			
+			if (this.playButton.playing)
+				stopScore();
+			else
+			this.playButton.playing = true;
 		}	
 
-			
+		klickResultSprite = new Sprite();
+		this.addChild(klickResultSprite);
+	
+		
 		playButton.onPlayingChange = function(playing:Bool)
 		{
 			if (playing) 
@@ -126,6 +141,65 @@ class Main extends Sprite
 		});
 		loader.load(new URLRequest(score));
 		
+
+		
+	}
+	
+	static var RED_SPAN:Int = 200;
+	static var BLUE_SPAN:Int = 80;
+	static var GREEN_SPAN:Int = 40;
+	
+	
+	function clearKlickPositions()
+	{
+		this.klickResultSprite.graphics.clear();
+	}
+	
+	function checkKlickPosition(pos:Float) 
+	{
+		var arrowValue:Int = -5;
+		for (keyPos in this.keyPositions)
+		{
+			if ((pos >= (keyPos - RED_SPAN)) && (pos <= (keyPos + RED_SPAN)))
+			{
+				arrowValue = 2;
+				if ((pos >= (keyPos - BLUE_SPAN)) && (pos <= (keyPos + BLUE_SPAN)))
+				{
+					arrowValue = 1;
+					if ((pos >= (keyPos - GREEN_SPAN)) && (pos <= (keyPos + GREEN_SPAN)))
+					{
+						arrowValue = 0;
+					}
+				}
+				if (pos < keyPos) arrowValue = -arrowValue;
+				//trace('Hit: ${keyPos-pos} - $arrowValue');
+				
+				var coord = this.keyCoordinates.get(keyPos);
+				var cx = coord.x;
+				var cy = coord.y;
+				//trace([cx, cy]);
+				switch arrowValue
+				{
+					case 0: 
+						this.klickResultSprite.graphics.beginFill(0x00FF00);
+						this.klickResultSprite.graphics.drawCircle(cx, cy, 8);
+					case 1: case -1:
+						this.klickResultSprite.graphics.beginFill(0x0000FF);
+						this.klickResultSprite.graphics.drawCircle(cx, cy, 8);
+					case 2: case -2:
+						this.klickResultSprite.graphics.beginFill(0xFF0000);
+						this.klickResultSprite.graphics.drawCircle(cx, cy, 8);
+					case _:
+						trace('Hit: ${keyPos-pos} - $arrowValue');
+						
+				}
+				
+			}
+		}
+		
+		
+		
+		
 	}
 
 	var pscore:PScore;
@@ -134,8 +208,8 @@ class Main extends Sprite
 		{
 			this.pscore = pscore;
 			var snotes = nsc.getPlayableNotesFromTopVoice(pscore.nscore);
-
-			var wav = conc.getWav(snotes, 60);			
+			var tempo =  (pscore.nscore.configuration.tempo != null) ? pscore.nscore.configuration.tempo : Constants.SCORE_DEFAULT_TEMPO;
+			var wav = conc.getWav(snotes, tempo);			
 			
 			var swf : SWFFormat = new SWFFormat(PCMFormat.mono16format(wav.length));
 			var compiledSWF : ByteArray = swf.compileSWF(wav);
@@ -148,12 +222,13 @@ class Main extends Sprite
 				var sound:Sound = cast instance;							
 				resolve(sound);
 			});	    						
-			
 		}
 		
 		var soundLenght:Float = 0;
 		var playCoordinates:Map<Int, Point>=null;
 		var playPositions:Array<Int>;
+		var keyCoordinates:Map<Int, Point>=null;
+		var keyPositions:Array<Int>;
 		var pointerSprite:Sprite;
 		
 		function playScore(pscore:PScore)
@@ -190,18 +265,25 @@ class Main extends Sprite
 		
 		function playSound()
 		{
+			this.clearKlickPositions();
 			this.soundLenght = this.sound.length;	
 
 			var coords = ncc.getCoordinatesFromTopVoice(pscore);
 			var value = ncc.getValueLenghtForTopVoice(pscore);
+			var countinLength = ncc.getCountinLength(pscore, value, this.soundLenght);
 		
-			this.playCoordinates = ncc.getPlayCoordinates(coords, value, this.soundLenght);
+			this.playCoordinates = ncc.getPlayCoordinates(coords, value, this.soundLenght, countinLength);
 			this.playPositions = Iterators.toArray(this.playCoordinates.keys());
 			this.playPositions.sort(function(a, b) return Reflect.compare(a, b) );
 			
+			this.keyCoordinates = ncc.getKeyCoordinates(coords, value, this.soundLenght, countinLength);
+			this.keyPositions = Iterators.toArray(this.keyCoordinates.keys());
+			this.keyPositions.sort(function(a, b) return Reflect.compare(a, b) );
+
 			
 			if (this.channel != null) this.channel.stop();
 			this.channel = this.sound.play();
+			
 			this.channel.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) this.endScore() , false, 0, true);
 			this.addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
 		}
