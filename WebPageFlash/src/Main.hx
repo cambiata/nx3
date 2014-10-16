@@ -2,6 +2,7 @@ package ;
 
 import audio.flash.PCMFormat;
 import audio.flash.SWFFormat;
+import audio.flash.ui.GraphicArrows;
 import audio.flash.ui.PlayButton;
 import audio.flash.WavePlayer;
 import cx.ByteArrayTools;
@@ -63,6 +64,14 @@ class Main extends Sprite
 	var playButton:audio.flash.ui.PlayButton;
 	var klickResultSprite:Sprite;
 	var scaling:TScaling;
+	
+	var soundLenght:Float = 0;
+	var playCoordinates:Map<Int, Point>=null;
+	var playPositions:Array<Int>;
+	var keyCoordinates:Map<Int, Point>=null;
+	var keyPositions:Array<Int>;
+	var klickPositions:Array<Float>;
+	var pointerSprite:Sprite;	
 	
 	
 	/* ENTRY POINT */
@@ -153,13 +162,70 @@ class Main extends Sprite
 	function clearKlickPositions()
 	{
 		this.klickResultSprite.graphics.clear();
+		this.klickPositions = [];
 	}
 	
 	function checkKlickPosition(pos:Float) 
 	{
+		pos -= 100;		
+		
 		var arrowValue:Int = -5;
 		for (keyPos in this.keyPositions)
 		{
+			var diff = Math.abs(keyPos - pos);
+			
+			if (diff <= RED_SPAN)
+			{
+				arrowValue = 2;
+				if (diff <= BLUE_SPAN)
+				{
+					arrowValue = 1;					
+					if (diff <= GREEN_SPAN)
+					{
+						arrowValue = 0;
+					}
+				}
+				if (pos < keyPos) arrowValue = -arrowValue;
+				
+				var coord = this.keyCoordinates.get(keyPos);
+				var cx = coord.x;
+				var cy = coord.y;				
+				
+				switch arrowValue
+				{
+					case 0:
+						//this.klickResultSprite.graphics.beginFill(0x00FF00);
+						//this.klickResultSprite.graphics.drawCircle(cx, cy, 8);
+						GraphicArrows.drawArrow(this.klickResultSprite.graphics, 0x00FF00, GraphicArrowType.UP, cx, cy);
+						
+					case 1: 
+						GraphicArrows.drawArrow(this.klickResultSprite.graphics, 0x0000FF, GraphicArrowType.RIGHT, cx, cy);
+						//this.klickResultSprite.graphics.beginFill(0x0000FF);
+						//this.klickResultSprite.graphics.drawCircle(cx, cy, 8);
+					case -1:
+						GraphicArrows.drawArrow(this.klickResultSprite.graphics, 0x0000FF, GraphicArrowType.LEFT, cx, cy);
+						//this.klickResultSprite.graphics.beginFill(0x0000FF);
+						//this.klickResultSprite.graphics.drawCircle(cx, cy, 8);
+					case 2: 
+						GraphicArrows.drawArrow(this.klickResultSprite.graphics, 0xFF0000, GraphicArrowType.RIGHT, cx, cy);
+						//this.klickResultSprite.graphics.beginFill(0xFF0000);
+						//this.klickResultSprite.graphics.drawCircle(cx, cy, 8);						
+					case -2:
+						GraphicArrows.drawArrow(this.klickResultSprite.graphics, 0xFF0000, GraphicArrowType.LEFT, cx, cy);
+						//this.klickResultSprite.graphics.beginFill(0xFF0000);
+						//this.klickResultSprite.graphics.drawCircle(cx, cy, 8);
+					case _:
+						trace('Hit: ${keyPos-pos} - $arrowValue');
+				}
+				
+				var diff =keyPos - pos;
+				
+				trace([pos, keyPos, diff, arrowValue]);
+				this.klickPositions.push(Std.int(pos));
+				break;				
+			}
+			
+			/*
 			if ((pos >= (keyPos - RED_SPAN)) && (pos <= (keyPos + RED_SPAN)))
 			{
 				arrowValue = 2;
@@ -193,8 +259,11 @@ class Main extends Sprite
 						trace('Hit: ${keyPos-pos} - $arrowValue');
 						
 				}
-				
+				trace([pos, keyPos]);
+				this.klickPositions.push(Std.int(pos));
+				break;
 			}
+			*/
 		}
 		
 		
@@ -204,116 +273,114 @@ class Main extends Sprite
 
 	var pscore:PScore;
 	
-		function ssPlay(pscore:PScore, resolve:Sound->Void) 
-		{
-			this.pscore = pscore;
-			var snotes = nsc.getPlayableNotesFromTopVoice(pscore.nscore);
-			var tempo =  (pscore.nscore.configuration.tempo != null) ? pscore.nscore.configuration.tempo : Constants.SCORE_DEFAULT_TEMPO;
-			var wav = conc.getWav(snotes, tempo);			
-			
-			var swf : SWFFormat = new SWFFormat(PCMFormat.mono16format(wav.length));
-			var compiledSWF : ByteArray = swf.compileSWF(wav);
-			var compiledSWFLoader : Loader = new Loader();
-			compiledSWFLoader.loadBytes(compiledSWF);
-			compiledSWFLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event) {
-				var loaderInfo:LoaderInfo = cast(e.target, LoaderInfo);        
-				var definition = loaderInfo.applicationDomain.getDefinition(SWFFormat.CLASS_NAME);
-				var instance = Type.createInstance(definition, []);
-				var sound:Sound = cast instance;							
-				resolve(sound);
-			});	    						
-		}
+	function ssPlay(pscore:PScore, resolve:Sound->Void) 
+	{
+		this.pscore = pscore;
+		var snotes = nsc.getPlayableNotesFromTopVoice(pscore.nscore);
+		var tempo =  (pscore.nscore.configuration.tempo != null) ? pscore.nscore.configuration.tempo : Constants.SCORE_DEFAULT_TEMPO;
+		var wav = conc.getWav(snotes, tempo);			
 		
-		var soundLenght:Float = 0;
-		var playCoordinates:Map<Int, Point>=null;
-		var playPositions:Array<Int>;
-		var keyCoordinates:Map<Int, Point>=null;
-		var keyPositions:Array<Int>;
-		var pointerSprite:Sprite;
-		
-		function playScore(pscore:PScore)
-		{
-			this.playButton.draw(true);
-			if (this.sound != null)
-			{
-				playSound();
-				/*
-				this.soundLenght = this.sound.length
-				if (this.channel != null) this.channel.stop();
-				this.channel = this.sound.play();
-				this.channel.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) this.endScore() , false, 0, true);
-				*/
-			}
-			else
-			{
-				var promise = thx.promise.Promise.create(function(resolve: Sound->Void, reject: Error->Void) {
-					this.ssPlay(pscore, resolve);
-				});
-				
-				promise.success(function(sound:Sound) {
-					this.sound = sound;
-					playSound();
-					/*
-					if (this.channel != null) this.channel.stop();
-					this.channel = sound.play();
-					this.sound.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) trace('COMPLETE') );
-					this.channel.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) this.endScore() , false, 0, true);
-					*/
-				});				
-			}
-		}
-		
-		function playSound()
-		{
-			this.clearKlickPositions();
-			this.soundLenght = this.sound.length;	
+		var swf : SWFFormat = new SWFFormat(PCMFormat.mono16format(wav.length));
+		var compiledSWF : ByteArray = swf.compileSWF(wav);
+		var compiledSWFLoader : Loader = new Loader();
+		compiledSWFLoader.loadBytes(compiledSWF);
+		compiledSWFLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event) {
+			var loaderInfo:LoaderInfo = cast(e.target, LoaderInfo);        
+			var definition = loaderInfo.applicationDomain.getDefinition(SWFFormat.CLASS_NAME);
+			var instance = Type.createInstance(definition, []);
+			var sound:Sound = cast instance;							
+			resolve(sound);
+		});	    						
+	}
+	
 
-			var coords = ncc.getCoordinatesFromTopVoice(pscore);
-			var value = ncc.getValueLenghtForTopVoice(pscore);
-			var countinLength = ncc.getCountinLength(pscore, value, this.soundLenght);
-		
-			this.playCoordinates = ncc.getPlayCoordinates(coords, value, this.soundLenght, countinLength);
-			this.playPositions = Iterators.toArray(this.playCoordinates.keys());
-			this.playPositions.sort(function(a, b) return Reflect.compare(a, b) );
-			
-			this.keyCoordinates = ncc.getKeyCoordinates(coords, value, this.soundLenght, countinLength);
-			this.keyPositions = Iterators.toArray(this.keyCoordinates.keys());
-			this.keyPositions.sort(function(a, b) return Reflect.compare(a, b) );
-
-			
+	
+	function playScore(pscore:PScore)
+	{
+		this.playButton.draw(true);
+		if (this.sound != null)
+		{
+			playSound();
+			/*
+			this.soundLenght = this.sound.length
 			if (this.channel != null) this.channel.stop();
 			this.channel = this.sound.play();
-			
 			this.channel.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) this.endScore() , false, 0, true);
-			this.addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
+			*/
 		}
-		
-		private function onEnterFrame(e:Event):Void 
+		else
 		{
-			if (this.channel == null) return;
-			if (this.playPositions.length < 1) return;
-			//trace(this.channel.position);
-			if (this.channel.position > this.playPositions[0])
-			{
-				var pos = this.playCoordinates.get(this.playPositions[0]);
-				this.pointerSprite.x = pos.x;
-				this.playPositions.shift();
-			}
-		}
-		
-		
-		function stopScore()
-		{
+			var promise = thx.promise.Promise.create(function(resolve: Sound->Void, reject: Error->Void) {
+				this.ssPlay(pscore, resolve);
+			});
+			
+			promise.success(function(sound:Sound) {
+				this.sound = sound;
+				playSound();
+				/*
 				if (this.channel != null) this.channel.stop();
-				endScore();
+				this.channel = sound.play();
+				this.sound.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) trace('COMPLETE') );
+				this.channel.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) this.endScore() , false, 0, true);
+				*/
+			});				
 		}
+	}
+	
+	function playSound()
+	{
+		this.clearKlickPositions();
+		this.soundLenght = this.sound.length;	
 
-		function endScore()
+		var coords = ncc.getCoordinatesFromTopVoice(pscore);
+		var value = ncc.getValueLenghtForTopVoice(pscore);
+		var countinLength = ncc.getCountinLength(pscore, value, this.soundLenght);
+	
+		this.playCoordinates = ncc.getPlayCoordinates(coords, value, this.soundLenght, countinLength);
+		this.playPositions = Iterators.toArray(this.playCoordinates.keys());
+		this.playPositions.sort(function(a, b) return Reflect.compare(a, b) );
+		
+		this.keyCoordinates = ncc.getKeyCoordinates(coords, value, this.soundLenght, countinLength);
+		this.keyPositions = Iterators.toArray(this.keyCoordinates.keys());
+		this.keyPositions.sort(function(a, b) return Reflect.compare(a, b) );
+
+		
+		if (this.channel != null) this.channel.stop();
+		this.channel = this.sound.play();
+		
+		this.channel.addEventListener(flash.events.Event.SOUND_COMPLETE, function(e) this.endScore() , false, 0, true);
+		this.addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
+	}
+	
+	private function onEnterFrame(e:Event):Void 
+	{
+		if (this.channel == null) return;
+		if (this.playPositions.length < 1) return;
+		//trace(this.channel.position);
+		if (this.channel.position > this.playPositions[0])
 		{
-			this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			this.playButton.playing = false;
-			this.pointerSprite.x = -100;
+			var pos = this.playCoordinates.get(this.playPositions[0]);
+			this.pointerSprite.x = pos.x;
+			this.playPositions.shift();
 		}
+	}
+	
+	
+	function stopScore()
+	{
+			if (this.channel != null) this.channel.stop();
+			endScore();
+	}
+
+	function endScore()
+	{
+		this.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+		this.playButton.playing = false;
+		this.pointerSprite.x = -100;
+		
+		trace(this.keyPositions);
+		trace(this.klickPositions);
+	}
 
 
 	

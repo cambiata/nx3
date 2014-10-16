@@ -92,6 +92,12 @@ class NoteCoordCalculator
 		var previousTie:Bool = false;
 		for (coord in coords)
 		{
+			switch coord.pnote.nnote.type
+			{
+				case ENoteType.Pause: continue;
+				case _:
+			}
+			
 			var pos = coord.pos;
 			var posDelta = pos / noteValue;
 			var soundPos = Std.int(musicLength * posDelta + countinLength);
