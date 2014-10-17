@@ -64,7 +64,7 @@ package
 				//icyDecoder.startProcessingByLoop();
 				
 			});
-			ul.load(new URLRequest('test.mp3'));
+			ul.load(new URLRequest('micro.mp3'));
 			
 			// Create a sound object for playback, and set its sampledatahandler to 
 			// ICYHandler, that's populated with the decoder data

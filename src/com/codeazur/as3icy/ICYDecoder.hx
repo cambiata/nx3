@@ -197,10 +197,21 @@ class ICYDecoder extends EventDispatcher
 				var ob:Array<Float> = _decoder.outputBuffer.getBuffer();
 				
 				//for (var i:Int = 0; i < ob.length; i++) {
+				trace(ob.length);
+				
 				for (i in 0...ob.length)	
 				{
-					sampleBuffer.writeFloat(ob[i]);
-					xBuffer.writeFloat(ob[i]);
+					//if (i < 10) trace(ob[i]);
+					
+					
+					#if (flash)
+					var f = ob[i];
+					#else
+					var f:Float = (ob[i] != null) ? ob[i]* 1.0 : 0;
+					#end
+					
+					sampleBuffer.writeFloat(f);
+					xBuffer.writeFloat(f);
 				}
 				
 				

@@ -99,19 +99,19 @@ class ICYDecoder extends EventDispatcher
 		*/   
 		
 		//-----------------------------------------------------------------------------------------------------  
-		
-		private function readFrameHeader() : Bool
+	
+	private function readFrameHeader() : Bool
+	{
+		var ret : Bool = true;
+		if (_bytesSource.bytesAvailable >= 1) 
 		{
-			var ret : Bool = true;
-			if (_bytesSource.bytesAvailable >= 1) 
+			if (_icyMetaInterval > 0 && ++_read > _icyMetaInterval) 
 			{
-				if (_icyMetaInterval > 0 && ++_read > _icyMetaInterval) 
-				{
-					_readFuncContinue = readFrameHeader; _readFunc = readMetaDataSize;
-					return ret;
-				}
+				_readFuncContinue = readFrameHeader; _readFunc = readMetaDataSize;
+				return ret;
 			}
 		}
+	}
             }try{_mpegFrame.setHeaderByteAt(_headerIndex, _bytesSource.readUnsignedByte());if (++_headerIndex == 4) {_readFunc = (_mpegFrame.hasCRC) ? readCRC : readFrame;_headerIndex = 0;
                 }
             }            catch (e : Error){  //trace(e.message);  _headerIndex = 0;
@@ -126,6 +126,7 @@ class ICYDecoder extends EventDispatcher
         }if (_bytesSource.bytesAvailable >= len) {var frameData : ByteArray = new ByteArray();if (_icyMetaInterval > 0 && _frameDataTmp != null) {_bytesSource.readBytes(_frameDataTmp, _frameDataTmp.length, len);frameData = _frameDataTmp;
             }
             else {_bytesSource.readBytes(frameData, 0, len);
+
             }if (_icyMetaInterval > 0 && _read >= _icyMetaInterval) {_frameDataTmp = frameData;_readFuncContinue = readFrame;_readFunc = readMetaDataSize;
             }
             else {  //----------------------------------------------------------    // En frame är färdigladdad!  _frameDataTmp = null;_mpegFrame.data.writeBytes(frameData);_mpegFrame.data.position = 0;  // decode the mpeg frame we just read  _decoder.decodeFrame(_mpegFrame);  // skriv till sampleBuffer...  var ob : Array<Float> = _decoder.outputBuffer.getBuffer();for (i in 0...ob.length){sampleBuffer.writeFloat(ob[i]);xBuffer.writeFloat(ob[i]);

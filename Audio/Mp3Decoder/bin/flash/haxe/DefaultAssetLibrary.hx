@@ -46,6 +46,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
+		className.set ("assets/micro.mp3", __ASSET__assets_micro_mp3);
+		type.set ("assets/micro.mp3", AssetType.MUSIC);
+		className.set ("assets/nano.mp3", __ASSET__assets_nano_mp3);
+		type.set ("assets/nano.mp3", AssetType.MUSIC);
 		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
 		type.set ("assets/openfl.svg", AssetType.TEXT);
 		className.set ("assets/test.mp3", __ASSET__assets_test_mp3);
@@ -55,6 +59,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#elseif html5
 		
 		var id;
+		id = "assets/micro.mp3";
+		path.set (id, id);
+		type.set (id, AssetType.MUSIC);
+		id = "assets/nano.mp3";
+		path.set (id, id);
+		type.set (id, AssetType.MUSIC);
 		id = "assets/openfl.svg";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
@@ -68,6 +78,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
+		
+		className.set ("assets/micro.mp3", __ASSET__assets_micro_mp3);
+		type.set ("assets/micro.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/nano.mp3", __ASSET__assets_nano_mp3);
+		type.set ("assets/nano.mp3", AssetType.MUSIC);
 		
 		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
 		type.set ("assets/openfl.svg", AssetType.TEXT);
@@ -691,6 +707,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if pixi
 #elseif flash
 
+@:keep class __ASSET__assets_micro_mp3 extends openfl.media.Sound { }
+@:keep class __ASSET__assets_nano_mp3 extends openfl.media.Sound { }
 @:keep class __ASSET__assets_openfl_svg extends openfl.utils.ByteArray { }
 @:keep class __ASSET__assets_test_mp3 extends openfl.media.Sound { }
 
@@ -701,9 +719,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
 #elseif (windows || mac || linux)
 
 
+@:sound("assets/micro.mp3") class __ASSET__assets_micro_mp3 extends flash.media.Sound {}
+@:sound("assets/nano.mp3") class __ASSET__assets_nano_mp3 extends flash.media.Sound {}
 @:file("assets/openfl.svg") class __ASSET__assets_openfl_svg extends flash.utils.ByteArray {}
 @:sound("assets/test.mp3") class __ASSET__assets_test_mp3 extends flash.media.Sound {}
 
