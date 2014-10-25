@@ -3,12 +3,14 @@ package;
 import audio.flash.PCMFormat;
 import audio.flash.SoundFactory;
 import audio.flash.SWFFormat;
+import audio.flash.WaveEncoder;
 import cx.ByteArrayTools;
 import cx.TimerTools;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.Lib;
 import flash.media.Sound;
+import flash.net.FileReference;
 import flash.utils.ByteArray;
 import format.wav.Reader;
 import haxe.io.BytesInput;
@@ -58,6 +60,19 @@ class Main
 			var ba:ByteArray = new ByteArray();
 			sound.extract(ba, 1000000);
 			trace(ba.length);
+
+			
+			ba.position = 0;
+			for (i in 0...40) {
+				var val:Float = ba.readFloat();
+				trace([i, val]);
+			}
+			
+			
+			var wave2:ByteArray = new WaveEncoder().encode(ba);
+			var fr:FileReference = new FileReference();
+			fr.save(wave2, 'encoded.wav');
+			
 			
 			
 		}, 500);
