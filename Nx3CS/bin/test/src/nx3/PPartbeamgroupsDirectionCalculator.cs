@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PPartbeamgroupsDirectionCalculator(global::nx3.PPartbeamgroupsDirectionCalculator __temp_me111, global::nx3.PPart ppart){
+		public static   void __hx_ctor_nx3_PPartbeamgroupsDirectionCalculator(global::nx3.PPartbeamgroupsDirectionCalculator __temp_me113, global::nx3.PPart ppart){
 			unchecked {
 				#line 12 "F:\\nx3\\src\\nx3\\PPartbeamgroupsDirectionCalculator.hx"
-				__temp_me111.ppart = ppart;
+				__temp_me113.ppart = ppart;
 			}
 			#line default
 		}

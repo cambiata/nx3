@@ -1,10 +1,10 @@
 
 #pragma warning disable 109, 114, 219, 429, 168, 162
 namespace nx3{
-	public  class PNote : global::haxe.lang.HxObject {
+	public  class PNote : global::haxe.lang.HxObject, global::hxlazy.Lazy {
 		public    PNote(global::haxe.lang.EmptyObject empty){
 			unchecked {
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				{
 				}
 				
@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PNote(global::nx3.PNote __temp_me103, global::nx3.NNote nnote){
+		public static   void __hx_ctor_nx3_PNote(global::nx3.PNote __temp_me105, global::nx3.NNote nnote){
 			unchecked {
 				#line 20 "F:\\nx3\\src\\nx3\\PNote.hx"
-				__temp_me103.nnote = nnote;
+				__temp_me105.nnote = nnote;
 			}
 			#line default
 		}
@@ -33,7 +33,7 @@ namespace nx3{
 		
 		public static  new object __hx_createEmpty(){
 			unchecked {
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				return new global::nx3.PNote(((global::haxe.lang.EmptyObject) (global::haxe.lang.EmptyObject.EMPTY) ));
 			}
 			#line default
@@ -42,7 +42,7 @@ namespace nx3{
 		
 		public static  new object __hx_create(global::Array arr){
 			unchecked {
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				return new global::nx3.PNote(((global::nx3.NNote) (arr[0]) ));
 			}
 			#line default
@@ -51,51 +51,38 @@ namespace nx3{
 		
 		public  global::nx3.NNote nnote;
 		
-		public  global::nx3.PVoice voice;
-		
-		public virtual   global::nx3.PVoice getVoice(){
+		public virtual   object iterator(){
 			unchecked {
-				#line 26 "F:\\nx3\\src\\nx3\\PNote.hx"
-				return this.voice;
+				#line 23 "F:\\nx3\\src\\nx3\\PNote.hx"
+				{
+					#line 23 "F:\\nx3\\src\\nx3\\PNote.hx"
+					global::Array<object> _this = this.get_heads();
+					#line 23 "F:\\nx3\\src\\nx3\\PNote.hx"
+					return new global::_Array.ArrayIterator<object>(((global::Array<object>) (_this) ));
+				}
+				
 			}
 			#line default
 		}
 		
 		
-		public  global::Array<object> heads;
+		public  int length;
 		
-		public virtual   global::Array<object> getHeads(){
+		public virtual   int get_length(){
 			unchecked {
-				#line 34 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (( this.heads != default(global::Array<object>) )) {
-					#line 34 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return this.heads;
-				}
-				
-				#line 35 "F:\\nx3\\src\\nx3\\PNote.hx"
-				this.heads = new global::Array<object>(new object[]{});
-				#line 37 "F:\\nx3\\src\\nx3\\PNote.hx"
-				{
-					#line 37 "F:\\nx3\\src\\nx3\\PNote.hx"
-					int _g = 0;
-					#line 37 "F:\\nx3\\src\\nx3\\PNote.hx"
-					global::Array<object> _g1 = this.nnote.get_nheads();
-					#line 37 "F:\\nx3\\src\\nx3\\PNote.hx"
-					while (( _g < _g1.length )){
-						#line 37 "F:\\nx3\\src\\nx3\\PNote.hx"
-						global::nx3.NHead nhead = ((global::nx3.NHead) (_g1[_g]) );
-						#line 37 "F:\\nx3\\src\\nx3\\PNote.hx"
-						 ++ _g;
-						#line 39 "F:\\nx3\\src\\nx3\\PNote.hx"
-						global::nx3.PHead phead = new global::nx3.PHead(((global::nx3.NHead) (nhead) ));
-						phead.note = this;
-						this.heads.push(phead);
-					}
-					
-				}
-				
-				#line 43 "F:\\nx3\\src\\nx3\\PNote.hx"
-				return this.heads;
+				#line 25 "F:\\nx3\\src\\nx3\\PNote.hx"
+				return this.get_heads().length;
+			}
+			#line default
+		}
+		
+		
+		public  global::nx3.PVoice voice;
+		
+		public virtual   global::nx3.PVoice getVoice(){
+			unchecked {
+				#line 31 "F:\\nx3\\src\\nx3\\PNote.hx"
+				return this.voice;
 			}
 			#line default
 		}
@@ -105,19 +92,25 @@ namespace nx3{
 		
 		public virtual   global::nx3.PBeamgroup getBeamgroup(){
 			unchecked {
-				#line 51 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 67 "F:\\nx3\\src\\nx3\\PNote.hx"
+				if (( this.voice == default(global::nx3.PVoice) )) {
+					#line 67 "F:\\nx3\\src\\nx3\\PNote.hx"
+					throw global::haxe.lang.HaxeException.wrap("PNote doesn\'t have a parent PVoice");
+				}
+				
+				#line 68 "F:\\nx3\\src\\nx3\\PNote.hx"
 				if (( this.beamgroup == default(global::nx3.PBeamgroup) )) {
-					#line 53 "F:\\nx3\\src\\nx3\\PNote.hx"
+					#line 70 "F:\\nx3\\src\\nx3\\PNote.hx"
 					this.voice.getBeamgroups(default(global::Array<global::nx3.ENoteVal>));
 				}
 				
-				#line 55 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 72 "F:\\nx3\\src\\nx3\\PNote.hx"
 				if (( this.beamgroup == default(global::nx3.PBeamgroup) )) {
-					#line 55 "F:\\nx3\\src\\nx3\\PNote.hx"
+					#line 72 "F:\\nx3\\src\\nx3\\PNote.hx"
 					throw global::haxe.lang.HaxeException.wrap("this should not happen");
 				}
 				
-				#line 56 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 73 "F:\\nx3\\src\\nx3\\PNote.hx"
 				return this.beamgroup;
 			}
 			#line default
@@ -126,7 +119,7 @@ namespace nx3{
 		
 		public virtual   global::nx3.EDirectionUD getDirection(){
 			unchecked {
-				#line 61 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 79 "F:\\nx3\\src\\nx3\\PNote.hx"
 				return this.getBeamgroup().getDirection();
 			}
 			#line default
@@ -137,148 +130,26 @@ namespace nx3{
 		
 		public virtual   global::nx3.PComplex getComplex(){
 			unchecked {
-				#line 67 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 85 "F:\\nx3\\src\\nx3\\PNote.hx"
+				if (( this.voice == default(global::nx3.PVoice) )) {
+					#line 85 "F:\\nx3\\src\\nx3\\PNote.hx"
+					throw global::haxe.lang.HaxeException.wrap("PNote doesn\'t have a parent PVoice");
+				}
+				
+				#line 86 "F:\\nx3\\src\\nx3\\PNote.hx"
 				if (( this.complex == default(global::nx3.PComplex) )) {
-					#line 69 "F:\\nx3\\src\\nx3\\PNote.hx"
+					#line 88 "F:\\nx3\\src\\nx3\\PNote.hx"
 					this.voice.getPart().getComplexes();
 				}
 				
-				#line 71 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 90 "F:\\nx3\\src\\nx3\\PNote.hx"
 				if (( this.complex == default(global::nx3.PComplex) )) {
-					#line 71 "F:\\nx3\\src\\nx3\\PNote.hx"
+					#line 90 "F:\\nx3\\src\\nx3\\PNote.hx"
 					throw global::haxe.lang.HaxeException.wrap("Shouldn\'t happen");
 				}
 				
-				#line 72 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 91 "F:\\nx3\\src\\nx3\\PNote.hx"
 				return this.complex;
-			}
-			#line default
-		}
-		
-		
-		public  global::Array<object> headsRects;
-		
-		public virtual   global::Array<object> getHeadsRects(){
-			unchecked {
-				#line 78 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (( this.headsRects != default(global::Array<object>) )) {
-					#line 78 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return this.headsRects;
-				}
-				
-				#line 79 "F:\\nx3\\src\\nx3\\PNote.hx"
-				global::nx3.PNoteheadsRectsCalculator calculator = new global::nx3.PNoteheadsRectsCalculator(((global::nx3.PNote) (this) ));
-				this.headsRects = calculator.getHeadsRects();
-				return this.headsRects;
-			}
-			#line default
-		}
-		
-		
-		public  global::nx3.geom.Rectangle staveRect;
-		
-		public  bool staveRectChecked;
-		
-		public virtual   global::nx3.geom.Rectangle getStaveRect(){
-			unchecked {
-				#line 88 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (this.staveRectChecked) {
-					#line 88 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return this.staveRect;
-				}
-				
-				#line 89 "F:\\nx3\\src\\nx3\\PNote.hx"
-				this.staveRect = this.getComplex().getStaveRect(this);
-				this.staveRectChecked = true;
-				return this.staveRect;
-			}
-			#line default
-		}
-		
-		
-		public  global::haxe.lang.Null<double> staveXPosition;
-		
-		public virtual   double getStaveXPosition(){
-			unchecked {
-				#line 97 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (this.staveXPosition.hasValue) {
-					#line 97 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return this.staveXPosition.@value;
-				}
-				
-				#line 99 "F:\\nx3\\src\\nx3\\PNote.hx"
-				global::nx3.geom.Rectangle staverect = this.getStaveRect();
-				if (( staverect == default(global::nx3.geom.Rectangle) )) {
-					#line 100 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return ((double) (0) );
-				}
-				
-				#line 102 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (( this.getDirection() == global::nx3.EDirectionUD.Up )) {
-					#line 102 "F:\\nx3\\src\\nx3\\PNote.hx"
-					this.staveXPosition = new global::haxe.lang.Null<double>(staverect.width, true);
-				}
-				 else {
-					#line 102 "F:\\nx3\\src\\nx3\\PNote.hx"
-					this.staveXPosition = new global::haxe.lang.Null<double>(staverect.x, true);
-				}
-				
-				#line 103 "F:\\nx3\\src\\nx3\\PNote.hx"
-				return this.staveXPosition.@value;
-			}
-			#line default
-		}
-		
-		
-		public  global::nx3.geom.Rectangle baserect;
-		
-		public virtual   global::nx3.geom.Rectangle getBaseRect(){
-			unchecked {
-				#line 109 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (( this.baserect != default(global::nx3.geom.Rectangle) )) {
-					#line 109 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return this.baserect;
-				}
-				
-				#line 110 "F:\\nx3\\src\\nx3\\PNote.hx"
-				this.baserect = new global::nx3.PBaseRectCalculator(((global::nx3.PNote) (this) )).getBaseRect();
-				return this.baserect;
-			}
-			#line default
-		}
-		
-		
-		public  global::haxe.lang.Null<double> xoffset;
-		
-		public virtual   double getXOffset(){
-			unchecked {
-				#line 117 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (this.xoffset.hasValue) {
-					#line 117 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return this.xoffset.@value;
-				}
-				
-				#line 118 "F:\\nx3\\src\\nx3\\PNote.hx"
-				this.xoffset = new global::haxe.lang.Null<double>(this.getComplex().getNoteXOffset(this), true);
-				return this.xoffset.@value;
-			}
-			#line default
-		}
-		
-		
-		public  global::haxe.lang.Null<double> xposition;
-		
-		public virtual   double getXPosition(){
-			unchecked {
-				#line 125 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (this.xposition.hasValue) {
-					#line 125 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return this.xposition.@value;
-				}
-				
-				#line 126 "F:\\nx3\\src\\nx3\\PNote.hx"
-				this.xposition = new global::haxe.lang.Null<double>(( this.getComplex().getXPosition() + this.getXOffset() ), true);
-				return this.xposition.@value;
 			}
 			#line default
 		}
@@ -286,53 +157,205 @@ namespace nx3{
 		
 		public virtual   global::Array<object> getTies(){
 			unchecked {
-				#line 132 "F:\\nx3\\src\\nx3\\PNote.hx"
-				return this.nnote.getTies();
+				#line 204 "F:\\nx3\\src\\nx3\\PNote.hx"
+				return this.nnote.get_ties();
 			}
 			#line default
 		}
 		
 		
-		public  global::nx3.PNote next;
+		public  global::Array<object> __lazyheads;
+		
+		
+		
+		public virtual   global::Array<object> get_heads(){
+			unchecked {
+				#line 7 "F:\\nx3\\src\\hxlazy\\Lazy.hx"
+				global::Array<object> _g = new global::Array<object>(new object[]{this});
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (( this.__lazyheads != default(global::Array<object>) )) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazyheads;
+				}
+				
+				#line 98 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				return this.__lazyheads = global::Lambda.array<object>(global::Lambda.map<object, object>(this.nnote, new global::nx3.PNote_get_heads_54__Fun(((global::Array<object>) (_g) ))));
+			}
+			#line default
+		}
+		
+		
+		public  global::Array<object> __lazyheadsRects;
+		
+		public virtual   global::Array<object> getHeadsRects(){
+			unchecked {
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (( this.__lazyheadsRects != default(global::Array<object>) )) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazyheadsRects;
+				}
+				
+				#line 98 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				return this.__lazyheadsRects = new global::nx3.PNoteheadsRectsCalculator(((global::nx3.PNote) (this) )).getHeadsRects();
+			}
+			#line default
+		}
+		
+		
+		public  global::nx3.geom.Rectangle __lazystaveRect;
+		
+		public virtual   global::nx3.geom.Rectangle getStaveRect(){
+			unchecked {
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (( this.__lazystaveRect != default(global::nx3.geom.Rectangle) )) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazystaveRect;
+				}
+				
+				#line 98 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				return this.__lazystaveRect = this.getComplex().getStaveRect(this);
+			}
+			#line default
+		}
+		
+		
+		public  global::haxe.lang.Null<double> __lazystaveXPosition;
+		
+		public virtual   global::haxe.lang.Null<double> getStaveXPosition(){
+			unchecked {
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (this.__lazystaveXPosition.hasValue) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazystaveXPosition;
+				}
+				
+				#line 146 "F:\\nx3\\src\\nx3\\PNote.hx"
+				global::nx3.geom.Rectangle staverect = this.getStaveRect();
+				if (( staverect == default(global::nx3.geom.Rectangle) )) {
+					#line 98 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazystaveXPosition = new global::haxe.lang.Null<double>(((double) (0) ), true);
+				}
+				
+				#line 148 "F:\\nx3\\src\\nx3\\PNote.hx"
+				return ( (( this.getDirection() == global::nx3.EDirectionUD.Up )) ? (this.__lazystaveXPosition = new global::haxe.lang.Null<double>(staverect.width, true)) : (this.__lazystaveXPosition = new global::haxe.lang.Null<double>(staverect.x, true)) );
+			}
+			#line default
+		}
+		
+		
+		public  global::nx3.geom.Rectangle __lazybaseRect;
+		
+		public virtual   global::nx3.geom.Rectangle getBaseRect(){
+			unchecked {
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (( this.__lazybaseRect != default(global::nx3.geom.Rectangle) )) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazybaseRect;
+				}
+				
+				#line 98 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				return this.__lazybaseRect = new global::nx3.PBaseRectCalculator(((global::nx3.PNote) (this) )).getBaseRect();
+			}
+			#line default
+		}
+		
+		
+		public  global::haxe.lang.Null<double> __lazyxOffset;
+		
+		public virtual   global::haxe.lang.Null<double> getXOffset(){
+			unchecked {
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (this.__lazyxOffset.hasValue) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazyxOffset;
+				}
+				
+				#line 98 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				return this.__lazyxOffset = new global::haxe.lang.Null<double>(this.getComplex().getNoteXOffset(this), true);
+			}
+			#line default
+		}
+		
+		
+		public  global::haxe.lang.Null<double> __lazyxPosition;
+		
+		public virtual   global::haxe.lang.Null<double> getXPosition(){
+			unchecked {
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (this.__lazyxPosition.hasValue) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazyxPosition;
+				}
+				
+				#line 98 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				return this.__lazyxPosition = new global::haxe.lang.Null<double>(( this.getComplex().getXPosition() + this.getXOffset().@value ), true);
+			}
+			#line default
+		}
+		
+		
+		public  global::nx3.PNote __lazynext;
 		
 		public virtual   global::nx3.PNote getNext(){
 			unchecked {
-				#line 138 "F:\\nx3\\src\\nx3\\PNote.hx"
-				if (( this.next != default(global::nx3.PNote) )) {
-					#line 138 "F:\\nx3\\src\\nx3\\PNote.hx"
-					return this.next;
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (( this.__lazynext != default(global::nx3.PNote) )) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazynext;
 				}
 				
-				#line 139 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 220 "F:\\nx3\\src\\nx3\\PNote.hx"
 				int idx = this.voice.getNotes().indexOf(this, default(global::haxe.lang.Null<int>));
 				{
-					#line 140 "F:\\nx3\\src\\nx3\\PNote.hx"
+					#line 221 "F:\\nx3\\src\\nx3\\PNote.hx"
 					global::Array<object> a = this.voice.getNotes();
-					#line 140 "F:\\nx3\\src\\nx3\\PNote.hx"
+					#line 221 "F:\\nx3\\src\\nx3\\PNote.hx"
 					int idx1 = ( idx + 1 );
-					#line 140 "F:\\nx3\\src\\nx3\\PNote.hx"
-					if (( ( idx1 < 0 ) || ( idx1 > ( a.length - 1 ) ) )) {
-						#line 140 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.next = default(global::nx3.PNote);
-					}
-					 else {
-						#line 140 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.next = ((global::nx3.PNote) (a[idx1]) );
-					}
-					
+					#line 221 "F:\\nx3\\src\\nx3\\PNote.hx"
+					return ( (( ( idx1 < 0 ) || ( idx1 > ( a.length - 1 ) ) )) ? (this.__lazynext = default(global::nx3.PNote)) : (this.__lazynext = ((global::nx3.PNote) (a[idx1]) )) );
 				}
 				
-				#line 141 "F:\\nx3\\src\\nx3\\PNote.hx"
-				return this.next;
 			}
 			#line default
 		}
 		
 		
-		public virtual   void setTiesInfo(global::Array<object> info){
+		public  global::haxe.lang.Null<bool> __lazyhasTie;
+		
+		public virtual   global::haxe.lang.Null<bool> getHasTie(){
 			unchecked {
-				#line 147 "F:\\nx3\\src\\nx3\\PNote.hx"
-				{
+				#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				if (this.__lazyhasTie.hasValue) {
+					#line 108 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+					return this.__lazyhasTie;
+				}
+				
+				#line 98 "F:\\nx3\\src\\hxlazy\\LazyBuilder.hx"
+				return this.__lazyhasTie = new global::haxe.lang.Null<bool>( ! (global::Lambda.@foreach<object>(this.nnote, ( (( global::nx3.PNote_getHasTie_225__Fun.__hx_current != default(global::nx3.PNote_getHasTie_225__Fun) )) ? (global::nx3.PNote_getHasTie_225__Fun.__hx_current) : (global::nx3.PNote_getHasTie_225__Fun.__hx_current = ((global::nx3.PNote_getHasTie_225__Fun) (new global::nx3.PNote_getHasTie_225__Fun()) )) ))) , true);
+			}
+			#line default
+		}
+		
+		
+		public override   double __hx_setField_f(string field, int hash, double @value, bool handleProperties){
+			unchecked {
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				switch (hash){
+					case 520590566:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.length = ((int) (@value) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return @value;
+					}
+					
+					
+					default:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return base.__hx_setField_f(field, hash, @value, handleProperties);
+					}
+					
 				}
 				
 			}
@@ -342,128 +365,137 @@ namespace nx3{
 		
 		public override   object __hx_setField(string field, int hash, object @value, bool handleProperties){
 			unchecked {
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				switch (hash){
-					case 1224901875:
+					case 1785055402:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.next = ((global::nx3.PNote) (@value) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazyhasTie = global::haxe.lang.Null<object>.ofDynamic<bool>(@value);
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
-					case 740546849:
+					case 1110135431:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.xposition = global::haxe.lang.Null<object>.ofDynamic<double>(@value);
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazynext = ((global::nx3.PNote) (@value) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
-					case 1582252555:
+					case 829886253:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.xoffset = global::haxe.lang.Null<object>.ofDynamic<double>(@value);
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazyxPosition = global::haxe.lang.Null<object>.ofDynamic<double>(@value);
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
-					case 354161077:
+					case 625777943:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.baserect = ((global::nx3.geom.Rectangle) (@value) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazyxOffset = global::haxe.lang.Null<object>.ofDynamic<double>(@value);
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
-					case 1680673650:
+					case 156657001:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.staveXPosition = global::haxe.lang.Null<object>.ofDynamic<double>(@value);
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazybaseRect = ((global::nx3.geom.Rectangle) (@value) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
-					case 1524653780:
+					case 2077104646:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.staveRectChecked = global::haxe.lang.Runtime.toBool(@value);
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazystaveXPosition = global::haxe.lang.Null<object>.ofDynamic<double>(@value);
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
-					case 2063959187:
+					case 648478335:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.staveRect = ((global::nx3.geom.Rectangle) (@value) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazystaveRect = ((global::nx3.geom.Rectangle) (@value) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
-					case 921887356:
+					case 949753616:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.headsRects = ((global::Array<object>) (global::Array<object>.__hx_cast<object>(((global::Array) (@value) ))) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazyheadsRects = ((global::Array<object>) (global::Array<object>.__hx_cast<object>(((global::Array) (@value) ))) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return @value;
+					}
+					
+					
+					case 792979263:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.__lazyheads = ((global::Array<object>) (global::Array<object>.__hx_cast<object>(((global::Array) (@value) ))) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
 					case 57763376:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						this.complex = ((global::nx3.PComplex) (@value) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
 					case 1104035696:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						this.beamgroup = ((global::nx3.PBeamgroup) (@value) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return @value;
-					}
-					
-					
-					case 616092499:
-					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.heads = ((global::Array<object>) (global::Array<object>.__hx_cast<object>(((global::Array) (@value) ))) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
 					case 989275570:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						this.voice = ((global::nx3.PVoice) (@value) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return @value;
+					}
+					
+					
+					case 520590566:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						this.length = ((int) (global::haxe.lang.Runtime.toInt(@value)) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
 					case 522053472:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						this.nnote = ((global::nx3.NNote) (@value) );
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return @value;
 					}
 					
 					
 					default:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return base.__hx_setField(field, hash, @value, handleProperties);
 					}
 					
@@ -476,201 +508,269 @@ namespace nx3{
 		
 		public override   object __hx_getField(string field, int hash, bool throwErrors, bool isCheck, bool handleProperties){
 			unchecked {
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				switch (hash){
-					case 1933492467:
+					case 932575052:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("setTiesInfo") ), ((int) (1933492467) ))) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getHasTie") ), ((int) (932575052) ))) );
+					}
+					
+					
+					case 1785055402:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return (this.__lazyhasTie).toDynamic();
 					}
 					
 					
 					case 461714601:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getNext") ), ((int) (461714601) ))) );
 					}
 					
 					
-					case 1224901875:
+					case 1110135431:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.next;
-					}
-					
-					
-					case 528446681:
-					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getTies") ), ((int) (528446681) ))) );
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.__lazynext;
 					}
 					
 					
 					case 355217867:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getXPosition") ), ((int) (355217867) ))) );
 					}
 					
 					
-					case 740546849:
+					case 829886253:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return (this.xposition).toDynamic();
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return (this.__lazyxPosition).toDynamic();
 					}
 					
 					
 					case 1648704565:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getXOffset") ), ((int) (1648704565) ))) );
 					}
 					
 					
-					case 1582252555:
+					case 625777943:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return (this.xoffset).toDynamic();
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return (this.__lazyxOffset).toDynamic();
 					}
 					
 					
 					case 636027019:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getBaseRect") ), ((int) (636027019) ))) );
 					}
 					
 					
-					case 354161077:
+					case 156657001:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.baserect;
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.__lazybaseRect;
 					}
 					
 					
 					case 1453374120:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getStaveXPosition") ), ((int) (1453374120) ))) );
 					}
 					
 					
-					case 1680673650:
+					case 2077104646:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return (this.staveXPosition).toDynamic();
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return (this.__lazystaveXPosition).toDynamic();
 					}
 					
 					
 					case 173809949:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getStaveRect") ), ((int) (173809949) ))) );
 					}
 					
 					
-					case 1524653780:
+					case 648478335:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.staveRectChecked;
-					}
-					
-					
-					case 2063959187:
-					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.staveRect;
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.__lazystaveRect;
 					}
 					
 					
 					case 325402290:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getHeadsRects") ), ((int) (325402290) ))) );
 					}
 					
 					
-					case 921887356:
+					case 949753616:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.headsRects;
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.__lazyheadsRects;
+					}
+					
+					
+					case 1751265194:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("get_heads") ), ((int) (1751265194) ))) );
+					}
+					
+					
+					case 616092499:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.get_heads();
+					}
+					
+					
+					case 792979263:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.__lazyheads;
+					}
+					
+					
+					case 528446681:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getTies") ), ((int) (528446681) ))) );
 					}
 					
 					
 					case 1389554746:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getComplex") ), ((int) (1389554746) ))) );
 					}
 					
 					
 					case 57763376:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.complex;
 					}
 					
 					
 					case 529989321:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getDirection") ), ((int) (529989321) ))) );
 					}
 					
 					
 					case 1361370106:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getBeamgroup") ), ((int) (1361370106) ))) );
 					}
 					
 					
 					case 1104035696:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.beamgroup;
-					}
-					
-					
-					case 76538589:
-					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getHeads") ), ((int) (76538589) ))) );
-					}
-					
-					
-					case 616092499:
-					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.heads;
 					}
 					
 					
 					case 449721660:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getVoice") ), ((int) (449721660) ))) );
 					}
 					
 					
 					case 989275570:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.voice;
+					}
+					
+					
+					case 261031087:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("get_length") ), ((int) (261031087) ))) );
+					}
+					
+					
+					case 520590566:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						if (handleProperties) {
+							#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+							return this.get_length();
+						}
+						 else {
+							#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+							return this.length;
+						}
+						
+					}
+					
+					
+					case 328878574:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("iterator") ), ((int) (328878574) ))) );
 					}
 					
 					
 					case 522053472:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.nnote;
 					}
 					
 					
 					default:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return base.__hx_getField(field, hash, throwErrors, isCheck, handleProperties);
+					}
+					
+				}
+				
+			}
+			#line default
+		}
+		
+		
+		public override   double __hx_getField_f(string field, int hash, bool throwErrors, bool handleProperties){
+			unchecked {
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				switch (hash){
+					case 520590566:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						if (handleProperties) {
+							#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+							return ((double) (this.get_length()) );
+						}
+						 else {
+							#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+							return ((double) (this.length) );
+						}
+						
+					}
+					
+					
+					default:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return base.__hx_getField_f(field, hash, throwErrors, handleProperties);
 					}
 					
 				}
@@ -682,118 +782,128 @@ namespace nx3{
 		
 		public override   object __hx_invokeField(string field, int hash, global::Array dynargs){
 			unchecked {
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				switch (hash){
-					case 1933492467:
+					case 932575052:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						this.setTiesInfo(((global::Array<object>) (global::Array<object>.__hx_cast<object>(((global::Array) (dynargs[0]) ))) ));
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						break;
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return (this.getHasTie()).toDynamic();
 					}
 					
 					
 					case 461714601:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.getNext();
-					}
-					
-					
-					case 528446681:
-					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.getTies();
 					}
 					
 					
 					case 355217867:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.getXPosition();
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return (this.getXPosition()).toDynamic();
 					}
 					
 					
 					case 1648704565:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.getXOffset();
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return (this.getXOffset()).toDynamic();
 					}
 					
 					
 					case 636027019:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.getBaseRect();
 					}
 					
 					
 					case 1453374120:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.getStaveXPosition();
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return (this.getStaveXPosition()).toDynamic();
 					}
 					
 					
 					case 173809949:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.getStaveRect();
 					}
 					
 					
 					case 325402290:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.getHeadsRects();
+					}
+					
+					
+					case 1751265194:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.get_heads();
+					}
+					
+					
+					case 528446681:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.getTies();
 					}
 					
 					
 					case 1389554746:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.getComplex();
 					}
 					
 					
 					case 529989321:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.getDirection();
 					}
 					
 					
 					case 1361370106:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.getBeamgroup();
-					}
-					
-					
-					case 76538589:
-					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-						return this.getHeads();
 					}
 					
 					
 					case 449721660:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return this.getVoice();
+					}
+					
+					
+					case 261031087:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.get_length();
+					}
+					
+					
+					case 328878574:
+					{
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+						return this.iterator();
 					}
 					
 					
 					default:
 					{
-						#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+						#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 						return base.__hx_invokeField(field, hash, dynargs);
 					}
 					
 				}
 				
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				return default(object);
 			}
 			#line default
 		}
@@ -801,38 +911,103 @@ namespace nx3{
 		
 		public override   void __hx_getFields(global::Array<object> baseArr){
 			unchecked {
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("next");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("xposition");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("xoffset");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("baserect");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("staveXPosition");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("staveRectChecked");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("staveRect");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("headsRects");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("complex");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
-				baseArr.push("beamgroup");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazyhasTie");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazynext");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazyxPosition");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazyxOffset");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazybaseRect");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazystaveXPosition");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazystaveRect");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazyheadsRects");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				baseArr.push("heads");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("__lazyheads");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("complex");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("beamgroup");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				baseArr.push("voice");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
+				baseArr.push("length");
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				baseArr.push("nnote");
-				#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+				#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 				{
-					#line 12 "F:\\nx3\\src\\nx3\\PNote.hx"
+					#line 14 "F:\\nx3\\src\\nx3\\PNote.hx"
 					base.__hx_getFields(baseArr);
 				}
 				
+			}
+			#line default
+		}
+		
+		
+	}
+}
+
+
+
+#pragma warning disable 109, 114, 219, 429, 168, 162
+namespace nx3{
+	public  class PNote_get_heads_54__Fun : global::haxe.lang.Function {
+		public    PNote_get_heads_54__Fun(global::Array<object> _g) : base(1, 0){
+			unchecked {
+				#line 54 "F:\\nx3\\src\\nx3\\PNote.hx"
+				this._g = _g;
+			}
+			#line default
+		}
+		
+		
+		public override   object __hx_invoke1_o(double __fn_float1, object __fn_dyn1){
+			unchecked {
+				#line 54 "F:\\nx3\\src\\nx3\\PNote.hx"
+				global::nx3.NHead nhead = ( (global::haxe.lang.Runtime.eq(__fn_dyn1, global::haxe.lang.Runtime.undefined)) ? (((global::nx3.NHead) (((object) (__fn_float1) )) )) : (((global::nx3.NHead) (__fn_dyn1) )) );
+				global::nx3.PHead phead = new global::nx3.PHead(((global::nx3.NHead) (nhead) ));
+				#line 55 "F:\\nx3\\src\\nx3\\PNote.hx"
+				phead.note = ((global::nx3.PNote) (this._g[0]) );
+				#line 55 "F:\\nx3\\src\\nx3\\PNote.hx"
+				return phead;
+			}
+			#line default
+		}
+		
+		
+		public  global::Array<object> _g;
+		
+	}
+}
+
+
+
+#pragma warning disable 109, 114, 219, 429, 168, 162
+namespace nx3{
+	public  class PNote_getHasTie_225__Fun : global::haxe.lang.Function {
+		public    PNote_getHasTie_225__Fun() : base(1, 0){
+			unchecked {
+			}
+			#line default
+		}
+		
+		
+		public static  global::nx3.PNote_getHasTie_225__Fun __hx_current;
+		
+		public override   object __hx_invoke1_o(double __fn_float1, object __fn_dyn1){
+			unchecked {
+				#line 225 "F:\\nx3\\src\\nx3\\PNote.hx"
+				global::nx3.NHead nhead = ( (global::haxe.lang.Runtime.eq(__fn_dyn1, global::haxe.lang.Runtime.undefined)) ? (((global::nx3.NHead) (((object) (__fn_float1) )) )) : (((global::nx3.NHead) (__fn_dyn1) )) );
+				#line 225 "F:\\nx3\\src\\nx3\\PNote.hx"
+				return  ! ((( nhead.tie != default(global::nx3.ETie) ))) ;
 			}
 			#line default
 		}

@@ -31,7 +31,7 @@ namespace nx3.xml{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_xml_PartXML(global::nx3.xml.PartXML __temp_me150){
+		public static   void __hx_ctor_nx3_xml_PartXML(global::nx3.xml.PartXML __temp_me140){
 			unchecked {
 				#line 17 "F:\\nx3\\src\\nx3\\xml\\PartXML.hx"
 				{
@@ -237,11 +237,11 @@ namespace nx3.xml{
 				global::Array<object> voices = new global::Array<object>(new object[]{});
 				{
 					#line 107 "F:\\nx3\\src\\nx3\\xml\\PartXML.hx"
-					object __temp_iterator177 = xml.elements();
+					object __temp_iterator167 = xml.elements();
 					#line 107 "F:\\nx3\\src\\nx3\\xml\\PartXML.hx"
-					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator177, "hasNext", 407283053, default(global::Array)))){
+					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator167, "hasNext", 407283053, default(global::Array)))){
 						#line 107 "F:\\nx3\\src\\nx3\\xml\\PartXML.hx"
-						global::Xml v = ((global::Xml) (global::haxe.lang.Runtime.callField(__temp_iterator177, "next", 1224901875, default(global::Array))) );
+						global::Xml v = ((global::Xml) (global::haxe.lang.Runtime.callField(__temp_iterator167, "next", 1224901875, default(global::Array))) );
 						#line 109 "F:\\nx3\\src\\nx3\\xml\\PartXML.hx"
 						global::nx3.NVoice voice = global::nx3.xml.VoiceXML.fromXmlStr(v.toString());
 						voices.push(voice);

@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBeamgroupDirectionCalculator(global::nx3.PBeamgroupDirectionCalculator __temp_me87, global::nx3.PBeamgroup beamgroup){
+		public static   void __hx_ctor_nx3_PBeamgroupDirectionCalculator(global::nx3.PBeamgroupDirectionCalculator __temp_me89, global::nx3.PBeamgroup beamgroup){
 			unchecked {
 				#line 13 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
-				__temp_me87.beamgroup = beamgroup;
+				__temp_me89.beamgroup = beamgroup;
 			}
 			#line default
 		}
@@ -73,7 +73,7 @@ namespace nx3{
 		public virtual   int findTopLevel(){
 			unchecked {
 				#line 28 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
-				int topLevel = ((global::nx3.PNote) (this.beamgroup.pnotes[0]) ).nnote.getTopLevel();
+				int topLevel = ((global::nx3.PNote) (this.beamgroup.pnotes[0]) ).nnote.get_topLevel().@value;
 				if (( this.beamgroup.pnotes.length == 1 )) {
 					#line 29 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
 					return topLevel;
@@ -90,7 +90,7 @@ namespace nx3{
 						#line 30 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
 						int i = _g1++;
 						#line 32 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
-						int level = ((global::nx3.PNote) (this.beamgroup.pnotes[i]) ).nnote.getTopLevel();
+						int level = ((global::nx3.PNote) (this.beamgroup.pnotes[i]) ).nnote.get_topLevel().@value;
 						{
 							#line 33 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
 							double x = global::System.Math.Min(((double) (topLevel) ), ((double) (level) ));
@@ -114,7 +114,7 @@ namespace nx3{
 		public virtual   int findBottomLevel(){
 			unchecked {
 				#line 41 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
-				int bottomLevel = ((global::nx3.PNote) (this.beamgroup.pnotes[0]) ).nnote.getBottomLevel();
+				int bottomLevel = ((global::nx3.PNote) (this.beamgroup.pnotes[0]) ).nnote.get_bottomLevel().@value;
 				if (( this.beamgroup.pnotes.length == 1 )) {
 					#line 42 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
 					return bottomLevel;
@@ -131,7 +131,7 @@ namespace nx3{
 						#line 43 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
 						int i = _g1++;
 						#line 45 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
-						int level = ((global::nx3.PNote) (this.beamgroup.pnotes[i]) ).nnote.getBottomLevel();
+						int level = ((global::nx3.PNote) (this.beamgroup.pnotes[i]) ).nnote.get_bottomLevel().@value;
 						{
 							#line 46 "F:\\nx3\\src\\nx3\\PBeamgroupDirectionCalculator.hx"
 							double x = global::System.Math.Max(((double) (bottomLevel) ), ((double) (level) ));

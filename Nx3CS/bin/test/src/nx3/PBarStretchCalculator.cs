@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBarStretchCalculator(global::nx3.PBarStretchCalculator __temp_me82, global::nx3.PSystemBar systembar){
+		public static   void __hx_ctor_nx3_PBarStretchCalculator(global::nx3.PBarStretchCalculator __temp_me84, global::nx3.PSystemBar systembar){
 			unchecked {
 				#line 18 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"
-				__temp_me82.systembar = systembar;
+				__temp_me84.systembar = systembar;
 			}
 			#line default
 		}
@@ -54,21 +54,7 @@ namespace nx3{
 		public virtual   void stretch(double amount){
 			unchecked {
 				#line 25 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"
-				{
-					#line 25 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"
-					object __temp_dynop165 = this.systembar.getBarWidths();
-					#line 25 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"
-					global::haxe.lang.Runtime.setField_f(__temp_dynop165, "contentWidth", 821103117, ((double) (( ((double) (global::haxe.lang.Runtime.getField_f(__temp_dynop165, "contentWidth", 821103117, true)) ) + amount )) ));
-				}
-				
-				#line 26 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"
-				{
-					#line 26 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"
-					object __temp_dynop166 = this.systembar.getBarWidths();
-					#line 26 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"
-					global::haxe.lang.Runtime.setField_f(__temp_dynop166, "width", 1247983110, ((double) (( ((double) (global::haxe.lang.Runtime.getField_f(__temp_dynop166, "width", 1247983110, true)) ) + amount )) ));
-				}
-				
+				this.systembar.getBarMeasurements().setContentWidth(( this.systembar.getBarMeasurements().getContentWidth() + amount ));
 				#line 30 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"
 				if (( this.systembar.bar.getColumns().length < 2 )) {
 					#line 30 "F:\\nx3\\src\\nx3\\PBarStretchCalculator.hx"

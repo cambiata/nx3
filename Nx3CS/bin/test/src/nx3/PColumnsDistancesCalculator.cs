@@ -22,11 +22,11 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PColumnsDistancesCalculator(global::nx3.PColumnsDistancesCalculator __temp_me92, global::nx3.PBar bar){
+		public static   void __hx_ctor_nx3_PColumnsDistancesCalculator(global::nx3.PColumnsDistancesCalculator __temp_me94, global::nx3.PBar bar){
 			unchecked {
 				#line 20 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"
-				__temp_me92.bar = bar;
-				__temp_me92.prevLeftComplex = new global::haxe.ds.IntMap<object>();
+				__temp_me94.bar = bar;
+				__temp_me94.prevLeftComplex = new global::haxe.ds.IntMap<object>();
 			}
 			#line default
 		}
@@ -77,17 +77,17 @@ namespace nx3{
 								#line 38 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"
 								int _g2 = 0;
 								#line 38 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"
-								global::nx3.PColumn __temp_stmt248 = default(global::nx3.PColumn);
+								global::nx3.PColumn __temp_stmt241 = default(global::nx3.PColumn);
 								#line 38 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"
 								{
 									#line 38 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"
 									global::Array<object> array = this.bar.getColumns();
 									#line 38 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"
-									__temp_stmt248 = ((global::nx3.PColumn) (array[0]) );
+									__temp_stmt241 = ((global::nx3.PColumn) (array[0]) );
 								}
 								
 								#line 38 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"
-								global::Array<object> _g3 = __temp_stmt248.getComplexes();
+								global::Array<object> _g3 = __temp_stmt241.getComplexes();
 								#line 38 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"
 								while (( _g2 < _g3.length )){
 									#line 38 "F:\\nx3\\src\\nx3\\PColumnsDistancesCalculator.hx"

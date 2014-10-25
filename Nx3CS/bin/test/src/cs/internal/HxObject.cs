@@ -52,7 +52,7 @@ namespace haxe.lang{
 		}
 		
 		
-		public static   void __hx_ctor_haxe_lang_HxObject(global::haxe.lang.HxObject __temp_me16){
+		public static   void __hx_ctor_haxe_lang_HxObject(global::haxe.lang.HxObject __temp_me17){
 			unchecked {
 				#line 27 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
 				{
@@ -279,31 +279,31 @@ namespace haxe.lang{
 		}
 		
 		
-		public static   void __hx_ctor_haxe_lang_DynamicObject(global::haxe.lang.DynamicObject __temp_me18){
+		public static   void __hx_ctor_haxe_lang_DynamicObject(global::haxe.lang.DynamicObject __temp_me19){
 			unchecked {
 				#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-				__temp_me18.__hx_hashes = new global::Array<int>(new int[]{});
+				__temp_me19.__hx_hashes = new global::Array<int>(new int[]{});
 				#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-				__temp_me18.__hx_dynamics = new global::Array<object>(new object[]{});
+				__temp_me19.__hx_dynamics = new global::Array<object>(new object[]{});
 				#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-				__temp_me18.__hx_hashes_f = new global::Array<int>(new int[]{});
+				__temp_me19.__hx_hashes_f = new global::Array<int>(new int[]{});
 				#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-				__temp_me18.__hx_dynamics_f = new global::Array<double>(new double[]{});
+				__temp_me19.__hx_dynamics_f = new global::Array<double>(new double[]{});
 			}
 			#line default
 		}
 		
 		
-		public static   void __hx_ctor_haxe_lang_DynamicObject(global::haxe.lang.DynamicObject __temp_me17, global::Array<int> __hx_hashes, global::Array<object> __hx_dynamics, global::Array<int> __hx_hashes_f, global::Array<double> __hx_dynamics_f){
+		public static   void __hx_ctor_haxe_lang_DynamicObject(global::haxe.lang.DynamicObject __temp_me18, global::Array<int> __hx_hashes, global::Array<object> __hx_dynamics, global::Array<int> __hx_hashes_f, global::Array<double> __hx_dynamics_f){
 			unchecked {
 				#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-				__temp_me17.__hx_hashes = __hx_hashes;
+				__temp_me18.__hx_hashes = __hx_hashes;
 				#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-				__temp_me17.__hx_dynamics = __hx_dynamics;
+				__temp_me18.__hx_dynamics = __hx_dynamics;
 				#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-				__temp_me17.__hx_hashes_f = __hx_hashes_f;
+				__temp_me18.__hx_hashes_f = __hx_hashes_f;
 				#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-				__temp_me17.__hx_dynamics_f = __hx_dynamics_f;
+				__temp_me18.__hx_dynamics_f = __hx_dynamics_f;
 			}
 			#line default
 		}
@@ -569,13 +569,13 @@ namespace haxe.lang{
 					#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
 					{
 						#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-						object __temp_iterator159 = this.__hx_hashes.iterator();
+						object __temp_iterator153 = this.__hx_hashes.iterator();
 						#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-						while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator159, "hasNext", 407283053, default(global::Array)))){
+						while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator153, "hasNext", 407283053, default(global::Array)))){
 							#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-							int __temp_field20 = ((int) (global::haxe.lang.Runtime.toInt(global::haxe.lang.Runtime.callField(__temp_iterator159, "next", 1224901875, default(global::Array)))) );
+							int __temp_field21 = ((int) (global::haxe.lang.Runtime.toInt(global::haxe.lang.Runtime.callField(__temp_iterator153, "next", 1224901875, default(global::Array)))) );
 							#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-							baseArr.push(global::haxe.lang.FieldLookup.lookupHash(__temp_field20));
+							baseArr.push(global::haxe.lang.FieldLookup.lookupHash(__temp_field21));
 						}
 						
 					}
@@ -583,13 +583,13 @@ namespace haxe.lang{
 					#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
 					{
 						#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-						object __temp_iterator160 = this.__hx_hashes_f.iterator();
+						object __temp_iterator154 = this.__hx_hashes_f.iterator();
 						#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-						while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator160, "hasNext", 407283053, default(global::Array)))){
+						while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator154, "hasNext", 407283053, default(global::Array)))){
 							#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-							int __temp_field19 = ((int) (global::haxe.lang.Runtime.toInt(global::haxe.lang.Runtime.callField(__temp_iterator160, "next", 1224901875, default(global::Array)))) );
+							int __temp_field20 = ((int) (global::haxe.lang.Runtime.toInt(global::haxe.lang.Runtime.callField(__temp_iterator154, "next", 1224901875, default(global::Array)))) );
 							#line 37 "F:\\HaxeToolkit\\haxe\\std\\cs\\internal\\HxObject.hx"
-							baseArr.push(global::haxe.lang.FieldLookup.lookupHash(__temp_field19));
+							baseArr.push(global::haxe.lang.FieldLookup.lookupHash(__temp_field20));
 						}
 						
 					}

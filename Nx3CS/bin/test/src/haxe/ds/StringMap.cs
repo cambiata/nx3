@@ -22,10 +22,10 @@ namespace haxe.ds{
 		}
 		
 		
-		public static   void __hx_ctor_haxe_ds_StringMap<T_c>(global::haxe.ds.StringMap<T_c> __temp_me55){
+		public static   void __hx_ctor_haxe_ds_StringMap<T_c>(global::haxe.ds.StringMap<T_c> __temp_me57){
 			unchecked {
 				#line 61 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-				__temp_me55.cachedIndex = -1;
+				__temp_me57.cachedIndex = -1;
 			}
 			#line default
 		}
@@ -71,11 +71,11 @@ namespace haxe.ds{
 				#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 				{
 					#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-					object __temp_iterator164 = global::Reflect.fields(this).iterator();
+					object __temp_iterator159 = global::Reflect.fields(this).iterator();
 					#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator164, "hasNext", 407283053, default(global::Array)))){
+					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator159, "hasNext", 407283053, default(global::Array)))){
 						#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-						string field = global::haxe.lang.Runtime.toString(global::haxe.lang.Runtime.callField(__temp_iterator164, "next", 1224901875, default(global::Array)));
+						string field = global::haxe.lang.Runtime.toString(global::haxe.lang.Runtime.callField(__temp_iterator159, "next", 1224901875, default(global::Array)));
 						#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 						switch (field){
 							case "vals":
@@ -83,23 +83,23 @@ namespace haxe.ds{
 								#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 								if (( this.vals != default(T[]) )) {
 									#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-									T_c[] __temp_new_arr52 = new T_c[((int) (this.vals.Length) )];
+									T_c[] __temp_new_arr54 = new T_c[((int) (this.vals.Length) )];
 									#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-									int __temp_i53 = -1;
+									int __temp_i55 = -1;
 									#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-									while ((  ++ __temp_i53 < this.vals.Length )){
+									while ((  ++ __temp_i55 < this.vals.Length )){
 										#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-										object __temp_obj54 = ((object) (this.vals[__temp_i53]) );
+										object __temp_obj56 = ((object) (this.vals[__temp_i55]) );
 										#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-										if ( ! (global::haxe.lang.Runtime.eq(__temp_obj54, default(T[]))) ) {
+										if ( ! (global::haxe.lang.Runtime.eq(__temp_obj56, default(T[]))) ) {
 											#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-											__temp_new_arr52[__temp_i53] = global::haxe.lang.Runtime.genericCast<T_c>(__temp_obj54);
+											__temp_new_arr54[__temp_i55] = global::haxe.lang.Runtime.genericCast<T_c>(__temp_obj56);
 										}
 										
 									}
 									
 									#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-									new_me.vals = __temp_new_arr52;
+									new_me.vals = __temp_new_arr54;
 								}
 								 else {
 									#line 26 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
@@ -250,27 +250,27 @@ namespace haxe.ds{
 						int flag = default(int);
 						do {
 							#line 88 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-							bool __temp_stmt202 = default(bool);
+							bool __temp_stmt195 = default(bool);
 							#line 88 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 							{
 								#line 88 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 								int v = flag = hashes1[i];
 								#line 88 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-								__temp_stmt202 = ( (( v & -2 )) == 0 );
+								__temp_stmt195 = ( (( v & -2 )) == 0 );
 							}
 							
 							#line 88 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-							bool __temp_boolv203 = false;
+							bool __temp_boolv196 = false;
 							#line 88 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-							if ( ! (__temp_stmt202) ) {
+							if ( ! (__temp_stmt195) ) {
 								#line 88 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-								__temp_boolv203 = ( ( flag == k ) && string.Equals(this._keys[i], key) );
+								__temp_boolv196 = ( ( flag == k ) && string.Equals(this._keys[i], key) );
 							}
 							
 							#line 88 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-							bool __temp_stmt201 = ( __temp_stmt202 || __temp_boolv203 );
+							bool __temp_stmt194 = ( __temp_stmt195 || __temp_boolv196 );
 							#line 90 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-							if ( ! ((__temp_stmt201)) ) {
+							if ( ! ((__temp_stmt194)) ) {
 								#line 90 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 								i = ( ( i +  ++ nProbes ) & mask );
 							}
@@ -380,29 +380,29 @@ namespace haxe.ds{
 					#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 					do {
 						#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-						bool __temp_stmt207 = default(bool);
+						bool __temp_stmt200 = default(bool);
 						#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 						{
 							#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 							int v = flag = hashes[i];
 							#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-							__temp_stmt207 = ( v == 0 );
+							__temp_stmt200 = ( v == 0 );
 						}
 						
 						#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-						bool __temp_boolv206 =  ! (__temp_stmt207) ;
+						bool __temp_boolv199 =  ! (__temp_stmt200) ;
 						#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-						bool __temp_boolv205 = false;
+						bool __temp_boolv198 = false;
 						#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-						if (__temp_boolv206) {
+						if (__temp_boolv199) {
 							#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-							__temp_boolv205 = (( ( ( flag == 1 ) || ( flag != k1 ) ) ||  ! (string.Equals(keys[i], key))  ));
+							__temp_boolv198 = (( ( ( flag == 1 ) || ( flag != k1 ) ) ||  ! (string.Equals(keys[i], key))  ));
 						}
 						
 						#line 139 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-						bool __temp_stmt204 = ( __temp_boolv206 && __temp_boolv205 );
+						bool __temp_stmt197 = ( __temp_boolv199 && __temp_boolv198 );
 						#line 141 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-						if (__temp_stmt204) {
+						if (__temp_stmt197) {
 							#line 141 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 							i = ( ( i +  ++ nProbes ) & mask );
 						}
@@ -517,17 +517,17 @@ namespace haxe.ds{
 					while ((  ++ j < nBuckets )){
 						#line 201 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 						int k1 = default(int);
-						bool __temp_stmt208 = default(bool);
+						bool __temp_stmt201 = default(bool);
 						#line 202 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 						{
 							#line 202 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 							int v1 = k1 = hashes[j];
 							#line 202 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-							__temp_stmt208 = ( (( v1 & -2 )) == 0 );
+							__temp_stmt201 = ( (( v1 & -2 )) == 0 );
 						}
 						
 						#line 202 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-						if ( ! (__temp_stmt208) ) {
+						if ( ! (__temp_stmt201) ) {
 							#line 204 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 							string key = _keys[j];
 							T val = vals[j];
@@ -547,29 +547,29 @@ namespace haxe.ds{
 								#line 217 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 								newHash[i] = k1;
 								#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-								bool __temp_boolv211 = ( i < nBuckets );
+								bool __temp_boolv204 = ( i < nBuckets );
 								#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-								bool __temp_boolv210 = false;
+								bool __temp_boolv203 = false;
 								#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-								if (__temp_boolv211) {
+								if (__temp_boolv204) {
 									#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-									bool __temp_stmt212 = default(bool);
+									bool __temp_stmt205 = default(bool);
 									#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 									{
 										#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 										int v2 = k1 = hashes[i];
 										#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-										__temp_stmt212 = ( (( v2 & -2 )) == 0 );
+										__temp_stmt205 = ( (( v2 & -2 )) == 0 );
 									}
 									
 									#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-									__temp_boolv210 =  ! (__temp_stmt212) ;
+									__temp_boolv203 =  ! (__temp_stmt205) ;
 								}
 								
 								#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-								bool __temp_stmt209 = ( __temp_boolv211 && __temp_boolv210 );
+								bool __temp_stmt202 = ( __temp_boolv204 && __temp_boolv203 );
 								#line 219 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-								if (__temp_stmt209) {
+								if (__temp_stmt202) {
 									#line 221 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 									{
 										#line 222 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
@@ -704,11 +704,11 @@ namespace haxe.ds{
 				global::Array<int> len = new global::Array<int>(new int[]{this.nBuckets});
 				{
 					#line 356 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-					global::haxe.lang.Function __temp_odecl213 = new global::haxe.ds.StringMap_keys_356__Fun<T>(((global::Array<int>) (len) ), ((global::Array<int>) (i) ), ((global::Array<object>) (_g1) ));
+					global::haxe.lang.Function __temp_odecl206 = new global::haxe.ds.StringMap_keys_356__Fun<T>(((global::Array<int>) (i) ), ((global::Array<int>) (len) ), ((global::Array<object>) (_g1) ));
 					#line 367 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-					global::haxe.lang.Function __temp_odecl214 = new global::haxe.ds.StringMap_keys_367__Fun<T>(((global::Array<int>) (i) ), ((global::Array<object>) (_g1) ));
+					global::haxe.lang.Function __temp_odecl207 = new global::haxe.ds.StringMap_keys_367__Fun<T>(((global::Array<int>) (i) ), ((global::Array<object>) (_g1) ));
 					#line 355 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-					return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl213, __temp_odecl214}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
+					return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl206, __temp_odecl207}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
 				}
 				
 			}
@@ -1154,12 +1154,12 @@ namespace haxe.ds{
 #pragma warning disable 109, 114, 219, 429, 168, 162
 namespace haxe.ds{
 	public  class StringMap_keys_356__Fun<T> : global::haxe.lang.Function {
-		public    StringMap_keys_356__Fun(global::Array<int> len, global::Array<int> i, global::Array<object> _g1) : base(0, 0){
+		public    StringMap_keys_356__Fun(global::Array<int> i, global::Array<int> len, global::Array<object> _g1) : base(0, 0){
 			unchecked {
 				#line 356 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
-				this.len = len;
-				#line 356 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 				this.i = i;
+				#line 356 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
+				this.len = len;
 				#line 356 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\StringMap.hx"
 				this._g1 = _g1;
 			}
@@ -1195,9 +1195,9 @@ namespace haxe.ds{
 		}
 		
 		
-		public  global::Array<int> len;
-		
 		public  global::Array<int> i;
+		
+		public  global::Array<int> len;
 		
 		public  global::Array<object> _g1;
 		

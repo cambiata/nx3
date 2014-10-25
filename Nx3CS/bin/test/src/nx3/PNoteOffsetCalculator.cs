@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PNoteOffsetCalculator(global::nx3.PNoteOffsetCalculator __temp_me107, global::nx3.PComplex complex){
+		public static   void __hx_ctor_nx3_PNoteOffsetCalculator(global::nx3.PNoteOffsetCalculator __temp_me109, global::nx3.PComplex complex){
 			unchecked {
 				#line 16 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
-				__temp_me107.complex = complex;
+				__temp_me109.complex = complex;
 			}
 			#line default
 		}
@@ -54,17 +54,17 @@ namespace nx3{
 		public virtual   double getNoteOffset(global::nx3.PNote note){
 			unchecked {
 				#line 21 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
-				global::nx3.PNote __temp_stmt257 = default(global::nx3.PNote);
+				global::nx3.PNote __temp_stmt250 = default(global::nx3.PNote);
 				#line 21 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
 				{
 					#line 21 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
 					global::Array<object> array = this.complex.getNotes();
 					#line 21 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
-					__temp_stmt257 = ((global::nx3.PNote) (array[0]) );
+					__temp_stmt250 = ((global::nx3.PNote) (array[0]) );
 				}
 				
 				#line 21 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
-				if (( note == __temp_stmt257 )) {
+				if (( note == __temp_stmt250 )) {
 					#line 21 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
 					return ((double) (0) );
 				}
@@ -84,7 +84,7 @@ namespace nx3{
 				}
 				
 				#line 29 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
-				int diff = ( note.nnote.getTopLevel() - firstnote.nnote.getBottomLevel() );
+				int diff = ( note.nnote.get_topLevel().@value - firstnote.nnote.get_bottomLevel().@value );
 				#line 31 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"
 				if (( diff == 1 )) {
 					#line 33 "F:\\nx3\\src\\nx3\\PNoteOffsetCalculator.hx"

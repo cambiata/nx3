@@ -27,7 +27,7 @@ public  class Main : global::haxe.lang.HxObject {
 	}
 	
 	
-	public static   void __hx_ctor__Main(global::Main __temp_me7){
+	public static   void __hx_ctor__Main(global::Main __temp_me8){
 		unchecked {
 			#line 12 "F:\\nx3\\Nx3CS\\src\\Main.hx"
 			{

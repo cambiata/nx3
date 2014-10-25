@@ -22,7 +22,7 @@ namespace cx{
 		}
 		
 		
-		public static   void __hx_ctor_cx_MathTools(global::cx.MathTools __temp_me25){
+		public static   void __hx_ctor_cx_MathTools(global::cx.MathTools __temp_me27){
 			unchecked {
 				#line 9 "F:\\nx3\\src\\cx\\MathTools.hx"
 				{
@@ -125,9 +125,9 @@ namespace cx{
 		public static   double round2(double number, global::haxe.lang.Null<int> precision){
 			unchecked {
 				#line 42 "F:\\nx3\\src\\cx\\MathTools.hx"
-				int __temp_precision24 = ( ( ! (precision.hasValue) ) ? (((int) (6) )) : (precision.@value) );
-				number = ( number * global::System.Math.Pow(((double) (10) ), ((double) (__temp_precision24) )) );
-				number = ( global::Math.round(number) / global::System.Math.Pow(((double) (10) ), ((double) (__temp_precision24) )) );
+				int __temp_precision26 = ( ( ! (precision.hasValue) ) ? (((int) (6) )) : (precision.@value) );
+				number = ( number * global::System.Math.Pow(((double) (10) ), ((double) (__temp_precision26) )) );
+				number = ( global::Math.round(number) / global::System.Math.Pow(((double) (10) ), ((double) (__temp_precision26) )) );
 				return number;
 			}
 			#line default

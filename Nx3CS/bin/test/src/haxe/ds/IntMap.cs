@@ -22,10 +22,10 @@ namespace haxe.ds{
 		}
 		
 		
-		public static   void __hx_ctor_haxe_ds_IntMap<T_c>(global::haxe.ds.IntMap<T_c> __temp_me44){
+		public static   void __hx_ctor_haxe_ds_IntMap<T_c>(global::haxe.ds.IntMap<T_c> __temp_me46){
 			unchecked {
 				#line 54 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-				__temp_me44.cachedIndex = -1;
+				__temp_me46.cachedIndex = -1;
 			}
 			#line default
 		}
@@ -71,11 +71,11 @@ namespace haxe.ds{
 				#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
 				{
 					#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-					object __temp_iterator162 = global::Reflect.fields(this).iterator();
+					object __temp_iterator157 = global::Reflect.fields(this).iterator();
 					#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator162, "hasNext", 407283053, default(global::Array)))){
+					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator157, "hasNext", 407283053, default(global::Array)))){
 						#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-						string field = global::haxe.lang.Runtime.toString(global::haxe.lang.Runtime.callField(__temp_iterator162, "next", 1224901875, default(global::Array)));
+						string field = global::haxe.lang.Runtime.toString(global::haxe.lang.Runtime.callField(__temp_iterator157, "next", 1224901875, default(global::Array)));
 						#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
 						switch (field){
 							case "vals":
@@ -83,23 +83,23 @@ namespace haxe.ds{
 								#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
 								if (( this.vals != default(T[]) )) {
 									#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-									T_c[] __temp_new_arr41 = new T_c[((int) (this.vals.Length) )];
+									T_c[] __temp_new_arr43 = new T_c[((int) (this.vals.Length) )];
 									#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-									int __temp_i42 = -1;
+									int __temp_i44 = -1;
 									#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-									while ((  ++ __temp_i42 < this.vals.Length )){
+									while ((  ++ __temp_i44 < this.vals.Length )){
 										#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-										object __temp_obj43 = ((object) (this.vals[__temp_i42]) );
+										object __temp_obj45 = ((object) (this.vals[__temp_i44]) );
 										#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-										if ( ! (global::haxe.lang.Runtime.eq(__temp_obj43, default(T[]))) ) {
+										if ( ! (global::haxe.lang.Runtime.eq(__temp_obj45, default(T[]))) ) {
 											#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-											__temp_new_arr41[__temp_i42] = global::haxe.lang.Runtime.genericCast<T_c>(__temp_obj43);
+											__temp_new_arr43[__temp_i44] = global::haxe.lang.Runtime.genericCast<T_c>(__temp_obj45);
 										}
 										
 									}
 									
 									#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-									new_me.vals = __temp_new_arr41;
+									new_me.vals = __temp_new_arr43;
 								}
 								 else {
 									#line 36 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
@@ -533,11 +533,11 @@ namespace haxe.ds{
 				global::Array<int> len = new global::Array<int>(new int[]{this.nBuckets});
 				{
 					#line 334 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-					global::haxe.lang.Function __temp_odecl187 = new global::haxe.ds.IntMap_keys_334__Fun<T>(((global::Array<int>) (i) ), ((global::Array<int>) (len) ), ((global::Array<object>) (_g1) ));
+					global::haxe.lang.Function __temp_odecl180 = new global::haxe.ds.IntMap_keys_334__Fun<T>(((global::Array<int>) (i) ), ((global::Array<object>) (_g1) ), ((global::Array<int>) (len) ));
 					#line 345 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-					global::haxe.lang.Function __temp_odecl188 = new global::haxe.ds.IntMap_keys_345__Fun<T>(((global::Array<int>) (i) ), ((global::Array<object>) (_g1) ));
+					global::haxe.lang.Function __temp_odecl181 = new global::haxe.ds.IntMap_keys_345__Fun<T>(((global::Array<int>) (i) ), ((global::Array<object>) (_g1) ));
 					#line 333 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-					return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl187, __temp_odecl188}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
+					return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl180, __temp_odecl181}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
 				}
 				
 			}
@@ -999,14 +999,14 @@ namespace haxe.ds{
 #pragma warning disable 109, 114, 219, 429, 168, 162
 namespace haxe.ds{
 	public  class IntMap_keys_334__Fun<T> : global::haxe.lang.Function {
-		public    IntMap_keys_334__Fun(global::Array<int> i, global::Array<int> len, global::Array<object> _g1) : base(0, 0){
+		public    IntMap_keys_334__Fun(global::Array<int> i, global::Array<object> _g1, global::Array<int> len) : base(0, 0){
 			unchecked {
 				#line 334 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
 				this.i = i;
 				#line 334 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
-				this.len = len;
-				#line 334 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
 				this._g1 = _g1;
+				#line 334 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\haxe\\ds\\IntMap.hx"
+				this.len = len;
 			}
 			#line default
 		}
@@ -1042,9 +1042,9 @@ namespace haxe.ds{
 		
 		public  global::Array<int> i;
 		
-		public  global::Array<int> len;
-		
 		public  global::Array<object> _g1;
+		
+		public  global::Array<int> len;
 		
 	}
 }

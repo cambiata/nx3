@@ -30,7 +30,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_EDirectionUDTools(global::nx3.EDirectionUDTools __temp_me61){
+		public static   void __hx_ctor_nx3_EDirectionUDTools(global::nx3.EDirectionUDTools __temp_me63){
 			unchecked {
 				#line 14 "F:\\nx3\\src\\nx3\\EDirectionUD.hx"
 				{

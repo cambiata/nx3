@@ -21,7 +21,7 @@ public  class StringTools : global::haxe.lang.HxObject {
 	}
 	
 	
-	public static   void __hx_ctor__StringTools(global::StringTools __temp_me10){
+	public static   void __hx_ctor__StringTools(global::StringTools __temp_me11){
 		unchecked {
 			#line 32 "F:\\HaxeToolkit\\haxe\\std\\StringTools.hx"
 			{

@@ -46,6 +46,8 @@ namespace nx3{
 			global::nx3.Constants.LEGER_MARGIN = 0.6;
 			global::nx3.Constants.OBJECT_XMARGIN = 0.6;
 			global::nx3.Constants.ATTRIBUTE_SIGN_WIDTH = 2.4;
+			global::nx3.Constants.SCORE_DEFAULT_COUNTIN = 0;
+			global::nx3.Constants.SCORE_DEFAULT_TEMPO = 80;
 		}
 		public    Constants(global::haxe.lang.EmptyObject empty){
 			unchecked {
@@ -67,7 +69,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_Constants(global::nx3.Constants __temp_me58){
+		public static   void __hx_ctor_nx3_Constants(global::nx3.Constants __temp_me60){
 			unchecked {
 				#line 8 "F:\\nx3\\src\\nx3\\Constants.hx"
 				{
@@ -151,6 +153,10 @@ namespace nx3{
 		public static  double OBJECT_XMARGIN;
 		
 		public static  double ATTRIBUTE_SIGN_WIDTH;
+		
+		public static  int SCORE_DEFAULT_COUNTIN;
+		
+		public static  int SCORE_DEFAULT_TEMPO;
 		
 		public static  new object __hx_createEmpty(){
 			unchecked {

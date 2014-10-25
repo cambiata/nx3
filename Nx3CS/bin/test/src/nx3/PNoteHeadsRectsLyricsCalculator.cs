@@ -22,12 +22,12 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PNoteHeadsRectsLyricsCalculator(global::nx3.PNoteHeadsRectsLyricsCalculator __temp_me105, global::nx3.PNote note, string text, object font){
+		public static   void __hx_ctor_nx3_PNoteHeadsRectsLyricsCalculator(global::nx3.PNoteHeadsRectsLyricsCalculator __temp_me107, global::nx3.PNote note, string text, object font){
 			unchecked {
 				#line 27 "F:\\nx3\\src\\nx3\\PNoteHeadsRectsLyricsCalculator.hx"
-				__temp_me105.note = note;
-				__temp_me105.text = text;
-				__temp_me105.font = font;
+				__temp_me107.note = note;
+				__temp_me107.text = text;
+				__temp_me107.font = font;
 			}
 			#line default
 		}

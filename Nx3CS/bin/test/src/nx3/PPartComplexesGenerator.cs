@@ -22,11 +22,11 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PPartComplexesGenerator(global::nx3.PPartComplexesGenerator __temp_me110, global::nx3.PPart part){
+		public static   void __hx_ctor_nx3_PPartComplexesGenerator(global::nx3.PPartComplexesGenerator __temp_me112, global::nx3.PPart part){
 			unchecked {
 				#line 20 "F:\\nx3\\src\\nx3\\PPartComplexesGenerator.hx"
-				__temp_me110.part = part;
-				__temp_me110.vvoices = part.getVoices();
+				__temp_me112.part = part;
+				__temp_me112.vvoices = part.getVoices();
 			}
 			#line default
 		}
@@ -77,8 +77,8 @@ namespace nx3{
 			unchecked {
 				#line 53 "F:\\nx3\\src\\nx3\\PPartComplexesGenerator.hx"
 				this.complexes = new global::Array<object>(new object[]{});
-				global::Array<int> poskeys = global::nx3.VMapTools.keysToArray<int>(positions.keys());
-				poskeys = global::nx3.VMapTools.sortarray<int>(poskeys);
+				global::Array<int> poskeys = global::cx.MapTools.keysToArray<int>(positions.keys());
+				poskeys = global::cx.MapTools.sortarray<int>(poskeys);
 				{
 					#line 56 "F:\\nx3\\src\\nx3\\PPartComplexesGenerator.hx"
 					int _g = 0;

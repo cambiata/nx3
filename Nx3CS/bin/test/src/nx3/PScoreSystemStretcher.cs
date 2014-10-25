@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PScoreSystemStretcher(global::nx3.PScoreSystemStretcher __temp_me114, global::nx3.PSystem system){
+		public static   void __hx_ctor_nx3_PScoreSystemStretcher(global::nx3.PScoreSystemStretcher __temp_me116, global::nx3.PSystem system){
 			unchecked {
 				#line 14 "F:\\nx3\\src\\nx3\\PScoreSystemStretcher.hx"
-				__temp_me114.system = system;
+				__temp_me116.system = system;
 			}
 			#line default
 		}
@@ -54,10 +54,10 @@ namespace nx3{
 		public virtual   bool stretchTo(double stretchSystemToWidth, global::haxe.lang.Null<double> ifMoreThan){
 			unchecked {
 				#line 18 "F:\\nx3\\src\\nx3\\PScoreSystemStretcher.hx"
-				double __temp_ifMoreThan113 = ( ( ! (ifMoreThan.hasValue) ) ? (((double) (0) )) : (ifMoreThan.@value) );
-				if (( __temp_ifMoreThan113 > 0 )) {
+				double __temp_ifMoreThan115 = ( ( ! (ifMoreThan.hasValue) ) ? (((double) (0) )) : (ifMoreThan.@value) );
+				if (( __temp_ifMoreThan115 > 0 )) {
 					#line 21 "F:\\nx3\\src\\nx3\\PScoreSystemStretcher.hx"
-					if (( this.system.getWidth() <= __temp_ifMoreThan113 )) {
+					if (( this.system.getWidth() <= __temp_ifMoreThan115 )) {
 						#line 21 "F:\\nx3\\src\\nx3\\PScoreSystemStretcher.hx"
 						return true;
 					}

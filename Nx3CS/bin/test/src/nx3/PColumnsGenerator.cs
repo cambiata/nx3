@@ -22,11 +22,11 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PColumnsGenerator(global::nx3.PColumnsGenerator __temp_me93, global::nx3.PBar bar){
+		public static   void __hx_ctor_nx3_PColumnsGenerator(global::nx3.PColumnsGenerator __temp_me95, global::nx3.PBar bar){
 			unchecked {
 				#line 17 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
-				__temp_me93.bar = bar;
-				__temp_me93.vparts = __temp_me93.bar.getParts();
+				__temp_me95.bar = bar;
+				__temp_me95.vparts = __temp_me95.bar.getParts();
 			}
 			#line default
 		}
@@ -149,19 +149,19 @@ namespace nx3{
 						global::nx3.PColumn vcolumn = new global::nx3.PColumn(((global::nx3.PBar) (this.bar) ), ((global::Array<object>) (vcomplexes) ), ((int) (pos) ), ((int) (@value) ));
 						#line 82 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 						this.columns.push(vcolumn);
-						#line 85 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+						#line 84 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 						{
-							#line 85 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+							#line 84 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 							int _g11 = 0;
-							#line 85 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+							#line 84 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 							while (( _g11 < vcomplexes.length )){
-								#line 85 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+								#line 84 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 								global::nx3.PComplex complex1 = ((global::nx3.PComplex) (vcomplexes[_g11]) );
-								#line 85 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+								#line 84 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 								 ++ _g11;
-								#line 87 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+								#line 86 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 								if (( complex1 != default(global::nx3.PComplex) )) {
-									#line 87 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+									#line 86 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 									complex1.column = vcolumn;
 								}
 								
@@ -169,9 +169,9 @@ namespace nx3{
 							
 						}
 						
-						#line 89 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+						#line 88 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 						this.positionsColumns.@set(pos, vcolumn);
-						#line 92 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+						#line 91 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 						idx++;
 					}
 					
@@ -184,30 +184,30 @@ namespace nx3{
 		
 		public virtual   global::Array<int> calcPositions(global::Array<object> vparts){
 			unchecked {
-				#line 99 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+				#line 98 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 				global::haxe.ds.IntMap<bool> positionsMap = new global::haxe.ds.IntMap<bool>();
-				#line 101 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+				#line 100 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 				{
-					#line 101 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+					#line 100 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 					int _g = 0;
-					#line 101 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+					#line 100 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 					while (( _g < vparts.length )){
-						#line 101 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+						#line 100 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 						global::nx3.PPart vpart = ((global::nx3.PPart) (vparts[_g]) );
-						#line 101 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+						#line 100 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 						 ++ _g;
-						#line 103 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
-						global::Array<int> poss = global::nx3.VMapTools.keysToArray<int>(vpart.getPositionsComplexes().keys()).copy();
+						#line 102 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+						global::Array<int> poss = global::cx.MapTools.keysToArray<int>(vpart.getPositionsComplexes().keys()).copy();
 						{
-							#line 104 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+							#line 103 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 							int _g1 = 0;
-							#line 104 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+							#line 103 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 							while (( _g1 < poss.length )){
-								#line 104 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+								#line 103 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 								int pos = poss[_g1];
-								#line 104 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+								#line 103 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 								 ++ _g1;
-								#line 104 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+								#line 103 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 								positionsMap.@set(pos, true);
 							}
 							
@@ -217,11 +217,11 @@ namespace nx3{
 					
 				}
 				
-				#line 107 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
-				global::Array<int> positions = global::nx3.VMapTools.keysToArray<int>(positionsMap.keys());
-				#line 109 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
-				positions.sort(( (( global::nx3.PColumnsGenerator_calcPositions_109__Fun.__hx_current != default(global::nx3.PColumnsGenerator_calcPositions_109__Fun) )) ? (global::nx3.PColumnsGenerator_calcPositions_109__Fun.__hx_current) : (global::nx3.PColumnsGenerator_calcPositions_109__Fun.__hx_current = ((global::nx3.PColumnsGenerator_calcPositions_109__Fun) (new global::nx3.PColumnsGenerator_calcPositions_109__Fun()) )) ));
-				#line 111 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+				#line 106 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+				global::Array<int> positions = global::cx.MapTools.keysToArray<int>(positionsMap.keys());
+				#line 108 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+				positions.sort(( (( global::nx3.PColumnsGenerator_calcPositions_108__Fun.__hx_current != default(global::nx3.PColumnsGenerator_calcPositions_108__Fun) )) ? (global::nx3.PColumnsGenerator_calcPositions_108__Fun.__hx_current) : (global::nx3.PColumnsGenerator_calcPositions_108__Fun.__hx_current = ((global::nx3.PColumnsGenerator_calcPositions_108__Fun) (new global::nx3.PColumnsGenerator_calcPositions_108__Fun()) )) ));
+				#line 110 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 				return positions;
 			}
 			#line default
@@ -435,23 +435,23 @@ namespace nx3{
 
 #pragma warning disable 109, 114, 219, 429, 168, 162
 namespace nx3{
-	public  class PColumnsGenerator_calcPositions_109__Fun : global::haxe.lang.Function {
-		public    PColumnsGenerator_calcPositions_109__Fun() : base(2, 1){
+	public  class PColumnsGenerator_calcPositions_108__Fun : global::haxe.lang.Function {
+		public    PColumnsGenerator_calcPositions_108__Fun() : base(2, 1){
 			unchecked {
 			}
 			#line default
 		}
 		
 		
-		public static  global::nx3.PColumnsGenerator_calcPositions_109__Fun __hx_current;
+		public static  global::nx3.PColumnsGenerator_calcPositions_108__Fun __hx_current;
 		
 		public override   double __hx_invoke2_f(double __fn_float1, object __fn_dyn1, double __fn_float2, object __fn_dyn2){
 			unchecked {
-				#line 109 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+				#line 108 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 				int b = ( (global::haxe.lang.Runtime.eq(__fn_dyn2, global::haxe.lang.Runtime.undefined)) ? (((int) (__fn_float2) )) : (((int) (global::haxe.lang.Runtime.toInt(__fn_dyn2)) )) );
-				#line 109 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+				#line 108 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 				int a = ( (global::haxe.lang.Runtime.eq(__fn_dyn1, global::haxe.lang.Runtime.undefined)) ? (((int) (__fn_float1) )) : (((int) (global::haxe.lang.Runtime.toInt(__fn_dyn1)) )) );
-				#line 109 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
+				#line 108 "F:\\nx3\\src\\nx3\\PColumnsGenerator.hx"
 				return ((double) (global::Reflect.compare<int>(a, b)) );
 			}
 			#line default

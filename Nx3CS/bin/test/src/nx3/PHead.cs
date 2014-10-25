@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PHead(global::nx3.PHead __temp_me100, global::nx3.NHead nhead){
+		public static   void __hx_ctor_nx3_PHead(global::nx3.PHead __temp_me102, global::nx3.NHead nhead){
 			unchecked {
 				#line 12 "F:\\nx3\\src\\nx3\\PHead.hx"
-				__temp_me100.nhead = nhead;
+				__temp_me102.nhead = nhead;
 			}
 			#line default
 		}

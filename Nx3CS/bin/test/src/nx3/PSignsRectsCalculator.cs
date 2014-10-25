@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PSignsRectsCalculator(global::nx3.PSignsRectsCalculator __temp_me117, global::Array<object> signs){
+		public static   void __hx_ctor_nx3_PSignsRectsCalculator(global::nx3.PSignsRectsCalculator __temp_me119, global::Array<object> signs){
 			unchecked {
 				#line 14 "F:\\nx3\\src\\nx3\\PSignsRectsCalculator.hx"
-				__temp_me117.signs = signs;
+				__temp_me119.signs = signs;
 			}
 			#line default
 		}

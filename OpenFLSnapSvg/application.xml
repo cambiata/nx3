@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<meta title="OpenFLSnapSvg" package="OpenFLSnapSvg" version="1.0.0" company="" />
+	<app main="Main" file="OpenFLSnapSvg" path="bin" />
+	
+	<window width="800" height="480" unless="mobile" />
+	
+	<source path="src" />
+	
+	<set name="html5-backend" value="openfl-snapsvg" />	
+	<haxelib name="openfl" />
+	<haxelib name="actuate" />
+	
+	<assets path="assets/img" rename="img" />
+	<assets path="assets" />
+	
+</project>

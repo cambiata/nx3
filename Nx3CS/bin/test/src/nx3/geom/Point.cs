@@ -22,15 +22,15 @@ namespace nx3.geom{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_geom_Point(global::nx3.geom.Point __temp_me139, global::haxe.lang.Null<double> x, global::haxe.lang.Null<double> y){
+		public static   void __hx_ctor_nx3_geom_Point(global::nx3.geom.Point __temp_me129, global::haxe.lang.Null<double> x, global::haxe.lang.Null<double> y){
 			unchecked {
 				#line 12 "F:\\nx3\\src\\nx3\\geom\\Point.hx"
-				double __temp_y138 = ( ( ! (y.hasValue) ) ? (((double) (0) )) : (y.@value) );
+				double __temp_y128 = ( ( ! (y.hasValue) ) ? (((double) (0) )) : (y.@value) );
 				#line 12 "F:\\nx3\\src\\nx3\\geom\\Point.hx"
-				double __temp_x137 = ( ( ! (x.hasValue) ) ? (((double) (0) )) : (x.@value) );
+				double __temp_x127 = ( ( ! (x.hasValue) ) ? (((double) (0) )) : (x.@value) );
 				#line 14 "F:\\nx3\\src\\nx3\\geom\\Point.hx"
-				__temp_me139.x = __temp_x137;
-				__temp_me139.y = __temp_y138;
+				__temp_me129.x = __temp_x127;
+				__temp_me129.y = __temp_y128;
 			}
 			#line default
 		}

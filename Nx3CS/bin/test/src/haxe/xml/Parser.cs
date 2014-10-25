@@ -37,7 +37,7 @@ namespace haxe.xml{
 		}
 		
 		
-		public static   void __hx_ctor_haxe_xml_Parser(global::haxe.xml.Parser __temp_me57){
+		public static   void __hx_ctor_haxe_xml_Parser(global::haxe.xml.Parser __temp_me59){
 			unchecked {
 				#line 49 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 				{
@@ -64,7 +64,7 @@ namespace haxe.xml{
 		public static   int doParse(string str, global::haxe.lang.Null<int> p, global::Xml parent){
 			unchecked {
 				#line 70 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-				int __temp_p56 = ( ( ! (p.hasValue) ) ? (((int) (0) )) : (p.@value) );
+				int __temp_p58 = ( ( ! (p.hasValue) ) ? (((int) (0) )) : (p.@value) );
 				global::Xml xml = default(global::Xml);
 				int state = 1;
 				int next = 1;
@@ -74,9 +74,9 @@ namespace haxe.xml{
 				int nbrackets = 0;
 				int c = default(int);
 				#line 78 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-				if (( ((uint) (__temp_p56) ) < str.Length )) {
+				if (( ((uint) (__temp_p58) ) < str.Length )) {
 					#line 78 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-					c = ((int) (global::haxe.lang.Runtime.toInt(str[__temp_p56])) );
+					c = ((int) (global::haxe.lang.Runtime.toInt(str[__temp_p58])) );
 				}
 				 else {
 					#line 78 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
@@ -134,7 +134,7 @@ namespace haxe.xml{
 								default:
 								{
 									#line 103 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									start = __temp_p56;
+									start = __temp_p58;
 									state = 13;
 									continue;
 								}
@@ -151,7 +151,7 @@ namespace haxe.xml{
 							#line 108 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 							if (( c == 60 )) {
 								#line 113 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								global::Xml child = global::Xml.createPCData(global::haxe.lang.Runtime.concat(buf.toString(), global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true))));
+								global::Xml child = global::Xml.createPCData(global::haxe.lang.Runtime.concat(buf.toString(), global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true))));
 								#line 115 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 								buf = new global::StringBuf();
 								parent.addChild(child);
@@ -163,10 +163,10 @@ namespace haxe.xml{
 								#line 122 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 								if (( c == 38 )) {
 									#line 123 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									buf.addSub(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true));
+									buf.addSub(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true));
 									state = 18;
 									next = 13;
-									start = ( __temp_p56 + 1 );
+									start = ( __temp_p58 + 1 );
 								}
 								
 							}
@@ -179,52 +179,52 @@ namespace haxe.xml{
 						case 17:
 						{
 							#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_boolv218 = ( c == 93 );
+							bool __temp_boolv211 = ( c == 93 );
 							#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_boolv217 = false;
+							bool __temp_boolv210 = false;
 							#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_boolv216 = false;
+							bool __temp_boolv209 = false;
 							#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							if (__temp_boolv218) {
+							if (__temp_boolv211) {
 								#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								int __temp_stmt219 = default(int);
+								int __temp_stmt212 = default(int);
 								#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 								{
 									#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									int index = ( __temp_p56 + 1 );
+									int index = ( __temp_p58 + 1 );
 									#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									__temp_stmt219 = ( (( ((uint) (index) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index])) )) : (-1) );
+									__temp_stmt212 = ( (( ((uint) (index) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index])) )) : (-1) );
 								}
 								
 								#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								__temp_boolv217 = ( __temp_stmt219 == 93 );
+								__temp_boolv210 = ( __temp_stmt212 == 93 );
 								#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								if (__temp_boolv217) {
+								if (__temp_boolv210) {
 									#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									int __temp_stmt220 = default(int);
+									int __temp_stmt213 = default(int);
 									#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									{
 										#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										int index1 = ( __temp_p56 + 2 );
+										int index1 = ( __temp_p58 + 2 );
 										#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										__temp_stmt220 = ( (( ((uint) (index1) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index1])) )) : (-1) );
+										__temp_stmt213 = ( (( ((uint) (index1) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index1])) )) : (-1) );
 									}
 									
 									#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									__temp_boolv216 = ( __temp_stmt220 == 62 );
+									__temp_boolv209 = ( __temp_stmt213 == 62 );
 								}
 								
 							}
 							
 							#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_stmt215 = ( ( __temp_boolv218 && __temp_boolv217 ) && __temp_boolv216 );
+							bool __temp_stmt208 = ( ( __temp_boolv211 && __temp_boolv210 ) && __temp_boolv209 );
 							#line 130 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							if (__temp_stmt215) {
+							if (__temp_stmt208) {
 								#line 132 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								global::Xml child1 = global::Xml.createCData(global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true)));
+								global::Xml child1 = global::Xml.createCData(global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true)));
 								parent.addChild(child1);
 								nsubs++;
-								__temp_p56 += 2;
+								__temp_p58 += 2;
 								state = 1;
 							}
 							
@@ -240,118 +240,118 @@ namespace haxe.xml{
 								case 33:
 								{
 									#line 142 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									int __temp_stmt221 = default(int);
+									int __temp_stmt214 = default(int);
 									#line 142 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									{
 										#line 142 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										int index2 = ( __temp_p56 + 1 );
+										int index2 = ( __temp_p58 + 1 );
 										#line 142 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										__temp_stmt221 = ( (( ((uint) (index2) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index2])) )) : (-1) );
+										__temp_stmt214 = ( (( ((uint) (index2) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index2])) )) : (-1) );
 									}
 									
 									#line 142 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									if (( __temp_stmt221 == 91 )) {
+									if (( __temp_stmt214 == 91 )) {
 										#line 144 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										__temp_p56 += 2;
-										if ( ! (string.Equals(global::haxe.lang.StringExt.substr(str, __temp_p56, new global::haxe.lang.Null<int>(6, true)).ToUpper(), "CDATA[")) ) {
+										__temp_p58 += 2;
+										if ( ! (string.Equals(global::haxe.lang.StringExt.substr(str, __temp_p58, new global::haxe.lang.Null<int>(6, true)).ToUpper(), "CDATA[")) ) {
 											#line 146 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 											throw global::haxe.lang.HaxeException.wrap("Expected <![CDATA[");
 										}
 										
 										#line 147 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										__temp_p56 += 5;
+										__temp_p58 += 5;
 										state = 17;
-										start = ( __temp_p56 + 1 );
+										start = ( __temp_p58 + 1 );
 									}
 									 else {
 										#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										int __temp_stmt224 = default(int);
+										int __temp_stmt217 = default(int);
 										#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 										{
 											#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											int index3 = ( __temp_p56 + 1 );
+											int index3 = ( __temp_p58 + 1 );
 											#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											__temp_stmt224 = ( (( ((uint) (index3) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index3])) )) : (-1) );
+											__temp_stmt217 = ( (( ((uint) (index3) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index3])) )) : (-1) );
 										}
 										
 										#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										bool __temp_stmt223 = ( __temp_stmt224 == 68 );
+										bool __temp_stmt216 = ( __temp_stmt217 == 68 );
 										#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										bool __temp_boolv225 = false;
+										bool __temp_boolv218 = false;
 										#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										if ( ! (__temp_stmt223) ) {
+										if ( ! (__temp_stmt216) ) {
 											#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											int __temp_stmt226 = default(int);
+											int __temp_stmt219 = default(int);
 											#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 											{
 												#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-												int index4 = ( __temp_p56 + 1 );
+												int index4 = ( __temp_p58 + 1 );
 												#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-												__temp_stmt226 = ( (( ((uint) (index4) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index4])) )) : (-1) );
+												__temp_stmt219 = ( (( ((uint) (index4) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index4])) )) : (-1) );
 											}
 											
 											#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											__temp_boolv225 = ( __temp_stmt226 == 100 );
+											__temp_boolv218 = ( __temp_stmt219 == 100 );
 										}
 										
 										#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										bool __temp_stmt222 = ( __temp_stmt223 || __temp_boolv225 );
+										bool __temp_stmt215 = ( __temp_stmt216 || __temp_boolv218 );
 										#line 151 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										if (__temp_stmt222) {
+										if (__temp_stmt215) {
 											#line 153 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											if ( ! (string.Equals(global::haxe.lang.StringExt.substr(str, ( __temp_p56 + 2 ), new global::haxe.lang.Null<int>(6, true)).ToUpper(), "OCTYPE")) ) {
+											if ( ! (string.Equals(global::haxe.lang.StringExt.substr(str, ( __temp_p58 + 2 ), new global::haxe.lang.Null<int>(6, true)).ToUpper(), "OCTYPE")) ) {
 												#line 154 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 												throw global::haxe.lang.HaxeException.wrap("Expected <!DOCTYPE");
 											}
 											
 											#line 155 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											__temp_p56 += 8;
+											__temp_p58 += 8;
 											state = 16;
-											start = ( __temp_p56 + 1 );
+											start = ( __temp_p58 + 1 );
 										}
 										 else {
 											#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											int __temp_stmt229 = default(int);
+											int __temp_stmt222 = default(int);
 											#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 											{
 												#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-												int index5 = ( __temp_p56 + 1 );
+												int index5 = ( __temp_p58 + 1 );
 												#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-												__temp_stmt229 = ( (( ((uint) (index5) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index5])) )) : (-1) );
+												__temp_stmt222 = ( (( ((uint) (index5) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index5])) )) : (-1) );
 											}
 											
 											#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											bool __temp_stmt228 = ( __temp_stmt229 != 45 );
+											bool __temp_stmt221 = ( __temp_stmt222 != 45 );
 											#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											bool __temp_boolv230 = false;
+											bool __temp_boolv223 = false;
 											#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											if ( ! (__temp_stmt228) ) {
+											if ( ! (__temp_stmt221) ) {
 												#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-												int __temp_stmt231 = default(int);
+												int __temp_stmt224 = default(int);
 												#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 												{
 													#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-													int index6 = ( __temp_p56 + 2 );
+													int index6 = ( __temp_p58 + 2 );
 													#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-													__temp_stmt231 = ( (( ((uint) (index6) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index6])) )) : (-1) );
+													__temp_stmt224 = ( (( ((uint) (index6) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index6])) )) : (-1) );
 												}
 												
 												#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-												__temp_boolv230 = ( __temp_stmt231 != 45 );
+												__temp_boolv223 = ( __temp_stmt224 != 45 );
 											}
 											
 											#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											bool __temp_stmt227 = ( __temp_stmt228 || __temp_boolv230 );
+											bool __temp_stmt220 = ( __temp_stmt221 || __temp_boolv223 );
 											#line 159 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-											if (__temp_stmt227) {
+											if (__temp_stmt220) {
 												#line 160 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 												throw global::haxe.lang.HaxeException.wrap("Expected <!--");
 											}
 											 else {
 												#line 163 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-												__temp_p56 += 2;
+												__temp_p58 += 2;
 												state = 15;
-												start = ( __temp_p56 + 1 );
+												start = ( __temp_p58 + 1 );
 											}
 											
 										}
@@ -367,7 +367,7 @@ namespace haxe.xml{
 								{
 									#line 168 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									state = 14;
-									start = __temp_p56;
+									start = __temp_p58;
 									#line 167 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									break;
 								}
@@ -382,7 +382,7 @@ namespace haxe.xml{
 									}
 									
 									#line 173 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									start = ( __temp_p56 + 1 );
+									start = ( __temp_p58 + 1 );
 									state = 0;
 									next = 10;
 									#line 170 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
@@ -394,7 +394,7 @@ namespace haxe.xml{
 								{
 									#line 177 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									state = 3;
-									start = __temp_p56;
+									start = __temp_p58;
 									continue;
 								}
 								
@@ -410,13 +410,13 @@ namespace haxe.xml{
 							#line 182 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 							if ( ! ((( ( ( ( ( ( ( ( c >= 97 ) && ( c <= 122 ) ) || ( ( c >= 65 ) && ( c <= 90 ) ) ) || ( ( c >= 48 ) && ( c <= 57 ) ) ) || ( c == 58 ) ) || ( c == 46 ) ) || ( c == 95 ) ) || ( c == 45 ) ))) ) {
 								#line 184 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								if (( __temp_p56 == start )) {
+								if (( __temp_p58 == start )) {
 									#line 185 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									throw global::haxe.lang.HaxeException.wrap("Expected node name");
 								}
 								
 								#line 186 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								xml = global::Xml.createElement(global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true)));
+								xml = global::Xml.createElement(global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true)));
 								parent.addChild(xml);
 								state = 0;
 								next = 4;
@@ -456,7 +456,7 @@ namespace haxe.xml{
 								{
 									#line 202 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									state = 5;
-									start = __temp_p56;
+									start = __temp_p58;
 									continue;
 								}
 								
@@ -473,13 +473,13 @@ namespace haxe.xml{
 							if ( ! ((( ( ( ( ( ( ( ( c >= 97 ) && ( c <= 122 ) ) || ( ( c >= 65 ) && ( c <= 90 ) ) ) || ( ( c >= 48 ) && ( c <= 57 ) ) ) || ( c == 58 ) ) || ( c == 46 ) ) || ( c == 95 ) ) || ( c == 45 ) ))) ) {
 								#line 209 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 								string tmp = default(string);
-								if (( start == __temp_p56 )) {
+								if (( start == __temp_p58 )) {
 									#line 211 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									throw global::haxe.lang.HaxeException.wrap("Expected attribute name");
 								}
 								
 								#line 212 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								tmp = global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true));
+								tmp = global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true));
 								aname = tmp;
 								if (xml.exists(aname)) {
 									#line 215 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
@@ -532,7 +532,7 @@ namespace haxe.xml{
 								{
 									#line 233 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									state = 8;
-									start = __temp_p56;
+									start = __temp_p58;
 									#line 232 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									break;
 								}
@@ -556,7 +556,7 @@ namespace haxe.xml{
 							#line 239 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 							if (( c == (( (( ((uint) (start) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[start])) )) : (-1) )) )) {
 								#line 241 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								string val = global::haxe.lang.StringExt.substr(str, ( start + 1 ), new global::haxe.lang.Null<int>(( ( __temp_p56 - start ) - 1 ), true));
+								string val = global::haxe.lang.StringExt.substr(str, ( start + 1 ), new global::haxe.lang.Null<int>(( ( __temp_p58 - start ) - 1 ), true));
 								xml.@set(aname, val);
 								state = 0;
 								next = 4;
@@ -570,8 +570,8 @@ namespace haxe.xml{
 						case 9:
 						{
 							#line 247 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							__temp_p56 = global::haxe.xml.Parser.doParse(str, new global::haxe.lang.Null<int>(__temp_p56, true), xml);
-							start = __temp_p56;
+							__temp_p58 = global::haxe.xml.Parser.doParse(str, new global::haxe.lang.Null<int>(__temp_p58, true), xml);
+							start = __temp_p58;
 							state = 1;
 							#line 246 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 							break;
@@ -617,7 +617,7 @@ namespace haxe.xml{
 									}
 									
 									#line 264 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									return __temp_p56;
+									return __temp_p58;
 								}
 								
 								
@@ -637,13 +637,13 @@ namespace haxe.xml{
 							#line 269 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 							if ( ! ((( ( ( ( ( ( ( ( c >= 97 ) && ( c <= 122 ) ) || ( ( c >= 65 ) && ( c <= 90 ) ) ) || ( ( c >= 48 ) && ( c <= 57 ) ) ) || ( c == 58 ) ) || ( c == 46 ) ) || ( c == 95 ) ) || ( c == 45 ) ))) ) {
 								#line 271 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								if (( start == __temp_p56 )) {
+								if (( start == __temp_p58 )) {
 									#line 272 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									throw global::haxe.lang.HaxeException.wrap("Expected node name");
 								}
 								
 								#line 274 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								string v = global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true));
+								string v = global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true));
 								if ( ! (string.Equals(v, parent.get_nodeName())) ) {
 									#line 276 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									throw global::haxe.lang.HaxeException.wrap(global::haxe.lang.Runtime.concat(global::haxe.lang.Runtime.concat("Expected </", parent.get_nodeName()), ">"));
@@ -663,50 +663,50 @@ namespace haxe.xml{
 						case 15:
 						{
 							#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_boolv235 = ( c == 45 );
+							bool __temp_boolv228 = ( c == 45 );
 							#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_boolv234 = false;
+							bool __temp_boolv227 = false;
 							#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_boolv233 = false;
+							bool __temp_boolv226 = false;
 							#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							if (__temp_boolv235) {
+							if (__temp_boolv228) {
 								#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								int __temp_stmt236 = default(int);
+								int __temp_stmt229 = default(int);
 								#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 								{
 									#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									int index7 = ( __temp_p56 + 1 );
+									int index7 = ( __temp_p58 + 1 );
 									#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									__temp_stmt236 = ( (( ((uint) (index7) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index7])) )) : (-1) );
+									__temp_stmt229 = ( (( ((uint) (index7) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index7])) )) : (-1) );
 								}
 								
 								#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								__temp_boolv234 = ( __temp_stmt236 == 45 );
+								__temp_boolv227 = ( __temp_stmt229 == 45 );
 								#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								if (__temp_boolv234) {
+								if (__temp_boolv227) {
 									#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									int __temp_stmt237 = default(int);
+									int __temp_stmt230 = default(int);
 									#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									{
 										#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										int index8 = ( __temp_p56 + 2 );
+										int index8 = ( __temp_p58 + 2 );
 										#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										__temp_stmt237 = ( (( ((uint) (index8) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index8])) )) : (-1) );
+										__temp_stmt230 = ( (( ((uint) (index8) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index8])) )) : (-1) );
 									}
 									
 									#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									__temp_boolv233 = ( __temp_stmt237 == 62 );
+									__temp_boolv226 = ( __temp_stmt230 == 62 );
 								}
 								
 							}
 							
 							#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_stmt232 = ( ( __temp_boolv235 && __temp_boolv234 ) && __temp_boolv233 );
+							bool __temp_stmt225 = ( ( __temp_boolv228 && __temp_boolv227 ) && __temp_boolv226 );
 							#line 283 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							if (__temp_stmt232) {
+							if (__temp_stmt225) {
 								#line 285 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								parent.addChild(global::Xml.createComment(global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true))));
-								__temp_p56 += 2;
+								parent.addChild(global::Xml.createComment(global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true))));
+								__temp_p58 += 2;
 								state = 1;
 							}
 							
@@ -732,7 +732,7 @@ namespace haxe.xml{
 									#line 294 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									if (( ( c == 62 ) && ( nbrackets == 0 ) )) {
 										#line 296 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-										parent.addChild(global::Xml.createDocType(global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true))));
+										parent.addChild(global::Xml.createDocType(global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true))));
 										state = 1;
 									}
 									
@@ -748,32 +748,32 @@ namespace haxe.xml{
 						case 14:
 						{
 							#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_boolv240 = ( c == 63 );
+							bool __temp_boolv233 = ( c == 63 );
 							#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_boolv239 = false;
+							bool __temp_boolv232 = false;
 							#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							if (__temp_boolv240) {
+							if (__temp_boolv233) {
 								#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								int __temp_stmt241 = default(int);
+								int __temp_stmt234 = default(int);
 								#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 								{
 									#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									int index9 = ( __temp_p56 + 1 );
+									int index9 = ( __temp_p58 + 1 );
 									#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-									__temp_stmt241 = ( (( ((uint) (index9) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index9])) )) : (-1) );
+									__temp_stmt234 = ( (( ((uint) (index9) ) < str.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(str[index9])) )) : (-1) );
 								}
 								
 								#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								__temp_boolv239 = ( __temp_stmt241 == 62 );
+								__temp_boolv232 = ( __temp_stmt234 == 62 );
 							}
 							
 							#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							bool __temp_stmt238 = ( __temp_boolv240 && __temp_boolv239 );
+							bool __temp_stmt231 = ( __temp_boolv233 && __temp_boolv232 );
 							#line 300 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-							if (__temp_stmt238) {
+							if (__temp_stmt231) {
 								#line 302 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								__temp_p56++;
-								string str1 = global::haxe.lang.StringExt.substr(str, ( start + 1 ), new global::haxe.lang.Null<int>(( ( __temp_p56 - start ) - 2 ), true));
+								__temp_p58++;
+								string str1 = global::haxe.lang.StringExt.substr(str, ( start + 1 ), new global::haxe.lang.Null<int>(( ( __temp_p58 - start ) - 2 ), true));
 								parent.addChild(global::Xml.createProcessingInstruction(str1));
 								state = 1;
 							}
@@ -788,7 +788,7 @@ namespace haxe.xml{
 							#line 308 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 							if (( c == 59 )) {
 								#line 310 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								string s = global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true));
+								string s = global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true));
 								if (( (( (( ((uint) (0) ) < s.Length )) ? (((int) (global::haxe.lang.Runtime.toInt(s[0])) )) : (-1) )) == 35 )) {
 									#line 312 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 									global::haxe.lang.Null<int> i = default(global::haxe.lang.Null<int>);
@@ -827,7 +827,7 @@ namespace haxe.xml{
 								}
 								
 								#line 320 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-								start = ( __temp_p56 + 1 );
+								start = ( __temp_p58 + 1 );
 								state = next;
 							}
 							
@@ -841,7 +841,7 @@ namespace haxe.xml{
 					#line 324 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 					{
 						#line 324 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-						int index10 =  ++ __temp_p56;
+						int index10 =  ++ __temp_p58;
 						#line 324 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 						if (( ((uint) (index10) ) < str.Length )) {
 							#line 324 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
@@ -859,20 +859,20 @@ namespace haxe.xml{
 				#line 327 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 				if (( state == 1 )) {
 					#line 329 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-					start = __temp_p56;
+					start = __temp_p58;
 					state = 13;
 				}
 				
 				#line 333 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
 				if (( state == 13 )) {
 					#line 335 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-					if (( ( __temp_p56 != start ) || ( nsubs == 0 ) )) {
+					if (( ( __temp_p58 != start ) || ( nsubs == 0 ) )) {
 						#line 336 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-						parent.addChild(global::Xml.createPCData(global::haxe.lang.Runtime.concat(buf.toString(), global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p56 - start ), true)))));
+						parent.addChild(global::Xml.createPCData(global::haxe.lang.Runtime.concat(buf.toString(), global::haxe.lang.StringExt.substr(str, start, new global::haxe.lang.Null<int>(( __temp_p58 - start ), true)))));
 					}
 					
 					#line 337 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"
-					return __temp_p56;
+					return __temp_p58;
 				}
 				
 				#line 340 "F:\\HaxeToolkit\\haxe\\std\\haxe\\xml\\Parser.hx"

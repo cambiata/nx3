@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PScoreSystemsGenerator(global::nx3.PScoreSystemsGenerator __temp_me115, global::Array<object> bars){
+		public static   void __hx_ctor_nx3_PScoreSystemsGenerator(global::nx3.PScoreSystemsGenerator __temp_me117, global::Array<object> bars){
 			unchecked {
 				#line 17 "F:\\nx3\\src\\nx3\\PScoreSystemsGenerator.hx"
-				__temp_me115.bars = bars;
+				__temp_me117.bars = bars;
 			}
 			#line default
 		}
@@ -72,7 +72,7 @@ namespace nx3{
 					}
 					
 					#line 30 "F:\\nx3\\src\\nx3\\PScoreSystemsGenerator.hx"
-					global::nx3.PSystemGenerator generator = new global::nx3.PSystemGenerator(((global::Array<object>) (tempbars) ), ((object) (new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{480140652, 1756293853, 1944669088}), new global::Array<object>(new object[]{true, true, ( sysidx == 0 )}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}))) ), ((object) (prevbarAttributes) ), ((double) (syswidth) ), ((global::nx3.IBarWidthCalculator) (new global::nx3.PBarWidthCalculator()) ));
+					global::nx3.PSystemBarsGenerator generator = new global::nx3.PSystemBarsGenerator(((global::Array<object>) (tempbars) ), ((object) (new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{480140652, 1756293853, 1944669088}), new global::Array<object>(new object[]{true, true, ( sysidx == 0 )}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}))) ), ((object) (prevbarAttributes) ), ((double) (syswidth) ), ((global::nx3.IBarWidthCalculator) (new global::nx3.PBarWidthCalculator()) ));
 					global::nx3.PSystem system = generator.getSystem();
 					prevbarAttributes = system.getLastBarAttributes();
 					result.push(system);

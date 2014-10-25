@@ -22,7 +22,7 @@ namespace cx{
 		}
 		
 		
-		public static   void __hx_ctor_cx_EnumTools(global::cx.EnumTools __temp_me23){
+		public static   void __hx_ctor_cx_EnumTools(global::cx.EnumTools __temp_me24){
 			unchecked {
 				#line 8 "F:\\nx3\\src\\cx\\EnumTools.hx"
 				{
@@ -50,21 +50,21 @@ namespace cx{
 					#line 19 "F:\\nx3\\src\\cx\\EnumTools.hx"
 					return global::Type.createEnum<T>(e, type, @params);
 				}
-				catch (global::System.Exception __temp_catchallException185){
+				catch (global::System.Exception __temp_catchallException178){
 					#line 11 "F:\\nx3\\src\\cx\\EnumTools.hx"
-					global::haxe.lang.Exceptions.exception = __temp_catchallException185;
+					global::haxe.lang.Exceptions.exception = __temp_catchallException178;
 					#line 20 "F:\\nx3\\src\\cx\\EnumTools.hx"
-					object __temp_catchall186 = __temp_catchallException185;
+					object __temp_catchall179 = __temp_catchallException178;
 					#line 20 "F:\\nx3\\src\\cx\\EnumTools.hx"
-					if (( __temp_catchall186 is global::haxe.lang.HaxeException )) {
+					if (( __temp_catchall179 is global::haxe.lang.HaxeException )) {
 						#line 20 "F:\\nx3\\src\\cx\\EnumTools.hx"
-						__temp_catchall186 = ((global::haxe.lang.HaxeException) (__temp_catchallException185) ).obj;
+						__temp_catchall179 = ((global::haxe.lang.HaxeException) (__temp_catchallException178) ).obj;
 					}
 					
 					#line 20 "F:\\nx3\\src\\cx\\EnumTools.hx"
 					{
 						#line 20 "F:\\nx3\\src\\cx\\EnumTools.hx"
-						object e1 = __temp_catchall186;
+						object e1 = __temp_catchall179;
 						#line 20 "F:\\nx3\\src\\cx\\EnumTools.hx"
 						{
 						}

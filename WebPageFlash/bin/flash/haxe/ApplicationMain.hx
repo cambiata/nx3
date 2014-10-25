@@ -1,133 +1,82 @@
-#if (!macro || !haxe3)
-#if (nme || openfl)
-
-
-import openfl.display.DisplayObject;
-import openfl.display.LoaderInfo;
-import openfl.display.StageAlign;
-import openfl.display.StageScaleMode;
-import openfl.events.Event;
-import openfl.events.ProgressEvent;
-import openfl.Assets;
-import openfl.Lib;
+import lime.Assets;
+#if !macro
 
 
 class ApplicationMain {
 	
 	
-	private static var complete:Bool;
-	private static var loaderInfo:LoaderInfo;
-	private static var preloader:NMEPreloader;
+	public static var config:lime.app.Config;
+	public static var preloader:openfl.display.Preloader;
+	
+	private static var app:lime.app.Application;
 	
 	
-	public static function main () {
+	public static function create ():Void {
+		
+		app = new openfl.display.Application ();
+		app.create (config);
+		
+		var display = new NMEPreloader ();
+		
+		preloader = new openfl.display.Preloader (display);
+		preloader.onComplete = init;
+		preloader.create (config);
+		
+		#if js
+		var urls = [];
+		var types = [];
+		
+		
+		urls.push ("wav/0.data");
+		types.push (AssetType.BINARY);
+		
+		
+		urls.push ("wav/1.data");
+		types.push (AssetType.BINARY);
+		
+		
+		urls.push ("wav/2.data");
+		types.push (AssetType.BINARY);
+		
+		
+		urls.push ("wav/3.data");
+		types.push (AssetType.BINARY);
+		
+		
+		urls.push ("wav/4.data");
+		types.push (AssetType.BINARY);
+		
+		
+		urls.push ("wav/81.data");
+		types.push (AssetType.BINARY);
+		
+		
+		urls.push ("wav/dummy.txt");
+		types.push (AssetType.TEXT);
 		
 		
 		
-		//nme.Lib.setPackage("Jonas Nyström", "score", "WebPageFlash", "1.0.0");
+		preloader.load (urls, types);
+		#end
 		
-		loaderInfo = openfl.Lib.current.loaderInfo;
+		var result = app.exec ();
 		
-		loaderInfo.addEventListener (Event.COMPLETE, loaderInfo_onComplete);
-		loaderInfo.addEventListener (Event.INIT, loaderInfo_onInit);
-		loaderInfo.addEventListener (ProgressEvent.PROGRESS, loaderInfo_onProgress);
-		//loaderInfo.addEventListener (IOErrorEvent.IO_ERROR, ioErrorHandler);
-		//loaderInfo.addEventListener (HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
-		
-		
-		
-		Lib.current.stage.align = StageAlign.TOP_LEFT;
-		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		
-		//if (loaderInfo.bytesLoaded < loaderInfo.bytesTotal || loaderInfo.bytesLoaded <= 0) {
-			
-			preloader = new NMEPreloader ();
-			Lib.current.addChild (preloader);
-			
-			preloader.onInit ();
-			preloader.onUpdate (loaderInfo.bytesLoaded, loaderInfo.bytesTotal);
-			
-			Lib.current.addEventListener (Event.ENTER_FRAME, current_onEnter);
-			
-		//} else {
-			
-			//start ();
-			
-		//}
-		
-		
+		#if sys
+		Sys.exit (result);
+		#end
 		
 	}
 	
 	
-	private static function start ():Void {
+	public static function init ():Void {
 		
-		var hasMain = false;
-		var mainClass = Type.resolveClass ("Main");
-		
-		for (methodName in Type.getClassFields (mainClass)) {
+		var loaded = 0;
+		var total = 0;
+		var library_onLoad = function (_) {
 			
-			if (methodName == "main") {
-				
-				hasMain = true;
-				break;
-				
-			}
+			loaded++;
 			
-		}
-		
-		if (hasMain) {
-			
-			Reflect.callMethod (mainClass, Reflect.field (mainClass, "main"), []);
-			
-		} else {
-			
-			var instance = Type.createInstance (DocumentClass, []);
-			
-			if (Std.is (instance, DisplayObject)) {
-				
-				Lib.current.addChild (cast instance);
-				
-			}
-			
-		}
-		
-	}
-	
-	
-	private static function update ():Void {
-		
-		if (preloader != null) {
-			
-			preloader.onUpdate (loaderInfo.bytesLoaded, loaderInfo.bytesTotal);
-			
-		}
-		
-	}
-	
-	
-	
-	
-	// Event Handlers
-	
-	
-	
-	
-	private static function current_onEnter (event:Event):Void {
-		
-		if (complete) {
-			
-			Lib.current.removeEventListener (Event.ENTER_FRAME, current_onEnter);
-			loaderInfo.removeEventListener (Event.COMPLETE, loaderInfo_onComplete);
-			loaderInfo.removeEventListener (Event.INIT, loaderInfo_onInit);
-			loaderInfo.removeEventListener (ProgressEvent.PROGRESS, loaderInfo_onProgress);
-			
-			if (preloader != null) {
-				
-				preloader.addEventListener (Event.COMPLETE, preloader_onComplete);
-				preloader.onLoaded();
-				
-			} else {
+			if (loaded == total) {
 				
 				start ();
 				
@@ -135,58 +84,52 @@ class ApplicationMain {
 			
 		}
 		
-	}
-	
-	
-	private static function loaderInfo_onComplete (event:Event):Void {
 		
-		complete = true;
-		update ();
 		
-	}
-	
-	
-	private static function loaderInfo_onInit (event:Event):Void {
-		
-		update ();
+		if (loaded == total) {
+			
+			start ();
+			
+		}
 		
 	}
-	
-	
-	private static function loaderInfo_onProgress (event:ProgressEvent):Void {
-		
-		update ();
-		
-	}
-	
-
-	private static function preloader_onComplete (event:Event):Void {
-		
-		preloader.removeEventListener (Event.COMPLETE, preloader_onComplete);
-		Lib.current.removeChild (preloader);
-		Lib.current.stage.focus = null;
-		preloader = null;
-		
-		start ();
-		
-	}
-	
-	
-}
-
-
-#else
-
-
-import Main;
-import flash.display.DisplayObject;
-import flash.Lib;
-
-
-class ApplicationMain {
 	
 	
 	public static function main () {
+		
+		config = {
+			
+			antialiasing: Std.int (0),
+			background: Std.int (16777215),
+			borderless: false,
+			depthBuffer: false,
+			fps: Std.int (60),
+			fullscreen: false,
+			height: Std.int (400),
+			orientation: "",
+			resizable: true,
+			stencilBuffer: false,
+			title: "WebPageFlash",
+			vsync: false,
+			width: Std.int (1000),
+			
+		}
+		
+		#if js
+		#if munit
+		flash.Lib.embed (null, 1000, 400, "FFFFFF");
+		#end
+		#else
+		create ();
+		#end
+		
+	}
+	
+	
+	public static function start ():Void {
+		
+		openfl.Lib.current.stage.align = openfl.display.StageAlign.TOP_LEFT;
+		openfl.Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
 		
 		var hasMain = false;
 		
@@ -207,27 +150,39 @@ class ApplicationMain {
 			
 		} else {
 			
-			var instance = Type.createInstance (DocumentClass, []);
+			var instance:DocumentClass = Type.createInstance (DocumentClass, []);
 			
-			if (Std.is (instance, DisplayObject)) {
+			if (Std.is (instance, openfl.display.DisplayObject)) {
 				
-				Lib.current.addChild (cast instance);
+				openfl.Lib.current.addChild (cast instance);
 				
 			}
 			
 		}
 		
+		openfl.Lib.current.stage.dispatchEvent (new openfl.events.Event (openfl.events.Event.RESIZE, false, false));
+		
 	}
+	
+	
+	#if neko
+	@:noCompletion public static function __init__ () {
+		
+		var loader = new neko.vm.Loader (untyped $loader);
+		loader.addPath (haxe.io.Path.directory (Sys.executablePath ()));
+		loader.addPath ("./");
+		loader.addPath ("@executable_path/");
+		
+	}
+	#end
 	
 	
 }
 
 
-#end
-
-
-#if haxe3 @:build(DocumentClass.build()) #end
-@:keep class DocumentClass extends Main { }
+#if flash @:build(DocumentClass.buildFlash())
+#else @:build(DocumentClass.build()) #end
+@:keep class DocumentClass extends Main {}
 
 
 #else
@@ -241,6 +196,40 @@ class DocumentClass {
 	
 	
 	macro public static function build ():Array<Field> {
+		
+		var classType = Context.getLocalClass ().get ();
+		var searchTypes = classType;
+		
+		while (searchTypes.superClass != null) {
+			
+			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
+				
+				var fields = Context.getBuildFields ();
+				
+				var method = macro {
+					
+					this.stage = flash.Lib.current.stage;
+					super ();
+					dispatchEvent (new openfl.events.Event (openfl.events.Event.ADDED_TO_STAGE, false, false));
+					
+				}
+				
+				fields.push ({ name: "new", access: [ APublic ], kind: FFun({ args: [], expr: method, params: [], ret: macro :Void }), pos: Context.currentPos () });
+				
+				return fields;
+				
+			}
+			
+			searchTypes = searchTypes.superClass.t.get ();
+			
+		}
+		
+		return null;
+		
+	}
+	
+	
+	macro public static function buildFlash ():Array<Field> {
 		
 		var classType = Context.getLocalClass ().get ();
 		var searchTypes = classType;

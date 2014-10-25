@@ -1,0 +1,21 @@
+-main ApplicationMain 
+-cp F:/_lib/openfl/2,1,1
+-D openfl=2.1.1
+-cp F:/_lib/lime/2,0,0-alpha,2
+-D lime=2.0.0-alpha.2
+-cp F:/_lib/actuate/1,7,5
+-D actuate=1.7.5
+-cp src
+-cp ../src
+-D lime-openal
+-D tools=2.0.0-alpha.2
+-D no-compilation
+-D lime-opengl
+-D openfl-flash
+-D lime-curl
+-D web
+-swf-version 11.2
+-swf bin/flash/bin/OpenFLSnapSvg.swf
+-swf-header 800:480:60:FFFFFF
+-cp bin/flash/haxe
+-debug

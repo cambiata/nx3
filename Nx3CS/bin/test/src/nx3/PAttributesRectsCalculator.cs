@@ -22,7 +22,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PAttributesRectsCalculator(global::nx3.PAttributesRectsCalculator __temp_me72){
+		public static   void __hx_ctor_nx3_PAttributesRectsCalculator(global::nx3.PAttributesRectsCalculator __temp_me74){
 			unchecked {
 				#line 8 "F:\\nx3\\src\\nx3\\PAttributesRectsCalculator.hx"
 				{

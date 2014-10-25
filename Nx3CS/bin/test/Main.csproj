@@ -68,8 +68,6 @@
 	
     <Compile Include="src\nx3\PColumn.cs"/>
 	
-    <Compile Include="src\nx3\VHeadsRectsCalculator.cs"/>
-	
     <Compile Include="src\nx3\geom\Point.cs"/>
 	
     <Compile Include="src\nx3\ENoteAttributes.cs"/>
@@ -83,8 +81,6 @@
     <Compile Include="src\nx3\EBarlineLeft.cs"/>
 	
     <Compile Include="src\nx3\PNoteHeadsRectsPausesCalculator.cs"/>
-	
-    <Compile Include="src\nx3\VNote.cs"/>
 	
     <Compile Include="src\nx3\xml\NoteXML.cs"/>
 	
@@ -106,8 +102,6 @@
 	
     <Compile Include="src\nx3\PHeadPlacementsCalculator.cs"/>
 	
-    <Compile Include="src\nx3\VNoteInternalDirectionCalculator.cs"/>
-	
     <Compile Include="src\nx3\EHeadValueType.cs"/>
 	
     <Compile Include="src\nx3\PBeamgroupFrameCalculator.cs"/>
@@ -117,8 +111,6 @@
     <Compile Include="src\nx3\EBarType.cs"/>
 	
     <Compile Include="src\nx3\PPartbeamgroupsDirectionCalculator.cs"/>
-	
-    <Compile Include="src\nx3\VNoteHeadsRectsPausesCalculator.cs"/>
 	
     <Compile Include="src\nx3\PNote.cs"/>
 	
@@ -148,15 +140,17 @@
 	
     <Compile Include="src\nx3\EVoiceType.cs"/>
 	
+    <Compile Include="src\List.cs"/>
+	
     <Compile Include="src\nx3\PBar.cs"/>
 	
     <Compile Include="src\nx3\PComplexTieTargetCalculator.cs"/>
 	
     <Compile Include="src\Type.cs"/>
 	
-    <Compile Include="src\nx3\PScore.cs"/>
+    <Compile Include="src\hxlazy\Lazy.cs"/>
 	
-    <Compile Include="src\nx3\PSystemGenerator.cs"/>
+    <Compile Include="src\nx3\PScore.cs"/>
 	
     <Compile Include="src\nx3\EHeadPosition.cs"/>
 	
@@ -192,19 +186,19 @@
 	
     <Compile Include="src\nx3\NBar.cs"/>
 	
-    <Compile Include="src\nx3\PSystemBarWidthCalculator.cs"/>
-	
     <Compile Include="src\Reflect.cs"/>
 	
     <Compile Include="src\nx3\PNoteHeadsRectTplCalculator.cs"/>
+	
+    <Compile Include="src\cx\MapTools.cs"/>
 	
     <Compile Include="src\nx3\EBeamflagType.cs"/>
 	
     <Compile Include="src\nx3\PScoreSystemsGenerator.cs"/>
 	
-    <Compile Include="src\nx3\ETime.cs"/>
+    <Compile Include="src\nx3\PSystemBarsGenerator.cs"/>
 	
-    <Compile Include="src\nx3\VNoteHeadsRectsLyricsCalculator.cs"/>
+    <Compile Include="src\nx3\ETime.cs"/>
 	
     <Compile Include="src\nx3\ETie.cs"/>
 	
@@ -215,8 +209,6 @@
     <Compile Include="src\nx3\EDisplayALN.cs"/>
 	
     <Compile Include="src\nx3\xml\HeadXML.cs"/>
-	
-    <Compile Include="src\nx3\VHead.cs"/>
 	
     <Compile Include="src\nx3\PSignsRectsCalculator.cs"/>
 	
@@ -254,8 +246,6 @@
 	
     <Compile Include="src\nx3\ENoteVal.cs"/>
 	
-    <Compile Include="src\nx3\VMapTools.cs"/>
-	
     <Compile Include="src\nx3\EDirectionUAD.cs"/>
 	
     <Compile Include="src\nx3\PBaseRectCalculator.cs"/>
@@ -274,11 +264,7 @@
 	
     <Compile Include="src\nx3\EHeadType.cs"/>
 	
-    <Compile Include="src\nx3\VNoteHeadsRectsTplCalculator.cs"/>
-	
     <Compile Include="src\Math.cs"/>
-	
-    <Compile Include="src\nx3\VNoteDirectionCalculator.cs"/>
 	
     <Compile Include="src\nx3\PBarStretchCalculator.cs"/>
 	
@@ -296,7 +282,7 @@
 	
     <Compile Include="src\nx3\PBeamflagCalculator.cs"/>
 	
-    <Compile Include="src\nx3\VNoteHeadsRectsCalculator.cs"/>
+    <Compile Include="src\nx3\PSystembarMeasurements.cs"/>
 	
     <Compile Include="src\nx3\NVoice.cs"/>
 	
@@ -307,8 +293,6 @@
     <Compile Include="src\nx3\PAttributesRectsCalculator.cs"/>
 	
     <Compile Include="src\nx3\PComplexDistancesCalculator.cs"/>
-	
-    <Compile Include="src\nx3\VHeadPlacementCalculator.cs"/>
 	
     <Compile Include="src\nx3\PColumnsGenerator.cs"/>
 	

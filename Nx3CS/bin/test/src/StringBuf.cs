@@ -21,10 +21,10 @@ public  class StringBuf : global::haxe.lang.HxObject {
 	}
 	
 	
-	public static   void __hx_ctor__StringBuf(global::StringBuf __temp_me9){
+	public static   void __hx_ctor__StringBuf(global::StringBuf __temp_me10){
 		unchecked {
 			#line 30 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\StringBuf.hx"
-			__temp_me9.b = new global::System.Text.StringBuilder();
+			__temp_me10.b = new global::System.Text.StringBuilder();
 		}
 		#line default
 	}

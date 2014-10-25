@@ -22,7 +22,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBamegroupFrameTipCalculator(global::nx3.PBamegroupFrameTipCalculator __temp_me73, global::Array<int> notelevels, global::nx3.EDirectionUD direction){
+		public static   void __hx_ctor_nx3_PBamegroupFrameTipCalculator(global::nx3.PBamegroupFrameTipCalculator __temp_me75, global::Array<int> notelevels, global::nx3.EDirectionUD direction){
 			unchecked {
 				#line 15 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 				if (( direction == global::nx3.EDirectionUD.Down )) {
@@ -48,55 +48,17 @@ namespace nx3{
 				}
 				
 				#line 24 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				__temp_me73.notelevels = notelevels;
-				__temp_me73.direction = direction;
+				__temp_me75.notelevels = notelevels;
+				__temp_me75.direction = direction;
 			}
 			#line default
 		}
 		
 		
-		public static   int intMin(global::Array<int> levels){
-			unchecked {
-				#line 71 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				int result = levels[0];
-				if (( levels.length == 1 )) {
-					#line 72 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					return result;
-				}
-				
-				#line 73 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				{
-					#line 73 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					int _g = 0;
-					#line 73 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					while (( _g < levels.length )){
-						#line 73 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						int level = levels[_g];
-						#line 73 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						 ++ _g;
-						#line 75 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						{
-							#line 75 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							double x = global::System.Math.Min(((double) (result) ), ((double) (level) ));
-							#line 75 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							result = ((int) (x) );
-						}
-						
-					}
-					
-				}
-				
-				#line 77 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				return result;
-			}
-			#line default
-		}
-		
-		
-		public static   int intMax(global::Array<int> levels){
+		public static   double floatMin(global::Array<double> levels){
 			unchecked {
 				#line 82 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				int result = levels[0];
+				double result = levels[0];
 				if (( levels.length == 1 )) {
 					#line 83 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 					return result;
@@ -109,14 +71,46 @@ namespace nx3{
 					#line 84 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 					while (( _g < levels.length )){
 						#line 84 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						int level = levels[_g];
+						double level = levels[_g];
 						#line 84 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 						 ++ _g;
 						#line 86 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						result = global::System.Math.Min(((double) (result) ), ((double) (level) ));
+					}
+					
+				}
+				
+				#line 88 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				return result;
+			}
+			#line default
+		}
+		
+		
+		public static   int intMin(global::Array<int> levels){
+			unchecked {
+				#line 93 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				int result = levels[0];
+				if (( levels.length == 1 )) {
+					#line 94 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					return result;
+				}
+				
+				#line 95 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				{
+					#line 95 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					int _g = 0;
+					#line 95 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					while (( _g < levels.length )){
+						#line 95 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						int level = levels[_g];
+						#line 95 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						 ++ _g;
+						#line 97 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 						{
-							#line 86 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							double x = global::System.Math.Max(((double) (result) ), ((double) (level) ));
-							#line 86 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							#line 97 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							double x = global::System.Math.Min(((double) (result) ), ((double) (level) ));
+							#line 97 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 							result = ((int) (x) );
 						}
 						
@@ -124,7 +118,45 @@ namespace nx3{
 					
 				}
 				
-				#line 88 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				#line 99 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				return result;
+			}
+			#line default
+		}
+		
+		
+		public static   int intMax(global::Array<int> levels){
+			unchecked {
+				#line 104 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				int result = levels[0];
+				if (( levels.length == 1 )) {
+					#line 105 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					return result;
+				}
+				
+				#line 106 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				{
+					#line 106 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					int _g = 0;
+					#line 106 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					while (( _g < levels.length )){
+						#line 106 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						int level = levels[_g];
+						#line 106 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						 ++ _g;
+						#line 108 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						{
+							#line 108 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							double x = global::System.Math.Max(((double) (result) ), ((double) (level) ));
+							#line 108 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							result = ((int) (x) );
+						}
+						
+					}
+					
+				}
+				
+				#line 110 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 				return result;
 			}
 			#line default
@@ -200,223 +232,203 @@ namespace nx3{
 				}
 				
 				#line 34 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				int leftTip = this.notelevels[0];
-				int rightTip = default(int);
+				double leftTip = ((double) (this.notelevels[0]) );
+				double rightTip = default(double);
 				#line 35 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 				{
 					#line 35 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 					global::Array<int> array = this.notelevels;
 					#line 35 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					rightTip = array[( array.length - 1 )];
-				}
-				
-				#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				{
-					#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					global::Array<int> levels1 = new global::Array<int>(new int[]{leftTip, ( rightTip + 2 ), stemLength});
-					#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					int result1 = levels1[0];
-					#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					if (( levels1.length == 1 )) {
-						#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						leftTip = result1;
-					}
-					 else {
-						#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						{
-							#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							int _g1 = 0;
-							#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							while (( _g1 < levels1.length )){
-								#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								int level1 = levels1[_g1];
-								#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								 ++ _g1;
-								#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								{
-									#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-									double x1 = global::System.Math.Min(((double) (result1) ), ((double) (level1) ));
-									#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-									result1 = ((int) (x1) );
-								}
-								
-							}
-							
-						}
-						
-						#line 37 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						leftTip = result1;
-					}
-					
-				}
-				
-				#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				{
-					#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					global::Array<int> levels2 = new global::Array<int>(new int[]{rightTip, ( leftTip + 2 ), stemLength});
-					#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					int result2 = levels2[0];
-					#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					if (( levels2.length == 1 )) {
-						#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						rightTip = result2;
-					}
-					 else {
-						#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						{
-							#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							int _g2 = 0;
-							#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							while (( _g2 < levels2.length )){
-								#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								int level2 = levels2[_g2];
-								#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								 ++ _g2;
-								#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								{
-									#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-									double x2 = global::System.Math.Min(((double) (result2) ), ((double) (level2) ));
-									#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-									result2 = ((int) (x2) );
-								}
-								
-							}
-							
-						}
-						
-						#line 38 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						rightTip = result2;
-					}
-					
+					rightTip = ((double) (array[( array.length - 1 )]) );
 				}
 				
 				#line 40 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				if (( this.notelevels.length > 2 )) {
+				if (( this.notelevels.length == 2 )) {
 					#line 42 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					global::Array<int> inlevels = this.notelevels.copy();
-					inlevels.shift();
-					inlevels.pop();
-					int inmin = default(int);
+					int slopevalue = 1;
+					{
+						#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						global::Array<double> levels1 = new global::Array<double>(new double[]{leftTip, ( rightTip + slopevalue ), ((double) (stemLength) )});
+						#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						double result1 = levels1[0];
+						#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						if (( levels1.length == 1 )) {
+							#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							leftTip = result1;
+						}
+						 else {
+							#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							{
+								#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								int _g1 = 0;
+								#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								while (( _g1 < levels1.length )){
+									#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									double level1 = levels1[_g1];
+									#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									 ++ _g1;
+									#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									result1 = global::System.Math.Min(((double) (result1) ), ((double) (level1) ));
+								}
+								
+							}
+							
+							#line 43 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							leftTip = result1;
+						}
+						
+					}
+					
 					#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 					{
 						#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						int result3 = inlevels[0];
+						global::Array<double> levels2 = new global::Array<double>(new double[]{rightTip, ( leftTip + slopevalue ), ((double) (stemLength) )});
 						#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						if (( inlevels.length == 1 )) {
+						double result2 = levels2[0];
+						#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						if (( levels2.length == 1 )) {
 							#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							inmin = result3;
+							rightTip = result2;
 						}
 						 else {
 							#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 							{
 								#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								int _g3 = 0;
+								int _g2 = 0;
 								#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								while (( _g3 < inlevels.length )){
+								while (( _g2 < levels2.length )){
 									#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-									int level3 = inlevels[_g3];
+									double level2 = levels2[_g2];
 									#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-									 ++ _g3;
+									 ++ _g2;
 									#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-									{
-										#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-										double x3 = global::System.Math.Min(((double) (result3) ), ((double) (level3) ));
-										#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-										result3 = ((int) (x3) );
-									}
-									
+									result2 = global::System.Math.Min(((double) (result2) ), ((double) (level2) ));
 								}
 								
 							}
 							
 							#line 45 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							rightTip = result2;
+						}
+						
+					}
+					
+				}
+				 else {
+					#line 50 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					double slopevalue1 = ( this.notelevels.length * .25 );
+					global::Array<int> inlevels = this.notelevels.copy();
+					inlevels.shift();
+					inlevels.pop();
+					int inmin = default(int);
+					#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					{
+						#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						int result3 = inlevels[0];
+						#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						if (( inlevels.length == 1 )) {
+							#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							inmin = result3;
+						}
+						 else {
+							#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							{
+								#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								int _g3 = 0;
+								#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								while (( _g3 < inlevels.length )){
+									#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									int level3 = inlevels[_g3];
+									#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									 ++ _g3;
+									#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									{
+										#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+										double x1 = global::System.Math.Min(((double) (result3) ), ((double) (level3) ));
+										#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+										result3 = ((int) (x1) );
+									}
+									
+								}
+								
+							}
+							
+							#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 							inmin = result3;
 						}
 						
 					}
 					
-					#line 47 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					#line 56 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 					if (( ( leftTip >= inmin ) && ( rightTip >= inmin ) )) {
-						#line 49 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-						leftTip = inmin;
-						rightTip = inmin;
+						#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						leftTip = ((double) (inmin) );
+						rightTip = ((double) (inmin) );
 					}
 					 else {
-						#line 52 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+						#line 61 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 						if (( ( rightTip < leftTip ) && ( min < leftTip ) )) {
-							#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							global::Array<int> levels3 = new global::Array<int>(new int[]{( min + 2 ), leftTip});
-							#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-							int result4 = levels3[0];
-							#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							global::Array<double> levels3 = new global::Array<double>(new double[]{( min + slopevalue1 ), leftTip});
+							#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							double result4 = levels3[0];
+							#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 							if (( levels3.length == 1 )) {
-								#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 								leftTip = result4;
 							}
 							 else {
-								#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 								{
-									#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 									int _g4 = 0;
-									#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 									while (( _g4 < levels3.length )){
-										#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-										int level4 = levels3[_g4];
-										#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+										#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+										double level4 = levels3[_g4];
+										#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 										 ++ _g4;
-										#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-										{
-											#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-											double x4 = global::System.Math.Min(((double) (result4) ), ((double) (level4) ));
-											#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-											result4 = ((int) (x4) );
-										}
-										
+										#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+										result4 = global::System.Math.Min(((double) (result4) ), ((double) (level4) ));
 									}
 									
 								}
 								
-								#line 54 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 								leftTip = result4;
 							}
 							
 						}
 						 else {
-							#line 56 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+							#line 65 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 							if (( ( leftTip < rightTip ) && ( min < rightTip ) )) {
-								#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								global::Array<int> levels4 = new global::Array<int>(new int[]{( min + 2 ), rightTip});
-								#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-								int result5 = levels4[0];
-								#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								global::Array<double> levels4 = new global::Array<double>(new double[]{( min + slopevalue1 ), rightTip});
+								#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+								double result5 = levels4[0];
+								#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 								if (( levels4.length == 1 )) {
-									#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 									rightTip = result5;
 								}
 								 else {
-									#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 									{
-										#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+										#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 										int _g5 = 0;
-										#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+										#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 										while (( _g5 < levels4.length )){
-											#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-											int level5 = levels4[_g5];
-											#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+											#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+											double level5 = levels4[_g5];
+											#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 											 ++ _g5;
-											#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-											{
-												#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-												double x5 = global::System.Math.Min(((double) (result5) ), ((double) (level5) ));
-												#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-												result5 = ((int) (x5) );
-											}
-											
+											#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+											result5 = global::System.Math.Min(((double) (result5) ), ((double) (level5) ));
 										}
 										
 									}
 									
-									#line 58 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+									#line 67 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 									rightTip = result5;
 								}
 								
@@ -428,30 +440,30 @@ namespace nx3{
 					
 				}
 				
-				#line 62 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				#line 71 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 				{
-					#line 62 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					double x6 = global::System.Math.Min(((double) (stemLength) ), ((double) (leftTip) ));
-					#line 62 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					leftTip = ((int) (x6) );
+					#line 71 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					double x2 = global::System.Math.Min(((double) (stemLength) ), ((double) (leftTip) ));
+					#line 71 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					leftTip = ((double) (((int) (x2) )) );
 				}
 				
-				#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				#line 72 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 				{
-					#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					double x7 = global::System.Math.Min(((double) (stemLength) ), ((double) (rightTip) ));
-					#line 63 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					rightTip = ((int) (x7) );
+					#line 72 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					double x3 = global::System.Math.Min(((double) (stemLength) ), ((double) (rightTip) ));
+					#line 72 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					rightTip = ((double) (((int) (x3) )) );
 				}
 				
-				#line 65 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				#line 76 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
 				if (( this.direction == global::nx3.EDirectionUD.Down )) {
-					#line 65 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-					return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{}), new global::Array<object>(new object[]{}), new global::Array<int>(new int[]{1679810271, 1961201556}), new global::Array<double>(new double[]{((double) ( - (rightTip) ) ), ((double) ( - (leftTip) ) )}));
+					#line 76 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+					return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{}), new global::Array<object>(new object[]{}), new global::Array<int>(new int[]{1679810271, 1961201556}), new global::Array<double>(new double[]{ - (rightTip) ,  - (leftTip) }));
 				}
 				
-				#line 66 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
-				return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{}), new global::Array<object>(new object[]{}), new global::Array<int>(new int[]{1679810271, 1961201556}), new global::Array<double>(new double[]{((double) (rightTip) ), ((double) (leftTip) )}));
+				#line 77 "F:\\nx3\\src\\nx3\\PBamegroupFrameTipCalculator.hx"
+				return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{}), new global::Array<object>(new object[]{}), new global::Array<int>(new int[]{1679810271, 1961201556}), new global::Array<double>(new double[]{rightTip, leftTip}));
 			}
 			#line default
 		}

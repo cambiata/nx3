@@ -28,15 +28,15 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PSystemBarsGenerator(global::nx3.PSystemBarsGenerator __temp_me122, global::Array<object> bars, object systemConfig, object prevBarAttributes, double breakSystemwidth, global::nx3.IBarWidthCalculator barWidthCalculator){
+		public static   void __hx_ctor_nx3_PSystemBarsGenerator(global::nx3.PSystemBarsGenerator __temp_me123, global::Array<object> bars, object systemConfig, object prevBarAttributes, double breakSystemwidth, global::nx3.IBarWidthCalculator barWidthCalculator){
 			unchecked {
 				#line 35 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-				__temp_me122.bars = bars;
-				__temp_me122.systemConfig = systemConfig;
-				__temp_me122.prevBarAttributes = prevBarAttributes;
-				__temp_me122.breakSystemwidth = breakSystemwidth;
-				__temp_me122.system = new global::nx3.PSystem();
-				__temp_me122.barWidthCalculator = barWidthCalculator;
+				__temp_me123.bars = bars;
+				__temp_me123.systemConfig = systemConfig;
+				__temp_me123.prevBarAttributes = prevBarAttributes;
+				__temp_me123.breakSystemwidth = breakSystemwidth;
+				__temp_me123.system = new global::nx3.PSystem();
+				__temp_me123.barWidthCalculator = barWidthCalculator;
 			}
 			#line default
 		}
@@ -144,40 +144,40 @@ namespace nx3{
 			unchecked {
 				#line 116 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 				this.system.status = global::nx3.PSystemStatus.Ok;
-				global::nx3.PSystemBar __temp_stmt245 = default(global::nx3.PSystemBar);
+				global::nx3.PSystemBar __temp_stmt253 = default(global::nx3.PSystemBar);
 				#line 117 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 				{
 					#line 117 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 					global::Array<object> array = this.system.getSystembars();
 					#line 117 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					__temp_stmt245 = ((global::nx3.PSystemBar) (array[( array.length - 1 )]) );
+					__temp_stmt253 = ((global::nx3.PSystemBar) (array[( array.length - 1 )]) );
 				}
 				
 				#line 117 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-				global::nx3.PBar sysBar = __temp_stmt245.bar;
-				global::nx3.PSystemBar __temp_stmt246 = default(global::nx3.PSystemBar);
+				global::nx3.PBar sysBar = __temp_stmt253.bar;
+				global::nx3.PSystemBar __temp_stmt254 = default(global::nx3.PSystemBar);
 				#line 118 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 				{
 					#line 118 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 					global::Array<object> array1 = this.system.getSystembars();
 					#line 118 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					__temp_stmt246 = ((global::nx3.PSystemBar) (array1[( array1.length - 1 )]) );
+					__temp_stmt254 = ((global::nx3.PSystemBar) (array1[( array1.length - 1 )]) );
 				}
 				
 				#line 118 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-				object sysBarAttributes = __temp_stmt246.actAttributes;
+				object sysBarAttributes = __temp_stmt254.actAttributes;
 				#line 120 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-				global::nx3.PBar __temp_stmt247 = default(global::nx3.PBar);
+				global::nx3.PBar __temp_stmt255 = default(global::nx3.PBar);
 				#line 120 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 				{
 					#line 120 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 					global::Array<object> array2 = this.bars;
 					#line 120 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					__temp_stmt247 = ((global::nx3.PBar) (array2[( array2.length - 1 )]) );
+					__temp_stmt255 = ((global::nx3.PBar) (array2[( array2.length - 1 )]) );
 				}
 				
 				#line 120 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-				if (( sysBar != __temp_stmt247 )) {
+				if (( sysBar != __temp_stmt255 )) {
 					#line 122 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 					global::nx3.PBar nextBar = ((global::nx3.PBar) (this.bars[0]) );
 					object nextBarAttributes = this.getBarAttributes(nextBar);
@@ -189,30 +189,30 @@ namespace nx3{
 					if (( ( newClef || newKey ) || newTime )) {
 						#line 132 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 						object sysBarCautAttributes = this.copyAndRemoveRedundantAttributes(sysBarAttributes, nextBarAttributes);
-						global::nx3.PSystemBar __temp_stmt248 = default(global::nx3.PSystemBar);
+						global::nx3.PSystemBar __temp_stmt256 = default(global::nx3.PSystemBar);
 						#line 133 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 						{
 							#line 133 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 							global::Array<object> array3 = this.system.getSystembars();
 							#line 133 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							__temp_stmt248 = ((global::nx3.PSystemBar) (array3[( array3.length - 1 )]) );
+							__temp_stmt256 = ((global::nx3.PSystemBar) (array3[( array3.length - 1 )]) );
 						}
 						
 						#line 133 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-						global::nx3.PBarConfig sysBarConfig = __temp_stmt248.barConfig;
-						global::nx3.PSystemBar __temp_stmt250 = default(global::nx3.PSystemBar);
+						global::nx3.PBarConfig sysBarConfig = __temp_stmt256.barConfig;
+						global::nx3.PSystemBar __temp_stmt258 = default(global::nx3.PSystemBar);
 						#line 134 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 						{
 							#line 134 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 							global::Array<object> array4 = this.system.getSystembars();
 							#line 134 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							__temp_stmt250 = ((global::nx3.PSystemBar) (array4[( array4.length - 1 )]) );
+							__temp_stmt258 = ((global::nx3.PSystemBar) (array4[( array4.length - 1 )]) );
 						}
 						
 						#line 134 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-						global::nx3.PSystembarMeasurements __temp_stmt249 = __temp_stmt250.getBarMeasurements();
+						global::nx3.PSystembarMeasurements __temp_stmt257 = __temp_stmt258.getBarMeasurements();
 						#line 134 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-						double sysBarWidth = __temp_stmt249.getTotalWidth();
+						double sysBarWidth = __temp_stmt257.getTotalWidth();
 						#line 136 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 						double systemWidthWithoutLastBar = ( this.system.width - sysBarWidth );
 						#line 138 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
@@ -239,45 +239,45 @@ namespace nx3{
 						#line 145 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 						if (( ( systemWidthWithoutLastBar + measurementsWithCautions.getTotalWidth() ) <= this.breakSystemwidth )) {
 							#line 147 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							global::nx3.PSystemBar __temp_stmt251 = default(global::nx3.PSystemBar);
+							global::nx3.PSystemBar __temp_stmt259 = default(global::nx3.PSystemBar);
 							#line 147 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 							{
 								#line 147 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 								global::Array<object> array5 = this.system.getSystembars();
 								#line 147 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-								__temp_stmt251 = ((global::nx3.PSystemBar) (array5[( array5.length - 1 )]) );
+								__temp_stmt259 = ((global::nx3.PSystemBar) (array5[( array5.length - 1 )]) );
 							}
 							
 							#line 147 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							__temp_stmt251.caAttributes = sysBarCautAttributes;
-							global::nx3.PSystemBar __temp_stmt252 = default(global::nx3.PSystemBar);
+							__temp_stmt259.caAttributes = sysBarCautAttributes;
+							global::nx3.PSystemBar __temp_stmt260 = default(global::nx3.PSystemBar);
 							#line 148 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 							{
 								#line 148 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 								global::Array<object> array6 = this.system.getSystembars();
 								#line 148 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-								__temp_stmt252 = ((global::nx3.PSystemBar) (array6[( array6.length - 1 )]) );
+								__temp_stmt260 = ((global::nx3.PSystemBar) (array6[( array6.length - 1 )]) );
 							}
 							
 							#line 148 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							__temp_stmt252.barConfig = sysBarConfigWithCautions;
-							double __temp_stmt253 = ( this.system.getWidth() - sysBarWidth );
+							__temp_stmt260.barConfig = sysBarConfigWithCautions;
+							double __temp_stmt261 = ( this.system.getWidth() - sysBarWidth );
 							#line 149 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							global::nx3.PSystemBar __temp_stmt256 = default(global::nx3.PSystemBar);
+							global::nx3.PSystemBar __temp_stmt264 = default(global::nx3.PSystemBar);
 							#line 149 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 							{
 								#line 149 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 								global::Array<object> array7 = this.system.getSystembars();
 								#line 149 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-								__temp_stmt256 = ((global::nx3.PSystemBar) (array7[( array7.length - 1 )]) );
+								__temp_stmt264 = ((global::nx3.PSystemBar) (array7[( array7.length - 1 )]) );
 							}
 							
 							#line 149 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							global::nx3.PSystembarMeasurements __temp_stmt255 = __temp_stmt256.getBarMeasurements();
+							global::nx3.PSystembarMeasurements __temp_stmt263 = __temp_stmt264.getBarMeasurements();
 							#line 149 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							double __temp_stmt254 = __temp_stmt255.getTotalWidth();
+							double __temp_stmt262 = __temp_stmt263.getTotalWidth();
 							#line 149 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-							this.system.width = ( __temp_stmt253 + __temp_stmt254 );
+							this.system.width = ( __temp_stmt261 + __temp_stmt262 );
 						}
 						 else {
 							#line 153 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
@@ -596,11 +596,11 @@ namespace nx3{
 				#line 248 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 				{
 					#line 248 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					global::Array<global::nx3.EClef> __temp_odecl257 = new global::Array<global::nx3.EClef>();
+					global::Array<global::nx3.EClef> __temp_odecl265 = new global::Array<global::nx3.EClef>();
 					#line 248 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					global::Array<global::nx3.EKey> __temp_odecl258 = new global::Array<global::nx3.EKey>();
+					global::Array<global::nx3.EKey> __temp_odecl266 = new global::Array<global::nx3.EKey>();
 					#line 248 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					result = new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{1191633396, 1213953513, 1291635725}), new global::Array<object>(new object[]{__temp_odecl258, __temp_odecl257, default(global::nx3.ETime)}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
+					result = new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{1191633396, 1213953513, 1291635725}), new global::Array<object>(new object[]{__temp_odecl266, __temp_odecl265, default(global::nx3.ETime)}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
 				}
 				
 				#line 249 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
@@ -742,11 +742,11 @@ namespace nx3{
 				#line 287 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
 				{
 					#line 287 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					global::Array<global::nx3.EClef> __temp_odecl259 = bar.get_clefs().copy();
+					global::Array<global::nx3.EClef> __temp_odecl267 = bar.get_clefs().copy();
 					#line 287 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					global::Array<global::nx3.EKey> __temp_odecl260 = bar.get_keys().copy();
+					global::Array<global::nx3.EKey> __temp_odecl268 = bar.get_keys().copy();
 					#line 287 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"
-					result = new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{1191633396, 1213953513, 1291635725}), new global::Array<object>(new object[]{__temp_odecl260, __temp_odecl259, time}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
+					result = new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{1191633396, 1213953513, 1291635725}), new global::Array<object>(new object[]{__temp_odecl268, __temp_odecl267, time}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
 				}
 				
 				#line 288 "F:\\nx3\\src\\nx3\\PSystemBarsGenerator.hx"

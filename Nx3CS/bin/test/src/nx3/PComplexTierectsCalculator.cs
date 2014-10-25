@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PComplexTierectsCalculator(global::nx3.PComplexTierectsCalculator __temp_me99, global::nx3.PComplex complex){
+		public static   void __hx_ctor_nx3_PComplexTierectsCalculator(global::nx3.PComplexTierectsCalculator __temp_me101, global::nx3.PComplex complex){
 			unchecked {
 				#line 17 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-				__temp_me99.complex = complex;
+				__temp_me101.complex = complex;
 			}
 			#line default
 		}
@@ -85,17 +85,17 @@ namespace nx3{
 				#line 27 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 				if (( nrofnotes == 2 )) {
 					#line 27 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-					global::nx3.PNote __temp_stmt252 = default(global::nx3.PNote);
+					global::nx3.PNote __temp_stmt245 = default(global::nx3.PNote);
 					#line 27 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 					{
 						#line 27 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 						global::Array<object> array2 = this.complex.getNotes();
 						#line 27 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-						__temp_stmt252 = ((global::nx3.PNote) (array2[1]) );
+						__temp_stmt245 = ((global::nx3.PNote) (array2[1]) );
 					}
 					
 					#line 27 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-					secondties = __temp_stmt252.getTies();
+					secondties = __temp_stmt245.getTies();
 				}
 				 else {
 					#line 27 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
@@ -126,7 +126,7 @@ namespace nx3{
 					#line 46 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 					int _g = 0;
 					#line 46 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-					global::Array<object> _g1 = firstnote.getHeads();
+					global::Array<object> _g1 = firstnote.get_heads();
 					#line 46 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 					while (( _g < _g1.length )){
 						#line 46 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
@@ -146,155 +146,189 @@ namespace nx3{
 						#line 58 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 						if (( head.nhead.tie != default(global::nx3.ETie) )) {
 							#line 60 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-							int level = head.nhead.level;
-							#line 62 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+							int tielevel = 0;
+							{
+								#line 61 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								global::nx3.ETie _g2 = head.nhead.tie;
+								#line 61 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								switch (global::Type.enumIndex(_g2)){
+									case 0:
+									{
+										#line 61 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										int tlevel = ((int) (global::haxe.lang.Runtime.toInt(_g2.@params[1])) );
+										#line 61 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										global::nx3.EDirectionUAD tiedir = ((global::nx3.EDirectionUAD) (_g2.@params[0]) );
+										#line 63 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										tielevel = tlevel;
+										#line 63 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										break;
+									}
+									
+									
+									default:
+									{
+										#line 61 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										{
+										}
+										
+										#line 61 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										break;
+									}
+									
+								}
+								
+							}
+							
+							#line 68 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+							int level = ( head.nhead.level + tielevel );
+							#line 70 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 							global::nx3.EDirectionUD direction = global::nx3.EDirectionUD.Up;
-							#line 64 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+							#line 72 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 							if (( firstties.length == 1 )) {
-								#line 66 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								#line 74 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 								if (( secondnote == default(global::nx3.PNote) )) {
-									#line 68 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+									#line 76 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 									if (( firstnote.getDirection() == global::nx3.EDirectionUD.Up )) {
-										#line 68 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										#line 76 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 										level = ( level + 1 );
 									}
 									 else {
-										#line 68 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										#line 76 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 										level = ( level - 1 );
 									}
 									
-									#line 69 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+									#line 77 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 									if (( firstnote.getDirection() == global::nx3.EDirectionUD.Up )) {
-										#line 69 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										#line 77 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 										direction = global::nx3.EDirectionUD.Down;
 									}
 									 else {
-										#line 69 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										#line 77 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 										direction = global::nx3.EDirectionUD.Up;
 									}
 									
-									#line 70 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+									#line 78 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 									if (( firstnote.getDirection() == global::nx3.EDirectionUD.Up )) {
-										#line 70 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										#line 78 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 										adjusty = .8;
 									}
 									 else {
-										#line 70 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										#line 78 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 										adjusty = -.8;
 									}
 									
 								}
 								 else {
-									#line 75 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+									#line 83 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 									if (( firstnote.getDirection() == global::nx3.EDirectionUD.Up )) {
-										#line 75 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										#line 83 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 										level = ( level - 1 );
 									}
 									 else {
-										#line 75 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										#line 83 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 										level = ( level - 1 );
 									}
 									
 								}
 								
-								#line 77 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								#line 85 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 								tiewidth = ((double) (3) );
 							}
 							 else {
-								#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-								bool __temp_boolv255 = ( secondnote == default(global::nx3.PNote) );
-								#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-								bool __temp_boolv254 = false;
-								#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-								if (__temp_boolv255) {
-									#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-									global::nx3.PHead __temp_stmt256 = default(global::nx3.PHead);
-									#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								bool __temp_boolv248 = ( secondnote == default(global::nx3.PNote) );
+								#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								bool __temp_boolv247 = false;
+								#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								if (__temp_boolv248) {
+									#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+									global::nx3.PHead __temp_stmt249 = default(global::nx3.PHead);
+									#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 									{
-										#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-										global::Array<object> array3 = firstnote.getHeads();
-										#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-										__temp_stmt256 = ((global::nx3.PHead) (array3[( array3.length - 1 )]) );
+										#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										global::Array<object> array3 = firstnote.get_heads();
+										#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+										__temp_stmt249 = ((global::nx3.PHead) (array3[( array3.length - 1 )]) );
 									}
 									
-									#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-									__temp_boolv254 = ( head == __temp_stmt256 );
+									#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+									__temp_boolv247 = ( head == __temp_stmt249 );
 								}
 								
-								#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-								bool __temp_stmt253 = ( __temp_boolv255 && __temp_boolv254 );
-								#line 81 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-								if (__temp_stmt253) {
-									#line 83 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								bool __temp_stmt246 = ( __temp_boolv248 && __temp_boolv247 );
+								#line 89 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								if (__temp_stmt246) {
+									#line 91 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 									direction = global::nx3.EDirectionUD.Down;
 									adjusty = .5;
 								}
 								 else {
-									#line 88 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+									#line 96 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 									adjusty = -.5;
 								}
 								
 							}
 							
-							#line 91 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+							#line 99 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 							global::nx3.geom.Rectangle r = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>(rx, true), new global::haxe.lang.Null<double>(( ( level - 0.8 ) + adjusty ), true), new global::haxe.lang.Null<double>(tiewidth, true), new global::haxe.lang.Null<double>(1.6, true));
 							rects.push(r);
 							tieinfos.push(new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{116192081, 272654911, 1158359328, 1269255460}), new global::Array<object>(new object[]{default(global::nx3.PHead), direction, head, r}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{})));
 						}
 						
-						#line 95 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+						#line 103 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 						headIdx++;
 					}
 					
 				}
 				
-				#line 99 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+				#line 107 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 				tiewidth = 3.2;
 				if (( secondnote != default(global::nx3.PNote) )) {
-					#line 102 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-					int _g2 = 0;
-					#line 102 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-					global::Array<object> _g11 = secondnote.getHeads();
-					#line 102 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-					while (( _g2 < _g11.length )){
-						#line 102 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-						global::nx3.PHead head1 = ((global::nx3.PHead) (_g11[_g2]) );
-						#line 102 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
-						 ++ _g2;
-						#line 104 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+					#line 110 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+					int _g3 = 0;
+					#line 110 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+					global::Array<object> _g11 = secondnote.get_heads();
+					#line 110 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+					while (( _g3 < _g11.length )){
+						#line 110 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+						global::nx3.PHead head1 = ((global::nx3.PHead) (_g11[_g3]) );
+						#line 110 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+						 ++ _g3;
+						#line 112 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 						if (( head1.nhead.tie != default(global::nx3.ETie) )) {
-							#line 106 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+							#line 116 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 							int level1 = head1.nhead.level;
-							#line 108 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+							#line 118 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 							global::nx3.geom.Rectangle headrect1 = ((global::nx3.geom.Rectangle) (this.complex.getHeadsRects()[headIdx]) );
 							double rx1 = ( headrect1.x + headrect1.width );
 							if (( global::nx3.ENoteValTools.dotlevel(secondnote.nnote.@value) > 0 )) {
-								#line 112 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								#line 122 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 								global::nx3.geom.Rectangle dotrect1 = ((global::nx3.geom.Rectangle) (this.complex.getDotRects()[dotidx]) );
 								rx1 = ( dotrect1.x + dotrect1.width );
 								dotidx++;
 							}
 							
-							#line 117 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+							#line 127 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 							if (( secondties.length == 1 )) {
-								#line 119 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+								#line 129 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 								level1++;
 								tiewidth = ((double) (3) );
 							}
 							
-							#line 124 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+							#line 134 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 							global::nx3.geom.Rectangle r1 = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>(rx1, true), new global::haxe.lang.Null<double>(( level1 - 0.8 ), true), new global::haxe.lang.Null<double>(tiewidth, true), new global::haxe.lang.Null<double>(1.6, true));
 							rects.push(r1);
 							tieinfos.push(new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{116192081, 272654911, 1158359328, 1269255460}), new global::Array<object>(new object[]{default(global::nx3.PHead), global::nx3.EDirectionUD.Down, head1, r1}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{})));
 						}
 						
-						#line 128 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+						#line 138 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 						headIdx++;
 					}
 					
 				}
 				
-				#line 131 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+				#line 141 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 				this.complex.setTieinfos(tieinfos);
 				return rects;
 			}
@@ -304,7 +338,7 @@ namespace nx3{
 		
 		public virtual   void getNoteTies(global::nx3.PNote note){
 			unchecked {
-				#line 136 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
+				#line 146 "F:\\nx3\\src\\nx3\\PComplexTierectsCalculator.hx"
 				{
 				}
 				

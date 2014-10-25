@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBeamflagCalculator(global::nx3.PBeamflagCalculator __temp_me85, global::nx3.PBeamgroup beamgroup){
+		public static   void __hx_ctor_nx3_PBeamflagCalculator(global::nx3.PBeamflagCalculator __temp_me87, global::nx3.PBeamgroup beamgroup){
 			unchecked {
 				#line 15 "F:\\nx3\\src\\nx3\\PBeamflagCalculator.hx"
-				__temp_me85.beamgroup = beamgroup;
+				__temp_me87.beamgroup = beamgroup;
 			}
 			#line default
 		}

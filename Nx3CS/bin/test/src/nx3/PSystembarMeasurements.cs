@@ -22,32 +22,32 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PSystembarMeasurements(global::nx3.PSystembarMeasurements __temp_me123, global::nx3.PBar bar){
+		public static   void __hx_ctor_nx3_PSystembarMeasurements(global::nx3.PSystembarMeasurements __temp_me124, global::nx3.PBar bar){
 			unchecked {
 				#line 60 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.barlineWidth = ((double) (0) );
+				__temp_me124.barlineWidth = ((double) (0) );
 				#line 56 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.cautTimeWidth = ((double) (0) );
+				__temp_me124.cautTimeWidth = ((double) (0) );
 				#line 52 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.cautKeyWidth = ((double) (0) );
+				__temp_me124.cautKeyWidth = ((double) (0) );
 				#line 48 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.cautClefWidth = ((double) (0) );
+				__temp_me124.cautClefWidth = ((double) (0) );
 				#line 42 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.contentWidth = ((double) (0) );
+				__temp_me124.contentWidth = ((double) (0) );
 				#line 40 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.contentXZero = ((double) (0) );
+				__temp_me124.contentXZero = ((double) (0) );
 				#line 36 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.leftContentMarginWidth = ((double) (0) );
+				__temp_me124.leftContentMarginWidth = ((double) (0) );
 				#line 32 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.timeWidth = ((double) (0) );
+				__temp_me124.timeWidth = ((double) (0) );
 				#line 28 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.keyWidth = ((double) (0) );
+				__temp_me124.keyWidth = ((double) (0) );
 				#line 24 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.clefWidth = ((double) (0) );
+				__temp_me124.clefWidth = ((double) (0) );
 				#line 20 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.ackoladeWidth = ((double) (0) );
+				__temp_me124.ackoladeWidth = ((double) (0) );
 				#line 16 "F:\\nx3\\src\\nx3\\PSystembarMeasurements.hx"
-				__temp_me123.bar = bar;
+				__temp_me124.bar = bar;
 			}
 			#line default
 		}

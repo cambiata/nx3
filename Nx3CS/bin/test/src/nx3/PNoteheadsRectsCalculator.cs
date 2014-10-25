@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PNoteheadsRectsCalculator(global::nx3.PNoteheadsRectsCalculator __temp_me108, global::nx3.PNote note){
+		public static   void __hx_ctor_nx3_PNoteheadsRectsCalculator(global::nx3.PNoteheadsRectsCalculator __temp_me110, global::nx3.PNote note){
 			unchecked {
 				#line 19 "F:\\nx3\\src\\nx3\\PNoteheadsRectsCalculator.hx"
-				__temp_me108.note = note;
+				__temp_me110.note = note;
 			}
 			#line default
 		}

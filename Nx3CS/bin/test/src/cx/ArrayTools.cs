@@ -22,7 +22,7 @@ namespace cx{
 		}
 		
 		
-		public static   void __hx_ctor_cx_ArrayTools(global::cx.ArrayTools __temp_me22){
+		public static   void __hx_ctor_cx_ArrayTools(global::cx.ArrayTools __temp_me23){
 			unchecked {
 				#line 14 "F:\\nx3\\src\\cx\\ArrayTools.hx"
 				{
@@ -160,11 +160,11 @@ namespace cx{
 				global::Array<T> result = new global::Array<T>(new T[]{});
 				{
 					#line 65 "F:\\nx3\\src\\cx\\ArrayTools.hx"
-					object __temp_iterator161 = it;
+					object __temp_iterator155 = it;
 					#line 65 "F:\\nx3\\src\\cx\\ArrayTools.hx"
-					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator161, "hasNext", 407283053, default(global::Array)))){
+					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator155, "hasNext", 407283053, default(global::Array)))){
 						#line 65 "F:\\nx3\\src\\cx\\ArrayTools.hx"
-						T v = global::haxe.lang.Runtime.genericCast<T>(global::haxe.lang.Runtime.callField(__temp_iterator161, "next", 1224901875, default(global::Array)));
+						T v = global::haxe.lang.Runtime.genericCast<T>(global::haxe.lang.Runtime.callField(__temp_iterator155, "next", 1224901875, default(global::Array)));
 						#line 65 "F:\\nx3\\src\\cx\\ArrayTools.hx"
 						result.push(v);
 					}
@@ -491,7 +491,7 @@ namespace cx{
 		public static   global::Array<int> range(int start, global::haxe.lang.Null<int> stop, global::haxe.lang.Null<int> step){
 			unchecked {
 				#line 210 "F:\\nx3\\src\\cx\\ArrayTools.hx"
-				int __temp_step21 = ( ( ! (step.hasValue) ) ? (((int) (1) )) : (step.@value) );
+				int __temp_step22 = ( ( ! (step.hasValue) ) ? (((int) (1) )) : (step.@value) );
 				if ( ! (stop.hasValue) ) {
 					#line 213 "F:\\nx3\\src\\cx\\ArrayTools.hx"
 					stop = new global::haxe.lang.Null<int>(start, true);
@@ -499,7 +499,7 @@ namespace cx{
 				}
 				
 				#line 216 "F:\\nx3\\src\\cx\\ArrayTools.hx"
-				if (( ( ((double) ((( stop.@value - start ))) ) / __temp_step21 ) == global::Math.POSITIVE_INFINITY )) {
+				if (( ( ((double) ((( stop.@value - start ))) ) / __temp_step22 ) == global::Math.POSITIVE_INFINITY )) {
 					#line 216 "F:\\nx3\\src\\cx\\ArrayTools.hx"
 					throw global::haxe.lang.HaxeException.wrap("infinite range");
 				}
@@ -510,9 +510,9 @@ namespace cx{
 				int i = -1;
 				#line 217 "F:\\nx3\\src\\cx\\ArrayTools.hx"
 				int j = default(int);
-				if (( __temp_step21 < 0 )) {
+				if (( __temp_step22 < 0 )) {
 					#line 219 "F:\\nx3\\src\\cx\\ArrayTools.hx"
-					while (( (j = ( start + ( __temp_step21 *  ++ i ) )) > stop.@value )){
+					while (( (j = ( start + ( __temp_step22 *  ++ i ) )) > stop.@value )){
 						#line 219 "F:\\nx3\\src\\cx\\ArrayTools.hx"
 						range.push(j);
 					}
@@ -520,7 +520,7 @@ namespace cx{
 				}
 				 else {
 					#line 221 "F:\\nx3\\src\\cx\\ArrayTools.hx"
-					while (( (j = ( start + ( __temp_step21 *  ++ i ) )) < stop.@value )){
+					while (( (j = ( start + ( __temp_step22 *  ++ i ) )) < stop.@value )){
 						#line 221 "F:\\nx3\\src\\cx\\ArrayTools.hx"
 						range.push(j);
 					}

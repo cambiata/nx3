@@ -22,7 +22,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PComplexDistancesCalculator(global::nx3.PComplexDistancesCalculator __temp_me95){
+		public static   void __hx_ctor_nx3_PComplexDistancesCalculator(global::nx3.PComplexDistancesCalculator __temp_me97){
 			unchecked {
 				#line 15 "F:\\nx3\\src\\nx3\\PComplexDistancesCalculator.hx"
 				{

@@ -22,21 +22,21 @@ namespace nx3.geom{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_geom_Rectangle(global::nx3.geom.Rectangle __temp_me144, global::haxe.lang.Null<double> x, global::haxe.lang.Null<double> y, global::haxe.lang.Null<double> width, global::haxe.lang.Null<double> height){
+		public static   void __hx_ctor_nx3_geom_Rectangle(global::nx3.geom.Rectangle __temp_me134, global::haxe.lang.Null<double> x, global::haxe.lang.Null<double> y, global::haxe.lang.Null<double> width, global::haxe.lang.Null<double> height){
 			unchecked {
 				#line 24 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-				double __temp_height143 = ( ( ! (height.hasValue) ) ? (((double) (0) )) : (height.@value) );
+				double __temp_height133 = ( ( ! (height.hasValue) ) ? (((double) (0) )) : (height.@value) );
 				#line 24 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-				double __temp_width142 = ( ( ! (width.hasValue) ) ? (((double) (0) )) : (width.@value) );
+				double __temp_width132 = ( ( ! (width.hasValue) ) ? (((double) (0) )) : (width.@value) );
 				#line 24 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-				double __temp_y141 = ( ( ! (y.hasValue) ) ? (((double) (0) )) : (y.@value) );
+				double __temp_y131 = ( ( ! (y.hasValue) ) ? (((double) (0) )) : (y.@value) );
 				#line 24 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-				double __temp_x140 = ( ( ! (x.hasValue) ) ? (((double) (0) )) : (x.@value) );
+				double __temp_x130 = ( ( ! (x.hasValue) ) ? (((double) (0) )) : (x.@value) );
 				#line 26 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-				__temp_me144.x = __temp_x140;
-				__temp_me144.y = __temp_y141;
-				__temp_me144.width = __temp_width142;
-				__temp_me144.height = __temp_height143;
+				__temp_me134.x = __temp_x130;
+				__temp_me134.y = __temp_y131;
+				__temp_me134.width = __temp_width132;
+				__temp_me134.height = __temp_height133;
 			}
 			#line default
 		}
@@ -266,7 +266,7 @@ namespace nx3.geom{
 				}
 				
 				#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-				double __temp_stmt273 = default(double);
+				double __temp_stmt269 = default(double);
 				#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
 				{
 					#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
@@ -278,11 +278,11 @@ namespace nx3.geom{
 					#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
 					number = ( global::Math.round(number) / global::System.Math.Pow(((double) (10) ), ((double) (precision) )) );
 					#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-					__temp_stmt273 = number;
+					__temp_stmt269 = number;
 				}
 				
 				#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-				double __temp_stmt274 = default(double);
+				double __temp_stmt270 = default(double);
 				#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
 				{
 					#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
@@ -294,11 +294,11 @@ namespace nx3.geom{
 					#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
 					number1 = ( global::Math.round(number1) / global::System.Math.Pow(((double) (10) ), ((double) (precision1) )) );
 					#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-					__temp_stmt274 = number1;
+					__temp_stmt270 = number1;
 				}
 				
 				#line 155 "F:\\nx3\\src\\nx3\\geom\\Rectangle.hx"
-				return new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>(x0, true), new global::haxe.lang.Null<double>(y0, true), new global::haxe.lang.Null<double>(__temp_stmt273, true), new global::haxe.lang.Null<double>(__temp_stmt274, true));
+				return new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>(x0, true), new global::haxe.lang.Null<double>(y0, true), new global::haxe.lang.Null<double>(__temp_stmt269, true), new global::haxe.lang.Null<double>(__temp_stmt270, true));
 			}
 			#line default
 		}

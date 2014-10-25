@@ -30,7 +30,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_ETimeUtils(global::nx3.ETimeUtils __temp_me63){
+		public static   void __hx_ctor_nx3_ETimeUtils(global::nx3.ETimeUtils __temp_me65){
 			unchecked {
 				#line 34 "F:\\nx3\\src\\nx3\\ETime.hx"
 				{

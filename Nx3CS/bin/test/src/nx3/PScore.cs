@@ -22,12 +22,12 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PScore(global::nx3.PScore __temp_me112, global::nx3.NScore nscore){
+		public static   void __hx_ctor_nx3_PScore(global::nx3.PScore __temp_me114, global::nx3.NScore nscore){
 			unchecked {
-				#line 41 "F:\\nx3\\src\\nx3\\PScore.hx"
-				__temp_me112.prevSystemwidth = ((double) (0) );
+				#line 42 "F:\\nx3\\src\\nx3\\PScore.hx"
+				__temp_me114.prevSystemwidth = ((double) (0) );
 				#line 16 "F:\\nx3\\src\\nx3\\PScore.hx"
-				__temp_me112.nscore = nscore;
+				__temp_me114.nscore = nscore;
 			}
 			#line default
 		}
@@ -57,26 +57,26 @@ namespace nx3{
 		
 		public virtual   global::Array<object> getBars(){
 			unchecked {
-				#line 22 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 23 "F:\\nx3\\src\\nx3\\PScore.hx"
 				if (( this.bars != default(global::Array<object>) )) {
-					#line 22 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 23 "F:\\nx3\\src\\nx3\\PScore.hx"
 					return this.bars;
 				}
 				
-				#line 23 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 24 "F:\\nx3\\src\\nx3\\PScore.hx"
 				this.bars = new global::Array<object>(new object[]{});
 				{
-					#line 24 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 25 "F:\\nx3\\src\\nx3\\PScore.hx"
 					int _g = 0;
-					#line 24 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 25 "F:\\nx3\\src\\nx3\\PScore.hx"
 					global::Array<object> _g1 = this.nscore.nbars;
-					#line 24 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 25 "F:\\nx3\\src\\nx3\\PScore.hx"
 					while (( _g < _g1.length )){
-						#line 24 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 25 "F:\\nx3\\src\\nx3\\PScore.hx"
 						global::nx3.NBar nbar = ((global::nx3.NBar) (_g1[_g]) );
-						#line 24 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 25 "F:\\nx3\\src\\nx3\\PScore.hx"
 						 ++ _g;
-						#line 26 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 27 "F:\\nx3\\src\\nx3\\PScore.hx"
 						global::nx3.PBar bar = new global::nx3.PBar(((global::nx3.NBar) (nbar) ));
 						bar.score = this;
 						this.bars.push(bar);
@@ -84,7 +84,7 @@ namespace nx3{
 					
 				}
 				
-				#line 30 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 31 "F:\\nx3\\src\\nx3\\PScore.hx"
 				return this.bars;
 			}
 			#line default
@@ -93,26 +93,26 @@ namespace nx3{
 		
 		public virtual   global::Array<object> getNBars(){
 			unchecked {
-				#line 35 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 36 "F:\\nx3\\src\\nx3\\PScore.hx"
 				global::Array<object> result = new global::Array<object>(new object[]{});
 				{
-					#line 36 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 37 "F:\\nx3\\src\\nx3\\PScore.hx"
 					int _g = 0;
-					#line 36 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 37 "F:\\nx3\\src\\nx3\\PScore.hx"
 					global::Array<object> _g1 = this.getBars();
-					#line 36 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 37 "F:\\nx3\\src\\nx3\\PScore.hx"
 					while (( _g < _g1.length )){
-						#line 36 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 37 "F:\\nx3\\src\\nx3\\PScore.hx"
 						global::nx3.PBar bar = ((global::nx3.PBar) (_g1[_g]) );
-						#line 36 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 37 "F:\\nx3\\src\\nx3\\PScore.hx"
 						 ++ _g;
-						#line 36 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 37 "F:\\nx3\\src\\nx3\\PScore.hx"
 						result.push(bar.nbar);
 					}
 					
 				}
 				
-				#line 37 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 38 "F:\\nx3\\src\\nx3\\PScore.hx"
 				return result;
 			}
 			#line default
@@ -125,80 +125,97 @@ namespace nx3{
 		
 		public virtual   global::Array<object> getSystems(double systemwidth){
 			unchecked {
-				#line 44 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 45 "F:\\nx3\\src\\nx3\\PScore.hx"
 				if (( systemwidth != this.prevSystemwidth )) {
-					#line 44 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 45 "F:\\nx3\\src\\nx3\\PScore.hx"
 					this.systems = default(global::Array<object>);
 				}
 				
-				#line 45 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 46 "F:\\nx3\\src\\nx3\\PScore.hx"
 				if (( this.systems != default(global::Array<object>) )) {
-					#line 45 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 46 "F:\\nx3\\src\\nx3\\PScore.hx"
 					return this.systems;
 				}
 				
-				#line 47 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 48 "F:\\nx3\\src\\nx3\\PScore.hx"
 				this.systems = new global::nx3.PScoreSystemsGenerator(((global::Array<object>) (this.getBars()) )).getsSystems(new global::Array<double>(new double[]{systemwidth}));
-				#line 49 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 50 "F:\\nx3\\src\\nx3\\PScore.hx"
 				{
-					#line 49 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 50 "F:\\nx3\\src\\nx3\\PScore.hx"
 					int _g = 0;
-					#line 49 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 50 "F:\\nx3\\src\\nx3\\PScore.hx"
 					global::Array<object> _g1 = this.systems;
-					#line 49 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 50 "F:\\nx3\\src\\nx3\\PScore.hx"
 					while (( _g < _g1.length )){
-						#line 49 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 50 "F:\\nx3\\src\\nx3\\PScore.hx"
 						global::nx3.PSystem system = ((global::nx3.PSystem) (_g1[_g]) );
-						#line 49 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 50 "F:\\nx3\\src\\nx3\\PScore.hx"
 						 ++ _g;
-						#line 49 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 50 "F:\\nx3\\src\\nx3\\PScore.hx"
 						system.calculateSystembarXs();
 					}
 					
 				}
 				
-				#line 51 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 52 "F:\\nx3\\src\\nx3\\PScore.hx"
 				{
-					#line 51 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 52 "F:\\nx3\\src\\nx3\\PScore.hx"
 					int _g2 = 0;
-					#line 51 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 52 "F:\\nx3\\src\\nx3\\PScore.hx"
 					global::Array<object> _g11 = this.systems;
-					#line 51 "F:\\nx3\\src\\nx3\\PScore.hx"
+					#line 52 "F:\\nx3\\src\\nx3\\PScore.hx"
 					while (( _g2 < _g11.length )){
-						#line 51 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 52 "F:\\nx3\\src\\nx3\\PScore.hx"
 						global::nx3.PSystem system1 = ((global::nx3.PSystem) (_g11[_g2]) );
-						#line 51 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 52 "F:\\nx3\\src\\nx3\\PScore.hx"
 						 ++ _g2;
-						#line 53 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 54 "F:\\nx3\\src\\nx3\\PScore.hx"
 						double ifMoreThan = default(double);
-						#line 53 "F:\\nx3\\src\\nx3\\PScore.hx"
-						global::nx3.PSystem __temp_stmt258 = default(global::nx3.PSystem);
-						#line 53 "F:\\nx3\\src\\nx3\\PScore.hx"
+						#line 54 "F:\\nx3\\src\\nx3\\PScore.hx"
+						global::nx3.PSystem __temp_stmt251 = default(global::nx3.PSystem);
+						#line 54 "F:\\nx3\\src\\nx3\\PScore.hx"
 						{
-							#line 53 "F:\\nx3\\src\\nx3\\PScore.hx"
+							#line 54 "F:\\nx3\\src\\nx3\\PScore.hx"
 							global::Array<object> array = this.systems;
-							#line 53 "F:\\nx3\\src\\nx3\\PScore.hx"
-							__temp_stmt258 = ((global::nx3.PSystem) (array[( array.length - 1 )]) );
-						}
-						
-						#line 53 "F:\\nx3\\src\\nx3\\PScore.hx"
-						if (( system1 != __temp_stmt258 )) {
-							#line 53 "F:\\nx3\\src\\nx3\\PScore.hx"
-							ifMoreThan = ((double) (0) );
-						}
-						 else {
-							#line 53 "F:\\nx3\\src\\nx3\\PScore.hx"
-							ifMoreThan = ( system1.getSystemBreakWidth() * .7 );
+							#line 54 "F:\\nx3\\src\\nx3\\PScore.hx"
+							__temp_stmt251 = ((global::nx3.PSystem) (array[( array.length - 1 )]) );
 						}
 						
 						#line 54 "F:\\nx3\\src\\nx3\\PScore.hx"
+						if (( system1 != __temp_stmt251 )) {
+							#line 54 "F:\\nx3\\src\\nx3\\PScore.hx"
+							ifMoreThan = ((double) (0) );
+						}
+						 else {
+							#line 54 "F:\\nx3\\src\\nx3\\PScore.hx"
+							ifMoreThan = ( system1.getSystemBreakWidth() * .7 );
+						}
+						
+						#line 55 "F:\\nx3\\src\\nx3\\PScore.hx"
 						new global::nx3.PScoreSystemStretcher(((global::nx3.PSystem) (system1) )).stretchTo(system1.getSystemBreakWidth(), new global::haxe.lang.Null<double>(ifMoreThan, true));
 					}
 					
 				}
 				
-				#line 56 "F:\\nx3\\src\\nx3\\PScore.hx"
+				#line 57 "F:\\nx3\\src\\nx3\\PScore.hx"
 				return this.systems;
+			}
+			#line default
+		}
+		
+		
+		public virtual   global::nx3.PBar getBar(int idx){
+			unchecked {
+				#line 60 "F:\\nx3\\src\\nx3\\PScore.hx"
+				if (( ( idx < 0 ) || ( idx > this.getBars().length ) )) {
+					#line 60 "F:\\nx3\\src\\nx3\\PScore.hx"
+					return default(global::nx3.PBar);
+				}
+				 else {
+					#line 60 "F:\\nx3\\src\\nx3\\PScore.hx"
+					return ((global::nx3.PBar) (this.getBars()[idx]) );
+				}
+				
 			}
 			#line default
 		}
@@ -287,6 +304,13 @@ namespace nx3{
 			unchecked {
 				#line 10 "F:\\nx3\\src\\nx3\\PScore.hx"
 				switch (hash){
+					case 588901085:
+					{
+						#line 10 "F:\\nx3\\src\\nx3\\PScore.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getBar") ), ((int) (588901085) ))) );
+					}
+					
+					
 					case 1656946862:
 					{
 						#line 10 "F:\\nx3\\src\\nx3\\PScore.hx"
@@ -377,6 +401,13 @@ namespace nx3{
 			unchecked {
 				#line 10 "F:\\nx3\\src\\nx3\\PScore.hx"
 				switch (hash){
+					case 588901085:
+					{
+						#line 10 "F:\\nx3\\src\\nx3\\PScore.hx"
+						return this.getBar(((int) (global::haxe.lang.Runtime.toInt(dynargs[0])) ));
+					}
+					
+					
 					case 1656946862:
 					{
 						#line 10 "F:\\nx3\\src\\nx3\\PScore.hx"

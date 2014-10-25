@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PComplexDotsrectsCalculator(global::nx3.PComplexDotsrectsCalculator __temp_me97, global::nx3.PComplex complex){
+		public static   void __hx_ctor_nx3_PComplexDotsrectsCalculator(global::nx3.PComplexDotsrectsCalculator __temp_me99, global::nx3.PComplex complex){
 			unchecked {
 				#line 17 "F:\\nx3\\src\\nx3\\PComplexDotsrectsCalculator.hx"
-				__temp_me97.complex = complex;
+				__temp_me99.complex = complex;
 			}
 			#line default
 		}
@@ -93,7 +93,7 @@ namespace nx3{
 		public virtual   global::Array<object> getRectsForNote(global::nx3.PNote note, global::haxe.lang.Null<bool> down){
 			unchecked {
 				#line 36 "F:\\nx3\\src\\nx3\\PComplexDotsrectsCalculator.hx"
-				bool __temp_down96 = ( ( ! (down.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (down.@value) );
+				bool __temp_down98 = ( ( ! (down.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (down.@value) );
 				if (( global::nx3.ENoteValTools.dotlevel(note.nnote.@value) == 0 )) {
 					#line 37 "F:\\nx3\\src\\nx3\\PComplexDotsrectsCalculator.hx"
 					return new global::Array<object>(new object[]{});
@@ -142,7 +142,7 @@ namespace nx3{
 						#line 48 "F:\\nx3\\src\\nx3\\PComplexDotsrectsCalculator.hx"
 						int dotlevel = default(int);
 						#line 48 "F:\\nx3\\src\\nx3\\PComplexDotsrectsCalculator.hx"
-						if (__temp_down96) {
+						if (__temp_down98) {
 							#line 48 "F:\\nx3\\src\\nx3\\PComplexDotsrectsCalculator.hx"
 							dotlevel = ( level + adj );
 						}

@@ -22,7 +22,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_EDirectionTools(global::nx3.EDirectionTools __temp_me59){
+		public static   void __hx_ctor_nx3_EDirectionTools(global::nx3.EDirectionTools __temp_me61){
 			unchecked {
 				#line 7 "F:\\nx3\\src\\nx3\\EDirectionTools.hx"
 				{

@@ -22,7 +22,7 @@ namespace nx3.geom{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_geom_RectanglesTools(global::nx3.geom.RectanglesTools __temp_me145){
+		public static   void __hx_ctor_nx3_geom_RectanglesTools(global::nx3.geom.RectanglesTools __temp_me135){
 			unchecked {
 				#line 10 "F:\\nx3\\src\\nx3\\geom\\Rectangles.hx"
 				{
@@ -55,7 +55,7 @@ namespace nx3.geom{
 				}
 				
 				#line 16 "F:\\nx3\\src\\nx3\\geom\\Rectangles.hx"
-				global::haxe.lang.Function check = new global::nx3.geom.RectanglesTools_getXIntersection_16__Fun(((global::Array<object>) (rectsB2) ), ((global::Array<object>) (rectsA1) ));
+				global::haxe.lang.Function check = new global::nx3.geom.RectanglesTools_getXIntersection_16__Fun(((global::Array<object>) (rectsA1) ), ((global::Array<object>) (rectsB2) ));
 				#line 30 "F:\\nx3\\src\\nx3\\geom\\Rectangles.hx"
 				double x = ((double) (0) );
 				double moveX = ((double) (check.__hx_invoke0_f()) );
@@ -228,12 +228,12 @@ namespace nx3.geom{
 #pragma warning disable 109, 114, 219, 429, 168, 162
 namespace nx3.geom{
 	public  class RectanglesTools_getXIntersection_16__Fun : global::haxe.lang.Function {
-		public    RectanglesTools_getXIntersection_16__Fun(global::Array<object> rectsB2, global::Array<object> rectsA1) : base(0, 1){
+		public    RectanglesTools_getXIntersection_16__Fun(global::Array<object> rectsA1, global::Array<object> rectsB2) : base(0, 1){
 			unchecked {
 				#line 17 "F:\\nx3\\src\\nx3\\geom\\Rectangles.hx"
-				this.rectsB2 = rectsB2;
-				#line 17 "F:\\nx3\\src\\nx3\\geom\\Rectangles.hx"
 				this.rectsA1 = rectsA1;
+				#line 17 "F:\\nx3\\src\\nx3\\geom\\Rectangles.hx"
+				this.rectsB2 = rectsB2;
 			}
 			#line default
 		}
@@ -296,9 +296,9 @@ namespace nx3.geom{
 		}
 		
 		
-		public  global::Array<object> rectsB2;
-		
 		public  global::Array<object> rectsA1;
+		
+		public  global::Array<object> rectsB2;
 		
 	}
 }

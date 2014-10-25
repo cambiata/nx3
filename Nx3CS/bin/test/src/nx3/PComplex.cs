@@ -22,22 +22,22 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PComplex(global::nx3.PComplex __temp_me94, global::nx3.PPart part, global::Array<object> notes, int valueposition){
+		public static   void __hx_ctor_nx3_PComplex(global::nx3.PComplex __temp_me96, global::nx3.PPart part, global::Array<object> notes, int valueposition){
 			unchecked {
 				#line 23 "F:\\nx3\\src\\nx3\\PComplex.hx"
-				__temp_me94.part = part;
+				__temp_me96.part = part;
 				if (( notes.length > 2 )) {
 					#line 24 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					throw global::haxe.lang.HaxeException.wrap("PComplex nr of PNote(s) limited to max 2 - for now");
 				}
 				
 				#line 25 "F:\\nx3\\src\\nx3\\PComplex.hx"
-				__temp_me94.notes = notes;
+				__temp_me96.notes = notes;
 				{
 					#line 26 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					int _g = 0;
 					#line 26 "F:\\nx3\\src\\nx3\\PComplex.hx"
-					global::Array<object> _g1 = __temp_me94.notes;
+					global::Array<object> _g1 = __temp_me96.notes;
 					#line 26 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					while (( _g < _g1.length )){
 						#line 26 "F:\\nx3\\src\\nx3\\PComplex.hx"
@@ -45,13 +45,13 @@ namespace nx3{
 						#line 26 "F:\\nx3\\src\\nx3\\PComplex.hx"
 						 ++ _g;
 						#line 26 "F:\\nx3\\src\\nx3\\PComplex.hx"
-						note.complex = __temp_me94;
+						note.complex = __temp_me96;
 					}
 					
 				}
 				
 				#line 27 "F:\\nx3\\src\\nx3\\PComplex.hx"
-				__temp_me94.valueposition = valueposition;
+				__temp_me96.valueposition = valueposition;
 			}
 			#line default
 		}
@@ -189,17 +189,17 @@ namespace nx3{
 		public virtual   double getNoteXOffset(global::nx3.PNote note){
 			unchecked {
 				#line 71 "F:\\nx3\\src\\nx3\\PComplex.hx"
-				global::nx3.PNote __temp_stmt249 = default(global::nx3.PNote);
+				global::nx3.PNote __temp_stmt242 = default(global::nx3.PNote);
 				#line 71 "F:\\nx3\\src\\nx3\\PComplex.hx"
 				{
 					#line 71 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					global::Array<object> array = this.getNotes();
 					#line 71 "F:\\nx3\\src\\nx3\\PComplex.hx"
-					__temp_stmt249 = ((global::nx3.PNote) (array[0]) );
+					__temp_stmt242 = ((global::nx3.PNote) (array[0]) );
 				}
 				
 				#line 71 "F:\\nx3\\src\\nx3\\PComplex.hx"
-				if (( note == __temp_stmt249 )) {
+				if (( note == __temp_stmt242 )) {
 					#line 71 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					return ((double) (0) );
 				}
@@ -211,19 +211,19 @@ namespace nx3{
 				}
 				
 				#line 73 "F:\\nx3\\src\\nx3\\PComplex.hx"
-				global::nx3.PNote __temp_stmt250 = default(global::nx3.PNote);
+				global::nx3.PNote __temp_stmt243 = default(global::nx3.PNote);
 				#line 73 "F:\\nx3\\src\\nx3\\PComplex.hx"
 				{
 					#line 73 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					global::Array<object> array1 = this.getNotes();
 					#line 73 "F:\\nx3\\src\\nx3\\PComplex.hx"
-					__temp_stmt250 = ((global::nx3.PNote) (array1[1]) );
+					__temp_stmt243 = ((global::nx3.PNote) (array1[1]) );
 				}
 				
 				#line 73 "F:\\nx3\\src\\nx3\\PComplex.hx"
-				global::nx3.PNoteOffsetCalculator __temp_stmt251 = new global::nx3.PNoteOffsetCalculator(((global::nx3.PComplex) (this) ));
+				global::nx3.PNoteOffsetCalculator __temp_stmt244 = new global::nx3.PNoteOffsetCalculator(((global::nx3.PComplex) (this) ));
 				#line 73 "F:\\nx3\\src\\nx3\\PComplex.hx"
-				this.secondoffset = new global::haxe.lang.Null<double>(__temp_stmt251.getNoteOffset(__temp_stmt250), true);
+				this.secondoffset = new global::haxe.lang.Null<double>(__temp_stmt244.getNoteOffset(__temp_stmt243), true);
 				return this.secondoffset.@value;
 			}
 			#line default
@@ -580,7 +580,7 @@ namespace nx3{
 						#line 225 "F:\\nx3\\src\\nx3\\PComplex.hx"
 						 ++ _g;
 						#line 225 "F:\\nx3\\src\\nx3\\PComplex.hx"
-						result = result.concat(note.getHeads());
+						result = result.concat(note.get_heads());
 					}
 					
 				}
@@ -592,28 +592,121 @@ namespace nx3{
 		}
 		
 		
+		public  global::haxe.lang.Null<bool> hasTie;
+		
+		public virtual   bool getHasTie(){
+			unchecked {
+				#line 232 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				if (this.hasTie.hasValue) {
+					#line 232 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					return this.hasTie.@value;
+				}
+				
+				#line 233 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				{
+					#line 233 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					int _g = 0;
+					#line 233 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					global::Array<object> _g1 = this.getNotes();
+					#line 233 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					while (( _g < _g1.length )){
+						#line 233 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						global::nx3.PNote note = ((global::nx3.PNote) (_g1[_g]) );
+						#line 233 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						 ++ _g;
+						#line 235 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						if (global::haxe.lang.Runtime.eq((note.getHasTie()).toDynamic(), true)) {
+							#line 237 "F:\\nx3\\src\\nx3\\PComplex.hx"
+							this.hasTie = new global::haxe.lang.Null<bool>(true, true);
+							return this.hasTie.@value;
+						}
+						
+					}
+					
+				}
+				
+				#line 241 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				this.hasTie = new global::haxe.lang.Null<bool>(false, true);
+				return this.hasTie.@value;
+			}
+			#line default
+		}
+		
+		
+		public  global::Array<int> headlevels;
+		
+		public virtual   global::Array<int> getHeadLevels(){
+			unchecked {
+				#line 248 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				if (( this.headlevels != default(global::Array<int>) )) {
+					#line 248 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					return this.headlevels;
+				}
+				
+				#line 249 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				this.headlevels = new global::Array<int>(new int[]{});
+				{
+					#line 250 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					int _g = 0;
+					#line 250 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					global::Array<object> _g1 = this.getNotes();
+					#line 250 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					while (( _g < _g1.length )){
+						#line 250 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						global::nx3.PNote note = ((global::nx3.PNote) (_g1[_g]) );
+						#line 250 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						 ++ _g;
+						#line 252 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						{
+							#line 252 "F:\\nx3\\src\\nx3\\PComplex.hx"
+							int _g2 = 0;
+							#line 252 "F:\\nx3\\src\\nx3\\PComplex.hx"
+							global::Array<object> _g3 = note.nnote.get_nheads();
+							#line 252 "F:\\nx3\\src\\nx3\\PComplex.hx"
+							while (( _g2 < _g3.length )){
+								#line 252 "F:\\nx3\\src\\nx3\\PComplex.hx"
+								global::nx3.NHead nhead = ((global::nx3.NHead) (_g3[_g2]) );
+								#line 252 "F:\\nx3\\src\\nx3\\PComplex.hx"
+								 ++ _g2;
+								#line 252 "F:\\nx3\\src\\nx3\\PComplex.hx"
+								this.headlevels.push(nhead.level);
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+				#line 254 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				return this.headlevels;
+			}
+			#line default
+		}
+		
+		
 		public virtual   string toString(){
 			unchecked {
-				#line 231 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				#line 261 "F:\\nx3\\src\\nx3\\PComplex.hx"
 				string str = "PComplex: \r";
 				{
-					#line 232 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					#line 262 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					int _g = 0;
-					#line 232 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					#line 262 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					global::Array<object> _g1 = this.getNotes();
-					#line 232 "F:\\nx3\\src\\nx3\\PComplex.hx"
+					#line 262 "F:\\nx3\\src\\nx3\\PComplex.hx"
 					while (( _g < _g1.length )){
-						#line 232 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						#line 262 "F:\\nx3\\src\\nx3\\PComplex.hx"
 						global::nx3.PNote note = ((global::nx3.PNote) (_g1[_g]) );
-						#line 232 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						#line 262 "F:\\nx3\\src\\nx3\\PComplex.hx"
 						 ++ _g;
-						#line 232 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						#line 262 "F:\\nx3\\src\\nx3\\PComplex.hx"
 						str = global::haxe.lang.Runtime.concat(str, global::haxe.lang.Runtime.concat(global::haxe.lang.Runtime.concat("- Note: ", global::Std.@string(note.nnote)), "\r"));
 					}
 					
 				}
 				
-				#line 233 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				#line 263 "F:\\nx3\\src\\nx3\\PComplex.hx"
 				return str;
 			}
 			#line default
@@ -650,6 +743,24 @@ namespace nx3{
 			unchecked {
 				#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
 				switch (hash){
+					case 1716420495:
+					{
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						this.headlevels = ((global::Array<int>) (global::Array<object>.__hx_cast<int>(((global::Array) (@value) ))) );
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						return @value;
+					}
+					
+					
+					case 994012694:
+					{
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						this.hasTie = global::haxe.lang.Null<object>.ofDynamic<bool>(@value);
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						return @value;
+					}
+					
+					
 					case 424346869:
 					{
 						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
@@ -851,6 +962,34 @@ namespace nx3{
 					{
 						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
 						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("toString") ), ((int) (946786476) ))) );
+					}
+					
+					
+					case 2002079717:
+					{
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getHeadLevels") ), ((int) (2002079717) ))) );
+					}
+					
+					
+					case 1716420495:
+					{
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						return this.headlevels;
+					}
+					
+					
+					case 932575052:
+					{
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getHasTie") ), ((int) (932575052) ))) );
+					}
+					
+					
+					case 994012694:
+					{
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						return (this.hasTie).toDynamic();
 					}
 					
 					
@@ -1210,6 +1349,20 @@ namespace nx3{
 					}
 					
 					
+					case 2002079717:
+					{
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						return this.getHeadLevels();
+					}
+					
+					
+					case 932575052:
+					{
+						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+						return this.getHasTie();
+					}
+					
+					
 					case 76538589:
 					{
 						#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
@@ -1397,6 +1550,10 @@ namespace nx3{
 		
 		public override   void __hx_getFields(global::Array<object> baseArr){
 			unchecked {
+				#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				baseArr.push("headlevels");
+				#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
+				baseArr.push("hasTie");
 				#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"
 				baseArr.push("tieinfos");
 				#line 15 "F:\\nx3\\src\\nx3\\PComplex.hx"

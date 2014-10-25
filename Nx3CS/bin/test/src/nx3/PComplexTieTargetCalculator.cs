@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PComplexTieTargetCalculator(global::nx3.PComplexTieTargetCalculator __temp_me98, global::Array<object> tieinfos){
+		public static   void __hx_ctor_nx3_PComplexTieTargetCalculator(global::nx3.PComplexTieTargetCalculator __temp_me100, global::Array<object> tieinfos){
 			unchecked {
 				#line 15 "F:\\nx3\\src\\nx3\\PComplexTieTargetCalculator.hx"
-				__temp_me98.tieinfos = tieinfos;
+				__temp_me100.tieinfos = tieinfos;
 			}
 			#line default
 		}
@@ -75,7 +75,7 @@ namespace nx3{
 						}
 						
 						#line 27 "F:\\nx3\\src\\nx3\\PComplexTieTargetCalculator.hx"
-						global::Array<object> nextheads = nextnote.getHeads();
+						global::Array<object> nextheads = nextnote.get_heads();
 						#line 29 "F:\\nx3\\src\\nx3\\PComplexTieTargetCalculator.hx"
 						{
 							#line 29 "F:\\nx3\\src\\nx3\\PComplexTieTargetCalculator.hx"

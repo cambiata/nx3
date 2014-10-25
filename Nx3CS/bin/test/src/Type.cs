@@ -105,7 +105,7 @@ public  class Type : global::haxe.lang.HxObject {
 	}
 	
 	
-	public static   void __hx_ctor__Type(global::Type __temp_me11){
+	public static   void __hx_ctor__Type(global::Type __temp_me12){
 		unchecked {
 			#line 62 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Type.hx"
 			{

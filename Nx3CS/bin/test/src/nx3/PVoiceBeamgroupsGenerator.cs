@@ -22,7 +22,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PVoiceBeamgroupsGenerator(global::nx3.PVoiceBeamgroupsGenerator __temp_me125, global::Array<object> pnotes, global::Array<global::nx3.ENoteVal> pattern){
+		public static   void __hx_ctor_nx3_PVoiceBeamgroupsGenerator(global::nx3.PVoiceBeamgroupsGenerator __temp_me126, global::Array<object> pnotes, global::Array<global::nx3.ENoteVal> pattern){
 			unchecked {
 				#line 16 "F:\\nx3\\src\\nx3\\PVoiceBeamgroupsGenerator.hx"
 				if (( pattern == default(global::Array<global::nx3.ENoteVal>) )) {
@@ -31,10 +31,10 @@ namespace nx3{
 				}
 				
 				#line 17 "F:\\nx3\\src\\nx3\\PVoiceBeamgroupsGenerator.hx"
-				__temp_me125.voice = ((global::nx3.PNote) (pnotes[0]) ).getVoice();
-				__temp_me125.notes = pnotes;
-				__temp_me125.pattern = pattern;
-				__temp_me125.adjustPatternLenght();
+				__temp_me126.voice = ((global::nx3.PNote) (pnotes[0]) ).getVoice();
+				__temp_me126.notes = pnotes;
+				__temp_me126.pattern = pattern;
+				__temp_me126.adjustPatternLenght();
 			}
 			#line default
 		}

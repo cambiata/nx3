@@ -22,17 +22,17 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBar(global::nx3.PBar __temp_me74, global::nx3.NBar nbar){
+		public static   void __hx_ctor_nx3_PBar(global::nx3.PBar __temp_me76, global::nx3.NBar nbar){
 			unchecked {
-				#line 183 "F:\\nx3\\src\\nx3\\PBar.hx"
-				__temp_me74.stretchwidth = ((double) (0) );
-				#line 39 "F:\\nx3\\src\\nx3\\PBar.hx"
-				__temp_me74._keys = default(global::Array<global::nx3.EKey>);
-				#line 30 "F:\\nx3\\src\\nx3\\PBar.hx"
-				__temp_me74._clefs = default(global::Array<global::nx3.EClef>);
+				#line 201 "F:\\nx3\\src\\nx3\\PBar.hx"
+				__temp_me76.stretchwidth = ((double) (0) );
+				#line 47 "F:\\nx3\\src\\nx3\\PBar.hx"
+				__temp_me76._keys = default(global::Array<global::nx3.EKey>);
+				#line 38 "F:\\nx3\\src\\nx3\\PBar.hx"
+				__temp_me76._clefs = default(global::Array<global::nx3.EClef>);
 				#line 14 "F:\\nx3\\src\\nx3\\PBar.hx"
-				__temp_me74.nbar = nbar;
-				__temp_me74.@value = 0;
+				__temp_me76.nbar = nbar;
+				__temp_me76.@value = 0;
 			}
 			#line default
 		}
@@ -58,12 +58,49 @@ namespace nx3{
 		
 		public  global::nx3.NBar nbar;
 		
+		public virtual   object iterator(){
+			unchecked {
+				#line 18 "F:\\nx3\\src\\nx3\\PBar.hx"
+				{
+					#line 18 "F:\\nx3\\src\\nx3\\PBar.hx"
+					global::Array<object> _this = this.getParts();
+					#line 18 "F:\\nx3\\src\\nx3\\PBar.hx"
+					return new global::_Array.ArrayIterator<object>(((global::Array<object>) (_this) ));
+				}
+				
+			}
+			#line default
+		}
+		
+		
+		public  int length;
+		
+		public virtual   int get_length(){
+			unchecked {
+				#line 20 "F:\\nx3\\src\\nx3\\PBar.hx"
+				return this.getParts().length;
+			}
+			#line default
+		}
+		
+		
 		public  global::nx3.PScore score;
 		
 		public virtual   global::nx3.PScore getScore(){
 			unchecked {
-				#line 22 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 26 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this.score;
+			}
+			#line default
+		}
+		
+		
+		public  global::nx3.PSystemBar systembar;
+		
+		public virtual   global::nx3.PSystemBar getSystembar(){
+			unchecked {
+				#line 30 "F:\\nx3\\src\\nx3\\PBar.hx"
+				return this.systembar;
 			}
 			#line default
 		}
@@ -79,32 +116,32 @@ namespace nx3{
 		
 		public virtual   global::Array<global::nx3.EClef> get_clefs(){
 			unchecked {
-				#line 33 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 41 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (( this._clefs != default(global::Array<global::nx3.EClef>) )) {
-					#line 33 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 41 "F:\\nx3\\src\\nx3\\PBar.hx"
 					return this._clefs;
 				}
 				
-				#line 34 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 42 "F:\\nx3\\src\\nx3\\PBar.hx"
 				this._clefs = new global::Array<global::nx3.EClef>();
 				{
-					#line 35 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 43 "F:\\nx3\\src\\nx3\\PBar.hx"
 					int _g = 0;
-					#line 35 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 43 "F:\\nx3\\src\\nx3\\PBar.hx"
 					global::Array<object> _g1 = this.getParts();
-					#line 35 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 43 "F:\\nx3\\src\\nx3\\PBar.hx"
 					while (( _g < _g1.length )){
-						#line 35 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 43 "F:\\nx3\\src\\nx3\\PBar.hx"
 						global::nx3.PPart vpart = ((global::nx3.PPart) (_g1[_g]) );
-						#line 35 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 43 "F:\\nx3\\src\\nx3\\PBar.hx"
 						 ++ _g;
-						#line 35 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 43 "F:\\nx3\\src\\nx3\\PBar.hx"
 						this._clefs.push(vpart.npart.clef);
 					}
 					
 				}
 				
-				#line 36 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 44 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this._clefs;
 			}
 			#line default
@@ -115,32 +152,32 @@ namespace nx3{
 		
 		public virtual   global::Array<global::nx3.EKey> get_keys(){
 			unchecked {
-				#line 42 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 50 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (( this._keys != default(global::Array<global::nx3.EKey>) )) {
-					#line 42 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 50 "F:\\nx3\\src\\nx3\\PBar.hx"
 					return this._keys;
 				}
 				
-				#line 43 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 51 "F:\\nx3\\src\\nx3\\PBar.hx"
 				this._keys = new global::Array<global::nx3.EKey>();
 				{
-					#line 44 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 52 "F:\\nx3\\src\\nx3\\PBar.hx"
 					int _g = 0;
-					#line 44 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 52 "F:\\nx3\\src\\nx3\\PBar.hx"
 					global::Array<object> _g1 = this.getParts();
-					#line 44 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 52 "F:\\nx3\\src\\nx3\\PBar.hx"
 					while (( _g < _g1.length )){
-						#line 44 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 52 "F:\\nx3\\src\\nx3\\PBar.hx"
 						global::nx3.PPart vpart = ((global::nx3.PPart) (_g1[_g]) );
-						#line 44 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 52 "F:\\nx3\\src\\nx3\\PBar.hx"
 						 ++ _g;
-						#line 44 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 52 "F:\\nx3\\src\\nx3\\PBar.hx"
 						this._keys.push(vpart.npart.key);
 					}
 					
 				}
 				
-				#line 45 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 53 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this._keys;
 			}
 			#line default
@@ -149,7 +186,7 @@ namespace nx3{
 		
 		public virtual   global::nx3.ETime get_time(){
 			unchecked {
-				#line 50 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 58 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this.nbar.time;
 			}
 			#line default
@@ -164,34 +201,34 @@ namespace nx3{
 		
 		public virtual   global::nx3.EDisplayALN get_displayClefs(){
 			unchecked {
-				#line 59 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 67 "F:\\nx3\\src\\nx3\\PBar.hx"
 				global::nx3.EDisplayALN result = global::nx3.EDisplayALN.Never;
 				{
-					#line 60 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 68 "F:\\nx3\\src\\nx3\\PBar.hx"
 					int _g = 0;
-					#line 60 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 68 "F:\\nx3\\src\\nx3\\PBar.hx"
 					global::Array<object> _g1 = this.getParts();
-					#line 60 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 68 "F:\\nx3\\src\\nx3\\PBar.hx"
 					while (( _g < _g1.length )){
-						#line 60 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 68 "F:\\nx3\\src\\nx3\\PBar.hx"
 						global::nx3.PPart vpart = ((global::nx3.PPart) (_g1[_g]) );
-						#line 60 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 68 "F:\\nx3\\src\\nx3\\PBar.hx"
 						 ++ _g;
-						#line 62 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 70 "F:\\nx3\\src\\nx3\\PBar.hx"
 						if (( vpart.npart.clefDisplay == default(global::nx3.EDisplayALN) )) {
-							#line 62 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 70 "F:\\nx3\\src\\nx3\\PBar.hx"
 							result = global::nx3.EDisplayALN.Layout;
 						}
 						
-						#line 63 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 71 "F:\\nx3\\src\\nx3\\PBar.hx"
 						if (( vpart.npart.clefDisplay == global::nx3.EDisplayALN.Layout )) {
-							#line 63 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 71 "F:\\nx3\\src\\nx3\\PBar.hx"
 							result = global::nx3.EDisplayALN.Layout;
 						}
 						
-						#line 64 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 72 "F:\\nx3\\src\\nx3\\PBar.hx"
 						if (( vpart.npart.clefDisplay == global::nx3.EDisplayALN.Always )) {
-							#line 66 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 74 "F:\\nx3\\src\\nx3\\PBar.hx"
 							result = global::nx3.EDisplayALN.Always;
 							break;
 						}
@@ -200,7 +237,7 @@ namespace nx3{
 					
 				}
 				
-				#line 70 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 78 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return result;
 			}
 			#line default
@@ -209,34 +246,34 @@ namespace nx3{
 		
 		public virtual   global::nx3.EDisplayALN get_displayKeys(){
 			unchecked {
-				#line 75 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 83 "F:\\nx3\\src\\nx3\\PBar.hx"
 				global::nx3.EDisplayALN result = global::nx3.EDisplayALN.Never;
 				{
-					#line 76 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 84 "F:\\nx3\\src\\nx3\\PBar.hx"
 					int _g = 0;
-					#line 76 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 84 "F:\\nx3\\src\\nx3\\PBar.hx"
 					global::Array<object> _g1 = this.getParts();
-					#line 76 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 84 "F:\\nx3\\src\\nx3\\PBar.hx"
 					while (( _g < _g1.length )){
-						#line 76 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 84 "F:\\nx3\\src\\nx3\\PBar.hx"
 						global::nx3.PPart vpart = ((global::nx3.PPart) (_g1[_g]) );
-						#line 76 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 84 "F:\\nx3\\src\\nx3\\PBar.hx"
 						 ++ _g;
-						#line 78 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 86 "F:\\nx3\\src\\nx3\\PBar.hx"
 						if (( vpart.npart.keyDisplay == default(global::nx3.EDisplayALN) )) {
-							#line 78 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 86 "F:\\nx3\\src\\nx3\\PBar.hx"
 							result = global::nx3.EDisplayALN.Layout;
 						}
 						
-						#line 79 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 87 "F:\\nx3\\src\\nx3\\PBar.hx"
 						if (( vpart.npart.keyDisplay == global::nx3.EDisplayALN.Layout )) {
-							#line 79 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 87 "F:\\nx3\\src\\nx3\\PBar.hx"
 							result = global::nx3.EDisplayALN.Layout;
 						}
 						
-						#line 80 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 88 "F:\\nx3\\src\\nx3\\PBar.hx"
 						if (( vpart.npart.keyDisplay == global::nx3.EDisplayALN.Always )) {
-							#line 82 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 90 "F:\\nx3\\src\\nx3\\PBar.hx"
 							result = global::nx3.EDisplayALN.Always;
 							break;
 						}
@@ -245,7 +282,7 @@ namespace nx3{
 					
 				}
 				
-				#line 87 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 95 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return result;
 			}
 			#line default
@@ -254,19 +291,19 @@ namespace nx3{
 		
 		public virtual   global::nx3.EDisplayALN get_displayTime(){
 			unchecked {
-				#line 92 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 100 "F:\\nx3\\src\\nx3\\PBar.hx"
 				global::nx3.EDisplayALN result = default(global::nx3.EDisplayALN);
-				#line 92 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 100 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (( this.nbar.timeDisplay != default(global::nx3.EDisplayALN) )) {
-					#line 92 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 100 "F:\\nx3\\src\\nx3\\PBar.hx"
 					result = this.nbar.timeDisplay;
 				}
 				 else {
-					#line 92 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 100 "F:\\nx3\\src\\nx3\\PBar.hx"
 					result = global::nx3.EDisplayALN.Layout;
 				}
 				
-				#line 93 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 101 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this.nbar.timeDisplay;
 			}
 			#line default
@@ -277,27 +314,27 @@ namespace nx3{
 		
 		public virtual   global::Array<object> getParts(){
 			unchecked {
-				#line 103 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 111 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (( this.parts != default(global::Array<object>) )) {
-					#line 103 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 111 "F:\\nx3\\src\\nx3\\PBar.hx"
 					return this.parts;
 				}
 				
-				#line 104 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 112 "F:\\nx3\\src\\nx3\\PBar.hx"
 				this.parts = new global::Array<object>(new object[]{});
-				#line 106 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 114 "F:\\nx3\\src\\nx3\\PBar.hx"
 				{
-					#line 106 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 114 "F:\\nx3\\src\\nx3\\PBar.hx"
 					int _g = 0;
-					#line 106 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 114 "F:\\nx3\\src\\nx3\\PBar.hx"
 					global::Array<object> _g1 = this.nbar.nparts;
-					#line 106 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 114 "F:\\nx3\\src\\nx3\\PBar.hx"
 					while (( _g < _g1.length )){
-						#line 106 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 114 "F:\\nx3\\src\\nx3\\PBar.hx"
 						global::nx3.NPart npart = ((global::nx3.NPart) (_g1[_g]) );
-						#line 106 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 114 "F:\\nx3\\src\\nx3\\PBar.hx"
 						 ++ _g;
-						#line 108 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 116 "F:\\nx3\\src\\nx3\\PBar.hx"
 						global::nx3.PPart ppart = new global::nx3.PPart(((global::nx3.NPart) (npart) ));
 						ppart.bar = this;
 						this.parts.push(ppart);
@@ -305,8 +342,25 @@ namespace nx3{
 					
 				}
 				
-				#line 113 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 121 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this.parts;
+			}
+			#line default
+		}
+		
+		
+		public virtual   global::nx3.PPart getPart(int idx){
+			unchecked {
+				#line 124 "F:\\nx3\\src\\nx3\\PBar.hx"
+				if (( ( idx < 0 ) || ( idx > this.getParts().length ) )) {
+					#line 124 "F:\\nx3\\src\\nx3\\PBar.hx"
+					return default(global::nx3.PPart);
+				}
+				 else {
+					#line 124 "F:\\nx3\\src\\nx3\\PBar.hx"
+					return ((global::nx3.PPart) (this.getParts()[idx]) );
+				}
+				
 			}
 			#line default
 		}
@@ -316,19 +370,28 @@ namespace nx3{
 		
 		public virtual   global::Array<object> getColumns(){
 			unchecked {
-				#line 120 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 130 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (( this.columns != default(global::Array<object>) )) {
-					#line 120 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 130 "F:\\nx3\\src\\nx3\\PBar.hx"
 					return this.columns;
 				}
 				
-				#line 121 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 131 "F:\\nx3\\src\\nx3\\PBar.hx"
 				global::nx3.PColumnsGenerator generator = new global::nx3.PColumnsGenerator(((global::nx3.PBar) (this) ));
 				this.columns = generator.getColumns();
-				#line 124 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 134 "F:\\nx3\\src\\nx3\\PBar.hx"
 				this.calculateMDistances();
-				#line 127 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 137 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this.columns;
+			}
+			#line default
+		}
+		
+		
+		public virtual   int getIndex(){
+			unchecked {
+				#line 142 "F:\\nx3\\src\\nx3\\PBar.hx"
+				return this.getScore().getBars().indexOf(this, default(global::haxe.lang.Null<int>));
 			}
 			#line default
 		}
@@ -336,13 +399,13 @@ namespace nx3{
 		
 		public virtual   void calculateMDistances(){
 			unchecked {
-				#line 133 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 148 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (( this.columns == default(global::Array<object>) )) {
-					#line 133 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 148 "F:\\nx3\\src\\nx3\\PBar.hx"
 					this.getColumns();
 				}
 				
-				#line 134 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 149 "F:\\nx3\\src\\nx3\\PBar.hx"
 				new global::nx3.PColumnsDistancesCalculator(((global::nx3.PBar) (this) )).calculate();
 			}
 			#line default
@@ -351,7 +414,7 @@ namespace nx3{
 		
 		public virtual   void calculateAPositions(){
 			unchecked {
-				#line 139 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 154 "F:\\nx3\\src\\nx3\\PBar.hx"
 				new global::nx3.PColumnsAllotmentCalculator(((global::nx3.PBar) (this) )).calculate(default(global::haxe.lang.Null<double>));
 			}
 			#line default
@@ -362,37 +425,37 @@ namespace nx3{
 		
 		public virtual   int getValue(){
 			unchecked {
-				#line 157 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 172 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (( this.@value != 0 )) {
-					#line 157 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 172 "F:\\nx3\\src\\nx3\\PBar.hx"
 					return this.@value;
 				}
 				
-				#line 158 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 173 "F:\\nx3\\src\\nx3\\PBar.hx"
 				{
-					#line 158 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 173 "F:\\nx3\\src\\nx3\\PBar.hx"
 					int _g = 0;
-					#line 158 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 173 "F:\\nx3\\src\\nx3\\PBar.hx"
 					global::Array<object> _g1 = this.getParts();
-					#line 158 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 173 "F:\\nx3\\src\\nx3\\PBar.hx"
 					while (( _g < _g1.length )){
-						#line 158 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 173 "F:\\nx3\\src\\nx3\\PBar.hx"
 						global::nx3.PPart part = ((global::nx3.PPart) (_g1[_g]) );
-						#line 158 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 173 "F:\\nx3\\src\\nx3\\PBar.hx"
 						 ++ _g;
-						#line 160 "F:\\nx3\\src\\nx3\\PBar.hx"
+						#line 175 "F:\\nx3\\src\\nx3\\PBar.hx"
 						{
-							#line 160 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 175 "F:\\nx3\\src\\nx3\\PBar.hx"
 							double x = default(double);
-							#line 160 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 175 "F:\\nx3\\src\\nx3\\PBar.hx"
 							{
-								#line 160 "F:\\nx3\\src\\nx3\\PBar.hx"
+								#line 175 "F:\\nx3\\src\\nx3\\PBar.hx"
 								double b = ((double) (part.getValue()) );
-								#line 160 "F:\\nx3\\src\\nx3\\PBar.hx"
+								#line 175 "F:\\nx3\\src\\nx3\\PBar.hx"
 								x = global::System.Math.Max(((double) (this.@value) ), ((double) (b) ));
 							}
 							
-							#line 160 "F:\\nx3\\src\\nx3\\PBar.hx"
+							#line 175 "F:\\nx3\\src\\nx3\\PBar.hx"
 							this.@value = ((int) (x) );
 						}
 						
@@ -400,7 +463,7 @@ namespace nx3{
 					
 				}
 				
-				#line 162 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 177 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this.@value;
 			}
 			#line default
@@ -411,39 +474,39 @@ namespace nx3{
 		
 		public virtual   double getContentwidth(){
 			unchecked {
-				#line 168 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 183 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (this.contentwidth.hasValue) {
-					#line 168 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 183 "F:\\nx3\\src\\nx3\\PBar.hx"
 					return this.contentwidth.@value;
 				}
 				
-				#line 169 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 184 "F:\\nx3\\src\\nx3\\PBar.hx"
 				global::nx3.PColumn lastcolumn = default(global::nx3.PColumn);
-				#line 169 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 184 "F:\\nx3\\src\\nx3\\PBar.hx"
 				{
-					#line 169 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 184 "F:\\nx3\\src\\nx3\\PBar.hx"
 					global::Array<object> array = this.getColumns();
-					#line 169 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 184 "F:\\nx3\\src\\nx3\\PBar.hx"
 					lastcolumn = ((global::nx3.PColumn) (array[( array.length - 1 )]) );
 				}
 				
-				#line 170 "F:\\nx3\\src\\nx3\\PBar.hx"
-				double __temp_stmt242 = lastcolumn.getAPostion();
-				#line 170 "F:\\nx3\\src\\nx3\\PBar.hx"
-				double __temp_stmt243 = default(double);
-				#line 170 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 188 "F:\\nx3\\src\\nx3\\PBar.hx"
+				double __temp_stmt235 = lastcolumn.getAPostion();
+				#line 188 "F:\\nx3\\src\\nx3\\PBar.hx"
+				double __temp_stmt236 = default(double);
+				#line 188 "F:\\nx3\\src\\nx3\\PBar.hx"
 				{
-					#line 170 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 188 "F:\\nx3\\src\\nx3\\PBar.hx"
 					double a = lastcolumn.getADistance();
-					#line 170 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 188 "F:\\nx3\\src\\nx3\\PBar.hx"
 					double b = lastcolumn.getRightX();
-					#line 170 "F:\\nx3\\src\\nx3\\PBar.hx"
-					__temp_stmt243 = global::System.Math.Max(((double) (a) ), ((double) (b) ));
+					#line 188 "F:\\nx3\\src\\nx3\\PBar.hx"
+					__temp_stmt236 = global::System.Math.Max(((double) (a) ), ((double) (b) ));
 				}
 				
-				#line 170 "F:\\nx3\\src\\nx3\\PBar.hx"
-				this.contentwidth = new global::haxe.lang.Null<double>(( __temp_stmt242 + __temp_stmt243 ), true);
-				#line 172 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 188 "F:\\nx3\\src\\nx3\\PBar.hx"
+				this.contentwidth = new global::haxe.lang.Null<double>(( __temp_stmt235 + __temp_stmt236 ), true);
+				#line 190 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this.contentwidth.@value;
 			}
 			#line default
@@ -454,17 +517,17 @@ namespace nx3{
 		
 		public virtual   double getContentXZero(){
 			unchecked {
-				#line 178 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 196 "F:\\nx3\\src\\nx3\\PBar.hx"
 				global::nx3.PColumn firstcolumn = default(global::nx3.PColumn);
-				#line 178 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 196 "F:\\nx3\\src\\nx3\\PBar.hx"
 				{
-					#line 178 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 196 "F:\\nx3\\src\\nx3\\PBar.hx"
 					global::Array<object> array = this.getColumns();
-					#line 178 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 196 "F:\\nx3\\src\\nx3\\PBar.hx"
 					firstcolumn = ((global::nx3.PColumn) (array[0]) );
 				}
 				
-				#line 179 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 197 "F:\\nx3\\src\\nx3\\PBar.hx"
 				this.contentx = new global::haxe.lang.Null<double>( - (firstcolumn.getLeftX()) , true);
 				return this.contentx.@value;
 			}
@@ -478,13 +541,13 @@ namespace nx3{
 		
 		public virtual   double getAllottedDistanceSum(){
 			unchecked {
-				#line 199 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 217 "F:\\nx3\\src\\nx3\\PBar.hx"
 				if (this.allottedDistanceSum.hasValue) {
-					#line 199 "F:\\nx3\\src\\nx3\\PBar.hx"
+					#line 217 "F:\\nx3\\src\\nx3\\PBar.hx"
 					return this.allottedDistanceSum.@value;
 				}
 				
-				#line 200 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 218 "F:\\nx3\\src\\nx3\\PBar.hx"
 				this.getContentwidth();
 				return this.allottedDistanceSum.@value;
 			}
@@ -494,8 +557,218 @@ namespace nx3{
 		
 		public virtual   double getStretchWidth(){
 			unchecked {
-				#line 207 "F:\\nx3\\src\\nx3\\PBar.hx"
+				#line 225 "F:\\nx3\\src\\nx3\\PBar.hx"
 				return this.stretchwidth;
+			}
+			#line default
+		}
+		
+		
+		public  global::Array<object> tieconnections;
+		
+		public virtual   global::Array<object> getTieConnections(){
+			unchecked {
+				#line 232 "F:\\nx3\\src\\nx3\\PBar.hx"
+				if (( this.tieconnections != default(global::Array<object>) )) {
+					#line 232 "F:\\nx3\\src\\nx3\\PBar.hx"
+					return this.tieconnections;
+				}
+				
+				#line 233 "F:\\nx3\\src\\nx3\\PBar.hx"
+				this.tieconnections = new global::Array<object>(new object[]{});
+				#line 235 "F:\\nx3\\src\\nx3\\PBar.hx"
+				global::nx3.PBar nextBar = default(global::nx3.PBar);
+				#line 235 "F:\\nx3\\src\\nx3\\PBar.hx"
+				{
+					#line 235 "F:\\nx3\\src\\nx3\\PBar.hx"
+					global::Array<object> a = this.score.getBars();
+					#line 235 "F:\\nx3\\src\\nx3\\PBar.hx"
+					int idx = ( this.getIndex() + 1 );
+					#line 235 "F:\\nx3\\src\\nx3\\PBar.hx"
+					if (( ( idx < 0 ) || ( idx > ( a.length - 1 ) ) )) {
+						#line 235 "F:\\nx3\\src\\nx3\\PBar.hx"
+						nextBar = default(global::nx3.PBar);
+					}
+					 else {
+						#line 235 "F:\\nx3\\src\\nx3\\PBar.hx"
+						nextBar = ((global::nx3.PBar) (a[idx]) );
+					}
+					
+				}
+				
+				#line 236 "F:\\nx3\\src\\nx3\\PBar.hx"
+				if (( nextBar == default(global::nx3.PBar) )) {
+					#line 238 "F:\\nx3\\src\\nx3\\PBar.hx"
+					return this.tieconnections;
+				}
+				
+				#line 241 "F:\\nx3\\src\\nx3\\PBar.hx"
+				{
+					#line 241 "F:\\nx3\\src\\nx3\\PBar.hx"
+					int _g = 0;
+					#line 241 "F:\\nx3\\src\\nx3\\PBar.hx"
+					global::Array<object> _g1 = this.getParts();
+					#line 241 "F:\\nx3\\src\\nx3\\PBar.hx"
+					while (( _g < _g1.length )){
+						#line 241 "F:\\nx3\\src\\nx3\\PBar.hx"
+						global::nx3.PPart part = ((global::nx3.PPart) (_g1[_g]) );
+						#line 241 "F:\\nx3\\src\\nx3\\PBar.hx"
+						 ++ _g;
+						#line 243 "F:\\nx3\\src\\nx3\\PBar.hx"
+						global::nx3.PPart nextPart = default(global::nx3.PPart);
+						#line 243 "F:\\nx3\\src\\nx3\\PBar.hx"
+						{
+							#line 243 "F:\\nx3\\src\\nx3\\PBar.hx"
+							global::Array<object> a1 = nextBar.getParts();
+							#line 243 "F:\\nx3\\src\\nx3\\PBar.hx"
+							int idx1 = part.getIndex();
+							#line 243 "F:\\nx3\\src\\nx3\\PBar.hx"
+							if (( ( idx1 < 0 ) || ( idx1 > ( a1.length - 1 ) ) )) {
+								#line 243 "F:\\nx3\\src\\nx3\\PBar.hx"
+								nextPart = default(global::nx3.PPart);
+							}
+							 else {
+								#line 243 "F:\\nx3\\src\\nx3\\PBar.hx"
+								nextPart = ((global::nx3.PPart) (a1[idx1]) );
+							}
+							
+						}
+						
+						#line 245 "F:\\nx3\\src\\nx3\\PBar.hx"
+						{
+							#line 245 "F:\\nx3\\src\\nx3\\PBar.hx"
+							int _g2 = 0;
+							#line 245 "F:\\nx3\\src\\nx3\\PBar.hx"
+							global::Array<object> _g3 = part.getVoices();
+							#line 245 "F:\\nx3\\src\\nx3\\PBar.hx"
+							while (( _g2 < _g3.length )){
+								#line 245 "F:\\nx3\\src\\nx3\\PBar.hx"
+								global::nx3.PVoice voice = ((global::nx3.PVoice) (_g3[_g2]) );
+								#line 245 "F:\\nx3\\src\\nx3\\PBar.hx"
+								 ++ _g2;
+								#line 247 "F:\\nx3\\src\\nx3\\PBar.hx"
+								global::nx3.PNote lastnote = default(global::nx3.PNote);
+								#line 247 "F:\\nx3\\src\\nx3\\PBar.hx"
+								{
+									#line 247 "F:\\nx3\\src\\nx3\\PBar.hx"
+									global::Array<object> array = voice.getNotes();
+									#line 247 "F:\\nx3\\src\\nx3\\PBar.hx"
+									lastnote = ((global::nx3.PNote) (array[( array.length - 1 )]) );
+								}
+								
+								#line 248 "F:\\nx3\\src\\nx3\\PBar.hx"
+								if (( ! (lastnote.getHasTie().@value) )) {
+									#line 248 "F:\\nx3\\src\\nx3\\PBar.hx"
+									continue;
+								}
+								
+								#line 250 "F:\\nx3\\src\\nx3\\PBar.hx"
+								{
+									#line 250 "F:\\nx3\\src\\nx3\\PBar.hx"
+									int _g4 = 0;
+									#line 250 "F:\\nx3\\src\\nx3\\PBar.hx"
+									global::Array<object> _g5 = lastnote.nnote.get_nheads();
+									#line 250 "F:\\nx3\\src\\nx3\\PBar.hx"
+									while (( _g4 < _g5.length )){
+										#line 250 "F:\\nx3\\src\\nx3\\PBar.hx"
+										global::nx3.NHead nhead = ((global::nx3.NHead) (_g5[_g4]) );
+										#line 250 "F:\\nx3\\src\\nx3\\PBar.hx"
+										 ++ _g4;
+										#line 252 "F:\\nx3\\src\\nx3\\PBar.hx"
+										if (( nhead.tie != default(global::nx3.ETie) )) {
+											#line 254 "F:\\nx3\\src\\nx3\\PBar.hx"
+											int level = nhead.level;
+											#line 257 "F:\\nx3\\src\\nx3\\PBar.hx"
+											global::nx3.PPart nextPart1 = default(global::nx3.PPart);
+											#line 257 "F:\\nx3\\src\\nx3\\PBar.hx"
+											{
+												#line 257 "F:\\nx3\\src\\nx3\\PBar.hx"
+												global::Array<object> a2 = nextBar.getParts();
+												#line 257 "F:\\nx3\\src\\nx3\\PBar.hx"
+												int idx2 = part.getIndex();
+												#line 257 "F:\\nx3\\src\\nx3\\PBar.hx"
+												if (( ( idx2 < 0 ) || ( idx2 > ( a2.length - 1 ) ) )) {
+													#line 257 "F:\\nx3\\src\\nx3\\PBar.hx"
+													nextPart1 = default(global::nx3.PPart);
+												}
+												 else {
+													#line 257 "F:\\nx3\\src\\nx3\\PBar.hx"
+													nextPart1 = ((global::nx3.PPart) (a2[idx2]) );
+												}
+												
+											}
+											
+											#line 258 "F:\\nx3\\src\\nx3\\PBar.hx"
+											if (( nextPart1 == default(global::nx3.PPart) )) {
+												#line 258 "F:\\nx3\\src\\nx3\\PBar.hx"
+												break;
+											}
+											
+											#line 260 "F:\\nx3\\src\\nx3\\PBar.hx"
+											{
+												#line 260 "F:\\nx3\\src\\nx3\\PBar.hx"
+												int _g6 = 0;
+												#line 260 "F:\\nx3\\src\\nx3\\PBar.hx"
+												global::Array<object> _g7 = nextPart1.getVoices();
+												#line 260 "F:\\nx3\\src\\nx3\\PBar.hx"
+												while (( _g6 < _g7.length )){
+													#line 260 "F:\\nx3\\src\\nx3\\PBar.hx"
+													global::nx3.PVoice voice1 = ((global::nx3.PVoice) (_g7[_g6]) );
+													#line 260 "F:\\nx3\\src\\nx3\\PBar.hx"
+													 ++ _g6;
+													#line 262 "F:\\nx3\\src\\nx3\\PBar.hx"
+													global::nx3.PNote nextnote = default(global::nx3.PNote);
+													#line 262 "F:\\nx3\\src\\nx3\\PBar.hx"
+													{
+														#line 262 "F:\\nx3\\src\\nx3\\PBar.hx"
+														global::Array<object> array1 = voice1.getNotes();
+														#line 262 "F:\\nx3\\src\\nx3\\PBar.hx"
+														nextnote = ((global::nx3.PNote) (array1[0]) );
+													}
+													
+													#line 263 "F:\\nx3\\src\\nx3\\PBar.hx"
+													{
+														#line 263 "F:\\nx3\\src\\nx3\\PBar.hx"
+														int _g8 = 0;
+														#line 263 "F:\\nx3\\src\\nx3\\PBar.hx"
+														global::Array<object> _g9 = nextnote.nnote.get_nheads();
+														#line 263 "F:\\nx3\\src\\nx3\\PBar.hx"
+														while (( _g8 < _g9.length )){
+															#line 263 "F:\\nx3\\src\\nx3\\PBar.hx"
+															global::nx3.NHead nnhead = ((global::nx3.NHead) (_g9[_g8]) );
+															#line 263 "F:\\nx3\\src\\nx3\\PBar.hx"
+															 ++ _g8;
+															#line 265 "F:\\nx3\\src\\nx3\\PBar.hx"
+															if (( nnhead.level == nhead.level )) {
+																#line 268 "F:\\nx3\\src\\nx3\\PBar.hx"
+																this.tieconnections.push(new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{25979, 5792080, 1136829802}), new global::Array<object>(new object[]{nextnote, nhead.tie, lastnote}), new global::Array<int>(new int[]{1919096196}), new global::Array<double>(new double[]{((double) (nhead.level) )})));
+																break;
+															}
+															
+														}
+														
+													}
+													
+												}
+												
+											}
+											
+										}
+										
+									}
+									
+								}
+								
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+				#line 278 "F:\\nx3\\src\\nx3\\PBar.hx"
+				return this.tieconnections;
 			}
 			#line default
 		}
@@ -523,6 +796,15 @@ namespace nx3{
 					}
 					
 					
+					case 520590566:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						this.length = ((int) (@value) );
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return @value;
+					}
+					
+					
 					default:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
@@ -540,6 +822,15 @@ namespace nx3{
 			unchecked {
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 				switch (hash){
+					case 1044183877:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						this.tieconnections = ((global::Array<object>) (global::Array<object>.__hx_cast<object>(((global::Array) (@value) ))) );
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return @value;
+					}
+					
+					
 					case 2090923337:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
@@ -675,10 +966,28 @@ namespace nx3{
 					}
 					
 					
+					case 1252252228:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						this.systembar = ((global::nx3.PSystemBar) (@value) );
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return @value;
+					}
+					
+					
 					case 2027516754:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 						this.score = ((global::nx3.PScore) (@value) );
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return @value;
+					}
+					
+					
+					case 520590566:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						this.length = ((int) (global::haxe.lang.Runtime.toInt(@value)) );
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 						return @value;
 					}
@@ -710,6 +1019,20 @@ namespace nx3{
 			unchecked {
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 				switch (hash){
+					case 350437979:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getTieConnections") ), ((int) (350437979) ))) );
+					}
+					
+					
+					case 1044183877:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return this.tieconnections;
+					}
+					
+					
 					case 1567574903:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
@@ -794,6 +1117,13 @@ namespace nx3{
 					}
 					
 					
+					case 501983900:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getIndex") ), ((int) (501983900) ))) );
+					}
+					
+					
 					case 1119564519:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
@@ -805,6 +1135,13 @@ namespace nx3{
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 						return this.columns;
+					}
+					
+					
+					case 483693481:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getPart") ), ((int) (483693481) ))) );
 					}
 					
 					
@@ -968,6 +1305,20 @@ namespace nx3{
 					}
 					
 					
+					case 1509586638:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getSystembar") ), ((int) (1509586638) ))) );
+					}
+					
+					
+					case 1252252228:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return this.systembar;
+					}
+					
+					
 					case 1487962844:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
@@ -979,6 +1330,35 @@ namespace nx3{
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 						return this.score;
+					}
+					
+					
+					case 261031087:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("get_length") ), ((int) (261031087) ))) );
+					}
+					
+					
+					case 520590566:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						if (handleProperties) {
+							#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+							return this.get_length();
+						}
+						 else {
+							#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+							return this.length;
+						}
+						
+					}
+					
+					
+					case 328878574:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("iterator") ), ((int) (328878574) ))) );
 					}
 					
 					
@@ -1020,6 +1400,21 @@ namespace nx3{
 					}
 					
 					
+					case 520590566:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						if (handleProperties) {
+							#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+							return ((double) (this.get_length()) );
+						}
+						 else {
+							#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+							return ((double) (this.length) );
+						}
+						
+					}
+					
+					
 					default:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
@@ -1037,6 +1432,13 @@ namespace nx3{
 			unchecked {
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 				switch (hash){
+					case 350437979:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return this.getTieConnections();
+					}
+					
+					
 					case 1567574903:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
@@ -1090,10 +1492,24 @@ namespace nx3{
 					}
 					
 					
+					case 501983900:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return this.getIndex();
+					}
+					
+					
 					case 1119564519:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 						return this.getColumns();
+					}
+					
+					
+					case 483693481:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return this.getPart(((int) (global::haxe.lang.Runtime.toInt(dynargs[0])) ));
 					}
 					
 					
@@ -1146,10 +1562,31 @@ namespace nx3{
 					}
 					
 					
+					case 1509586638:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return this.getSystembar();
+					}
+					
+					
 					case 1487962844:
 					{
 						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 						return this.getScore();
+					}
+					
+					
+					case 261031087:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return this.get_length();
+					}
+					
+					
+					case 328878574:
+					{
+						#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+						return this.iterator();
 					}
 					
 					
@@ -1170,6 +1607,8 @@ namespace nx3{
 		
 		public override   void __hx_getFields(global::Array<object> baseArr){
 			unchecked {
+				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+				baseArr.push("tieconnections");
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 				baseArr.push("allottedDistanceSum");
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
@@ -1201,7 +1640,11 @@ namespace nx3{
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 				baseArr.push("clefs");
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+				baseArr.push("systembar");
+				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 				baseArr.push("score");
+				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
+				baseArr.push("length");
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"
 				baseArr.push("nbar");
 				#line 8 "F:\\nx3\\src\\nx3\\PBar.hx"

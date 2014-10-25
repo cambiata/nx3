@@ -26,12 +26,12 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PColumnsAllotmentCalculator(global::nx3.PColumnsAllotmentCalculator __temp_me91, global::nx3.PBar bar){
+		public static   void __hx_ctor_nx3_PColumnsAllotmentCalculator(global::nx3.PColumnsAllotmentCalculator __temp_me93, global::nx3.PBar bar){
 			unchecked {
 				#line 19 "F:\\nx3\\src\\nx3\\PColumnsAllotmentCalculator.hx"
-				__temp_me91.bar = bar;
-				__temp_me91.spacing = bar.nbar.spacing;
-				__temp_me91.bar.allottedDistanceSum = new global::haxe.lang.Null<double>(((double) (0) ), true);
+				__temp_me93.bar = bar;
+				__temp_me93.spacing = bar.nbar.spacing;
+				__temp_me93.bar.allottedDistanceSum = new global::haxe.lang.Null<double>(((double) (0) ), true);
 			}
 			#line default
 		}
@@ -64,7 +64,7 @@ namespace nx3{
 		public virtual   void calculate(global::haxe.lang.Null<double> stretch){
 			unchecked {
 				#line 25 "F:\\nx3\\src\\nx3\\PColumnsAllotmentCalculator.hx"
-				double __temp_stretch90 = ( ( ! (stretch.hasValue) ) ? (((double) (0) )) : (stretch.@value) );
+				double __temp_stretch92 = ( ( ! (stretch.hasValue) ) ? (((double) (0) )) : (stretch.@value) );
 				double aposition = this.bar.getContentXZero();
 				{
 					#line 27 "F:\\nx3\\src\\nx3\\PColumnsAllotmentCalculator.hx"
@@ -82,9 +82,9 @@ namespace nx3{
 						column.allottedDistance = dist;
 						{
 							#line 31 "F:\\nx3\\src\\nx3\\PColumnsAllotmentCalculator.hx"
-							global::nx3.PBar __temp_dynop168 = this.bar;
+							global::nx3.PBar __temp_dynop161 = this.bar;
 							#line 31 "F:\\nx3\\src\\nx3\\PColumnsAllotmentCalculator.hx"
-							__temp_dynop168.allottedDistanceSum = new global::haxe.lang.Null<double>(( __temp_dynop168.allottedDistanceSum.@value + dist ), true);
+							__temp_dynop161.allottedDistanceSum = new global::haxe.lang.Null<double>(( __temp_dynop161.allottedDistanceSum.@value + dist ), true);
 						}
 						
 						#line 33 "F:\\nx3\\src\\nx3\\PColumnsAllotmentCalculator.hx"

@@ -65,7 +65,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_ENoteValTools(global::nx3.ENoteValTools __temp_me62){
+		public static   void __hx_ctor_nx3_ENoteValTools(global::nx3.ENoteValTools __temp_me64){
 			unchecked {
 				#line 11 "F:\\nx3\\src\\nx3\\ENoteValTools.hx"
 				{

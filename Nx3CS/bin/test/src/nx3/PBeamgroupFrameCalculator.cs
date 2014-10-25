@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBeamgroupFrameCalculator(global::nx3.PBeamgroupFrameCalculator __temp_me88, global::nx3.PBeamgroup beamgroup){
+		public static   void __hx_ctor_nx3_PBeamgroupFrameCalculator(global::nx3.PBeamgroupFrameCalculator __temp_me90, global::nx3.PBeamgroup beamgroup){
 			unchecked {
 				#line 14 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-				__temp_me88.beamgroup = beamgroup;
+				__temp_me90.beamgroup = beamgroup;
 			}
 			#line default
 		}
@@ -75,10 +75,10 @@ namespace nx3{
 				#line 34 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				{
 					#line 39 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-					int __temp_odecl245 = ((int) (global::haxe.lang.Runtime.getField_f(tips, "leftTip", 1961201556, true)) );
-					int __temp_odecl246 = ((int) (global::haxe.lang.Runtime.getField_f(tips, "rightTip", 1679810271, true)) );
+					double __temp_odecl238 = ((double) (global::haxe.lang.Runtime.getField_f(tips, "leftTip", 1961201556, true)) );
+					double __temp_odecl239 = ((double) (global::haxe.lang.Runtime.getField_f(tips, "rightTip", 1679810271, true)) );
 					#line 34 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-					return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{223262885, 711309176, 1178007882}), new global::Array<object>(new object[]{this.innerLevels, beamflags, this.outerLevels}), new global::Array<int>(new int[]{68419327, 935535770, 998862565, 1235217770, 1408766533, 1979547770}), new global::Array<double>(new double[]{((double) (this.innerLevels[( count - 1 )]) ), ((double) (__temp_odecl246) ), ((double) (this.outerLevels[0]) ), ((double) (this.innerLevels[0]) ), ((double) (__temp_odecl245) ), ((double) (this.outerLevels[( count - 1 )]) )}));
+					return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{223262885, 711309176, 1178007882}), new global::Array<object>(new object[]{this.innerLevels, beamflags, this.outerLevels}), new global::Array<int>(new int[]{68419327, 935535770, 998862565, 1235217770, 1408766533, 1979547770}), new global::Array<double>(new double[]{((double) (this.innerLevels[( count - 1 )]) ), __temp_odecl239, ((double) (this.outerLevels[0]) ), ((double) (this.innerLevels[0]) ), __temp_odecl238, ((double) (this.outerLevels[( count - 1 )]) )}));
 				}
 				
 			}
@@ -88,26 +88,26 @@ namespace nx3{
 		
 		public virtual   global::Array<int> getTopLevels(){
 			unchecked {
-				#line 50 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 49 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				global::Array<int> levels = new global::Array<int>(new int[]{});
 				{
-					#line 51 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+					#line 50 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 					int _g = 0;
-					#line 51 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+					#line 50 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 					global::Array<object> _g1 = this.beamgroup.pnotes;
-					#line 51 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+					#line 50 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 					while (( _g < _g1.length )){
-						#line 51 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						#line 50 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 						global::nx3.PNote note = ((global::nx3.PNote) (_g1[_g]) );
-						#line 51 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						#line 50 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 						 ++ _g;
-						#line 51 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-						levels.push(note.nnote.getTopLevel());
+						#line 50 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						levels.push(note.nnote.get_topLevel().@value);
 					}
 					
 				}
 				
-				#line 52 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 51 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				return levels;
 			}
 			#line default
@@ -116,26 +116,26 @@ namespace nx3{
 		
 		public virtual   global::Array<int> getBottomLevels(){
 			unchecked {
-				#line 57 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 56 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				global::Array<int> levels = new global::Array<int>(new int[]{});
 				{
-					#line 58 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+					#line 57 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 					int _g = 0;
-					#line 58 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+					#line 57 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 					global::Array<object> _g1 = this.beamgroup.pnotes;
-					#line 58 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+					#line 57 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 					while (( _g < _g1.length )){
-						#line 58 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						#line 57 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 						global::nx3.PNote note = ((global::nx3.PNote) (_g1[_g]) );
-						#line 58 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						#line 57 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 						 ++ _g;
-						#line 58 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-						levels.push(note.nnote.getBottomLevel());
+						#line 57 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						levels.push(note.nnote.get_bottomLevel().@value);
 					}
 					
 				}
 				
-				#line 59 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 58 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				return levels;
 			}
 			#line default
@@ -144,26 +144,26 @@ namespace nx3{
 		
 		public virtual   void calcLevelArrays(){
 			unchecked {
-				#line 64 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 63 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				global::nx3.EDirectionUD _g = this.beamgroup.getDirection();
-				#line 64 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 63 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				switch (global::Type.enumIndex(_g)){
 					case 0:
 					{
-						#line 67 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						#line 66 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 						this.outerLevels = this.getTopLevels();
 						this.innerLevels = this.getBottomLevels();
-						#line 66 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						#line 65 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 						break;
 					}
 					
 					
 					case 1:
 					{
-						#line 70 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						#line 69 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 						this.outerLevels = this.getBottomLevels();
 						this.innerLevels = this.getTopLevels();
-						#line 69 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+						#line 68 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 						break;
 					}
 					
@@ -177,34 +177,34 @@ namespace nx3{
 		
 		public virtual   object calcTips(){
 			unchecked {
-				#line 79 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 78 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				int stemLenght = 7;
 				global::nx3.EDirectionUD direction = this.beamgroup.getDirection();
-				#line 82 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 81 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				global::nx3.PBamegroupFrameTipCalculator calculator = new global::nx3.PBamegroupFrameTipCalculator(((global::Array<int>) (this.outerLevels) ), ((global::nx3.EDirectionUD) (direction) ));
-				#line 85 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 84 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				object tips = calculator.getTips();
+				#line 86 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				if (( direction == global::nx3.EDirectionUD.Up )) {
+					#line 86 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+					global::haxe.lang.Runtime.setField_f(tips, "leftTip", 1961201556, ((double) (( ((double) (global::haxe.lang.Runtime.getField_f(tips, "leftTip", 1961201556, true)) ) - ((double) (stemLenght) ) )) ));
+				}
+				 else {
+					#line 86 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+					global::haxe.lang.Runtime.setField_f(tips, "leftTip", 1961201556, ((double) (( ((double) (global::haxe.lang.Runtime.getField_f(tips, "leftTip", 1961201556, true)) ) + stemLenght )) ));
+				}
+				
 				#line 87 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				if (( direction == global::nx3.EDirectionUD.Up )) {
 					#line 87 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-					global::haxe.lang.Runtime.setField_f(tips, "leftTip", 1961201556, ((double) (( ((int) (global::haxe.lang.Runtime.getField_f(tips, "leftTip", 1961201556, true)) ) - ((int) (stemLenght) ) )) ));
+					global::haxe.lang.Runtime.setField_f(tips, "rightTip", 1679810271, ((double) (( ((double) (global::haxe.lang.Runtime.getField_f(tips, "rightTip", 1679810271, true)) ) - ((double) (stemLenght) ) )) ));
 				}
 				 else {
 					#line 87 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-					global::haxe.lang.Runtime.setField_f(tips, "leftTip", 1961201556, ((double) (( ((int) (global::haxe.lang.Runtime.getField_f(tips, "leftTip", 1961201556, true)) ) + stemLenght )) ));
+					global::haxe.lang.Runtime.setField_f(tips, "rightTip", 1679810271, ((double) (( ((double) (global::haxe.lang.Runtime.getField_f(tips, "rightTip", 1679810271, true)) ) + stemLenght )) ));
 				}
 				
-				#line 88 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-				if (( direction == global::nx3.EDirectionUD.Up )) {
-					#line 88 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-					global::haxe.lang.Runtime.setField_f(tips, "rightTip", 1679810271, ((double) (( ((int) (global::haxe.lang.Runtime.getField_f(tips, "rightTip", 1679810271, true)) ) - ((int) (stemLenght) ) )) ));
-				}
-				 else {
-					#line 88 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
-					global::haxe.lang.Runtime.setField_f(tips, "rightTip", 1679810271, ((double) (( ((int) (global::haxe.lang.Runtime.getField_f(tips, "rightTip", 1679810271, true)) ) + stemLenght )) ));
-				}
-				
-				#line 90 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
+				#line 89 "F:\\nx3\\src\\nx3\\PBeamgroupFrameCalculator.hx"
 				return tips;
 			}
 			#line default

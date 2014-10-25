@@ -22,13 +22,13 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBeamgroup(global::nx3.PBeamgroup __temp_me86, global::Array<object> pnotes){
+		public static   void __hx_ctor_nx3_PBeamgroup(global::nx3.PBeamgroup __temp_me88, global::Array<object> pnotes){
 			unchecked {
 				#line 22 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
-				__temp_me86.@value = default(global::haxe.lang.Null<int>);
+				__temp_me88.@value = default(global::haxe.lang.Null<int>);
 				#line 17 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
-				__temp_me86.voice = ((global::nx3.PNote) (pnotes[0]) ).voice;
-				__temp_me86.pnotes = pnotes;
+				__temp_me88.voice = ((global::nx3.PNote) (pnotes[0]) ).voice;
+				__temp_me88.pnotes = pnotes;
 				{
 					#line 19 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
 					int _g = 0;
@@ -39,7 +39,7 @@ namespace nx3{
 						#line 19 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
 						 ++ _g;
 						#line 19 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
-						pnote.beamgroup = __temp_me86;
+						pnote.beamgroup = __temp_me88;
 					}
 					
 				}
@@ -95,9 +95,9 @@ namespace nx3{
 						#line 29 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
 						{
 							#line 29 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
-							global::nx3.PBeamgroup __temp_dynop167 = this;
+							global::nx3.PBeamgroup __temp_dynop160 = this;
 							#line 29 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
-							__temp_dynop167.@value = new global::haxe.lang.Null<int>(( __temp_dynop167.@value.@value + global::nx3.ENoteValTools.@value(pnote.nnote.@value) ), true);
+							__temp_dynop160.@value = new global::haxe.lang.Null<int>(( __temp_dynop160.@value.@value + global::nx3.ENoteValTools.@value(pnote.nnote.@value) ), true);
 						}
 						
 					}
@@ -173,7 +173,7 @@ namespace nx3{
 						#line 64 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
 						 ++ _g;
 						#line 66 "F:\\nx3\\src\\nx3\\PBeamgroup.hx"
-						this.stavexpositions.push(( note.getComplex().getXPosition() + note.getStaveXPosition() ));
+						this.stavexpositions.push(( note.getComplex().getXPosition() + note.getStaveXPosition().@value ));
 					}
 					
 				}

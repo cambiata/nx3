@@ -29,10 +29,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBaseRectCalculator(global::nx3.PBaseRectCalculator __temp_me84, global::nx3.PNote note){
+		public static   void __hx_ctor_nx3_PBaseRectCalculator(global::nx3.PBaseRectCalculator __temp_me86, global::nx3.PNote note){
 			unchecked {
 				#line 23 "F:\\nx3\\src\\nx3\\PBaseRectCalculator.hx"
-				__temp_me84.note = note;
+				__temp_me86.note = note;
 			}
 			#line default
 		}
@@ -121,17 +121,17 @@ namespace nx3{
 							#line 29 "F:\\nx3\\src\\nx3\\PBaseRectCalculator.hx"
 							string text = global::haxe.lang.Runtime.toString(_g.@params[0]);
 							#line 38 "F:\\nx3\\src\\nx3\\PBaseRectCalculator.hx"
-							global::nx3.geom.Rectangle __temp_stmt244 = default(global::nx3.geom.Rectangle);
+							global::nx3.geom.Rectangle __temp_stmt237 = default(global::nx3.geom.Rectangle);
 							#line 38 "F:\\nx3\\src\\nx3\\PBaseRectCalculator.hx"
 							{
 								#line 38 "F:\\nx3\\src\\nx3\\PBaseRectCalculator.hx"
 								global::Array<object> array = this.note.getHeadsRects();
 								#line 38 "F:\\nx3\\src\\nx3\\PBaseRectCalculator.hx"
-								__temp_stmt244 = ((global::nx3.geom.Rectangle) (array[0]) );
+								__temp_stmt237 = ((global::nx3.geom.Rectangle) (array[0]) );
 							}
 							
 							#line 38 "F:\\nx3\\src\\nx3\\PBaseRectCalculator.hx"
-							return __temp_stmt244.clone();
+							return __temp_stmt237.clone();
 						}
 						
 						

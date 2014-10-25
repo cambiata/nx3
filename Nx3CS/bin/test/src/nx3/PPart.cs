@@ -22,11 +22,11 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PPart(global::nx3.PPart __temp_me109, global::nx3.NPart npart){
+		public static   void __hx_ctor_nx3_PPart(global::nx3.PPart __temp_me111, global::nx3.NPart npart){
 			unchecked {
 				#line 15 "F:\\nx3\\src\\nx3\\PPart.hx"
-				__temp_me109.npart = npart;
-				__temp_me109.@value = 0;
+				__temp_me111.npart = npart;
+				__temp_me111.@value = 0;
 			}
 			#line default
 		}
@@ -52,11 +52,37 @@ namespace nx3{
 		
 		public  global::nx3.NPart npart;
 		
+		public virtual   object iterator(){
+			unchecked {
+				#line 19 "F:\\nx3\\src\\nx3\\PPart.hx"
+				{
+					#line 19 "F:\\nx3\\src\\nx3\\PPart.hx"
+					global::Array<object> _this = this.getVoices();
+					#line 19 "F:\\nx3\\src\\nx3\\PPart.hx"
+					return new global::_Array.ArrayIterator<object>(((global::Array<object>) (_this) ));
+				}
+				
+			}
+			#line default
+		}
+		
+		
+		public  int length;
+		
+		public virtual   int get_length(){
+			unchecked {
+				#line 21 "F:\\nx3\\src\\nx3\\PPart.hx"
+				return this.getVoices().length;
+			}
+			#line default
+		}
+		
+		
 		public  global::nx3.PBar bar;
 		
 		public virtual   global::nx3.PBar getBar(){
 			unchecked {
-				#line 23 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 28 "F:\\nx3\\src\\nx3\\PPart.hx"
 				return this.bar;
 			}
 			#line default
@@ -67,27 +93,27 @@ namespace nx3{
 		
 		public virtual   global::Array<object> getVoices(){
 			unchecked {
-				#line 30 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 35 "F:\\nx3\\src\\nx3\\PPart.hx"
 				if (( this.voices != default(global::Array<object>) )) {
-					#line 30 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 35 "F:\\nx3\\src\\nx3\\PPart.hx"
 					return this.voices;
 				}
 				
-				#line 31 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 36 "F:\\nx3\\src\\nx3\\PPart.hx"
 				this.voices = new global::Array<object>(new object[]{});
-				#line 33 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 38 "F:\\nx3\\src\\nx3\\PPart.hx"
 				{
-					#line 33 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 38 "F:\\nx3\\src\\nx3\\PPart.hx"
 					int _g = 0;
-					#line 33 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 38 "F:\\nx3\\src\\nx3\\PPart.hx"
 					global::Array<object> _g1 = this.npart.nvoices;
-					#line 33 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 38 "F:\\nx3\\src\\nx3\\PPart.hx"
 					while (( _g < _g1.length )){
-						#line 33 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 38 "F:\\nx3\\src\\nx3\\PPart.hx"
 						global::nx3.NVoice nvoice = ((global::nx3.NVoice) (_g1[_g]) );
-						#line 33 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 38 "F:\\nx3\\src\\nx3\\PPart.hx"
 						 ++ _g;
-						#line 35 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 40 "F:\\nx3\\src\\nx3\\PPart.hx"
 						global::nx3.PVoice voice = new global::nx3.PVoice(((global::nx3.NVoice) (nvoice) ));
 						voice.part = this;
 						this.voices.push(voice);
@@ -95,8 +121,25 @@ namespace nx3{
 					
 				}
 				
-				#line 39 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 44 "F:\\nx3\\src\\nx3\\PPart.hx"
 				return this.voices;
+			}
+			#line default
+		}
+		
+		
+		public virtual   global::nx3.PVoice getVoice(int idx){
+			unchecked {
+				#line 47 "F:\\nx3\\src\\nx3\\PPart.hx"
+				if (( ( idx < 0 ) || ( idx > this.getVoices().length ) )) {
+					#line 47 "F:\\nx3\\src\\nx3\\PPart.hx"
+					return default(global::nx3.PVoice);
+				}
+				 else {
+					#line 47 "F:\\nx3\\src\\nx3\\PPart.hx"
+					return ((global::nx3.PVoice) (this.getVoices()[idx]) );
+				}
+				
 			}
 			#line default
 		}
@@ -106,13 +149,13 @@ namespace nx3{
 		
 		public virtual   global::Array<object> getComplexes(){
 			unchecked {
-				#line 45 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 52 "F:\\nx3\\src\\nx3\\PPart.hx"
 				if (( this.complexes != default(global::Array<object>) )) {
-					#line 45 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 52 "F:\\nx3\\src\\nx3\\PPart.hx"
 					return this.complexes;
 				}
 				
-				#line 46 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 53 "F:\\nx3\\src\\nx3\\PPart.hx"
 				global::nx3.PPartComplexesGenerator generator = new global::nx3.PPartComplexesGenerator(((global::nx3.PPart) (this) ));
 				this.complexes = generator.getComplexes();
 				return this.complexes;
@@ -125,32 +168,32 @@ namespace nx3{
 		
 		public virtual   global::haxe.ds.IntMap<object> getPositionsComplexes(){
 			unchecked {
-				#line 54 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 61 "F:\\nx3\\src\\nx3\\PPart.hx"
 				if (( this.positionsComplexes != default(global::haxe.ds.IntMap<object>) )) {
-					#line 54 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 61 "F:\\nx3\\src\\nx3\\PPart.hx"
 					return this.positionsComplexes;
 				}
 				
-				#line 55 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 62 "F:\\nx3\\src\\nx3\\PPart.hx"
 				this.positionsComplexes = new global::haxe.ds.IntMap<object>();
 				{
-					#line 56 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 63 "F:\\nx3\\src\\nx3\\PPart.hx"
 					int _g = 0;
-					#line 56 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 63 "F:\\nx3\\src\\nx3\\PPart.hx"
 					global::Array<object> _g1 = this.getComplexes();
-					#line 56 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 63 "F:\\nx3\\src\\nx3\\PPart.hx"
 					while (( _g < _g1.length )){
-						#line 56 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 63 "F:\\nx3\\src\\nx3\\PPart.hx"
 						global::nx3.PComplex complex = ((global::nx3.PComplex) (_g1[_g]) );
-						#line 56 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 63 "F:\\nx3\\src\\nx3\\PPart.hx"
 						 ++ _g;
-						#line 58 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 65 "F:\\nx3\\src\\nx3\\PPart.hx"
 						this.positionsComplexes.@set(complex.getValueposition(), complex);
 					}
 					
 				}
 				
-				#line 60 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 67 "F:\\nx3\\src\\nx3\\PPart.hx"
 				return this.positionsComplexes;
 			}
 			#line default
@@ -159,7 +202,7 @@ namespace nx3{
 		
 		public virtual   int getIndex(){
 			unchecked {
-				#line 65 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 72 "F:\\nx3\\src\\nx3\\PPart.hx"
 				return this.bar.getParts().indexOf(this, default(global::haxe.lang.Null<int>));
 			}
 			#line default
@@ -168,7 +211,7 @@ namespace nx3{
 		
 		public virtual   double getYPosition(){
 			unchecked {
-				#line 71 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 78 "F:\\nx3\\src\\nx3\\PPart.hx"
 				return ((double) (( this.getIndex() * 20 )) );
 			}
 			#line default
@@ -179,37 +222,37 @@ namespace nx3{
 		
 		public virtual   int getValue(){
 			unchecked {
-				#line 77 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 84 "F:\\nx3\\src\\nx3\\PPart.hx"
 				if (( this.@value != 0 )) {
-					#line 77 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 84 "F:\\nx3\\src\\nx3\\PPart.hx"
 					return this.@value;
 				}
 				
-				#line 78 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 85 "F:\\nx3\\src\\nx3\\PPart.hx"
 				{
-					#line 78 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 85 "F:\\nx3\\src\\nx3\\PPart.hx"
 					int _g = 0;
-					#line 78 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 85 "F:\\nx3\\src\\nx3\\PPart.hx"
 					global::Array<object> _g1 = this.getVoices();
-					#line 78 "F:\\nx3\\src\\nx3\\PPart.hx"
+					#line 85 "F:\\nx3\\src\\nx3\\PPart.hx"
 					while (( _g < _g1.length )){
-						#line 78 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 85 "F:\\nx3\\src\\nx3\\PPart.hx"
 						global::nx3.PVoice voice = ((global::nx3.PVoice) (_g1[_g]) );
-						#line 78 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 85 "F:\\nx3\\src\\nx3\\PPart.hx"
 						 ++ _g;
-						#line 80 "F:\\nx3\\src\\nx3\\PPart.hx"
+						#line 87 "F:\\nx3\\src\\nx3\\PPart.hx"
 						{
-							#line 80 "F:\\nx3\\src\\nx3\\PPart.hx"
+							#line 87 "F:\\nx3\\src\\nx3\\PPart.hx"
 							double x = default(double);
-							#line 80 "F:\\nx3\\src\\nx3\\PPart.hx"
+							#line 87 "F:\\nx3\\src\\nx3\\PPart.hx"
 							{
-								#line 80 "F:\\nx3\\src\\nx3\\PPart.hx"
+								#line 87 "F:\\nx3\\src\\nx3\\PPart.hx"
 								double b = ((double) (voice.getValue()) );
-								#line 80 "F:\\nx3\\src\\nx3\\PPart.hx"
+								#line 87 "F:\\nx3\\src\\nx3\\PPart.hx"
 								x = global::System.Math.Max(((double) (this.@value) ), ((double) (b) ));
 							}
 							
-							#line 80 "F:\\nx3\\src\\nx3\\PPart.hx"
+							#line 87 "F:\\nx3\\src\\nx3\\PPart.hx"
 							this.@value = ((int) (x) );
 						}
 						
@@ -217,7 +260,7 @@ namespace nx3{
 					
 				}
 				
-				#line 82 "F:\\nx3\\src\\nx3\\PPart.hx"
+				#line 89 "F:\\nx3\\src\\nx3\\PPart.hx"
 				return this.@value;
 			}
 			#line default
@@ -232,6 +275,15 @@ namespace nx3{
 					{
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 						this.@value = ((int) (@value) );
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						return @value;
+					}
+					
+					
+					case 520590566:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						this.length = ((int) (@value) );
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 						return @value;
 					}
@@ -294,6 +346,15 @@ namespace nx3{
 					{
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 						this.bar = ((global::nx3.PBar) (@value) );
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						return @value;
+					}
+					
+					
+					case 520590566:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						this.length = ((int) (global::haxe.lang.Runtime.toInt(@value)) );
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 						return @value;
 					}
@@ -381,6 +442,13 @@ namespace nx3{
 					}
 					
 					
+					case 449721660:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("getVoice") ), ((int) (449721660) ))) );
+					}
+					
+					
 					case 1503682487:
 					{
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
@@ -406,6 +474,35 @@ namespace nx3{
 					{
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 						return this.bar;
+					}
+					
+					
+					case 261031087:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("get_length") ), ((int) (261031087) ))) );
+					}
+					
+					
+					case 520590566:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						if (handleProperties) {
+							#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+							return this.get_length();
+						}
+						 else {
+							#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+							return this.length;
+						}
+						
+					}
+					
+					
+					case 328878574:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("iterator") ), ((int) (328878574) ))) );
 					}
 					
 					
@@ -437,6 +534,21 @@ namespace nx3{
 					{
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 						return ((double) (this.@value) );
+					}
+					
+					
+					case 520590566:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						if (handleProperties) {
+							#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+							return ((double) (this.get_length()) );
+						}
+						 else {
+							#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+							return ((double) (this.length) );
+						}
+						
 					}
 					
 					
@@ -492,6 +604,13 @@ namespace nx3{
 					}
 					
 					
+					case 449721660:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						return this.getVoice(((int) (global::haxe.lang.Runtime.toInt(dynargs[0])) ));
+					}
+					
+					
 					case 1503682487:
 					{
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
@@ -503,6 +622,20 @@ namespace nx3{
 					{
 						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 						return this.getBar();
+					}
+					
+					
+					case 261031087:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						return this.get_length();
+					}
+					
+					
+					case 328878574:
+					{
+						#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+						return this.iterator();
 					}
 					
 					
@@ -531,6 +664,8 @@ namespace nx3{
 				baseArr.push("voices");
 				#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 				baseArr.push("bar");
+				#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
+				baseArr.push("length");
 				#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"
 				baseArr.push("npart");
 				#line 9 "F:\\nx3\\src\\nx3\\PPart.hx"

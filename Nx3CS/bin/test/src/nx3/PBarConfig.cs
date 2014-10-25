@@ -22,26 +22,26 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBarConfig(global::nx3.PBarConfig __temp_me81, global::haxe.lang.Null<bool> showClef, global::haxe.lang.Null<bool> showKey, global::haxe.lang.Null<bool> showTime, global::haxe.lang.Null<bool> showCautClef, global::haxe.lang.Null<bool> showCautKey, global::haxe.lang.Null<bool> showCautTime){
+		public static   void __hx_ctor_nx3_PBarConfig(global::nx3.PBarConfig __temp_me83, global::haxe.lang.Null<bool> showClef, global::haxe.lang.Null<bool> showKey, global::haxe.lang.Null<bool> showTime, global::haxe.lang.Null<bool> showCautClef, global::haxe.lang.Null<bool> showCautKey, global::haxe.lang.Null<bool> showCautTime){
 			unchecked {
 				#line 20 "F:\\nx3\\src\\nx3\\PBarConfig.hx"
-				bool __temp_showCautTime80 = ( ( ! (showCautTime.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showCautTime.@value) );
+				bool __temp_showCautTime82 = ( ( ! (showCautTime.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showCautTime.@value) );
 				#line 20 "F:\\nx3\\src\\nx3\\PBarConfig.hx"
-				bool __temp_showCautKey79 = ( ( ! (showCautKey.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showCautKey.@value) );
+				bool __temp_showCautKey81 = ( ( ! (showCautKey.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showCautKey.@value) );
 				#line 20 "F:\\nx3\\src\\nx3\\PBarConfig.hx"
-				bool __temp_showCautClef78 = ( ( ! (showCautClef.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showCautClef.@value) );
+				bool __temp_showCautClef80 = ( ( ! (showCautClef.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showCautClef.@value) );
 				#line 20 "F:\\nx3\\src\\nx3\\PBarConfig.hx"
-				bool __temp_showTime77 = ( ( ! (showTime.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showTime.@value) );
+				bool __temp_showTime79 = ( ( ! (showTime.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showTime.@value) );
 				#line 20 "F:\\nx3\\src\\nx3\\PBarConfig.hx"
-				bool __temp_showKey76 = ( ( ! (showKey.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showKey.@value) );
+				bool __temp_showKey78 = ( ( ! (showKey.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showKey.@value) );
 				#line 20 "F:\\nx3\\src\\nx3\\PBarConfig.hx"
-				bool __temp_showClef75 = ( ( ! (showClef.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showClef.@value) );
-				__temp_me81.showClef = __temp_showClef75;
-				__temp_me81.showKey = __temp_showKey76;
-				__temp_me81.showTime = __temp_showTime77;
-				__temp_me81.showCautClef = __temp_showCautClef78;
-				__temp_me81.showCautKey = __temp_showCautKey79;
-				__temp_me81.showCautTime = __temp_showCautTime80;
+				bool __temp_showClef77 = ( ( ! (showClef.hasValue) ) ? (global::haxe.lang.Runtime.toBool(false)) : (showClef.@value) );
+				__temp_me83.showClef = __temp_showClef77;
+				__temp_me83.showKey = __temp_showKey78;
+				__temp_me83.showTime = __temp_showTime79;
+				__temp_me83.showCautClef = __temp_showCautClef80;
+				__temp_me83.showCautKey = __temp_showCautKey81;
+				__temp_me83.showCautTime = __temp_showCautTime82;
 			}
 			#line default
 		}

@@ -46,7 +46,7 @@ namespace nx3.xml{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_xml_NoteXML(global::nx3.xml.NoteXML __temp_me149){
+		public static   void __hx_ctor_nx3_xml_NoteXML(global::nx3.xml.NoteXML __temp_me139){
 			unchecked {
 				#line 22 "F:\\nx3\\src\\nx3\\xml\\NoteXML.hx"
 				{
@@ -299,11 +299,11 @@ namespace nx3.xml{
 						global::Array<object> heads = new global::Array<object>(new object[]{});
 						{
 							#line 127 "F:\\nx3\\src\\nx3\\xml\\NoteXML.hx"
-							object __temp_iterator176 = xml.elementsNamed(global::nx3.xml.HeadXML.XHEAD);
+							object __temp_iterator166 = xml.elementsNamed(global::nx3.xml.HeadXML.XHEAD);
 							#line 127 "F:\\nx3\\src\\nx3\\xml\\NoteXML.hx"
-							while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator176, "hasNext", 407283053, default(global::Array)))){
+							while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator166, "hasNext", 407283053, default(global::Array)))){
 								#line 127 "F:\\nx3\\src\\nx3\\xml\\NoteXML.hx"
-								global::Xml h = ((global::Xml) (global::haxe.lang.Runtime.callField(__temp_iterator176, "next", 1224901875, default(global::Array))) );
+								global::Xml h = ((global::Xml) (global::haxe.lang.Runtime.callField(__temp_iterator166, "next", 1224901875, default(global::Array))) );
 								#line 129 "F:\\nx3\\src\\nx3\\xml\\NoteXML.hx"
 								global::nx3.NHead head = global::nx3.xml.HeadXML.fromXmlStr(h.toString());
 								heads.push(head);
@@ -438,6 +438,15 @@ namespace nx3.xml{
 				global::haxe.Log.trace.__hx_invoke2_o(default(double), str, default(double), new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{302979532, 1547539107, 1648581351}), new global::Array<object>(new object[]{"test", "nx3.xml.NoteXML", "NoteXML.hx"}), new global::Array<int>(new int[]{1981972957}), new global::Array<double>(new double[]{((double) (204) )})));
 				global::haxe.Log.trace.__hx_invoke2_o(default(double), str2, default(double), new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{302979532, 1547539107, 1648581351}), new global::Array<object>(new object[]{"test", "nx3.xml.NoteXML", "NoteXML.hx"}), new global::Array<int>(new int[]{1981972957}), new global::Array<double>(new double[]{((double) (205) )})));
 				return string.Equals(str, str2);
+			}
+			#line default
+		}
+		
+		
+		public static   global::nx3.NNote clone(global::nx3.NNote nnote){
+			unchecked {
+				#line 211 "F:\\nx3\\src\\nx3\\xml\\NoteXML.hx"
+				return global::nx3.xml.NoteXML.fromXmlStr(global::nx3.xml.NoteXML.toXml(nnote).toString());
 			}
 			#line default
 		}

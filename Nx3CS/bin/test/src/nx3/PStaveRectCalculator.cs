@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PStaveRectCalculator(global::nx3.PStaveRectCalculator __temp_me118, global::nx3.PNote note){
+		public static   void __hx_ctor_nx3_PStaveRectCalculator(global::nx3.PStaveRectCalculator __temp_me120, global::nx3.PNote note){
 			unchecked {
 				#line 17 "F:\\nx3\\src\\nx3\\PStaveRectCalculator.hx"
-				__temp_me118.note = note;
+				__temp_me120.note = note;
 			}
 			#line default
 		}
@@ -98,15 +98,15 @@ namespace nx3{
 				global::nx3.geom.Rectangle rect = default(global::nx3.geom.Rectangle);
 				if (( this.note.getDirection() == global::nx3.EDirectionUD.Up )) {
 					#line 33 "F:\\nx3\\src\\nx3\\PStaveRectCalculator.hx"
-					rect = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>(((double) (0) ), true), new global::haxe.lang.Null<double>(( this.note.nnote.getBottomLevel() - ((double) (7) ) ), true), new global::haxe.lang.Null<double>(headw, true), new global::haxe.lang.Null<double>(((double) (7) ), true));
+					rect = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>(((double) (0) ), true), new global::haxe.lang.Null<double>(( this.note.nnote.get_bottomLevel().@value - ((double) (7) ) ), true), new global::haxe.lang.Null<double>(headw, true), new global::haxe.lang.Null<double>(((double) (7) ), true));
 				}
 				 else {
 					#line 37 "F:\\nx3\\src\\nx3\\PStaveRectCalculator.hx"
-					rect = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>( - (headw) , true), new global::haxe.lang.Null<double>(((double) (this.note.nnote.getTopLevel()) ), true), new global::haxe.lang.Null<double>(headw, true), new global::haxe.lang.Null<double>(((double) (7) ), true));
+					rect = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>( - (headw) , true), new global::haxe.lang.Null<double>(((double) (this.note.nnote.get_topLevel().@value) ), true), new global::haxe.lang.Null<double>(headw, true), new global::haxe.lang.Null<double>(((double) (7) ), true));
 				}
 				
 				#line 39 "F:\\nx3\\src\\nx3\\PStaveRectCalculator.hx"
-				rect.offset(this.note.getXOffset(), ((double) (0) ));
+				rect.offset(this.note.getXOffset().@value, ((double) (0) ));
 				return rect;
 			}
 			#line default
@@ -166,15 +166,15 @@ namespace nx3{
 						global::nx3.geom.Rectangle rect = default(global::nx3.geom.Rectangle);
 						if (( this.note.getDirection() == global::nx3.EDirectionUD.Up )) {
 							#line 62 "F:\\nx3\\src\\nx3\\PStaveRectCalculator.hx"
-							rect = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>(headw, true), new global::haxe.lang.Null<double>(( this.note.nnote.getBottomLevel() - ((double) (7) ) ), true), new global::haxe.lang.Null<double>(2.6, true), new global::haxe.lang.Null<double>(4.8, true));
+							rect = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>(headw, true), new global::haxe.lang.Null<double>(( this.note.nnote.get_bottomLevel().@value - ((double) (7) ) ), true), new global::haxe.lang.Null<double>(2.6, true), new global::haxe.lang.Null<double>(4.8, true));
 						}
 						 else {
 							#line 66 "F:\\nx3\\src\\nx3\\PStaveRectCalculator.hx"
-							rect = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>( - (headw) , true), new global::haxe.lang.Null<double>(( ( this.note.nnote.getTopLevel() + ((double) (7) ) ) - 4.8 ), true), new global::haxe.lang.Null<double>(2.6, true), new global::haxe.lang.Null<double>(4.8, true));
+							rect = new global::nx3.geom.Rectangle(new global::haxe.lang.Null<double>( - (headw) , true), new global::haxe.lang.Null<double>(( ( this.note.nnote.get_topLevel().@value + ((double) (7) ) ) - 4.8 ), true), new global::haxe.lang.Null<double>(2.6, true), new global::haxe.lang.Null<double>(4.8, true));
 						}
 						
 						#line 68 "F:\\nx3\\src\\nx3\\PStaveRectCalculator.hx"
-						rect.offset(this.note.getXOffset(), ((double) (0) ));
+						rect.offset(this.note.getXOffset().@value, ((double) (0) ));
 						return rect;
 					}
 					

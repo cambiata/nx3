@@ -29,7 +29,7 @@ namespace nx3.xml{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_xml_VoiceXML(global::nx3.xml.VoiceXML __temp_me151){
+		public static   void __hx_ctor_nx3_xml_VoiceXML(global::nx3.xml.VoiceXML __temp_me141){
 			unchecked {
 				#line 15 "F:\\nx3\\src\\nx3\\xml\\VoiceXML.hx"
 				{
@@ -118,7 +118,7 @@ namespace nx3.xml{
 				global::Xml xml = global::Xml.parse(xmlStr).firstElement();
 				#line 52 "F:\\nx3\\src\\nx3\\xml\\VoiceXML.hx"
 				string typeStr = xml.@get("type");
-				global::nx3.EVoiceType type = global::cx.EnumTools.createFromString<global::nx3.EVoiceType>(typeof(global::nx3.EVoiceType), typeStr);
+				global::nx3.EVoiceType type = ((global::nx3.EVoiceType) (global::cx.EnumTools.createFromString<object>(typeof(global::nx3.EVoiceType), typeStr)) );
 				#line 55 "F:\\nx3\\src\\nx3\\xml\\VoiceXML.hx"
 				string directionStr = xml.@get("direction");
 				global::nx3.EDirectionUAD direction = default(global::nx3.EDirectionUAD);
@@ -136,11 +136,11 @@ namespace nx3.xml{
 				#line 62 "F:\\nx3\\src\\nx3\\xml\\VoiceXML.hx"
 				{
 					#line 62 "F:\\nx3\\src\\nx3\\xml\\VoiceXML.hx"
-					object __temp_iterator178 = xml.elements();
+					object __temp_iterator168 = xml.elements();
 					#line 62 "F:\\nx3\\src\\nx3\\xml\\VoiceXML.hx"
-					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator178, "hasNext", 407283053, default(global::Array)))){
+					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator168, "hasNext", 407283053, default(global::Array)))){
 						#line 62 "F:\\nx3\\src\\nx3\\xml\\VoiceXML.hx"
-						global::Xml n = ((global::Xml) (global::haxe.lang.Runtime.callField(__temp_iterator178, "next", 1224901875, default(global::Array))) );
+						global::Xml n = ((global::Xml) (global::haxe.lang.Runtime.callField(__temp_iterator168, "next", 1224901875, default(global::Array))) );
 						#line 64 "F:\\nx3\\src\\nx3\\xml\\VoiceXML.hx"
 						global::nx3.NNote note = global::nx3.xml.NoteXML.fromXmlStr(n.toString());
 						notes.push(note);

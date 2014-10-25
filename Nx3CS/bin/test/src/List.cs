@@ -21,10 +21,10 @@ public  class List<T> : global::haxe.lang.HxObject, global::List {
 	}
 	
 	
-	public static   void __hx_ctor__List<T_c>(global::List<T_c> __temp_me8){
+	public static   void __hx_ctor__List<T_c>(global::List<T_c> __temp_me7){
 		unchecked {
 			#line 41 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
-			__temp_me8.length = 0;
+			__temp_me7.length = 0;
 		}
 		#line default
 	}
@@ -70,11 +70,11 @@ public  class List<T> : global::haxe.lang.HxObject, global::List {
 			#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
 			{
 				#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
-				object __temp_iterator228 = global::Reflect.fields(this).iterator();
+				object __temp_iterator150 = global::Reflect.fields(this).iterator();
 				#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
-				while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator228, "hasNext", 407283053, default(global::Array)))){
+				while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator150, "hasNext", 407283053, default(global::Array)))){
 					#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
-					string field = global::haxe.lang.Runtime.toString(global::haxe.lang.Runtime.callField(__temp_iterator228, "next", 1224901875, default(global::Array)));
+					string field = global::haxe.lang.Runtime.toString(global::haxe.lang.Runtime.callField(__temp_iterator150, "next", 1224901875, default(global::Array)));
 					#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
 					switch (field){
 						default:
@@ -129,19 +129,38 @@ public  class List<T> : global::haxe.lang.HxObject, global::List {
 		unchecked {
 			#line 163 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
 			global::Array<object> h = new global::Array<object>(new object[]{this.h});
-			object __temp_stmt259 = default(object);
+			object __temp_stmt171 = default(object);
 			#line 164 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
 			{
 				#line 165 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
-				global::haxe.lang.Function __temp_odecl257 = new global::List_iterator_165__Fun(((global::Array<object>) (h) ));
+				global::haxe.lang.Function __temp_odecl169 = new global::List_iterator_165__Fun(((global::Array<object>) (h) ));
 				#line 168 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
-				global::haxe.lang.Function __temp_odecl258 = new global::List_iterator_168__Fun(((global::Array<object>) (h) ));
+				global::haxe.lang.Function __temp_odecl170 = new global::List_iterator_168__Fun(((global::Array<object>) (h) ));
 				#line 164 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
-				__temp_stmt259 = new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl257, __temp_odecl258}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
+				__temp_stmt171 = new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl169, __temp_odecl170}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
 			}
 			
 			#line 164 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
-			return ((object) (__temp_stmt259) );
+			return ((object) (__temp_stmt171) );
+		}
+		#line default
+	}
+	
+	
+	public virtual   global::List<X> map<X>(global::haxe.lang.Function f){
+		unchecked {
+			#line 260 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
+			global::List<X> b = new global::List<X>();
+			global::Array l = this.h;
+			while (( l != default(global::Array) )){
+				#line 263 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
+				T v = global::haxe.lang.Runtime.genericCast<T>(l[0]);
+				l = ((global::Array) (l[1]) );
+				b.@add(global::haxe.lang.Runtime.genericCast<X>(f.__hx_invoke1_o(default(double), v)));
+			}
+			
+			#line 267 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
+			return b;
 		}
 		#line default
 	}
@@ -221,6 +240,13 @@ public  class List<T> : global::haxe.lang.HxObject, global::List {
 		unchecked {
 			#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
 			switch (hash){
+				case 5442204:
+				{
+					#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
+					return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("map") ), ((int) (5442204) ))) );
+				}
+				
+				
 				case 328878574:
 				{
 					#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
@@ -297,6 +323,13 @@ public  class List<T> : global::haxe.lang.HxObject, global::List {
 		unchecked {
 			#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
 			switch (hash){
+				case 5442204:
+				{
+					#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"
+					return this.map<object>(((global::haxe.lang.Function) (dynargs[0]) ));
+				}
+				
+				
 				case 328878574:
 				{
 					#line 27 "F:\\HaxeToolkit\\haxe\\std\\List.hx"

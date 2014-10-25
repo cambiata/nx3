@@ -22,7 +22,7 @@ namespace haxe{
 		}
 		
 		
-		public static   void __hx_ctor_haxe_Utf8(global::haxe.Utf8 __temp_me40){
+		public static   void __hx_ctor_haxe_Utf8(global::haxe.Utf8 __temp_me42){
 			unchecked {
 				#line 28 "F:\\HaxeToolkit\\haxe\\std\\haxe\\Utf8.hx"
 				{

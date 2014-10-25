@@ -43,7 +43,7 @@ public  class Xml : global::haxe.lang.HxObject {
 	}
 	
 	
-	public static   void __hx_ctor__Xml(global::Xml __temp_me12){
+	public static   void __hx_ctor__Xml(global::Xml __temp_me13){
 		unchecked {
 			#line 61 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 			{
@@ -296,11 +296,11 @@ public  class Xml : global::haxe.lang.HxObject {
 			global::Array<object> x = new global::Array<object>(new object[]{this._children});
 			{
 				#line 178 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				global::haxe.lang.Function __temp_odecl179 = new global::Xml_iterator_178__Fun(((global::Array<int>) (cur) ), ((global::Array<object>) (x) ));
+				global::haxe.lang.Function __temp_odecl172 = new global::Xml_iterator_178__Fun(((global::Array<int>) (cur) ), ((global::Array<object>) (x) ));
 				#line 181 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				global::haxe.lang.Function __temp_odecl180 = new global::Xml_iterator_181__Fun(((global::Array<int>) (cur) ), ((global::Array<object>) (x) ));
+				global::haxe.lang.Function __temp_odecl173 = new global::Xml_iterator_181__Fun(((global::Array<int>) (cur) ), ((global::Array<object>) (x) ));
 				#line 177 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl179, __temp_odecl180}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
+				return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl172, __temp_odecl173}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
 			}
 			
 		}
@@ -321,11 +321,11 @@ public  class Xml : global::haxe.lang.HxObject {
 			global::Array<object> x = new global::Array<object>(new object[]{this._children});
 			{
 				#line 192 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				global::haxe.lang.Function __temp_odecl181 = new global::Xml_elements_192__Fun(((global::Array<int>) (cur) ), ((global::Array<object>) (x) ));
+				global::haxe.lang.Function __temp_odecl174 = new global::Xml_elements_192__Fun(((global::Array<object>) (x) ), ((global::Array<int>) (cur) ));
 				#line 203 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				global::haxe.lang.Function __temp_odecl182 = new global::Xml_elements_203__Fun(((global::Array<int>) (cur) ), ((global::Array<object>) (x) ));
+				global::haxe.lang.Function __temp_odecl175 = new global::Xml_elements_203__Fun(((global::Array<object>) (x) ), ((global::Array<int>) (cur) ));
 				#line 191 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl181, __temp_odecl182}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
+				return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{407283053, 1224901875}), new global::Array<object>(new object[]{__temp_odecl174, __temp_odecl175}), new global::Array<int>(new int[]{}), new global::Array<double>(new double[]{}));
 			}
 			
 		}
@@ -347,11 +347,11 @@ public  class Xml : global::haxe.lang.HxObject {
 			global::Array<int> cur = new global::Array<int>(new int[]{0});
 			{
 				#line 226 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				global::haxe.lang.Function __temp_odecl183 = new global::Xml_elementsNamed_226__Fun(((global::Array<object>) (name1) ), ((global::Array<int>) (cur) ), ((global::Array<object>) (x) ));
+				global::haxe.lang.Function __temp_odecl176 = new global::Xml_elementsNamed_226__Fun(((global::Array<object>) (x) ), ((global::Array<object>) (name1) ), ((global::Array<int>) (cur) ));
 				#line 238 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				global::haxe.lang.Function __temp_odecl184 = new global::Xml_elementsNamed_238__Fun(((global::Array<object>) (name1) ), ((global::Array<int>) (cur) ), ((global::Array<object>) (x) ));
+				global::haxe.lang.Function __temp_odecl177 = new global::Xml_elementsNamed_238__Fun(((global::Array<object>) (x) ), ((global::Array<object>) (name1) ), ((global::Array<int>) (cur) ));
 				#line 223 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{120, 407283053, 1224901875}), new global::Array<object>(new object[]{this._children, __temp_odecl183, __temp_odecl184}), new global::Array<int>(new int[]{4949376}), new global::Array<double>(new double[]{((double) (0) )}));
+				return new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{120, 407283053, 1224901875}), new global::Array<object>(new object[]{this._children, __temp_odecl176, __temp_odecl177}), new global::Array<int>(new int[]{4949376}), new global::Array<double>(new double[]{((double) (0) )}));
 			}
 			
 		}
@@ -452,11 +452,11 @@ public  class Xml : global::haxe.lang.HxObject {
 				s.b.Append(((object) (global::Std.@string(this._nodeName)) ));
 				{
 					#line 310 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-					object __temp_iterator157 = this._attributes.keys();
+					object __temp_iterator151 = this._attributes.keys();
 					#line 310 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator157, "hasNext", 407283053, default(global::Array)))){
+					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator151, "hasNext", 407283053, default(global::Array)))){
 						#line 310 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-						string k = global::haxe.lang.Runtime.toString(global::haxe.lang.Runtime.callField(__temp_iterator157, "next", 1224901875, default(global::Array)));
+						string k = global::haxe.lang.Runtime.toString(global::haxe.lang.Runtime.callField(__temp_iterator151, "next", 1224901875, default(global::Array)));
 						s.b.Append(((object) (" ") ));
 						s.b.Append(((object) (global::Std.@string(k)) ));
 						s.b.Append(((object) ("=\"") ));
@@ -487,11 +487,11 @@ public  class Xml : global::haxe.lang.HxObject {
 			#line 324 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 			{
 				#line 324 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				object __temp_iterator158 = this.iterator();
+				object __temp_iterator152 = this.iterator();
 				#line 324 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-				while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator158, "hasNext", 407283053, default(global::Array)))){
+				while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator152, "hasNext", 407283053, default(global::Array)))){
 					#line 324 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-					global::Xml x1 = ((global::Xml) (global::haxe.lang.Runtime.callField(__temp_iterator158, "next", 1224901875, default(global::Array))) );
+					global::Xml x1 = ((global::Xml) (global::haxe.lang.Runtime.callField(__temp_iterator152, "next", 1224901875, default(global::Array))) );
 					string x2 = x1.toString();
 					#line 325 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 					s.b.Append(((object) (global::Std.@string(x2)) ));
@@ -931,12 +931,12 @@ public  class Xml_iterator_181__Fun : global::haxe.lang.Function {
 
 #pragma warning disable 109, 114, 219, 429, 168, 162
 public  class Xml_elements_192__Fun : global::haxe.lang.Function {
-	public    Xml_elements_192__Fun(global::Array<int> cur, global::Array<object> x) : base(0, 0){
+	public    Xml_elements_192__Fun(global::Array<object> x, global::Array<int> cur) : base(0, 0){
 		unchecked {
 			#line 192 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-			this.cur = cur;
-			#line 192 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 			this.x = x;
+			#line 192 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
+			this.cur = cur;
 		}
 		#line default
 	}
@@ -966,9 +966,9 @@ public  class Xml_elements_192__Fun : global::haxe.lang.Function {
 	}
 	
 	
-	public  global::Array<int> cur;
-	
 	public  global::Array<object> x;
+	
+	public  global::Array<int> cur;
 	
 }
 
@@ -976,12 +976,12 @@ public  class Xml_elements_192__Fun : global::haxe.lang.Function {
 
 #pragma warning disable 109, 114, 219, 429, 168, 162
 public  class Xml_elements_203__Fun : global::haxe.lang.Function {
-	public    Xml_elements_203__Fun(global::Array<int> cur, global::Array<object> x) : base(0, 0){
+	public    Xml_elements_203__Fun(global::Array<object> x, global::Array<int> cur) : base(0, 0){
 		unchecked {
 			#line 203 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-			this.cur = cur;
-			#line 203 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 			this.x = x;
+			#line 203 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
+			this.cur = cur;
 		}
 		#line default
 	}
@@ -1011,9 +1011,9 @@ public  class Xml_elements_203__Fun : global::haxe.lang.Function {
 	}
 	
 	
-	public  global::Array<int> cur;
-	
 	public  global::Array<object> x;
+	
+	public  global::Array<int> cur;
 	
 }
 
@@ -1021,14 +1021,14 @@ public  class Xml_elements_203__Fun : global::haxe.lang.Function {
 
 #pragma warning disable 109, 114, 219, 429, 168, 162
 public  class Xml_elementsNamed_226__Fun : global::haxe.lang.Function {
-	public    Xml_elementsNamed_226__Fun(global::Array<object> name1, global::Array<int> cur, global::Array<object> x) : base(0, 0){
+	public    Xml_elementsNamed_226__Fun(global::Array<object> x, global::Array<object> name1, global::Array<int> cur) : base(0, 0){
 		unchecked {
+			#line 226 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
+			this.x = x;
 			#line 226 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 			this.name1 = name1;
 			#line 226 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 			this.cur = cur;
-			#line 226 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-			this.x = x;
 		}
 		#line default
 	}
@@ -1059,11 +1059,11 @@ public  class Xml_elementsNamed_226__Fun : global::haxe.lang.Function {
 	}
 	
 	
+	public  global::Array<object> x;
+	
 	public  global::Array<object> name1;
 	
 	public  global::Array<int> cur;
-	
-	public  global::Array<object> x;
 	
 }
 
@@ -1071,14 +1071,14 @@ public  class Xml_elementsNamed_226__Fun : global::haxe.lang.Function {
 
 #pragma warning disable 109, 114, 219, 429, 168, 162
 public  class Xml_elementsNamed_238__Fun : global::haxe.lang.Function {
-	public    Xml_elementsNamed_238__Fun(global::Array<object> name1, global::Array<int> cur, global::Array<object> x) : base(0, 0){
+	public    Xml_elementsNamed_238__Fun(global::Array<object> x, global::Array<object> name1, global::Array<int> cur) : base(0, 0){
 		unchecked {
+			#line 238 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
+			this.x = x;
 			#line 238 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 			this.name1 = name1;
 			#line 238 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
 			this.cur = cur;
-			#line 238 "F:\\HaxeToolkit\\haxe\\std\\cs\\_std\\Xml.hx"
-			this.x = x;
 		}
 		#line default
 	}
@@ -1108,11 +1108,11 @@ public  class Xml_elementsNamed_238__Fun : global::haxe.lang.Function {
 	}
 	
 	
+	public  global::Array<object> x;
+	
 	public  global::Array<object> name1;
 	
 	public  global::Array<int> cur;
-	
-	public  global::Array<object> x;
 	
 }
 

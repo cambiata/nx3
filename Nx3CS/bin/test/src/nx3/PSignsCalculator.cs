@@ -22,10 +22,10 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PSignsCalculator(global::nx3.PSignsCalculator __temp_me116, global::Array<object> notes){
+		public static   void __hx_ctor_nx3_PSignsCalculator(global::nx3.PSignsCalculator __temp_me118, global::Array<object> notes){
 			unchecked {
 				#line 13 "F:\\nx3\\src\\nx3\\PSignsCalculator.hx"
-				__temp_me116.notes = notes;
+				__temp_me118.notes = notes;
 			}
 			#line default
 		}
@@ -109,7 +109,7 @@ namespace nx3{
 		public virtual   global::Array<object> calcUnsortedSigns(global::Array<object> notes){
 			unchecked {
 				#line 45 "F:\\nx3\\src\\nx3\\PSignsCalculator.hx"
-				global::Array<object> vsigns = new global::Array<object>(new object[]{});
+				global::Array<object> PSigns = new global::Array<object>(new object[]{});
 				{
 					#line 46 "F:\\nx3\\src\\nx3\\PSignsCalculator.hx"
 					int _g = 0;
@@ -134,7 +134,7 @@ namespace nx3{
 								#line 50 "F:\\nx3\\src\\nx3\\PSignsCalculator.hx"
 								object tsign = new global::haxe.lang.DynamicObject(new global::Array<int>(new int[]{1280544829}), new global::Array<object>(new object[]{nhead.sign}), new global::Array<int>(new int[]{1257939113, 1919096196}), new global::Array<double>(new double[]{((double) (0) ), ((double) (nhead.level) )}));
 								#line 55 "F:\\nx3\\src\\nx3\\PSignsCalculator.hx"
-								vsigns.push(tsign);
+								PSigns.push(tsign);
 							}
 							
 						}
@@ -144,18 +144,18 @@ namespace nx3{
 				}
 				
 				#line 58 "F:\\nx3\\src\\nx3\\PSignsCalculator.hx"
-				return vsigns;
+				return PSigns;
 			}
 			#line default
 		}
 		
 		
-		public virtual   global::Array<object> calcSortSigns(global::Array<object> vsigns){
+		public virtual   global::Array<object> calcSortSigns(global::Array<object> PSigns){
 			unchecked {
 				#line 63 "F:\\nx3\\src\\nx3\\PSignsCalculator.hx"
-				vsigns.sort(( (( global::nx3.PSignsCalculator_calcSortSigns_63__Fun.__hx_current != default(global::nx3.PSignsCalculator_calcSortSigns_63__Fun) )) ? (global::nx3.PSignsCalculator_calcSortSigns_63__Fun.__hx_current) : (global::nx3.PSignsCalculator_calcSortSigns_63__Fun.__hx_current = ((global::nx3.PSignsCalculator_calcSortSigns_63__Fun) (new global::nx3.PSignsCalculator_calcSortSigns_63__Fun()) )) ));
+				PSigns.sort(( (( global::nx3.PSignsCalculator_calcSortSigns_63__Fun.__hx_current != default(global::nx3.PSignsCalculator_calcSortSigns_63__Fun) )) ? (global::nx3.PSignsCalculator_calcSortSigns_63__Fun.__hx_current) : (global::nx3.PSignsCalculator_calcSortSigns_63__Fun.__hx_current = ((global::nx3.PSignsCalculator_calcSortSigns_63__Fun) (new global::nx3.PSignsCalculator_calcSortSigns_63__Fun()) )) ));
 				#line 66 "F:\\nx3\\src\\nx3\\PSignsCalculator.hx"
-				return vsigns;
+				return PSigns;
 			}
 			#line default
 		}

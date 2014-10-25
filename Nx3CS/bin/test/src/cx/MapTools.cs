@@ -22,7 +22,7 @@ namespace cx{
 		}
 		
 		
-		public static   void __hx_ctor_cx_MapTools(global::cx.MapTools __temp_me24){
+		public static   void __hx_ctor_cx_MapTools(global::cx.MapTools __temp_me25){
 			unchecked {
 				#line 7 "F:\\nx3\\src\\cx\\MapTools.hx"
 				{
@@ -39,11 +39,11 @@ namespace cx{
 				global::Array<T> result = new global::Array<T>(new T[]{});
 				{
 					#line 11 "F:\\nx3\\src\\cx\\MapTools.hx"
-					object __temp_iterator151 = it;
+					object __temp_iterator156 = it;
 					#line 11 "F:\\nx3\\src\\cx\\MapTools.hx"
-					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator151, "hasNext", 407283053, default(global::Array)))){
+					while (global::haxe.lang.Runtime.toBool(global::haxe.lang.Runtime.callField(__temp_iterator156, "hasNext", 407283053, default(global::Array)))){
 						#line 11 "F:\\nx3\\src\\cx\\MapTools.hx"
-						T v = global::haxe.lang.Runtime.genericCast<T>(global::haxe.lang.Runtime.callField(__temp_iterator151, "next", 1224901875, default(global::Array)));
+						T v = global::haxe.lang.Runtime.genericCast<T>(global::haxe.lang.Runtime.callField(__temp_iterator156, "next", 1224901875, default(global::Array)));
 						#line 11 "F:\\nx3\\src\\cx\\MapTools.hx"
 						result.push(v);
 					}

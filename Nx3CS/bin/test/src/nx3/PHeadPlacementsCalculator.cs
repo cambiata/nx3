@@ -22,11 +22,11 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PHeadPlacementsCalculator(global::nx3.PHeadPlacementsCalculator __temp_me101, global::Array<object> vheads, global::nx3.EDirectionUD direction){
+		public static   void __hx_ctor_nx3_PHeadPlacementsCalculator(global::nx3.PHeadPlacementsCalculator __temp_me103, global::Array<object> vheads, global::nx3.EDirectionUD direction){
 			unchecked {
 				#line 14 "F:\\nx3\\src\\nx3\\PHeadPlacementsCalculator.hx"
-				__temp_me101.vheads = vheads;
-				__temp_me101.direction = direction;
+				__temp_me103.vheads = vheads;
+				__temp_me103.direction = direction;
 			}
 			#line default
 		}

@@ -15,58 +15,58 @@ namespace nx3{
 		
 		public    NHead(global::nx3.EHeadType type, global::haxe.lang.Null<int> level, global::nx3.ESign sign, global::nx3.ETie tie, global::nx3.ETie tieTo){
 			unchecked {
-				#line 19 "F:\\nx3\\src\\nx3\\NHead.hx"
+				#line 21 "F:\\nx3\\src\\nx3\\NHead.hx"
 				global::nx3.NHead.__hx_ctor_nx3_NHead(this, type, level, sign, tie, tieTo);
 			}
 			#line default
 		}
 		
 		
-		public static   void __hx_ctor_nx3_NHead(global::nx3.NHead __temp_me67, global::nx3.EHeadType type, global::haxe.lang.Null<int> level, global::nx3.ESign sign, global::nx3.ETie tie, global::nx3.ETie tieTo){
+		public static   void __hx_ctor_nx3_NHead(global::nx3.NHead __temp_me69, global::nx3.EHeadType type, global::haxe.lang.Null<int> level, global::nx3.ESign sign, global::nx3.ETie tie, global::nx3.ETie tieTo){
 			unchecked {
-				#line 20 "F:\\nx3\\src\\nx3\\NHead.hx"
-				global::haxe.lang.Null<int> __temp_level66 = ( ( ! (level.hasValue) ) ? (new global::haxe.lang.Null<int>(0, true)) : (((global::haxe.lang.Null<int>) (level) )) );
-				if (( type != default(global::nx3.EHeadType) )) {
-					#line 21 "F:\\nx3\\src\\nx3\\NHead.hx"
-					__temp_me67.type = type;
-				}
-				 else {
-					#line 21 "F:\\nx3\\src\\nx3\\NHead.hx"
-					__temp_me67.type = global::nx3.EHeadType.Normal;
-				}
-				
 				#line 22 "F:\\nx3\\src\\nx3\\NHead.hx"
-				if (( sign != default(global::nx3.ESign) )) {
-					#line 22 "F:\\nx3\\src\\nx3\\NHead.hx"
-					__temp_me67.sign = sign;
-				}
-				 else {
-					#line 22 "F:\\nx3\\src\\nx3\\NHead.hx"
-					__temp_me67.sign = global::nx3.ESign.None;
-				}
-				
-				#line 23 "F:\\nx3\\src\\nx3\\NHead.hx"
-				if (( tie != default(global::nx3.ETie) )) {
+				global::haxe.lang.Null<int> __temp_level68 = ( ( ! (level.hasValue) ) ? (new global::haxe.lang.Null<int>(0, true)) : (((global::haxe.lang.Null<int>) (level) )) );
+				if (( type != default(global::nx3.EHeadType) )) {
 					#line 23 "F:\\nx3\\src\\nx3\\NHead.hx"
-					__temp_me67.tie = tie;
+					__temp_me69.type = type;
 				}
 				 else {
 					#line 23 "F:\\nx3\\src\\nx3\\NHead.hx"
-					__temp_me67.tie = default(global::nx3.ETie);
+					__temp_me69.type = global::nx3.EHeadType.Normal;
 				}
 				
 				#line 24 "F:\\nx3\\src\\nx3\\NHead.hx"
-				if (( tieTo != default(global::nx3.ETie) )) {
+				if (( sign != default(global::nx3.ESign) )) {
 					#line 24 "F:\\nx3\\src\\nx3\\NHead.hx"
-					__temp_me67.tieTo = tieTo;
+					__temp_me69.sign = sign;
 				}
 				 else {
 					#line 24 "F:\\nx3\\src\\nx3\\NHead.hx"
-					__temp_me67.tieTo = default(global::nx3.ETie);
+					__temp_me69.sign = global::nx3.ESign.None;
 				}
 				
 				#line 25 "F:\\nx3\\src\\nx3\\NHead.hx"
-				__temp_me67.level = __temp_level66.@value;
+				if (( tie != default(global::nx3.ETie) )) {
+					#line 25 "F:\\nx3\\src\\nx3\\NHead.hx"
+					__temp_me69.tie = tie;
+				}
+				 else {
+					#line 25 "F:\\nx3\\src\\nx3\\NHead.hx"
+					__temp_me69.tie = default(global::nx3.ETie);
+				}
+				
+				#line 26 "F:\\nx3\\src\\nx3\\NHead.hx"
+				if (( tieTo != default(global::nx3.ETie) )) {
+					#line 26 "F:\\nx3\\src\\nx3\\NHead.hx"
+					__temp_me69.tieTo = tieTo;
+				}
+				 else {
+					#line 26 "F:\\nx3\\src\\nx3\\NHead.hx"
+					__temp_me69.tieTo = default(global::nx3.ETie);
+				}
+				
+				#line 27 "F:\\nx3\\src\\nx3\\NHead.hx"
+				__temp_me69.level = __temp_level68.@value;
 			}
 			#line default
 		}
@@ -100,6 +100,38 @@ namespace nx3{
 		
 		public  global::nx3.ETie tieTo;
 		
+		public  global::nx3.NNote nnote;
+		
+		public virtual   string toString(){
+			unchecked {
+				#line 32 "F:\\nx3\\src\\nx3\\NHead.hx"
+				string str = global::haxe.lang.Runtime.concat("", global::haxe.lang.Runtime.toString(this.level));
+				if (( this.type != global::nx3.EHeadType.Normal )) {
+					#line 33 "F:\\nx3\\src\\nx3\\NHead.hx"
+					str = global::haxe.lang.Runtime.concat(str, global::haxe.lang.Runtime.concat(" ", global::Type.enumConstructor(this.type)));
+				}
+				 else {
+					#line 33 "F:\\nx3\\src\\nx3\\NHead.hx"
+					str = global::haxe.lang.Runtime.concat(str, "");
+				}
+				
+				#line 34 "F:\\nx3\\src\\nx3\\NHead.hx"
+				if (( this.sign != global::nx3.ESign.None )) {
+					#line 34 "F:\\nx3\\src\\nx3\\NHead.hx"
+					str = global::haxe.lang.Runtime.concat(str, global::haxe.lang.Runtime.concat(" ", global::Type.enumConstructor(this.sign)));
+				}
+				 else {
+					#line 34 "F:\\nx3\\src\\nx3\\NHead.hx"
+					str = global::haxe.lang.Runtime.concat(str, "");
+				}
+				
+				#line 35 "F:\\nx3\\src\\nx3\\NHead.hx"
+				return global::haxe.lang.Runtime.concat(global::haxe.lang.Runtime.concat("NHead(", str), ")");
+			}
+			#line default
+		}
+		
+		
 		public override   double __hx_setField_f(string field, int hash, double @value, bool handleProperties){
 			unchecked {
 				#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
@@ -130,6 +162,15 @@ namespace nx3{
 			unchecked {
 				#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
 				switch (hash){
+					case 522053472:
+					{
+						#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
+						this.nnote = ((global::nx3.NNote) (@value) );
+						#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
+						return @value;
+					}
+					
+					
 					case 271556331:
 					{
 						#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
@@ -192,6 +233,20 @@ namespace nx3{
 			unchecked {
 				#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
 				switch (hash){
+					case 946786476:
+					{
+						#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
+						return ((global::haxe.lang.Function) (new global::haxe.lang.Closure(((object) (this) ), ((string) ("toString") ), ((int) (946786476) ))) );
+					}
+					
+					
+					case 522053472:
+					{
+						#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
+						return this.nnote;
+					}
+					
+					
 					case 271556331:
 					{
 						#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
@@ -264,8 +319,34 @@ namespace nx3{
 		}
 		
 		
+		public override   object __hx_invokeField(string field, int hash, global::Array dynargs){
+			unchecked {
+				#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
+				switch (hash){
+					case 946786476:
+					{
+						#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
+						return this.toString();
+					}
+					
+					
+					default:
+					{
+						#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
+						return base.__hx_invokeField(field, hash, dynargs);
+					}
+					
+				}
+				
+			}
+			#line default
+		}
+		
+		
 		public override   void __hx_getFields(global::Array<object> baseArr){
 			unchecked {
+				#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
+				baseArr.push("nnote");
 				#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
 				baseArr.push("tieTo");
 				#line 11 "F:\\nx3\\src\\nx3\\NHead.hx"
@@ -284,6 +365,11 @@ namespace nx3{
 				
 			}
 			#line default
+		}
+		
+		
+		public override string ToString(){
+			return this.toString();
 		}
 		
 		

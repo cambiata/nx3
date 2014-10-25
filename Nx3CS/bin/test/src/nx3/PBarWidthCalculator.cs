@@ -22,7 +22,7 @@ namespace nx3{
 		}
 		
 		
-		public static   void __hx_ctor_nx3_PBarWidthCalculator(global::nx3.PBarWidthCalculator __temp_me83){
+		public static   void __hx_ctor_nx3_PBarWidthCalculator(global::nx3.PBarWidthCalculator __temp_me85){
 			unchecked {
 				#line 19 "F:\\nx3\\src\\nx3\\PBarWidthCalculator.hx"
 				{
@@ -78,19 +78,10 @@ namespace nx3{
 		}
 		
 		
-		   double global::nx3.IBarWidthCalculator.getContentLeftMarginWidth(global::nx3.PBar bar){
-			unchecked {
-				#line 40 "F:\\nx3\\src\\nx3\\PBarWidthCalculator.hx"
-				return ((double) (((int) (this.getContentLeftMarginWidth(((global::nx3.PBar) (bar) ))) )) );
-			}
-			#line default
-		}
-		
-		
-		public virtual   int getContentLeftMarginWidth(global::nx3.PBar bar){
+		public virtual   double getContentLeftMarginWidth(global::nx3.PBar bar){
 			unchecked {
 				#line 42 "F:\\nx3\\src\\nx3\\PBarWidthCalculator.hx"
-				return 3;
+				return 3.0;
 			}
 			#line default
 		}
@@ -108,7 +99,7 @@ namespace nx3{
 		public virtual   double getBarlineWidth(global::nx3.EBarline barline){
 			unchecked {
 				#line 59 "F:\\nx3\\src\\nx3\\PBarWidthCalculator.hx"
-				return ((double) (1) );
+				return 1.0;
 			}
 			#line default
 		}
@@ -117,7 +108,7 @@ namespace nx3{
 		public virtual   double getLeftBarlineWidth(global::nx3.EBarlineLeft barline){
 			unchecked {
 				#line 66 "F:\\nx3\\src\\nx3\\PBarWidthCalculator.hx"
-				return ((double) (1) );
+				return 1.0;
 			}
 			#line default
 		}
@@ -309,7 +300,7 @@ namespace nx3{
 					case 1065219630:
 					{
 						#line 15 "F:\\nx3\\src\\nx3\\PBarWidthCalculator.hx"
-						return ((int) (this.getContentLeftMarginWidth(((global::nx3.PBar) (dynargs[0]) ))) );
+						return this.getContentLeftMarginWidth(((global::nx3.PBar) (dynargs[0]) ));
 					}
 					
 					
