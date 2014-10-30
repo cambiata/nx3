@@ -204,10 +204,10 @@ class ICYDecoder extends EventDispatcher
 					//if (i < 10) trace(ob[i]);
 					
 					
-					#if (flash)
-					var f = ob[i];
-					#else
+					#if (neko)
 					var f:Float = (ob[i] != null) ? ob[i]* 1.0 : 0;
+					#else
+					var f = ob[i];
 					#end
 					
 					sampleBuffer.writeFloat(f);

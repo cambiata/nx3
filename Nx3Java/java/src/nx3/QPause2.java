@@ -17,10 +17,10 @@ public  class QPause2 extends nx3.NNote
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QPause2(nx3.QPause2 __temp_me158, java.lang.Object level)
+	public static   void __hx_ctor_nx3_QPause2(nx3.QPause2 __temp_me146, java.lang.Object level)
 	{
-		nx3.NNote.__hx_ctor_nx3_NNote(__temp_me158, nx3.ENoteType.Pause(((int) (haxe.lang.Runtime.toInt(( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ))) )), null, nx3.ENoteVal.Nv2, null);
-		java.lang.Object __temp_level157 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
+		nx3.NNote.__hx_ctor_nx3_NNote(__temp_me146, nx3.ENoteType.Pause(((int) (haxe.lang.Runtime.toInt(( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ))) )), null, nx3.ENoteVal.Nv2, null);
+		java.lang.Object __temp_level145 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
 	}
 	
 	

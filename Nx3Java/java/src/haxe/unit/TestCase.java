@@ -18,7 +18,7 @@ public  class TestCase extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_haxe_unit_TestCase(haxe.unit.TestCase __temp_me49)
+	public static   void __hx_ctor_haxe_unit_TestCase(haxe.unit.TestCase __temp_me48)
 	{
 		{
 		}
@@ -107,14 +107,14 @@ public  class TestCase extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef373 = true;
+			boolean __temp_executeDef356 = true;
 			switch (field.hashCode())
 			{
 				case 601231787:
 				{
 					if (field.equals("currentTest")) 
 					{
-						__temp_executeDef373 = false;
+						__temp_executeDef356 = false;
 						this.currentTest = ((haxe.unit.TestStatus) (value) );
 						return value;
 					}
@@ -125,7 +125,7 @@ public  class TestCase extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef373) 
+			if (__temp_executeDef356) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -142,14 +142,14 @@ public  class TestCase extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef374 = true;
+			boolean __temp_executeDef357 = true;
 			switch (field.hashCode())
 			{
 				case -1076899163:
 				{
 					if (field.equals("assertEquals")) 
 					{
-						__temp_executeDef374 = false;
+						__temp_executeDef357 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("assertEquals"))) );
 					}
 					
@@ -161,7 +161,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("currentTest")) 
 					{
-						__temp_executeDef374 = false;
+						__temp_executeDef357 = false;
 						return this.currentTest;
 					}
 					
@@ -173,7 +173,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("assertFalse")) 
 					{
-						__temp_executeDef374 = false;
+						__temp_executeDef357 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("assertFalse"))) );
 					}
 					
@@ -185,7 +185,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("setup")) 
 					{
-						__temp_executeDef374 = false;
+						__temp_executeDef357 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("setup"))) );
 					}
 					
@@ -197,7 +197,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("assertTrue")) 
 					{
-						__temp_executeDef374 = false;
+						__temp_executeDef357 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("assertTrue"))) );
 					}
 					
@@ -209,7 +209,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("tearDown")) 
 					{
-						__temp_executeDef374 = false;
+						__temp_executeDef357 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("tearDown"))) );
 					}
 					
@@ -221,7 +221,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("print")) 
 					{
-						__temp_executeDef374 = false;
+						__temp_executeDef357 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("print"))) );
 					}
 					
@@ -231,7 +231,7 @@ public  class TestCase extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef374) 
+			if (__temp_executeDef357) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -248,14 +248,14 @@ public  class TestCase extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef375 = true;
+			boolean __temp_executeDef358 = true;
 			switch (field.hashCode())
 			{
 				case -1076899163:
 				{
 					if (field.equals("assertEquals")) 
 					{
-						__temp_executeDef375 = false;
+						__temp_executeDef358 = false;
 						this.assertEquals(dynargs.__get(0), dynargs.__get(1), dynargs.__get(2));
 					}
 					
@@ -267,7 +267,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("setup")) 
 					{
-						__temp_executeDef375 = false;
+						__temp_executeDef358 = false;
 						this.setup();
 					}
 					
@@ -279,7 +279,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("assertFalse")) 
 					{
-						__temp_executeDef375 = false;
+						__temp_executeDef358 = false;
 						this.assertFalse(haxe.lang.Runtime.toBool(dynargs.__get(0)), dynargs.__get(1));
 					}
 					
@@ -291,7 +291,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("tearDown")) 
 					{
-						__temp_executeDef375 = false;
+						__temp_executeDef358 = false;
 						this.tearDown();
 					}
 					
@@ -303,7 +303,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("assertTrue")) 
 					{
-						__temp_executeDef375 = false;
+						__temp_executeDef358 = false;
 						this.assertTrue(haxe.lang.Runtime.toBool(dynargs.__get(0)), dynargs.__get(1));
 					}
 					
@@ -315,7 +315,7 @@ public  class TestCase extends haxe.lang.HxObject
 				{
 					if (field.equals("print")) 
 					{
-						__temp_executeDef375 = false;
+						__temp_executeDef358 = false;
 						this.print(dynargs.__get(0));
 					}
 					
@@ -325,7 +325,7 @@ public  class TestCase extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef375) 
+			if (__temp_executeDef358) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,7 +18,7 @@ public  class StringTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor__StringTools(haxe.root.StringTools __temp_me17)
+	public static   void __hx_ctor__StringTools(haxe.root.StringTools __temp_me16)
 	{
 		{
 		}
@@ -52,29 +52,6 @@ public  class StringTools extends haxe.lang.HxObject
 			return s.replace(sub, by);
 		}
 		
-	}
-	
-	
-	public static   java.lang.String hex(int n, java.lang.Object digits)
-	{
-		java.lang.String s = "";
-		java.lang.String hexChars = "0123456789ABCDEF";
-		do 
-		{
-			s = ( haxe.lang.StringExt.charAt(hexChars, ( n & 15 )) + s );
-			n >>>= 4;
-		}
-		while (( n > 0 ));
-		if (( ! (( digits == null )) )) 
-		{
-			while (( haxe.lang.Runtime.compare(s.length(), digits) < 0 ))
-			{
-				s = ( "0" + s );
-			}
-			
-		}
-		
-		return s;
 	}
 	
 	

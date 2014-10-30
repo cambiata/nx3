@@ -9,6 +9,13 @@
    <depend name="include/haxe/io/Output.h"/>
    <depend name="include/sys/io/FileOutput.h"/>
   </file>
+  <file name="src/sys/io/File.cpp">
+   <depend name="include/cpp/Lib.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/Output.h"/>
+   <depend name="include/sys/io/File.h"/>
+   <depend name="include/sys/io/FileOutput.h"/>
+  </file>
   <file name="src/sys/FileSystem.cpp">
    <depend name="include/Date.h"/>
    <depend name="include/cpp/Lib.h"/>
@@ -825,6 +832,25 @@
   <file name="src/haxe/StackItem.cpp">
    <depend name="include/haxe/StackItem.h"/>
   </file>
+  <file name="src/cx/FileTools.cpp">
+   <depend name="include/Date.h"/>
+   <depend name="include/Std.h"/>
+   <depend name="include/cx/FileTools.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/haxe/io/Output.h"/>
+   <depend name="include/haxe/io/Path.h"/>
+   <depend name="include/sys/FileSystem.h"/>
+   <depend name="include/sys/io/File.h"/>
+   <depend name="include/sys/io/FileOutput.h"/>
+  </file>
+  <file name="src/cx/ByteArrayTools.cpp">
+   <depend name="include/cx/ByteArrayTools.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/openfl/utils/ByteArray.h"/>
+   <depend name="include/openfl/utils/IDataInput.h"/>
+   <depend name="include/openfl/utils/IDataOutput.h"/>
+   <depend name="include/openfl/utils/IMemoryRange.h"/>
+  </file>
   <file name="src/cpp/vm/Thread.cpp">
    <depend name="include/cpp/vm/Thread.h"/>
   </file>
@@ -1013,6 +1039,15 @@
   <file name="src/com/codeazur/as3icy/ICYConst.cpp">
    <depend name="include/com/codeazur/as3icy/ICYConst.h"/>
   </file>
+  <file name="src/audio/flash/WaveEncoder.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/audio/flash/WaveEncoder.h"/>
+   <depend name="include/haxe/io/Bytes.h"/>
+   <depend name="include/openfl/utils/ByteArray.h"/>
+   <depend name="include/openfl/utils/IDataInput.h"/>
+   <depend name="include/openfl/utils/IDataOutput.h"/>
+   <depend name="include/openfl/utils/IMemoryRange.h"/>
+  </file>
   <file name="src/Type.cpp">
    <depend name="include/Reflect.h"/>
    <depend name="include/Type.h"/>
@@ -1107,7 +1142,9 @@
   <file name="src/Main.cpp">
    <depend name="include/Main.h"/>
    <depend name="include/Std.h"/>
+   <depend name="include/audio/flash/WaveEncoder.h"/>
    <depend name="include/com/codeazur/as3icy/ICYDecoder.h"/>
+   <depend name="include/cx/ByteArrayTools.h"/>
    <depend name="include/haxe/Log.h"/>
    <depend name="include/haxe/io/Bytes.h"/>
    <depend name="include/openfl/Assets.h"/>
@@ -1129,6 +1166,7 @@
    <depend name="include/openfl/utils/IDataInput.h"/>
    <depend name="include/openfl/utils/IDataOutput.h"/>
    <depend name="include/openfl/utils/IMemoryRange.h"/>
+   <depend name="include/sys/io/File.h"/>
   </file>
   <file name="src/openfl/display/Sprite.cpp">
    <depend name="include/Type.h"/>

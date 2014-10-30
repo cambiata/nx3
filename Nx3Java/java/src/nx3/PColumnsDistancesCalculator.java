@@ -18,10 +18,10 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PColumnsDistancesCalculator(nx3.PColumnsDistancesCalculator __temp_me109, nx3.PBar bar)
+	public static   void __hx_ctor_nx3_PColumnsDistancesCalculator(nx3.PColumnsDistancesCalculator __temp_me97, nx3.PBar bar)
 	{
-		__temp_me109.bar = bar;
-		__temp_me109.prevLeftComplex = new haxe.ds.IntMap<java.lang.Object>();
+		__temp_me97.bar = bar;
+		__temp_me97.prevLeftComplex = new haxe.ds.IntMap<java.lang.Object>();
 	}
 	
 	
@@ -56,13 +56,13 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 					int complexId = 0;
 					{
 						int _g2 = 0;
-						nx3.PColumn __temp_stmt670 = null;
+						nx3.PColumn __temp_stmt657 = null;
 						{
 							haxe.root.Array<nx3.PColumn> array = this.bar.getColumns();
-							__temp_stmt670 = array.__get(0);
+							__temp_stmt657 = array.__get(0);
 						}
 						
-						haxe.root.Array<nx3.PComplex> _g3 = __temp_stmt670.getComplexes();
+						haxe.root.Array<nx3.PComplex> _g3 = __temp_stmt657.getComplexes();
 						while (( _g2 < _g3.length ))
 						{
 							nx3.PComplex complex = _g3.__get(_g2);
@@ -163,14 +163,14 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef671 = true;
+			boolean __temp_executeDef658 = true;
 			switch (field.hashCode())
 			{
 				case -530493834:
 				{
 					if (field.equals("prevLeftComplex")) 
 					{
-						__temp_executeDef671 = false;
+						__temp_executeDef658 = false;
 						this.prevLeftComplex = ((haxe.ds.IntMap<java.lang.Object>) (value) );
 						return value;
 					}
@@ -183,7 +183,7 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("bar")) 
 					{
-						__temp_executeDef671 = false;
+						__temp_executeDef658 = false;
 						this.bar = ((nx3.PBar) (value) );
 						return value;
 					}
@@ -194,7 +194,7 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef671) 
+			if (__temp_executeDef658) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -211,14 +211,14 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef672 = true;
+			boolean __temp_executeDef659 = true;
 			switch (field.hashCode())
 			{
 				case 1781619652:
 				{
 					if (field.equals("getComplexDistances")) 
 					{
-						__temp_executeDef672 = false;
+						__temp_executeDef659 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getComplexDistances"))) );
 					}
 					
@@ -230,7 +230,7 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("bar")) 
 					{
-						__temp_executeDef672 = false;
+						__temp_executeDef659 = false;
 						return this.bar;
 					}
 					
@@ -242,7 +242,7 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("prevLeftComplex")) 
 					{
-						__temp_executeDef672 = false;
+						__temp_executeDef659 = false;
 						return this.prevLeftComplex;
 					}
 					
@@ -254,7 +254,7 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calculate")) 
 					{
-						__temp_executeDef672 = false;
+						__temp_executeDef659 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calculate"))) );
 					}
 					
@@ -264,7 +264,7 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef672) 
+			if (__temp_executeDef659) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -281,14 +281,14 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef673 = true;
+			boolean __temp_executeDef660 = true;
 			switch (field.hashCode())
 			{
 				case 1781619652:
 				{
 					if (field.equals("getComplexDistances")) 
 					{
-						__temp_executeDef673 = false;
+						__temp_executeDef660 = false;
 						return this.getComplexDistances(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ), ((int) (haxe.lang.Runtime.toInt(dynargs.__get(1))) ), ((nx3.PComplex) (dynargs.__get(2)) ), ((nx3.PComplex) (dynargs.__get(3)) ));
 					}
 					
@@ -300,7 +300,7 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calculate")) 
 					{
-						__temp_executeDef673 = false;
+						__temp_executeDef660 = false;
 						this.calculate();
 					}
 					
@@ -310,7 +310,7 @@ public  class PColumnsDistancesCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef673) 
+			if (__temp_executeDef660) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

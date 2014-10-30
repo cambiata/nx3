@@ -18,28 +18,28 @@ public  class PComplex extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PComplex(nx3.PComplex __temp_me111, nx3.PPart part, haxe.root.Array<nx3.PNote> notes, int valueposition)
+	public static   void __hx_ctor_nx3_PComplex(nx3.PComplex __temp_me99, nx3.PPart part, haxe.root.Array<nx3.PNote> notes, int valueposition)
 	{
-		__temp_me111.part = part;
+		__temp_me99.part = part;
 		if (( notes.length > 2 )) 
 		{
 			throw haxe.lang.HaxeException.wrap("PComplex nr of PNote(s) limited to max 2 - for now");
 		}
 		
-		__temp_me111.notes = notes;
+		__temp_me99.notes = notes;
 		{
 			int _g = 0;
-			haxe.root.Array<nx3.PNote> _g1 = __temp_me111.notes;
+			haxe.root.Array<nx3.PNote> _g1 = __temp_me99.notes;
 			while (( _g < _g1.length ))
 			{
 				nx3.PNote note = _g1.__get(_g);
 				 ++ _g;
-				note.complex = __temp_me111;
+				note.complex = __temp_me99;
 			}
 			
 		}
 		
-		__temp_me111.valueposition = valueposition;
+		__temp_me99.valueposition = valueposition;
 	}
 	
 	
@@ -144,13 +144,13 @@ public  class PComplex extends haxe.lang.HxObject
 	
 	public   double getNoteXOffset(nx3.PNote note)
 	{
-		nx3.PNote __temp_stmt677 = null;
+		nx3.PNote __temp_stmt664 = null;
 		{
 			haxe.root.Array<nx3.PNote> array = this.getNotes();
-			__temp_stmt677 = array.__get(0);
+			__temp_stmt664 = array.__get(0);
 		}
 		
-		if (( note == __temp_stmt677 )) 
+		if (( note == __temp_stmt664 )) 
 		{
 			return ((double) (0) );
 		}
@@ -160,14 +160,14 @@ public  class PComplex extends haxe.lang.HxObject
 			return ((double) (haxe.lang.Runtime.toDouble(this.secondoffset)) );
 		}
 		
-		nx3.PNote __temp_stmt678 = null;
+		nx3.PNote __temp_stmt665 = null;
 		{
 			haxe.root.Array<nx3.PNote> array1 = this.getNotes();
-			__temp_stmt678 = array1.__get(1);
+			__temp_stmt665 = array1.__get(1);
 		}
 		
-		nx3.PNoteOffsetCalculator __temp_stmt679 = new nx3.PNoteOffsetCalculator(((nx3.PComplex) (this) ));
-		this.secondoffset = __temp_stmt679.getNoteOffset(__temp_stmt678);
+		nx3.PNoteOffsetCalculator __temp_stmt666 = new nx3.PNoteOffsetCalculator(((nx3.PComplex) (this) ));
+		this.secondoffset = __temp_stmt666.getNoteOffset(__temp_stmt665);
 		return ((double) (haxe.lang.Runtime.toDouble(this.secondoffset)) );
 	}
 	
@@ -434,7 +434,7 @@ public  class PComplex extends haxe.lang.HxObject
 			{
 				nx3.PNote note = _g1.__get(_g);
 				 ++ _g;
-				result = result.concat(note.getHeads());
+				result = result.concat(note.get_heads());
 			}
 			
 		}
@@ -459,7 +459,7 @@ public  class PComplex extends haxe.lang.HxObject
 			{
 				nx3.PNote note = _g1.__get(_g);
 				 ++ _g;
-				if (( note.getHasTie() == true )) 
+				if (haxe.lang.Runtime.eq(note.getHasTie(), true)) 
 				{
 					this.hasTie = true;
 					return haxe.lang.Runtime.toBool(this.hasTie);
@@ -533,14 +533,14 @@ public  class PComplex extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef680 = true;
+			boolean __temp_executeDef667 = true;
 			switch (field.hashCode())
 			{
 				case -1224444010:
 				{
 					if (field.equals("hasTie")) 
 					{
-						__temp_executeDef680 = false;
+						__temp_executeDef667 = false;
 						this.hasTie = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -553,7 +553,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("valueposition")) 
 					{
-						__temp_executeDef680 = false;
+						__temp_executeDef667 = false;
 						this.valueposition = ((int) (value) );
 						return value;
 					}
@@ -566,7 +566,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("rightX")) 
 					{
-						__temp_executeDef680 = false;
+						__temp_executeDef667 = false;
 						this.rightX = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -579,7 +579,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("secondoffset")) 
 					{
-						__temp_executeDef680 = false;
+						__temp_executeDef667 = false;
 						this.secondoffset = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -592,7 +592,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("leftX")) 
 					{
-						__temp_executeDef680 = false;
+						__temp_executeDef667 = false;
 						this.leftX = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -605,7 +605,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("xposition")) 
 					{
-						__temp_executeDef680 = false;
+						__temp_executeDef667 = false;
 						this.xposition = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -616,7 +616,7 @@ public  class PComplex extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef680) 
+			if (__temp_executeDef667) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -633,14 +633,14 @@ public  class PComplex extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef681 = true;
+			boolean __temp_executeDef668 = true;
 			switch (field.hashCode())
 			{
 				case -2128037041:
 				{
 					if (field.equals("headlevels")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.headlevels = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -653,7 +653,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("part")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.part = ((nx3.PPart) (value) );
 						return value;
 					}
@@ -666,7 +666,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("hasTie")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.hasTie = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -679,7 +679,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("valueposition")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.valueposition = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -692,7 +692,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("tieinfos")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.tieinfos = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -705,7 +705,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("notes")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.notes = ((haxe.root.Array<nx3.PNote>) (value) );
 						return value;
 					}
@@ -718,7 +718,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("next")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.next = ((nx3.PComplex) (value) );
 						return value;
 					}
@@ -731,7 +731,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("column")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.column = ((nx3.PColumn) (value) );
 						return value;
 					}
@@ -744,7 +744,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("rightX")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.rightX = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -757,7 +757,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("headsrects")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.headsrects = ((haxe.root.Array<nx3.geom.Rectangle>) (value) );
 						return value;
 					}
@@ -770,7 +770,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("leftX")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.leftX = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -783,7 +783,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("signsrects")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.signsrects = ((haxe.root.Array<nx3.geom.Rectangle>) (value) );
 						return value;
 					}
@@ -796,7 +796,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("xposition")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.xposition = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -809,7 +809,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("secondoffset")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.secondoffset = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -822,7 +822,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("rect")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.rect = ((nx3.geom.Rectangle) (value) );
 						return value;
 					}
@@ -835,7 +835,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("signs")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.signs = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -848,7 +848,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("allrects")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.allrects = ((haxe.root.Array<nx3.geom.Rectangle>) (value) );
 						return value;
 					}
@@ -861,7 +861,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("visiblesigns")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.visiblesigns = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -874,7 +874,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("baserect")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.baserect = ((nx3.geom.Rectangle) (value) );
 						return value;
 					}
@@ -887,7 +887,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("stavesrects")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.stavesrects = ((haxe.root.Array<nx3.geom.Rectangle>) (value) );
 						return value;
 					}
@@ -900,7 +900,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("dotrects")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.dotrects = ((haxe.root.Array<nx3.geom.Rectangle>) (value) );
 						return value;
 					}
@@ -913,7 +913,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("tierects")) 
 					{
-						__temp_executeDef681 = false;
+						__temp_executeDef668 = false;
 						this.tierects = ((haxe.root.Array<nx3.geom.Rectangle>) (value) );
 						return value;
 					}
@@ -924,7 +924,7 @@ public  class PComplex extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef681) 
+			if (__temp_executeDef668) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -941,14 +941,14 @@ public  class PComplex extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef682 = true;
+			boolean __temp_executeDef669 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("toString"))) );
 					}
 					
@@ -960,7 +960,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("part")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.part;
 					}
 					
@@ -972,7 +972,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getHeadLevels")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeadLevels"))) );
 					}
 					
@@ -984,7 +984,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("valueposition")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.valueposition;
 					}
 					
@@ -996,7 +996,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("headlevels")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.headlevels;
 					}
 					
@@ -1008,7 +1008,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("notes")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.notes;
 					}
 					
@@ -1020,7 +1020,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getHasTie")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHasTie"))) );
 					}
 					
@@ -1032,7 +1032,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getNotes")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNotes"))) );
 					}
 					
@@ -1044,7 +1044,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("hasTie")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.hasTie;
 					}
 					
@@ -1056,7 +1056,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getValueposition")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getValueposition"))) );
 					}
 					
@@ -1068,7 +1068,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getHeads")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeads"))) );
 					}
 					
@@ -1080,7 +1080,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getPart")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getPart"))) );
 					}
 					
@@ -1092,7 +1092,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getTieinfos")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTieinfos"))) );
 					}
 					
@@ -1104,7 +1104,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("column")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.column;
 					}
 					
@@ -1116,7 +1116,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("setTieinfos")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("setTieinfos"))) );
 					}
 					
@@ -1128,7 +1128,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getColumn")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getColumn"))) );
 					}
 					
@@ -1140,7 +1140,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("tieinfos")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.tieinfos;
 					}
 					
@@ -1152,7 +1152,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("headsrects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.headsrects;
 					}
 					
@@ -1164,7 +1164,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getNext")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNext"))) );
 					}
 					
@@ -1176,7 +1176,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeadsRects"))) );
 					}
 					
@@ -1188,7 +1188,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("next")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.next;
 					}
 					
@@ -1200,7 +1200,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("signsrects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.signsrects;
 					}
 					
@@ -1212,7 +1212,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getRightX")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getRightX"))) );
 					}
 					
@@ -1224,7 +1224,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getSignsRects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSignsRects"))) );
 					}
 					
@@ -1236,7 +1236,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("rightX")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.rightX;
 					}
 					
@@ -1248,7 +1248,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("secondoffset")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.secondoffset;
 					}
 					
@@ -1260,7 +1260,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getLeftX")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getLeftX"))) );
 					}
 					
@@ -1272,7 +1272,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getNoteXOffset")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNoteXOffset"))) );
 					}
 					
@@ -1284,7 +1284,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("leftX")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.leftX;
 					}
 					
@@ -1296,7 +1296,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("signs")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.signs;
 					}
 					
@@ -1308,7 +1308,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getIndex")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getIndex"))) );
 					}
 					
@@ -1320,7 +1320,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getSigns")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSigns"))) );
 					}
 					
@@ -1332,7 +1332,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getXPosition")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getXPosition"))) );
 					}
 					
@@ -1344,7 +1344,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("visiblesigns")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.visiblesigns;
 					}
 					
@@ -1356,7 +1356,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("xposition")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.xposition;
 					}
 					
@@ -1368,7 +1368,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getVisibleSigns")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getVisibleSigns"))) );
 					}
 					
@@ -1380,7 +1380,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getRect")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getRect"))) );
 					}
 					
@@ -1392,7 +1392,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("stavesrects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.stavesrects;
 					}
 					
@@ -1404,7 +1404,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("rect")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.rect;
 					}
 					
@@ -1416,7 +1416,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getStavesRects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getStavesRects"))) );
 					}
 					
@@ -1428,7 +1428,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getAllRects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getAllRects"))) );
 					}
 					
@@ -1440,7 +1440,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getStaveRect")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getStaveRect"))) );
 					}
 					
@@ -1452,7 +1452,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("allrects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.allrects;
 					}
 					
@@ -1464,7 +1464,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("tierects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.tierects;
 					}
 					
@@ -1476,7 +1476,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getBaseRect")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBaseRect"))) );
 					}
 					
@@ -1488,7 +1488,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getTieRects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTieRects"))) );
 					}
 					
@@ -1500,7 +1500,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("baserect")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.baserect;
 					}
 					
@@ -1512,7 +1512,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("dotrects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return this.dotrects;
 					}
 					
@@ -1524,7 +1524,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getDotRects")) 
 					{
-						__temp_executeDef682 = false;
+						__temp_executeDef669 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getDotRects"))) );
 					}
 					
@@ -1534,7 +1534,7 @@ public  class PComplex extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef682) 
+			if (__temp_executeDef669) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -1551,14 +1551,14 @@ public  class PComplex extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef683 = true;
+			boolean __temp_executeDef670 = true;
 			switch (field.hashCode())
 			{
 				case -1224444010:
 				{
 					if (field.equals("hasTie")) 
 					{
-						__temp_executeDef683 = false;
+						__temp_executeDef670 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.hasTie)) );
 					}
 					
@@ -1570,7 +1570,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("valueposition")) 
 					{
-						__temp_executeDef683 = false;
+						__temp_executeDef670 = false;
 						return ((double) (this.valueposition) );
 					}
 					
@@ -1582,7 +1582,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("rightX")) 
 					{
-						__temp_executeDef683 = false;
+						__temp_executeDef670 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.rightX)) );
 					}
 					
@@ -1594,7 +1594,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("secondoffset")) 
 					{
-						__temp_executeDef683 = false;
+						__temp_executeDef670 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.secondoffset)) );
 					}
 					
@@ -1606,7 +1606,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("leftX")) 
 					{
-						__temp_executeDef683 = false;
+						__temp_executeDef670 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.leftX)) );
 					}
 					
@@ -1618,7 +1618,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("xposition")) 
 					{
-						__temp_executeDef683 = false;
+						__temp_executeDef670 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.xposition)) );
 					}
 					
@@ -1628,7 +1628,7 @@ public  class PComplex extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef683) 
+			if (__temp_executeDef670) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -1645,14 +1645,14 @@ public  class PComplex extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef684 = true;
+			boolean __temp_executeDef671 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.toString();
 					}
 					
@@ -1664,7 +1664,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getNotes")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getNotes();
 					}
 					
@@ -1676,7 +1676,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getHeadLevels")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getHeadLevels();
 					}
 					
@@ -1688,7 +1688,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getValueposition")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getValueposition();
 					}
 					
@@ -1700,7 +1700,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getHasTie")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getHasTie();
 					}
 					
@@ -1712,7 +1712,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getPart")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getPart();
 					}
 					
@@ -1724,7 +1724,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getHeads")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getHeads();
 					}
 					
@@ -1736,7 +1736,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getColumn")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getColumn();
 					}
 					
@@ -1748,7 +1748,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getTieinfos")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getTieinfos();
 					}
 					
@@ -1760,7 +1760,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getHeadsRects();
 					}
 					
@@ -1772,7 +1772,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("setTieinfos")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						this.setTieinfos(((haxe.root.Array<java.lang.Object>) (dynargs.__get(0)) ));
 					}
 					
@@ -1784,7 +1784,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getSignsRects")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getSignsRects();
 					}
 					
@@ -1796,7 +1796,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getNext")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getNext();
 					}
 					
@@ -1808,7 +1808,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getNoteXOffset")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getNoteXOffset(((nx3.PNote) (dynargs.__get(0)) ));
 					}
 					
@@ -1820,7 +1820,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getRightX")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getRightX();
 					}
 					
@@ -1832,7 +1832,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getSigns")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getSigns();
 					}
 					
@@ -1844,7 +1844,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getLeftX")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getLeftX();
 					}
 					
@@ -1856,7 +1856,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getVisibleSigns")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getVisibleSigns();
 					}
 					
@@ -1868,7 +1868,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getIndex")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getIndex();
 					}
 					
@@ -1880,7 +1880,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getStavesRects")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getStavesRects();
 					}
 					
@@ -1892,7 +1892,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getXPosition")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getXPosition();
 					}
 					
@@ -1904,7 +1904,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getStaveRect")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getStaveRect(((nx3.PNote) (dynargs.__get(0)) ));
 					}
 					
@@ -1916,7 +1916,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getRect")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getRect();
 					}
 					
@@ -1928,7 +1928,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getTieRects")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getTieRects();
 					}
 					
@@ -1940,7 +1940,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getAllRects")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getAllRects();
 					}
 					
@@ -1952,7 +1952,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getDotRects")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getDotRects();
 					}
 					
@@ -1964,7 +1964,7 @@ public  class PComplex extends haxe.lang.HxObject
 				{
 					if (field.equals("getBaseRect")) 
 					{
-						__temp_executeDef684 = false;
+						__temp_executeDef671 = false;
 						return this.getBaseRect();
 					}
 					
@@ -1974,7 +1974,7 @@ public  class PComplex extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef684) 
+			if (__temp_executeDef671) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

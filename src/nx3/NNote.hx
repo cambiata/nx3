@@ -3,9 +3,7 @@ import hxlazy.Lazy;
 using Lambda;
 //import jasononeil.CleverSort;
 
-
 //import nx3.tools.ENoteTypeTools;
-
 
 /**
  * ...
@@ -69,6 +67,7 @@ class NNote implements Lazy
 	@lazy public function topLevel():Int  { return this.nheads[0].level; }
 	@lazy public function bottomLevel():Int  { return this.nheads[this.nheads.length-1].level; }
 	@lazy public function ties():ETies {  return this.filter(function(head) return head.tie != null).map(function(head) return head.tie).array(); 	}	
+	
 	
 	public function toString():String
 	{

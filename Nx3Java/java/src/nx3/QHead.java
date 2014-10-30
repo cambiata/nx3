@@ -17,10 +17,10 @@ public  class QHead extends nx3.NHead
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QHead(nx3.QHead __temp_me143, java.lang.Object level, nx3.ESign sign)
+	public static   void __hx_ctor_nx3_QHead(nx3.QHead __temp_me131, java.lang.Object level, nx3.ESign sign)
 	{
-		nx3.NHead.__hx_ctor_nx3_NHead(__temp_me143, null, ( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ), ( (( sign == null )) ? (((nx3.ESign) (null) )) : (sign) ), null, null);
-		java.lang.Object __temp_level142 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
+		nx3.NHead.__hx_ctor_nx3_NHead(__temp_me131, null, ( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ), ( (( sign == null )) ? (((nx3.ESign) (null) )) : (sign) ), null, null);
+		java.lang.Object __temp_level130 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
 	}
 	
 	

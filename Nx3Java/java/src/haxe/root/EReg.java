@@ -18,7 +18,7 @@ public  class EReg extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor__EReg(haxe.root.EReg __temp_me4, java.lang.String r, java.lang.String opt)
+	public static   void __hx_ctor__EReg(haxe.root.EReg __temp_me3, java.lang.String r, java.lang.String opt)
 	{
 		int flags = 0;
 		{
@@ -63,7 +63,7 @@ public  class EReg extends haxe.lang.HxObject
 						
 						case 103:
 						{
-							__temp_me4.isGlobal = true;
+							__temp_me3.isGlobal = true;
 							break;
 						}
 						
@@ -76,8 +76,8 @@ public  class EReg extends haxe.lang.HxObject
 			
 		}
 		
-		__temp_me4.matcher = java.util.regex.Pattern.compile(haxe.lang.Runtime.toString(haxe.root.EReg.convert(r)), ((int) (flags) )).matcher(((java.lang.CharSequence) ("") ));
-		__temp_me4.pattern = r;
+		__temp_me3.matcher = java.util.regex.Pattern.compile(haxe.lang.Runtime.toString(haxe.root.EReg.convert(r)), ((int) (flags) )).matcher(((java.lang.CharSequence) ("") ));
+		__temp_me3.pattern = r;
 	}
 	
 	
@@ -148,14 +148,14 @@ public  class EReg extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef277 = true;
+			boolean __temp_executeDef260 = true;
 			switch (field.hashCode())
 			{
 				case -568986259:
 				{
 					if (field.equals("isGlobal")) 
 					{
-						__temp_executeDef277 = false;
+						__temp_executeDef260 = false;
 						this.isGlobal = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -168,7 +168,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("pattern")) 
 					{
-						__temp_executeDef277 = false;
+						__temp_executeDef260 = false;
 						this.pattern = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -181,7 +181,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("cur")) 
 					{
-						__temp_executeDef277 = false;
+						__temp_executeDef260 = false;
 						this.cur = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -194,7 +194,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("matcher")) 
 					{
-						__temp_executeDef277 = false;
+						__temp_executeDef260 = false;
 						this.matcher = ((java.util.regex.Matcher) (value) );
 						return value;
 					}
@@ -205,7 +205,7 @@ public  class EReg extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef277) 
+			if (__temp_executeDef260) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -222,14 +222,14 @@ public  class EReg extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef278 = true;
+			boolean __temp_executeDef261 = true;
 			switch (field.hashCode())
 			{
 				case 1094496948:
 				{
 					if (field.equals("replace")) 
 					{
-						__temp_executeDef278 = false;
+						__temp_executeDef261 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("replace"))) );
 					}
 					
@@ -241,7 +241,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("pattern")) 
 					{
-						__temp_executeDef278 = false;
+						__temp_executeDef261 = false;
 						return this.pattern;
 					}
 					
@@ -253,7 +253,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("matched")) 
 					{
-						__temp_executeDef278 = false;
+						__temp_executeDef261 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("matched"))) );
 					}
 					
@@ -265,7 +265,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("matcher")) 
 					{
-						__temp_executeDef278 = false;
+						__temp_executeDef261 = false;
 						return this.matcher;
 					}
 					
@@ -277,7 +277,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("match")) 
 					{
-						__temp_executeDef278 = false;
+						__temp_executeDef261 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("match"))) );
 					}
 					
@@ -289,7 +289,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("cur")) 
 					{
-						__temp_executeDef278 = false;
+						__temp_executeDef261 = false;
 						return this.cur;
 					}
 					
@@ -301,7 +301,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("isGlobal")) 
 					{
-						__temp_executeDef278 = false;
+						__temp_executeDef261 = false;
 						return this.isGlobal;
 					}
 					
@@ -311,7 +311,7 @@ public  class EReg extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef278) 
+			if (__temp_executeDef261) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -328,14 +328,14 @@ public  class EReg extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef279 = true;
+			boolean __temp_executeDef262 = true;
 			switch (field.hashCode())
 			{
 				case 1094496948:
 				{
 					if (field.equals("replace")) 
 					{
-						__temp_executeDef279 = false;
+						__temp_executeDef262 = false;
 						return this.replace(haxe.lang.Runtime.toString(dynargs.__get(0)), haxe.lang.Runtime.toString(dynargs.__get(1)));
 					}
 					
@@ -347,7 +347,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("match")) 
 					{
-						__temp_executeDef279 = false;
+						__temp_executeDef262 = false;
 						return this.match(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -359,7 +359,7 @@ public  class EReg extends haxe.lang.HxObject
 				{
 					if (field.equals("matched")) 
 					{
-						__temp_executeDef279 = false;
+						__temp_executeDef262 = false;
 						return this.matched(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
 					}
 					
@@ -369,7 +369,7 @@ public  class EReg extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef279) 
+			if (__temp_executeDef262) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

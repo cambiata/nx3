@@ -25,7 +25,7 @@ public  class VoiceXML extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_xml_VoiceXML(nx3.xml.VoiceXML __temp_me217)
+	public static   void __hx_ctor_nx3_xml_VoiceXML(nx3.xml.VoiceXML __temp_me195)
 	{
 		{
 		}
@@ -108,10 +108,10 @@ public  class VoiceXML extends haxe.lang.HxObject
 		
 		haxe.root.Array<nx3.NNote> notes = new haxe.root.Array<nx3.NNote>(new nx3.NNote[]{});
 		{
-			java.lang.Object __temp_iterator264 = xml.elements();
-			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator264, "hasNext", null)))
+			java.lang.Object __temp_iterator249 = xml.elements();
+			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator249, "hasNext", null)))
 			{
-				haxe.root.Xml n = ((haxe.root.Xml) (haxe.lang.Runtime.callField(__temp_iterator264, "next", null)) );
+				haxe.root.Xml n = ((haxe.root.Xml) (haxe.lang.Runtime.callField(__temp_iterator249, "next", null)) );
 				nx3.NNote note = nx3.xml.NoteXML.fromXmlStr(n.toString());
 				notes.push(note);
 			}

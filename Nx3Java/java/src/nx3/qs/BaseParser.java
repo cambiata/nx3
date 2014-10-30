@@ -18,11 +18,11 @@ public  class BaseParser extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_qs_BaseParser(nx3.qs.BaseParser __temp_me187, nx3.qs.QuickSyntaxParser builder)
+	public static   void __hx_ctor_nx3_qs_BaseParser(nx3.qs.BaseParser __temp_me174, nx3.qs.QuickSyntaxParser builder)
 	{
-		__temp_me187.builder = builder;
-		__temp_me187.functions = new haxe.ds.StringMap<haxe.lang.Function>();
-		__temp_me187.createFunctions();
+		__temp_me174.builder = builder;
+		__temp_me174.functions = new haxe.ds.StringMap<haxe.lang.Function>();
+		__temp_me174.createFunctions();
 	}
 	
 	
@@ -132,14 +132,14 @@ public  class BaseParser extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef845 = true;
+			boolean __temp_executeDef824 = true;
 			switch (field.hashCode())
 			{
 				case -140572773:
 				{
 					if (field.equals("functions")) 
 					{
-						__temp_executeDef845 = false;
+						__temp_executeDef824 = false;
 						this.functions = ((haxe.ds.StringMap<haxe.lang.Function>) (value) );
 						return value;
 					}
@@ -152,7 +152,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("builder")) 
 					{
-						__temp_executeDef845 = false;
+						__temp_executeDef824 = false;
 						this.builder = ((nx3.qs.QuickSyntaxParser) (value) );
 						return value;
 					}
@@ -163,7 +163,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef845) 
+			if (__temp_executeDef824) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -180,14 +180,14 @@ public  class BaseParser extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef846 = true;
+			boolean __temp_executeDef825 = true;
 			switch (field.hashCode())
 			{
 				case -2111738369:
 				{
 					if (field.equals("recieveEvent")) 
 					{
-						__temp_executeDef846 = false;
+						__temp_executeDef825 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("recieveEvent"))) );
 					}
 					
@@ -199,7 +199,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("builder")) 
 					{
-						__temp_executeDef846 = false;
+						__temp_executeDef825 = false;
 						return this.builder;
 					}
 					
@@ -211,7 +211,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("sendEvent")) 
 					{
-						__temp_executeDef846 = false;
+						__temp_executeDef825 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("sendEvent"))) );
 					}
 					
@@ -223,7 +223,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("functions")) 
 					{
-						__temp_executeDef846 = false;
+						__temp_executeDef825 = false;
 						return this.functions;
 					}
 					
@@ -235,7 +235,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("createFunctions")) 
 					{
-						__temp_executeDef846 = false;
+						__temp_executeDef825 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("createFunctions"))) );
 					}
 					
@@ -247,7 +247,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("getTokenfunction")) 
 					{
-						__temp_executeDef846 = false;
+						__temp_executeDef825 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTokenfunction"))) );
 					}
 					
@@ -259,7 +259,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("tokenFinished")) 
 					{
-						__temp_executeDef846 = false;
+						__temp_executeDef825 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("tokenFinished"))) );
 					}
 					
@@ -271,7 +271,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("parse")) 
 					{
-						__temp_executeDef846 = false;
+						__temp_executeDef825 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("parse"))) );
 					}
 					
@@ -281,7 +281,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef846) 
+			if (__temp_executeDef825) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -298,14 +298,14 @@ public  class BaseParser extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef847 = true;
+			boolean __temp_executeDef826 = true;
 			switch (field.hashCode())
 			{
 				case -2111738369:
 				{
 					if (field.equals("recieveEvent")) 
 					{
-						__temp_executeDef847 = false;
+						__temp_executeDef826 = false;
 						this.recieveEvent(((nx3.qs.ParserEvents) (dynargs.__get(0)) ));
 					}
 					
@@ -317,7 +317,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("getTokenfunction")) 
 					{
-						__temp_executeDef847 = false;
+						__temp_executeDef826 = false;
 						return this.getTokenfunction(((haxe.ds.StringMap<haxe.lang.Function>) (dynargs.__get(0)) ), haxe.lang.Runtime.toString(dynargs.__get(1)));
 					}
 					
@@ -329,7 +329,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("sendEvent")) 
 					{
-						__temp_executeDef847 = false;
+						__temp_executeDef826 = false;
 						this.sendEvent(((nx3.qs.ParserEvents) (dynargs.__get(0)) ));
 					}
 					
@@ -341,7 +341,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("parse")) 
 					{
-						__temp_executeDef847 = false;
+						__temp_executeDef826 = false;
 						return this.parse(haxe.lang.Runtime.toString(dynargs.__get(0)), ((nx3.qs.QuickSyntaxParser) (dynargs.__get(1)) ));
 					}
 					
@@ -353,7 +353,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("createFunctions")) 
 					{
-						__temp_executeDef847 = false;
+						__temp_executeDef826 = false;
 						this.createFunctions();
 					}
 					
@@ -365,7 +365,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				{
 					if (field.equals("tokenFinished")) 
 					{
-						__temp_executeDef847 = false;
+						__temp_executeDef826 = false;
 						this.tokenFinished(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -375,7 +375,7 @@ public  class BaseParser extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef847) 
+			if (__temp_executeDef826) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

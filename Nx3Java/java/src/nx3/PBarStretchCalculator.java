@@ -18,9 +18,9 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBarStretchCalculator(nx3.PBarStretchCalculator __temp_me99, nx3.PSystemBar systembar)
+	public static   void __hx_ctor_nx3_PBarStretchCalculator(nx3.PBarStretchCalculator __temp_me87, nx3.PSystemBar systembar)
 	{
-		__temp_me99.systembar = systembar;
+		__temp_me87.systembar = systembar;
 	}
 	
 	
@@ -156,14 +156,14 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef628 = true;
+			boolean __temp_executeDef615 = true;
 			switch (field.hashCode())
 			{
 				case 1129129860:
 				{
 					if (field.equals("systembar")) 
 					{
-						__temp_executeDef628 = false;
+						__temp_executeDef615 = false;
 						this.systembar = ((nx3.PSystemBar) (value) );
 						return value;
 					}
@@ -174,7 +174,7 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef628) 
+			if (__temp_executeDef615) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -191,14 +191,14 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef629 = true;
+			boolean __temp_executeDef616 = true;
 			switch (field.hashCode())
 			{
 				case 1818860214:
 				{
 					if (field.equals("resetStretch")) 
 					{
-						__temp_executeDef629 = false;
+						__temp_executeDef616 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("resetStretch"))) );
 					}
 					
@@ -210,7 +210,7 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("systembar")) 
 					{
-						__temp_executeDef629 = false;
+						__temp_executeDef616 = false;
 						return this.systembar;
 					}
 					
@@ -222,7 +222,7 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("stretch")) 
 					{
-						__temp_executeDef629 = false;
+						__temp_executeDef616 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("stretch"))) );
 					}
 					
@@ -232,7 +232,7 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef629) 
+			if (__temp_executeDef616) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -249,14 +249,14 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef630 = true;
+			boolean __temp_executeDef617 = true;
 			switch (field.hashCode())
 			{
 				case 1818860214:
 				{
 					if (field.equals("resetStretch")) 
 					{
-						__temp_executeDef630 = false;
+						__temp_executeDef617 = false;
 						this.resetStretch();
 					}
 					
@@ -268,7 +268,7 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("stretch")) 
 					{
-						__temp_executeDef630 = false;
+						__temp_executeDef617 = false;
 						this.stretch(((double) (haxe.lang.Runtime.toDouble(dynargs.__get(0))) ));
 					}
 					
@@ -278,7 +278,7 @@ public  class PBarStretchCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef630) 
+			if (__temp_executeDef617) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -24,14 +24,14 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PSystemBarsGenerator(nx3.PSystemBarsGenerator __temp_me138, haxe.root.Array<nx3.PBar> bars, java.lang.Object systemConfig, java.lang.Object prevBarAttributes, double breakSystemwidth, nx3.IBarWidthCalculator barWidthCalculator)
+	public static   void __hx_ctor_nx3_PSystemBarsGenerator(nx3.PSystemBarsGenerator __temp_me126, haxe.root.Array<nx3.PBar> bars, java.lang.Object systemConfig, java.lang.Object prevBarAttributes, double breakSystemwidth, nx3.IBarWidthCalculator barWidthCalculator)
 	{
-		__temp_me138.bars = bars;
-		__temp_me138.systemConfig = systemConfig;
-		__temp_me138.prevBarAttributes = prevBarAttributes;
-		__temp_me138.breakSystemwidth = breakSystemwidth;
-		__temp_me138.system = new nx3.PSystem();
-		__temp_me138.barWidthCalculator = barWidthCalculator;
+		__temp_me126.bars = bars;
+		__temp_me126.systemConfig = systemConfig;
+		__temp_me126.prevBarAttributes = prevBarAttributes;
+		__temp_me126.breakSystemwidth = breakSystemwidth;
+		__temp_me126.system = new nx3.PSystem();
+		__temp_me126.barWidthCalculator = barWidthCalculator;
 	}
 	
 	
@@ -116,27 +116,27 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 	public   void takeCareOfLastBarCautions()
 	{
 		this.system.status = nx3.PSystemStatus.Ok;
-		nx3.PSystemBar __temp_stmt778 = null;
+		nx3.PSystemBar __temp_stmt765 = null;
 		{
 			haxe.root.Array<nx3.PSystemBar> array = this.system.getSystembars();
-			__temp_stmt778 = array.__get(( array.length - 1 ));
+			__temp_stmt765 = array.__get(( array.length - 1 ));
 		}
 		
-		nx3.PBar sysBar = __temp_stmt778.bar;
-		nx3.PSystemBar __temp_stmt779 = null;
+		nx3.PBar sysBar = __temp_stmt765.bar;
+		nx3.PSystemBar __temp_stmt766 = null;
 		{
 			haxe.root.Array<nx3.PSystemBar> array1 = this.system.getSystembars();
-			__temp_stmt779 = array1.__get(( array1.length - 1 ));
+			__temp_stmt766 = array1.__get(( array1.length - 1 ));
 		}
 		
-		java.lang.Object sysBarAttributes = __temp_stmt779.actAttributes;
-		nx3.PBar __temp_stmt780 = null;
+		java.lang.Object sysBarAttributes = __temp_stmt766.actAttributes;
+		nx3.PBar __temp_stmt767 = null;
 		{
 			haxe.root.Array<nx3.PBar> array2 = this.bars;
-			__temp_stmt780 = array2.__get(( array2.length - 1 ));
+			__temp_stmt767 = array2.__get(( array2.length - 1 ));
 		}
 		
-		if (( sysBar != __temp_stmt780 )) 
+		if (( sysBar != __temp_stmt767 )) 
 		{
 			nx3.PBar nextBar = this.bars.__get(0);
 			java.lang.Object nextBarAttributes = this.getBarAttributes(nextBar);
@@ -146,21 +146,21 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 			if (( ( newClef || newKey ) || newTime )) 
 			{
 				java.lang.Object sysBarCautAttributes = this.copyAndRemoveRedundantAttributes(sysBarAttributes, nextBarAttributes);
-				nx3.PSystemBar __temp_stmt781 = null;
+				nx3.PSystemBar __temp_stmt768 = null;
 				{
 					haxe.root.Array<nx3.PSystemBar> array3 = this.system.getSystembars();
-					__temp_stmt781 = array3.__get(( array3.length - 1 ));
+					__temp_stmt768 = array3.__get(( array3.length - 1 ));
 				}
 				
-				nx3.PBarConfig sysBarConfig = __temp_stmt781.barConfig;
-				nx3.PSystemBar __temp_stmt783 = null;
+				nx3.PBarConfig sysBarConfig = __temp_stmt768.barConfig;
+				nx3.PSystemBar __temp_stmt770 = null;
 				{
 					haxe.root.Array<nx3.PSystemBar> array4 = this.system.getSystembars();
-					__temp_stmt783 = array4.__get(( array4.length - 1 ));
+					__temp_stmt770 = array4.__get(( array4.length - 1 ));
 				}
 				
-				nx3.PSystembarMeasurements __temp_stmt782 = __temp_stmt783.getBarMeasurements();
-				double sysBarWidth = __temp_stmt782.getTotalWidth();
+				nx3.PSystembarMeasurements __temp_stmt769 = __temp_stmt770.getBarMeasurements();
+				double sysBarWidth = __temp_stmt769.getTotalWidth();
 				double systemWidthWithoutLastBar = ( this.system.width - sysBarWidth );
 				nx3.PBarConfig sysBarConfigWithCautions = new nx3.PBarConfig(((java.lang.Object) (sysBarConfig.showClef) ), ((java.lang.Object) (sysBarConfig.showKey) ), ((java.lang.Object) (sysBarConfig.showTime) ), ((java.lang.Object) (null) ), ((java.lang.Object) (null) ), ((java.lang.Object) (null) ));
 				if (newClef) 
@@ -181,30 +181,30 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				nx3.PSystembarMeasurements measurementsWithCautions = new nx3.PSystembarMeasurements(((nx3.PBar) (sysBar) )).init(sysBarAttributes, sysBarConfigWithCautions, sysBarCautAttributes);
 				if (( ( systemWidthWithoutLastBar + measurementsWithCautions.getTotalWidth() ) <= this.breakSystemwidth )) 
 				{
-					nx3.PSystemBar __temp_stmt784 = null;
+					nx3.PSystemBar __temp_stmt771 = null;
 					{
 						haxe.root.Array<nx3.PSystemBar> array5 = this.system.getSystembars();
-						__temp_stmt784 = array5.__get(( array5.length - 1 ));
+						__temp_stmt771 = array5.__get(( array5.length - 1 ));
 					}
 					
-					__temp_stmt784.caAttributes = sysBarCautAttributes;
-					nx3.PSystemBar __temp_stmt785 = null;
+					__temp_stmt771.caAttributes = sysBarCautAttributes;
+					nx3.PSystemBar __temp_stmt772 = null;
 					{
 						haxe.root.Array<nx3.PSystemBar> array6 = this.system.getSystembars();
-						__temp_stmt785 = array6.__get(( array6.length - 1 ));
+						__temp_stmt772 = array6.__get(( array6.length - 1 ));
 					}
 					
-					__temp_stmt785.barConfig = sysBarConfigWithCautions;
-					double __temp_stmt786 = ( this.system.getWidth() - sysBarWidth );
-					nx3.PSystemBar __temp_stmt789 = null;
+					__temp_stmt772.barConfig = sysBarConfigWithCautions;
+					double __temp_stmt773 = ( this.system.getWidth() - sysBarWidth );
+					nx3.PSystemBar __temp_stmt776 = null;
 					{
 						haxe.root.Array<nx3.PSystemBar> array7 = this.system.getSystembars();
-						__temp_stmt789 = array7.__get(( array7.length - 1 ));
+						__temp_stmt776 = array7.__get(( array7.length - 1 ));
 					}
 					
-					nx3.PSystembarMeasurements __temp_stmt788 = __temp_stmt789.getBarMeasurements();
-					double __temp_stmt787 = __temp_stmt788.getTotalWidth();
-					this.system.width = ( __temp_stmt786 + __temp_stmt787 );
+					nx3.PSystembarMeasurements __temp_stmt775 = __temp_stmt776.getBarMeasurements();
+					double __temp_stmt774 = __temp_stmt775.getTotalWidth();
+					this.system.width = ( __temp_stmt773 + __temp_stmt774 );
 				}
 				 else 
 				{
@@ -462,9 +462,9 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 	{
 		java.lang.Object result = null;
 		{
-			haxe.root.Array<nx3.EClef> __temp_odecl790 = new haxe.root.Array<nx3.EClef>();
-			haxe.root.Array<nx3.EKey> __temp_odecl791 = new haxe.root.Array<nx3.EKey>();
-			result = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"clefs", "keys", "time"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl790, __temp_odecl791, null}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
+			haxe.root.Array<nx3.EClef> __temp_odecl777 = new haxe.root.Array<nx3.EClef>();
+			haxe.root.Array<nx3.EKey> __temp_odecl778 = new haxe.root.Array<nx3.EKey>();
+			result = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"clefs", "keys", "time"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl777, __temp_odecl778, null}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
 		}
 		
 		haxe.lang.Runtime.setField(result, "clefs", ((haxe.root.Array<nx3.EClef>) (haxe.lang.Runtime.getField(barAttributes, "clefs", true)) ).copy());
@@ -569,9 +569,9 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 		
 		java.lang.Object result = null;
 		{
-			haxe.root.Array<nx3.EClef> __temp_odecl792 = bar.get_clefs().copy();
-			haxe.root.Array<nx3.EKey> __temp_odecl793 = bar.get_keys().copy();
-			result = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"clefs", "keys", "time"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl792, __temp_odecl793, time}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
+			haxe.root.Array<nx3.EClef> __temp_odecl779 = bar.get_clefs().copy();
+			haxe.root.Array<nx3.EKey> __temp_odecl780 = bar.get_keys().copy();
+			result = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"clefs", "keys", "time"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl779, __temp_odecl780, time}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
 		}
 		
 		return result;
@@ -634,14 +634,14 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef794 = true;
+			boolean __temp_executeDef781 = true;
 			switch (field.hashCode())
 			{
 				case 438880888:
 				{
 					if (field.equals("breakSystemwidth")) 
 					{
-						__temp_executeDef794 = false;
+						__temp_executeDef781 = false;
 						this.breakSystemwidth = ((double) (value) );
 						return value;
 					}
@@ -654,7 +654,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("systemConfig")) 
 					{
-						__temp_executeDef794 = false;
+						__temp_executeDef781 = false;
 						this.systemConfig = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -667,7 +667,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("prevBarAttributes")) 
 					{
-						__temp_executeDef794 = false;
+						__temp_executeDef781 = false;
 						this.prevBarAttributes = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -678,7 +678,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef794) 
+			if (__temp_executeDef781) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -695,14 +695,14 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef795 = true;
+			boolean __temp_executeDef782 = true;
 			switch (field.hashCode())
 			{
 				case -935417643:
 				{
 					if (field.equals("barWidthCalculator")) 
 					{
-						__temp_executeDef795 = false;
+						__temp_executeDef782 = false;
 						this.barWidthCalculator = ((nx3.IBarWidthCalculator) (value) );
 						return value;
 					}
@@ -715,7 +715,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("bars")) 
 					{
-						__temp_executeDef795 = false;
+						__temp_executeDef782 = false;
 						this.bars = ((haxe.root.Array<nx3.PBar>) (value) );
 						return value;
 					}
@@ -728,7 +728,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("system")) 
 					{
-						__temp_executeDef795 = false;
+						__temp_executeDef782 = false;
 						this.system = ((nx3.PSystem) (value) );
 						return value;
 					}
@@ -741,7 +741,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("systemConfig")) 
 					{
-						__temp_executeDef795 = false;
+						__temp_executeDef782 = false;
 						this.systemConfig = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -754,7 +754,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("breakSystemwidth")) 
 					{
-						__temp_executeDef795 = false;
+						__temp_executeDef782 = false;
 						this.breakSystemwidth = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -767,7 +767,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("prevBarAttributes")) 
 					{
-						__temp_executeDef795 = false;
+						__temp_executeDef782 = false;
 						this.prevBarAttributes = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -778,7 +778,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef795) 
+			if (__temp_executeDef782) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -795,14 +795,14 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef796 = true;
+			boolean __temp_executeDef783 = true;
 			switch (field.hashCode())
 			{
 				case -1451582953:
 				{
 					if (field.equals("nullOrDiffers")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("nullOrDiffers"))) );
 					}
 					
@@ -814,7 +814,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("bars")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return this.bars;
 					}
 					
@@ -826,7 +826,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("arrayBNullOrDiffers")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("arrayBNullOrDiffers"))) );
 					}
 					
@@ -838,7 +838,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("systemConfig")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return this.systemConfig;
 					}
 					
@@ -850,7 +850,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("compareBarAttributesValidity")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("compareBarAttributesValidity"))) );
 					}
 					
@@ -862,7 +862,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("prevBarAttributes")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return this.prevBarAttributes;
 					}
 					
@@ -874,7 +874,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getBarAttributes")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBarAttributes"))) );
 					}
 					
@@ -886,7 +886,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("breakSystemwidth")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return this.breakSystemwidth;
 					}
 					
@@ -898,7 +898,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("overrideActualAttributesFromPrevBarAttributes")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("overrideActualAttributesFromPrevBarAttributes"))) );
 					}
 					
@@ -910,7 +910,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("system")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return this.system;
 					}
 					
@@ -922,7 +922,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("overrideActualAttributesWithDefaultsIfStillNotSet")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("overrideActualAttributesWithDefaultsIfStillNotSet"))) );
 					}
 					
@@ -934,7 +934,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("barWidthCalculator")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return this.barWidthCalculator;
 					}
 					
@@ -946,7 +946,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("copyBarAttributes")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("copyBarAttributes"))) );
 					}
 					
@@ -958,7 +958,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getSystem")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSystem"))) );
 					}
 					
@@ -970,7 +970,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("adaptBarConfig")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("adaptBarConfig"))) );
 					}
 					
@@ -982,7 +982,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("takeCareOfLastBarCautions")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("takeCareOfLastBarCautions"))) );
 					}
 					
@@ -994,7 +994,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("copyAndRemoveRedundantAttributes")) 
 					{
-						__temp_executeDef796 = false;
+						__temp_executeDef783 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("copyAndRemoveRedundantAttributes"))) );
 					}
 					
@@ -1004,7 +1004,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef796) 
+			if (__temp_executeDef783) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -1021,14 +1021,14 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef797 = true;
+			boolean __temp_executeDef784 = true;
 			switch (field.hashCode())
 			{
 				case 438880888:
 				{
 					if (field.equals("breakSystemwidth")) 
 					{
-						__temp_executeDef797 = false;
+						__temp_executeDef784 = false;
 						return this.breakSystemwidth;
 					}
 					
@@ -1040,7 +1040,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("systemConfig")) 
 					{
-						__temp_executeDef797 = false;
+						__temp_executeDef784 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.systemConfig)) );
 					}
 					
@@ -1052,7 +1052,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("prevBarAttributes")) 
 					{
-						__temp_executeDef797 = false;
+						__temp_executeDef784 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.prevBarAttributes)) );
 					}
 					
@@ -1062,7 +1062,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef797) 
+			if (__temp_executeDef784) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -1079,14 +1079,14 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef798 = true;
+			boolean __temp_executeDef785 = true;
 			switch (field.hashCode())
 			{
 				case -1451582953:
 				{
 					if (field.equals("nullOrDiffers")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						return this.nullOrDiffers(dynargs.__get(0), dynargs.__get(1));
 					}
 					
@@ -1098,7 +1098,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getSystem")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						return this.getSystem();
 					}
 					
@@ -1110,7 +1110,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("arrayBNullOrDiffers")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						return this.arrayBNullOrDiffers(((haxe.root.Array<java.lang.Object>) (dynargs.__get(0)) ), ((haxe.root.Array<java.lang.Object>) (dynargs.__get(1)) ));
 					}
 					
@@ -1122,7 +1122,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("takeCareOfLastBarCautions")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						this.takeCareOfLastBarCautions();
 					}
 					
@@ -1134,7 +1134,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("compareBarAttributesValidity")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						return this.compareBarAttributesValidity(dynargs.__get(0), dynargs.__get(1));
 					}
 					
@@ -1146,7 +1146,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("copyAndRemoveRedundantAttributes")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						return this.copyAndRemoveRedundantAttributes(dynargs.__get(0), dynargs.__get(1));
 					}
 					
@@ -1158,7 +1158,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getBarAttributes")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						return this.getBarAttributes(((nx3.PBar) (dynargs.__get(0)) ));
 					}
 					
@@ -1170,7 +1170,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("adaptBarConfig")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						this.adaptBarConfig(((nx3.PBar) (dynargs.__get(0)) ), ((nx3.PBarConfig) (dynargs.__get(1)) ), dynargs.__get(2), haxe.lang.Runtime.toBool(dynargs.__get(3)), haxe.lang.Runtime.toBool(dynargs.__get(4)), haxe.lang.Runtime.toBool(dynargs.__get(5)));
 					}
 					
@@ -1182,7 +1182,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("overrideActualAttributesFromPrevBarAttributes")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						this.overrideActualAttributesFromPrevBarAttributes(dynargs.__get(0), ((nx3.PBar) (dynargs.__get(1)) ), dynargs.__get(2));
 					}
 					
@@ -1194,7 +1194,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("copyBarAttributes")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						return this.copyBarAttributes(dynargs.__get(0));
 					}
 					
@@ -1206,7 +1206,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("overrideActualAttributesWithDefaultsIfStillNotSet")) 
 					{
-						__temp_executeDef798 = false;
+						__temp_executeDef785 = false;
 						this.overrideActualAttributesWithDefaultsIfStillNotSet(dynargs.__get(0));
 					}
 					
@@ -1216,7 +1216,7 @@ public  class PSystemBarsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef798) 
+			if (__temp_executeDef785) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,18 +18,18 @@ public  class PBeamgroup extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBeamgroup(nx3.PBeamgroup __temp_me103, haxe.root.Array<nx3.PNote> pnotes)
+	public static   void __hx_ctor_nx3_PBeamgroup(nx3.PBeamgroup __temp_me91, haxe.root.Array<nx3.PNote> pnotes)
 	{
-		__temp_me103.value = null;
-		__temp_me103.voice = pnotes.__get(0).voice;
-		__temp_me103.pnotes = pnotes;
+		__temp_me91.value = null;
+		__temp_me91.voice = pnotes.__get(0).voice;
+		__temp_me91.pnotes = pnotes;
 		{
 			int _g = 0;
 			while (( _g < pnotes.length ))
 			{
 				nx3.PNote pnote = pnotes.__get(_g);
 				 ++ _g;
-				pnote.beamgroup = __temp_me103;
+				pnote.beamgroup = __temp_me91;
 			}
 			
 		}
@@ -69,8 +69,8 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				nx3.PNote pnote = _g1.__get(_g);
 				 ++ _g;
 				{
-					nx3.PBeamgroup __temp_dynop255 = this;
-					__temp_dynop255.value = ((java.lang.Object) (haxe.lang.Runtime.plus(__temp_dynop255.value, nx3.ENoteValTools.value(pnote.nnote.value))) );
+					nx3.PBeamgroup __temp_dynop237 = this;
+					__temp_dynop237.value = ((java.lang.Object) (haxe.lang.Runtime.plus(__temp_dynop237.value, nx3.ENoteValTools.value(pnote.nnote.value))) );
 				}
 				
 			}
@@ -126,7 +126,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 			{
 				nx3.PNote note = _g1.__get(_g);
 				 ++ _g;
-				this.stavexpositions.push(( note.getComplex().getXPosition() + note.getStaveXPosition() ));
+				this.stavexpositions.push(((double) (haxe.lang.Runtime.toDouble(haxe.lang.Runtime.plus(note.getComplex().getXPosition(), note.getStaveXPosition()))) ));
 			}
 			
 		}
@@ -175,14 +175,14 @@ public  class PBeamgroup extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef640 = true;
+			boolean __temp_executeDef627 = true;
 			switch (field.hashCode())
 			{
 				case 97692013:
 				{
 					if (field.equals("frame")) 
 					{
-						__temp_executeDef640 = false;
+						__temp_executeDef627 = false;
 						this.frame = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -195,7 +195,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef640 = false;
+						__temp_executeDef627 = false;
 						this.value = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -206,7 +206,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef640) 
+			if (__temp_executeDef627) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -223,14 +223,14 @@ public  class PBeamgroup extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef641 = true;
+			boolean __temp_executeDef628 = true;
 			switch (field.hashCode())
 			{
 				case 97692013:
 				{
 					if (field.equals("frame")) 
 					{
-						__temp_executeDef641 = false;
+						__temp_executeDef628 = false;
 						this.frame = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -243,7 +243,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("pnotes")) 
 					{
-						__temp_executeDef641 = false;
+						__temp_executeDef628 = false;
 						this.pnotes = ((haxe.root.Array<nx3.PNote>) (value) );
 						return value;
 					}
@@ -256,7 +256,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("stavexpositions")) 
 					{
-						__temp_executeDef641 = false;
+						__temp_executeDef628 = false;
 						this.stavexpositions = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -269,7 +269,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef641 = false;
+						__temp_executeDef628 = false;
 						this.value = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -282,7 +282,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("voice")) 
 					{
-						__temp_executeDef641 = false;
+						__temp_executeDef628 = false;
 						this.voice = ((nx3.PVoice) (value) );
 						return value;
 					}
@@ -295,7 +295,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("direction")) 
 					{
-						__temp_executeDef641 = false;
+						__temp_executeDef628 = false;
 						this.direction = ((nx3.EDirectionUD) (value) );
 						return value;
 					}
@@ -306,7 +306,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef641) 
+			if (__temp_executeDef628) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -323,14 +323,14 @@ public  class PBeamgroup extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef642 = true;
+			boolean __temp_executeDef629 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("toString"))) );
 					}
 					
@@ -342,7 +342,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("pnotes")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return this.pnotes;
 					}
 					
@@ -354,7 +354,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getFrame")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getFrame"))) );
 					}
 					
@@ -366,7 +366,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return this.value;
 					}
 					
@@ -378,7 +378,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("frame")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return this.frame;
 					}
 					
@@ -390,7 +390,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getValue")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getValue"))) );
 					}
 					
@@ -402,7 +402,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getNotesStemXPositions")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNotesStemXPositions"))) );
 					}
 					
@@ -414,7 +414,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("direction")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return this.direction;
 					}
 					
@@ -426,7 +426,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("stavexpositions")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return this.stavexpositions;
 					}
 					
@@ -438,7 +438,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("setDirection")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("setDirection"))) );
 					}
 					
@@ -450,7 +450,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getPVoice")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getPVoice"))) );
 					}
 					
@@ -462,7 +462,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getDirection")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getDirection"))) );
 					}
 					
@@ -474,7 +474,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("voice")) 
 					{
-						__temp_executeDef642 = false;
+						__temp_executeDef629 = false;
 						return this.voice;
 					}
 					
@@ -484,7 +484,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef642) 
+			if (__temp_executeDef629) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -501,14 +501,14 @@ public  class PBeamgroup extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef643 = true;
+			boolean __temp_executeDef630 = true;
 			switch (field.hashCode())
 			{
 				case 97692013:
 				{
 					if (field.equals("frame")) 
 					{
-						__temp_executeDef643 = false;
+						__temp_executeDef630 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.frame)) );
 					}
 					
@@ -520,7 +520,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef643 = false;
+						__temp_executeDef630 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.value)) );
 					}
 					
@@ -530,7 +530,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef643) 
+			if (__temp_executeDef630) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -547,14 +547,14 @@ public  class PBeamgroup extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef644 = true;
+			boolean __temp_executeDef631 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef644 = false;
+						__temp_executeDef631 = false;
 						return this.toString();
 					}
 					
@@ -566,7 +566,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getValue")) 
 					{
-						__temp_executeDef644 = false;
+						__temp_executeDef631 = false;
 						return this.getValue();
 					}
 					
@@ -578,7 +578,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getFrame")) 
 					{
-						__temp_executeDef644 = false;
+						__temp_executeDef631 = false;
 						return this.getFrame();
 					}
 					
@@ -590,7 +590,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("setDirection")) 
 					{
-						__temp_executeDef644 = false;
+						__temp_executeDef631 = false;
 						this.setDirection(((nx3.EDirectionUD) (dynargs.__get(0)) ));
 					}
 					
@@ -602,7 +602,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getNotesStemXPositions")) 
 					{
-						__temp_executeDef644 = false;
+						__temp_executeDef631 = false;
 						return this.getNotesStemXPositions();
 					}
 					
@@ -614,7 +614,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getDirection")) 
 					{
-						__temp_executeDef644 = false;
+						__temp_executeDef631 = false;
 						return this.getDirection();
 					}
 					
@@ -626,7 +626,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				{
 					if (field.equals("getPVoice")) 
 					{
-						__temp_executeDef644 = false;
+						__temp_executeDef631 = false;
 						return this.getPVoice();
 					}
 					
@@ -636,7 +636,7 @@ public  class PBeamgroup extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef644) 
+			if (__temp_executeDef631) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

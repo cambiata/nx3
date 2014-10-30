@@ -18,9 +18,9 @@ public  class PScoreSystemsGenerator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PScoreSystemsGenerator(nx3.PScoreSystemsGenerator __temp_me132, haxe.root.Array<nx3.PBar> bars)
+	public static   void __hx_ctor_nx3_PScoreSystemsGenerator(nx3.PScoreSystemsGenerator __temp_me120, haxe.root.Array<nx3.PBar> bars)
 	{
-		__temp_me132.bars = bars;
+		__temp_me120.bars = bars;
 	}
 	
 	
@@ -70,14 +70,14 @@ public  class PScoreSystemsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef755 = true;
+			boolean __temp_executeDef742 = true;
 			switch (field.hashCode())
 			{
 				case 3016384:
 				{
 					if (field.equals("bars")) 
 					{
-						__temp_executeDef755 = false;
+						__temp_executeDef742 = false;
 						this.bars = ((haxe.root.Array<nx3.PBar>) (value) );
 						return value;
 					}
@@ -88,7 +88,7 @@ public  class PScoreSystemsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef755) 
+			if (__temp_executeDef742) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -105,14 +105,14 @@ public  class PScoreSystemsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef756 = true;
+			boolean __temp_executeDef743 = true;
 			switch (field.hashCode())
 			{
 				case 500264327:
 				{
 					if (field.equals("getsSystems")) 
 					{
-						__temp_executeDef756 = false;
+						__temp_executeDef743 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getsSystems"))) );
 					}
 					
@@ -124,7 +124,7 @@ public  class PScoreSystemsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("bars")) 
 					{
-						__temp_executeDef756 = false;
+						__temp_executeDef743 = false;
 						return this.bars;
 					}
 					
@@ -134,7 +134,7 @@ public  class PScoreSystemsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef756) 
+			if (__temp_executeDef743) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -151,14 +151,14 @@ public  class PScoreSystemsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef757 = true;
+			boolean __temp_executeDef744 = true;
 			switch (field.hashCode())
 			{
 				case 500264327:
 				{
 					if (field.equals("getsSystems")) 
 					{
-						__temp_executeDef757 = false;
+						__temp_executeDef744 = false;
 						return this.getsSystems(((haxe.root.Array<java.lang.Object>) (dynargs.__get(0)) ));
 					}
 					
@@ -168,7 +168,7 @@ public  class PScoreSystemsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef757) 
+			if (__temp_executeDef744) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

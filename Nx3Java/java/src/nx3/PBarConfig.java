@@ -18,20 +18,20 @@ public  class PBarConfig extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBarConfig(nx3.PBarConfig __temp_me98, java.lang.Object showClef, java.lang.Object showKey, java.lang.Object showTime, java.lang.Object showCautClef, java.lang.Object showCautKey, java.lang.Object showCautTime)
+	public static   void __hx_ctor_nx3_PBarConfig(nx3.PBarConfig __temp_me86, java.lang.Object showClef, java.lang.Object showKey, java.lang.Object showTime, java.lang.Object showCautClef, java.lang.Object showCautKey, java.lang.Object showCautTime)
 	{
-		boolean __temp_showCautTime97 = ( (( showCautTime == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showCautTime)) );
-		boolean __temp_showCautKey96 = ( (( showCautKey == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showCautKey)) );
-		boolean __temp_showCautClef95 = ( (( showCautClef == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showCautClef)) );
-		boolean __temp_showTime94 = ( (( showTime == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showTime)) );
-		boolean __temp_showKey93 = ( (( showKey == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showKey)) );
-		boolean __temp_showClef92 = ( (( showClef == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showClef)) );
-		__temp_me98.showClef = __temp_showClef92;
-		__temp_me98.showKey = __temp_showKey93;
-		__temp_me98.showTime = __temp_showTime94;
-		__temp_me98.showCautClef = __temp_showCautClef95;
-		__temp_me98.showCautKey = __temp_showCautKey96;
-		__temp_me98.showCautTime = __temp_showCautTime97;
+		boolean __temp_showCautTime85 = ( (( showCautTime == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showCautTime)) );
+		boolean __temp_showCautKey84 = ( (( showCautKey == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showCautKey)) );
+		boolean __temp_showCautClef83 = ( (( showCautClef == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showCautClef)) );
+		boolean __temp_showTime82 = ( (( showTime == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showTime)) );
+		boolean __temp_showKey81 = ( (( showKey == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showKey)) );
+		boolean __temp_showClef80 = ( (( showClef == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(showClef)) );
+		__temp_me86.showClef = __temp_showClef80;
+		__temp_me86.showKey = __temp_showKey81;
+		__temp_me86.showTime = __temp_showTime82;
+		__temp_me86.showCautClef = __temp_showCautClef83;
+		__temp_me86.showCautKey = __temp_showCautKey84;
+		__temp_me86.showCautTime = __temp_showCautTime85;
 	}
 	
 	
@@ -64,14 +64,14 @@ public  class PBarConfig extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef624 = true;
+			boolean __temp_executeDef611 = true;
 			switch (field.hashCode())
 			{
 				case -674612568:
 				{
 					if (field.equals("calculatedWidth")) 
 					{
-						__temp_executeDef624 = false;
+						__temp_executeDef611 = false;
 						this.calculatedWidth = ((double) (value) );
 						return value;
 					}
@@ -82,7 +82,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef624) 
+			if (__temp_executeDef611) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -99,14 +99,14 @@ public  class PBarConfig extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef625 = true;
+			boolean __temp_executeDef612 = true;
 			switch (field.hashCode())
 			{
 				case -674612568:
 				{
 					if (field.equals("calculatedWidth")) 
 					{
-						__temp_executeDef625 = false;
+						__temp_executeDef612 = false;
 						this.calculatedWidth = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -119,7 +119,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showClef")) 
 					{
-						__temp_executeDef625 = false;
+						__temp_executeDef612 = false;
 						this.showClef = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -132,7 +132,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showCautTime")) 
 					{
-						__temp_executeDef625 = false;
+						__temp_executeDef612 = false;
 						this.showCautTime = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -145,7 +145,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showKey")) 
 					{
-						__temp_executeDef625 = false;
+						__temp_executeDef612 = false;
 						this.showKey = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -158,7 +158,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showCautKey")) 
 					{
-						__temp_executeDef625 = false;
+						__temp_executeDef612 = false;
 						this.showCautKey = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -171,7 +171,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showTime")) 
 					{
-						__temp_executeDef625 = false;
+						__temp_executeDef612 = false;
 						this.showTime = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -184,7 +184,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showCautClef")) 
 					{
-						__temp_executeDef625 = false;
+						__temp_executeDef612 = false;
 						this.showCautClef = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -195,7 +195,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef625) 
+			if (__temp_executeDef612) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -212,14 +212,14 @@ public  class PBarConfig extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef626 = true;
+			boolean __temp_executeDef613 = true;
 			switch (field.hashCode())
 			{
 				case -674612568:
 				{
 					if (field.equals("calculatedWidth")) 
 					{
-						__temp_executeDef626 = false;
+						__temp_executeDef613 = false;
 						return this.calculatedWidth;
 					}
 					
@@ -231,7 +231,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showClef")) 
 					{
-						__temp_executeDef626 = false;
+						__temp_executeDef613 = false;
 						return this.showClef;
 					}
 					
@@ -243,7 +243,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showCautTime")) 
 					{
-						__temp_executeDef626 = false;
+						__temp_executeDef613 = false;
 						return this.showCautTime;
 					}
 					
@@ -255,7 +255,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showKey")) 
 					{
-						__temp_executeDef626 = false;
+						__temp_executeDef613 = false;
 						return this.showKey;
 					}
 					
@@ -267,7 +267,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showCautKey")) 
 					{
-						__temp_executeDef626 = false;
+						__temp_executeDef613 = false;
 						return this.showCautKey;
 					}
 					
@@ -279,7 +279,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showTime")) 
 					{
-						__temp_executeDef626 = false;
+						__temp_executeDef613 = false;
 						return this.showTime;
 					}
 					
@@ -291,7 +291,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				{
 					if (field.equals("showCautClef")) 
 					{
-						__temp_executeDef626 = false;
+						__temp_executeDef613 = false;
 						return this.showCautClef;
 					}
 					
@@ -301,7 +301,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef626) 
+			if (__temp_executeDef613) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -318,14 +318,14 @@ public  class PBarConfig extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef627 = true;
+			boolean __temp_executeDef614 = true;
 			switch (field.hashCode())
 			{
 				case -674612568:
 				{
 					if (field.equals("calculatedWidth")) 
 					{
-						__temp_executeDef627 = false;
+						__temp_executeDef614 = false;
 						return this.calculatedWidth;
 					}
 					
@@ -335,7 +335,7 @@ public  class PBarConfig extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef627) 
+			if (__temp_executeDef614) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}

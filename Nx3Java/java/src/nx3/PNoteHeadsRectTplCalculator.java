@@ -18,9 +18,9 @@ public  class PNoteHeadsRectTplCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PNoteHeadsRectTplCalculator(nx3.PNoteHeadsRectTplCalculator __temp_me121, nx3.PNote note)
+	public static   void __hx_ctor_nx3_PNoteHeadsRectTplCalculator(nx3.PNoteHeadsRectTplCalculator __temp_me109, nx3.PNote note)
 	{
-		__temp_me121.note = note;
+		__temp_me109.note = note;
 	}
 	
 	
@@ -47,14 +47,14 @@ public  class PNoteHeadsRectTplCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef717 = true;
+			boolean __temp_executeDef704 = true;
 			switch (field.hashCode())
 			{
 				case 3387378:
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef717 = false;
+						__temp_executeDef704 = false;
 						this.note = ((nx3.PNote) (value) );
 						return value;
 					}
@@ -65,7 +65,7 @@ public  class PNoteHeadsRectTplCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef717) 
+			if (__temp_executeDef704) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -82,14 +82,14 @@ public  class PNoteHeadsRectTplCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef718 = true;
+			boolean __temp_executeDef705 = true;
 			switch (field.hashCode())
 			{
 				case 2051530802:
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef718 = false;
+						__temp_executeDef705 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeadsRects"))) );
 					}
 					
@@ -101,7 +101,7 @@ public  class PNoteHeadsRectTplCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef718 = false;
+						__temp_executeDef705 = false;
 						return this.note;
 					}
 					
@@ -111,7 +111,7 @@ public  class PNoteHeadsRectTplCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef718) 
+			if (__temp_executeDef705) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -128,14 +128,14 @@ public  class PNoteHeadsRectTplCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef719 = true;
+			boolean __temp_executeDef706 = true;
 			switch (field.hashCode())
 			{
 				case 2051530802:
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef719 = false;
+						__temp_executeDef706 = false;
 						return this.getHeadsRects();
 					}
 					
@@ -145,7 +145,7 @@ public  class PNoteHeadsRectTplCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef719) 
+			if (__temp_executeDef706) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

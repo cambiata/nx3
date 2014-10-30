@@ -17,9 +17,9 @@ public  class QVoiceDown extends nx3.QVoice
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QVoiceDown(nx3.QVoiceDown __temp_me174, haxe.root.Array<java.lang.Object> notevalues, java.lang.Object notevalue, haxe.root.Array<java.lang.Object> headlevels, java.lang.Object levelrepeats, java.lang.String signs)
+	public static   void __hx_ctor_nx3_QVoiceDown(nx3.QVoiceDown __temp_me162, haxe.root.Array<java.lang.Object> notevalues, java.lang.Object notevalue, haxe.root.Array<java.lang.Object> headlevels, java.lang.Object levelrepeats, java.lang.String signs)
 	{
-		nx3.QVoice.__hx_ctor_nx3_QVoice(__temp_me174, ( (( notevalues == null )) ? (((haxe.root.Array<java.lang.Object>) (null) )) : (notevalues) ), ( (( notevalue == null )) ? (((java.lang.Object) (null) )) : (notevalue) ), ( (( headlevels == null )) ? (((haxe.root.Array<java.lang.Object>) (null) )) : (headlevels) ), ( (( levelrepeats == null )) ? (((java.lang.Object) (null) )) : (levelrepeats) ), ( (( signs == null )) ? (haxe.lang.Runtime.toString(null)) : (signs) ), nx3.EDirectionUAD.Down);
+		nx3.QVoice.__hx_ctor_nx3_QVoice(__temp_me162, ( (( notevalues == null )) ? (((haxe.root.Array<java.lang.Object>) (null) )) : (notevalues) ), ( (( notevalue == null )) ? (((java.lang.Object) (null) )) : (notevalue) ), ( (( headlevels == null )) ? (((haxe.root.Array<java.lang.Object>) (null) )) : (headlevels) ), ( (( levelrepeats == null )) ? (((java.lang.Object) (null) )) : (levelrepeats) ), ( (( signs == null )) ? (haxe.lang.Runtime.toString(null)) : (signs) ), nx3.EDirectionUAD.Down);
 	}
 	
 	

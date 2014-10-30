@@ -16,6 +16,10 @@ class AssetData {
 		
 		if (!initialized) {
 			
+			path.set ("assets/4samples.mp3", "assets/4samples.mp3");
+			type.set ("assets/4samples.mp3", Reflect.field (AssetType, "music".toUpperCase ()));
+			path.set ("assets/4samples.wav", "assets/4samples.wav");
+			type.set ("assets/4samples.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
 			path.set ("assets/micro.mp3", "assets/micro.mp3");
 			type.set ("assets/micro.mp3", Reflect.field (AssetType, "music".toUpperCase ()));
 			path.set ("assets/nano.mp3", "assets/nano.mp3");

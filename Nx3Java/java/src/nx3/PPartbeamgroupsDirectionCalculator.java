@@ -18,9 +18,9 @@ public  class PPartbeamgroupsDirectionCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PPartbeamgroupsDirectionCalculator(nx3.PPartbeamgroupsDirectionCalculator __temp_me128, nx3.PPart ppart)
+	public static   void __hx_ctor_nx3_PPartbeamgroupsDirectionCalculator(nx3.PPartbeamgroupsDirectionCalculator __temp_me116, nx3.PPart ppart)
 	{
-		__temp_me128.ppart = ppart;
+		__temp_me116.ppart = ppart;
 	}
 	
 	
@@ -203,14 +203,14 @@ public  class PPartbeamgroupsDirectionCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef743 = true;
+			boolean __temp_executeDef730 = true;
 			switch (field.hashCode())
 			{
 				case 106867811:
 				{
 					if (field.equals("ppart")) 
 					{
-						__temp_executeDef743 = false;
+						__temp_executeDef730 = false;
 						this.ppart = ((nx3.PPart) (value) );
 						return value;
 					}
@@ -221,7 +221,7 @@ public  class PPartbeamgroupsDirectionCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef743) 
+			if (__temp_executeDef730) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -238,14 +238,14 @@ public  class PPartbeamgroupsDirectionCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef744 = true;
+			boolean __temp_executeDef731 = true;
 			switch (field.hashCode())
 			{
 				case 225756157:
 				{
 					if (field.equals("calculateBeamgroupsDirections")) 
 					{
-						__temp_executeDef744 = false;
+						__temp_executeDef731 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calculateBeamgroupsDirections"))) );
 					}
 					
@@ -257,7 +257,7 @@ public  class PPartbeamgroupsDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("ppart")) 
 					{
-						__temp_executeDef744 = false;
+						__temp_executeDef731 = false;
 						return this.ppart;
 					}
 					
@@ -267,7 +267,7 @@ public  class PPartbeamgroupsDirectionCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef744) 
+			if (__temp_executeDef731) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -284,14 +284,14 @@ public  class PPartbeamgroupsDirectionCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef745 = true;
+			boolean __temp_executeDef732 = true;
 			switch (field.hashCode())
 			{
 				case 225756157:
 				{
 					if (field.equals("calculateBeamgroupsDirections")) 
 					{
-						__temp_executeDef745 = false;
+						__temp_executeDef732 = false;
 						this.calculateBeamgroupsDirections();
 					}
 					
@@ -301,7 +301,7 @@ public  class PPartbeamgroupsDirectionCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef745) 
+			if (__temp_executeDef732) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -17,9 +17,9 @@ public  class QNote16 extends nx3.QNote
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QNote16(nx3.QNote16 __temp_me168, java.lang.Object headLevel, haxe.root.Array<java.lang.Object> headLevels, java.lang.String signs)
+	public static   void __hx_ctor_nx3_QNote16(nx3.QNote16 __temp_me156, java.lang.Object headLevel, haxe.root.Array<java.lang.Object> headLevels, java.lang.String signs)
 	{
-		nx3.QNote.__hx_ctor_nx3_QNote(__temp_me168, ( (( headLevel == null )) ? (((java.lang.Object) (null) )) : (headLevel) ), ( (( headLevels == null )) ? (((haxe.root.Array<java.lang.Object>) (null) )) : (headLevels) ), null, null, nx3.ENoteVal.Nv16, ( (( signs == null )) ? (haxe.lang.Runtime.toString("")) : (signs) ), null);
+		nx3.QNote.__hx_ctor_nx3_QNote(__temp_me156, ( (( headLevel == null )) ? (((java.lang.Object) (null) )) : (headLevel) ), ( (( headLevels == null )) ? (((haxe.root.Array<java.lang.Object>) (null) )) : (headLevels) ), null, null, nx3.ENoteVal.Nv16, ( (( signs == null )) ? (haxe.lang.Runtime.toString("")) : (signs) ), null);
 		if (( signs == null )) 
 		{
 			signs = "";

@@ -18,9 +18,9 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PSignsRectsCalculator(nx3.PSignsRectsCalculator __temp_me134, haxe.root.Array<java.lang.Object> signs)
+	public static   void __hx_ctor_nx3_PSignsRectsCalculator(nx3.PSignsRectsCalculator __temp_me122, haxe.root.Array<java.lang.Object> signs)
 	{
-		__temp_me134.signs = signs;
+		__temp_me122.signs = signs;
 	}
 	
 	
@@ -146,14 +146,14 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef761 = true;
+			boolean __temp_executeDef748 = true;
 			switch (field.hashCode())
 			{
 				case 109435478:
 				{
 					if (field.equals("signs")) 
 					{
-						__temp_executeDef761 = false;
+						__temp_executeDef748 = false;
 						this.signs = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -164,7 +164,7 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef761) 
+			if (__temp_executeDef748) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -181,14 +181,14 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef762 = true;
+			boolean __temp_executeDef749 = true;
 			switch (field.hashCode())
 			{
 				case -1905802569:
 				{
 					if (field.equals("getSignRect")) 
 					{
-						__temp_executeDef762 = false;
+						__temp_executeDef749 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSignRect"))) );
 					}
 					
@@ -200,7 +200,7 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("signs")) 
 					{
-						__temp_executeDef762 = false;
+						__temp_executeDef749 = false;
 						return this.signs;
 					}
 					
@@ -212,7 +212,7 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getSignRects")) 
 					{
-						__temp_executeDef762 = false;
+						__temp_executeDef749 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSignRects"))) );
 					}
 					
@@ -222,7 +222,7 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef762) 
+			if (__temp_executeDef749) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -239,14 +239,14 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef763 = true;
+			boolean __temp_executeDef750 = true;
 			switch (field.hashCode())
 			{
 				case -1905802569:
 				{
 					if (field.equals("getSignRect")) 
 					{
-						__temp_executeDef763 = false;
+						__temp_executeDef750 = false;
 						return this.getSignRect(((nx3.ESign) (dynargs.__get(0)) ));
 					}
 					
@@ -258,7 +258,7 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getSignRects")) 
 					{
-						__temp_executeDef763 = false;
+						__temp_executeDef750 = false;
 						return this.getSignRects(((haxe.root.Array<nx3.geom.Rectangle>) (dynargs.__get(0)) ));
 					}
 					
@@ -268,7 +268,7 @@ public  class PSignsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef763) 
+			if (__temp_executeDef750) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,10 +18,10 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PColumnsGenerator(nx3.PColumnsGenerator __temp_me110, nx3.PBar bar)
+	public static   void __hx_ctor_nx3_PColumnsGenerator(nx3.PColumnsGenerator __temp_me98, nx3.PBar bar)
 	{
-		__temp_me110.bar = bar;
-		__temp_me110.vparts = __temp_me110.bar.getParts();
+		__temp_me98.bar = bar;
+		__temp_me98.vparts = __temp_me98.bar.getParts();
 	}
 	
 	
@@ -160,7 +160,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 		}
 		
 		haxe.root.Array<java.lang.Object> positions = ((haxe.root.Array<java.lang.Object>) (((haxe.root.Array) (cx.MapTools.keysToArray(positionsMap.keys())) )) );
-		positions.sort(( (( nx3.PColumnsGenerator_calcPositions_109__Fun.__hx_current != null )) ? (nx3.PColumnsGenerator_calcPositions_109__Fun.__hx_current) : (nx3.PColumnsGenerator_calcPositions_109__Fun.__hx_current = ((nx3.PColumnsGenerator_calcPositions_109__Fun) (new nx3.PColumnsGenerator_calcPositions_109__Fun()) )) ));
+		positions.sort(( (( nx3.PColumnsGenerator_calcPositions_108__Fun.__hx_current != null )) ? (nx3.PColumnsGenerator_calcPositions_108__Fun.__hx_current) : (nx3.PColumnsGenerator_calcPositions_108__Fun.__hx_current = ((nx3.PColumnsGenerator_calcPositions_108__Fun) (new nx3.PColumnsGenerator_calcPositions_108__Fun()) )) ));
 		return positions;
 	}
 	
@@ -168,14 +168,14 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef674 = true;
+			boolean __temp_executeDef661 = true;
 			switch (field.hashCode())
 			{
 				case 97299:
 				{
 					if (field.equals("bar")) 
 					{
-						__temp_executeDef674 = false;
+						__temp_executeDef661 = false;
 						this.bar = ((nx3.PBar) (value) );
 						return value;
 					}
@@ -188,7 +188,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("vparts")) 
 					{
-						__temp_executeDef674 = false;
+						__temp_executeDef661 = false;
 						this.vparts = ((haxe.root.Array<nx3.PPart>) (value) );
 						return value;
 					}
@@ -201,7 +201,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("positionsColumns")) 
 					{
-						__temp_executeDef674 = false;
+						__temp_executeDef661 = false;
 						this.positionsColumns = ((haxe.ds.IntMap<nx3.PColumn>) (value) );
 						return value;
 					}
@@ -214,7 +214,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("positions")) 
 					{
-						__temp_executeDef674 = false;
+						__temp_executeDef661 = false;
 						this.positions = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -227,7 +227,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("columns")) 
 					{
-						__temp_executeDef674 = false;
+						__temp_executeDef661 = false;
 						this.columns = ((haxe.root.Array<nx3.PColumn>) (value) );
 						return value;
 					}
@@ -238,7 +238,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef674) 
+			if (__temp_executeDef661) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -255,14 +255,14 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef675 = true;
+			boolean __temp_executeDef662 = true;
 			switch (field.hashCode())
 			{
 				case 1292894613:
 				{
 					if (field.equals("calcPositions")) 
 					{
-						__temp_executeDef675 = false;
+						__temp_executeDef662 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcPositions"))) );
 					}
 					
@@ -274,7 +274,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("vparts")) 
 					{
-						__temp_executeDef675 = false;
+						__temp_executeDef662 = false;
 						return this.vparts;
 					}
 					
@@ -286,7 +286,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcColumns")) 
 					{
-						__temp_executeDef675 = false;
+						__temp_executeDef662 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcColumns"))) );
 					}
 					
@@ -298,7 +298,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("positions")) 
 					{
-						__temp_executeDef675 = false;
+						__temp_executeDef662 = false;
 						return this.positions;
 					}
 					
@@ -310,7 +310,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getColumns")) 
 					{
-						__temp_executeDef675 = false;
+						__temp_executeDef662 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getColumns"))) );
 					}
 					
@@ -322,7 +322,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("columns")) 
 					{
-						__temp_executeDef675 = false;
+						__temp_executeDef662 = false;
 						return this.columns;
 					}
 					
@@ -334,7 +334,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("bar")) 
 					{
-						__temp_executeDef675 = false;
+						__temp_executeDef662 = false;
 						return this.bar;
 					}
 					
@@ -346,7 +346,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("positionsColumns")) 
 					{
-						__temp_executeDef675 = false;
+						__temp_executeDef662 = false;
 						return this.positionsColumns;
 					}
 					
@@ -356,7 +356,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef675) 
+			if (__temp_executeDef662) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -373,14 +373,14 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef676 = true;
+			boolean __temp_executeDef663 = true;
 			switch (field.hashCode())
 			{
 				case 1292894613:
 				{
 					if (field.equals("calcPositions")) 
 					{
-						__temp_executeDef676 = false;
+						__temp_executeDef663 = false;
 						return this.calcPositions(((haxe.root.Array<nx3.PPart>) (dynargs.__get(0)) ));
 					}
 					
@@ -392,7 +392,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getColumns")) 
 					{
-						__temp_executeDef676 = false;
+						__temp_executeDef663 = false;
 						return this.getColumns();
 					}
 					
@@ -404,7 +404,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcColumns")) 
 					{
-						__temp_executeDef676 = false;
+						__temp_executeDef663 = false;
 						this.calcColumns(((haxe.root.Array<java.lang.Object>) (dynargs.__get(0)) ), ((haxe.root.Array<nx3.PPart>) (dynargs.__get(1)) ));
 					}
 					
@@ -414,7 +414,7 @@ public  class PColumnsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef676) 
+			if (__temp_executeDef663) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

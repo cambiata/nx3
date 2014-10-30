@@ -27,7 +27,7 @@ public  class PartXML extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_xml_PartXML(nx3.xml.PartXML __temp_me216)
+	public static   void __hx_ctor_nx3_xml_PartXML(nx3.xml.PartXML __temp_me193)
 	{
 		{
 		}
@@ -189,10 +189,10 @@ public  class PartXML extends haxe.lang.HxObject
 		haxe.root.Xml xml = haxe.root.Xml.parse(xmlStr).firstElement();
 		haxe.root.Array<nx3.NVoice> voices = new haxe.root.Array<nx3.NVoice>(new nx3.NVoice[]{});
 		{
-			java.lang.Object __temp_iterator263 = xml.elements();
-			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator263, "hasNext", null)))
+			java.lang.Object __temp_iterator245 = xml.elements();
+			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator245, "hasNext", null)))
 			{
-				haxe.root.Xml v = ((haxe.root.Xml) (haxe.lang.Runtime.callField(__temp_iterator263, "next", null)) );
+				haxe.root.Xml v = ((haxe.root.Xml) (haxe.lang.Runtime.callField(__temp_iterator245, "next", null)) );
 				nx3.NVoice voice = nx3.xml.VoiceXML.fromXmlStr(v.toString());
 				voices.push(voice);
 			}

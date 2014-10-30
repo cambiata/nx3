@@ -18,12 +18,12 @@ public  class Point extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_geom_Point(nx3.geom.Point __temp_me180, java.lang.Object x, java.lang.Object y)
+	public static   void __hx_ctor_nx3_geom_Point(nx3.geom.Point __temp_me167, java.lang.Object x, java.lang.Object y)
 	{
-		double __temp_y179 = ( (( y == null )) ? (((double) (0) )) : (((double) (haxe.lang.Runtime.toDouble(y)) )) );
-		double __temp_x178 = ( (( x == null )) ? (((double) (0) )) : (((double) (haxe.lang.Runtime.toDouble(x)) )) );
-		__temp_me180.x = __temp_x178;
-		__temp_me180.y = __temp_y179;
+		double __temp_y166 = ( (( y == null )) ? (((double) (0) )) : (((double) (haxe.lang.Runtime.toDouble(y)) )) );
+		double __temp_x165 = ( (( x == null )) ? (((double) (0) )) : (((double) (haxe.lang.Runtime.toDouble(x)) )) );
+		__temp_me167.x = __temp_x165;
+		__temp_me167.y = __temp_y166;
 	}
 	
 	
@@ -141,14 +141,14 @@ public  class Point extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef833 = true;
+			boolean __temp_executeDef812 = true;
 			switch (field.hashCode())
 			{
 				case 121:
 				{
 					if (field.equals("y")) 
 					{
-						__temp_executeDef833 = false;
+						__temp_executeDef812 = false;
 						this.y = ((double) (value) );
 						return value;
 					}
@@ -161,7 +161,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("length")) 
 					{
-						__temp_executeDef833 = false;
+						__temp_executeDef812 = false;
 						this.length = ((double) (value) );
 						return value;
 					}
@@ -174,7 +174,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("x")) 
 					{
-						__temp_executeDef833 = false;
+						__temp_executeDef812 = false;
 						this.x = ((double) (value) );
 						return value;
 					}
@@ -185,7 +185,7 @@ public  class Point extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef833) 
+			if (__temp_executeDef812) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -202,14 +202,14 @@ public  class Point extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef834 = true;
+			boolean __temp_executeDef813 = true;
 			switch (field.hashCode())
 			{
 				case 121:
 				{
 					if (field.equals("y")) 
 					{
-						__temp_executeDef834 = false;
+						__temp_executeDef813 = false;
 						this.y = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -222,7 +222,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("length")) 
 					{
-						__temp_executeDef834 = false;
+						__temp_executeDef813 = false;
 						this.length = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -235,7 +235,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("x")) 
 					{
-						__temp_executeDef834 = false;
+						__temp_executeDef813 = false;
 						this.x = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -246,7 +246,7 @@ public  class Point extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef834) 
+			if (__temp_executeDef813) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -263,14 +263,14 @@ public  class Point extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef835 = true;
+			boolean __temp_executeDef814 = true;
 			switch (field.hashCode())
 			{
 				case 974314479:
 				{
 					if (field.equals("get_length")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_length"))) );
 					}
 					
@@ -282,7 +282,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("length")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						if (handleProperties) 
 						{
 							return this.get_length();
@@ -302,7 +302,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("toString"))) );
 					}
 					
@@ -314,7 +314,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("x")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return this.x;
 					}
 					
@@ -326,7 +326,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("subtract")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("subtract"))) );
 					}
 					
@@ -338,7 +338,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("y")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return this.y;
 					}
 					
@@ -350,7 +350,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("setTo")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("setTo"))) );
 					}
 					
@@ -362,7 +362,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("add")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("add"))) );
 					}
 					
@@ -374,7 +374,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("offset")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("offset"))) );
 					}
 					
@@ -386,7 +386,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("clone")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("clone"))) );
 					}
 					
@@ -398,7 +398,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("normalize")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("normalize"))) );
 					}
 					
@@ -410,7 +410,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("copyFrom")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("copyFrom"))) );
 					}
 					
@@ -422,7 +422,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("equals")) 
 					{
-						__temp_executeDef835 = false;
+						__temp_executeDef814 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("equals"))) );
 					}
 					
@@ -432,7 +432,7 @@ public  class Point extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef835) 
+			if (__temp_executeDef814) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -449,14 +449,14 @@ public  class Point extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef836 = true;
+			boolean __temp_executeDef815 = true;
 			switch (field.hashCode())
 			{
 				case 121:
 				{
 					if (field.equals("y")) 
 					{
-						__temp_executeDef836 = false;
+						__temp_executeDef815 = false;
 						return this.y;
 					}
 					
@@ -468,7 +468,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("length")) 
 					{
-						__temp_executeDef836 = false;
+						__temp_executeDef815 = false;
 						if (handleProperties) 
 						{
 							return this.get_length();
@@ -488,7 +488,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("x")) 
 					{
-						__temp_executeDef836 = false;
+						__temp_executeDef815 = false;
 						return this.x;
 					}
 					
@@ -498,7 +498,7 @@ public  class Point extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef836) 
+			if (__temp_executeDef815) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -515,14 +515,14 @@ public  class Point extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef837 = true;
+			boolean __temp_executeDef816 = true;
 			switch (field.hashCode())
 			{
 				case 974314479:
 				{
 					if (field.equals("get_length")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						return this.get_length();
 					}
 					
@@ -534,7 +534,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("add")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						return this.add(((nx3.geom.Point) (dynargs.__get(0)) ));
 					}
 					
@@ -546,7 +546,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						return this.toString();
 					}
 					
@@ -558,7 +558,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("clone")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						return this.clone();
 					}
 					
@@ -570,7 +570,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("subtract")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						return this.subtract(((nx3.geom.Point) (dynargs.__get(0)) ));
 					}
 					
@@ -582,7 +582,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("copyFrom")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						this.copyFrom(((nx3.geom.Point) (dynargs.__get(0)) ));
 					}
 					
@@ -594,7 +594,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("setTo")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						this.setTo(((double) (haxe.lang.Runtime.toDouble(dynargs.__get(0))) ), ((double) (haxe.lang.Runtime.toDouble(dynargs.__get(1))) ));
 					}
 					
@@ -606,7 +606,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("equals")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						return this.equals(((nx3.geom.Point) (dynargs.__get(0)) ));
 					}
 					
@@ -618,7 +618,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("offset")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						this.offset(((double) (haxe.lang.Runtime.toDouble(dynargs.__get(0))) ), ((double) (haxe.lang.Runtime.toDouble(dynargs.__get(1))) ));
 					}
 					
@@ -630,7 +630,7 @@ public  class Point extends haxe.lang.HxObject
 				{
 					if (field.equals("normalize")) 
 					{
-						__temp_executeDef837 = false;
+						__temp_executeDef816 = false;
 						this.normalize(((double) (haxe.lang.Runtime.toDouble(dynargs.__get(0))) ));
 					}
 					
@@ -640,7 +640,7 @@ public  class Point extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef837) 
+			if (__temp_executeDef816) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

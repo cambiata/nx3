@@ -17,9 +17,9 @@ public  class QLyric4 extends nx3.NNote
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QLyric4(nx3.QLyric4 __temp_me162, java.lang.String text)
+	public static   void __hx_ctor_nx3_QLyric4(nx3.QLyric4 __temp_me150, java.lang.String text)
 	{
-		nx3.NNote.__hx_ctor_nx3_NNote(__temp_me162, nx3.ENoteType.Lyric(( (( text == null )) ? (haxe.lang.Runtime.toString("QLyric4")) : (text) ), null, null, null), null, nx3.ENoteVal.Nv4, null);
+		nx3.NNote.__hx_ctor_nx3_NNote(__temp_me150, nx3.ENoteType.Lyric(( (( text == null )) ? (haxe.lang.Runtime.toString("QLyric4")) : (text) ), null, null, null), null, nx3.ENoteVal.Nv4, null);
 		if (( text == null )) 
 		{
 			text = "QLyric4";

@@ -17,12 +17,12 @@ public  class BarParser extends nx3.qs.BaseParser
 	}
 	
 	
-	public static   void __hx_ctor_nx3_qs_BarParser(nx3.qs.BarParser __temp_me188, nx3.qs.QuickSyntaxParser parser)
+	public static   void __hx_ctor_nx3_qs_BarParser(nx3.qs.BarParser __temp_me175, nx3.qs.QuickSyntaxParser parser)
 	{
-		nx3.qs.BaseParser.__hx_ctor_nx3_qs_BaseParser(__temp_me188, parser);
-		__temp_me188.barIndex = 0;
-		__temp_me188.partIndex = 0;
-		__temp_me188.voiceIndex = 0;
+		nx3.qs.BaseParser.__hx_ctor_nx3_qs_BaseParser(__temp_me175, parser);
+		__temp_me175.barIndex = 0;
+		__temp_me175.partIndex = 0;
+		__temp_me175.voiceIndex = 0;
 	}
 	
 	
@@ -83,14 +83,14 @@ public  class BarParser extends nx3.qs.BaseParser
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef848 = true;
+			boolean __temp_executeDef827 = true;
 			switch (field.hashCode())
 			{
 				case -1535359296:
 				{
 					if (field.equals("voiceIndex")) 
 					{
-						__temp_executeDef848 = false;
+						__temp_executeDef827 = false;
 						this.voiceIndex = ((int) (value) );
 						return value;
 					}
@@ -103,7 +103,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("barIndex")) 
 					{
-						__temp_executeDef848 = false;
+						__temp_executeDef827 = false;
 						this.barIndex = ((int) (value) );
 						return value;
 					}
@@ -116,7 +116,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("partIndex")) 
 					{
-						__temp_executeDef848 = false;
+						__temp_executeDef827 = false;
 						this.partIndex = ((int) (value) );
 						return value;
 					}
@@ -127,7 +127,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef848) 
+			if (__temp_executeDef827) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -144,14 +144,14 @@ public  class BarParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef849 = true;
+			boolean __temp_executeDef828 = true;
 			switch (field.hashCode())
 			{
 				case -1535359296:
 				{
 					if (field.equals("voiceIndex")) 
 					{
-						__temp_executeDef849 = false;
+						__temp_executeDef828 = false;
 						this.voiceIndex = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -164,7 +164,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("barIndex")) 
 					{
-						__temp_executeDef849 = false;
+						__temp_executeDef828 = false;
 						this.barIndex = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -177,7 +177,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("partIndex")) 
 					{
-						__temp_executeDef849 = false;
+						__temp_executeDef828 = false;
 						this.partIndex = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -188,7 +188,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef849) 
+			if (__temp_executeDef828) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -205,14 +205,14 @@ public  class BarParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef850 = true;
+			boolean __temp_executeDef829 = true;
 			switch (field.hashCode())
 			{
 				case -2111738369:
 				{
 					if (field.equals("recieveEvent")) 
 					{
-						__temp_executeDef850 = false;
+						__temp_executeDef829 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("recieveEvent"))) );
 					}
 					
@@ -224,7 +224,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("barIndex")) 
 					{
-						__temp_executeDef850 = false;
+						__temp_executeDef829 = false;
 						return this.barIndex;
 					}
 					
@@ -236,7 +236,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("getBpvIndex")) 
 					{
-						__temp_executeDef850 = false;
+						__temp_executeDef829 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBpvIndex"))) );
 					}
 					
@@ -248,7 +248,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("partIndex")) 
 					{
-						__temp_executeDef850 = false;
+						__temp_executeDef829 = false;
 						return this.partIndex;
 					}
 					
@@ -260,7 +260,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("tokenFinished")) 
 					{
-						__temp_executeDef850 = false;
+						__temp_executeDef829 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("tokenFinished"))) );
 					}
 					
@@ -272,7 +272,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("voiceIndex")) 
 					{
-						__temp_executeDef850 = false;
+						__temp_executeDef829 = false;
 						return this.voiceIndex;
 					}
 					
@@ -284,7 +284,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("createFunctions")) 
 					{
-						__temp_executeDef850 = false;
+						__temp_executeDef829 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("createFunctions"))) );
 					}
 					
@@ -294,7 +294,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef850) 
+			if (__temp_executeDef829) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -311,14 +311,14 @@ public  class BarParser extends nx3.qs.BaseParser
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef851 = true;
+			boolean __temp_executeDef830 = true;
 			switch (field.hashCode())
 			{
 				case -1535359296:
 				{
 					if (field.equals("voiceIndex")) 
 					{
-						__temp_executeDef851 = false;
+						__temp_executeDef830 = false;
 						return ((double) (this.voiceIndex) );
 					}
 					
@@ -330,7 +330,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("barIndex")) 
 					{
-						__temp_executeDef851 = false;
+						__temp_executeDef830 = false;
 						return ((double) (this.barIndex) );
 					}
 					
@@ -342,7 +342,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("partIndex")) 
 					{
-						__temp_executeDef851 = false;
+						__temp_executeDef830 = false;
 						return ((double) (this.partIndex) );
 					}
 					
@@ -352,7 +352,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef851) 
+			if (__temp_executeDef830) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -369,15 +369,15 @@ public  class BarParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			int __temp_hash853 = field.hashCode();
-			boolean __temp_executeDef852 = true;
-			switch (__temp_hash853)
+			int __temp_hash832 = field.hashCode();
+			boolean __temp_executeDef831 = true;
+			switch (__temp_hash832)
 			{
 				case -2111738369:case -1760504437:case -1605705217:
 				{
-					if (( (( ( __temp_hash853 == -2111738369 ) && field.equals("recieveEvent") )) || ( (( ( __temp_hash853 == -1760504437 ) && field.equals("tokenFinished") )) || field.equals("createFunctions") ) )) 
+					if (( (( ( __temp_hash832 == -2111738369 ) && field.equals("recieveEvent") )) || ( (( ( __temp_hash832 == -1760504437 ) && field.equals("tokenFinished") )) || field.equals("createFunctions") ) )) 
 					{
-						__temp_executeDef852 = false;
+						__temp_executeDef831 = false;
 						return haxe.lang.Runtime.slowCallField(this, field, dynargs);
 					}
 					
@@ -389,7 +389,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("getBpvIndex")) 
 					{
-						__temp_executeDef852 = false;
+						__temp_executeDef831 = false;
 						return this.getBpvIndex();
 					}
 					
@@ -399,7 +399,7 @@ public  class BarParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef852) 
+			if (__temp_executeDef831) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

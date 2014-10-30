@@ -27,15 +27,14 @@ class NHead
 		this.level = level;
 	}	
 	
+	
 	public function toString():String
 	{
 		var str = '$level';
 		str +=  (type != EHeadType.Normal) ? ' '  + this.type.getName() : '';
 		str +=  (this.sign != ESign.None) ? ' '  + this.sign.getName() : '' ;
 		return 'NHead($str)' ;
-	}	
-	
-	
+	}			
 }
 
 

@@ -22,11 +22,11 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PColumnsAllotmentCalculator(nx3.PColumnsAllotmentCalculator __temp_me108, nx3.PBar bar)
+	public static   void __hx_ctor_nx3_PColumnsAllotmentCalculator(nx3.PColumnsAllotmentCalculator __temp_me96, nx3.PBar bar)
 	{
-		__temp_me108.bar = bar;
-		__temp_me108.spacing = bar.nbar.spacing;
-		__temp_me108.bar.allottedDistanceSum = 0;
+		__temp_me96.bar = bar;
+		__temp_me96.spacing = bar.nbar.spacing;
+		__temp_me96.bar.allottedDistanceSum = 0;
 	}
 	
 	
@@ -50,7 +50,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 	
 	public   void calculate(java.lang.Object stretch)
 	{
-		double __temp_stretch107 = ( (( stretch == null )) ? (((double) (0) )) : (((double) (haxe.lang.Runtime.toDouble(stretch)) )) );
+		double __temp_stretch95 = ( (( stretch == null )) ? (((double) (0) )) : (((double) (haxe.lang.Runtime.toDouble(stretch)) )) );
 		double aposition = this.bar.getContentXZero();
 		{
 			int _g = 0;
@@ -62,8 +62,8 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				double dist = this.getADistance(column.getValue(), column);
 				column.allottedDistance = dist;
 				{
-					nx3.PBar __temp_dynop256 = this.bar;
-					__temp_dynop256.allottedDistanceSum = ((java.lang.Object) (haxe.lang.Runtime.plus(__temp_dynop256.allottedDistanceSum, dist)) );
+					nx3.PBar __temp_dynop238 = this.bar;
+					__temp_dynop238.allottedDistanceSum = ((java.lang.Object) (haxe.lang.Runtime.plus(__temp_dynop238.allottedDistanceSum, dist)) );
 				}
 				
 				double adistance = java.lang.Math.max(column.getMDistance(), dist);
@@ -118,14 +118,14 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef665 = true;
+			boolean __temp_executeDef652 = true;
 			switch (field.hashCode())
 			{
 				case -2012158909:
 				{
 					if (field.equals("spacing")) 
 					{
-						__temp_executeDef665 = false;
+						__temp_executeDef652 = false;
 						this.spacing = ((double) (value) );
 						return value;
 					}
@@ -136,7 +136,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef665) 
+			if (__temp_executeDef652) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -153,14 +153,14 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef666 = true;
+			boolean __temp_executeDef653 = true;
 			switch (field.hashCode())
 			{
 				case -2012158909:
 				{
 					if (field.equals("spacing")) 
 					{
-						__temp_executeDef666 = false;
+						__temp_executeDef653 = false;
 						this.spacing = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -173,7 +173,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("bar")) 
 					{
-						__temp_executeDef666 = false;
+						__temp_executeDef653 = false;
 						this.bar = ((nx3.PBar) (value) );
 						return value;
 					}
@@ -184,7 +184,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef666) 
+			if (__temp_executeDef653) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -201,14 +201,14 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef667 = true;
+			boolean __temp_executeDef654 = true;
 			switch (field.hashCode())
 			{
 				case 1114075328:
 				{
 					if (field.equals("getADistance")) 
 					{
-						__temp_executeDef667 = false;
+						__temp_executeDef654 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getADistance"))) );
 					}
 					
@@ -220,7 +220,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("bar")) 
 					{
-						__temp_executeDef667 = false;
+						__temp_executeDef654 = false;
 						return this.bar;
 					}
 					
@@ -232,7 +232,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calculate")) 
 					{
-						__temp_executeDef667 = false;
+						__temp_executeDef654 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calculate"))) );
 					}
 					
@@ -244,7 +244,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("spacing")) 
 					{
-						__temp_executeDef667 = false;
+						__temp_executeDef654 = false;
 						return this.spacing;
 					}
 					
@@ -254,7 +254,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef667) 
+			if (__temp_executeDef654) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -271,14 +271,14 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef668 = true;
+			boolean __temp_executeDef655 = true;
 			switch (field.hashCode())
 			{
 				case -2012158909:
 				{
 					if (field.equals("spacing")) 
 					{
-						__temp_executeDef668 = false;
+						__temp_executeDef655 = false;
 						return this.spacing;
 					}
 					
@@ -288,7 +288,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef668) 
+			if (__temp_executeDef655) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -305,14 +305,14 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef669 = true;
+			boolean __temp_executeDef656 = true;
 			switch (field.hashCode())
 			{
 				case 1114075328:
 				{
 					if (field.equals("getADistance")) 
 					{
-						__temp_executeDef669 = false;
+						__temp_executeDef656 = false;
 						return this.getADistance(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ), ((nx3.PColumn) (dynargs.__get(1)) ));
 					}
 					
@@ -324,7 +324,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calculate")) 
 					{
-						__temp_executeDef669 = false;
+						__temp_executeDef656 = false;
 						this.calculate(dynargs.__get(0));
 					}
 					
@@ -334,7 +334,7 @@ public  class PColumnsAllotmentCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef669) 
+			if (__temp_executeDef656) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

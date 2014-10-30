@@ -18,7 +18,7 @@ public  class StrTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_cx_StrTools(cx.StrTools __temp_me39)
+	public static   void __hx_ctor_cx_StrTools(cx.StrTools __temp_me38)
 	{
 		{
 		}
@@ -34,9 +34,9 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   java.lang.String until(java.lang.String str, java.lang.String untilStr, java.lang.Object includeUntilStr)
 	{
-		boolean __temp_includeUntilStr27 = ( (( includeUntilStr == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(includeUntilStr)) );
+		boolean __temp_includeUntilStr26 = ( (( includeUntilStr == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(includeUntilStr)) );
 		int pos = haxe.lang.StringExt.indexOf(str, untilStr, null);
-		if (__temp_includeUntilStr27) 
+		if (__temp_includeUntilStr26) 
 		{
 			pos++;
 		}
@@ -47,9 +47,9 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   java.lang.String untilLast(java.lang.String str, java.lang.String untilStr, java.lang.Object includeUntilStr)
 	{
-		boolean __temp_includeUntilStr28 = ( (( includeUntilStr == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(includeUntilStr)) );
+		boolean __temp_includeUntilStr27 = ( (( includeUntilStr == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(includeUntilStr)) );
 		int pos = haxe.lang.StringExt.lastIndexOf(str, untilStr, null);
-		if (__temp_includeUntilStr28) 
+		if (__temp_includeUntilStr27) 
 		{
 			pos++;
 		}
@@ -99,7 +99,7 @@ public  class StrTools extends haxe.lang.HxObject
 			with = " ";
 		}
 		
-		int __temp_toLength29 = ( (( toLength == null )) ? (((int) (32) )) : (((int) (haxe.lang.Runtime.toInt(toLength)) )) );
+		int __temp_toLength28 = ( (( toLength == null )) ? (((int) (32) )) : (((int) (haxe.lang.Runtime.toInt(toLength)) )) );
 		if (( str == null )) 
 		{
 			str = replaceNull;
@@ -109,8 +109,8 @@ public  class StrTools extends haxe.lang.HxObject
 		{
 			str += with;
 		}
-		while (( str.length() < __temp_toLength29 ));
-		return haxe.lang.StringExt.substr(str, 0, __temp_toLength29);
+		while (( str.length() < __temp_toLength28 ));
+		return haxe.lang.StringExt.substr(str, 0, __temp_toLength28);
 	}
 	
 	
@@ -169,9 +169,9 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   java.lang.String firstUpperCase(java.lang.String str, java.lang.Object restToLowercase)
 	{
-		boolean __temp_restToLowercase30 = ( (( restToLowercase == null )) ? (haxe.lang.Runtime.toBool(true)) : (haxe.lang.Runtime.toBool(restToLowercase)) );
+		boolean __temp_restToLowercase29 = ( (( restToLowercase == null )) ? (haxe.lang.Runtime.toBool(true)) : (haxe.lang.Runtime.toBool(restToLowercase)) );
 		java.lang.String rest = null;
-		if (__temp_restToLowercase30) 
+		if (__temp_restToLowercase29) 
 		{
 			rest = haxe.lang.StringExt.substr(str, 1, null).toLowerCase();
 		}
@@ -186,14 +186,14 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   java.lang.String afterLast(java.lang.String str, java.lang.String _char, java.lang.Object includeChar)
 	{
-		boolean __temp_includeChar31 = ( (( includeChar == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(includeChar)) );
+		boolean __temp_includeChar30 = ( (( includeChar == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(includeChar)) );
 		int idx = haxe.lang.StringExt.lastIndexOf(str, _char, null);
 		if (( idx == -1 )) 
 		{
 			return str;
 		}
 		
-		if ( ! (__temp_includeChar31) ) 
+		if ( ! (__temp_includeChar30) ) 
 		{
 			idx += _char.length();
 		}
@@ -221,8 +221,14 @@ public  class StrTools extends haxe.lang.HxObject
 			return ((double) (1) );
 		}
 		
-		haxe.lang.Function sim = ( (( cx.StrTools_similarity_96__Fun.__hx_current != null )) ? (cx.StrTools_similarity_96__Fun.__hx_current) : (cx.StrTools_similarity_96__Fun.__hx_current = ((cx.StrTools_similarity_96__Fun) (new cx.StrTools_similarity_96__Fun()) )) );
-		return ((double) (sim.__hx_invoke2_f(0.0, strA, 0.0, strB)) );
+		if (( strA.length() > strB.length() )) 
+		{
+			java.lang.String strC = strA;
+			strA = strB;
+			strB = strC;
+		}
+		
+		return cx.StrTools._similarity(strA, strB);
 	}
 	
 	
@@ -326,7 +332,7 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   java.lang.String intToChar(int _int, java.lang.Object offset)
 	{
-		int __temp_offset32 = ( (( offset == null )) ? (((int) (65) )) : (((int) (haxe.lang.Runtime.toInt(offset)) )) );
+		int __temp_offset31 = ( (( offset == null )) ? (((int) (65) )) : (((int) (haxe.lang.Runtime.toInt(offset)) )) );
 		if (( _int > 9 )) 
 		{
 			throw haxe.lang.HaxeException.wrap("int to char error");
@@ -337,7 +343,7 @@ public  class StrTools extends haxe.lang.HxObject
 			throw haxe.lang.HaxeException.wrap("int to char error");
 		}
 		
-		int c = ( _int + __temp_offset32 );
+		int c = ( _int + __temp_offset31 );
 		java.lang.String _char = Character.toString((char) c);
 		return _char;
 	}
@@ -345,19 +351,19 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   int charToInt(java.lang.String _char, java.lang.Object offset)
 	{
-		int __temp_offset33 = ( (( offset == null )) ? (((int) (65) )) : (((int) (haxe.lang.Runtime.toInt(offset)) )) );
+		int __temp_offset32 = ( (( offset == null )) ? (((int) (65) )) : (((int) (haxe.lang.Runtime.toInt(offset)) )) );
 		if (( _char.length() > 1 )) 
 		{
 			throw haxe.lang.HaxeException.wrap("char to int error");
 		}
 		
-		return ( ((int) (haxe.lang.Runtime.toInt(haxe.lang.StringExt.charCodeAt(_char, 0))) ) - ((int) (__temp_offset33) ) );
+		return ( ((int) (haxe.lang.Runtime.toInt(haxe.lang.StringExt.charCodeAt(_char, 0))) ) - ((int) (__temp_offset32) ) );
 	}
 	
 	
 	public static   java.lang.String numToStr(java.lang.String numStr, java.lang.Object offset)
 	{
-		int __temp_offset34 = ( (( offset == null )) ? (((int) (65) )) : (((int) (haxe.lang.Runtime.toInt(offset)) )) );
+		int __temp_offset33 = ( (( offset == null )) ? (((int) (65) )) : (((int) (haxe.lang.Runtime.toInt(offset)) )) );
 		java.lang.Object testParse = haxe.root.Std.parseInt(numStr);
 		java.lang.String result = "";
 		{
@@ -367,7 +373,7 @@ public  class StrTools extends haxe.lang.HxObject
 			{
 				int i = _g1++;
 				java.lang.Object _int = haxe.root.Std.parseInt(haxe.lang.StringExt.charAt(numStr, i));
-				java.lang.String _char = cx.StrTools.intToChar(((int) (haxe.lang.Runtime.toInt(_int)) ), __temp_offset34);
+				java.lang.String _char = cx.StrTools.intToChar(((int) (haxe.lang.Runtime.toInt(_int)) ), __temp_offset33);
 				result += _char;
 			}
 			
@@ -379,7 +385,7 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   java.lang.String strToNum(java.lang.String str, java.lang.Object offset)
 	{
-		int __temp_offset35 = ( (( offset == null )) ? (((int) (65) )) : (((int) (haxe.lang.Runtime.toInt(offset)) )) );
+		int __temp_offset34 = ( (( offset == null )) ? (((int) (65) )) : (((int) (haxe.lang.Runtime.toInt(offset)) )) );
 		java.lang.String result = "";
 		{
 			int _g1 = 0;
@@ -388,7 +394,7 @@ public  class StrTools extends haxe.lang.HxObject
 			{
 				int i = _g1++;
 				java.lang.String _char = haxe.lang.StringExt.charAt(str, i);
-				int _int = cx.StrTools.charToInt(_char, __temp_offset35);
+				int _int = cx.StrTools.charToInt(_char, __temp_offset34);
 				result += haxe.root.Std.string(_int);
 			}
 			
@@ -400,11 +406,11 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   java.lang.String rotate(java.lang.String str, java.lang.Object positions)
 	{
-		int __temp_positions36 = ( (( positions == null )) ? (((int) (1) )) : (((int) (haxe.lang.Runtime.toInt(positions)) )) );
+		int __temp_positions35 = ( (( positions == null )) ? (((int) (1) )) : (((int) (haxe.lang.Runtime.toInt(positions)) )) );
 		java.lang.String result = str;
 		{
 			int _g = 0;
-			while (( _g < __temp_positions36 ))
+			while (( _g < __temp_positions35 ))
 			{
 				int i = _g++;
 				result = ( haxe.lang.StringExt.substr(result, 1, result.length()) + haxe.lang.StringExt.substr(result, 0, 1) );
@@ -418,11 +424,11 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   java.lang.String rotateBack(java.lang.String str, java.lang.Object positions)
 	{
-		int __temp_positions37 = ( (( positions == null )) ? (((int) (1) )) : (((int) (haxe.lang.Runtime.toInt(positions)) )) );
+		int __temp_positions36 = ( (( positions == null )) ? (((int) (1) )) : (((int) (haxe.lang.Runtime.toInt(positions)) )) );
 		java.lang.String result = str;
 		{
 			int _g = 0;
-			while (( _g < __temp_positions37 ))
+			while (( _g < __temp_positions36 ))
 			{
 				int i = _g++;
 				result = ( haxe.lang.StringExt.substr(result, -1, null) + haxe.lang.StringExt.substr(result, 0, ( result.length() - 1 )) );
@@ -442,15 +448,15 @@ public  class StrTools extends haxe.lang.HxObject
 	
 	public static   int lastIdxOf(java.lang.String str, java.lang.String search, java.lang.Object lastPos)
 	{
-		int __temp_lastPos38 = ( (( lastPos == null )) ? (((int) (0) )) : (((int) (haxe.lang.Runtime.toInt(lastPos)) )) );
-		if (( __temp_lastPos38 == 0 )) 
+		int __temp_lastPos37 = ( (( lastPos == null )) ? (((int) (0) )) : (((int) (haxe.lang.Runtime.toInt(lastPos)) )) );
+		if (( __temp_lastPos37 == 0 )) 
 		{
 			return haxe.lang.StringExt.lastIndexOf(str, search, null);
 		}
 		
 		{
 			int _g = 0;
-			while (( _g < __temp_lastPos38 ))
+			while (( _g < __temp_lastPos37 ))
 			{
 				int i = _g++;
 				str = haxe.lang.StringExt.substr(str, 0, haxe.lang.StringExt.lastIndexOf(str, search, null));

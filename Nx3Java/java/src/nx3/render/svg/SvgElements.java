@@ -66,7 +66,7 @@ public  class SvgElements extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_render_svg_SvgElements(nx3.render.svg.SvgElements __temp_me206)
+	public static   void __hx_ctor_nx3_render_svg_SvgElements(nx3.render.svg.SvgElements __temp_me182)
 	{
 		{
 		}

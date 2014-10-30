@@ -18,9 +18,9 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PScoreSystemStretcher(nx3.PScoreSystemStretcher __temp_me131, nx3.PSystem system)
+	public static   void __hx_ctor_nx3_PScoreSystemStretcher(nx3.PScoreSystemStretcher __temp_me119, nx3.PSystem system)
 	{
-		__temp_me131.system = system;
+		__temp_me119.system = system;
 	}
 	
 	
@@ -40,10 +40,10 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 	
 	public   boolean stretchTo(double stretchSystemToWidth, java.lang.Object ifMoreThan)
 	{
-		double __temp_ifMoreThan130 = ( (( ifMoreThan == null )) ? (((double) (0) )) : (((double) (haxe.lang.Runtime.toDouble(ifMoreThan)) )) );
-		if (( __temp_ifMoreThan130 > 0 )) 
+		double __temp_ifMoreThan118 = ( (( ifMoreThan == null )) ? (((double) (0) )) : (((double) (haxe.lang.Runtime.toDouble(ifMoreThan)) )) );
+		if (( __temp_ifMoreThan118 > 0 )) 
 		{
-			if (( this.system.getWidth() <= __temp_ifMoreThan130 )) 
+			if (( this.system.getWidth() <= __temp_ifMoreThan118 )) 
 			{
 				return true;
 			}
@@ -73,14 +73,14 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef752 = true;
+			boolean __temp_executeDef739 = true;
 			switch (field.hashCode())
 			{
 				case -887328209:
 				{
 					if (field.equals("system")) 
 					{
-						__temp_executeDef752 = false;
+						__temp_executeDef739 = false;
 						this.system = ((nx3.PSystem) (value) );
 						return value;
 					}
@@ -91,7 +91,7 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef752) 
+			if (__temp_executeDef739) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -108,14 +108,14 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef753 = true;
+			boolean __temp_executeDef740 = true;
 			switch (field.hashCode())
 			{
 				case -298367904:
 				{
 					if (field.equals("stretchTo")) 
 					{
-						__temp_executeDef753 = false;
+						__temp_executeDef740 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("stretchTo"))) );
 					}
 					
@@ -127,7 +127,7 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 				{
 					if (field.equals("system")) 
 					{
-						__temp_executeDef753 = false;
+						__temp_executeDef740 = false;
 						return this.system;
 					}
 					
@@ -137,7 +137,7 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef753) 
+			if (__temp_executeDef740) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -154,14 +154,14 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef754 = true;
+			boolean __temp_executeDef741 = true;
 			switch (field.hashCode())
 			{
 				case -298367904:
 				{
 					if (field.equals("stretchTo")) 
 					{
-						__temp_executeDef754 = false;
+						__temp_executeDef741 = false;
 						return this.stretchTo(((double) (haxe.lang.Runtime.toDouble(dynargs.__get(0))) ), dynargs.__get(1));
 					}
 					
@@ -171,7 +171,7 @@ public  class PScoreSystemStretcher extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef754) 
+			if (__temp_executeDef741) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

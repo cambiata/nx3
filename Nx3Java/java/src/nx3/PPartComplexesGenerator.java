@@ -18,10 +18,10 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PPartComplexesGenerator(nx3.PPartComplexesGenerator __temp_me127, nx3.PPart part)
+	public static   void __hx_ctor_nx3_PPartComplexesGenerator(nx3.PPartComplexesGenerator __temp_me115, nx3.PPart part)
 	{
-		__temp_me127.part = part;
-		__temp_me127.vvoices = part.getVoices();
+		__temp_me115.part = part;
+		__temp_me115.vvoices = part.getVoices();
 	}
 	
 	
@@ -123,14 +123,14 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef740 = true;
+			boolean __temp_executeDef727 = true;
 			switch (field.hashCode())
 			{
 				case 34951314:
 				{
 					if (field.equals("positionsMap")) 
 					{
-						__temp_executeDef740 = false;
+						__temp_executeDef727 = false;
 						this.positionsMap = ((haxe.ds.IntMap<haxe.root.Array>) (value) );
 						return value;
 					}
@@ -143,7 +143,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("part")) 
 					{
-						__temp_executeDef740 = false;
+						__temp_executeDef727 = false;
 						this.part = ((nx3.PPart) (value) );
 						return value;
 					}
@@ -156,7 +156,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("complexes")) 
 					{
-						__temp_executeDef740 = false;
+						__temp_executeDef727 = false;
 						this.complexes = ((haxe.root.Array<nx3.PComplex>) (value) );
 						return value;
 					}
@@ -169,7 +169,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("vvoices")) 
 					{
-						__temp_executeDef740 = false;
+						__temp_executeDef727 = false;
 						this.vvoices = ((haxe.root.Array<nx3.PVoice>) (value) );
 						return value;
 					}
@@ -180,7 +180,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef740) 
+			if (__temp_executeDef727) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -197,14 +197,14 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef741 = true;
+			boolean __temp_executeDef728 = true;
 			switch (field.hashCode())
 			{
 				case -643217529:
 				{
 					if (field.equals("calcPositionsMap")) 
 					{
-						__temp_executeDef741 = false;
+						__temp_executeDef728 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcPositionsMap"))) );
 					}
 					
@@ -216,7 +216,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("part")) 
 					{
-						__temp_executeDef741 = false;
+						__temp_executeDef728 = false;
 						return this.part;
 					}
 					
@@ -228,7 +228,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("positionsMap")) 
 					{
-						__temp_executeDef741 = false;
+						__temp_executeDef728 = false;
 						return this.positionsMap;
 					}
 					
@@ -240,7 +240,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("vvoices")) 
 					{
-						__temp_executeDef741 = false;
+						__temp_executeDef728 = false;
 						return this.vvoices;
 					}
 					
@@ -252,7 +252,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcComplexes")) 
 					{
-						__temp_executeDef741 = false;
+						__temp_executeDef728 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcComplexes"))) );
 					}
 					
@@ -264,7 +264,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("complexes")) 
 					{
-						__temp_executeDef741 = false;
+						__temp_executeDef728 = false;
 						return this.complexes;
 					}
 					
@@ -276,7 +276,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getComplexes")) 
 					{
-						__temp_executeDef741 = false;
+						__temp_executeDef728 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getComplexes"))) );
 					}
 					
@@ -286,7 +286,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef741) 
+			if (__temp_executeDef728) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -303,14 +303,14 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef742 = true;
+			boolean __temp_executeDef729 = true;
 			switch (field.hashCode())
 			{
 				case -643217529:
 				{
 					if (field.equals("calcPositionsMap")) 
 					{
-						__temp_executeDef742 = false;
+						__temp_executeDef729 = false;
 						return this.calcPositionsMap();
 					}
 					
@@ -322,7 +322,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getComplexes")) 
 					{
-						__temp_executeDef742 = false;
+						__temp_executeDef729 = false;
 						return this.getComplexes();
 					}
 					
@@ -334,7 +334,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcComplexes")) 
 					{
-						__temp_executeDef742 = false;
+						__temp_executeDef729 = false;
 						this.calcComplexes(((haxe.ds.IntMap<haxe.root.Array>) (dynargs.__get(0)) ));
 					}
 					
@@ -344,7 +344,7 @@ public  class PPartComplexesGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef742) 
+			if (__temp_executeDef729) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

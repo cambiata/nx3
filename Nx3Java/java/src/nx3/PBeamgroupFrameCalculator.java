@@ -18,9 +18,9 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBeamgroupFrameCalculator(nx3.PBeamgroupFrameCalculator __temp_me105, nx3.PBeamgroup beamgroup)
+	public static   void __hx_ctor_nx3_PBeamgroupFrameCalculator(nx3.PBeamgroupFrameCalculator __temp_me93, nx3.PBeamgroup beamgroup)
 	{
-		__temp_me105.beamgroup = beamgroup;
+		__temp_me93.beamgroup = beamgroup;
 	}
 	
 	
@@ -56,13 +56,13 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 		java.lang.Object tips = this.calcTips();
 		haxe.root.Array<nx3.EBeamflagType> beamflags = new nx3.PBeamflagCalculator(((nx3.PBeamgroup) (this.beamgroup) )).getBeamflags();
 		{
-			int __temp_odecl650 = ((int) (haxe.lang.Runtime.toInt(this.innerLevels.__get(0))) );
-			int __temp_odecl651 = ((int) (haxe.lang.Runtime.toInt(this.outerLevels.__get(0))) );
-			int __temp_odecl652 = ((int) (haxe.lang.Runtime.toInt(this.innerLevels.__get(( count - 1 )))) );
-			int __temp_odecl653 = ((int) (haxe.lang.Runtime.toInt(this.outerLevels.__get(( count - 1 )))) );
-			double __temp_odecl654 = ((double) (haxe.lang.Runtime.getField_f(tips, "leftTip", true)) );
-			double __temp_odecl655 = ((double) (haxe.lang.Runtime.getField_f(tips, "rightTip", true)) );
-			return new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"beamflags", "innerLevels", "outerLevels"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{beamflags, this.innerLevels, this.outerLevels}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"leftInnerY", "leftOuterY", "leftTipY", "rightInnerY", "rightOuterY", "rightTipY"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (__temp_odecl650) )) ), ((java.lang.Object) (((double) (__temp_odecl651) )) ), ((java.lang.Object) (__temp_odecl654) ), ((java.lang.Object) (((double) (__temp_odecl652) )) ), ((java.lang.Object) (((double) (__temp_odecl653) )) ), ((java.lang.Object) (__temp_odecl655) )}));
+			int __temp_odecl637 = ((int) (haxe.lang.Runtime.toInt(this.innerLevels.__get(0))) );
+			int __temp_odecl638 = ((int) (haxe.lang.Runtime.toInt(this.outerLevels.__get(0))) );
+			int __temp_odecl639 = ((int) (haxe.lang.Runtime.toInt(this.innerLevels.__get(( count - 1 )))) );
+			int __temp_odecl640 = ((int) (haxe.lang.Runtime.toInt(this.outerLevels.__get(( count - 1 )))) );
+			double __temp_odecl641 = ((double) (haxe.lang.Runtime.getField_f(tips, "leftTip", true)) );
+			double __temp_odecl642 = ((double) (haxe.lang.Runtime.getField_f(tips, "rightTip", true)) );
+			return new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"beamflags", "innerLevels", "outerLevels"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{beamflags, this.innerLevels, this.outerLevels}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"leftInnerY", "leftOuterY", "leftTipY", "rightInnerY", "rightOuterY", "rightTipY"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (__temp_odecl637) )) ), ((java.lang.Object) (((double) (__temp_odecl638) )) ), ((java.lang.Object) (__temp_odecl641) ), ((java.lang.Object) (((double) (__temp_odecl639) )) ), ((java.lang.Object) (((double) (__temp_odecl640) )) ), ((java.lang.Object) (__temp_odecl642) )}));
 		}
 		
 	}
@@ -78,7 +78,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 			{
 				nx3.PNote note = _g1.__get(_g);
 				 ++ _g;
-				levels.push(note.nnote.getTopLevel());
+				levels.push(((int) (haxe.lang.Runtime.toInt(note.nnote.get_topLevel())) ));
 			}
 			
 		}
@@ -97,7 +97,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 			{
 				nx3.PNote note = _g1.__get(_g);
 				 ++ _g;
-				levels.push(note.nnote.getBottomLevel());
+				levels.push(((int) (haxe.lang.Runtime.toInt(note.nnote.get_bottomLevel())) ));
 			}
 			
 		}
@@ -163,14 +163,14 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef656 = true;
+			boolean __temp_executeDef643 = true;
 			switch (field.hashCode())
 			{
 				case -795379867:
 				{
 					if (field.equals("innerLevels")) 
 					{
-						__temp_executeDef656 = false;
+						__temp_executeDef643 = false;
 						this.innerLevels = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -183,7 +183,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("beamgroup")) 
 					{
-						__temp_executeDef656 = false;
+						__temp_executeDef643 = false;
 						this.beamgroup = ((nx3.PBeamgroup) (value) );
 						return value;
 					}
@@ -196,7 +196,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("outerLevels")) 
 					{
-						__temp_executeDef656 = false;
+						__temp_executeDef643 = false;
 						this.outerLevels = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -207,7 +207,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef656) 
+			if (__temp_executeDef643) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -224,14 +224,14 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef657 = true;
+			boolean __temp_executeDef644 = true;
 			switch (field.hashCode())
 			{
 				case -180941011:
 				{
 					if (field.equals("calcTips")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcTips"))) );
 					}
 					
@@ -243,7 +243,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("beamgroup")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return this.beamgroup;
 					}
 					
@@ -255,7 +255,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcLevelArrays")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcLevelArrays"))) );
 					}
 					
@@ -267,7 +267,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("outerLevels")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return this.outerLevels;
 					}
 					
@@ -279,7 +279,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getBottomLevels")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBottomLevels"))) );
 					}
 					
@@ -291,7 +291,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("innerLevels")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return this.innerLevels;
 					}
 					
@@ -303,7 +303,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getTopLevels")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTopLevels"))) );
 					}
 					
@@ -315,7 +315,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getFrame")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getFrame"))) );
 					}
 					
@@ -327,7 +327,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcFramePrototype")) 
 					{
-						__temp_executeDef657 = false;
+						__temp_executeDef644 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcFramePrototype"))) );
 					}
 					
@@ -337,7 +337,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef657) 
+			if (__temp_executeDef644) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -354,14 +354,14 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef658 = true;
+			boolean __temp_executeDef645 = true;
 			switch (field.hashCode())
 			{
 				case -180941011:
 				{
 					if (field.equals("calcTips")) 
 					{
-						__temp_executeDef658 = false;
+						__temp_executeDef645 = false;
 						return this.calcTips();
 					}
 					
@@ -373,7 +373,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getFrame")) 
 					{
-						__temp_executeDef658 = false;
+						__temp_executeDef645 = false;
 						return this.getFrame();
 					}
 					
@@ -385,7 +385,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcLevelArrays")) 
 					{
-						__temp_executeDef658 = false;
+						__temp_executeDef645 = false;
 						this.calcLevelArrays();
 					}
 					
@@ -397,7 +397,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcFramePrototype")) 
 					{
-						__temp_executeDef658 = false;
+						__temp_executeDef645 = false;
 						return this.calcFramePrototype();
 					}
 					
@@ -409,7 +409,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getBottomLevels")) 
 					{
-						__temp_executeDef658 = false;
+						__temp_executeDef645 = false;
 						return this.getBottomLevels();
 					}
 					
@@ -421,7 +421,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getTopLevels")) 
 					{
-						__temp_executeDef658 = false;
+						__temp_executeDef645 = false;
 						return this.getTopLevels();
 					}
 					
@@ -431,7 +431,7 @@ public  class PBeamgroupFrameCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef658) 
+			if (__temp_executeDef645) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

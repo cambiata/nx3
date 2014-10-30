@@ -2,7 +2,7 @@ package nx3;
 import haxe.root.*;
 
 @SuppressWarnings(value={"rawtypes", "unchecked"})
-public  class PNote extends haxe.lang.HxObject
+public  class PNote extends haxe.lang.HxObject implements hxlazy.Lazy
 {
 	public    PNote(haxe.lang.EmptyObject empty)
 	{
@@ -18,9 +18,9 @@ public  class PNote extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PNote(nx3.PNote __temp_me120, nx3.NNote nnote)
+	public static   void __hx_ctor_nx3_PNote(nx3.PNote __temp_me108, nx3.NNote nnote)
 	{
-		__temp_me120.nnote = nnote;
+		__temp_me108.nnote = nnote;
 	}
 	
 	
@@ -38,6 +38,24 @@ public  class PNote extends haxe.lang.HxObject
 	
 	public  nx3.NNote nnote;
 	
+	public   java.lang.Object iterator()
+	{
+		{
+			haxe.root.Array<nx3.PHead> _this = this.get_heads();
+			return new _Array.ArrayIterator<nx3.PHead>(((haxe.root.Array<nx3.PHead>) (_this) ));
+		}
+		
+	}
+	
+	
+	public  int length;
+	
+	public   int get_length()
+	{
+		return this.get_heads().length;
+	}
+	
+	
 	public  nx3.PVoice voice;
 	
 	public   nx3.PVoice getVoice()
@@ -46,38 +64,15 @@ public  class PNote extends haxe.lang.HxObject
 	}
 	
 	
-	public  haxe.root.Array<nx3.PHead> heads;
-	
-	public   haxe.root.Array<nx3.PHead> getHeads()
-	{
-		if (( this.heads != null )) 
-		{
-			return this.heads;
-		}
-		
-		this.heads = new haxe.root.Array<nx3.PHead>(new nx3.PHead[]{});
-		{
-			int _g = 0;
-			haxe.root.Array<nx3.NHead> _g1 = this.nnote.get_nheads();
-			while (( _g < _g1.length ))
-			{
-				nx3.NHead nhead = _g1.__get(_g);
-				 ++ _g;
-				nx3.PHead phead = new nx3.PHead(((nx3.NHead) (nhead) ));
-				phead.note = this;
-				this.heads.push(phead);
-			}
-			
-		}
-		
-		return this.heads;
-	}
-	
-	
 	public  nx3.PBeamgroup beamgroup;
 	
 	public   nx3.PBeamgroup getBeamgroup()
 	{
+		if (( this.voice == null )) 
+		{
+			throw haxe.lang.HaxeException.wrap("PNote doesn\'t have a parent PVoice");
+		}
+		
 		if (( this.beamgroup == null )) 
 		{
 			this.voice.getBeamgroups(null);
@@ -102,6 +97,11 @@ public  class PNote extends haxe.lang.HxObject
 	
 	public   nx3.PComplex getComplex()
 	{
+		if (( this.voice == null )) 
+		{
+			throw haxe.lang.HaxeException.wrap("PNote doesn\'t have a parent PVoice");
+		}
+		
 		if (( this.complex == null )) 
 		{
 			this.voice.getPart().getComplexes();
@@ -116,193 +116,156 @@ public  class PNote extends haxe.lang.HxObject
 	}
 	
 	
-	public  haxe.root.Array<nx3.geom.Rectangle> headsRects;
+	public   haxe.root.Array<nx3.ETie> getTies()
+	{
+		return this.nnote.get_ties();
+	}
+	
+	
+	public  haxe.root.Array<nx3.PHead> __lazyheads;
+	
+	
+	
+	public   haxe.root.Array<nx3.PHead> get_heads()
+	{
+		haxe.root.Array<nx3.PNote> _g = new haxe.root.Array<nx3.PNote>(new nx3.PNote[]{this});
+		if (( this.__lazyheads != null )) 
+		{
+			return this.__lazyheads;
+		}
+		
+		return this.__lazyheads = ((haxe.root.Array<nx3.PHead>) (((haxe.root.Array) (haxe.root.Lambda.array(((haxe.root.List<nx3.PHead>) (((haxe.root.List) (haxe.root.Lambda.map(this.nnote, new nx3.PNote_get_heads_54__Fun(((haxe.root.Array<nx3.PNote>) (_g) )))) )) ))) )) );
+	}
+	
+	
+	public  haxe.root.Array<nx3.geom.Rectangle> __lazyheadsRects;
 	
 	public   haxe.root.Array<nx3.geom.Rectangle> getHeadsRects()
 	{
-		if (( this.headsRects != null )) 
+		if (( this.__lazyheadsRects != null )) 
 		{
-			return this.headsRects;
+			return this.__lazyheadsRects;
 		}
 		
-		nx3.PNoteheadsRectsCalculator calculator = new nx3.PNoteheadsRectsCalculator(((nx3.PNote) (this) ));
-		this.headsRects = calculator.getHeadsRects();
-		return this.headsRects;
+		return this.__lazyheadsRects = new nx3.PNoteheadsRectsCalculator(((nx3.PNote) (this) )).getHeadsRects();
 	}
 	
 	
-	public  nx3.geom.Rectangle staveRect;
-	
-	public  boolean staveRectChecked;
+	public  nx3.geom.Rectangle __lazystaveRect;
 	
 	public   nx3.geom.Rectangle getStaveRect()
 	{
-		if (this.staveRectChecked) 
+		if (( this.__lazystaveRect != null )) 
 		{
-			return this.staveRect;
+			return this.__lazystaveRect;
 		}
 		
-		this.staveRect = this.getComplex().getStaveRect(this);
-		this.staveRectChecked = true;
-		return this.staveRect;
+		return this.__lazystaveRect = this.getComplex().getStaveRect(this);
 	}
 	
 	
-	public  java.lang.Object staveXPosition;
+	public  java.lang.Object __lazystaveXPosition;
 	
-	public   double getStaveXPosition()
+	public   java.lang.Object getStaveXPosition()
 	{
-		if (( ! (( this.staveXPosition == null )) )) 
+		if (( ! (( this.__lazystaveXPosition == null )) )) 
 		{
-			return ((double) (haxe.lang.Runtime.toDouble(this.staveXPosition)) );
+			return this.__lazystaveXPosition;
 		}
 		
 		nx3.geom.Rectangle staverect = this.getStaveRect();
 		if (( staverect == null )) 
 		{
-			return ((double) (0) );
+			return this.__lazystaveXPosition = 0;
 		}
 		
-		if (( this.getDirection() == nx3.EDirectionUD.Up )) 
-		{
-			this.staveXPosition = staverect.width;
-		}
-		 else 
-		{
-			this.staveXPosition = staverect.x;
-		}
-		
-		return ((double) (haxe.lang.Runtime.toDouble(this.staveXPosition)) );
+		return ( (( this.getDirection() == nx3.EDirectionUD.Up )) ? (this.__lazystaveXPosition = staverect.width) : (this.__lazystaveXPosition = staverect.x) );
 	}
 	
 	
-	public  nx3.geom.Rectangle baserect;
+	public  nx3.geom.Rectangle __lazybaseRect;
 	
 	public   nx3.geom.Rectangle getBaseRect()
 	{
-		if (( this.baserect != null )) 
+		if (( this.__lazybaseRect != null )) 
 		{
-			return this.baserect;
+			return this.__lazybaseRect;
 		}
 		
-		this.baserect = new nx3.PBaseRectCalculator(((nx3.PNote) (this) )).getBaseRect();
-		return this.baserect;
+		return this.__lazybaseRect = new nx3.PBaseRectCalculator(((nx3.PNote) (this) )).getBaseRect();
 	}
 	
 	
-	public  java.lang.Object xoffset;
+	public  java.lang.Object __lazyxOffset;
 	
-	public   double getXOffset()
+	public   java.lang.Object getXOffset()
 	{
-		if (( ! (( this.xoffset == null )) )) 
+		if (( ! (( this.__lazyxOffset == null )) )) 
 		{
-			return ((double) (haxe.lang.Runtime.toDouble(this.xoffset)) );
+			return this.__lazyxOffset;
 		}
 		
-		this.xoffset = this.getComplex().getNoteXOffset(this);
-		return ((double) (haxe.lang.Runtime.toDouble(this.xoffset)) );
+		return this.__lazyxOffset = this.getComplex().getNoteXOffset(this);
 	}
 	
 	
-	public  java.lang.Object xposition;
+	public  java.lang.Object __lazyxPosition;
 	
-	public   double getXPosition()
+	public   java.lang.Object getXPosition()
 	{
-		if (( ! (( this.xposition == null )) )) 
+		if (( ! (( this.__lazyxPosition == null )) )) 
 		{
-			return ((double) (haxe.lang.Runtime.toDouble(this.xposition)) );
+			return this.__lazyxPosition;
 		}
 		
-		this.xposition = ( this.getComplex().getXPosition() + this.getXOffset() );
-		return ((double) (haxe.lang.Runtime.toDouble(this.xposition)) );
+		return this.__lazyxPosition = ((double) (haxe.lang.Runtime.toDouble(haxe.lang.Runtime.plus(this.getComplex().getXPosition(), this.getXOffset()))) );
 	}
 	
 	
-	public   haxe.root.Array<nx3.ETie> getTies()
-	{
-		return this.nnote.getTies();
-	}
-	
-	
-	public  nx3.PNote next;
+	public  nx3.PNote __lazynext;
 	
 	public   nx3.PNote getNext()
 	{
-		if (( this.next != null )) 
+		if (( this.__lazynext != null )) 
 		{
-			return this.next;
+			return this.__lazynext;
 		}
 		
 		int idx = this.voice.getNotes().indexOf(this, null);
 		{
 			haxe.root.Array<nx3.PNote> a = this.voice.getNotes();
 			int idx1 = ( idx + 1 );
-			if (( ( idx1 < 0 ) || ( idx1 > ( a.length - 1 ) ) )) 
-			{
-				this.next = null;
-			}
-			 else 
-			{
-				this.next = a.__get(idx1);
-			}
-			
+			return ( (( ( idx1 < 0 ) || ( idx1 > ( a.length - 1 ) ) )) ? (this.__lazynext = null) : (this.__lazynext = a.__get(idx1)) );
 		}
 		
-		return this.next;
 	}
 	
 	
-	public  java.lang.Object hasTie;
+	public  java.lang.Object __lazyhasTie;
 	
-	public   boolean getHasTie()
+	public   java.lang.Object getHasTie()
 	{
-		if (( ! (( this.hasTie == null )) )) 
+		if (( ! (( this.__lazyhasTie == null )) )) 
 		{
-			return haxe.lang.Runtime.toBool(this.hasTie);
+			return this.__lazyhasTie;
 		}
 		
-		{
-			int _g = 0;
-			haxe.root.Array<nx3.NHead> _g1 = this.nnote.get_nheads();
-			while (( _g < _g1.length ))
-			{
-				nx3.NHead nhead = _g1.__get(_g);
-				 ++ _g;
-				if (( nhead.tie != null )) 
-				{
-					this.hasTie = true;
-					return haxe.lang.Runtime.toBool(this.hasTie);
-				}
-				
-			}
-			
-		}
-		
-		this.hasTie = false;
-		return haxe.lang.Runtime.toBool(this.hasTie);
-	}
-	
-	
-	public   void setTiesInfo(haxe.root.Array<nx3.ETie> info)
-	{
-		{
-		}
-		
+		return this.__lazyhasTie =  ! (haxe.root.Lambda.foreach(this.nnote, ( (( nx3.PNote_getHasTie_225__Fun.__hx_current != null )) ? (nx3.PNote_getHasTie_225__Fun.__hx_current) : (nx3.PNote_getHasTie_225__Fun.__hx_current = ((nx3.PNote_getHasTie_225__Fun) (new nx3.PNote_getHasTie_225__Fun()) )) ))) ;
 	}
 	
 	
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef712 = true;
+			boolean __temp_executeDef699 = true;
 			switch (field.hashCode())
 			{
-				case -1224444010:
+				case -1847961622:
 				{
-					if (field.equals("hasTie")) 
+					if (field.equals("__lazyhasTie")) 
 					{
-						__temp_executeDef712 = false;
-						this.hasTie = ((java.lang.Object) (value) );
+						__temp_executeDef699 = false;
+						this.__lazyhasTie = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -310,12 +273,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1633199694:
+				case -1106363674:
 				{
-					if (field.equals("staveXPosition")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef712 = false;
-						this.staveXPosition = ((java.lang.Object) (value) );
+						__temp_executeDef699 = false;
+						this.length = ((int) (value) );
 						return value;
 					}
 					
@@ -323,12 +286,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1398365791:
+				case -813345555:
 				{
-					if (field.equals("xposition")) 
+					if (field.equals("__lazyxPosition")) 
 					{
-						__temp_executeDef712 = false;
-						this.xposition = ((java.lang.Object) (value) );
+						__temp_executeDef699 = false;
+						this.__lazyxPosition = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -336,12 +299,25 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1893520629:
+				case 1544660486:
 				{
-					if (field.equals("xoffset")) 
+					if (field.equals("__lazystaveXPosition")) 
 					{
-						__temp_executeDef712 = false;
-						this.xoffset = ((java.lang.Object) (value) );
+						__temp_executeDef699 = false;
+						this.__lazystaveXPosition = ((java.lang.Object) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case -663862953:
+				{
+					if (field.equals("__lazyxOffset")) 
+					{
+						__temp_executeDef699 = false;
+						this.__lazyxOffset = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -351,7 +327,7 @@ public  class PNote extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef712) 
+			if (__temp_executeDef699) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -368,15 +344,15 @@ public  class PNote extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef713 = true;
+			boolean __temp_executeDef700 = true;
 			switch (field.hashCode())
 			{
-				case -1224444010:
+				case -1847961622:
 				{
-					if (field.equals("hasTie")) 
+					if (field.equals("__lazyhasTie")) 
 					{
-						__temp_executeDef713 = false;
-						this.hasTie = ((java.lang.Object) (value) );
+						__temp_executeDef700 = false;
+						this.__lazyhasTie = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -388,7 +364,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("nnote")) 
 					{
-						__temp_executeDef713 = false;
+						__temp_executeDef700 = false;
 						this.nnote = ((nx3.NNote) (value) );
 						return value;
 					}
@@ -397,12 +373,38 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case 3377907:
+				case 1642950727:
 				{
-					if (field.equals("next")) 
+					if (field.equals("__lazynext")) 
 					{
-						__temp_executeDef713 = false;
-						this.next = ((nx3.PNote) (value) );
+						__temp_executeDef700 = false;
+						this.__lazynext = ((nx3.PNote) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case -1106363674:
+				{
+					if (field.equals("length")) 
+					{
+						__temp_executeDef700 = false;
+						this.length = ((int) (haxe.lang.Runtime.toInt(value)) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case -813345555:
+				{
+					if (field.equals("__lazyxPosition")) 
+					{
+						__temp_executeDef700 = false;
+						this.__lazyxPosition = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -414,7 +416,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("voice")) 
 					{
-						__temp_executeDef713 = false;
+						__temp_executeDef700 = false;
 						this.voice = ((nx3.PVoice) (value) );
 						return value;
 					}
@@ -423,38 +425,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1398365791:
+				case -663862953:
 				{
-					if (field.equals("xposition")) 
+					if (field.equals("__lazyxOffset")) 
 					{
-						__temp_executeDef713 = false;
-						this.xposition = ((java.lang.Object) (value) );
-						return value;
-					}
-					
-					break;
-				}
-				
-				
-				case 99151507:
-				{
-					if (field.equals("heads")) 
-					{
-						__temp_executeDef713 = false;
-						this.heads = ((haxe.root.Array<nx3.PHead>) (value) );
-						return value;
-					}
-					
-					break;
-				}
-				
-				
-				case -1893520629:
-				{
-					if (field.equals("xoffset")) 
-					{
-						__temp_executeDef713 = false;
-						this.xoffset = ((java.lang.Object) (value) );
+						__temp_executeDef700 = false;
+						this.__lazyxOffset = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -466,7 +442,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("beamgroup")) 
 					{
-						__temp_executeDef713 = false;
+						__temp_executeDef700 = false;
 						this.beamgroup = ((nx3.PBeamgroup) (value) );
 						return value;
 					}
@@ -475,12 +451,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1720610763:
+				case 373432233:
 				{
-					if (field.equals("baserect")) 
+					if (field.equals("__lazybaseRect")) 
 					{
-						__temp_executeDef713 = false;
-						this.baserect = ((nx3.geom.Rectangle) (value) );
+						__temp_executeDef700 = false;
+						this.__lazybaseRect = ((nx3.geom.Rectangle) (value) );
 						return value;
 					}
 					
@@ -492,7 +468,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("complex")) 
 					{
-						__temp_executeDef713 = false;
+						__temp_executeDef700 = false;
 						this.complex = ((nx3.PComplex) (value) );
 						return value;
 					}
@@ -501,12 +477,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1633199694:
+				case 1544660486:
 				{
-					if (field.equals("staveXPosition")) 
+					if (field.equals("__lazystaveXPosition")) 
 					{
-						__temp_executeDef713 = false;
-						this.staveXPosition = ((java.lang.Object) (value) );
+						__temp_executeDef700 = false;
+						this.__lazystaveXPosition = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -514,12 +490,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1945688004:
+				case -613698625:
 				{
-					if (field.equals("headsRects")) 
+					if (field.equals("__lazyheads")) 
 					{
-						__temp_executeDef713 = false;
-						this.headsRects = ((haxe.root.Array<nx3.geom.Rectangle>) (value) );
+						__temp_executeDef700 = false;
+						this.__lazyheads = ((haxe.root.Array<nx3.PHead>) (value) );
 						return value;
 					}
 					
@@ -527,12 +503,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1532428076:
+				case -1508318593:
 				{
-					if (field.equals("staveRectChecked")) 
+					if (field.equals("__lazystaveRect")) 
 					{
-						__temp_executeDef713 = false;
-						this.staveRectChecked = haxe.lang.Runtime.toBool(value);
+						__temp_executeDef700 = false;
+						this.__lazystaveRect = ((nx3.geom.Rectangle) (value) );
 						return value;
 					}
 					
@@ -540,12 +516,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -2028694701:
+				case 1301069456:
 				{
-					if (field.equals("staveRect")) 
+					if (field.equals("__lazyheadsRects")) 
 					{
-						__temp_executeDef713 = false;
-						this.staveRect = ((nx3.geom.Rectangle) (value) );
+						__temp_executeDef700 = false;
+						this.__lazyheadsRects = ((haxe.root.Array<nx3.geom.Rectangle>) (value) );
 						return value;
 					}
 					
@@ -555,7 +531,7 @@ public  class PNote extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef713) 
+			if (__temp_executeDef700) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -572,15 +548,15 @@ public  class PNote extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef714 = true;
+			boolean __temp_executeDef701 = true;
 			switch (field.hashCode())
 			{
-				case -304472141:
+				case 471571084:
 				{
-					if (field.equals("setTiesInfo")) 
+					if (field.equals("getHasTie")) 
 					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("setTiesInfo"))) );
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHasTie"))) );
 					}
 					
 					break;
@@ -591,7 +567,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("nnote")) 
 					{
-						__temp_executeDef714 = false;
+						__temp_executeDef701 = false;
 						return this.nnote;
 					}
 					
@@ -599,48 +575,24 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case 471571084:
+				case -1847961622:
 				{
-					if (field.equals("getHasTie")) 
+					if (field.equals("__lazyhasTie")) 
 					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHasTie"))) );
+						__temp_executeDef701 = false;
+						return this.__lazyhasTie;
 					}
 					
 					break;
 				}
 				
 				
-				case 112386354:
+				case 1182533742:
 				{
-					if (field.equals("voice")) 
+					if (field.equals("iterator")) 
 					{
-						__temp_executeDef714 = false;
-						return this.voice;
-					}
-					
-					break;
-				}
-				
-				
-				case -1224444010:
-				{
-					if (field.equals("hasTie")) 
-					{
-						__temp_executeDef714 = false;
-						return this.hasTie;
-					}
-					
-					break;
-				}
-				
-				
-				case 1968211836:
-				{
-					if (field.equals("getVoice")) 
-					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getVoice"))) );
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("iterator"))) );
 					}
 					
 					break;
@@ -651,7 +603,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getNext")) 
 					{
-						__temp_executeDef714 = false;
+						__temp_executeDef701 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNext"))) );
 					}
 					
@@ -659,60 +611,44 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case 99151507:
+				case -1106363674:
 				{
-					if (field.equals("heads")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef714 = false;
-						return this.heads;
+						__temp_executeDef701 = false;
+						if (handleProperties) 
+						{
+							return this.get_length();
+						}
+						 else 
+						{
+							return this.length;
+						}
+						
 					}
 					
 					break;
 				}
 				
 				
-				case 3377907:
+				case 1642950727:
 				{
-					if (field.equals("next")) 
+					if (field.equals("__lazynext")) 
 					{
-						__temp_executeDef714 = false;
-						return this.next;
+						__temp_executeDef701 = false;
+						return this.__lazynext;
 					}
 					
 					break;
 				}
 				
 				
-				case 1954976989:
+				case 974314479:
 				{
-					if (field.equals("getHeads")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeads"))) );
-					}
-					
-					break;
-				}
-				
-				
-				case -75122087:
-				{
-					if (field.equals("getTies")) 
-					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTies"))) );
-					}
-					
-					break;
-				}
-				
-				
-				case -1993942992:
-				{
-					if (field.equals("beamgroup")) 
-					{
-						__temp_executeDef714 = false;
-						return this.beamgroup;
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_length"))) );
 					}
 					
 					break;
@@ -723,7 +659,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getXPosition")) 
 					{
-						__temp_executeDef714 = false;
+						__temp_executeDef701 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getXPosition"))) );
 					}
 					
@@ -731,36 +667,36 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -2003547782:
+				case 112386354:
 				{
-					if (field.equals("getBeamgroup")) 
+					if (field.equals("voice")) 
 					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBeamgroup"))) );
+						__temp_executeDef701 = false;
+						return this.voice;
 					}
 					
 					break;
 				}
 				
 				
-				case -1398365791:
+				case -813345555:
 				{
-					if (field.equals("xposition")) 
+					if (field.equals("__lazyxPosition")) 
 					{
-						__temp_executeDef714 = false;
-						return this.xposition;
+						__temp_executeDef701 = false;
+						return this.__lazyxPosition;
 					}
 					
 					break;
 				}
 				
 				
-				case -972195639:
+				case 1968211836:
 				{
-					if (field.equals("getDirection")) 
+					if (field.equals("getVoice")) 
 					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getDirection"))) );
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getVoice"))) );
 					}
 					
 					break;
@@ -771,7 +707,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getXOffset")) 
 					{
-						__temp_executeDef714 = false;
+						__temp_executeDef701 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getXOffset"))) );
 					}
 					
@@ -779,36 +715,36 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case 950494384:
+				case -1993942992:
 				{
-					if (field.equals("complex")) 
+					if (field.equals("beamgroup")) 
 					{
-						__temp_executeDef714 = false;
-						return this.complex;
+						__temp_executeDef701 = false;
+						return this.beamgroup;
 					}
 					
 					break;
 				}
 				
 				
-				case -1893520629:
+				case -663862953:
 				{
-					if (field.equals("xoffset")) 
+					if (field.equals("__lazyxOffset")) 
 					{
-						__temp_executeDef714 = false;
-						return this.xoffset;
+						__temp_executeDef701 = false;
+						return this.__lazyxOffset;
 					}
 					
 					break;
 				}
 				
 				
-				case 1987354746:
+				case -2003547782:
 				{
-					if (field.equals("getComplex")) 
+					if (field.equals("getBeamgroup")) 
 					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getComplex"))) );
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBeamgroup"))) );
 					}
 					
 					break;
@@ -819,7 +755,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getBaseRect")) 
 					{
-						__temp_executeDef714 = false;
+						__temp_executeDef701 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBaseRect"))) );
 					}
 					
@@ -827,36 +763,36 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -1945688004:
+				case -972195639:
 				{
-					if (field.equals("headsRects")) 
+					if (field.equals("getDirection")) 
 					{
-						__temp_executeDef714 = false;
-						return this.headsRects;
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getDirection"))) );
 					}
 					
 					break;
 				}
 				
 				
-				case -1720610763:
+				case 373432233:
 				{
-					if (field.equals("baserect")) 
+					if (field.equals("__lazybaseRect")) 
 					{
-						__temp_executeDef714 = false;
-						return this.baserect;
+						__temp_executeDef701 = false;
+						return this.__lazybaseRect;
 					}
 					
 					break;
 				}
 				
 				
-				case 2051530802:
+				case 950494384:
 				{
-					if (field.equals("getHeadsRects")) 
+					if (field.equals("complex")) 
 					{
-						__temp_executeDef714 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeadsRects"))) );
+						__temp_executeDef701 = false;
+						return this.complex;
 					}
 					
 					break;
@@ -867,7 +803,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getStaveXPosition")) 
 					{
-						__temp_executeDef714 = false;
+						__temp_executeDef701 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getStaveXPosition"))) );
 					}
 					
@@ -875,36 +811,36 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -2028694701:
+				case 1987354746:
 				{
-					if (field.equals("staveRect")) 
+					if (field.equals("getComplex")) 
 					{
-						__temp_executeDef714 = false;
-						return this.staveRect;
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getComplex"))) );
 					}
 					
 					break;
 				}
 				
 				
-				case -1633199694:
+				case 1544660486:
 				{
-					if (field.equals("staveXPosition")) 
+					if (field.equals("__lazystaveXPosition")) 
 					{
-						__temp_executeDef714 = false;
-						return this.staveXPosition;
+						__temp_executeDef701 = false;
+						return this.__lazystaveXPosition;
 					}
 					
 					break;
 				}
 				
 				
-				case -1532428076:
+				case -75122087:
 				{
-					if (field.equals("staveRectChecked")) 
+					if (field.equals("getTies")) 
 					{
-						__temp_executeDef714 = false;
-						return this.staveRectChecked;
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTies"))) );
 					}
 					
 					break;
@@ -915,8 +851,80 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getStaveRect")) 
 					{
-						__temp_executeDef714 = false;
+						__temp_executeDef701 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getStaveRect"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case -613698625:
+				{
+					if (field.equals("__lazyheads")) 
+					{
+						__temp_executeDef701 = false;
+						return this.__lazyheads;
+					}
+					
+					break;
+				}
+				
+				
+				case -1508318593:
+				{
+					if (field.equals("__lazystaveRect")) 
+					{
+						__temp_executeDef701 = false;
+						return this.__lazystaveRect;
+					}
+					
+					break;
+				}
+				
+				
+				case 99151507:
+				{
+					if (field.equals("heads")) 
+					{
+						__temp_executeDef701 = false;
+						return this.get_heads();
+					}
+					
+					break;
+				}
+				
+				
+				case 2051530802:
+				{
+					if (field.equals("getHeadsRects")) 
+					{
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeadsRects"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 1136101482:
+				{
+					if (field.equals("get_heads")) 
+					{
+						__temp_executeDef701 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_heads"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 1301069456:
+				{
+					if (field.equals("__lazyheadsRects")) 
+					{
+						__temp_executeDef701 = false;
+						return this.__lazyheadsRects;
 					}
 					
 					break;
@@ -925,7 +933,7 @@ public  class PNote extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef714) 
+			if (__temp_executeDef701) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -942,51 +950,71 @@ public  class PNote extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef715 = true;
+			boolean __temp_executeDef702 = true;
 			switch (field.hashCode())
 			{
-				case -1224444010:
+				case -1847961622:
 				{
-					if (field.equals("hasTie")) 
+					if (field.equals("__lazyhasTie")) 
 					{
-						__temp_executeDef715 = false;
-						return ((double) (haxe.lang.Runtime.toDouble(this.hasTie)) );
+						__temp_executeDef702 = false;
+						return ((double) (haxe.lang.Runtime.toDouble(this.__lazyhasTie)) );
 					}
 					
 					break;
 				}
 				
 				
-				case -1633199694:
+				case -1106363674:
 				{
-					if (field.equals("staveXPosition")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef715 = false;
-						return ((double) (haxe.lang.Runtime.toDouble(this.staveXPosition)) );
+						__temp_executeDef702 = false;
+						if (handleProperties) 
+						{
+							return ((double) (this.get_length()) );
+						}
+						 else 
+						{
+							return ((double) (this.length) );
+						}
+						
 					}
 					
 					break;
 				}
 				
 				
-				case -1398365791:
+				case -813345555:
 				{
-					if (field.equals("xposition")) 
+					if (field.equals("__lazyxPosition")) 
 					{
-						__temp_executeDef715 = false;
-						return ((double) (haxe.lang.Runtime.toDouble(this.xposition)) );
+						__temp_executeDef702 = false;
+						return ((double) (haxe.lang.Runtime.toDouble(this.__lazyxPosition)) );
 					}
 					
 					break;
 				}
 				
 				
-				case -1893520629:
+				case 1544660486:
 				{
-					if (field.equals("xoffset")) 
+					if (field.equals("__lazystaveXPosition")) 
 					{
-						__temp_executeDef715 = false;
-						return ((double) (haxe.lang.Runtime.toDouble(this.xoffset)) );
+						__temp_executeDef702 = false;
+						return ((double) (haxe.lang.Runtime.toDouble(this.__lazystaveXPosition)) );
+					}
+					
+					break;
+				}
+				
+				
+				case -663862953:
+				{
+					if (field.equals("__lazyxOffset")) 
+					{
+						__temp_executeDef702 = false;
+						return ((double) (haxe.lang.Runtime.toDouble(this.__lazyxOffset)) );
 					}
 					
 					break;
@@ -995,7 +1023,7 @@ public  class PNote extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef715) 
+			if (__temp_executeDef702) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -1012,38 +1040,14 @@ public  class PNote extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef716 = true;
+			boolean __temp_executeDef703 = true;
 			switch (field.hashCode())
 			{
-				case -304472141:
-				{
-					if (field.equals("setTiesInfo")) 
-					{
-						__temp_executeDef716 = false;
-						this.setTiesInfo(((haxe.root.Array<nx3.ETie>) (dynargs.__get(0)) ));
-					}
-					
-					break;
-				}
-				
-				
-				case 1968211836:
-				{
-					if (field.equals("getVoice")) 
-					{
-						__temp_executeDef716 = false;
-						return this.getVoice();
-					}
-					
-					break;
-				}
-				
-				
 				case 471571084:
 				{
 					if (field.equals("getHasTie")) 
 					{
-						__temp_executeDef716 = false;
+						__temp_executeDef703 = false;
 						return this.getHasTie();
 					}
 					
@@ -1051,12 +1055,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case 1954976989:
+				case 1182533742:
 				{
-					if (field.equals("getHeads")) 
+					if (field.equals("iterator")) 
 					{
-						__temp_executeDef716 = false;
-						return this.getHeads();
+						__temp_executeDef703 = false;
+						return this.iterator();
 					}
 					
 					break;
@@ -1067,7 +1071,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getNext")) 
 					{
-						__temp_executeDef716 = false;
+						__temp_executeDef703 = false;
 						return this.getNext();
 					}
 					
@@ -1075,36 +1079,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -2003547782:
+				case 974314479:
 				{
-					if (field.equals("getBeamgroup")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef716 = false;
-						return this.getBeamgroup();
-					}
-					
-					break;
-				}
-				
-				
-				case -75122087:
-				{
-					if (field.equals("getTies")) 
-					{
-						__temp_executeDef716 = false;
-						return this.getTies();
-					}
-					
-					break;
-				}
-				
-				
-				case -972195639:
-				{
-					if (field.equals("getDirection")) 
-					{
-						__temp_executeDef716 = false;
-						return this.getDirection();
+						__temp_executeDef703 = false;
+						return this.get_length();
 					}
 					
 					break;
@@ -1115,7 +1095,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getXPosition")) 
 					{
-						__temp_executeDef716 = false;
+						__temp_executeDef703 = false;
 						return this.getXPosition();
 					}
 					
@@ -1123,12 +1103,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case 1987354746:
+				case 1968211836:
 				{
-					if (field.equals("getComplex")) 
+					if (field.equals("getVoice")) 
 					{
-						__temp_executeDef716 = false;
-						return this.getComplex();
+						__temp_executeDef703 = false;
+						return this.getVoice();
 					}
 					
 					break;
@@ -1139,7 +1119,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getXOffset")) 
 					{
-						__temp_executeDef716 = false;
+						__temp_executeDef703 = false;
 						return this.getXOffset();
 					}
 					
@@ -1147,12 +1127,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case 2051530802:
+				case -2003547782:
 				{
-					if (field.equals("getHeadsRects")) 
+					if (field.equals("getBeamgroup")) 
 					{
-						__temp_executeDef716 = false;
-						return this.getHeadsRects();
+						__temp_executeDef703 = false;
+						return this.getBeamgroup();
 					}
 					
 					break;
@@ -1163,7 +1143,7 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getBaseRect")) 
 					{
-						__temp_executeDef716 = false;
+						__temp_executeDef703 = false;
 						return this.getBaseRect();
 					}
 					
@@ -1171,12 +1151,12 @@ public  class PNote extends haxe.lang.HxObject
 				}
 				
 				
-				case -2038299491:
+				case -972195639:
 				{
-					if (field.equals("getStaveRect")) 
+					if (field.equals("getDirection")) 
 					{
-						__temp_executeDef716 = false;
-						return this.getStaveRect();
+						__temp_executeDef703 = false;
+						return this.getDirection();
 					}
 					
 					break;
@@ -1187,8 +1167,68 @@ public  class PNote extends haxe.lang.HxObject
 				{
 					if (field.equals("getStaveXPosition")) 
 					{
-						__temp_executeDef716 = false;
+						__temp_executeDef703 = false;
 						return this.getStaveXPosition();
+					}
+					
+					break;
+				}
+				
+				
+				case 1987354746:
+				{
+					if (field.equals("getComplex")) 
+					{
+						__temp_executeDef703 = false;
+						return this.getComplex();
+					}
+					
+					break;
+				}
+				
+				
+				case -2038299491:
+				{
+					if (field.equals("getStaveRect")) 
+					{
+						__temp_executeDef703 = false;
+						return this.getStaveRect();
+					}
+					
+					break;
+				}
+				
+				
+				case -75122087:
+				{
+					if (field.equals("getTies")) 
+					{
+						__temp_executeDef703 = false;
+						return this.getTies();
+					}
+					
+					break;
+				}
+				
+				
+				case 2051530802:
+				{
+					if (field.equals("getHeadsRects")) 
+					{
+						__temp_executeDef703 = false;
+						return this.getHeadsRects();
+					}
+					
+					break;
+				}
+				
+				
+				case 1136101482:
+				{
+					if (field.equals("get_heads")) 
+					{
+						__temp_executeDef703 = false;
+						return this.get_heads();
 					}
 					
 					break;
@@ -1197,32 +1237,36 @@ public  class PNote extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef716) 
+			if (__temp_executeDef703) 
 			{
 				return super.__hx_invokeField(field, dynargs);
+			}
+			 else 
+			{
+				throw null;
 			}
 			
 		}
 		
-		return null;
 	}
 	
 	
 	@Override public   void __hx_getFields(haxe.root.Array<java.lang.String> baseArr)
 	{
-		baseArr.push("hasTie");
-		baseArr.push("next");
-		baseArr.push("xposition");
-		baseArr.push("xoffset");
-		baseArr.push("baserect");
-		baseArr.push("staveXPosition");
-		baseArr.push("staveRectChecked");
-		baseArr.push("staveRect");
-		baseArr.push("headsRects");
+		baseArr.push("__lazyhasTie");
+		baseArr.push("__lazynext");
+		baseArr.push("__lazyxPosition");
+		baseArr.push("__lazyxOffset");
+		baseArr.push("__lazybaseRect");
+		baseArr.push("__lazystaveXPosition");
+		baseArr.push("__lazystaveRect");
+		baseArr.push("__lazyheadsRects");
+		baseArr.push("heads");
+		baseArr.push("__lazyheads");
 		baseArr.push("complex");
 		baseArr.push("beamgroup");
-		baseArr.push("heads");
 		baseArr.push("voice");
+		baseArr.push("length");
 		baseArr.push("nnote");
 		{
 			super.__hx_getFields(baseArr);

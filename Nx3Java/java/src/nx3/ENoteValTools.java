@@ -54,7 +54,7 @@ public  class ENoteValTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_ENoteValTools(nx3.ENoteValTools __temp_me68)
+	public static   void __hx_ctor_nx3_ENoteValTools(nx3.ENoteValTools __temp_me67)
 	{
 		{
 		}
@@ -815,15 +815,15 @@ public  class ENoteValTools extends haxe.lang.HxObject
 		 else 
 		{
 			{
-				java.lang.String __temp_svar586 = (valString);
-				boolean __temp_executeDef587 = true;
-				switch (__temp_svar586.hashCode())
+				java.lang.String __temp_svar569 = (valString);
+				boolean __temp_executeDef570 = true;
+				switch (__temp_svar569.hashCode())
 				{
 					case 0:
 					{
-						if (__temp_svar586.equals("")) 
+						if (__temp_svar569.equals("")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv4;
 						}
 						
@@ -833,9 +833,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1568837:
 					{
-						if (__temp_svar586.equals("32-3")) 
+						if (__temp_svar569.equals("32-3")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv32tri;
 						}
 						
@@ -845,9 +845,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 49:
 					{
-						if (__temp_svar586.equals("1")) 
+						if (__temp_svar569.equals("1")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv1;
 						}
 						
@@ -857,9 +857,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1568863:
 					{
-						if (__temp_svar586.equals("32..")) 
+						if (__temp_svar569.equals("32..")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv32ddot;
 						}
 						
@@ -869,9 +869,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1565:
 					{
-						if (__temp_svar586.equals("1.")) 
+						if (__temp_svar569.equals("1.")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv1dot;
 						}
 						
@@ -881,9 +881,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 50607:
 					{
-						if (__temp_svar586.equals("32.")) 
+						if (__temp_svar569.equals("32.")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv32dot;
 						}
 						
@@ -893,9 +893,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 48561:
 					{
-						if (__temp_svar586.equals("1..")) 
+						if (__temp_svar569.equals("1..")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv1ddot;
 						}
 						
@@ -905,9 +905,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1631:
 					{
-						if (__temp_svar586.equals("32")) 
+						if (__temp_svar569.equals("32")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv32;
 						}
 						
@@ -917,9 +917,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 48535:
 					{
-						if (__temp_svar586.equals("1-3")) 
+						if (__temp_svar569.equals("1-3")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv1tri;
 						}
 						
@@ -929,9 +929,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1513099:
 					{
-						if (__temp_svar586.equals("16-3")) 
+						if (__temp_svar569.equals("16-3")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv16tri;
 						}
 						
@@ -941,9 +941,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 50:
 					{
-						if (__temp_svar586.equals("2")) 
+						if (__temp_svar569.equals("2")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv2;
 						}
 						
@@ -953,9 +953,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1513125:
 					{
-						if (__temp_svar586.equals("16..")) 
+						if (__temp_svar569.equals("16..")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv16ddot;
 						}
 						
@@ -965,9 +965,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1596:
 					{
-						if (__temp_svar586.equals("2.")) 
+						if (__temp_svar569.equals("2.")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv2dot;
 						}
 						
@@ -977,9 +977,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 48809:
 					{
-						if (__temp_svar586.equals("16.")) 
+						if (__temp_svar569.equals("16.")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv16dot;
 						}
 						
@@ -989,9 +989,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 49522:
 					{
-						if (__temp_svar586.equals("2..")) 
+						if (__temp_svar569.equals("2..")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv2ddot;
 						}
 						
@@ -1001,9 +1001,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1573:
 					{
-						if (__temp_svar586.equals("16")) 
+						if (__temp_svar569.equals("16")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv16;
 						}
 						
@@ -1013,9 +1013,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 49496:
 					{
-						if (__temp_svar586.equals("2-3")) 
+						if (__temp_svar569.equals("2-3")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv2tri;
 						}
 						
@@ -1025,9 +1025,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 55262:
 					{
-						if (__temp_svar586.equals("8-3")) 
+						if (__temp_svar569.equals("8-3")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv8tri;
 						}
 						
@@ -1037,9 +1037,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 52:
 					{
-						if (__temp_svar586.equals("4")) 
+						if (__temp_svar569.equals("4")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv4;
 						}
 						
@@ -1049,9 +1049,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 55288:
 					{
-						if (__temp_svar586.equals("8..")) 
+						if (__temp_svar569.equals("8..")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv8ddot;
 						}
 						
@@ -1061,9 +1061,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1658:
 					{
-						if (__temp_svar586.equals("4.")) 
+						if (__temp_svar569.equals("4.")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv4dot;
 						}
 						
@@ -1073,9 +1073,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 1782:
 					{
-						if (__temp_svar586.equals("8.")) 
+						if (__temp_svar569.equals("8.")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv8dot;
 						}
 						
@@ -1085,9 +1085,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 51444:
 					{
-						if (__temp_svar586.equals("4..")) 
+						if (__temp_svar569.equals("4..")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv4ddot;
 						}
 						
@@ -1097,9 +1097,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 56:
 					{
-						if (__temp_svar586.equals("8")) 
+						if (__temp_svar569.equals("8")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv8;
 						}
 						
@@ -1109,9 +1109,9 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 					case 51418:
 					{
-						if (__temp_svar586.equals("4-3")) 
+						if (__temp_svar569.equals("4-3")) 
 						{
-							__temp_executeDef587 = false;
+							__temp_executeDef570 = false;
 							return nx3.ENoteVal.Nv4tri;
 						}
 						
@@ -1121,7 +1121,7 @@ public  class ENoteValTools extends haxe.lang.HxObject
 					
 				}
 				
-				if (__temp_executeDef587) 
+				if (__temp_executeDef570) 
 				{
 					throw haxe.lang.HaxeException.wrap(( "unhandled note value: " + valString ));
 				}

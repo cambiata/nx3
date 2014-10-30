@@ -18,7 +18,7 @@ public  class MathTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_cx_MathTools(cx.MathTools __temp_me26)
+	public static   void __hx_ctor_cx_MathTools(cx.MathTools __temp_me25)
 	{
 		{
 		}
@@ -95,9 +95,9 @@ public  class MathTools extends haxe.lang.HxObject
 	
 	public static   double round2(double number, java.lang.Object precision)
 	{
-		int __temp_precision25 = ( (( precision == null )) ? (((int) (6) )) : (((int) (haxe.lang.Runtime.toInt(precision)) )) );
-		number = ( number * java.lang.Math.pow(((double) (10) ), ((double) (__temp_precision25) )) );
-		number = ( ((int) (java.lang.Math.round(number)) ) / java.lang.Math.pow(((double) (10) ), ((double) (__temp_precision25) )) );
+		int __temp_precision24 = ( (( precision == null )) ? (((int) (6) )) : (((int) (haxe.lang.Runtime.toInt(precision)) )) );
+		number = ( number * java.lang.Math.pow(((double) (10) ), ((double) (__temp_precision24) )) );
+		number = ( ((int) (java.lang.Math.round(number)) ) / java.lang.Math.pow(((double) (10) ), ((double) (__temp_precision24) )) );
 		return number;
 	}
 	

@@ -40,7 +40,7 @@ public  class NoteXML extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_xml_NoteXML(nx3.xml.NoteXML __temp_me215)
+	public static   void __hx_ctor_nx3_xml_NoteXML(nx3.xml.NoteXML __temp_me192)
 	{
 		{
 		}
@@ -234,19 +234,19 @@ public  class NoteXML extends haxe.lang.HxObject
 		java.lang.String xmlType = xml.get_nodeName();
 		nx3.ENoteType type = null;
 		{
-			java.lang.String __temp_svar888 = (xmlType);
-			switch (__temp_svar888.hashCode())
+			java.lang.String __temp_svar861 = (xmlType);
+			switch (__temp_svar861.hashCode())
 			{
 				case 3387378:
 				{
-					if (__temp_svar888.equals("note")) 
+					if (__temp_svar861.equals("note")) 
 					{
 						haxe.root.Array<nx3.NHead> heads = new haxe.root.Array<nx3.NHead>(new nx3.NHead[]{});
 						{
-							java.lang.Object __temp_iterator262 = xml.elementsNamed(nx3.xml.HeadXML.XHEAD);
-							while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator262, "hasNext", null)))
+							java.lang.Object __temp_iterator244 = xml.elementsNamed(nx3.xml.HeadXML.XHEAD);
+							while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator244, "hasNext", null)))
 							{
-								haxe.root.Xml h = ((haxe.root.Xml) (haxe.lang.Runtime.callField(__temp_iterator262, "next", null)) );
+								haxe.root.Xml h = ((haxe.root.Xml) (haxe.lang.Runtime.callField(__temp_iterator244, "next", null)) );
 								nx3.NHead head = nx3.xml.HeadXML.fromXmlStr(h.toString());
 								heads.push(head);
 							}
@@ -309,7 +309,7 @@ public  class NoteXML extends haxe.lang.HxObject
 				
 				case 103457887:
 				{
-					if (__temp_svar888.equals("lyric")) 
+					if (__temp_svar861.equals("lyric")) 
 					{
 						java.lang.String text = xml.get("text");
 						java.lang.String offsetStr = xml.get("offset");
@@ -325,7 +325,7 @@ public  class NoteXML extends haxe.lang.HxObject
 				
 				case 106440182:
 				{
-					if (__temp_svar888.equals("pause")) 
+					if (__temp_svar861.equals("pause")) 
 					{
 						java.lang.String pauseLevelStr = xml.get("level");
 						int levelInt = 0;

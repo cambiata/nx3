@@ -18,9 +18,9 @@ public  class PBeamflagCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBeamflagCalculator(nx3.PBeamflagCalculator __temp_me102, nx3.PBeamgroup beamgroup)
+	public static   void __hx_ctor_nx3_PBeamflagCalculator(nx3.PBeamflagCalculator __temp_me90, nx3.PBeamgroup beamgroup)
 	{
-		__temp_me102.beamgroup = beamgroup;
+		__temp_me90.beamgroup = beamgroup;
 	}
 	
 	
@@ -176,14 +176,14 @@ public  class PBeamflagCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef637 = true;
+			boolean __temp_executeDef624 = true;
 			switch (field.hashCode())
 			{
 				case -1993942992:
 				{
 					if (field.equals("beamgroup")) 
 					{
-						__temp_executeDef637 = false;
+						__temp_executeDef624 = false;
 						this.beamgroup = ((nx3.PBeamgroup) (value) );
 						return value;
 					}
@@ -194,7 +194,7 @@ public  class PBeamflagCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef637) 
+			if (__temp_executeDef624) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -211,14 +211,14 @@ public  class PBeamflagCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef638 = true;
+			boolean __temp_executeDef625 = true;
 			switch (field.hashCode())
 			{
 				case -2004663934:
 				{
 					if (field.equals("getBeamflags")) 
 					{
-						__temp_executeDef638 = false;
+						__temp_executeDef625 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBeamflags"))) );
 					}
 					
@@ -230,7 +230,7 @@ public  class PBeamflagCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("beamgroup")) 
 					{
-						__temp_executeDef638 = false;
+						__temp_executeDef625 = false;
 						return this.beamgroup;
 					}
 					
@@ -240,7 +240,7 @@ public  class PBeamflagCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef638) 
+			if (__temp_executeDef625) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -257,14 +257,14 @@ public  class PBeamflagCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef639 = true;
+			boolean __temp_executeDef626 = true;
 			switch (field.hashCode())
 			{
 				case -2004663934:
 				{
 					if (field.equals("getBeamflags")) 
 					{
-						__temp_executeDef639 = false;
+						__temp_executeDef626 = false;
 						return this.getBeamflags();
 					}
 					
@@ -274,7 +274,7 @@ public  class PBeamflagCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef639) 
+			if (__temp_executeDef626) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

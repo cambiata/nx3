@@ -18,10 +18,10 @@ public  class TestStatus extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_haxe_unit_TestStatus(haxe.unit.TestStatus __temp_me52)
+	public static   void __hx_ctor_haxe_unit_TestStatus(haxe.unit.TestStatus __temp_me51)
 	{
-		__temp_me52.done = false;
-		__temp_me52.success = false;
+		__temp_me51.done = false;
+		__temp_me51.success = false;
 	}
 	
 	
@@ -54,14 +54,14 @@ public  class TestStatus extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef384 = true;
+			boolean __temp_executeDef367 = true;
 			switch (field.hashCode())
 			{
 				case 718070673:
 				{
 					if (field.equals("posInfos")) 
 					{
-						__temp_executeDef384 = false;
+						__temp_executeDef367 = false;
 						this.posInfos = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -72,7 +72,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef384) 
+			if (__temp_executeDef367) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -89,14 +89,14 @@ public  class TestStatus extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef385 = true;
+			boolean __temp_executeDef368 = true;
 			switch (field.hashCode())
 			{
 				case 1354491070:
 				{
 					if (field.equals("backtrace")) 
 					{
-						__temp_executeDef385 = false;
+						__temp_executeDef368 = false;
 						this.backtrace = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -109,7 +109,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("done")) 
 					{
-						__temp_executeDef385 = false;
+						__temp_executeDef368 = false;
 						this.done = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -122,7 +122,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("posInfos")) 
 					{
-						__temp_executeDef385 = false;
+						__temp_executeDef368 = false;
 						this.posInfos = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -135,7 +135,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("success")) 
 					{
-						__temp_executeDef385 = false;
+						__temp_executeDef368 = false;
 						this.success = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -148,7 +148,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("classname")) 
 					{
-						__temp_executeDef385 = false;
+						__temp_executeDef368 = false;
 						this.classname = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -161,7 +161,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("error")) 
 					{
-						__temp_executeDef385 = false;
+						__temp_executeDef368 = false;
 						this.error = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -174,7 +174,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("method")) 
 					{
-						__temp_executeDef385 = false;
+						__temp_executeDef368 = false;
 						this.method = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -185,7 +185,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef385) 
+			if (__temp_executeDef368) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -202,14 +202,14 @@ public  class TestStatus extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef386 = true;
+			boolean __temp_executeDef369 = true;
 			switch (field.hashCode())
 			{
 				case 1354491070:
 				{
 					if (field.equals("backtrace")) 
 					{
-						__temp_executeDef386 = false;
+						__temp_executeDef369 = false;
 						return this.backtrace;
 					}
 					
@@ -221,7 +221,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("done")) 
 					{
-						__temp_executeDef386 = false;
+						__temp_executeDef369 = false;
 						return this.done;
 					}
 					
@@ -233,7 +233,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("posInfos")) 
 					{
-						__temp_executeDef386 = false;
+						__temp_executeDef369 = false;
 						return this.posInfos;
 					}
 					
@@ -245,7 +245,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("success")) 
 					{
-						__temp_executeDef386 = false;
+						__temp_executeDef369 = false;
 						return this.success;
 					}
 					
@@ -257,7 +257,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("classname")) 
 					{
-						__temp_executeDef386 = false;
+						__temp_executeDef369 = false;
 						return this.classname;
 					}
 					
@@ -269,7 +269,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("error")) 
 					{
-						__temp_executeDef386 = false;
+						__temp_executeDef369 = false;
 						return this.error;
 					}
 					
@@ -281,7 +281,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				{
 					if (field.equals("method")) 
 					{
-						__temp_executeDef386 = false;
+						__temp_executeDef369 = false;
 						return this.method;
 					}
 					
@@ -291,7 +291,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef386) 
+			if (__temp_executeDef369) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -308,14 +308,14 @@ public  class TestStatus extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef387 = true;
+			boolean __temp_executeDef370 = true;
 			switch (field.hashCode())
 			{
 				case 718070673:
 				{
 					if (field.equals("posInfos")) 
 					{
-						__temp_executeDef387 = false;
+						__temp_executeDef370 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.posInfos)) );
 					}
 					
@@ -325,7 +325,7 @@ public  class TestStatus extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef387) 
+			if (__temp_executeDef370) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}

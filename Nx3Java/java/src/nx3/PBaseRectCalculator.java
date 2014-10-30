@@ -25,9 +25,9 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBaseRectCalculator(nx3.PBaseRectCalculator __temp_me101, nx3.PNote note)
+	public static   void __hx_ctor_nx3_PBaseRectCalculator(nx3.PBaseRectCalculator __temp_me89, nx3.PNote note)
 	{
-		__temp_me101.note = note;
+		__temp_me89.note = note;
 	}
 	
 	
@@ -93,13 +93,13 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 					nx3.ELyricContinuation c = ((nx3.ELyricContinuation) (_g.params.__get(2)) );
 					nx3.EPosition o = ((nx3.EPosition) (_g.params.__get(1)) );
 					java.lang.String text = haxe.lang.Runtime.toString(_g.params.__get(0));
-					nx3.geom.Rectangle __temp_stmt633 = null;
+					nx3.geom.Rectangle __temp_stmt620 = null;
 					{
 						haxe.root.Array<nx3.geom.Rectangle> array = this.note.getHeadsRects();
-						__temp_stmt633 = array.__get(0);
+						__temp_stmt620 = array.__get(0);
 					}
 					
-					return __temp_stmt633.clone();
+					return __temp_stmt620.clone();
 				}
 				
 				
@@ -118,14 +118,14 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef634 = true;
+			boolean __temp_executeDef621 = true;
 			switch (field.hashCode())
 			{
 				case 3387378:
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef634 = false;
+						__temp_executeDef621 = false;
 						this.note = ((nx3.PNote) (value) );
 						return value;
 					}
@@ -136,7 +136,7 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef634) 
+			if (__temp_executeDef621) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -153,14 +153,14 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef635 = true;
+			boolean __temp_executeDef622 = true;
 			switch (field.hashCode())
 			{
 				case 356336075:
 				{
 					if (field.equals("getBaseRect")) 
 					{
-						__temp_executeDef635 = false;
+						__temp_executeDef622 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBaseRect"))) );
 					}
 					
@@ -172,7 +172,7 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef635 = false;
+						__temp_executeDef622 = false;
 						return this.note;
 					}
 					
@@ -182,7 +182,7 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef635) 
+			if (__temp_executeDef622) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -199,14 +199,14 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef636 = true;
+			boolean __temp_executeDef623 = true;
 			switch (field.hashCode())
 			{
 				case 356336075:
 				{
 					if (field.equals("getBaseRect")) 
 					{
-						__temp_executeDef636 = false;
+						__temp_executeDef623 = false;
 						return this.getBaseRect();
 					}
 					
@@ -216,7 +216,7 @@ public  class PBaseRectCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef636) 
+			if (__temp_executeDef623) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

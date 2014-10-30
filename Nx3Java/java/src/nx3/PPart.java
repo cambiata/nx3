@@ -18,10 +18,10 @@ public  class PPart extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PPart(nx3.PPart __temp_me126, nx3.NPart npart)
+	public static   void __hx_ctor_nx3_PPart(nx3.PPart __temp_me114, nx3.NPart npart)
 	{
-		__temp_me126.npart = npart;
-		__temp_me126.value = 0;
+		__temp_me114.npart = npart;
+		__temp_me114.value = 0;
 	}
 	
 	
@@ -38,6 +38,24 @@ public  class PPart extends haxe.lang.HxObject
 	
 	
 	public  nx3.NPart npart;
+	
+	public   java.lang.Object iterator()
+	{
+		{
+			haxe.root.Array<nx3.PVoice> _this = this.getVoices();
+			return new _Array.ArrayIterator<nx3.PVoice>(((haxe.root.Array<nx3.PVoice>) (_this) ));
+		}
+		
+	}
+	
+	
+	public  int length;
+	
+	public   int get_length()
+	{
+		return this.getVoices().length;
+	}
+	
 	
 	public  nx3.PBar bar;
 	
@@ -174,15 +192,28 @@ public  class PPart extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef735 = true;
+			boolean __temp_executeDef722 = true;
 			switch (field.hashCode())
 			{
 				case 111972721:
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef735 = false;
+						__temp_executeDef722 = false;
 						this.value = ((int) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case -1106363674:
+				{
+					if (field.equals("length")) 
+					{
+						__temp_executeDef722 = false;
+						this.length = ((int) (value) );
 						return value;
 					}
 					
@@ -192,7 +223,7 @@ public  class PPart extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef735) 
+			if (__temp_executeDef722) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -209,14 +240,14 @@ public  class PPart extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef736 = true;
+			boolean __temp_executeDef723 = true;
 			switch (field.hashCode())
 			{
 				case 111972721:
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef736 = false;
+						__temp_executeDef723 = false;
 						this.value = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -229,7 +260,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("npart")) 
 					{
-						__temp_executeDef736 = false;
+						__temp_executeDef723 = false;
 						this.npart = ((nx3.NPart) (value) );
 						return value;
 					}
@@ -242,7 +273,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("positionsComplexes")) 
 					{
-						__temp_executeDef736 = false;
+						__temp_executeDef723 = false;
 						this.positionsComplexes = ((haxe.ds.IntMap<nx3.PComplex>) (value) );
 						return value;
 					}
@@ -251,12 +282,12 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case 97299:
+				case -1106363674:
 				{
-					if (field.equals("bar")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef736 = false;
-						this.bar = ((nx3.PBar) (value) );
+						__temp_executeDef723 = false;
+						this.length = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
 					
@@ -268,8 +299,21 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("complexes")) 
 					{
-						__temp_executeDef736 = false;
+						__temp_executeDef723 = false;
 						this.complexes = ((haxe.root.Array<nx3.PComplex>) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case 97299:
+				{
+					if (field.equals("bar")) 
+					{
+						__temp_executeDef723 = false;
+						this.bar = ((nx3.PBar) (value) );
 						return value;
 					}
 					
@@ -281,7 +325,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("voices")) 
 					{
-						__temp_executeDef736 = false;
+						__temp_executeDef723 = false;
 						this.voices = ((haxe.root.Array<nx3.PVoice>) (value) );
 						return value;
 					}
@@ -292,7 +336,7 @@ public  class PPart extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef736) 
+			if (__temp_executeDef723) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -309,14 +353,14 @@ public  class PPart extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef737 = true;
+			boolean __temp_executeDef724 = true;
 			switch (field.hashCode())
 			{
 				case 1967798203:
 				{
 					if (field.equals("getValue")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getValue"))) );
 					}
 					
@@ -328,7 +372,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("npart")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return this.npart;
 					}
 					
@@ -340,7 +384,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return this.value;
 					}
 					
@@ -348,12 +392,12 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case 97299:
+				case 1182533742:
 				{
-					if (field.equals("bar")) 
+					if (field.equals("iterator")) 
 					{
-						__temp_executeDef737 = false;
-						return this.bar;
+						__temp_executeDef724 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("iterator"))) );
 					}
 					
 					break;
@@ -364,7 +408,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("getYPosition")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getYPosition"))) );
 					}
 					
@@ -372,12 +416,20 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case -1249366819:
+				case -1106363674:
 				{
-					if (field.equals("getBar")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef737 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBar"))) );
+						__temp_executeDef724 = false;
+						if (handleProperties) 
+						{
+							return this.get_length();
+						}
+						 else 
+						{
+							return this.length;
+						}
+						
 					}
 					
 					break;
@@ -388,7 +440,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("getIndex")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getIndex"))) );
 					}
 					
@@ -396,12 +448,12 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case -810990207:
+				case 974314479:
 				{
-					if (field.equals("voices")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef737 = false;
-						return this.voices;
+						__temp_executeDef724 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_length"))) );
 					}
 					
 					break;
@@ -412,7 +464,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("getPositionsComplexes")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getPositionsComplexes"))) );
 					}
 					
@@ -420,12 +472,12 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case 885024887:
+				case 97299:
 				{
-					if (field.equals("getVoices")) 
+					if (field.equals("bar")) 
 					{
-						__temp_executeDef737 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getVoices"))) );
+						__temp_executeDef724 = false;
+						return this.bar;
 					}
 					
 					break;
@@ -436,7 +488,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("positionsComplexes")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return this.positionsComplexes;
 					}
 					
@@ -444,12 +496,12 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case 1968211836:
+				case -1249366819:
 				{
-					if (field.equals("getVoice")) 
+					if (field.equals("getBar")) 
 					{
-						__temp_executeDef737 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getVoice"))) );
+						__temp_executeDef724 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBar"))) );
 					}
 					
 					break;
@@ -460,8 +512,20 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("getComplexes")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getComplexes"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case -810990207:
+				{
+					if (field.equals("voices")) 
+					{
+						__temp_executeDef724 = false;
+						return this.voices;
 					}
 					
 					break;
@@ -472,8 +536,32 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("complexes")) 
 					{
-						__temp_executeDef737 = false;
+						__temp_executeDef724 = false;
 						return this.complexes;
+					}
+					
+					break;
+				}
+				
+				
+				case 885024887:
+				{
+					if (field.equals("getVoices")) 
+					{
+						__temp_executeDef724 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getVoices"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 1968211836:
+				{
+					if (field.equals("getVoice")) 
+					{
+						__temp_executeDef724 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getVoice"))) );
 					}
 					
 					break;
@@ -482,7 +570,7 @@ public  class PPart extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef737) 
+			if (__temp_executeDef724) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -499,15 +587,35 @@ public  class PPart extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef738 = true;
+			boolean __temp_executeDef725 = true;
 			switch (field.hashCode())
 			{
 				case 111972721:
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef738 = false;
+						__temp_executeDef725 = false;
 						return ((double) (this.value) );
+					}
+					
+					break;
+				}
+				
+				
+				case -1106363674:
+				{
+					if (field.equals("length")) 
+					{
+						__temp_executeDef725 = false;
+						if (handleProperties) 
+						{
+							return ((double) (this.get_length()) );
+						}
+						 else 
+						{
+							return ((double) (this.length) );
+						}
+						
 					}
 					
 					break;
@@ -516,7 +624,7 @@ public  class PPart extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef738) 
+			if (__temp_executeDef725) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -533,14 +641,14 @@ public  class PPart extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef739 = true;
+			boolean __temp_executeDef726 = true;
 			switch (field.hashCode())
 			{
 				case 1967798203:
 				{
 					if (field.equals("getValue")) 
 					{
-						__temp_executeDef739 = false;
+						__temp_executeDef726 = false;
 						return this.getValue();
 					}
 					
@@ -548,12 +656,12 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case -1249366819:
+				case 1182533742:
 				{
-					if (field.equals("getBar")) 
+					if (field.equals("iterator")) 
 					{
-						__temp_executeDef739 = false;
-						return this.getBar();
+						__temp_executeDef726 = false;
+						return this.iterator();
 					}
 					
 					break;
@@ -564,7 +672,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("getYPosition")) 
 					{
-						__temp_executeDef739 = false;
+						__temp_executeDef726 = false;
 						return this.getYPosition();
 					}
 					
@@ -572,12 +680,12 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case 885024887:
+				case 974314479:
 				{
-					if (field.equals("getVoices")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef739 = false;
-						return this.getVoices();
+						__temp_executeDef726 = false;
+						return this.get_length();
 					}
 					
 					break;
@@ -588,7 +696,7 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("getIndex")) 
 					{
-						__temp_executeDef739 = false;
+						__temp_executeDef726 = false;
 						return this.getIndex();
 					}
 					
@@ -596,12 +704,12 @@ public  class PPart extends haxe.lang.HxObject
 				}
 				
 				
-				case 1968211836:
+				case -1249366819:
 				{
-					if (field.equals("getVoice")) 
+					if (field.equals("getBar")) 
 					{
-						__temp_executeDef739 = false;
-						return this.getVoice(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
+						__temp_executeDef726 = false;
+						return this.getBar();
 					}
 					
 					break;
@@ -612,8 +720,20 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("getPositionsComplexes")) 
 					{
-						__temp_executeDef739 = false;
+						__temp_executeDef726 = false;
 						return this.getPositionsComplexes();
+					}
+					
+					break;
+				}
+				
+				
+				case 885024887:
+				{
+					if (field.equals("getVoices")) 
+					{
+						__temp_executeDef726 = false;
+						return this.getVoices();
 					}
 					
 					break;
@@ -624,8 +744,20 @@ public  class PPart extends haxe.lang.HxObject
 				{
 					if (field.equals("getComplexes")) 
 					{
-						__temp_executeDef739 = false;
+						__temp_executeDef726 = false;
 						return this.getComplexes();
+					}
+					
+					break;
+				}
+				
+				
+				case 1968211836:
+				{
+					if (field.equals("getVoice")) 
+					{
+						__temp_executeDef726 = false;
+						return this.getVoice(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
 					}
 					
 					break;
@@ -634,7 +766,7 @@ public  class PPart extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef739) 
+			if (__temp_executeDef726) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}
@@ -655,6 +787,7 @@ public  class PPart extends haxe.lang.HxObject
 		baseArr.push("complexes");
 		baseArr.push("voices");
 		baseArr.push("bar");
+		baseArr.push("length");
 		baseArr.push("npart");
 		{
 			super.__hx_getFields(baseArr);

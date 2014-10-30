@@ -18,17 +18,17 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PVoiceBeamgroupsGenerator(nx3.PVoiceBeamgroupsGenerator __temp_me141, haxe.root.Array<nx3.PNote> pnotes, haxe.root.Array<nx3.ENoteVal> pattern)
+	public static   void __hx_ctor_nx3_PVoiceBeamgroupsGenerator(nx3.PVoiceBeamgroupsGenerator __temp_me129, haxe.root.Array<nx3.PNote> pnotes, haxe.root.Array<nx3.ENoteVal> pattern)
 	{
 		if (( pattern == null )) 
 		{
 			pattern = new haxe.root.Array<nx3.ENoteVal>(new nx3.ENoteVal[]{nx3.ENoteVal.Nv4});
 		}
 		
-		__temp_me141.voice = pnotes.__get(0).getVoice();
-		__temp_me141.notes = pnotes;
-		__temp_me141.pattern = pattern;
-		__temp_me141.adjustPatternLenght();
+		__temp_me129.voice = pnotes.__get(0).getVoice();
+		__temp_me129.notes = pnotes;
+		__temp_me129.pattern = pattern;
+		__temp_me129.adjustPatternLenght();
 	}
 	
 	
@@ -287,14 +287,14 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef809 = true;
+			boolean __temp_executeDef796 = true;
 			switch (field.hashCode())
 			{
 				case 112386354:
 				{
 					if (field.equals("voice")) 
 					{
-						__temp_executeDef809 = false;
+						__temp_executeDef796 = false;
 						this.voice = ((nx3.PVoice) (value) );
 						return value;
 					}
@@ -307,7 +307,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("notes")) 
 					{
-						__temp_executeDef809 = false;
+						__temp_executeDef796 = false;
 						this.notes = ((haxe.root.Array<nx3.PNote>) (value) );
 						return value;
 					}
@@ -320,7 +320,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("pattern")) 
 					{
-						__temp_executeDef809 = false;
+						__temp_executeDef796 = false;
 						this.pattern = ((haxe.root.Array<nx3.ENoteVal>) (value) );
 						return value;
 					}
@@ -331,7 +331,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef809) 
+			if (__temp_executeDef796) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -348,14 +348,14 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef810 = true;
+			boolean __temp_executeDef797 = true;
 			switch (field.hashCode())
 			{
 				case -1972625953:
 				{
 					if (field.equals("adjustPatternLenght")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("adjustPatternLenght"))) );
 					}
 					
@@ -367,7 +367,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("notes")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return this.notes;
 					}
 					
@@ -379,7 +379,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getPatternPositions")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getPatternPositions"))) );
 					}
 					
@@ -391,7 +391,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("pattern")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return this.pattern;
 					}
 					
@@ -403,7 +403,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getNotesPositions")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNotesPositions"))) );
 					}
 					
@@ -415,7 +415,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("voice")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return this.voice;
 					}
 					
@@ -427,7 +427,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getNotesBeamgroupPosIndexes")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNotesBeamgroupPosIndexes"))) );
 					}
 					
@@ -439,7 +439,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getBeamgroups")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBeamgroups"))) );
 					}
 					
@@ -451,7 +451,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("createBeamgroups")) 
 					{
-						__temp_executeDef810 = false;
+						__temp_executeDef797 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("createBeamgroups"))) );
 					}
 					
@@ -461,7 +461,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef810) 
+			if (__temp_executeDef797) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -478,14 +478,14 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef811 = true;
+			boolean __temp_executeDef798 = true;
 			switch (field.hashCode())
 			{
 				case -1972625953:
 				{
 					if (field.equals("adjustPatternLenght")) 
 					{
-						__temp_executeDef811 = false;
+						__temp_executeDef798 = false;
 						this.adjustPatternLenght();
 					}
 					
@@ -497,7 +497,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getBeamgroups")) 
 					{
-						__temp_executeDef811 = false;
+						__temp_executeDef798 = false;
 						return this.getBeamgroups();
 					}
 					
@@ -509,7 +509,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getPatternPositions")) 
 					{
-						__temp_executeDef811 = false;
+						__temp_executeDef798 = false;
 						return this.getPatternPositions();
 					}
 					
@@ -521,7 +521,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("createBeamgroups")) 
 					{
-						__temp_executeDef811 = false;
+						__temp_executeDef798 = false;
 						return this.createBeamgroups(((haxe.root.Array<java.lang.Object>) (dynargs.__get(0)) ));
 					}
 					
@@ -533,7 +533,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getNotesPositions")) 
 					{
-						__temp_executeDef811 = false;
+						__temp_executeDef798 = false;
 						return this.getNotesPositions();
 					}
 					
@@ -545,7 +545,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				{
 					if (field.equals("getNotesBeamgroupPosIndexes")) 
 					{
-						__temp_executeDef811 = false;
+						__temp_executeDef798 = false;
 						return this.getNotesBeamgroupPosIndexes(((haxe.root.Array<java.lang.Object>) (dynargs.__get(0)) ), ((haxe.root.Array<java.lang.Object>) (dynargs.__get(1)) ));
 					}
 					
@@ -555,7 +555,7 @@ public  class PVoiceBeamgroupsGenerator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef811) 
+			if (__temp_executeDef798) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -29,7 +29,7 @@ public  class HeadXML extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_xml_HeadXML(nx3.xml.HeadXML __temp_me214)
+	public static   void __hx_ctor_nx3_xml_HeadXML(nx3.xml.HeadXML __temp_me191)
 	{
 		{
 		}

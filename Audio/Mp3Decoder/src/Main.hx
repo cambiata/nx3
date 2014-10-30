@@ -1,5 +1,6 @@
 package ;
 
+import audio.flash.WaveEncoder;
 import com.codeazur.as3icy.ICYDecoder;
 import com.codeazur.as3icy.ICYHandler;
 import cx.ByteArrayTools;
@@ -16,6 +17,7 @@ import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
 import flash.utils.ByteArray;
 import openfl.Assets;
+
 
 /**
  * ...
@@ -89,8 +91,14 @@ class Main extends Sprite
 				var sb:ByteArray = icyDecoder.sampleBuffer;
 				sb.position = 0;
 				for (x in 0...200) trace(sb.readFloat());					
+				var encoder = new WaveEncoder(1);
 				
-				testSound.play();
+				trace('sb.length: ' + sb.length);
+				var wavdata = encoder.encode(sb);
+				var fileref:flash.net.FileReference = new flash.net.FileReference();
+				fileref.save(wavdata, '4samples-saved.wav');
+				
+				//testSound.play();
 			});			
 			
 			
@@ -113,10 +121,18 @@ class Main extends Sprite
 			icyDecoder.sampleBuffer.position = 0;
 			var sb:ByteArray = icyDecoder.sampleBuffer;
 			sb.position = 0;
+			/*
 			for (x in 0...200) trace(sb.readFloat());			
 			sb.position = 0;
 			FileTools.saveBytes(MP3_FILENAME+'.data', ByteArrayTools.toBytes(sb));
-
+			*/
+			trace('sb.length: ' + sb.length);
+			
+			var encoder = new WaveEncoder(1);			
+			var wavdata = encoder.encode(sb);			
+			sys.io.File.saveBytes('native-saved.wav', ByteArrayTools.toBytes(wavdata));
+			
+			
 			#end
 			
 			/*

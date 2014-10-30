@@ -46,8 +46,14 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
+		path.set ("assets/4samples.mp3", "assets/4samples.mp3");
+		type.set ("assets/4samples.mp3", AssetType.MUSIC);
+		path.set ("assets/4samples.wav", "assets/4samples.wav");
+		type.set ("assets/4samples.wav", AssetType.SOUND);
 		path.set ("assets/micro.mp3", "assets/micro.mp3");
 		type.set ("assets/micro.mp3", AssetType.MUSIC);
+		path.set ("assets/nano.mp3", "assets/nano.mp3");
+		type.set ("assets/nano.mp3", AssetType.MUSIC);
 		path.set ("assets/openfl.svg", "assets/openfl.svg");
 		type.set ("assets/openfl.svg", AssetType.TEXT);
 		path.set ("assets/test.mp3", "assets/test.mp3");
@@ -64,6 +70,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -689,7 +698,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
+
 #elseif html5
+
+
+
 
 
 

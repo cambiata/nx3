@@ -18,7 +18,7 @@ public  class EDirectionUDTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_EDirectionUDTools(nx3.EDirectionUDTools __temp_me67)
+	public static   void __hx_ctor_nx3_EDirectionUDTools(nx3.EDirectionUDTools __temp_me66)
 	{
 		{
 		}

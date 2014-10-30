@@ -18,7 +18,7 @@ public  class MapTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_cx_MapTools(cx.MapTools __temp_me24)
+	public static   void __hx_ctor_cx_MapTools(cx.MapTools __temp_me23)
 	{
 		{
 		}
@@ -30,10 +30,10 @@ public  class MapTools extends haxe.lang.HxObject
 	{
 		haxe.root.Array<T> result = new haxe.root.Array<T>(( (T[]) (new java.lang.Object[] {}) ));
 		{
-			java.lang.Object __temp_iterator228 = it;
-			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator228, "hasNext", null)))
+			java.lang.Object __temp_iterator210 = it;
+			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator210, "hasNext", null)))
 			{
-				T v = ((T) (haxe.lang.Runtime.callField(__temp_iterator228, "next", null)) );
+				T v = ((T) (haxe.lang.Runtime.callField(__temp_iterator210, "next", null)) );
 				result.push(v);
 			}
 			

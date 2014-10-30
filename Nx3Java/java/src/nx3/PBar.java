@@ -18,13 +18,13 @@ public  class PBar extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBar(nx3.PBar __temp_me91, nx3.NBar nbar)
+	public static   void __hx_ctor_nx3_PBar(nx3.PBar __temp_me79, nx3.NBar nbar)
 	{
-		__temp_me91.stretchwidth = ((double) (0) );
-		__temp_me91._keys = null;
-		__temp_me91._clefs = null;
-		__temp_me91.nbar = nbar;
-		__temp_me91.value = 0;
+		__temp_me79.stretchwidth = ((double) (0) );
+		__temp_me79._keys = null;
+		__temp_me79._clefs = null;
+		__temp_me79.nbar = nbar;
+		__temp_me79.value = 0;
 	}
 	
 	
@@ -41,6 +41,24 @@ public  class PBar extends haxe.lang.HxObject
 	
 	
 	public  nx3.NBar nbar;
+	
+	public   java.lang.Object iterator()
+	{
+		{
+			haxe.root.Array<nx3.PPart> _this = this.getParts();
+			return new _Array.ArrayIterator<nx3.PPart>(((haxe.root.Array<nx3.PPart>) (_this) ));
+		}
+		
+	}
+	
+	
+	public  int length;
+	
+	public   int get_length()
+	{
+		return this.getParts().length;
+	}
+	
 	
 	public  nx3.PScore score;
 	
@@ -444,7 +462,7 @@ public  class PBar extends haxe.lang.HxObject
 							lastnote = array.__get(( array.length - 1 ));
 						}
 						
-						if ( ! (lastnote.getHasTie()) ) 
+						if (( ! (haxe.lang.Runtime.toBool(lastnote.getHasTie())) )) 
 						{
 							continue;
 						}
@@ -534,14 +552,14 @@ public  class PBar extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef619 = true;
+			boolean __temp_executeDef606 = true;
 			switch (field.hashCode())
 			{
 				case 339597513:
 				{
 					if (field.equals("allottedDistanceSum")) 
 					{
-						__temp_executeDef619 = false;
+						__temp_executeDef606 = false;
 						this.allottedDistanceSum = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -550,12 +568,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 111972721:
+				case -1106363674:
 				{
-					if (field.equals("value")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef619 = false;
-						this.value = ((int) (value) );
+						__temp_executeDef606 = false;
+						this.length = ((int) (value) );
 						return value;
 					}
 					
@@ -567,7 +585,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("stretchwidth")) 
 					{
-						__temp_executeDef619 = false;
+						__temp_executeDef606 = false;
 						this.stretchwidth = ((double) (value) );
 						return value;
 					}
@@ -576,12 +594,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 853662957:
+				case 111972721:
 				{
-					if (field.equals("contentwidth")) 
+					if (field.equals("value")) 
 					{
-						__temp_executeDef619 = false;
-						this.contentwidth = ((java.lang.Object) (value) );
+						__temp_executeDef606 = false;
+						this.value = ((int) (value) );
 						return value;
 					}
 					
@@ -593,8 +611,21 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("contentx")) 
 					{
-						__temp_executeDef619 = false;
+						__temp_executeDef606 = false;
 						this.contentx = ((java.lang.Object) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case 853662957:
+				{
+					if (field.equals("contentwidth")) 
+					{
+						__temp_executeDef606 = false;
+						this.contentwidth = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -604,7 +635,7 @@ public  class PBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef619) 
+			if (__temp_executeDef606) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -621,14 +652,14 @@ public  class PBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef620 = true;
+			boolean __temp_executeDef607 = true;
 			switch (field.hashCode())
 			{
 				case -1675713851:
 				{
 					if (field.equals("tieconnections")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.tieconnections = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -641,7 +672,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("nbar")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.nbar = ((nx3.NBar) (value) );
 						return value;
 					}
@@ -654,7 +685,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("allottedDistanceSum")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.allottedDistanceSum = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -663,12 +694,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 109264530:
+				case -1106363674:
 				{
-					if (field.equals("score")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef620 = false;
-						this.score = ((nx3.PScore) (value) );
+						__temp_executeDef607 = false;
+						this.length = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
 					
@@ -680,7 +711,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("stretchwidth")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.stretchwidth = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -689,12 +720,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1129129860:
+				case 109264530:
 				{
-					if (field.equals("systembar")) 
+					if (field.equals("score")) 
 					{
-						__temp_executeDef620 = false;
-						this.systembar = ((nx3.PSystemBar) (value) );
+						__temp_executeDef607 = false;
+						this.score = ((nx3.PScore) (value) );
 						return value;
 					}
 					
@@ -706,7 +737,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("contentx")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.contentx = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -715,12 +746,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 94746345:
+				case 1129129860:
 				{
-					if (field.equals("clefs")) 
+					if (field.equals("systembar")) 
 					{
-						__temp_executeDef620 = false;
-						this.clefs = ((haxe.root.Array<nx3.EClef>) (value) );
+						__temp_executeDef607 = false;
+						this.systembar = ((nx3.PSystemBar) (value) );
 						return value;
 					}
 					
@@ -732,7 +763,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("contentwidth")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.contentwidth = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -741,12 +772,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 3288564:
+				case 94746345:
 				{
-					if (field.equals("keys")) 
+					if (field.equals("clefs")) 
 					{
-						__temp_executeDef620 = false;
-						this.keys = ((haxe.root.Array<nx3.EKey>) (value) );
+						__temp_executeDef607 = false;
+						this.clefs = ((haxe.root.Array<nx3.EClef>) (value) );
 						return value;
 					}
 					
@@ -758,7 +789,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("value")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.value = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -767,12 +798,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 3560141:
+				case 3288564:
 				{
-					if (field.equals("time")) 
+					if (field.equals("keys")) 
 					{
-						__temp_executeDef620 = false;
-						this.time = ((nx3.ETime) (value) );
+						__temp_executeDef607 = false;
+						this.keys = ((haxe.root.Array<nx3.EKey>) (value) );
 						return value;
 					}
 					
@@ -784,7 +815,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("columns")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.columns = ((haxe.root.Array<nx3.PColumn>) (value) );
 						return value;
 					}
@@ -793,12 +824,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case -1480451606:
+				case 3560141:
 				{
-					if (field.equals("_clefs")) 
+					if (field.equals("time")) 
 					{
-						__temp_executeDef620 = false;
-						this._clefs = ((haxe.root.Array<nx3.EClef>) (value) );
+						__temp_executeDef607 = false;
+						this.time = ((nx3.ETime) (value) );
 						return value;
 					}
 					
@@ -810,7 +841,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("parts")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.parts = ((haxe.root.Array<nx3.PPart>) (value) );
 						return value;
 					}
@@ -819,12 +850,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 91023059:
+				case -1480451606:
 				{
-					if (field.equals("_keys")) 
+					if (field.equals("_clefs")) 
 					{
-						__temp_executeDef620 = false;
-						this._keys = ((haxe.root.Array<nx3.EKey>) (value) );
+						__temp_executeDef607 = false;
+						this._clefs = ((haxe.root.Array<nx3.EClef>) (value) );
 						return value;
 					}
 					
@@ -836,7 +867,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("displayTime")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.displayTime = ((nx3.EDisplayALN) (value) );
 						return value;
 					}
@@ -845,12 +876,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1589172039:
+				case 91023059:
 				{
-					if (field.equals("displayClefs")) 
+					if (field.equals("_keys")) 
 					{
-						__temp_executeDef620 = false;
-						this.displayClefs = ((nx3.EDisplayALN) (value) );
+						__temp_executeDef607 = false;
+						this._keys = ((haxe.root.Array<nx3.EKey>) (value) );
 						return value;
 					}
 					
@@ -862,8 +893,21 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("displayKeys")) 
 					{
-						__temp_executeDef620 = false;
+						__temp_executeDef607 = false;
 						this.displayKeys = ((nx3.EDisplayALN) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case 1589172039:
+				{
+					if (field.equals("displayClefs")) 
+					{
+						__temp_executeDef607 = false;
+						this.displayClefs = ((nx3.EDisplayALN) (value) );
 						return value;
 					}
 					
@@ -873,7 +917,7 @@ public  class PBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef620) 
+			if (__temp_executeDef607) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -890,14 +934,14 @@ public  class PBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef621 = true;
+			boolean __temp_executeDef608 = true;
 			switch (field.hashCode())
 			{
 				case -299886693:
 				{
 					if (field.equals("getTieConnections")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTieConnections"))) );
 					}
 					
@@ -909,7 +953,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("nbar")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return this.nbar;
 					}
 					
@@ -921,7 +965,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("tieconnections")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return this.tieconnections;
 					}
 					
@@ -929,12 +973,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 109264530:
+				case 1182533742:
 				{
-					if (field.equals("score")) 
+					if (field.equals("iterator")) 
 					{
-						__temp_executeDef621 = false;
-						return this.score;
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("iterator"))) );
 					}
 					
 					break;
@@ -945,7 +989,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getStretchWidth")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getStretchWidth"))) );
 					}
 					
@@ -953,12 +997,20 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1965090012:
+				case -1106363674:
 				{
-					if (field.equals("getScore")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getScore"))) );
+						__temp_executeDef608 = false;
+						if (handleProperties) 
+						{
+							return this.get_length();
+						}
+						 else 
+						{
+							return this.length;
+						}
+						
 					}
 					
 					break;
@@ -969,7 +1021,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getAllottedDistanceSum")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getAllottedDistanceSum"))) );
 					}
 					
@@ -977,12 +1029,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1129129860:
+				case 974314479:
 				{
-					if (field.equals("systembar")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef621 = false;
-						return this.systembar;
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_length"))) );
 					}
 					
 					break;
@@ -993,7 +1045,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("allottedDistanceSum")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return this.allottedDistanceSum;
 					}
 					
@@ -1001,12 +1053,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1119525070:
+				case 109264530:
 				{
-					if (field.equals("getSystembar")) 
+					if (field.equals("score")) 
 					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSystembar"))) );
+						__temp_executeDef608 = false;
+						return this.score;
 					}
 					
 					break;
@@ -1017,8 +1069,80 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("stretchwidth")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return this.stretchwidth;
+					}
+					
+					break;
+				}
+				
+				
+				case 1965090012:
+				{
+					if (field.equals("getScore")) 
+					{
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getScore"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case -1843869507:
+				{
+					if (field.equals("getContentXZero")) 
+					{
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getContentXZero"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 1129129860:
+				{
+					if (field.equals("systembar")) 
+					{
+						__temp_executeDef608 = false;
+						return this.systembar;
+					}
+					
+					break;
+				}
+				
+				
+				case -567321825:
+				{
+					if (field.equals("contentx")) 
+					{
+						__temp_executeDef608 = false;
+						return this.contentx;
+					}
+					
+					break;
+				}
+				
+				
+				case 1119525070:
+				{
+					if (field.equals("getSystembar")) 
+					{
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSystembar"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case -1814794397:
+				{
+					if (field.equals("getContentwidth")) 
+					{
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getContentwidth"))) );
 					}
 					
 					break;
@@ -1029,7 +1153,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("clefs")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						if (handleProperties) 
 						{
 							return this.get_clefs();
@@ -1045,12 +1169,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case -1843869507:
+				case 853662957:
 				{
-					if (field.equals("getContentXZero")) 
+					if (field.equals("contentwidth")) 
 					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getContentXZero"))) );
+						__temp_executeDef608 = false;
+						return this.contentwidth;
 					}
 					
 					break;
@@ -1061,7 +1185,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("keys")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						if (handleProperties) 
 						{
 							return this.get_keys();
@@ -1077,12 +1201,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case -567321825:
+				case 1967798203:
 				{
-					if (field.equals("contentx")) 
+					if (field.equals("getValue")) 
 					{
-						__temp_executeDef621 = false;
-						return this.contentx;
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getValue"))) );
 					}
 					
 					break;
@@ -1093,7 +1217,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("time")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						if (handleProperties) 
 						{
 							return this.get_time();
@@ -1109,12 +1233,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case -1814794397:
+				case 111972721:
 				{
-					if (field.equals("getContentwidth")) 
+					if (field.equals("value")) 
 					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getContentwidth"))) );
+						__temp_executeDef608 = false;
+						return this.value;
 					}
 					
 					break;
@@ -1125,80 +1249,8 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("_clefs")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return this._clefs;
-					}
-					
-					break;
-				}
-				
-				
-				case 853662957:
-				{
-					if (field.equals("contentwidth")) 
-					{
-						__temp_executeDef621 = false;
-						return this.contentwidth;
-					}
-					
-					break;
-				}
-				
-				
-				case 1131696320:
-				{
-					if (field.equals("get_clefs")) 
-					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_clefs"))) );
-					}
-					
-					break;
-				}
-				
-				
-				case 1967798203:
-				{
-					if (field.equals("getValue")) 
-					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getValue"))) );
-					}
-					
-					break;
-				}
-				
-				
-				case 91023059:
-				{
-					if (field.equals("_keys")) 
-					{
-						__temp_executeDef621 = false;
-						return this._keys;
-					}
-					
-					break;
-				}
-				
-				
-				case 111972721:
-				{
-					if (field.equals("value")) 
-					{
-						__temp_executeDef621 = false;
-						return this.value;
-					}
-					
-					break;
-				}
-				
-				
-				case 1976401213:
-				{
-					if (field.equals("get_keys")) 
-					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_keys"))) );
 					}
 					
 					break;
@@ -1209,7 +1261,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("calculateAPositions")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calculateAPositions"))) );
 					}
 					
@@ -1217,12 +1269,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1976672790:
+				case 1131696320:
 				{
-					if (field.equals("get_time")) 
+					if (field.equals("get_clefs")) 
 					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_time"))) );
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_clefs"))) );
 					}
 					
 					break;
@@ -1233,8 +1285,80 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("calculateMDistances")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calculateMDistances"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 91023059:
+				{
+					if (field.equals("_keys")) 
+					{
+						__temp_executeDef608 = false;
+						return this._keys;
+					}
+					
+					break;
+				}
+				
+				
+				case 1956171548:
+				{
+					if (field.equals("getIndex")) 
+					{
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getIndex"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 1976401213:
+				{
+					if (field.equals("get_keys")) 
+					{
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_keys"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 1986581415:
+				{
+					if (field.equals("getColumns")) 
+					{
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getColumns"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 1976672790:
+				{
+					if (field.equals("get_time")) 
+					{
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_time"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case 949721053:
+				{
+					if (field.equals("columns")) 
+					{
+						__temp_executeDef608 = false;
+						return this.columns;
 					}
 					
 					break;
@@ -1245,7 +1369,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("displayClefs")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						if (handleProperties) 
 						{
 							return this.get_displayClefs();
@@ -1261,12 +1385,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1956171548:
+				case -75248535:
 				{
-					if (field.equals("getIndex")) 
+					if (field.equals("getPart")) 
 					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getIndex"))) );
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getPart"))) );
 					}
 					
 					break;
@@ -1277,7 +1401,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("displayKeys")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						if (handleProperties) 
 						{
 							return this.get_displayKeys();
@@ -1293,12 +1417,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1986581415:
+				case 1962262826:
 				{
-					if (field.equals("getColumns")) 
+					if (field.equals("getParts")) 
 					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getColumns"))) );
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getParts"))) );
 					}
 					
 					break;
@@ -1309,7 +1433,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("displayTime")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						if (handleProperties) 
 						{
 							return this.get_displayTime();
@@ -1325,12 +1449,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 949721053:
+				case 106437344:
 				{
-					if (field.equals("columns")) 
+					if (field.equals("parts")) 
 					{
-						__temp_executeDef621 = false;
-						return this.columns;
+						__temp_executeDef608 = false;
+						return this.parts;
 					}
 					
 					break;
@@ -1341,44 +1465,8 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("get_displayClefs")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_displayClefs"))) );
-					}
-					
-					break;
-				}
-				
-				
-				case -75248535:
-				{
-					if (field.equals("getPart")) 
-					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getPart"))) );
-					}
-					
-					break;
-				}
-				
-				
-				case -1740757395:
-				{
-					if (field.equals("get_displayKeys")) 
-					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_displayKeys"))) );
-					}
-					
-					break;
-				}
-				
-				
-				case 1962262826:
-				{
-					if (field.equals("getParts")) 
-					{
-						__temp_executeDef621 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getParts"))) );
 					}
 					
 					break;
@@ -1389,7 +1477,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("get_displayTime")) 
 					{
-						__temp_executeDef621 = false;
+						__temp_executeDef608 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_displayTime"))) );
 					}
 					
@@ -1397,12 +1485,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 106437344:
+				case -1740757395:
 				{
-					if (field.equals("parts")) 
+					if (field.equals("get_displayKeys")) 
 					{
-						__temp_executeDef621 = false;
-						return this.parts;
+						__temp_executeDef608 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_displayKeys"))) );
 					}
 					
 					break;
@@ -1411,7 +1499,7 @@ public  class PBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef621) 
+			if (__temp_executeDef608) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -1428,14 +1516,14 @@ public  class PBar extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef622 = true;
+			boolean __temp_executeDef609 = true;
 			switch (field.hashCode())
 			{
 				case 339597513:
 				{
 					if (field.equals("allottedDistanceSum")) 
 					{
-						__temp_executeDef622 = false;
+						__temp_executeDef609 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.allottedDistanceSum)) );
 					}
 					
@@ -1443,12 +1531,20 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 111972721:
+				case -1106363674:
 				{
-					if (field.equals("value")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef622 = false;
-						return ((double) (this.value) );
+						__temp_executeDef609 = false;
+						if (handleProperties) 
+						{
+							return ((double) (this.get_length()) );
+						}
+						 else 
+						{
+							return ((double) (this.length) );
+						}
+						
 					}
 					
 					break;
@@ -1459,7 +1555,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("stretchwidth")) 
 					{
-						__temp_executeDef622 = false;
+						__temp_executeDef609 = false;
 						return this.stretchwidth;
 					}
 					
@@ -1467,12 +1563,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 853662957:
+				case 111972721:
 				{
-					if (field.equals("contentwidth")) 
+					if (field.equals("value")) 
 					{
-						__temp_executeDef622 = false;
-						return ((double) (haxe.lang.Runtime.toDouble(this.contentwidth)) );
+						__temp_executeDef609 = false;
+						return ((double) (this.value) );
 					}
 					
 					break;
@@ -1483,8 +1579,20 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("contentx")) 
 					{
-						__temp_executeDef622 = false;
+						__temp_executeDef609 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.contentx)) );
+					}
+					
+					break;
+				}
+				
+				
+				case 853662957:
+				{
+					if (field.equals("contentwidth")) 
+					{
+						__temp_executeDef609 = false;
+						return ((double) (haxe.lang.Runtime.toDouble(this.contentwidth)) );
 					}
 					
 					break;
@@ -1493,7 +1601,7 @@ public  class PBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef622) 
+			if (__temp_executeDef609) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -1510,14 +1618,14 @@ public  class PBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef623 = true;
+			boolean __temp_executeDef610 = true;
 			switch (field.hashCode())
 			{
 				case -299886693:
 				{
 					if (field.equals("getTieConnections")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getTieConnections();
 					}
 					
@@ -1525,12 +1633,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1965090012:
+				case 1182533742:
 				{
-					if (field.equals("getScore")) 
+					if (field.equals("iterator")) 
 					{
-						__temp_executeDef623 = false;
-						return this.getScore();
+						__temp_executeDef610 = false;
+						return this.iterator();
 					}
 					
 					break;
@@ -1541,7 +1649,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getStretchWidth")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getStretchWidth();
 					}
 					
@@ -1549,12 +1657,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1119525070:
+				case 974314479:
 				{
-					if (field.equals("getSystembar")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef623 = false;
-						return this.getSystembar();
+						__temp_executeDef610 = false;
+						return this.get_length();
 					}
 					
 					break;
@@ -1565,7 +1673,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getAllottedDistanceSum")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getAllottedDistanceSum();
 					}
 					
@@ -1573,12 +1681,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1131696320:
+				case 1965090012:
 				{
-					if (field.equals("get_clefs")) 
+					if (field.equals("getScore")) 
 					{
-						__temp_executeDef623 = false;
-						return this.get_clefs();
+						__temp_executeDef610 = false;
+						return this.getScore();
 					}
 					
 					break;
@@ -1589,7 +1697,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getContentXZero")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getContentXZero();
 					}
 					
@@ -1597,12 +1705,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1976401213:
+				case 1119525070:
 				{
-					if (field.equals("get_keys")) 
+					if (field.equals("getSystembar")) 
 					{
-						__temp_executeDef623 = false;
-						return this.get_keys();
+						__temp_executeDef610 = false;
+						return this.getSystembar();
 					}
 					
 					break;
@@ -1613,7 +1721,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getContentwidth")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getContentwidth();
 					}
 					
@@ -1621,12 +1729,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1976672790:
+				case 1131696320:
 				{
-					if (field.equals("get_time")) 
+					if (field.equals("get_clefs")) 
 					{
-						__temp_executeDef623 = false;
-						return this.get_time();
+						__temp_executeDef610 = false;
+						return this.get_clefs();
 					}
 					
 					break;
@@ -1637,7 +1745,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getValue")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getValue();
 					}
 					
@@ -1645,12 +1753,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1863896464:
+				case 1976401213:
 				{
-					if (field.equals("get_displayClefs")) 
+					if (field.equals("get_keys")) 
 					{
-						__temp_executeDef623 = false;
-						return this.get_displayClefs();
+						__temp_executeDef610 = false;
+						return this.get_keys();
 					}
 					
 					break;
@@ -1661,7 +1769,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("calculateAPositions")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						this.calculateAPositions();
 					}
 					
@@ -1669,12 +1777,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case -1740757395:
+				case 1976672790:
 				{
-					if (field.equals("get_displayKeys")) 
+					if (field.equals("get_time")) 
 					{
-						__temp_executeDef623 = false;
-						return this.get_displayKeys();
+						__temp_executeDef610 = false;
+						return this.get_time();
 					}
 					
 					break;
@@ -1685,7 +1793,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("calculateMDistances")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						this.calculateMDistances();
 					}
 					
@@ -1693,12 +1801,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case -1740485818:
+				case 1863896464:
 				{
-					if (field.equals("get_displayTime")) 
+					if (field.equals("get_displayClefs")) 
 					{
-						__temp_executeDef623 = false;
-						return this.get_displayTime();
+						__temp_executeDef610 = false;
+						return this.get_displayClefs();
 					}
 					
 					break;
@@ -1709,7 +1817,7 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getIndex")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getIndex();
 					}
 					
@@ -1717,12 +1825,12 @@ public  class PBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1962262826:
+				case -1740757395:
 				{
-					if (field.equals("getParts")) 
+					if (field.equals("get_displayKeys")) 
 					{
-						__temp_executeDef623 = false;
-						return this.getParts();
+						__temp_executeDef610 = false;
+						return this.get_displayKeys();
 					}
 					
 					break;
@@ -1733,8 +1841,20 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getColumns")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getColumns();
+					}
+					
+					break;
+				}
+				
+				
+				case -1740485818:
+				{
+					if (field.equals("get_displayTime")) 
+					{
+						__temp_executeDef610 = false;
+						return this.get_displayTime();
 					}
 					
 					break;
@@ -1745,8 +1865,20 @@ public  class PBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getPart")) 
 					{
-						__temp_executeDef623 = false;
+						__temp_executeDef610 = false;
 						return this.getPart(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
+					}
+					
+					break;
+				}
+				
+				
+				case 1962262826:
+				{
+					if (field.equals("getParts")) 
+					{
+						__temp_executeDef610 = false;
+						return this.getParts();
 					}
 					
 					break;
@@ -1755,7 +1887,7 @@ public  class PBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef623) 
+			if (__temp_executeDef610) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}
@@ -1786,6 +1918,7 @@ public  class PBar extends haxe.lang.HxObject
 		baseArr.push("clefs");
 		baseArr.push("systembar");
 		baseArr.push("score");
+		baseArr.push("length");
 		baseArr.push("nbar");
 		{
 			super.__hx_getFields(baseArr);

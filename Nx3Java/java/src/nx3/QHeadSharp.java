@@ -17,10 +17,10 @@ public  class QHeadSharp extends nx3.QHead
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QHeadSharp(nx3.QHeadSharp __temp_me145, java.lang.Object level)
+	public static   void __hx_ctor_nx3_QHeadSharp(nx3.QHeadSharp __temp_me133, java.lang.Object level)
 	{
-		nx3.QHead.__hx_ctor_nx3_QHead(__temp_me145, ( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ), nx3.ESign.Sharp);
-		java.lang.Object __temp_level144 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
+		nx3.QHead.__hx_ctor_nx3_QHead(__temp_me133, ( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ), nx3.ESign.Sharp);
+		java.lang.Object __temp_level132 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
 	}
 	
 	

@@ -18,7 +18,7 @@ public  class EnumTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_cx_EnumTools(cx.EnumTools __temp_me22)
+	public static   void __hx_ctor_cx_EnumTools(cx.EnumTools __temp_me21)
 	{
 		{
 		}
@@ -41,16 +41,16 @@ public  class EnumTools extends haxe.lang.HxObject
 			
 			return haxe.root.Type.createEnum(e, type, ((haxe.root.Array) (params) ));
 		}
-		catch (java.lang.Throwable __temp_catchallException315)
+		catch (java.lang.Throwable __temp_catchallException298)
 		{
-			java.lang.Object __temp_catchall316 = __temp_catchallException315;
-			if (( __temp_catchall316 instanceof haxe.lang.HaxeException )) 
+			java.lang.Object __temp_catchall299 = __temp_catchallException298;
+			if (( __temp_catchall299 instanceof haxe.lang.HaxeException )) 
 			{
-				__temp_catchall316 = ((haxe.lang.HaxeException) (__temp_catchallException315) ).obj;
+				__temp_catchall299 = ((haxe.lang.HaxeException) (__temp_catchallException298) ).obj;
 			}
 			
 			{
-				java.lang.Object e1 = __temp_catchall316;
+				java.lang.Object e1 = __temp_catchall299;
 				{
 				}
 				

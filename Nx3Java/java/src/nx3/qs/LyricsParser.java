@@ -17,11 +17,11 @@ public  class LyricsParser extends nx3.qs.BaseParser
 	}
 	
 	
-	public static   void __hx_ctor_nx3_qs_LyricsParser(nx3.qs.LyricsParser __temp_me189, nx3.qs.QuickSyntaxParser builder)
+	public static   void __hx_ctor_nx3_qs_LyricsParser(nx3.qs.LyricsParser __temp_me176, nx3.qs.QuickSyntaxParser builder)
 	{
-		nx3.qs.BaseParser.__hx_ctor_nx3_qs_BaseParser(__temp_me189, builder);
-		__temp_me189.notevalue = nx3.ENoteVal.Nv4;
-		__temp_me189.flagWord = false;
+		nx3.qs.BaseParser.__hx_ctor_nx3_qs_BaseParser(__temp_me176, builder);
+		__temp_me176.notevalue = nx3.ENoteVal.Nv4;
+		__temp_me176.flagWord = false;
 	}
 	
 	
@@ -73,14 +73,14 @@ public  class LyricsParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef854 = true;
+			boolean __temp_executeDef833 = true;
 			switch (field.hashCode())
 			{
 				case 1613997206:
 				{
 					if (field.equals("flagWord")) 
 					{
-						__temp_executeDef854 = false;
+						__temp_executeDef833 = false;
 						this.flagWord = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -93,7 +93,7 @@ public  class LyricsParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("notevalue")) 
 					{
-						__temp_executeDef854 = false;
+						__temp_executeDef833 = false;
 						this.notevalue = ((nx3.ENoteVal) (value) );
 						return value;
 					}
@@ -104,7 +104,7 @@ public  class LyricsParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef854) 
+			if (__temp_executeDef833) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -121,14 +121,14 @@ public  class LyricsParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef855 = true;
+			boolean __temp_executeDef834 = true;
 			switch (field.hashCode())
 			{
 				case -1760504437:
 				{
 					if (field.equals("tokenFinished")) 
 					{
-						__temp_executeDef855 = false;
+						__temp_executeDef834 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("tokenFinished"))) );
 					}
 					
@@ -140,7 +140,7 @@ public  class LyricsParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("notevalue")) 
 					{
-						__temp_executeDef855 = false;
+						__temp_executeDef834 = false;
 						return this.notevalue;
 					}
 					
@@ -152,7 +152,7 @@ public  class LyricsParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("createFunctions")) 
 					{
-						__temp_executeDef855 = false;
+						__temp_executeDef834 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("createFunctions"))) );
 					}
 					
@@ -164,7 +164,7 @@ public  class LyricsParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("flagWord")) 
 					{
-						__temp_executeDef855 = false;
+						__temp_executeDef834 = false;
 						return this.flagWord;
 					}
 					
@@ -174,7 +174,7 @@ public  class LyricsParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef855) 
+			if (__temp_executeDef834) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}

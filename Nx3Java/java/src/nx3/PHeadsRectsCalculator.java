@@ -18,20 +18,20 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PHeadsRectsCalculator(nx3.PHeadsRectsCalculator __temp_me119, nx3.PNote note, nx3.EDirectionUD direction)
+	public static   void __hx_ctor_nx3_PHeadsRectsCalculator(nx3.PHeadsRectsCalculator __temp_me107, nx3.PNote note, nx3.EDirectionUD direction)
 	{
 		if (( direction != null )) 
 		{
-			__temp_me119.direction = direction;
+			__temp_me107.direction = direction;
 		}
 		 else 
 		{
-			__temp_me119.direction = note.getDirection();
+			__temp_me107.direction = note.getDirection();
 		}
 		
-		__temp_me119.vheads = note.getHeads();
-		__temp_me119.placements = new nx3.PHeadPlacementsCalculator(((haxe.root.Array<nx3.PHead>) (__temp_me119.vheads) ), ((nx3.EDirectionUD) (__temp_me119.direction) )).getHeadsPlacements();
-		__temp_me119.notevalue = note.nnote.value;
+		__temp_me107.vheads = note.get_heads();
+		__temp_me107.placements = new nx3.PHeadPlacementsCalculator(((haxe.root.Array<nx3.PHead>) (__temp_me107.vheads) ), ((nx3.EDirectionUD) (__temp_me107.direction) )).getHeadsPlacements();
+		__temp_me107.notevalue = note.nnote.value;
 	}
 	
 	
@@ -201,14 +201,14 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef709 = true;
+			boolean __temp_executeDef696 = true;
 			switch (field.hashCode())
 			{
 				case -962590849:
 				{
 					if (field.equals("direction")) 
 					{
-						__temp_executeDef709 = false;
+						__temp_executeDef696 = false;
 						this.direction = ((nx3.EDirectionUD) (value) );
 						return value;
 					}
@@ -221,7 +221,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("vheads")) 
 					{
-						__temp_executeDef709 = false;
+						__temp_executeDef696 = false;
 						this.vheads = ((haxe.root.Array<nx3.PHead>) (value) );
 						return value;
 					}
@@ -234,7 +234,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("notetype")) 
 					{
-						__temp_executeDef709 = false;
+						__temp_executeDef696 = false;
 						this.notetype = ((nx3.ENoteType) (value) );
 						return value;
 					}
@@ -247,7 +247,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("placements")) 
 					{
-						__temp_executeDef709 = false;
+						__temp_executeDef696 = false;
 						this.placements = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -260,7 +260,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("notevalue")) 
 					{
-						__temp_executeDef709 = false;
+						__temp_executeDef696 = false;
 						this.notevalue = ((nx3.ENoteVal) (value) );
 						return value;
 					}
@@ -271,7 +271,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef709) 
+			if (__temp_executeDef696) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -288,14 +288,14 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef710 = true;
+			boolean __temp_executeDef697 = true;
 			switch (field.hashCode())
 			{
 				case -1115837468:
 				{
 					if (field.equals("headRect")) 
 					{
-						__temp_executeDef710 = false;
+						__temp_executeDef697 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("headRect"))) );
 					}
 					
@@ -307,7 +307,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("vheads")) 
 					{
-						__temp_executeDef710 = false;
+						__temp_executeDef697 = false;
 						return this.vheads;
 					}
 					
@@ -319,7 +319,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef710 = false;
+						__temp_executeDef697 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeadsRects"))) );
 					}
 					
@@ -331,7 +331,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("placements")) 
 					{
-						__temp_executeDef710 = false;
+						__temp_executeDef697 = false;
 						return this.placements;
 					}
 					
@@ -343,7 +343,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("direction")) 
 					{
-						__temp_executeDef710 = false;
+						__temp_executeDef697 = false;
 						return this.direction;
 					}
 					
@@ -355,7 +355,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("notevalue")) 
 					{
-						__temp_executeDef710 = false;
+						__temp_executeDef697 = false;
 						return this.notevalue;
 					}
 					
@@ -367,7 +367,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("notetype")) 
 					{
-						__temp_executeDef710 = false;
+						__temp_executeDef697 = false;
 						return this.notetype;
 					}
 					
@@ -377,7 +377,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef710) 
+			if (__temp_executeDef697) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -394,14 +394,14 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef711 = true;
+			boolean __temp_executeDef698 = true;
 			switch (field.hashCode())
 			{
 				case -1115837468:
 				{
 					if (field.equals("headRect")) 
 					{
-						__temp_executeDef711 = false;
+						__temp_executeDef698 = false;
 						return this.headRect(((nx3.EHeadType) (dynargs.__get(0)) ), ((nx3.ENoteVal) (dynargs.__get(1)) ));
 					}
 					
@@ -413,7 +413,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef711 = false;
+						__temp_executeDef698 = false;
 						return this.getHeadsRects();
 					}
 					
@@ -423,7 +423,7 @@ public  class PHeadsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef711) 
+			if (__temp_executeDef698) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

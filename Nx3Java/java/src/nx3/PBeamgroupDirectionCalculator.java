@@ -18,9 +18,9 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBeamgroupDirectionCalculator(nx3.PBeamgroupDirectionCalculator __temp_me104, nx3.PBeamgroup beamgroup)
+	public static   void __hx_ctor_nx3_PBeamgroupDirectionCalculator(nx3.PBeamgroupDirectionCalculator __temp_me92, nx3.PBeamgroup beamgroup)
 	{
-		__temp_me104.beamgroup = beamgroup;
+		__temp_me92.beamgroup = beamgroup;
 	}
 	
 	
@@ -55,7 +55,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 	
 	public   int findTopLevel()
 	{
-		int topLevel = this.beamgroup.pnotes.__get(0).nnote.getTopLevel();
+		int topLevel = ((int) (haxe.lang.Runtime.toInt(this.beamgroup.pnotes.__get(0).nnote.get_topLevel())) );
 		if (( this.beamgroup.pnotes.length == 1 )) 
 		{
 			return topLevel;
@@ -67,7 +67,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 			while (( _g1 < _g ))
 			{
 				int i = _g1++;
-				int level = this.beamgroup.pnotes.__get(i).nnote.getTopLevel();
+				int level = ((int) (haxe.lang.Runtime.toInt(this.beamgroup.pnotes.__get(i).nnote.get_topLevel())) );
 				{
 					double x = java.lang.Math.min(((double) (topLevel) ), ((double) (level) ));
 					topLevel = ((int) (x) );
@@ -85,7 +85,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 	
 	public   int findBottomLevel()
 	{
-		int bottomLevel = this.beamgroup.pnotes.__get(0).nnote.getBottomLevel();
+		int bottomLevel = ((int) (haxe.lang.Runtime.toInt(this.beamgroup.pnotes.__get(0).nnote.get_bottomLevel())) );
 		if (( this.beamgroup.pnotes.length == 1 )) 
 		{
 			return bottomLevel;
@@ -97,7 +97,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 			while (( _g1 < _g ))
 			{
 				int i = _g1++;
-				int level = this.beamgroup.pnotes.__get(i).nnote.getBottomLevel();
+				int level = ((int) (haxe.lang.Runtime.toInt(this.beamgroup.pnotes.__get(i).nnote.get_bottomLevel())) );
 				{
 					double x = java.lang.Math.max(((double) (bottomLevel) ), ((double) (level) ));
 					bottomLevel = ((int) (x) );
@@ -114,14 +114,14 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef645 = true;
+			boolean __temp_executeDef632 = true;
 			switch (field.hashCode())
 			{
 				case -626936807:
 				{
 					if (field.equals("bottomLevel")) 
 					{
-						__temp_executeDef645 = false;
+						__temp_executeDef632 = false;
 						this.bottomLevel = ((int) (value) );
 						return value;
 					}
@@ -134,7 +134,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("topLevel")) 
 					{
-						__temp_executeDef645 = false;
+						__temp_executeDef632 = false;
 						this.topLevel = ((int) (value) );
 						return value;
 					}
@@ -145,7 +145,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef645) 
+			if (__temp_executeDef632) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -162,14 +162,14 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef646 = true;
+			boolean __temp_executeDef633 = true;
 			switch (field.hashCode())
 			{
 				case -626936807:
 				{
 					if (field.equals("bottomLevel")) 
 					{
-						__temp_executeDef646 = false;
+						__temp_executeDef633 = false;
 						this.bottomLevel = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -182,7 +182,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("beamgroup")) 
 					{
-						__temp_executeDef646 = false;
+						__temp_executeDef633 = false;
 						this.beamgroup = ((nx3.PBeamgroup) (value) );
 						return value;
 					}
@@ -195,7 +195,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("topLevel")) 
 					{
-						__temp_executeDef646 = false;
+						__temp_executeDef633 = false;
 						this.topLevel = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -206,7 +206,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef646) 
+			if (__temp_executeDef633) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -223,14 +223,14 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef647 = true;
+			boolean __temp_executeDef634 = true;
 			switch (field.hashCode())
 			{
 				case 757123232:
 				{
 					if (field.equals("findBottomLevel")) 
 					{
-						__temp_executeDef647 = false;
+						__temp_executeDef634 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("findBottomLevel"))) );
 					}
 					
@@ -242,7 +242,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("beamgroup")) 
 					{
-						__temp_executeDef647 = false;
+						__temp_executeDef634 = false;
 						return this.beamgroup;
 					}
 					
@@ -254,7 +254,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("bottomLevel")) 
 					{
-						__temp_executeDef647 = false;
+						__temp_executeDef634 = false;
 						return this.bottomLevel;
 					}
 					
@@ -266,7 +266,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getDirection")) 
 					{
-						__temp_executeDef647 = false;
+						__temp_executeDef634 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getDirection"))) );
 					}
 					
@@ -278,7 +278,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("findTopLevel")) 
 					{
-						__temp_executeDef647 = false;
+						__temp_executeDef634 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("findTopLevel"))) );
 					}
 					
@@ -290,7 +290,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("topLevel")) 
 					{
-						__temp_executeDef647 = false;
+						__temp_executeDef634 = false;
 						return this.topLevel;
 					}
 					
@@ -300,7 +300,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef647) 
+			if (__temp_executeDef634) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -317,14 +317,14 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef648 = true;
+			boolean __temp_executeDef635 = true;
 			switch (field.hashCode())
 			{
 				case -626936807:
 				{
 					if (field.equals("bottomLevel")) 
 					{
-						__temp_executeDef648 = false;
+						__temp_executeDef635 = false;
 						return ((double) (this.bottomLevel) );
 					}
 					
@@ -336,7 +336,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("topLevel")) 
 					{
-						__temp_executeDef648 = false;
+						__temp_executeDef635 = false;
 						return ((double) (this.topLevel) );
 					}
 					
@@ -346,7 +346,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef648) 
+			if (__temp_executeDef635) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -363,14 +363,14 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef649 = true;
+			boolean __temp_executeDef636 = true;
 			switch (field.hashCode())
 			{
 				case 757123232:
 				{
 					if (field.equals("findBottomLevel")) 
 					{
-						__temp_executeDef649 = false;
+						__temp_executeDef636 = false;
 						return this.findBottomLevel();
 					}
 					
@@ -382,7 +382,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getDirection")) 
 					{
-						__temp_executeDef649 = false;
+						__temp_executeDef636 = false;
 						return this.getDirection();
 					}
 					
@@ -394,7 +394,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("findTopLevel")) 
 					{
-						__temp_executeDef649 = false;
+						__temp_executeDef636 = false;
 						return this.findTopLevel();
 					}
 					
@@ -404,7 +404,7 @@ public  class PBeamgroupDirectionCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef649) 
+			if (__temp_executeDef636) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,9 +18,9 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_cx_java_SvgTranscoder(cx.java.SvgTranscoder __temp_me40, java.lang.String svgString)
+	public static   void __hx_ctor_cx_java_SvgTranscoder(cx.java.SvgTranscoder __temp_me39, java.lang.String svgString)
 	{
-		__temp_me40.svgString = svgString;
+		__temp_me39.svgString = svgString;
 	}
 	
 	
@@ -45,16 +45,16 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 			
 			return xml.toString();
 		}
-		catch (java.lang.Throwable __temp_catchallException326)
+		catch (java.lang.Throwable __temp_catchallException309)
 		{
-			java.lang.Object __temp_catchall327 = __temp_catchallException326;
-			if (( __temp_catchall327 instanceof haxe.lang.HaxeException )) 
+			java.lang.Object __temp_catchall310 = __temp_catchallException309;
+			if (( __temp_catchall310 instanceof haxe.lang.HaxeException )) 
 			{
-				__temp_catchall327 = ((haxe.lang.HaxeException) (__temp_catchallException326) ).obj;
+				__temp_catchall310 = ((haxe.lang.HaxeException) (__temp_catchallException309) ).obj;
 			}
 			
 			{
-				java.lang.Object e = __temp_catchall327;
+				java.lang.Object e = __temp_catchall310;
 				return svgString;
 			}
 			
@@ -102,16 +102,16 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 		{
 			writer = new java.io.StringWriter();
 		}
-		catch (java.lang.Throwable __temp_catchallException321)
+		catch (java.lang.Throwable __temp_catchallException304)
 		{
-			java.lang.Object __temp_catchall322 = __temp_catchallException321;
-			if (( __temp_catchall322 instanceof haxe.lang.HaxeException )) 
+			java.lang.Object __temp_catchall305 = __temp_catchallException304;
+			if (( __temp_catchall305 instanceof haxe.lang.HaxeException )) 
 			{
-				__temp_catchall322 = ((haxe.lang.HaxeException) (__temp_catchallException321) ).obj;
+				__temp_catchall305 = ((haxe.lang.HaxeException) (__temp_catchallException304) ).obj;
 			}
 			
 			{
-				java.lang.Object e = __temp_catchall322;
+				java.lang.Object e = __temp_catchall305;
 				haxe.Log.trace.__hx_invoke2_o(0.0, e, 0.0, new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"className", "fileName", "methodName"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{"cx.java.SvgTranscoder", "SvgTranscoder.hx", "toClassCode"}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"lineNumber"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (36) )) )})));
 			}
 			
@@ -128,14 +128,14 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef323 = true;
+			boolean __temp_executeDef306 = true;
 			switch (field.hashCode())
 			{
 				case 1499770773:
 				{
 					if (field.equals("svgString")) 
 					{
-						__temp_executeDef323 = false;
+						__temp_executeDef306 = false;
 						this.svgString = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -146,7 +146,7 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef323) 
+			if (__temp_executeDef306) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -163,14 +163,14 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef324 = true;
+			boolean __temp_executeDef307 = true;
 			switch (field.hashCode())
 			{
 				case -632325302:
 				{
 					if (field.equals("toClassCode")) 
 					{
-						__temp_executeDef324 = false;
+						__temp_executeDef307 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("toClassCode"))) );
 					}
 					
@@ -182,7 +182,7 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 				{
 					if (field.equals("svgString")) 
 					{
-						__temp_executeDef324 = false;
+						__temp_executeDef307 = false;
 						return this.svgString;
 					}
 					
@@ -192,7 +192,7 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef324) 
+			if (__temp_executeDef307) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -209,14 +209,14 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef325 = true;
+			boolean __temp_executeDef308 = true;
 			switch (field.hashCode())
 			{
 				case -632325302:
 				{
 					if (field.equals("toClassCode")) 
 					{
-						__temp_executeDef325 = false;
+						__temp_executeDef308 = false;
 						return this.toClassCode(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -226,7 +226,7 @@ public  class SvgTranscoder extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef325) 
+			if (__temp_executeDef308) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

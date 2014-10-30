@@ -18,50 +18,50 @@ public  class NBar extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_NBar(nx3.NBar __temp_me71, haxe.root.Array<nx3.NPart> parts, nx3.EBarType type, nx3.ETime time, nx3.EDisplayALN timeDisplay, nx3.EAllotment allotment, java.lang.Object spacing)
+	public static   void __hx_ctor_nx3_NBar(nx3.NBar __temp_me70, haxe.root.Array<nx3.NPart> parts, nx3.EBarType type, nx3.ETime time, nx3.EDisplayALN timeDisplay, nx3.EAllotment allotment, java.lang.Object spacing)
 	{
-		java.lang.Object __temp_spacing70 = ( (( spacing == null )) ? (((java.lang.Object) (8) )) : (((java.lang.Object) (spacing) )) );
-		__temp_me71.nparts = parts;
+		java.lang.Object __temp_spacing69 = ( (( spacing == null )) ? (((java.lang.Object) (8) )) : (((java.lang.Object) (spacing) )) );
+		__temp_me70.nparts = parts;
 		{
 			int _g = 0;
 			while (( _g < parts.length ))
 			{
 				nx3.NPart part = parts.__get(_g);
 				 ++ _g;
-				part.nbar = __temp_me71;
+				part.nbar = __temp_me70;
 			}
 			
 		}
 		
 		if (( type == null )) 
 		{
-			__temp_me71.type = nx3.EBarType.Normal;
+			__temp_me70.type = nx3.EBarType.Normal;
 		}
 		 else 
 		{
-			__temp_me71.type = type;
+			__temp_me70.type = type;
 		}
 		
-		__temp_me71.time = time;
+		__temp_me70.time = time;
 		if (( timeDisplay == null )) 
 		{
-			__temp_me71.timeDisplay = nx3.EDisplayALN.Layout;
+			__temp_me70.timeDisplay = nx3.EDisplayALN.Layout;
 		}
 		 else 
 		{
-			__temp_me71.timeDisplay = timeDisplay;
+			__temp_me70.timeDisplay = timeDisplay;
 		}
 		
 		if (( allotment == null )) 
 		{
-			__temp_me71.allotment = nx3.EAllotment.Logaritmic;
+			__temp_me70.allotment = nx3.EAllotment.Logaritmic;
 		}
 		 else 
 		{
-			__temp_me71.allotment = allotment;
+			__temp_me70.allotment = allotment;
 		}
 		
-		__temp_me71.spacing = ((double) (haxe.lang.Runtime.toDouble(__temp_spacing70)) );
+		__temp_me70.spacing = ((double) (haxe.lang.Runtime.toDouble(__temp_spacing69)) );
 	}
 	
 	
@@ -111,17 +111,44 @@ public  class NBar extends haxe.lang.HxObject
 	}
 	
 	
+	public   java.lang.Object iterator()
+	{
+		return ((java.lang.Object) (new _Array.ArrayIterator<nx3.NPart>(((haxe.root.Array<nx3.NPart>) (this.nparts) ))) );
+	}
+	
+	
+	public  int length;
+	
+	public   int get_length()
+	{
+		return this.nparts.length;
+	}
+	
+	
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef590 = true;
+			boolean __temp_executeDef573 = true;
 			switch (field.hashCode())
 			{
+				case -1106363674:
+				{
+					if (field.equals("length")) 
+					{
+						__temp_executeDef573 = false;
+						this.length = ((int) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
 				case -2012158909:
 				{
 					if (field.equals("spacing")) 
 					{
-						__temp_executeDef590 = false;
+						__temp_executeDef573 = false;
 						this.spacing = ((double) (value) );
 						return value;
 					}
@@ -132,7 +159,7 @@ public  class NBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef590) 
+			if (__temp_executeDef573) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -149,15 +176,15 @@ public  class NBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef591 = true;
+			boolean __temp_executeDef574 = true;
 			switch (field.hashCode())
 			{
-				case -2012158909:
+				case -1106363674:
 				{
-					if (field.equals("spacing")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef591 = false;
-						this.spacing = ((double) (haxe.lang.Runtime.toDouble(value)) );
+						__temp_executeDef574 = false;
+						this.length = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
 					
@@ -169,7 +196,7 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("nscore")) 
 					{
-						__temp_executeDef591 = false;
+						__temp_executeDef574 = false;
 						this.nscore = ((nx3.NScore) (value) );
 						return value;
 					}
@@ -178,12 +205,12 @@ public  class NBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 369993124:
+				case -2012158909:
 				{
-					if (field.equals("allotment")) 
+					if (field.equals("spacing")) 
 					{
-						__temp_executeDef591 = false;
-						this.allotment = ((nx3.EAllotment) (value) );
+						__temp_executeDef574 = false;
+						this.spacing = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
 					
@@ -195,7 +222,7 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("nparts")) 
 					{
-						__temp_executeDef591 = false;
+						__temp_executeDef574 = false;
 						this.nparts = ((haxe.root.Array<nx3.NPart>) (value) );
 						return value;
 					}
@@ -204,12 +231,12 @@ public  class NBar extends haxe.lang.HxObject
 				}
 				
 				
-				case -1919414987:
+				case 369993124:
 				{
-					if (field.equals("timeDisplay")) 
+					if (field.equals("allotment")) 
 					{
-						__temp_executeDef591 = false;
-						this.timeDisplay = ((nx3.EDisplayALN) (value) );
+						__temp_executeDef574 = false;
+						this.allotment = ((nx3.EAllotment) (value) );
 						return value;
 					}
 					
@@ -221,8 +248,21 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("type")) 
 					{
-						__temp_executeDef591 = false;
+						__temp_executeDef574 = false;
 						this.type = ((nx3.EBarType) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case -1919414987:
+				{
+					if (field.equals("timeDisplay")) 
+					{
+						__temp_executeDef574 = false;
+						this.timeDisplay = ((nx3.EDisplayALN) (value) );
 						return value;
 					}
 					
@@ -234,7 +274,7 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("time")) 
 					{
-						__temp_executeDef591 = false;
+						__temp_executeDef574 = false;
 						this.time = ((nx3.ETime) (value) );
 						return value;
 					}
@@ -245,7 +285,7 @@ public  class NBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef591) 
+			if (__temp_executeDef574) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -262,15 +302,15 @@ public  class NBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef592 = true;
+			boolean __temp_executeDef575 = true;
 			switch (field.hashCode())
 			{
-				case 1959892939:
+				case 974314479:
 				{
-					if (field.equals("getNPart")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef592 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNPart"))) );
+						__temp_executeDef575 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_length"))) );
 					}
 					
 					break;
@@ -281,7 +321,7 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("nscore")) 
 					{
-						__temp_executeDef592 = false;
+						__temp_executeDef575 = false;
 						return this.nscore;
 					}
 					
@@ -289,12 +329,20 @@ public  class NBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 1959846858:
+				case -1106363674:
 				{
-					if (field.equals("getNNote")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef592 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNNote"))) );
+						__temp_executeDef575 = false;
+						if (handleProperties) 
+						{
+							return this.get_length();
+						}
+						 else 
+						{
+							return this.length;
+						}
+						
 					}
 					
 					break;
@@ -305,7 +353,7 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("nparts")) 
 					{
-						__temp_executeDef592 = false;
+						__temp_executeDef575 = false;
 						return this.nparts;
 					}
 					
@@ -313,12 +361,12 @@ public  class NBar extends haxe.lang.HxObject
 				}
 				
 				
-				case -2012158909:
+				case 1182533742:
 				{
-					if (field.equals("spacing")) 
+					if (field.equals("iterator")) 
 					{
-						__temp_executeDef592 = false;
-						return this.spacing;
+						__temp_executeDef575 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("iterator"))) );
 					}
 					
 					break;
@@ -329,7 +377,7 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("type")) 
 					{
-						__temp_executeDef592 = false;
+						__temp_executeDef575 = false;
 						return this.type;
 					}
 					
@@ -337,12 +385,12 @@ public  class NBar extends haxe.lang.HxObject
 				}
 				
 				
-				case 369993124:
+				case 1959892939:
 				{
-					if (field.equals("allotment")) 
+					if (field.equals("getNPart")) 
 					{
-						__temp_executeDef592 = false;
-						return this.allotment;
+						__temp_executeDef575 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNPart"))) );
 					}
 					
 					break;
@@ -353,8 +401,20 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("time")) 
 					{
-						__temp_executeDef592 = false;
+						__temp_executeDef575 = false;
 						return this.time;
+					}
+					
+					break;
+				}
+				
+				
+				case 1959846858:
+				{
+					if (field.equals("getNNote")) 
+					{
+						__temp_executeDef575 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNNote"))) );
 					}
 					
 					break;
@@ -365,8 +425,32 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("timeDisplay")) 
 					{
-						__temp_executeDef592 = false;
+						__temp_executeDef575 = false;
 						return this.timeDisplay;
+					}
+					
+					break;
+				}
+				
+				
+				case -2012158909:
+				{
+					if (field.equals("spacing")) 
+					{
+						__temp_executeDef575 = false;
+						return this.spacing;
+					}
+					
+					break;
+				}
+				
+				
+				case 369993124:
+				{
+					if (field.equals("allotment")) 
+					{
+						__temp_executeDef575 = false;
+						return this.allotment;
 					}
 					
 					break;
@@ -375,7 +459,7 @@ public  class NBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef592) 
+			if (__temp_executeDef575) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -392,14 +476,34 @@ public  class NBar extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef593 = true;
+			boolean __temp_executeDef576 = true;
 			switch (field.hashCode())
 			{
+				case -1106363674:
+				{
+					if (field.equals("length")) 
+					{
+						__temp_executeDef576 = false;
+						if (handleProperties) 
+						{
+							return ((double) (this.get_length()) );
+						}
+						 else 
+						{
+							return ((double) (this.length) );
+						}
+						
+					}
+					
+					break;
+				}
+				
+				
 				case -2012158909:
 				{
 					if (field.equals("spacing")) 
 					{
-						__temp_executeDef593 = false;
+						__temp_executeDef576 = false;
 						return this.spacing;
 					}
 					
@@ -409,7 +513,7 @@ public  class NBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef593) 
+			if (__temp_executeDef576) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -426,15 +530,15 @@ public  class NBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef594 = true;
+			boolean __temp_executeDef577 = true;
 			switch (field.hashCode())
 			{
-				case 1959892939:
+				case 974314479:
 				{
-					if (field.equals("getNPart")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef594 = false;
-						return this.getNPart(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
+						__temp_executeDef577 = false;
+						return this.get_length();
 					}
 					
 					break;
@@ -445,8 +549,32 @@ public  class NBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getNNote")) 
 					{
-						__temp_executeDef594 = false;
+						__temp_executeDef577 = false;
 						return this.getNNote(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ), ((int) (haxe.lang.Runtime.toInt(dynargs.__get(1))) ), ((int) (haxe.lang.Runtime.toInt(dynargs.__get(2))) ));
+					}
+					
+					break;
+				}
+				
+				
+				case 1182533742:
+				{
+					if (field.equals("iterator")) 
+					{
+						__temp_executeDef577 = false;
+						return this.iterator();
+					}
+					
+					break;
+				}
+				
+				
+				case 1959892939:
+				{
+					if (field.equals("getNPart")) 
+					{
+						__temp_executeDef577 = false;
+						return this.getNPart(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
 					}
 					
 					break;
@@ -455,7 +583,7 @@ public  class NBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef594) 
+			if (__temp_executeDef577) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}
@@ -471,6 +599,7 @@ public  class NBar extends haxe.lang.HxObject
 	
 	@Override public   void __hx_getFields(haxe.root.Array<java.lang.String> baseArr)
 	{
+		baseArr.push("length");
 		baseArr.push("spacing");
 		baseArr.push("allotment");
 		baseArr.push("timeDisplay");

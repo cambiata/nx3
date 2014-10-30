@@ -18,7 +18,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBarWidthCalculator(nx3.PBarWidthCalculator __temp_me100)
+	public static   void __hx_ctor_nx3_PBarWidthCalculator(nx3.PBarWidthCalculator __temp_me88)
 	{
 		{
 		}
@@ -129,14 +129,14 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef631 = true;
+			boolean __temp_executeDef618 = true;
 			switch (field.hashCode())
 			{
 				case -1108797060:
 				{
 					if (field.equals("getKeysWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getKeysWidth"))) );
 					}
 					
@@ -148,7 +148,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getClefWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getClefWidth"))) );
 					}
 					
@@ -160,7 +160,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getClefsWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getClefsWidth"))) );
 					}
 					
@@ -172,7 +172,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getKeyWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getKeyWidth"))) );
 					}
 					
@@ -184,7 +184,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getLeftBarlineWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getLeftBarlineWidth"))) );
 					}
 					
@@ -196,7 +196,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getTimeWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTimeWidth"))) );
 					}
 					
@@ -208,7 +208,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getBarlineWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBarlineWidth"))) );
 					}
 					
@@ -220,7 +220,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getContentLeftMarginWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getContentLeftMarginWidth"))) );
 					}
 					
@@ -232,7 +232,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getContentWidth")) 
 					{
-						__temp_executeDef631 = false;
+						__temp_executeDef618 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getContentWidth"))) );
 					}
 					
@@ -242,7 +242,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				
 			}
 			
-			if (__temp_executeDef631) 
+			if (__temp_executeDef618) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -259,14 +259,14 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef632 = true;
+			boolean __temp_executeDef619 = true;
 			switch (field.hashCode())
 			{
 				case -1108797060:
 				{
 					if (field.equals("getKeysWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getKeysWidth(((haxe.root.Array<nx3.EKey>) (dynargs.__get(0)) ));
 					}
 					
@@ -278,7 +278,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getClefWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getClefWidth(((nx3.EClef) (dynargs.__get(0)) ));
 					}
 					
@@ -290,7 +290,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getClefsWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getClefsWidth(((haxe.root.Array<nx3.EClef>) (dynargs.__get(0)) ));
 					}
 					
@@ -302,7 +302,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getKeyWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getKeyWidth(((nx3.EKey) (dynargs.__get(0)) ));
 					}
 					
@@ -314,7 +314,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getLeftBarlineWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getLeftBarlineWidth(((nx3.EBarlineLeft) (dynargs.__get(0)) ));
 					}
 					
@@ -326,7 +326,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getTimeWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getTimeWidth(((nx3.ETime) (dynargs.__get(0)) ));
 					}
 					
@@ -338,7 +338,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getBarlineWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getBarlineWidth(((nx3.EBarline) (dynargs.__get(0)) ));
 					}
 					
@@ -350,7 +350,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getContentLeftMarginWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getContentLeftMarginWidth(((nx3.PBar) (dynargs.__get(0)) ));
 					}
 					
@@ -362,7 +362,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				{
 					if (field.equals("getContentWidth")) 
 					{
-						__temp_executeDef632 = false;
+						__temp_executeDef619 = false;
 						return this.getContentWidth(((nx3.PBar) (dynargs.__get(0)) ));
 					}
 					
@@ -372,7 +372,7 @@ public  class PBarWidthCalculator extends haxe.lang.HxObject implements nx3.IBar
 				
 			}
 			
-			if (__temp_executeDef632) 
+			if (__temp_executeDef619) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -4,11 +4,11 @@ import haxe.root.*;
 @SuppressWarnings(value={"rawtypes", "unchecked"})
 public  class RectanglesTools_getXIntersection_16__Fun extends haxe.lang.Function
 {
-	public    RectanglesTools_getXIntersection_16__Fun(haxe.root.Array<haxe.root.Array> rectsA1, haxe.root.Array<haxe.root.Array> rectsB2)
+	public    RectanglesTools_getXIntersection_16__Fun(haxe.root.Array<haxe.root.Array> rectsB2, haxe.root.Array<haxe.root.Array> rectsA1)
 	{
 		super(0, 1);
-		this.rectsA1 = rectsA1;
 		this.rectsB2 = rectsB2;
+		this.rectsA1 = rectsA1;
 	}
 	
 	
@@ -51,9 +51,9 @@ public  class RectanglesTools_getXIntersection_16__Fun extends haxe.lang.Functio
 	}
 	
 	
-	public  haxe.root.Array<haxe.root.Array> rectsA1;
-	
 	public  haxe.root.Array<haxe.root.Array> rectsB2;
+	
+	public  haxe.root.Array<haxe.root.Array> rectsA1;
 	
 }
 

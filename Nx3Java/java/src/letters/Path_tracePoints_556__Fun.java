@@ -15,8 +15,8 @@ public  class Path_tracePoints_556__Fun extends haxe.lang.Function
 	{
 		java.lang.Object v = ( (( __fn_dyn1 == haxe.lang.Runtime.undefined )) ? (((java.lang.Object) (__fn_float1) )) : (((java.lang.Object) (__fn_dyn1) )) );
 		{
-			int __temp_index253 = 0;
-			this.str.__set(__temp_index253, ( this.str.__get(__temp_index253) + ( ( ( haxe.root.Std.string(((double) (haxe.lang.Runtime.toDouble(((haxe.root.Array<java.lang.Object>) (haxe.lang.Runtime.getField(v, "v0", true)) ).__get(0))) )) + " " ) + haxe.root.Std.string(((double) (haxe.lang.Runtime.toDouble(((haxe.root.Array<java.lang.Object>) (haxe.lang.Runtime.getField(v, "v0", true)) ).__get(1))) )) ) + "\n" ) ));
+			int __temp_index235 = 0;
+			this.str.__set(__temp_index235, ( this.str.__get(__temp_index235) + ( ( ( haxe.root.Std.string(((double) (haxe.lang.Runtime.toDouble(((haxe.root.Array<java.lang.Object>) (haxe.lang.Runtime.getField(v, "v0", true)) ).__get(0))) )) + " " ) + haxe.root.Std.string(((double) (haxe.lang.Runtime.toDouble(((haxe.root.Array<java.lang.Object>) (haxe.lang.Runtime.getField(v, "v0", true)) ).__get(1))) )) ) + "\n" ) ));
 		}
 		
 		return v;

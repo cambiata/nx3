@@ -17,7 +17,7 @@ public  class QNote extends nx3.NNote
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QNote(nx3.QNote __temp_me150, java.lang.Object headLevel, haxe.root.Array<java.lang.Object> headLevels, nx3.NHead head, haxe.root.Array<nx3.NHead> heads, nx3.ENoteVal value, java.lang.String signs, nx3.EDirectionUAD direction)
+	public static   void __hx_ctor_nx3_QNote(nx3.QNote __temp_me138, java.lang.Object headLevel, haxe.root.Array<java.lang.Object> headLevels, nx3.NHead head, haxe.root.Array<nx3.NHead> heads, nx3.ENoteVal value, java.lang.String signs, nx3.EDirectionUAD direction)
 	{
 		if (( signs == null )) 
 		{
@@ -41,7 +41,7 @@ public  class QNote extends nx3.NNote
 				{
 					int level = ((int) (haxe.lang.Runtime.toInt(headLevels.__get(_g))) );
 					 ++ _g;
-					heads.push(new nx3.NHead(((nx3.EHeadType) (null) ), ((java.lang.Object) (level) ), ((nx3.ESign) (__temp_me150.getSign(aSigns.__get(i++))) ), ((nx3.ETie) (null) ), ((nx3.ETie) (null) )));
+					heads.push(new nx3.NHead(((nx3.EHeadType) (null) ), ((java.lang.Object) (level) ), ((nx3.ESign) (__temp_me138.getSign(aSigns.__get(i++))) ), ((nx3.ETie) (null) ), ((nx3.ETie) (null) )));
 				}
 				
 			}
@@ -63,7 +63,7 @@ public  class QNote extends nx3.NNote
 			value = nx3.ENoteVal.Nv4;
 		}
 		
-		nx3.NNote.__hx_ctor_nx3_NNote(__temp_me150, null, heads, value, direction);
+		nx3.NNote.__hx_ctor_nx3_NNote(__temp_me138, null, heads, value, direction);
 	}
 	
 	
@@ -82,16 +82,16 @@ public  class QNote extends nx3.NNote
 	public   nx3.ESign getSign(java.lang.String val)
 	{
 		{
-			java.lang.String __temp_svar812 = (val);
-			int __temp_hash814 = __temp_svar812.hashCode();
-			boolean __temp_executeDef813 = true;
-			switch (__temp_hash814)
+			java.lang.String __temp_svar799 = (val);
+			int __temp_hash801 = __temp_svar799.hashCode();
+			boolean __temp_executeDef800 = true;
+			switch (__temp_hash801)
 			{
 				case 35:
 				{
-					if (__temp_svar812.equals("#")) 
+					if (__temp_svar799.equals("#")) 
 					{
-						__temp_executeDef813 = false;
+						__temp_executeDef800 = false;
 						return nx3.ESign.Sharp;
 					}
 					
@@ -101,9 +101,9 @@ public  class QNote extends nx3.NNote
 				
 				case 110:case 78:
 				{
-					if (( (( ( __temp_hash814 == 110 ) && __temp_svar812.equals("n") )) || __temp_svar812.equals("N") )) 
+					if (( (( ( __temp_hash801 == 110 ) && __temp_svar799.equals("n") )) || __temp_svar799.equals("N") )) 
 					{
-						__temp_executeDef813 = false;
+						__temp_executeDef800 = false;
 						return nx3.ESign.Natural;
 					}
 					
@@ -113,9 +113,9 @@ public  class QNote extends nx3.NNote
 				
 				case 98:
 				{
-					if (__temp_svar812.equals("b")) 
+					if (__temp_svar799.equals("b")) 
 					{
-						__temp_executeDef813 = false;
+						__temp_executeDef800 = false;
 						return nx3.ESign.Flat;
 					}
 					
@@ -125,7 +125,7 @@ public  class QNote extends nx3.NNote
 				
 			}
 			
-			if (__temp_executeDef813) 
+			if (__temp_executeDef800) 
 			{
 				return null;
 			}
@@ -142,14 +142,14 @@ public  class QNote extends nx3.NNote
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef815 = true;
+			boolean __temp_executeDef802 = true;
 			switch (field.hashCode())
 			{
 				case -75151821:
 				{
 					if (field.equals("getSign")) 
 					{
-						__temp_executeDef815 = false;
+						__temp_executeDef802 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSign"))) );
 					}
 					
@@ -159,7 +159,7 @@ public  class QNote extends nx3.NNote
 				
 			}
 			
-			if (__temp_executeDef815) 
+			if (__temp_executeDef802) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -176,14 +176,14 @@ public  class QNote extends nx3.NNote
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef816 = true;
+			boolean __temp_executeDef803 = true;
 			switch (field.hashCode())
 			{
 				case -75151821:
 				{
 					if (field.equals("getSign")) 
 					{
-						__temp_executeDef816 = false;
+						__temp_executeDef803 = false;
 						return this.getSign(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -193,7 +193,7 @@ public  class QNote extends nx3.NNote
 				
 			}
 			
-			if (__temp_executeDef816) 
+			if (__temp_executeDef803) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,7 +18,7 @@ public  class FileTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_cx_FileTools(cx.FileTools __temp_me23)
+	public static   void __hx_ctor_cx_FileTools(cx.FileTools __temp_me22)
 	{
 		{
 		}
@@ -35,17 +35,17 @@ public  class FileTools extends haxe.lang.HxObject
 			output.write(haxe.lang.Runtime.toString(content));
 			output.close();
 		}
-		catch (java.lang.Throwable __temp_catchallException317)
+		catch (java.lang.Throwable __temp_catchallException300)
 		{
-			java.lang.Object __temp_catchall318 = __temp_catchallException317;
-			if (( __temp_catchall318 instanceof haxe.lang.HaxeException )) 
+			java.lang.Object __temp_catchall301 = __temp_catchallException300;
+			if (( __temp_catchall301 instanceof haxe.lang.HaxeException )) 
 			{
-				__temp_catchall318 = ((haxe.lang.HaxeException) (__temp_catchallException317) ).obj;
+				__temp_catchall301 = ((haxe.lang.HaxeException) (__temp_catchallException300) ).obj;
 			}
 			
 			{
-				java.lang.Object e = __temp_catchall318;
-				haxe.Log.trace.__hx_invoke2_o(0.0, e, 0.0, new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"className", "fileName", "methodName"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{"cx.FileTools", "FileTools.hx", "saveContent"}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"lineNumber"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (45) )) )})));
+				java.lang.Object e = __temp_catchall301;
+				haxe.Log.trace.__hx_invoke2_o(0.0, e, 0.0, new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"className", "fileName", "methodName"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{"cx.FileTools", "FileTools.hx", "saveContent"}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"lineNumber"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (46) )) )})));
 			}
 			
 		}
@@ -70,17 +70,17 @@ public  class FileTools extends haxe.lang.HxObject
 			
 			return stringBuilder.toString();
 		}
-		catch (java.lang.Throwable __temp_catchallException319)
+		catch (java.lang.Throwable __temp_catchallException302)
 		{
-			java.lang.Object __temp_catchall320 = __temp_catchallException319;
-			if (( __temp_catchall320 instanceof haxe.lang.HaxeException )) 
+			java.lang.Object __temp_catchall303 = __temp_catchallException302;
+			if (( __temp_catchall303 instanceof haxe.lang.HaxeException )) 
 			{
-				__temp_catchall320 = ((haxe.lang.HaxeException) (__temp_catchallException319) ).obj;
+				__temp_catchall303 = ((haxe.lang.HaxeException) (__temp_catchallException302) ).obj;
 			}
 			
 			{
-				java.lang.Object e = __temp_catchall320;
-				haxe.Log.trace.__hx_invoke2_o(0.0, e, 0.0, new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"className", "fileName", "methodName"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{"cx.FileTools", "FileTools.hx", "getContent"}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"lineNumber"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (65) )) )})));
+				java.lang.Object e = __temp_catchall303;
+				haxe.Log.trace.__hx_invoke2_o(0.0, e, 0.0, new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"className", "fileName", "methodName"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{"cx.FileTools", "FileTools.hx", "getContent"}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{"lineNumber"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{((java.lang.Object) (((double) (66) )) )})));
 			}
 			
 		}

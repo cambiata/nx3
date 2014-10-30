@@ -18,10 +18,10 @@ public  class TestResult extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_haxe_unit_TestResult(haxe.unit.TestResult __temp_me50)
+	public static   void __hx_ctor_haxe_unit_TestResult(haxe.unit.TestResult __temp_me49)
 	{
-		__temp_me50.m_tests = new haxe.root.List<haxe.unit.TestStatus>();
-		__temp_me50.success = true;
+		__temp_me49.m_tests = new haxe.root.List<haxe.unit.TestStatus>();
+		__temp_me49.success = true;
 	}
 	
 	
@@ -57,10 +57,10 @@ public  class TestResult extends haxe.lang.HxObject
 		haxe.root.StringBuf buf = new haxe.root.StringBuf();
 		int failures = 0;
 		{
-			java.lang.Object __temp_iterator229 = this.m_tests.iterator();
-			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator229, "hasNext", null)))
+			java.lang.Object __temp_iterator211 = this.m_tests.iterator();
+			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator211, "hasNext", null)))
 			{
-				haxe.unit.TestStatus test = ((haxe.unit.TestStatus) (haxe.lang.Runtime.callField(__temp_iterator229, "next", null)) );
+				haxe.unit.TestStatus test = ((haxe.unit.TestStatus) (haxe.lang.Runtime.callField(__temp_iterator211, "next", null)) );
 				if (( test.success == false )) 
 				{
 					buf.add("* ");
@@ -122,14 +122,14 @@ public  class TestResult extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef376 = true;
+			boolean __temp_executeDef359 = true;
 			switch (field.hashCode())
 			{
 				case -1867169789:
 				{
 					if (field.equals("success")) 
 					{
-						__temp_executeDef376 = false;
+						__temp_executeDef359 = false;
 						this.success = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -142,7 +142,7 @@ public  class TestResult extends haxe.lang.HxObject
 				{
 					if (field.equals("m_tests")) 
 					{
-						__temp_executeDef376 = false;
+						__temp_executeDef359 = false;
 						this.m_tests = ((haxe.root.List<haxe.unit.TestStatus>) (value) );
 						return value;
 					}
@@ -153,7 +153,7 @@ public  class TestResult extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef376) 
+			if (__temp_executeDef359) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -170,14 +170,14 @@ public  class TestResult extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef377 = true;
+			boolean __temp_executeDef360 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef377 = false;
+						__temp_executeDef360 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("toString"))) );
 					}
 					
@@ -189,7 +189,7 @@ public  class TestResult extends haxe.lang.HxObject
 				{
 					if (field.equals("m_tests")) 
 					{
-						__temp_executeDef377 = false;
+						__temp_executeDef360 = false;
 						return this.m_tests;
 					}
 					
@@ -201,7 +201,7 @@ public  class TestResult extends haxe.lang.HxObject
 				{
 					if (field.equals("add")) 
 					{
-						__temp_executeDef377 = false;
+						__temp_executeDef360 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("add"))) );
 					}
 					
@@ -213,7 +213,7 @@ public  class TestResult extends haxe.lang.HxObject
 				{
 					if (field.equals("success")) 
 					{
-						__temp_executeDef377 = false;
+						__temp_executeDef360 = false;
 						return this.success;
 					}
 					
@@ -223,7 +223,7 @@ public  class TestResult extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef377) 
+			if (__temp_executeDef360) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -240,14 +240,14 @@ public  class TestResult extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef378 = true;
+			boolean __temp_executeDef361 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef378 = false;
+						__temp_executeDef361 = false;
 						return this.toString();
 					}
 					
@@ -259,7 +259,7 @@ public  class TestResult extends haxe.lang.HxObject
 				{
 					if (field.equals("add")) 
 					{
-						__temp_executeDef378 = false;
+						__temp_executeDef361 = false;
 						this.add(((haxe.unit.TestStatus) (dynargs.__get(0)) ));
 					}
 					
@@ -269,7 +269,7 @@ public  class TestResult extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef378) 
+			if (__temp_executeDef361) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

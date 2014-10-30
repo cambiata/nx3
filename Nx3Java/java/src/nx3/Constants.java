@@ -43,6 +43,8 @@ public  class Constants extends haxe.lang.HxObject
 		nx3.Constants.LEGER_MARGIN = 0.6;
 		nx3.Constants.OBJECT_XMARGIN = 0.6;
 		nx3.Constants.ATTRIBUTE_SIGN_WIDTH = 2.4;
+		nx3.Constants.SCORE_DEFAULT_COUNTIN = 0;
+		nx3.Constants.SCORE_DEFAULT_TEMPO = 80;
 	}
 	public    Constants(haxe.lang.EmptyObject empty)
 	{
@@ -58,7 +60,7 @@ public  class Constants extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_Constants(nx3.Constants __temp_me64)
+	public static   void __hx_ctor_nx3_Constants(nx3.Constants __temp_me63)
 	{
 		{
 		}
@@ -139,6 +141,10 @@ public  class Constants extends haxe.lang.HxObject
 	public static  double OBJECT_XMARGIN;
 	
 	public static  double ATTRIBUTE_SIGN_WIDTH;
+	
+	public static  int SCORE_DEFAULT_COUNTIN;
+	
+	public static  int SCORE_DEFAULT_TEMPO;
 	
 	public static   java.lang.Object __hx_createEmpty()
 	{

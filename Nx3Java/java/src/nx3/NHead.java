@@ -18,46 +18,46 @@ public  class NHead extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_NHead(nx3.NHead __temp_me73, nx3.EHeadType type, java.lang.Object level, nx3.ESign sign, nx3.ETie tie, nx3.ETie tieTo)
+	public static   void __hx_ctor_nx3_NHead(nx3.NHead __temp_me72, nx3.EHeadType type, java.lang.Object level, nx3.ESign sign, nx3.ETie tie, nx3.ETie tieTo)
 	{
-		java.lang.Object __temp_level72 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
+		java.lang.Object __temp_level71 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
 		if (( type != null )) 
 		{
-			__temp_me73.type = type;
+			__temp_me72.type = type;
 		}
 		 else 
 		{
-			__temp_me73.type = nx3.EHeadType.Normal;
+			__temp_me72.type = nx3.EHeadType.Normal;
 		}
 		
 		if (( sign != null )) 
 		{
-			__temp_me73.sign = sign;
+			__temp_me72.sign = sign;
 		}
 		 else 
 		{
-			__temp_me73.sign = nx3.ESign.None;
+			__temp_me72.sign = nx3.ESign.None;
 		}
 		
 		if (( tie != null )) 
 		{
-			__temp_me73.tie = tie;
+			__temp_me72.tie = tie;
 		}
 		 else 
 		{
-			__temp_me73.tie = null;
+			__temp_me72.tie = null;
 		}
 		
 		if (( tieTo != null )) 
 		{
-			__temp_me73.tieTo = tieTo;
+			__temp_me72.tieTo = tieTo;
 		}
 		 else 
 		{
-			__temp_me73.tieTo = null;
+			__temp_me72.tieTo = null;
 		}
 		
-		__temp_me73.level = ((int) (haxe.lang.Runtime.toInt(__temp_level72)) );
+		__temp_me72.level = ((int) (haxe.lang.Runtime.toInt(__temp_level71)) );
 	}
 	
 	
@@ -113,14 +113,14 @@ public  class NHead extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef595 = true;
+			boolean __temp_executeDef578 = true;
 			switch (field.hashCode())
 			{
 				case 102865796:
 				{
 					if (field.equals("level")) 
 					{
-						__temp_executeDef595 = false;
+						__temp_executeDef578 = false;
 						this.level = ((int) (value) );
 						return value;
 					}
@@ -131,7 +131,7 @@ public  class NHead extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef595) 
+			if (__temp_executeDef578) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -148,14 +148,14 @@ public  class NHead extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef596 = true;
+			boolean __temp_executeDef579 = true;
 			switch (field.hashCode())
 			{
 				case 104974688:
 				{
 					if (field.equals("nnote")) 
 					{
-						__temp_executeDef596 = false;
+						__temp_executeDef579 = false;
 						this.nnote = ((nx3.NNote) (value) );
 						return value;
 					}
@@ -168,7 +168,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("level")) 
 					{
-						__temp_executeDef596 = false;
+						__temp_executeDef579 = false;
 						this.level = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -181,7 +181,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("tieTo")) 
 					{
-						__temp_executeDef596 = false;
+						__temp_executeDef579 = false;
 						this.tieTo = ((nx3.ETie) (value) );
 						return value;
 					}
@@ -194,7 +194,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("type")) 
 					{
-						__temp_executeDef596 = false;
+						__temp_executeDef579 = false;
 						this.type = ((nx3.EHeadType) (value) );
 						return value;
 					}
@@ -207,7 +207,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("tie")) 
 					{
-						__temp_executeDef596 = false;
+						__temp_executeDef579 = false;
 						this.tie = ((nx3.ETie) (value) );
 						return value;
 					}
@@ -220,7 +220,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("sign")) 
 					{
-						__temp_executeDef596 = false;
+						__temp_executeDef579 = false;
 						this.sign = ((nx3.ESign) (value) );
 						return value;
 					}
@@ -231,7 +231,7 @@ public  class NHead extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef596) 
+			if (__temp_executeDef579) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -248,14 +248,14 @@ public  class NHead extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef597 = true;
+			boolean __temp_executeDef580 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef597 = false;
+						__temp_executeDef580 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("toString"))) );
 					}
 					
@@ -267,7 +267,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("level")) 
 					{
-						__temp_executeDef597 = false;
+						__temp_executeDef580 = false;
 						return this.level;
 					}
 					
@@ -279,7 +279,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("nnote")) 
 					{
-						__temp_executeDef597 = false;
+						__temp_executeDef580 = false;
 						return this.nnote;
 					}
 					
@@ -291,7 +291,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("type")) 
 					{
-						__temp_executeDef597 = false;
+						__temp_executeDef580 = false;
 						return this.type;
 					}
 					
@@ -303,7 +303,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("tieTo")) 
 					{
-						__temp_executeDef597 = false;
+						__temp_executeDef580 = false;
 						return this.tieTo;
 					}
 					
@@ -315,7 +315,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("sign")) 
 					{
-						__temp_executeDef597 = false;
+						__temp_executeDef580 = false;
 						return this.sign;
 					}
 					
@@ -327,7 +327,7 @@ public  class NHead extends haxe.lang.HxObject
 				{
 					if (field.equals("tie")) 
 					{
-						__temp_executeDef597 = false;
+						__temp_executeDef580 = false;
 						return this.tie;
 					}
 					
@@ -337,7 +337,7 @@ public  class NHead extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef597) 
+			if (__temp_executeDef580) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -354,14 +354,14 @@ public  class NHead extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef598 = true;
+			boolean __temp_executeDef581 = true;
 			switch (field.hashCode())
 			{
 				case 102865796:
 				{
 					if (field.equals("level")) 
 					{
-						__temp_executeDef598 = false;
+						__temp_executeDef581 = false;
 						return ((double) (this.level) );
 					}
 					
@@ -371,7 +371,7 @@ public  class NHead extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef598) 
+			if (__temp_executeDef581) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -388,14 +388,14 @@ public  class NHead extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef599 = true;
+			boolean __temp_executeDef582 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef599 = false;
+						__temp_executeDef582 = false;
 						return this.toString();
 					}
 					
@@ -405,7 +405,7 @@ public  class NHead extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef599) 
+			if (__temp_executeDef582) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,7 +18,7 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PBamegroupFrameTipCalculator(nx3.PBamegroupFrameTipCalculator __temp_me90, haxe.root.Array<java.lang.Object> notelevels, nx3.EDirectionUD direction)
+	public static   void __hx_ctor_nx3_PBamegroupFrameTipCalculator(nx3.PBamegroupFrameTipCalculator __temp_me78, haxe.root.Array<java.lang.Object> notelevels, nx3.EDirectionUD direction)
 	{
 		if (( direction == nx3.EDirectionUD.Down )) 
 		{
@@ -37,12 +37,12 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 			notelevels = invertedLevels;
 		}
 		
-		__temp_me90.notelevels = notelevels;
-		__temp_me90.direction = direction;
+		__temp_me78.notelevels = notelevels;
+		__temp_me78.direction = direction;
 	}
 	
 	
-	public static   double intMin(haxe.root.Array<java.lang.Object> levels)
+	public static   double floatMin(haxe.root.Array<java.lang.Object> levels)
 	{
 		double result = ((double) (haxe.lang.Runtime.toDouble(levels.__get(0))) );
 		if (( levels.length == 1 )) 
@@ -57,6 +57,33 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 				double level = ((double) (haxe.lang.Runtime.toDouble(levels.__get(_g))) );
 				 ++ _g;
 				result = java.lang.Math.min(result, level);
+			}
+			
+		}
+		
+		return result;
+	}
+	
+	
+	public static   int intMin(haxe.root.Array<java.lang.Object> levels)
+	{
+		int result = ((int) (haxe.lang.Runtime.toInt(levels.__get(0))) );
+		if (( levels.length == 1 )) 
+		{
+			return result;
+		}
+		
+		{
+			int _g = 0;
+			while (( _g < levels.length ))
+			{
+				int level = ((int) (haxe.lang.Runtime.toInt(levels.__get(_g))) );
+				 ++ _g;
+				{
+					double x = java.lang.Math.min(((double) (result) ), ((double) (level) ));
+					result = ((int) (x) );
+				}
+				
 			}
 			
 		}
@@ -111,10 +138,10 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 	public   java.lang.Object getTips()
 	{
 		int stemLength = 7;
-		double min = 0.0;
+		int min = 0;
 		{
-			haxe.root.Array<java.lang.Object> levels = ((haxe.root.Array<java.lang.Object>) (((haxe.root.Array) (this.notelevels) )) );
-			double result = ((double) (haxe.lang.Runtime.toDouble(levels.__get(0))) );
+			haxe.root.Array<java.lang.Object> levels = this.notelevels;
+			int result = ((int) (haxe.lang.Runtime.toInt(levels.__get(0))) );
 			if (( levels.length == 1 )) 
 			{
 				min = result;
@@ -125,9 +152,13 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 					int _g = 0;
 					while (( _g < levels.length ))
 					{
-						double level = ((double) (haxe.lang.Runtime.toDouble(levels.__get(_g))) );
+						int level = ((int) (haxe.lang.Runtime.toInt(levels.__get(_g))) );
 						 ++ _g;
-						result = java.lang.Math.min(result, level);
+						{
+							double x = java.lang.Math.min(((double) (result) ), ((double) (level) ));
+							result = ((int) (x) );
+						}
+						
 					}
 					
 				}
@@ -204,9 +235,9 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 			haxe.root.Array<java.lang.Object> inlevels = ((haxe.root.Array<java.lang.Object>) (((haxe.root.Array) (this.notelevels.copy()) )) );
 			inlevels.shift();
 			inlevels.pop();
-			double inmin = 0.0;
+			int inmin = 0;
 			{
-				double result3 = ((double) (haxe.lang.Runtime.toDouble(inlevels.__get(0))) );
+				int result3 = ((int) (haxe.lang.Runtime.toInt(inlevels.__get(0))) );
 				if (( inlevels.length == 1 )) 
 				{
 					inmin = result3;
@@ -217,9 +248,13 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 						int _g3 = 0;
 						while (( _g3 < inlevels.length ))
 						{
-							double level3 = ((double) (haxe.lang.Runtime.toDouble(inlevels.__get(_g3))) );
+							int level3 = ((int) (haxe.lang.Runtime.toInt(inlevels.__get(_g3))) );
 							 ++ _g3;
-							result3 = java.lang.Math.min(result3, level3);
+							{
+								double x1 = java.lang.Math.min(((double) (result3) ), ((double) (level3) ));
+								result3 = ((int) (x1) );
+							}
+							
 						}
 						
 					}
@@ -231,8 +266,8 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 			
 			if (( ( leftTip >= inmin ) && ( rightTip >= inmin ) )) 
 			{
-				leftTip = inmin;
-				rightTip = inmin;
+				leftTip = ((double) (inmin) );
+				rightTip = ((double) (inmin) );
 			}
 			 else 
 			{
@@ -296,13 +331,13 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 		}
 		
 		{
-			double x = java.lang.Math.min(((double) (stemLength) ), leftTip);
-			leftTip = ((double) (((int) (x) )) );
+			double x2 = java.lang.Math.min(((double) (stemLength) ), leftTip);
+			leftTip = ((double) (((int) (x2) )) );
 		}
 		
 		{
-			double x1 = java.lang.Math.min(((double) (stemLength) ), rightTip);
-			rightTip = ((double) (((int) (x1) )) );
+			double x3 = java.lang.Math.min(((double) (stemLength) ), rightTip);
+			rightTip = ((double) (((int) (x3) )) );
 		}
 		
 		if (( this.direction == nx3.EDirectionUD.Down )) 
@@ -317,14 +352,14 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef616 = true;
+			boolean __temp_executeDef603 = true;
 			switch (field.hashCode())
 			{
 				case -962590849:
 				{
 					if (field.equals("direction")) 
 					{
-						__temp_executeDef616 = false;
+						__temp_executeDef603 = false;
 						this.direction = ((nx3.EDirectionUD) (value) );
 						return value;
 					}
@@ -337,7 +372,7 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("notelevels")) 
 					{
-						__temp_executeDef616 = false;
+						__temp_executeDef603 = false;
 						this.notelevels = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -348,7 +383,7 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef616) 
+			if (__temp_executeDef603) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -365,14 +400,14 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef617 = true;
+			boolean __temp_executeDef604 = true;
 			switch (field.hashCode())
 			{
 				case -75121746:
 				{
 					if (field.equals("getTips")) 
 					{
-						__temp_executeDef617 = false;
+						__temp_executeDef604 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTips"))) );
 					}
 					
@@ -384,7 +419,7 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("notelevels")) 
 					{
-						__temp_executeDef617 = false;
+						__temp_executeDef604 = false;
 						return this.notelevels;
 					}
 					
@@ -396,7 +431,7 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("direction")) 
 					{
-						__temp_executeDef617 = false;
+						__temp_executeDef604 = false;
 						return this.direction;
 					}
 					
@@ -406,7 +441,7 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef617) 
+			if (__temp_executeDef604) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -423,14 +458,14 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef618 = true;
+			boolean __temp_executeDef605 = true;
 			switch (field.hashCode())
 			{
 				case -75121746:
 				{
 					if (field.equals("getTips")) 
 					{
-						__temp_executeDef618 = false;
+						__temp_executeDef605 = false;
 						return this.getTips();
 					}
 					
@@ -440,7 +475,7 @@ public  class PBamegroupFrameTipCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef618) 
+			if (__temp_executeDef605) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

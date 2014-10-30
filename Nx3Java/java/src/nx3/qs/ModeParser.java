@@ -17,9 +17,9 @@ public  class ModeParser extends nx3.qs.BaseParser
 	}
 	
 	
-	public static   void __hx_ctor_nx3_qs_ModeParser(nx3.qs.ModeParser __temp_me190, nx3.qs.QuickSyntaxParser parser)
+	public static   void __hx_ctor_nx3_qs_ModeParser(nx3.qs.ModeParser __temp_me177, nx3.qs.QuickSyntaxParser parser)
 	{
-		nx3.qs.BaseParser.__hx_ctor_nx3_qs_BaseParser(__temp_me190, parser);
+		nx3.qs.BaseParser.__hx_ctor_nx3_qs_BaseParser(__temp_me177, parser);
 	}
 	
 	
@@ -65,14 +65,14 @@ public  class ModeParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef856 = true;
+			boolean __temp_executeDef835 = true;
 			switch (field.hashCode())
 			{
 				case -2111738369:
 				{
 					if (field.equals("recieveEvent")) 
 					{
-						__temp_executeDef856 = false;
+						__temp_executeDef835 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("recieveEvent"))) );
 					}
 					
@@ -84,7 +84,7 @@ public  class ModeParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("createFunctions")) 
 					{
-						__temp_executeDef856 = false;
+						__temp_executeDef835 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("createFunctions"))) );
 					}
 					
@@ -96,7 +96,7 @@ public  class ModeParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("tokenFinished")) 
 					{
-						__temp_executeDef856 = false;
+						__temp_executeDef835 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("tokenFinished"))) );
 					}
 					
@@ -106,7 +106,7 @@ public  class ModeParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef856) 
+			if (__temp_executeDef835) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}

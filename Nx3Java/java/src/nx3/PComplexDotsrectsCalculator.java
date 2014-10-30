@@ -18,9 +18,9 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PComplexDotsrectsCalculator(nx3.PComplexDotsrectsCalculator __temp_me114, nx3.PComplex complex)
+	public static   void __hx_ctor_nx3_PComplexDotsrectsCalculator(nx3.PComplexDotsrectsCalculator __temp_me102, nx3.PComplex complex)
 	{
-		__temp_me114.complex = complex;
+		__temp_me102.complex = complex;
 	}
 	
 	
@@ -66,7 +66,7 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 	
 	public   haxe.root.Array<nx3.geom.Rectangle> getRectsForNote(nx3.PNote note, java.lang.Object down)
 	{
-		boolean __temp_down113 = ( (( down == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(down)) );
+		boolean __temp_down101 = ( (( down == null )) ? (haxe.lang.Runtime.toBool(false)) : (haxe.lang.Runtime.toBool(down)) );
 		if (( nx3.ENoteValTools.dotlevel(note.nnote.value) == 0 )) 
 		{
 			return new haxe.root.Array<nx3.geom.Rectangle>(new nx3.geom.Rectangle[]{});
@@ -101,7 +101,7 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 				}
 				
 				int dotlevel = 0;
-				if (__temp_down113) 
+				if (__temp_down101) 
 				{
 					dotlevel = ( level + adj );
 				}
@@ -134,14 +134,14 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef687 = true;
+			boolean __temp_executeDef674 = true;
 			switch (field.hashCode())
 			{
 				case 950494384:
 				{
 					if (field.equals("complex")) 
 					{
-						__temp_executeDef687 = false;
+						__temp_executeDef674 = false;
 						this.complex = ((nx3.PComplex) (value) );
 						return value;
 					}
@@ -152,7 +152,7 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef687) 
+			if (__temp_executeDef674) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -169,14 +169,14 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef688 = true;
+			boolean __temp_executeDef675 = true;
 			switch (field.hashCode())
 			{
 				case 413314242:
 				{
 					if (field.equals("getRectsForNote")) 
 					{
-						__temp_executeDef688 = false;
+						__temp_executeDef675 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getRectsForNote"))) );
 					}
 					
@@ -188,7 +188,7 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("complex")) 
 					{
-						__temp_executeDef688 = false;
+						__temp_executeDef675 = false;
 						return this.complex;
 					}
 					
@@ -200,7 +200,7 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getDotRects")) 
 					{
-						__temp_executeDef688 = false;
+						__temp_executeDef675 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getDotRects"))) );
 					}
 					
@@ -210,7 +210,7 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef688) 
+			if (__temp_executeDef675) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -227,14 +227,14 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef689 = true;
+			boolean __temp_executeDef676 = true;
 			switch (field.hashCode())
 			{
 				case 413314242:
 				{
 					if (field.equals("getRectsForNote")) 
 					{
-						__temp_executeDef689 = false;
+						__temp_executeDef676 = false;
 						return this.getRectsForNote(((nx3.PNote) (dynargs.__get(0)) ), dynargs.__get(1));
 					}
 					
@@ -246,7 +246,7 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getDotRects")) 
 					{
-						__temp_executeDef689 = false;
+						__temp_executeDef676 = false;
 						return this.getDotRects();
 					}
 					
@@ -256,7 +256,7 @@ public  class PComplexDotsrectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef689) 
+			if (__temp_executeDef676) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

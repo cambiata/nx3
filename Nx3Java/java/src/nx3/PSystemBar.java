@@ -18,15 +18,15 @@ public  class PSystemBar extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PSystemBar(nx3.PSystemBar __temp_me137, nx3.PBar bar, nx3.PBarConfig barConfig, nx3.PSystembarMeasurements barMeasurements, java.lang.Object actAttributes, java.lang.Object caAttributes)
+	public static   void __hx_ctor_nx3_PSystemBar(nx3.PSystemBar __temp_me125, nx3.PBar bar, nx3.PBarConfig barConfig, nx3.PSystembarMeasurements barMeasurements, java.lang.Object actAttributes, java.lang.Object caAttributes)
 	{
-		__temp_me137.stretchamount = ((double) (0) );
-		__temp_me137.bar = bar;
-		__temp_me137.bar.systembar = __temp_me137;
-		__temp_me137.barConfig = barConfig;
-		__temp_me137.barMeasurements = barMeasurements;
-		__temp_me137.actAttributes = actAttributes;
-		__temp_me137.caAttributes = caAttributes;
+		__temp_me125.stretchamount = ((double) (0) );
+		__temp_me125.bar = bar;
+		__temp_me125.bar.systembar = __temp_me125;
+		__temp_me125.barConfig = barConfig;
+		__temp_me125.barMeasurements = barMeasurements;
+		__temp_me125.actAttributes = actAttributes;
+		__temp_me125.caAttributes = caAttributes;
 	}
 	
 	
@@ -97,14 +97,14 @@ public  class PSystemBar extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef773 = true;
+			boolean __temp_executeDef760 = true;
 			switch (field.hashCode())
 			{
 				case -1398365791:
 				{
 					if (field.equals("xposition")) 
 					{
-						__temp_executeDef773 = false;
+						__temp_executeDef760 = false;
 						this.xposition = ((double) (value) );
 						return value;
 					}
@@ -117,7 +117,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("actAttributes")) 
 					{
-						__temp_executeDef773 = false;
+						__temp_executeDef760 = false;
 						this.actAttributes = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -130,7 +130,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("stretchamount")) 
 					{
-						__temp_executeDef773 = false;
+						__temp_executeDef760 = false;
 						this.stretchamount = ((double) (value) );
 						return value;
 					}
@@ -143,7 +143,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("caAttributes")) 
 					{
-						__temp_executeDef773 = false;
+						__temp_executeDef760 = false;
 						this.caAttributes = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -154,7 +154,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef773) 
+			if (__temp_executeDef760) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -171,14 +171,14 @@ public  class PSystemBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef774 = true;
+			boolean __temp_executeDef761 = true;
 			switch (field.hashCode())
 			{
 				case -1398365791:
 				{
 					if (field.equals("xposition")) 
 					{
-						__temp_executeDef774 = false;
+						__temp_executeDef761 = false;
 						this.xposition = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -191,7 +191,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("bar")) 
 					{
-						__temp_executeDef774 = false;
+						__temp_executeDef761 = false;
 						this.bar = ((nx3.PBar) (value) );
 						return value;
 					}
@@ -204,7 +204,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("barMeasurements")) 
 					{
-						__temp_executeDef774 = false;
+						__temp_executeDef761 = false;
 						this.barMeasurements = ((nx3.PSystembarMeasurements) (value) );
 						return value;
 					}
@@ -217,7 +217,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("barConfig")) 
 					{
-						__temp_executeDef774 = false;
+						__temp_executeDef761 = false;
 						this.barConfig = ((nx3.PBarConfig) (value) );
 						return value;
 					}
@@ -230,7 +230,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("stretchamount")) 
 					{
-						__temp_executeDef774 = false;
+						__temp_executeDef761 = false;
 						this.stretchamount = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -243,7 +243,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("actAttributes")) 
 					{
-						__temp_executeDef774 = false;
+						__temp_executeDef761 = false;
 						this.actAttributes = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -256,7 +256,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("caAttributes")) 
 					{
-						__temp_executeDef774 = false;
+						__temp_executeDef761 = false;
 						this.caAttributes = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -267,7 +267,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef774) 
+			if (__temp_executeDef761) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -284,14 +284,14 @@ public  class PSystemBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef775 = true;
+			boolean __temp_executeDef762 = true;
 			switch (field.hashCode())
 			{
 				case -1343326453:
 				{
 					if (field.equals("getXPosition")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getXPosition"))) );
 					}
 					
@@ -303,7 +303,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("bar")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return this.bar;
 					}
 					
@@ -315,7 +315,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("xposition")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return this.xposition;
 					}
 					
@@ -327,7 +327,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("barConfig")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return this.barConfig;
 					}
 					
@@ -339,7 +339,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getBarMeasurements")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBarMeasurements"))) );
 					}
 					
@@ -351,7 +351,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("actAttributes")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return this.actAttributes;
 					}
 					
@@ -363,7 +363,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("barMeasurements")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return this.barMeasurements;
 					}
 					
@@ -375,7 +375,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("caAttributes")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return this.caAttributes;
 					}
 					
@@ -387,7 +387,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("setBarStretch")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("setBarStretch"))) );
 					}
 					
@@ -399,7 +399,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("stretchamount")) 
 					{
-						__temp_executeDef775 = false;
+						__temp_executeDef762 = false;
 						return this.stretchamount;
 					}
 					
@@ -409,7 +409,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef775) 
+			if (__temp_executeDef762) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -426,14 +426,14 @@ public  class PSystemBar extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef776 = true;
+			boolean __temp_executeDef763 = true;
 			switch (field.hashCode())
 			{
 				case -1398365791:
 				{
 					if (field.equals("xposition")) 
 					{
-						__temp_executeDef776 = false;
+						__temp_executeDef763 = false;
 						return this.xposition;
 					}
 					
@@ -445,7 +445,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("actAttributes")) 
 					{
-						__temp_executeDef776 = false;
+						__temp_executeDef763 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.actAttributes)) );
 					}
 					
@@ -457,7 +457,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("stretchamount")) 
 					{
-						__temp_executeDef776 = false;
+						__temp_executeDef763 = false;
 						return this.stretchamount;
 					}
 					
@@ -469,7 +469,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("caAttributes")) 
 					{
-						__temp_executeDef776 = false;
+						__temp_executeDef763 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.caAttributes)) );
 					}
 					
@@ -479,7 +479,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef776) 
+			if (__temp_executeDef763) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -496,14 +496,14 @@ public  class PSystemBar extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef777 = true;
+			boolean __temp_executeDef764 = true;
 			switch (field.hashCode())
 			{
 				case -1343326453:
 				{
 					if (field.equals("getXPosition")) 
 					{
-						__temp_executeDef777 = false;
+						__temp_executeDef764 = false;
 						return this.getXPosition();
 					}
 					
@@ -515,7 +515,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("setBarStretch")) 
 					{
-						__temp_executeDef777 = false;
+						__temp_executeDef764 = false;
 						this.setBarStretch(((double) (haxe.lang.Runtime.toDouble(dynargs.__get(0))) ));
 					}
 					
@@ -527,7 +527,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				{
 					if (field.equals("getBarMeasurements")) 
 					{
-						__temp_executeDef777 = false;
+						__temp_executeDef764 = false;
 						return this.getBarMeasurements();
 					}
 					
@@ -537,7 +537,7 @@ public  class PSystemBar extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef777) 
+			if (__temp_executeDef764) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

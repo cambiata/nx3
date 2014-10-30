@@ -100,7 +100,7 @@ class Main extends TargetJFrame
 		trace(procedureCode);
 		*/
 		
-		//new Main();
+		new Main();
 	}
 
 	public function new() 

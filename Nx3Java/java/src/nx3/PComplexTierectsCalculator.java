@@ -18,9 +18,9 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PComplexTierectsCalculator(nx3.PComplexTierectsCalculator __temp_me116, nx3.PComplex complex)
+	public static   void __hx_ctor_nx3_PComplexTierectsCalculator(nx3.PComplexTierectsCalculator __temp_me104, nx3.PComplex complex)
 	{
-		__temp_me116.complex = complex;
+		__temp_me104.complex = complex;
 	}
 	
 	
@@ -62,13 +62,13 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 		haxe.root.Array<nx3.ETie> secondties = null;
 		if (( nrofnotes == 2 )) 
 		{
-			nx3.PNote __temp_stmt693 = null;
+			nx3.PNote __temp_stmt680 = null;
 			{
 				haxe.root.Array<nx3.PNote> array2 = this.complex.getNotes();
-				__temp_stmt693 = array2.__get(1);
+				__temp_stmt680 = array2.__get(1);
 			}
 			
-			secondties = __temp_stmt693.getTies();
+			secondties = __temp_stmt680.getTies();
 		}
 		 else 
 		{
@@ -91,7 +91,7 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 		double tieheight = 1.6;
 		{
 			int _g = 0;
-			haxe.root.Array<nx3.PHead> _g1 = firstnote.getHeads();
+			haxe.root.Array<nx3.PHead> _g1 = firstnote.get_heads();
 			while (( _g < _g1.length ))
 			{
 				nx3.PHead head = _g1.__get(_g);
@@ -184,21 +184,21 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 					}
 					 else 
 					{
-						boolean __temp_boolv696 = ( secondnote == null );
-						boolean __temp_boolv695 = false;
-						if (__temp_boolv696) 
+						boolean __temp_boolv683 = ( secondnote == null );
+						boolean __temp_boolv682 = false;
+						if (__temp_boolv683) 
 						{
-							nx3.PHead __temp_stmt697 = null;
+							nx3.PHead __temp_stmt684 = null;
 							{
-								haxe.root.Array<nx3.PHead> array3 = firstnote.getHeads();
-								__temp_stmt697 = array3.__get(( array3.length - 1 ));
+								haxe.root.Array<nx3.PHead> array3 = firstnote.get_heads();
+								__temp_stmt684 = array3.__get(( array3.length - 1 ));
 							}
 							
-							__temp_boolv695 = ( head == __temp_stmt697 );
+							__temp_boolv682 = ( head == __temp_stmt684 );
 						}
 						
-						boolean __temp_stmt694 = ( __temp_boolv696 && __temp_boolv695 );
-						if (__temp_stmt694) 
+						boolean __temp_stmt681 = ( __temp_boolv683 && __temp_boolv682 );
+						if (__temp_stmt681) 
 						{
 							direction = nx3.EDirectionUD.Down;
 							adjusty = .5;
@@ -224,7 +224,7 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 		if (( secondnote != null )) 
 		{
 			int _g3 = 0;
-			haxe.root.Array<nx3.PHead> _g11 = secondnote.getHeads();
+			haxe.root.Array<nx3.PHead> _g11 = secondnote.get_heads();
 			while (( _g3 < _g11.length ))
 			{
 				nx3.PHead head1 = _g11.__get(_g3);
@@ -273,14 +273,14 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef698 = true;
+			boolean __temp_executeDef685 = true;
 			switch (field.hashCode())
 			{
 				case 950494384:
 				{
 					if (field.equals("complex")) 
 					{
-						__temp_executeDef698 = false;
+						__temp_executeDef685 = false;
 						this.complex = ((nx3.PComplex) (value) );
 						return value;
 					}
@@ -291,7 +291,7 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef698) 
+			if (__temp_executeDef685) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -308,14 +308,14 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef699 = true;
+			boolean __temp_executeDef686 = true;
 			switch (field.hashCode())
 			{
 				case -635934101:
 				{
 					if (field.equals("getNoteTies")) 
 					{
-						__temp_executeDef699 = false;
+						__temp_executeDef686 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNoteTies"))) );
 					}
 					
@@ -327,7 +327,7 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("complex")) 
 					{
-						__temp_executeDef699 = false;
+						__temp_executeDef686 = false;
 						return this.complex;
 					}
 					
@@ -339,7 +339,7 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getTieRects")) 
 					{
-						__temp_executeDef699 = false;
+						__temp_executeDef686 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getTieRects"))) );
 					}
 					
@@ -349,7 +349,7 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef699) 
+			if (__temp_executeDef686) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -366,14 +366,14 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef700 = true;
+			boolean __temp_executeDef687 = true;
 			switch (field.hashCode())
 			{
 				case -635934101:
 				{
 					if (field.equals("getNoteTies")) 
 					{
-						__temp_executeDef700 = false;
+						__temp_executeDef687 = false;
 						this.getNoteTies(((nx3.PNote) (dynargs.__get(0)) ));
 					}
 					
@@ -385,7 +385,7 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getTieRects")) 
 					{
-						__temp_executeDef700 = false;
+						__temp_executeDef687 = false;
 						return this.getTieRects();
 					}
 					
@@ -395,7 +395,7 @@ public  class PComplexTierectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef700) 
+			if (__temp_executeDef687) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

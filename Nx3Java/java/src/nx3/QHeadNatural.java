@@ -17,10 +17,10 @@ public  class QHeadNatural extends nx3.QHead
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QHeadNatural(nx3.QHeadNatural __temp_me149, java.lang.Object level)
+	public static   void __hx_ctor_nx3_QHeadNatural(nx3.QHeadNatural __temp_me137, java.lang.Object level)
 	{
-		nx3.QHead.__hx_ctor_nx3_QHead(__temp_me149, ( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ), nx3.ESign.Natural);
-		java.lang.Object __temp_level148 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
+		nx3.QHead.__hx_ctor_nx3_QHead(__temp_me137, ( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ), nx3.ESign.Natural);
+		java.lang.Object __temp_level136 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
 	}
 	
 	

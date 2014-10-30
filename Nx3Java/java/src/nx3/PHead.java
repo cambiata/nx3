@@ -18,9 +18,9 @@ public  class PHead extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PHead(nx3.PHead __temp_me117, nx3.NHead nhead)
+	public static   void __hx_ctor_nx3_PHead(nx3.PHead __temp_me105, nx3.NHead nhead)
 	{
-		__temp_me117.nhead = nhead;
+		__temp_me105.nhead = nhead;
 	}
 	
 	
@@ -55,14 +55,14 @@ public  class PHead extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef701 = true;
+			boolean __temp_executeDef688 = true;
 			switch (field.hashCode())
 			{
 				case 3387378:
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef701 = false;
+						__temp_executeDef688 = false;
 						this.note = ((nx3.PNote) (value) );
 						return value;
 					}
@@ -75,7 +75,7 @@ public  class PHead extends haxe.lang.HxObject
 				{
 					if (field.equals("nhead")) 
 					{
-						__temp_executeDef701 = false;
+						__temp_executeDef688 = false;
 						this.nhead = ((nx3.NHead) (value) );
 						return value;
 					}
@@ -86,7 +86,7 @@ public  class PHead extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef701) 
+			if (__temp_executeDef688) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -103,14 +103,14 @@ public  class PHead extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef702 = true;
+			boolean __temp_executeDef689 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef702 = false;
+						__temp_executeDef689 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("toString"))) );
 					}
 					
@@ -122,7 +122,7 @@ public  class PHead extends haxe.lang.HxObject
 				{
 					if (field.equals("nhead")) 
 					{
-						__temp_executeDef702 = false;
+						__temp_executeDef689 = false;
 						return this.nhead;
 					}
 					
@@ -134,7 +134,7 @@ public  class PHead extends haxe.lang.HxObject
 				{
 					if (field.equals("getNote")) 
 					{
-						__temp_executeDef702 = false;
+						__temp_executeDef689 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNote"))) );
 					}
 					
@@ -146,7 +146,7 @@ public  class PHead extends haxe.lang.HxObject
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef702 = false;
+						__temp_executeDef689 = false;
 						return this.note;
 					}
 					
@@ -156,7 +156,7 @@ public  class PHead extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef702) 
+			if (__temp_executeDef689) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -173,14 +173,14 @@ public  class PHead extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef703 = true;
+			boolean __temp_executeDef690 = true;
 			switch (field.hashCode())
 			{
 				case -1776922004:
 				{
 					if (field.equals("toString")) 
 					{
-						__temp_executeDef703 = false;
+						__temp_executeDef690 = false;
 						return this.toString();
 					}
 					
@@ -192,7 +192,7 @@ public  class PHead extends haxe.lang.HxObject
 				{
 					if (field.equals("getNote")) 
 					{
-						__temp_executeDef703 = false;
+						__temp_executeDef690 = false;
 						return this.getNote();
 					}
 					
@@ -202,7 +202,7 @@ public  class PHead extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef703) 
+			if (__temp_executeDef690) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

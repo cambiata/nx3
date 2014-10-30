@@ -18,9 +18,9 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PNoteheadsRectsCalculator(nx3.PNoteheadsRectsCalculator __temp_me125, nx3.PNote note)
+	public static   void __hx_ctor_nx3_PNoteheadsRectsCalculator(nx3.PNoteheadsRectsCalculator __temp_me113, nx3.PNote note)
 	{
-		__temp_me125.note = note;
+		__temp_me113.note = note;
 	}
 	
 	
@@ -97,14 +97,14 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef732 = true;
+			boolean __temp_executeDef719 = true;
 			switch (field.hashCode())
 			{
 				case -253474258:
 				{
 					if (field.equals("placements")) 
 					{
-						__temp_executeDef732 = false;
+						__temp_executeDef719 = false;
 						this.placements = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -117,7 +117,7 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef732 = false;
+						__temp_executeDef719 = false;
 						this.note = ((nx3.PNote) (value) );
 						return value;
 					}
@@ -130,7 +130,7 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("heads")) 
 					{
-						__temp_executeDef732 = false;
+						__temp_executeDef719 = false;
 						this.heads = ((haxe.root.Array<nx3.PHead>) (value) );
 						return value;
 					}
@@ -141,7 +141,7 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef732) 
+			if (__temp_executeDef719) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -158,14 +158,14 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef733 = true;
+			boolean __temp_executeDef720 = true;
 			switch (field.hashCode())
 			{
 				case 2051530802:
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef733 = false;
+						__temp_executeDef720 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeadsRects"))) );
 					}
 					
@@ -177,7 +177,7 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef733 = false;
+						__temp_executeDef720 = false;
 						return this.note;
 					}
 					
@@ -189,7 +189,7 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("placements")) 
 					{
-						__temp_executeDef733 = false;
+						__temp_executeDef720 = false;
 						return this.placements;
 					}
 					
@@ -201,7 +201,7 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("heads")) 
 					{
-						__temp_executeDef733 = false;
+						__temp_executeDef720 = false;
 						return this.heads;
 					}
 					
@@ -211,7 +211,7 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef733) 
+			if (__temp_executeDef720) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -228,14 +228,14 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef734 = true;
+			boolean __temp_executeDef721 = true;
 			switch (field.hashCode())
 			{
 				case 2051530802:
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef734 = false;
+						__temp_executeDef721 = false;
 						return this.getHeadsRects();
 					}
 					
@@ -245,7 +245,7 @@ public  class PNoteheadsRectsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef734) 
+			if (__temp_executeDef721) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,9 +18,9 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PComplexTieTargetCalculator(nx3.PComplexTieTargetCalculator __temp_me115, haxe.root.Array<java.lang.Object> tieinfos)
+	public static   void __hx_ctor_nx3_PComplexTieTargetCalculator(nx3.PComplexTieTargetCalculator __temp_me103, haxe.root.Array<java.lang.Object> tieinfos)
 	{
-		__temp_me115.tieinfos = tieinfos;
+		__temp_me103.tieinfos = tieinfos;
 	}
 	
 	
@@ -55,7 +55,7 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 					continue;
 				}
 				
-				haxe.root.Array<nx3.PHead> nextheads = nextnote.getHeads();
+				haxe.root.Array<nx3.PHead> nextheads = nextnote.get_heads();
 				{
 					int _g2 = 0;
 					while (( _g2 < nextheads.length ))
@@ -83,14 +83,14 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef690 = true;
+			boolean __temp_executeDef677 = true;
 			switch (field.hashCode())
 			{
 				case 1993034485:
 				{
 					if (field.equals("tieinfos")) 
 					{
-						__temp_executeDef690 = false;
+						__temp_executeDef677 = false;
 						this.tieinfos = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -101,7 +101,7 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef690) 
+			if (__temp_executeDef677) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -118,14 +118,14 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef691 = true;
+			boolean __temp_executeDef678 = true;
 			switch (field.hashCode())
 			{
 				case -722209783:
 				{
 					if (field.equals("findTargetHeads")) 
 					{
-						__temp_executeDef691 = false;
+						__temp_executeDef678 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("findTargetHeads"))) );
 					}
 					
@@ -137,7 +137,7 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("tieinfos")) 
 					{
-						__temp_executeDef691 = false;
+						__temp_executeDef678 = false;
 						return this.tieinfos;
 					}
 					
@@ -147,7 +147,7 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef691) 
+			if (__temp_executeDef678) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -164,14 +164,14 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef692 = true;
+			boolean __temp_executeDef679 = true;
 			switch (field.hashCode())
 			{
 				case -722209783:
 				{
 					if (field.equals("findTargetHeads")) 
 					{
-						__temp_executeDef692 = false;
+						__temp_executeDef679 = false;
 						return this.findTargetHeads();
 					}
 					
@@ -181,7 +181,7 @@ public  class PComplexTieTargetCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef692) 
+			if (__temp_executeDef679) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

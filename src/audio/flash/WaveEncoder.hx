@@ -25,7 +25,7 @@ class WaveEncoder
 		{
 			var data:ByteArray = create( samples );
 			
-			_bytes.length = 0;
+			//_bytes.length = 0;
 			_bytes.endian = Endian.LITTLE_ENDIAN;
 			
 			_bytes.writeUTFBytes( WaveEncoder.RIFF );
@@ -52,7 +52,7 @@ class WaveEncoder
 		private function create( bytes:ByteArray ):ByteArray
 		{
 			_buffer.endian = Endian.LITTLE_ENDIAN;
-			_buffer.length = 0;
+			//_buffer.length = 0;
 			bytes.position = 0;
 			
 			while( bytes.bytesAvailable > 0 ) 

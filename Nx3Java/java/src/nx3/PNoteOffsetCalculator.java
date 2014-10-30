@@ -18,9 +18,9 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PNoteOffsetCalculator(nx3.PNoteOffsetCalculator __temp_me124, nx3.PComplex complex)
+	public static   void __hx_ctor_nx3_PNoteOffsetCalculator(nx3.PNoteOffsetCalculator __temp_me112, nx3.PComplex complex)
 	{
-		__temp_me124.complex = complex;
+		__temp_me112.complex = complex;
 	}
 	
 	
@@ -40,13 +40,13 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 	
 	public   double getNoteOffset(nx3.PNote note)
 	{
-		nx3.PNote __temp_stmt728 = null;
+		nx3.PNote __temp_stmt715 = null;
 		{
 			haxe.root.Array<nx3.PNote> array = this.complex.getNotes();
-			__temp_stmt728 = array.__get(0);
+			__temp_stmt715 = array.__get(0);
 		}
 		
-		if (( note == __temp_stmt728 )) 
+		if (( note == __temp_stmt715 )) 
 		{
 			return ((double) (0) );
 		}
@@ -60,7 +60,7 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 			firstnote = array1.__get(0);
 		}
 		
-		int diff = ( note.nnote.getTopLevel() - firstnote.nnote.getBottomLevel() );
+		int diff = ( ((int) (haxe.lang.Runtime.toInt(note.nnote.get_topLevel())) ) - ((int) (haxe.lang.Runtime.toInt(firstnote.nnote.get_bottomLevel())) ) );
 		if (( diff == 1 )) 
 		{
 			secondoffset = ( secondoffset * 0.8 );
@@ -90,14 +90,14 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef729 = true;
+			boolean __temp_executeDef716 = true;
 			switch (field.hashCode())
 			{
 				case 950494384:
 				{
 					if (field.equals("complex")) 
 					{
-						__temp_executeDef729 = false;
+						__temp_executeDef716 = false;
 						this.complex = ((nx3.PComplex) (value) );
 						return value;
 					}
@@ -108,7 +108,7 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef729) 
+			if (__temp_executeDef716) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -125,14 +125,14 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef730 = true;
+			boolean __temp_executeDef717 = true;
 			switch (field.hashCode())
 			{
 				case -1393198309:
 				{
 					if (field.equals("getNoteOffset")) 
 					{
-						__temp_executeDef730 = false;
+						__temp_executeDef717 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNoteOffset"))) );
 					}
 					
@@ -144,7 +144,7 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("complex")) 
 					{
-						__temp_executeDef730 = false;
+						__temp_executeDef717 = false;
 						return this.complex;
 					}
 					
@@ -154,7 +154,7 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef730) 
+			if (__temp_executeDef717) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -171,14 +171,14 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef731 = true;
+			boolean __temp_executeDef718 = true;
 			switch (field.hashCode())
 			{
 				case -1393198309:
 				{
 					if (field.equals("getNoteOffset")) 
 					{
-						__temp_executeDef731 = false;
+						__temp_executeDef718 = false;
 						return this.getNoteOffset(((nx3.PNote) (dynargs.__get(0)) ));
 					}
 					
@@ -188,7 +188,7 @@ public  class PNoteOffsetCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef731) 
+			if (__temp_executeDef718) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,9 +18,9 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PStaveRectCalculator(nx3.PStaveRectCalculator __temp_me135, nx3.PNote note)
+	public static   void __hx_ctor_nx3_PStaveRectCalculator(nx3.PStaveRectCalculator __temp_me123, nx3.PNote note)
 	{
-		__temp_me135.note = note;
+		__temp_me123.note = note;
 	}
 	
 	
@@ -75,14 +75,14 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 		nx3.geom.Rectangle rect = null;
 		if (( this.note.getDirection() == nx3.EDirectionUD.Up )) 
 		{
-			rect = new nx3.geom.Rectangle(((java.lang.Object) (0) ), ((java.lang.Object) (( this.note.nnote.getBottomLevel() - ((double) (7) ) )) ), ((java.lang.Object) (headw) ), ((double) (7) ));
+			rect = new nx3.geom.Rectangle(((java.lang.Object) (0) ), ((java.lang.Object) (( ((int) (haxe.lang.Runtime.toInt(this.note.nnote.get_bottomLevel())) ) - ((double) (7) ) )) ), ((java.lang.Object) (headw) ), ((double) (7) ));
 		}
 		 else 
 		{
-			rect = new nx3.geom.Rectangle(((java.lang.Object) ( - (headw) ) ), ((java.lang.Object) (this.note.nnote.getTopLevel()) ), ((java.lang.Object) (headw) ), ((double) (7) ));
+			rect = new nx3.geom.Rectangle(((java.lang.Object) ( - (headw) ) ), ((int) (haxe.lang.Runtime.toInt(this.note.nnote.get_topLevel())) ), ((java.lang.Object) (headw) ), ((double) (7) ));
 		}
 		
-		rect.offset(this.note.getXOffset(), ((double) (0) ));
+		rect.offset(((double) (haxe.lang.Runtime.toDouble(this.note.getXOffset())) ), ((double) (0) ));
 		return rect;
 	}
 	
@@ -129,14 +129,14 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 				nx3.geom.Rectangle rect = null;
 				if (( this.note.getDirection() == nx3.EDirectionUD.Up )) 
 				{
-					rect = new nx3.geom.Rectangle(((java.lang.Object) (headw) ), ((java.lang.Object) (( this.note.nnote.getBottomLevel() - ((double) (7) ) )) ), ((java.lang.Object) (2.6) ), ((java.lang.Object) (4.8) ));
+					rect = new nx3.geom.Rectangle(((java.lang.Object) (headw) ), ((java.lang.Object) (( ((int) (haxe.lang.Runtime.toInt(this.note.nnote.get_bottomLevel())) ) - ((double) (7) ) )) ), ((java.lang.Object) (2.6) ), ((java.lang.Object) (4.8) ));
 				}
 				 else 
 				{
-					rect = new nx3.geom.Rectangle(((java.lang.Object) ( - (headw) ) ), ((java.lang.Object) (( ( this.note.nnote.getTopLevel() + ((double) (7) ) ) - 4.8 )) ), ((java.lang.Object) (2.6) ), ((java.lang.Object) (4.8) ));
+					rect = new nx3.geom.Rectangle(((java.lang.Object) ( - (headw) ) ), ((java.lang.Object) (( ( ((int) (haxe.lang.Runtime.toInt(this.note.nnote.get_topLevel())) ) + ((double) (7) ) ) - 4.8 )) ), ((java.lang.Object) (2.6) ), ((java.lang.Object) (4.8) ));
 				}
 				
-				rect.offset(this.note.getXOffset(), ((double) (0) ));
+				rect.offset(((double) (haxe.lang.Runtime.toDouble(this.note.getXOffset())) ), ((double) (0) ));
 				return rect;
 			}
 			
@@ -149,14 +149,14 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef764 = true;
+			boolean __temp_executeDef751 = true;
 			switch (field.hashCode())
 			{
 				case 3387378:
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef764 = false;
+						__temp_executeDef751 = false;
 						this.note = ((nx3.PNote) (value) );
 						return value;
 					}
@@ -167,7 +167,7 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef764) 
+			if (__temp_executeDef751) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -184,14 +184,14 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef765 = true;
+			boolean __temp_executeDef752 = true;
 			switch (field.hashCode())
 			{
 				case -603228954:
 				{
 					if (field.equals("getFlagRect")) 
 					{
-						__temp_executeDef765 = false;
+						__temp_executeDef752 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getFlagRect"))) );
 					}
 					
@@ -203,7 +203,7 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef765 = false;
+						__temp_executeDef752 = false;
 						return this.note;
 					}
 					
@@ -215,7 +215,7 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getStaveRect")) 
 					{
-						__temp_executeDef765 = false;
+						__temp_executeDef752 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getStaveRect"))) );
 					}
 					
@@ -225,7 +225,7 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef765) 
+			if (__temp_executeDef752) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -242,14 +242,14 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef766 = true;
+			boolean __temp_executeDef753 = true;
 			switch (field.hashCode())
 			{
 				case -603228954:
 				{
 					if (field.equals("getFlagRect")) 
 					{
-						__temp_executeDef766 = false;
+						__temp_executeDef753 = false;
 						return this.getFlagRect();
 					}
 					
@@ -261,7 +261,7 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getStaveRect")) 
 					{
-						__temp_executeDef766 = false;
+						__temp_executeDef753 = false;
 						return this.getStaveRect();
 					}
 					
@@ -271,7 +271,7 @@ public  class PStaveRectCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef766) 
+			if (__temp_executeDef753) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

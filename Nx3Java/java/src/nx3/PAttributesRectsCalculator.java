@@ -18,7 +18,7 @@ public  class PAttributesRectsCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PAttributesRectsCalculator(nx3.PAttributesRectsCalculator __temp_me89)
+	public static   void __hx_ctor_nx3_PAttributesRectsCalculator(nx3.PAttributesRectsCalculator __temp_me77)
 	{
 		{
 		}

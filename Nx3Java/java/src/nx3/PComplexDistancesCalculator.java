@@ -18,7 +18,7 @@ public  class PComplexDistancesCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PComplexDistancesCalculator(nx3.PComplexDistancesCalculator __temp_me112)
+	public static   void __hx_ctor_nx3_PComplexDistancesCalculator(nx3.PComplexDistancesCalculator __temp_me100)
 	{
 		{
 		}
@@ -64,14 +64,14 @@ public  class PComplexDistancesCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef685 = true;
+			boolean __temp_executeDef672 = true;
 			switch (field.hashCode())
 			{
 				case 1964214617:
 				{
 					if (field.equals("getRects")) 
 					{
-						__temp_executeDef685 = false;
+						__temp_executeDef672 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getRects"))) );
 					}
 					
@@ -83,7 +83,7 @@ public  class PComplexDistancesCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getDistance")) 
 					{
-						__temp_executeDef685 = false;
+						__temp_executeDef672 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getDistance"))) );
 					}
 					
@@ -93,7 +93,7 @@ public  class PComplexDistancesCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef685) 
+			if (__temp_executeDef672) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -110,14 +110,14 @@ public  class PComplexDistancesCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef686 = true;
+			boolean __temp_executeDef673 = true;
 			switch (field.hashCode())
 			{
 				case 1964214617:
 				{
 					if (field.equals("getRects")) 
 					{
-						__temp_executeDef686 = false;
+						__temp_executeDef673 = false;
 						return this.getRects(((nx3.PComplex) (dynargs.__get(0)) ));
 					}
 					
@@ -129,7 +129,7 @@ public  class PComplexDistancesCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getDistance")) 
 					{
-						__temp_executeDef686 = false;
+						__temp_executeDef673 = false;
 						return this.getDistance(((nx3.PComplex) (dynargs.__get(0)) ), ((nx3.PComplex) (dynargs.__get(1)) ));
 					}
 					
@@ -139,7 +139,7 @@ public  class PComplexDistancesCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef686) 
+			if (__temp_executeDef673) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

@@ -18,10 +18,10 @@ public  class PScore extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PScore(nx3.PScore __temp_me129, nx3.NScore nscore)
+	public static   void __hx_ctor_nx3_PScore(nx3.PScore __temp_me117, nx3.NScore nscore)
 	{
-		__temp_me129.prevSystemwidth = ((double) (0) );
-		__temp_me129.nscore = nscore;
+		__temp_me117.prevSystemwidth = ((double) (0) );
+		__temp_me117.nscore = nscore;
 	}
 	
 	
@@ -123,13 +123,13 @@ public  class PScore extends haxe.lang.HxObject
 				nx3.PSystem system1 = _g11.__get(_g2);
 				 ++ _g2;
 				double ifMoreThan = 0.0;
-				nx3.PSystem __temp_stmt746 = null;
+				nx3.PSystem __temp_stmt733 = null;
 				{
 					haxe.root.Array<nx3.PSystem> array = this.systems;
-					__temp_stmt746 = array.__get(( array.length - 1 ));
+					__temp_stmt733 = array.__get(( array.length - 1 ));
 				}
 				
-				if (( system1 != __temp_stmt746 )) 
+				if (( system1 != __temp_stmt733 )) 
 				{
 					ifMoreThan = ((double) (0) );
 				}
@@ -164,14 +164,14 @@ public  class PScore extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef747 = true;
+			boolean __temp_executeDef734 = true;
 			switch (field.hashCode())
 			{
 				case -1819510588:
 				{
 					if (field.equals("prevSystemwidth")) 
 					{
-						__temp_executeDef747 = false;
+						__temp_executeDef734 = false;
 						this.prevSystemwidth = ((double) (value) );
 						return value;
 					}
@@ -182,7 +182,7 @@ public  class PScore extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef747) 
+			if (__temp_executeDef734) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -199,14 +199,14 @@ public  class PScore extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef748 = true;
+			boolean __temp_executeDef735 = true;
 			switch (field.hashCode())
 			{
 				case -1819510588:
 				{
 					if (field.equals("prevSystemwidth")) 
 					{
-						__temp_executeDef748 = false;
+						__temp_executeDef735 = false;
 						this.prevSystemwidth = ((double) (haxe.lang.Runtime.toDouble(value)) );
 						return value;
 					}
@@ -219,7 +219,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("nscore")) 
 					{
-						__temp_executeDef748 = false;
+						__temp_executeDef735 = false;
 						this.nscore = ((nx3.NScore) (value) );
 						return value;
 					}
@@ -232,7 +232,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("systems")) 
 					{
-						__temp_executeDef748 = false;
+						__temp_executeDef735 = false;
 						this.systems = ((haxe.root.Array<nx3.PSystem>) (value) );
 						return value;
 					}
@@ -245,7 +245,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("bars")) 
 					{
-						__temp_executeDef748 = false;
+						__temp_executeDef735 = false;
 						this.bars = ((haxe.root.Array<nx3.PBar>) (value) );
 						return value;
 					}
@@ -256,7 +256,7 @@ public  class PScore extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef748) 
+			if (__temp_executeDef735) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -273,14 +273,14 @@ public  class PScore extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef749 = true;
+			boolean __temp_executeDef736 = true;
 			switch (field.hashCode())
 			{
 				case -1249366819:
 				{
 					if (field.equals("getBar")) 
 					{
-						__temp_executeDef749 = false;
+						__temp_executeDef736 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBar"))) );
 					}
 					
@@ -292,7 +292,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("nscore")) 
 					{
-						__temp_executeDef749 = false;
+						__temp_executeDef736 = false;
 						return this.nscore;
 					}
 					
@@ -304,7 +304,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("getSystems")) 
 					{
-						__temp_executeDef749 = false;
+						__temp_executeDef736 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSystems"))) );
 					}
 					
@@ -316,7 +316,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("bars")) 
 					{
-						__temp_executeDef749 = false;
+						__temp_executeDef736 = false;
 						return this.bars;
 					}
 					
@@ -328,7 +328,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("prevSystemwidth")) 
 					{
-						__temp_executeDef749 = false;
+						__temp_executeDef736 = false;
 						return this.prevSystemwidth;
 					}
 					
@@ -340,7 +340,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("getBars")) 
 					{
-						__temp_executeDef749 = false;
+						__temp_executeDef736 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getBars"))) );
 					}
 					
@@ -352,7 +352,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("systems")) 
 					{
-						__temp_executeDef749 = false;
+						__temp_executeDef736 = false;
 						return this.systems;
 					}
 					
@@ -364,7 +364,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("getNBars")) 
 					{
-						__temp_executeDef749 = false;
+						__temp_executeDef736 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNBars"))) );
 					}
 					
@@ -374,7 +374,7 @@ public  class PScore extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef749) 
+			if (__temp_executeDef736) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -391,14 +391,14 @@ public  class PScore extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef750 = true;
+			boolean __temp_executeDef737 = true;
 			switch (field.hashCode())
 			{
 				case -1819510588:
 				{
 					if (field.equals("prevSystemwidth")) 
 					{
-						__temp_executeDef750 = false;
+						__temp_executeDef737 = false;
 						return this.prevSystemwidth;
 					}
 					
@@ -408,7 +408,7 @@ public  class PScore extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef750) 
+			if (__temp_executeDef737) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -425,14 +425,14 @@ public  class PScore extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef751 = true;
+			boolean __temp_executeDef738 = true;
 			switch (field.hashCode())
 			{
 				case -1249366819:
 				{
 					if (field.equals("getBar")) 
 					{
-						__temp_executeDef751 = false;
+						__temp_executeDef738 = false;
 						return this.getBar(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
 					}
 					
@@ -444,7 +444,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("getBars")) 
 					{
-						__temp_executeDef751 = false;
+						__temp_executeDef738 = false;
 						return this.getBars();
 					}
 					
@@ -456,7 +456,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("getSystems")) 
 					{
-						__temp_executeDef751 = false;
+						__temp_executeDef738 = false;
 						return this.getSystems(((double) (haxe.lang.Runtime.toDouble(dynargs.__get(0))) ));
 					}
 					
@@ -468,7 +468,7 @@ public  class PScore extends haxe.lang.HxObject
 				{
 					if (field.equals("getNBars")) 
 					{
-						__temp_executeDef751 = false;
+						__temp_executeDef738 = false;
 						return this.getNBars();
 					}
 					
@@ -478,7 +478,7 @@ public  class PScore extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef751) 
+			if (__temp_executeDef738) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

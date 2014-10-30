@@ -17,16 +17,16 @@ public  class QNote4 extends nx3.QNote
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QNote4(nx3.QNote4 __temp_me165, java.lang.Object dot, java.lang.Object headLevel, haxe.root.Array<java.lang.Object> headLevels, java.lang.String signs)
+	public static   void __hx_ctor_nx3_QNote4(nx3.QNote4 __temp_me153, java.lang.Object dot, java.lang.Object headLevel, haxe.root.Array<java.lang.Object> headLevels, java.lang.String signs)
 	{
 		if (( signs == null )) 
 		{
 			signs = "";
 		}
 		
-		java.lang.Object __temp_dot164 = ( (( dot == null )) ? (((java.lang.Object) (false) )) : (((java.lang.Object) (dot) )) );
+		java.lang.Object __temp_dot152 = ( (( dot == null )) ? (((java.lang.Object) (false) )) : (((java.lang.Object) (dot) )) );
 		nx3.ENoteVal val = null;
-		if (haxe.lang.Runtime.toBool((__temp_dot164))) 
+		if (haxe.lang.Runtime.toBool((__temp_dot152))) 
 		{
 			val = nx3.ENoteVal.Nv4dot;
 		}
@@ -35,7 +35,7 @@ public  class QNote4 extends nx3.QNote
 			val = nx3.ENoteVal.Nv4;
 		}
 		
-		nx3.QNote.__hx_ctor_nx3_QNote(__temp_me165, headLevel, headLevels, null, null, val, signs, null);
+		nx3.QNote.__hx_ctor_nx3_QNote(__temp_me153, headLevel, headLevels, null, null, val, signs, null);
 	}
 	
 	

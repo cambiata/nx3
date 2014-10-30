@@ -18,20 +18,25 @@ public  class NScore extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_NScore(nx3.NScore __temp_me86, haxe.root.Array<nx3.NBar> nbars)
+	public static   void __hx_ctor_nx3_NScore(nx3.NScore __temp_me75, haxe.root.Array<nx3.NBar> nbars)
 	{
-		__temp_me86.nbars = nbars;
+		__temp_me75.nbars = nbars;
 		{
 			int _g = 0;
 			while (( _g < nbars.length ))
 			{
 				nx3.NBar bar = nbars.__get(_g);
 				 ++ _g;
-				bar.nscore = __temp_me86;
+				bar.nscore = __temp_me75;
 			}
 			
 		}
 		
+		__temp_me75.configuration = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
+		haxe.lang.Runtime.setField_f(__temp_me75.configuration, "test", ((double) (123) ));
+		haxe.lang.Runtime.setField_f(__temp_me75.configuration, "rtempo", ((double) (80) ));
+		haxe.lang.Runtime.setField_f(__temp_me75.configuration, "rlength", ((double) (3) ));
+		haxe.lang.Runtime.setField_f(__temp_me75.configuration, "rcountin", ((double) (2) ));
 	}
 	
 	
@@ -49,6 +54,8 @@ public  class NScore extends haxe.lang.HxObject
 	
 	public  haxe.root.Array<nx3.NBar> nbars;
 	
+	public  java.lang.Object configuration;
+	
 	public   nx3.NBar getNBar(int idx)
 	{
 		if (( ( idx < 0 ) || ( idx > this.nbars.length ) )) 
@@ -63,18 +70,45 @@ public  class NScore extends haxe.lang.HxObject
 	}
 	
 	
-	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
+	public   java.lang.Object iterator()
+	{
+		return ((java.lang.Object) (new _Array.ArrayIterator<nx3.NBar>(((haxe.root.Array<nx3.NBar>) (this.nbars) ))) );
+	}
+	
+	
+	public  int length;
+	
+	public   int get_length()
+	{
+		return this.nbars.length;
+	}
+	
+	
+	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef610 = true;
+			boolean __temp_executeDef593 = true;
 			switch (field.hashCode())
 			{
-				case 104603694:
+				case -1106363674:
 				{
-					if (field.equals("nbars")) 
+					if (field.equals("length")) 
 					{
-						__temp_executeDef610 = false;
-						this.nbars = ((haxe.root.Array<nx3.NBar>) (value) );
+						__temp_executeDef593 = false;
+						this.length = ((int) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case 1932752118:
+				{
+					if (field.equals("configuration")) 
+					{
+						__temp_executeDef593 = false;
+						this.configuration = ((java.lang.Object) (value) );
 						return value;
 					}
 					
@@ -84,7 +118,68 @@ public  class NScore extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef610) 
+			if (__temp_executeDef593) 
+			{
+				return super.__hx_setField_f(field, value, handleProperties);
+			}
+			 else 
+			{
+				throw null;
+			}
+			
+		}
+		
+	}
+	
+	
+	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
+	{
+		{
+			boolean __temp_executeDef594 = true;
+			switch (field.hashCode())
+			{
+				case -1106363674:
+				{
+					if (field.equals("length")) 
+					{
+						__temp_executeDef594 = false;
+						this.length = ((int) (haxe.lang.Runtime.toInt(value)) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case 104603694:
+				{
+					if (field.equals("nbars")) 
+					{
+						__temp_executeDef594 = false;
+						this.nbars = ((haxe.root.Array<nx3.NBar>) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+				case 1932752118:
+				{
+					if (field.equals("configuration")) 
+					{
+						__temp_executeDef594 = false;
+						this.configuration = ((java.lang.Object) (value) );
+						return value;
+					}
+					
+					break;
+				}
+				
+				
+			}
+			
+			if (__temp_executeDef594) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -101,15 +196,15 @@ public  class NScore extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef611 = true;
+			boolean __temp_executeDef595 = true;
 			switch (field.hashCode())
 			{
-				case -75338437:
+				case 974314479:
 				{
-					if (field.equals("getNBar")) 
+					if (field.equals("get_length")) 
 					{
-						__temp_executeDef611 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNBar"))) );
+						__temp_executeDef595 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("get_length"))) );
 					}
 					
 					break;
@@ -120,8 +215,64 @@ public  class NScore extends haxe.lang.HxObject
 				{
 					if (field.equals("nbars")) 
 					{
-						__temp_executeDef611 = false;
+						__temp_executeDef595 = false;
 						return this.nbars;
+					}
+					
+					break;
+				}
+				
+				
+				case -1106363674:
+				{
+					if (field.equals("length")) 
+					{
+						__temp_executeDef595 = false;
+						if (handleProperties) 
+						{
+							return this.get_length();
+						}
+						 else 
+						{
+							return this.length;
+						}
+						
+					}
+					
+					break;
+				}
+				
+				
+				case 1932752118:
+				{
+					if (field.equals("configuration")) 
+					{
+						__temp_executeDef595 = false;
+						return this.configuration;
+					}
+					
+					break;
+				}
+				
+				
+				case 1182533742:
+				{
+					if (field.equals("iterator")) 
+					{
+						__temp_executeDef595 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("iterator"))) );
+					}
+					
+					break;
+				}
+				
+				
+				case -75338437:
+				{
+					if (field.equals("getNBar")) 
+					{
+						__temp_executeDef595 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getNBar"))) );
 					}
 					
 					break;
@@ -130,9 +281,63 @@ public  class NScore extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef611) 
+			if (__temp_executeDef595) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
+			}
+			 else 
+			{
+				throw null;
+			}
+			
+		}
+		
+	}
+	
+	
+	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
+	{
+		{
+			boolean __temp_executeDef596 = true;
+			switch (field.hashCode())
+			{
+				case -1106363674:
+				{
+					if (field.equals("length")) 
+					{
+						__temp_executeDef596 = false;
+						if (handleProperties) 
+						{
+							return ((double) (this.get_length()) );
+						}
+						 else 
+						{
+							return ((double) (this.length) );
+						}
+						
+					}
+					
+					break;
+				}
+				
+				
+				case 1932752118:
+				{
+					if (field.equals("configuration")) 
+					{
+						__temp_executeDef596 = false;
+						return ((double) (haxe.lang.Runtime.toDouble(this.configuration)) );
+					}
+					
+					break;
+				}
+				
+				
+			}
+			
+			if (__temp_executeDef596) 
+			{
+				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
 			 else 
 			{
@@ -147,15 +352,39 @@ public  class NScore extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef612 = true;
+			boolean __temp_executeDef597 = true;
 			switch (field.hashCode())
 			{
+				case 974314479:
+				{
+					if (field.equals("get_length")) 
+					{
+						__temp_executeDef597 = false;
+						return this.get_length();
+					}
+					
+					break;
+				}
+				
+				
 				case -75338437:
 				{
 					if (field.equals("getNBar")) 
 					{
-						__temp_executeDef612 = false;
+						__temp_executeDef597 = false;
 						return this.getNBar(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
+					}
+					
+					break;
+				}
+				
+				
+				case 1182533742:
+				{
+					if (field.equals("iterator")) 
+					{
+						__temp_executeDef597 = false;
+						return this.iterator();
 					}
 					
 					break;
@@ -164,7 +393,7 @@ public  class NScore extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef612) 
+			if (__temp_executeDef597) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}
@@ -180,6 +409,8 @@ public  class NScore extends haxe.lang.HxObject
 	
 	@Override public   void __hx_getFields(haxe.root.Array<java.lang.String> baseArr)
 	{
+		baseArr.push("length");
+		baseArr.push("configuration");
 		baseArr.push("nbars");
 		{
 			super.__hx_getFields(baseArr);

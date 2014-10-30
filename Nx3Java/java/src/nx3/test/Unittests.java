@@ -18,7 +18,7 @@ public  class Unittests extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_test_Unittests(nx3.test.Unittests __temp_me211)
+	public static   void __hx_ctor_nx3_test_Unittests(nx3.test.Unittests __temp_me186)
 	{
 		{
 		}
@@ -29,19 +29,9 @@ public  class Unittests extends haxe.lang.HxObject
 	public static   void performTests()
 	{
 		haxe.unit.TestRunner runner = new haxe.unit.TestRunner();
-		haxe.root.Date start_time = haxe.root.Date.now();
 		runner.add(new nx3.test.TestN());
-		runner.add(new nx3.test.TestTargetSvgXml());
-		runner.add(new nx3.test.TestEvents());
-		haxe.root.Date end_time = haxe.root.Date.now();
+		runner.add(new nx3.test.TestSound());
 		boolean success = runner.run();
-		int __temp_stmt887 = 0;
-		{
-			double x = ( ((double) (end_time.date.getTime()) ) - ((double) (start_time.date.getTime()) ) );
-			__temp_stmt887 = ((int) (x) );
-		}
-		
-		haxe.unit.TestRunner.print.__hx_invoke1_o(0.0, ( ( "Testing time: " + __temp_stmt887 ) + "ms" ));
 	}
 	
 	

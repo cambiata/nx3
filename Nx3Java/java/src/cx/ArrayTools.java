@@ -18,7 +18,7 @@ public  class ArrayTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_cx_ArrayTools(cx.ArrayTools __temp_me21)
+	public static   void __hx_ctor_cx_ArrayTools(cx.ArrayTools __temp_me20)
 	{
 		{
 		}
@@ -122,10 +122,10 @@ public  class ArrayTools extends haxe.lang.HxObject
 	{
 		haxe.root.Array<T> result = new haxe.root.Array<T>(( (T[]) (new java.lang.Object[] {}) ));
 		{
-			java.lang.Object __temp_iterator227 = it;
-			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator227, "hasNext", null)))
+			java.lang.Object __temp_iterator209 = it;
+			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator209, "hasNext", null)))
 			{
-				T v = ((T) (haxe.lang.Runtime.callField(__temp_iterator227, "next", null)) );
+				T v = ((T) (haxe.lang.Runtime.callField(__temp_iterator209, "next", null)) );
 				result.push(v);
 			}
 			
@@ -358,14 +358,14 @@ public  class ArrayTools extends haxe.lang.HxObject
 	
 	public static   haxe.root.Array<java.lang.Object> range(int start, java.lang.Object stop, java.lang.Object step)
 	{
-		int __temp_step20 = ( (( step == null )) ? (((int) (1) )) : (((int) (haxe.lang.Runtime.toInt(step)) )) );
+		int __temp_step19 = ( (( step == null )) ? (((int) (1) )) : (((int) (haxe.lang.Runtime.toInt(step)) )) );
 		if (( null == stop )) 
 		{
 			stop = start;
 			start = 0;
 		}
 		
-		if (( ( ((double) ((( ((int) (haxe.lang.Runtime.toInt(stop)) ) - ((int) (start) ) ))) ) / __temp_step20 ) == java.lang.Double.POSITIVE_INFINITY )) 
+		if (( ( ((double) ((( ((int) (haxe.lang.Runtime.toInt(stop)) ) - ((int) (start) ) ))) ) / __temp_step19 ) == java.lang.Double.POSITIVE_INFINITY )) 
 		{
 			throw haxe.lang.HaxeException.wrap("infinite range");
 		}
@@ -373,9 +373,9 @@ public  class ArrayTools extends haxe.lang.HxObject
 		haxe.root.Array<java.lang.Object> range = new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{});
 		int i = -1;
 		int j = 0;
-		if (( __temp_step20 < 0 )) 
+		if (( __temp_step19 < 0 )) 
 		{
-			while (( haxe.lang.Runtime.compare((j = ( start + ( __temp_step20 *  ++ i ) )), stop) > 0 ))
+			while (( haxe.lang.Runtime.compare((j = ( start + ( __temp_step19 *  ++ i ) )), stop) > 0 ))
 			{
 				range.push(j);
 			}
@@ -383,7 +383,7 @@ public  class ArrayTools extends haxe.lang.HxObject
 		}
 		 else 
 		{
-			while (( haxe.lang.Runtime.compare((j = ( start + ( __temp_step20 *  ++ i ) )), stop) < 0 ))
+			while (( haxe.lang.Runtime.compare((j = ( start + ( __temp_step19 *  ++ i ) )), stop) < 0 ))
 			{
 				range.push(j);
 			}

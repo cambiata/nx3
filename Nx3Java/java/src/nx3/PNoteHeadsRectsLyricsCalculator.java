@@ -18,11 +18,11 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PNoteHeadsRectsLyricsCalculator(nx3.PNoteHeadsRectsLyricsCalculator __temp_me122, nx3.PNote note, java.lang.String text, java.lang.Object font)
+	public static   void __hx_ctor_nx3_PNoteHeadsRectsLyricsCalculator(nx3.PNoteHeadsRectsLyricsCalculator __temp_me110, nx3.PNote note, java.lang.String text, java.lang.Object font)
 	{
-		__temp_me122.note = note;
-		__temp_me122.text = text;
-		__temp_me122.font = font;
+		__temp_me110.note = note;
+		__temp_me110.text = text;
+		__temp_me110.font = font;
 	}
 	
 	
@@ -54,14 +54,14 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef720 = true;
+			boolean __temp_executeDef707 = true;
 			switch (field.hashCode())
 			{
 				case 3148879:
 				{
 					if (field.equals("font")) 
 					{
-						__temp_executeDef720 = false;
+						__temp_executeDef707 = false;
 						this.font = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -72,7 +72,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef720) 
+			if (__temp_executeDef707) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -89,14 +89,14 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef721 = true;
+			boolean __temp_executeDef708 = true;
 			switch (field.hashCode())
 			{
 				case 3148879:
 				{
 					if (field.equals("font")) 
 					{
-						__temp_executeDef721 = false;
+						__temp_executeDef708 = false;
 						this.font = ((java.lang.Object) (value) );
 						return value;
 					}
@@ -109,7 +109,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef721 = false;
+						__temp_executeDef708 = false;
 						this.note = ((nx3.PNote) (value) );
 						return value;
 					}
@@ -122,7 +122,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("text")) 
 					{
-						__temp_executeDef721 = false;
+						__temp_executeDef708 = false;
 						this.text = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -133,7 +133,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef721) 
+			if (__temp_executeDef708) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -150,14 +150,14 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef722 = true;
+			boolean __temp_executeDef709 = true;
 			switch (field.hashCode())
 			{
 				case 2051530802:
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef722 = false;
+						__temp_executeDef709 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getHeadsRects"))) );
 					}
 					
@@ -169,7 +169,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("note")) 
 					{
-						__temp_executeDef722 = false;
+						__temp_executeDef709 = false;
 						return this.note;
 					}
 					
@@ -181,7 +181,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("font")) 
 					{
-						__temp_executeDef722 = false;
+						__temp_executeDef709 = false;
 						return this.font;
 					}
 					
@@ -193,7 +193,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("text")) 
 					{
-						__temp_executeDef722 = false;
+						__temp_executeDef709 = false;
 						return this.text;
 					}
 					
@@ -203,7 +203,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef722) 
+			if (__temp_executeDef709) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -220,14 +220,14 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef723 = true;
+			boolean __temp_executeDef710 = true;
 			switch (field.hashCode())
 			{
 				case 3148879:
 				{
 					if (field.equals("font")) 
 					{
-						__temp_executeDef723 = false;
+						__temp_executeDef710 = false;
 						return ((double) (haxe.lang.Runtime.toDouble(this.font)) );
 					}
 					
@@ -237,7 +237,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef723) 
+			if (__temp_executeDef710) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -254,14 +254,14 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef724 = true;
+			boolean __temp_executeDef711 = true;
 			switch (field.hashCode())
 			{
 				case 2051530802:
 				{
 					if (field.equals("getHeadsRects")) 
 					{
-						__temp_executeDef724 = false;
+						__temp_executeDef711 = false;
 						return this.getHeadsRects();
 					}
 					
@@ -271,7 +271,7 @@ public  class PNoteHeadsRectsLyricsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef724) 
+			if (__temp_executeDef711) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

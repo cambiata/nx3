@@ -25,7 +25,7 @@ public  class BarXML extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_xml_BarXML(nx3.xml.BarXML __temp_me212)
+	public static   void __hx_ctor_nx3_xml_BarXML(nx3.xml.BarXML __temp_me189)
 	{
 		{
 		}
@@ -136,10 +136,10 @@ public  class BarXML extends haxe.lang.HxObject
 		haxe.root.Xml xml = haxe.root.Xml.parse(xmlStr).firstElement();
 		haxe.root.Array<nx3.NPart> parts = new haxe.root.Array<nx3.NPart>(new nx3.NPart[]{});
 		{
-			java.lang.Object __temp_iterator260 = xml.elements();
-			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator260, "hasNext", null)))
+			java.lang.Object __temp_iterator242 = xml.elements();
+			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator242, "hasNext", null)))
 			{
-				haxe.root.Xml p = ((haxe.root.Xml) (haxe.lang.Runtime.callField(__temp_iterator260, "next", null)) );
+				haxe.root.Xml p = ((haxe.root.Xml) (haxe.lang.Runtime.callField(__temp_iterator242, "next", null)) );
 				nx3.NPart part = nx3.xml.PartXML.fromXmlStr(p.toString());
 				parts.push(part);
 			}

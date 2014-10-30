@@ -13,6 +13,7 @@
 -D no-compilation
 -D native
 -D openfl-native
+-D fdb
 -D windows
 -D desktop
 --remap flash:openfl

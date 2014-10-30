@@ -18,7 +18,7 @@ public  class ETimeUtils extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_ETimeUtils(nx3.ETimeUtils __temp_me69)
+	public static   void __hx_ctor_nx3_ETimeUtils(nx3.ETimeUtils __temp_me68)
 	{
 		{
 		}
@@ -158,15 +158,15 @@ public  class ETimeUtils extends haxe.lang.HxObject
 		}
 		
 		{
-			java.lang.String __temp_svar588 = (str);
-			boolean __temp_executeDef589 = true;
-			switch (__temp_svar588.hashCode())
+			java.lang.String __temp_svar571 = (str);
+			boolean __temp_executeDef572 = true;
+			switch (__temp_svar571.hashCode())
 			{
 				case 51479:
 				{
-					if (__temp_svar588.equals("4/2")) 
+					if (__temp_svar571.equals("4/2")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time4_2;
 					}
 					
@@ -176,9 +176,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 1927126116:
 				{
-					if (__temp_svar588.equals("AllaBreve")) 
+					if (__temp_svar571.equals("AllaBreve")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.TimeAllabreve;
 					}
 					
@@ -188,9 +188,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 50518:
 				{
-					if (__temp_svar588.equals("3/2")) 
+					if (__temp_svar571.equals("3/2")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time3_2;
 					}
 					
@@ -200,9 +200,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 67:
 				{
-					if (__temp_svar588.equals("C")) 
+					if (__temp_svar571.equals("C")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.TimeCommon;
 					}
 					
@@ -212,9 +212,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 49652:
 				{
-					if (__temp_svar588.equals("224")) 
+					if (__temp_svar571.equals("224")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time2_2;
 					}
 					
@@ -224,9 +224,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 1509322:
 				{
-					if (__temp_svar588.equals("12/8")) 
+					if (__temp_svar571.equals("12/8")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time12_8;
 					}
 					
@@ -236,9 +236,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 54364:
 				{
-					if (__temp_svar588.equals("7/4")) 
+					if (__temp_svar571.equals("7/4")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time7_4;
 					}
 					
@@ -248,9 +248,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 56290:
 				{
-					if (__temp_svar588.equals("9/8")) 
+					if (__temp_svar571.equals("9/8")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time9_8;
 					}
 					
@@ -260,9 +260,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 53403:
 				{
-					if (__temp_svar588.equals("6/4")) 
+					if (__temp_svar571.equals("6/4")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time6_4;
 					}
 					
@@ -272,9 +272,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 54368:
 				{
-					if (__temp_svar588.equals("7/8")) 
+					if (__temp_svar571.equals("7/8")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time7_8;
 					}
 					
@@ -284,9 +284,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 52442:
 				{
-					if (__temp_svar588.equals("5/4")) 
+					if (__temp_svar571.equals("5/4")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time5_4;
 					}
 					
@@ -296,9 +296,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 53407:
 				{
-					if (__temp_svar588.equals("6/8")) 
+					if (__temp_svar571.equals("6/8")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time6_8;
 					}
 					
@@ -308,9 +308,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 51481:
 				{
-					if (__temp_svar588.equals("4/4")) 
+					if (__temp_svar571.equals("4/4")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time4_4;
 					}
 					
@@ -320,9 +320,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 52446:
 				{
-					if (__temp_svar588.equals("5/8")) 
+					if (__temp_svar571.equals("5/8")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time5_8;
 					}
 					
@@ -332,9 +332,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 50520:
 				{
-					if (__temp_svar588.equals("3/4")) 
+					if (__temp_svar571.equals("3/4")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time3_4;
 					}
 					
@@ -344,9 +344,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 51485:
 				{
-					if (__temp_svar588.equals("4/8")) 
+					if (__temp_svar571.equals("4/8")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time4_8;
 					}
 					
@@ -356,9 +356,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 49559:
 				{
-					if (__temp_svar588.equals("2/4")) 
+					if (__temp_svar571.equals("2/4")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time2_4;
 					}
 					
@@ -368,9 +368,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 50524:
 				{
-					if (__temp_svar588.equals("3/8")) 
+					if (__temp_svar571.equals("3/8")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time3_8;
 					}
 					
@@ -380,9 +380,9 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 				case 49563:
 				{
-					if (__temp_svar588.equals("2/8")) 
+					if (__temp_svar571.equals("2/8")) 
 					{
-						__temp_executeDef589 = false;
+						__temp_executeDef572 = false;
 						return nx3.ETime.Time2_8;
 					}
 					
@@ -392,7 +392,7 @@ public  class ETimeUtils extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef589) 
+			if (__temp_executeDef572) 
 			{
 				return null;
 			}

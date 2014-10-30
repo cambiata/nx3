@@ -18,9 +18,9 @@ public  class List<T> extends haxe.lang.HxObject
 	}
 	
 	
-	public static  <T_c> void __hx_ctor__List(haxe.root.List<T_c> __temp_me6)
+	public static  <T_c> void __hx_ctor__List(haxe.root.List<T_c> __temp_me5)
 	{
-		__temp_me6.length = 0;
+		__temp_me5.length = 0;
 	}
 	
 	
@@ -62,28 +62,43 @@ public  class List<T> extends haxe.lang.HxObject
 	public   java.lang.Object iterator()
 	{
 		haxe.root.Array<haxe.root.Array> h = new haxe.root.Array<haxe.root.Array>(new haxe.root.Array[]{this.h});
-		java.lang.Object __temp_stmt282 = null;
+		java.lang.Object __temp_stmt265 = null;
 		{
-			haxe.lang.Function __temp_odecl280 = new haxe.root.List_iterator_165__Fun(((haxe.root.Array<haxe.root.Array>) (h) ));
-			haxe.lang.Function __temp_odecl281 = new haxe.root.List_iterator_168__Fun(((haxe.root.Array<haxe.root.Array>) (h) ));
-			__temp_stmt282 = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"hasNext", "next"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl280, __temp_odecl281}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
+			haxe.lang.Function __temp_odecl263 = new haxe.root.List_iterator_165__Fun(((haxe.root.Array<haxe.root.Array>) (h) ));
+			haxe.lang.Function __temp_odecl264 = new haxe.root.List_iterator_168__Fun(((haxe.root.Array<haxe.root.Array>) (h) ));
+			__temp_stmt265 = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"hasNext", "next"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl263, __temp_odecl264}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
 		}
 		
-		return ((java.lang.Object) (__temp_stmt282) );
+		return ((java.lang.Object) (__temp_stmt265) );
+	}
+	
+	
+	public  <X> haxe.root.List<X> map(haxe.lang.Function f)
+	{
+		haxe.root.List<X> b = new haxe.root.List<X>();
+		haxe.root.Array l = this.h;
+		while (( l != null ))
+		{
+			T v = ((T) (l.__get(0)) );
+			l = ((haxe.root.Array) (l.__get(1)) );
+			b.add(((X) (f.__hx_invoke1_o(0.0, v)) ));
+		}
+		
+		return b;
 	}
 	
 	
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef283 = true;
+			boolean __temp_executeDef266 = true;
 			switch (field.hashCode())
 			{
 				case -1106363674:
 				{
 					if (field.equals("length")) 
 					{
-						__temp_executeDef283 = false;
+						__temp_executeDef266 = false;
 						this.length = ((int) (value) );
 						return value;
 					}
@@ -94,7 +109,7 @@ public  class List<T> extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef283) 
+			if (__temp_executeDef266) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -111,14 +126,14 @@ public  class List<T> extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef284 = true;
+			boolean __temp_executeDef267 = true;
 			switch (field.hashCode())
 			{
 				case -1106363674:
 				{
 					if (field.equals("length")) 
 					{
-						__temp_executeDef284 = false;
+						__temp_executeDef267 = false;
 						this.length = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -131,7 +146,7 @@ public  class List<T> extends haxe.lang.HxObject
 				{
 					if (field.equals("h")) 
 					{
-						__temp_executeDef284 = false;
+						__temp_executeDef267 = false;
 						this.h = ((haxe.root.Array) (value) );
 						return value;
 					}
@@ -144,7 +159,7 @@ public  class List<T> extends haxe.lang.HxObject
 				{
 					if (field.equals("q")) 
 					{
-						__temp_executeDef284 = false;
+						__temp_executeDef267 = false;
 						this.q = ((haxe.root.Array) (value) );
 						return value;
 					}
@@ -155,7 +170,7 @@ public  class List<T> extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef284) 
+			if (__temp_executeDef267) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -172,15 +187,15 @@ public  class List<T> extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef285 = true;
+			boolean __temp_executeDef268 = true;
 			switch (field.hashCode())
 			{
-				case 1182533742:
+				case 107868:
 				{
-					if (field.equals("iterator")) 
+					if (field.equals("map")) 
 					{
-						__temp_executeDef285 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("iterator"))) );
+						__temp_executeDef268 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("map"))) );
 					}
 					
 					break;
@@ -191,7 +206,7 @@ public  class List<T> extends haxe.lang.HxObject
 				{
 					if (field.equals("h")) 
 					{
-						__temp_executeDef285 = false;
+						__temp_executeDef268 = false;
 						return this.h;
 					}
 					
@@ -199,12 +214,12 @@ public  class List<T> extends haxe.lang.HxObject
 				}
 				
 				
-				case 96417:
+				case 1182533742:
 				{
-					if (field.equals("add")) 
+					if (field.equals("iterator")) 
 					{
-						__temp_executeDef285 = false;
-						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("add"))) );
+						__temp_executeDef268 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("iterator"))) );
 					}
 					
 					break;
@@ -215,8 +230,20 @@ public  class List<T> extends haxe.lang.HxObject
 				{
 					if (field.equals("q")) 
 					{
-						__temp_executeDef285 = false;
+						__temp_executeDef268 = false;
 						return this.q;
+					}
+					
+					break;
+				}
+				
+				
+				case 96417:
+				{
+					if (field.equals("add")) 
+					{
+						__temp_executeDef268 = false;
+						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("add"))) );
 					}
 					
 					break;
@@ -227,7 +254,7 @@ public  class List<T> extends haxe.lang.HxObject
 				{
 					if (field.equals("length")) 
 					{
-						__temp_executeDef285 = false;
+						__temp_executeDef268 = false;
 						return this.length;
 					}
 					
@@ -237,7 +264,7 @@ public  class List<T> extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef285) 
+			if (__temp_executeDef268) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -254,14 +281,14 @@ public  class List<T> extends haxe.lang.HxObject
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef286 = true;
+			boolean __temp_executeDef269 = true;
 			switch (field.hashCode())
 			{
 				case -1106363674:
 				{
 					if (field.equals("length")) 
 					{
-						__temp_executeDef286 = false;
+						__temp_executeDef269 = false;
 						return ((double) (this.length) );
 					}
 					
@@ -271,7 +298,7 @@ public  class List<T> extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef286) 
+			if (__temp_executeDef269) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -288,15 +315,15 @@ public  class List<T> extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef287 = true;
+			boolean __temp_executeDef270 = true;
 			switch (field.hashCode())
 			{
-				case 1182533742:
+				case 107868:
 				{
-					if (field.equals("iterator")) 
+					if (field.equals("map")) 
 					{
-						__temp_executeDef287 = false;
-						return this.iterator();
+						__temp_executeDef270 = false;
+						return this.map(((haxe.lang.Function) (dynargs.__get(0)) ));
 					}
 					
 					break;
@@ -307,8 +334,20 @@ public  class List<T> extends haxe.lang.HxObject
 				{
 					if (field.equals("add")) 
 					{
-						__temp_executeDef287 = false;
+						__temp_executeDef270 = false;
 						this.add(((T) (dynargs.__get(0)) ));
+					}
+					
+					break;
+				}
+				
+				
+				case 1182533742:
+				{
+					if (field.equals("iterator")) 
+					{
+						__temp_executeDef270 = false;
+						return this.iterator();
 					}
 					
 					break;
@@ -317,7 +356,7 @@ public  class List<T> extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef287) 
+			if (__temp_executeDef270) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

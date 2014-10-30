@@ -18,18 +18,18 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_qs_QuickSyntaxParser(nx3.qs.QuickSyntaxParser __temp_me194, java.lang.String str)
+	public static   void __hx_ctor_nx3_qs_QuickSyntaxParser(nx3.qs.QuickSyntaxParser __temp_me181, java.lang.String str)
 	{
 		str = nx3.qs.QSyntaxTools.removeComments(str);
 		str = nx3.qs.QSyntaxTools.removeSpaces(str);
-		__temp_me194.str = str;
-		__temp_me194.tokens = __temp_me194.parseTokens(__temp_me194.str);
-		__temp_me194.qsnotes = new haxe.ds.StringMap<haxe.root.Array>();
-		__temp_me194.modeparser = new nx3.qs.ModeParser(((nx3.qs.QuickSyntaxParser) (__temp_me194) ));
-		__temp_me194.barparser = new nx3.qs.BarParser(((nx3.qs.QuickSyntaxParser) (__temp_me194) ));
-		__temp_me194.noteparser = new nx3.qs.NoteParser(((nx3.qs.QuickSyntaxParser) (__temp_me194) ));
-		__temp_me194.lyricsparser = new nx3.qs.LyricsParser(((nx3.qs.QuickSyntaxParser) (__temp_me194) ));
-		__temp_me194.mode = nx3.qs.ContentMode.Notes;
+		__temp_me181.str = str;
+		__temp_me181.tokens = __temp_me181.parseTokens(__temp_me181.str);
+		__temp_me181.qsnotes = new haxe.ds.StringMap<haxe.root.Array>();
+		__temp_me181.modeparser = new nx3.qs.ModeParser(((nx3.qs.QuickSyntaxParser) (__temp_me181) ));
+		__temp_me181.barparser = new nx3.qs.BarParser(((nx3.qs.QuickSyntaxParser) (__temp_me181) ));
+		__temp_me181.noteparser = new nx3.qs.NoteParser(((nx3.qs.QuickSyntaxParser) (__temp_me181) ));
+		__temp_me181.lyricsparser = new nx3.qs.LyricsParser(((nx3.qs.QuickSyntaxParser) (__temp_me181) ));
+		__temp_me181.mode = nx3.qs.ContentMode.Notes;
 	}
 	
 	
@@ -184,14 +184,14 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef871 = true;
+			boolean __temp_executeDef850 = true;
 			switch (field.hashCode())
 			{
 				case 3357091:
 				{
 					if (field.equals("mode")) 
 					{
-						__temp_executeDef871 = false;
+						__temp_executeDef850 = false;
 						this.mode = ((nx3.qs.ContentMode) (value) );
 						return value;
 					}
@@ -204,7 +204,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("str")) 
 					{
-						__temp_executeDef871 = false;
+						__temp_executeDef850 = false;
 						this.str = haxe.lang.Runtime.toString(value);
 						return value;
 					}
@@ -217,7 +217,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("lyricsparser")) 
 					{
-						__temp_executeDef871 = false;
+						__temp_executeDef850 = false;
 						this.lyricsparser = ((nx3.qs.LyricsParser) (value) );
 						return value;
 					}
@@ -230,7 +230,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("tokens")) 
 					{
-						__temp_executeDef871 = false;
+						__temp_executeDef850 = false;
 						this.tokens = ((haxe.root.Array<java.lang.String>) (value) );
 						return value;
 					}
@@ -243,7 +243,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("noteparser")) 
 					{
-						__temp_executeDef871 = false;
+						__temp_executeDef850 = false;
 						this.noteparser = ((nx3.qs.NoteParser) (value) );
 						return value;
 					}
@@ -256,7 +256,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("qsnotes")) 
 					{
-						__temp_executeDef871 = false;
+						__temp_executeDef850 = false;
 						this.qsnotes = ((haxe.ds.StringMap<haxe.root.Array>) (value) );
 						return value;
 					}
@@ -269,7 +269,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("barparser")) 
 					{
-						__temp_executeDef871 = false;
+						__temp_executeDef850 = false;
 						this.barparser = ((nx3.qs.BarParser) (value) );
 						return value;
 					}
@@ -282,7 +282,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("modeparser")) 
 					{
-						__temp_executeDef871 = false;
+						__temp_executeDef850 = false;
 						this.modeparser = ((nx3.qs.ModeParser) (value) );
 						return value;
 					}
@@ -293,7 +293,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef871) 
+			if (__temp_executeDef850) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -310,14 +310,14 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef872 = true;
+			boolean __temp_executeDef851 = true;
 			switch (field.hashCode())
 			{
 				case -974126839:
 				{
 					if (field.equals("passEvent")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("passEvent"))) );
 					}
 					
@@ -329,7 +329,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("str")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return this.str;
 					}
 					
@@ -341,7 +341,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("addNote")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("addNote"))) );
 					}
 					
@@ -353,7 +353,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("tokens")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return this.tokens;
 					}
 					
@@ -365,7 +365,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("parseTokens")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("parseTokens"))) );
 					}
 					
@@ -377,7 +377,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("qsnotes")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return this.qsnotes;
 					}
 					
@@ -389,7 +389,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("parseToQSyntaxNotes")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("parseToQSyntaxNotes"))) );
 					}
 					
@@ -401,7 +401,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("modeparser")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return this.modeparser;
 					}
 					
@@ -413,7 +413,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("mode")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return this.mode;
 					}
 					
@@ -425,7 +425,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("barparser")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return this.barparser;
 					}
 					
@@ -437,7 +437,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("lyricsparser")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return this.lyricsparser;
 					}
 					
@@ -449,7 +449,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("noteparser")) 
 					{
-						__temp_executeDef872 = false;
+						__temp_executeDef851 = false;
 						return this.noteparser;
 					}
 					
@@ -459,7 +459,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef872) 
+			if (__temp_executeDef851) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -476,14 +476,14 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef873 = true;
+			boolean __temp_executeDef852 = true;
 			switch (field.hashCode())
 			{
 				case -974126839:
 				{
 					if (field.equals("passEvent")) 
 					{
-						__temp_executeDef873 = false;
+						__temp_executeDef852 = false;
 						this.passEvent(((nx3.qs.ParserEvents) (dynargs.__get(0)) ));
 					}
 					
@@ -495,7 +495,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("parseToQSyntaxNotes")) 
 					{
-						__temp_executeDef873 = false;
+						__temp_executeDef852 = false;
 						return this.parseToQSyntaxNotes();
 					}
 					
@@ -507,7 +507,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("addNote")) 
 					{
-						__temp_executeDef873 = false;
+						__temp_executeDef852 = false;
 						this.addNote(((nx3.NNote) (dynargs.__get(0)) ), dynargs.__get(1));
 					}
 					
@@ -519,7 +519,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				{
 					if (field.equals("parseTokens")) 
 					{
-						__temp_executeDef873 = false;
+						__temp_executeDef852 = false;
 						return this.parseTokens(haxe.lang.Runtime.toString(dynargs.__get(0)));
 					}
 					
@@ -529,7 +529,7 @@ public  class QuickSyntaxParser extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef873) 
+			if (__temp_executeDef852) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

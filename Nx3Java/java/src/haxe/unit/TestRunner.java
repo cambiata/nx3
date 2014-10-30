@@ -22,10 +22,10 @@ public  class TestRunner extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_haxe_unit_TestRunner(haxe.unit.TestRunner __temp_me51)
+	public static   void __hx_ctor_haxe_unit_TestRunner(haxe.unit.TestRunner __temp_me50)
 	{
-		__temp_me51.result = new haxe.unit.TestResult();
-		__temp_me51.cases = new haxe.root.List<haxe.unit.TestCase>();
+		__temp_me50.result = new haxe.unit.TestResult();
+		__temp_me50.cases = new haxe.root.List<haxe.unit.TestCase>();
 	}
 	
 	
@@ -63,10 +63,10 @@ public  class TestRunner extends haxe.lang.HxObject
 	{
 		this.result = new haxe.unit.TestResult();
 		{
-			java.lang.Object __temp_iterator230 = this.cases.iterator();
-			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator230, "hasNext", null)))
+			java.lang.Object __temp_iterator212 = this.cases.iterator();
+			while (haxe.lang.Runtime.toBool(haxe.lang.Runtime.callField(__temp_iterator212, "hasNext", null)))
 			{
-				haxe.unit.TestCase c = ((haxe.unit.TestCase) (haxe.lang.Runtime.callField(__temp_iterator230, "next", null)) );
+				haxe.unit.TestCase c = ((haxe.unit.TestCase) (haxe.lang.Runtime.callField(__temp_iterator212, "next", null)) );
 				this.runCase(c);
 			}
 			
@@ -114,17 +114,17 @@ public  class TestRunner extends haxe.lang.HxObject
 						}
 						
 					}
-					catch (java.lang.Throwable __temp_catchallException379)
+					catch (java.lang.Throwable __temp_catchallException362)
 					{
-						java.lang.Object __temp_catchall380 = __temp_catchallException379;
-						if (( __temp_catchall380 instanceof haxe.lang.HaxeException )) 
+						java.lang.Object __temp_catchall363 = __temp_catchallException362;
+						if (( __temp_catchall363 instanceof haxe.lang.HaxeException )) 
 						{
-							__temp_catchall380 = ((haxe.lang.HaxeException) (__temp_catchallException379) ).obj;
+							__temp_catchall363 = ((haxe.lang.HaxeException) (__temp_catchallException362) ).obj;
 						}
 						
-						if (( __temp_catchall380 instanceof haxe.unit.TestStatus )) 
+						if (( __temp_catchall363 instanceof haxe.unit.TestStatus )) 
 						{
-							haxe.unit.TestStatus e = ((haxe.unit.TestStatus) (__temp_catchall380) );
+							haxe.unit.TestStatus e = ((haxe.unit.TestStatus) (__temp_catchall363) );
 							{
 								haxe.unit.TestRunner.print.__hx_invoke1_o(0.0, "F");
 								t.currentTest.backtrace = haxe.CallStack.toString(haxe.CallStack.exceptionStack());
@@ -133,7 +133,7 @@ public  class TestRunner extends haxe.lang.HxObject
 						}
 						 else 
 						{
-							java.lang.Object e1 = __temp_catchall380;
+							java.lang.Object e1 = __temp_catchall363;
 							haxe.unit.TestRunner.print.__hx_invoke1_o(0.0, "E");
 							t.currentTest.error = ( "exception thrown : " + haxe.root.Std.string(e1) );
 							t.currentTest.backtrace = haxe.CallStack.toString(haxe.CallStack.exceptionStack());
@@ -158,14 +158,14 @@ public  class TestRunner extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef381 = true;
+			boolean __temp_executeDef364 = true;
 			switch (field.hashCode())
 			{
 				case 94432067:
 				{
 					if (field.equals("cases")) 
 					{
-						__temp_executeDef381 = false;
+						__temp_executeDef364 = false;
 						this.cases = ((haxe.root.List<haxe.unit.TestCase>) (value) );
 						return value;
 					}
@@ -178,7 +178,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				{
 					if (field.equals("result")) 
 					{
-						__temp_executeDef381 = false;
+						__temp_executeDef364 = false;
 						this.result = ((haxe.unit.TestResult) (value) );
 						return value;
 					}
@@ -189,7 +189,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef381) 
+			if (__temp_executeDef364) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -206,14 +206,14 @@ public  class TestRunner extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef382 = true;
+			boolean __temp_executeDef365 = true;
 			switch (field.hashCode())
 			{
 				case 1549495387:
 				{
 					if (field.equals("runCase")) 
 					{
-						__temp_executeDef382 = false;
+						__temp_executeDef365 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("runCase"))) );
 					}
 					
@@ -225,7 +225,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				{
 					if (field.equals("result")) 
 					{
-						__temp_executeDef382 = false;
+						__temp_executeDef365 = false;
 						return this.result;
 					}
 					
@@ -237,7 +237,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				{
 					if (field.equals("run")) 
 					{
-						__temp_executeDef382 = false;
+						__temp_executeDef365 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("run"))) );
 					}
 					
@@ -249,7 +249,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				{
 					if (field.equals("cases")) 
 					{
-						__temp_executeDef382 = false;
+						__temp_executeDef365 = false;
 						return this.cases;
 					}
 					
@@ -261,7 +261,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				{
 					if (field.equals("add")) 
 					{
-						__temp_executeDef382 = false;
+						__temp_executeDef365 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("add"))) );
 					}
 					
@@ -271,7 +271,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef382) 
+			if (__temp_executeDef365) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -288,14 +288,14 @@ public  class TestRunner extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef383 = true;
+			boolean __temp_executeDef366 = true;
 			switch (field.hashCode())
 			{
 				case 1549495387:
 				{
 					if (field.equals("runCase")) 
 					{
-						__temp_executeDef383 = false;
+						__temp_executeDef366 = false;
 						this.runCase(((haxe.unit.TestCase) (dynargs.__get(0)) ));
 					}
 					
@@ -307,7 +307,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				{
 					if (field.equals("add")) 
 					{
-						__temp_executeDef383 = false;
+						__temp_executeDef366 = false;
 						this.add(((haxe.unit.TestCase) (dynargs.__get(0)) ));
 					}
 					
@@ -319,7 +319,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				{
 					if (field.equals("run")) 
 					{
-						__temp_executeDef383 = false;
+						__temp_executeDef366 = false;
 						return this.run();
 					}
 					
@@ -329,7 +329,7 @@ public  class TestRunner extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef383) 
+			if (__temp_executeDef366) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

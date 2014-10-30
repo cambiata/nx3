@@ -16,12 +16,14 @@ java6
 java7
 java_ver
 sys
+thx.core
+thx_core
 true
 end defines
 begin defines_data
 dce=std
 haxe3=1
-haxe_ver=3.101
+haxe_ver=3.103
 hxcpp_api_level=311
 hxjava=1
 java=1
@@ -35,6 +37,8 @@ java6=1
 java7=1
 java_ver=7
 sys=1
+thx.core=1
+thx_core=1
 true=1
 end defines_data
 begin modules
@@ -84,8 +88,6 @@ M org.apache.xalan.templates.ElemCallTemplate
 M java.util.concurrent.locks.ReentrantLock
 M org.apache.batik.parser.Parser
 M java.javax.xml.transform.ErrorListener
-M nx3.render.TargetSvgXml
-C nx3.render.TargetSvgXml
 M java.util.AbstractSet
 M java.util.HashMap
 M java.org.w3c.css.sac.SimpleSelector
@@ -162,6 +164,8 @@ C nx3.EVoiceType
 M org.apache.batik.dom.svg.AbstractSVGAnimatedLength
 M java.org.w3c.css.sac.ConditionFactory
 M java.util.Collection
+M thx.core.Nil
+E thx.core.Nil
 M org.apache.xalan.templates.OutputProperties
 M java.util.SortedMap
 M java.awt.im.InputMethodHighlight
@@ -271,6 +275,8 @@ M org.apache.batik.i18n.Localizable
 M java.org.w3c.dom.ProcessingInstruction
 M java.org.w3c.dom.svg.SVGPathSegList
 M java.lang.annotation.Annotation
+M nx3.xml.ScoreXML
+C nx3.xml.ScoreXML
 M org.apache.xalan.transformer.ClonerToResultTree
 M java.org.w3c.dom.svg.SVGZoomAndPan
 M java.sun.font.Font2D
@@ -360,14 +366,13 @@ M java.awt.ScrollPane
 M java.org.w3c.dom.stylesheets.StyleSheetList
 M haxe.root.Main
 C haxe.root.Main
-C haxe.root.Main_new_110__Fun
+C haxe.root.Main_new_109__Fun
 C haxe.root.FontElements
 M java.org.w3c.dom.svg.SVGPathSegCurvetoCubicSmoothAbs
 M java.org.w3c.css.sac.Selector
 M java.awt.LayoutManager2
 M cx.StrTools
 C cx.StrTools
-C cx.StrTools_similarity_96__Fun
 M nx3.PBeamflagCalculator
 C nx3.PBeamflagCalculator
 M java.javax.swing.JWindow
@@ -418,7 +423,7 @@ M org.apache.batik.parser.DefaultNumberListHandler
 M java.awt.Graphics2D
 M nx3.PColumnsGenerator
 C nx3.PColumnsGenerator
-C nx3.PColumnsGenerator_calcPositions_109__Fun
+C nx3.PColumnsGenerator_calcPositions_108__Fun
 M org.apache.xpath.Arg
 M java.awt.MenuShortcut
 M java.org.w3c.dom.svg.SVGPathSegArcRel
@@ -527,12 +532,12 @@ M org.apache.xalan.extensions.ExpressionContext
 M org.apache.xpath.VariableStack
 M haxe.io.BytesData
 M haxe.macro.Type
-M nx3.render.scaling.Scaling
-C nx3.render.scaling.Scaling
 M java.security.Principal
 M java.nio.file.Path
 M nx3.PComplexTieTargetCalculator
 C nx3.PComplexTieTargetCalculator
+M hxlazy.Lazy
+C hxlazy.Lazy
 M java.security.ProtectionDomain
 M java.nio.file.WatchEvent
 M java.text.NumberFormat
@@ -637,8 +642,6 @@ M java.awt.GraphicsConfigTemplate
 M java.javax.accessibility.AccessibleContext
 M java.awt.Image
 M org.apache.xalan.transformer.CountersTable
-M nx3.NRefTools
-C nx3.NRefTools
 M java.awt.Adjustable
 M nx3.PBamegroupFrameTipCalculator
 C nx3.PBamegroupFrameTipCalculator
@@ -837,6 +840,8 @@ M org.apache.batik.bridge.SVGAnimationEngine
 M haxe.CallStack
 C haxe.StackItem
 C haxe.CallStack
+M nx3.audio.NoteSoundCalculator
+C nx3.audio.NoteSoundCalculator
 M java.awt.font.TextAttribute
 M java.net.URLConnection
 M java.sun.util.LocaleServiceProviderPool
@@ -867,8 +872,6 @@ M nx3.xml.NoteXML
 C nx3.xml.NoteXML
 M java.awt.Container
 M java.org.w3c.dom.DOMImplementation
-M nx3.test.TestTargetSvgXml
-C nx3.test.TestTargetSvgXml
 M java.awt.Button
 M org.apache.batik.parser.DefaultLengthHandler
 M org.apache.batik.dom.util.DocumentDescriptor
@@ -887,8 +890,6 @@ M nx3.PComplex
 C nx3.PComplex
 M haxe.zip.Entry
 M java.awt.font.GlyphJustificationInfo
-M nx3.test.TestEvents
-C nx3.test.TestEvents
 M java.text.FieldPosition
 M org.apache.batik.parser.UnitProcessor
 M java.org.w3c.dom.svg.SVGMatrix
@@ -942,7 +943,6 @@ M org.apache.xpath.axes.SubContextList
 M java.org.w3c.dom.css.ViewCSS
 M nx3.PPartComplexesGenerator
 C nx3.PPartComplexesGenerator
-M nx3.NRef
 M java.nio.file.attribute.UserPrincipalLookupService
 M nx3.PHeadPlacements
 M haxe.root.List
@@ -1017,8 +1017,6 @@ M java.awt.image.VolatileImage
 M java.org.w3c.dom.svg.SVGPathSegCurvetoCubicRel
 M java.awt.RenderingHints
 M nx3.TPoints
-M nx3.events.IEvent
-C nx3.events.IEvent
 M java.util.Date
 M nx3.PTieConnection
 M java.awt.peer.MenuPeer
@@ -1056,6 +1054,8 @@ M java.awt.GraphicsDevice
 M java.javax.swing.JSeparator
 M java.org.w3c.dom.svg.SVGAnimatedBoolean
 M org.apache.xalan.transformer.MsgMgr
+M nx3.utils.ScoreModifier
+C nx3.utils.ScoreModifier
 M org.apache.batik.dom.svg.SVGDocumentFactory
 M org.apache.batik.gvt.RootGraphicsNode
 M org.apache.batik.transcoder.TranscoderOutput
@@ -1229,8 +1229,6 @@ M org.apache.batik.gvt.TextNode
 M nx3.ENoteAttributes
 C nx3.ENoteAttributes
 M org.apache.xpath.compiler.Compiler
-M nx3.events.EvAddNote
-C nx3.events.EvAddNote
 M org.apache.batik.ext.awt.RadialGradientPaint
 M java.sun.awt.RequestFocusController
 M org.apache.batik.parser.ParseException
@@ -1264,6 +1262,8 @@ M java.sun.font.StrikeMetrics
 M org.apache.batik.gvt.event.GraphicsNodeChangeAdapter
 M nx3.PNote
 C nx3.PNote
+C nx3.PNote_get_heads_54__Fun
+C nx3.PNote_getHasTie_225__Fun
 M org.apache.batik.bridge.UserAgentAdapter
 M java.lang.reflect.AccessibleObject
 M java.awt.dnd.DropTargetDropEvent
@@ -1313,8 +1313,6 @@ M nx3.PHeads
 M org.apache.batik.util.DoublyLinkedList
 M java.org.w3c.css.sac.CombinatorCondition
 M nx3.PBeamframe
-M nx3.events.EvHeadSign
-C nx3.events.EvHeadSign
 M java.lang.Cloneable
 M java.org.w3c.dom.traversal.DocumentTraversal
 M org.apache.batik.css.engine.StyleDeclaration
@@ -1331,8 +1329,6 @@ M java.nio.file.AccessMode
 M java.util.concurrent.locks.AbstractOwnableSynchronizer
 M org.apache.batik.transcoder.Transcoder
 M org.apache.batik.css.engine.StringIntMap
-M haxe.root.Date
-C haxe.root.Date
 M nx3.PNoteOffsetCalculator
 C nx3.PNoteOffsetCalculator
 M nx3.EClef
@@ -1411,6 +1407,8 @@ M java.org.w3c.dom.svg.SVGLength
 M nx3.action.EActivityType
 E nx3.action.EActivityType
 M java.javax.swing.plaf.MenuItemUI
+M nx3.test.TestSound
+C nx3.test.TestSound
 M java.lang.StackTraceElement
 M java.org.w3c.dom.svg.SVGPathSegLinetoVerticalRel
 M java.awt.AWTEvent
@@ -1424,16 +1422,26 @@ M java.org.w3c.dom.svg.SVGAnimatedNumber
 M java.awt.Point
 M java.awt.event.InputMethodListener
 M java.org.w3c.dom.CDATASection
+M thx.core.Tuple
+C thx.core._Tuple.Tuple0_Impl_
+C thx.core._Tuple.Tuple1_Impl_
+C thx.core._Tuple.Tuple2_Impl_
+C thx.core._Tuple.Tuple3_Impl_
+C thx.core._Tuple.Tuple4_Impl_
+C thx.core._Tuple.Tuple5_Impl_
+C thx.core._Tuple.Tuple6_Impl_
 M java.util.concurrent.TimeUnit
 M org.apache.batik.i18n.LocalizableSupport
 M nx3.NNote
 C nx3.NNote
-C nx3.NNote_get_nheads_46__Fun
+C nx3.NNote_get_nheads_53__Fun
+C nx3.NNote_get_headLevels_68__Fun
+C nx3.NNote_get_ties_71__Fun_0
+C nx3.NNote_get_ties_71__Fun
 M java.org.w3c.dom.svg.SVGStylable
 M org.apache.batik.parser.DefaultLengthListHandler
 M org.apache.xalan.templates.TemplateList
 M java.lang.CharSequence
-M nx3.NHeads
 M java.org.w3c.dom.css.CSSRuleList
 M java.io.DataInput
 M java.awt.TextArea
@@ -1482,8 +1490,6 @@ M java.org.w3c.dom.svg.SVGPathSegClosePath
 M nx3.PColumns
 M java.nio.CharBuffer
 M java.awt.Polygon
-M nx3.NTools
-C nx3.NTools
 M nx3.PBeamgroup
 C nx3.PBeamgroup
 M java.org.w3c.dom.stylesheets.StyleSheet

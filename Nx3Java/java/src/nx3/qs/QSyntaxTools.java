@@ -18,7 +18,7 @@ public  class QSyntaxTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_qs_QSyntaxTools(nx3.qs.QSyntaxTools __temp_me192)
+	public static   void __hx_ctor_nx3_qs_QSyntaxTools(nx3.qs.QSyntaxTools __temp_me179)
 	{
 		{
 		}
@@ -37,10 +37,10 @@ public  class QSyntaxTools extends haxe.lang.HxObject
 		haxe.root.Array<java.lang.String> segments = haxe.lang.StringExt.split(bpvString, "-");
 		java.lang.Object bpv = null;
 		{
-			java.lang.Object __temp_odecl863 = haxe.root.Std.parseInt(segments.__get(0));
-			java.lang.Object __temp_odecl864 = haxe.root.Std.parseInt(segments.__get(1));
-			java.lang.Object __temp_odecl865 = haxe.root.Std.parseInt(segments.__get(2));
-			bpv = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"barIndex", "partIndex", "voiceIndex"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl863, __temp_odecl864, __temp_odecl865}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
+			java.lang.Object __temp_odecl842 = haxe.root.Std.parseInt(segments.__get(0));
+			java.lang.Object __temp_odecl843 = haxe.root.Std.parseInt(segments.__get(1));
+			java.lang.Object __temp_odecl844 = haxe.root.Std.parseInt(segments.__get(2));
+			bpv = new haxe.lang.DynamicObject(new haxe.root.Array<java.lang.String>(new java.lang.String[]{"barIndex", "partIndex", "voiceIndex"}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{__temp_odecl842, __temp_odecl843, __temp_odecl844}), new haxe.root.Array<java.lang.String>(new java.lang.String[]{}), new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{}));
 		}
 		
 		return bpv;

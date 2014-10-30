@@ -18,7 +18,7 @@ public  class RectanglesTools extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_geom_RectanglesTools(nx3.geom.RectanglesTools __temp_me186)
+	public static   void __hx_ctor_nx3_geom_RectanglesTools(nx3.geom.RectanglesTools __temp_me173)
 	{
 		{
 		}
@@ -41,7 +41,7 @@ public  class RectanglesTools extends haxe.lang.HxObject
 			
 		}
 		
-		haxe.lang.Function check = new nx3.geom.RectanglesTools_getXIntersection_16__Fun(((haxe.root.Array<haxe.root.Array>) (rectsA1) ), ((haxe.root.Array<haxe.root.Array>) (rectsB2) ));
+		haxe.lang.Function check = new nx3.geom.RectanglesTools_getXIntersection_16__Fun(((haxe.root.Array<haxe.root.Array>) (rectsB2) ), ((haxe.root.Array<haxe.root.Array>) (rectsA1) ));
 		double x = ((double) (0) );
 		double moveX = ((double) (check.__hx_invoke0_f()) );
 		while (( moveX > 0 ))

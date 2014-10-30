@@ -17,22 +17,22 @@ public  class NoteParser extends nx3.qs.BaseParser
 	}
 	
 	
-	public static   void __hx_ctor_nx3_qs_NoteParser(nx3.qs.NoteParser __temp_me191, nx3.qs.QuickSyntaxParser parser)
+	public static   void __hx_ctor_nx3_qs_NoteParser(nx3.qs.NoteParser __temp_me178, nx3.qs.QuickSyntaxParser parser)
 	{
-		nx3.qs.BaseParser.__hx_ctor_nx3_qs_BaseParser(__temp_me191, parser);
-		__temp_me191.guessOctave = false;
-		__temp_me191.notelevels = new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{});
-		__temp_me191.notesigns = new haxe.root.Array<nx3.ESign>(new nx3.ESign[]{});
-		__temp_me191.notevalue = null;
-		__temp_me191.prevlevel = 3;
-		__temp_me191.prevlevels = new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{3});
-		__temp_me191.prevsigns = new haxe.root.Array<nx3.ESign>(new nx3.ESign[]{nx3.ESign.None});
-		__temp_me191.prevvalue = nx3.ENoteVal.Nv4;
-		__temp_me191.clefAdjust = 0;
-		__temp_me191.octAdjust = 0;
-		__temp_me191.pause = false;
-		__temp_me191.pauselevel = 0;
-		__temp_me191.tie = false;
+		nx3.qs.BaseParser.__hx_ctor_nx3_qs_BaseParser(__temp_me178, parser);
+		__temp_me178.guessOctave = false;
+		__temp_me178.notelevels = new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{});
+		__temp_me178.notesigns = new haxe.root.Array<nx3.ESign>(new nx3.ESign[]{});
+		__temp_me178.notevalue = null;
+		__temp_me178.prevlevel = 3;
+		__temp_me178.prevlevels = new haxe.root.Array<java.lang.Object>(new java.lang.Object[]{3});
+		__temp_me178.prevsigns = new haxe.root.Array<nx3.ESign>(new nx3.ESign[]{nx3.ESign.None});
+		__temp_me178.prevvalue = nx3.ENoteVal.Nv4;
+		__temp_me178.clefAdjust = 0;
+		__temp_me178.octAdjust = 0;
+		__temp_me178.pause = false;
+		__temp_me178.pauselevel = 0;
+		__temp_me178.tie = false;
 	}
 	
 	
@@ -263,14 +263,14 @@ public  class NoteParser extends nx3.qs.BaseParser
 	@Override public   double __hx_setField_f(java.lang.String field, double value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef857 = true;
+			boolean __temp_executeDef836 = true;
 			switch (field.hashCode())
 			{
 				case -829857487:
 				{
 					if (field.equals("prevlevel")) 
 					{
-						__temp_executeDef857 = false;
+						__temp_executeDef836 = false;
 						this.prevlevel = ((int) (value) );
 						return value;
 					}
@@ -283,7 +283,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("clefAdjust")) 
 					{
-						__temp_executeDef857 = false;
+						__temp_executeDef836 = false;
 						this.clefAdjust = ((int) (value) );
 						return value;
 					}
@@ -296,7 +296,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("pauselevel")) 
 					{
-						__temp_executeDef857 = false;
+						__temp_executeDef836 = false;
 						this.pauselevel = ((int) (value) );
 						return value;
 					}
@@ -309,7 +309,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("octAdjust")) 
 					{
-						__temp_executeDef857 = false;
+						__temp_executeDef836 = false;
 						this.octAdjust = ((int) (value) );
 						return value;
 					}
@@ -320,7 +320,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef857) 
+			if (__temp_executeDef836) 
 			{
 				return super.__hx_setField_f(field, value, handleProperties);
 			}
@@ -337,14 +337,14 @@ public  class NoteParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef858 = true;
+			boolean __temp_executeDef837 = true;
 			switch (field.hashCode())
 			{
 				case 111171175:
 				{
 					if (field.equals("guessOctave")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.guessOctave = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -357,7 +357,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("notelevels")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.notelevels = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -370,7 +370,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("tie")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.tie = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -383,7 +383,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("notevalue")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.notevalue = ((nx3.ENoteVal) (value) );
 						return value;
 					}
@@ -396,7 +396,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("prevlevel")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.prevlevel = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -409,7 +409,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("notesigns")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.notesigns = ((haxe.root.Array<nx3.ESign>) (value) );
 						return value;
 					}
@@ -422,7 +422,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("pauselevel")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.pauselevel = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -435,7 +435,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("prevlevels")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.prevlevels = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -448,7 +448,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("pause")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.pause = haxe.lang.Runtime.toBool(value);
 						return value;
 					}
@@ -461,7 +461,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("prevvalue")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.prevvalue = ((nx3.ENoteVal) (value) );
 						return value;
 					}
@@ -474,7 +474,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("octAdjust")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.octAdjust = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -487,7 +487,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("prevsigns")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.prevsigns = ((haxe.root.Array<nx3.ESign>) (value) );
 						return value;
 					}
@@ -500,7 +500,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("clefAdjust")) 
 					{
-						__temp_executeDef858 = false;
+						__temp_executeDef837 = false;
 						this.clefAdjust = ((int) (haxe.lang.Runtime.toInt(value)) );
 						return value;
 					}
@@ -511,7 +511,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef858) 
+			if (__temp_executeDef837) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -528,14 +528,14 @@ public  class NoteParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef859 = true;
+			boolean __temp_executeDef838 = true;
 			switch (field.hashCode())
 			{
 				case -2111738369:
 				{
 					if (field.equals("recieveEvent")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("recieveEvent"))) );
 					}
 					
@@ -547,7 +547,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("notelevels")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.notelevels;
 					}
 					
@@ -559,7 +559,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("tokenFinished")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("tokenFinished"))) );
 					}
 					
@@ -571,7 +571,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("notevalue")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.notevalue;
 					}
 					
@@ -583,7 +583,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("pushNotelevel")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("pushNotelevel"))) );
 					}
 					
@@ -595,7 +595,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("notesigns")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.notesigns;
 					}
 					
@@ -607,7 +607,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("createFunctions")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("createFunctions"))) );
 					}
 					
@@ -619,7 +619,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("prevlevels")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.prevlevels;
 					}
 					
@@ -631,7 +631,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("guessOctave")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.guessOctave;
 					}
 					
@@ -643,7 +643,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("prevvalue")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.prevvalue;
 					}
 					
@@ -655,7 +655,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("tie")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.tie;
 					}
 					
@@ -667,7 +667,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("prevsigns")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.prevsigns;
 					}
 					
@@ -679,7 +679,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("prevlevel")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.prevlevel;
 					}
 					
@@ -691,7 +691,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("clefAdjust")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.clefAdjust;
 					}
 					
@@ -703,7 +703,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("pauselevel")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.pauselevel;
 					}
 					
@@ -715,7 +715,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("octAdjust")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.octAdjust;
 					}
 					
@@ -727,7 +727,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("pause")) 
 					{
-						__temp_executeDef859 = false;
+						__temp_executeDef838 = false;
 						return this.pause;
 					}
 					
@@ -737,7 +737,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef859) 
+			if (__temp_executeDef838) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -754,14 +754,14 @@ public  class NoteParser extends nx3.qs.BaseParser
 	@Override public   double __hx_getField_f(java.lang.String field, boolean throwErrors, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef860 = true;
+			boolean __temp_executeDef839 = true;
 			switch (field.hashCode())
 			{
 				case -829857487:
 				{
 					if (field.equals("prevlevel")) 
 					{
-						__temp_executeDef860 = false;
+						__temp_executeDef839 = false;
 						return ((double) (this.prevlevel) );
 					}
 					
@@ -773,7 +773,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("clefAdjust")) 
 					{
-						__temp_executeDef860 = false;
+						__temp_executeDef839 = false;
 						return ((double) (this.clefAdjust) );
 					}
 					
@@ -785,7 +785,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("pauselevel")) 
 					{
-						__temp_executeDef860 = false;
+						__temp_executeDef839 = false;
 						return ((double) (this.pauselevel) );
 					}
 					
@@ -797,7 +797,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("octAdjust")) 
 					{
-						__temp_executeDef860 = false;
+						__temp_executeDef839 = false;
 						return ((double) (this.octAdjust) );
 					}
 					
@@ -807,7 +807,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef860) 
+			if (__temp_executeDef839) 
 			{
 				return super.__hx_getField_f(field, throwErrors, handleProperties);
 			}
@@ -824,15 +824,15 @@ public  class NoteParser extends nx3.qs.BaseParser
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			int __temp_hash862 = field.hashCode();
-			boolean __temp_executeDef861 = true;
-			switch (__temp_hash862)
+			int __temp_hash841 = field.hashCode();
+			boolean __temp_executeDef840 = true;
+			switch (__temp_hash841)
 			{
 				case -2111738369:case -1760504437:case -1605705217:
 				{
-					if (( (( ( __temp_hash862 == -2111738369 ) && field.equals("recieveEvent") )) || ( (( ( __temp_hash862 == -1760504437 ) && field.equals("tokenFinished") )) || field.equals("createFunctions") ) )) 
+					if (( (( ( __temp_hash841 == -2111738369 ) && field.equals("recieveEvent") )) || ( (( ( __temp_hash841 == -1760504437 ) && field.equals("tokenFinished") )) || field.equals("createFunctions") ) )) 
 					{
-						__temp_executeDef861 = false;
+						__temp_executeDef840 = false;
 						return haxe.lang.Runtime.slowCallField(this, field, dynargs);
 					}
 					
@@ -844,7 +844,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				{
 					if (field.equals("pushNotelevel")) 
 					{
-						__temp_executeDef861 = false;
+						__temp_executeDef840 = false;
 						this.pushNotelevel(((int) (haxe.lang.Runtime.toInt(dynargs.__get(0))) ));
 					}
 					
@@ -854,7 +854,7 @@ public  class NoteParser extends nx3.qs.BaseParser
 				
 			}
 			
-			if (__temp_executeDef861) 
+			if (__temp_executeDef840) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}

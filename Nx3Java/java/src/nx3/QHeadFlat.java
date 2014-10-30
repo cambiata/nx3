@@ -17,10 +17,10 @@ public  class QHeadFlat extends nx3.QHead
 	}
 	
 	
-	public static   void __hx_ctor_nx3_QHeadFlat(nx3.QHeadFlat __temp_me147, java.lang.Object level)
+	public static   void __hx_ctor_nx3_QHeadFlat(nx3.QHeadFlat __temp_me135, java.lang.Object level)
 	{
-		nx3.QHead.__hx_ctor_nx3_QHead(__temp_me147, ( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ), nx3.ESign.Flat);
-		java.lang.Object __temp_level146 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
+		nx3.QHead.__hx_ctor_nx3_QHead(__temp_me135, ( (( level == null )) ? (((java.lang.Object) (0) )) : (level) ), nx3.ESign.Flat);
+		java.lang.Object __temp_level134 = ( (( level == null )) ? (((java.lang.Object) (0) )) : (((java.lang.Object) (level) )) );
 	}
 	
 	

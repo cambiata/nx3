@@ -18,7 +18,7 @@ public  class TestItems extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_test_TestItems(nx3.test.TestItems __temp_me208)
+	public static   void __hx_ctor_nx3_test_TestItems(nx3.test.TestItems __temp_me183)
 	{
 		{
 		}
@@ -173,13 +173,13 @@ public  class TestItems extends haxe.lang.HxObject
 		nx3.NScore nscore = new nx3.NScore(((haxe.root.Array<nx3.NBar>) (new haxe.root.Array<nx3.NBar>(new nx3.NBar[]{n0})) ));
 		nx3.PScore score = new nx3.PScore(((nx3.NScore) (nscore) ));
 		{
-			nx3.PSystem __temp_stmt882 = null;
+			nx3.PSystem __temp_stmt853 = null;
 			{
 				haxe.root.Array<nx3.PSystem> array1 = score.getSystems(systemwidth);
-				__temp_stmt882 = array1.__get(0);
+				__temp_stmt853 = array1.__get(0);
 			}
 			
-			haxe.root.Array<nx3.PSystemBar> array = __temp_stmt882.getSystembars();
+			haxe.root.Array<nx3.PSystemBar> array = __temp_stmt853.getSystembars();
 			array.__get(0);
 		}
 		

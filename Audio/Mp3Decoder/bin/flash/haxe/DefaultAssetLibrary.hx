@@ -46,6 +46,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
+		className.set ("assets/4samples.mp3", __ASSET__assets_4samples_mp3);
+		type.set ("assets/4samples.mp3", AssetType.MUSIC);
+		className.set ("assets/4samples.wav", __ASSET__assets_4samples_wav);
+		type.set ("assets/4samples.wav", AssetType.SOUND);
 		className.set ("assets/micro.mp3", __ASSET__assets_micro_mp3);
 		type.set ("assets/micro.mp3", AssetType.MUSIC);
 		className.set ("assets/nano.mp3", __ASSET__assets_nano_mp3);
@@ -59,6 +63,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#elseif html5
 		
 		var id;
+		id = "assets/4samples.mp3";
+		path.set (id, id);
+		type.set (id, AssetType.MUSIC);
+		id = "assets/4samples.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
 		id = "assets/micro.mp3";
 		path.set (id, id);
 		type.set (id, AssetType.MUSIC);
@@ -78,6 +88,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
+		
+		className.set ("assets/4samples.mp3", __ASSET__assets_4samples_mp3);
+		type.set ("assets/4samples.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/4samples.wav", __ASSET__assets_4samples_wav);
+		type.set ("assets/4samples.wav", AssetType.SOUND);
 		
 		className.set ("assets/micro.mp3", __ASSET__assets_micro_mp3);
 		type.set ("assets/micro.mp3", AssetType.MUSIC);
@@ -707,6 +723,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if pixi
 #elseif flash
 
+@:keep class __ASSET__assets_4samples_mp3 extends openfl.media.Sound { }
+@:keep class __ASSET__assets_4samples_wav extends openfl.media.Sound { }
 @:keep class __ASSET__assets_micro_mp3 extends openfl.media.Sound { }
 @:keep class __ASSET__assets_nano_mp3 extends openfl.media.Sound { }
 @:keep class __ASSET__assets_openfl_svg extends openfl.utils.ByteArray { }
@@ -721,9 +739,13 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
 #elseif (windows || mac || linux)
 
 
+@:sound("assets/4samples.mp3") class __ASSET__assets_4samples_mp3 extends flash.media.Sound {}
+@:sound("assets/4samples.wav") class __ASSET__assets_4samples_wav extends flash.media.Sound {}
 @:sound("assets/micro.mp3") class __ASSET__assets_micro_mp3 extends flash.media.Sound {}
 @:sound("assets/nano.mp3") class __ASSET__assets_nano_mp3 extends flash.media.Sound {}
 @:file("assets/openfl.svg") class __ASSET__assets_openfl_svg extends flash.utils.ByteArray {}

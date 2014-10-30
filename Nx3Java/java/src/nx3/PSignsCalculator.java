@@ -18,9 +18,9 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 	}
 	
 	
-	public static   void __hx_ctor_nx3_PSignsCalculator(nx3.PSignsCalculator __temp_me133, haxe.root.Array<nx3.PNote> notes)
+	public static   void __hx_ctor_nx3_PSignsCalculator(nx3.PSignsCalculator __temp_me121, haxe.root.Array<nx3.PNote> notes)
 	{
-		__temp_me133.notes = notes;
+		__temp_me121.notes = notes;
 	}
 	
 	
@@ -118,14 +118,14 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_setField(java.lang.String field, java.lang.Object value, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef758 = true;
+			boolean __temp_executeDef745 = true;
 			switch (field.hashCode())
 			{
 				case -248549116:
 				{
 					if (field.equals("visibleSigns")) 
 					{
-						__temp_executeDef758 = false;
+						__temp_executeDef745 = false;
 						this.visibleSigns = ((haxe.root.Array<java.lang.Object>) (value) );
 						return value;
 					}
@@ -138,7 +138,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("notes")) 
 					{
-						__temp_executeDef758 = false;
+						__temp_executeDef745 = false;
 						this.notes = ((haxe.root.Array<nx3.PNote>) (value) );
 						return value;
 					}
@@ -149,7 +149,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef758) 
+			if (__temp_executeDef745) 
 			{
 				return super.__hx_setField(field, value, handleProperties);
 			}
@@ -166,14 +166,14 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_getField(java.lang.String field, boolean throwErrors, boolean isCheck, boolean handleProperties)
 	{
 		{
-			boolean __temp_executeDef759 = true;
+			boolean __temp_executeDef746 = true;
 			switch (field.hashCode())
 			{
 				case -437568381:
 				{
 					if (field.equals("calcSortSigns")) 
 					{
-						__temp_executeDef759 = false;
+						__temp_executeDef746 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcSortSigns"))) );
 					}
 					
@@ -185,7 +185,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("notes")) 
 					{
-						__temp_executeDef759 = false;
+						__temp_executeDef746 = false;
 						return this.notes;
 					}
 					
@@ -197,7 +197,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcUnsortedSigns")) 
 					{
-						__temp_executeDef759 = false;
+						__temp_executeDef746 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcUnsortedSigns"))) );
 					}
 					
@@ -209,7 +209,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getSigns")) 
 					{
-						__temp_executeDef759 = false;
+						__temp_executeDef746 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getSigns"))) );
 					}
 					
@@ -221,7 +221,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcVisibleSigns")) 
 					{
-						__temp_executeDef759 = false;
+						__temp_executeDef746 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("calcVisibleSigns"))) );
 					}
 					
@@ -233,7 +233,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("visibleSigns")) 
 					{
-						__temp_executeDef759 = false;
+						__temp_executeDef746 = false;
 						return this.visibleSigns;
 					}
 					
@@ -245,7 +245,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getVisibleSigns")) 
 					{
-						__temp_executeDef759 = false;
+						__temp_executeDef746 = false;
 						return ((haxe.lang.Function) (new haxe.lang.Closure(((java.lang.Object) (this) ), haxe.lang.Runtime.toString("getVisibleSigns"))) );
 					}
 					
@@ -255,7 +255,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef759) 
+			if (__temp_executeDef746) 
 			{
 				return super.__hx_getField(field, throwErrors, isCheck, handleProperties);
 			}
@@ -272,14 +272,14 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 	@Override public   java.lang.Object __hx_invokeField(java.lang.String field, haxe.root.Array dynargs)
 	{
 		{
-			boolean __temp_executeDef760 = true;
+			boolean __temp_executeDef747 = true;
 			switch (field.hashCode())
 			{
 				case -437568381:
 				{
 					if (field.equals("calcSortSigns")) 
 					{
-						__temp_executeDef760 = false;
+						__temp_executeDef747 = false;
 						return this.calcSortSigns(((haxe.root.Array<java.lang.Object>) (dynargs.__get(0)) ));
 					}
 					
@@ -291,7 +291,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getSigns")) 
 					{
-						__temp_executeDef760 = false;
+						__temp_executeDef747 = false;
 						return this.getSigns();
 					}
 					
@@ -303,7 +303,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcUnsortedSigns")) 
 					{
-						__temp_executeDef760 = false;
+						__temp_executeDef747 = false;
 						return this.calcUnsortedSigns(((haxe.root.Array<nx3.PNote>) (dynargs.__get(0)) ));
 					}
 					
@@ -315,7 +315,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("getVisibleSigns")) 
 					{
-						__temp_executeDef760 = false;
+						__temp_executeDef747 = false;
 						return this.getVisibleSigns();
 					}
 					
@@ -327,7 +327,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				{
 					if (field.equals("calcVisibleSigns")) 
 					{
-						__temp_executeDef760 = false;
+						__temp_executeDef747 = false;
 						return this.calcVisibleSigns(((haxe.root.Array<java.lang.Object>) (dynargs.__get(0)) ));
 					}
 					
@@ -337,7 +337,7 @@ public  class PSignsCalculator extends haxe.lang.HxObject
 				
 			}
 			
-			if (__temp_executeDef760) 
+			if (__temp_executeDef747) 
 			{
 				return super.__hx_invokeField(field, dynargs);
 			}
