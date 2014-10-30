@@ -1,16 +1,10 @@
 package;
 
 import cx.diff.Differ;
-import haxe.Serializer;
-import haxe.Unserializer;
-import nx3.ENoteType;
+
 import nx3.NHead;
 import nx3.NNote;
 import nx3.NVoice;
-import nx3.QNote;
-import nx3.test.TestItems;
-import openfl.display.Sprite;
-import openfl.Lib;
 
 /**
  * ...
