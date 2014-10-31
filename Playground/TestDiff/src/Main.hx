@@ -1,6 +1,7 @@
 package;
 
 import cx.diff.Differ;
+import nx3.test.TestItems;
 
 import nx3.NHead;
 import nx3.NNote;
@@ -16,6 +17,7 @@ class Main
 	public function new() 
 	{
 	
+		
 		var original = new NVoice([new NNote([new NHead()])]);		
 		var differ = new Differ(original);
 		
@@ -31,7 +33,13 @@ class Main
 		
 		var restoreOriginal = differ.undo().obj;
 		trace(Std.string(original) == Std.string(restoreOriginal)); // True! :-)	
-
+		
+		
+		/*
+		var item = TestItems.scoreBachSinfonia4().nscore;
+		var differ = new Differ(item);
+		trace(differ.getDiffinfos());
+		*/
 	}
 }
 

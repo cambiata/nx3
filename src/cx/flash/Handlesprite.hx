@@ -7,6 +7,8 @@ import flash.display.Sprite;
  * ...
  * @author Jonas Nyström
  */
+
+
 class Handlesprite extends Sprite
 {
 	private var handleTL:Handle;
@@ -36,6 +38,15 @@ class Handlesprite extends Sprite
 		
 		this.x = 20;
 		this.y = 20;
+
+		#if (html5 || flash)
+			this.backing.graphics.drawRect(this.x, this.y, this._width, this._height);		
+		#end
+		
+		//this.backing.graphics.clear();
+		
+		
+		//#end
 		
 		
 		
@@ -110,9 +121,9 @@ class Handlesprite extends Sprite
 	
 	private function _repaint(x:Float, y:Float, width:Float, height:Float, background:Sprite )
 	{
-		trace('repaint method - should be set dynamically from outside');		
+		trace('repaint method - should be set dynamically from outside $width $height');		
 		backing.graphics.clear();
-		backing.graphics.beginFill(0xFF0000, .2);
+		backing.graphics.beginFill(0x0000ff, .2);
 		backing.graphics.drawRect(0, 0, _width, _height);				
 	}
 }
