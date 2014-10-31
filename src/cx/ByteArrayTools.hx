@@ -15,6 +15,7 @@ class ByteArrayTools
 		#if (flash)
 			var bytes = Bytes.ofData(byteArray);
 		#elseif (html5)
+			byteArray.position = 0;
 			var arrayBytes = new Array<Int>();
 			for (i in 0...byteArray.length) arrayBytes.push(byteArray.readByte());
 			var bytes = Bytes.ofData(arrayBytes);

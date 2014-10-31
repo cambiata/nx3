@@ -9,7 +9,7 @@ class ConversionTools
 {
 	inline static public function shortToUChars(short:Int):Array<Int>
 	{
-		if (! inRange(short, -32767, 32767)) throw "range error";
+		if (! inRange(short, -32767, 32767)) throw 'ConversionTools: range error: $short';
 		var result = [0, 0];
 		if  (short >= 0)
 		{
@@ -23,8 +23,10 @@ class ConversionTools
 	
 	static public function ucharsToShort(ucharLeft:Int, ucharRight:Int):Int
 	{
-		if (! inRange(ucharLeft, 0, 255)) throw "range error";
-		if (! inRange(ucharRight, 0, 255)) throw "range error";
+		if (ucharLeft < 0) ucharLeft += 256;
+		if (ucharRight < 0) ucharLeft += 256;
+		if (! inRange(ucharLeft, 0, 255)) throw 'ConversionTools: range error  ucharLeft: $ucharLeft';
+		if (! inRange(ucharRight, 0, 255)) throw 'ConversionTools: range error ucharRight: $ucharRight';
 		var negative:Bool = (ucharLeft & 128 == 128);
 		var result = (! negative) ? (ucharLeft << 8) + ucharRight: -32768 + (((ucharLeft - 128) << 8) + ucharRight);
 		return result;

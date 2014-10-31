@@ -32,7 +32,6 @@ class WavSprite extends Handlesprite
 		
 		this.wavHeader = wavFile.header;	
 		this.stereo = !(this.wavHeader.channels == 1);		
-		trace(this.wavHeader.channels);
 		
 		if (stereo) {			
 			var ints = WavTools.stereo16bitToInts(wavFile.data);		
