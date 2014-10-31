@@ -5,9 +5,13 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Rectangle;
 import flash.Lib;
+import haxe.Serializer;
+import haxe.Unserializer;
 import nx3.NBar;
 import nx3.NPart;
+import nx3.NScore;
 import nx3.NVoice;
+import nx3.PScore;
 import nx3.QNote.QNote16;
 import nx3.QVoice;
 import nx3.action.SoundInteractivity;
@@ -20,6 +24,8 @@ import nx3.render.TargetSprite;
 import nx3.test.Unittests;
 import nx3.test.TestItems;
 import nx3.test.TestRenderer;
+import nx3.xml.ScoreXML;
+import sys.io.File;
 
 /**
  * ...
@@ -58,14 +64,25 @@ class Main extends Sprite
 		this.addChild(target.getTargetSprite(600, 0));
 		*/
 		
+		var nscore:NScore = TestItems.scoreBachSinfonia4();
+		#if (neko)
+			File.saveContent('bach.xml', ScoreXML.toXml(nscore).toString());
+			Serializer.USE_CACHE = true;
+			File.saveContent('bach.data', Serializer.run(nscore));
+			nscore = Unserializer.run(File.getContent('bach.data'));
+		#end
+		
+		var pscore:PScore = new PScore(nscore);
+		
+		
 		var hs:HandlespriteDelayed = new HandlespriteDelayed();
 		hs.setSize(1350, 800);
 		Lib.current.addChild(hs);		
 		
 		var targetHS = new TargetSprite(hs.getBackground(), Scaling.NORMAL);
 		var rendererHS = new Renderer(targetHS, 0, 0);
-		rendererHS.addInteraction( new TestInteractivity());
-		rendererHS.addInteraction( new SoundInteractivity());
+		//rendererHS.addInteraction( new TestInteractivity());
+		//rendererHS.addInteraction( new SoundInteractivity());
 		
 		hs.setRepaintCallback(function (x:Float, y:Float, width:Float, height:Float, background:Sprite)
 		{			
@@ -79,12 +96,9 @@ class Main extends Sprite
 		{
 			targetHS.clear();
 			var renderWidth =  Math.max(60, rendererHS.xToUnitX(width));
-			rendererHS.renderScore(TestItems.scoreBachSinfonia4(), 0, 100, renderWidth);												
+			rendererHS.renderScore(pscore, 0, 100, renderWidth);												
 			//rendererHS.renderScore(TestItems.scoreTest1(), 0, 100, renderWidth);												
 		}, 200);		
-		
-		
-		
 	}
 
 	/* SETUP */

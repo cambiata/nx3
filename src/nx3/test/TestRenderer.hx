@@ -7,6 +7,7 @@ import nx3.NVoice;
 import nx3.PBar;
 import nx3.PComplexDistancesCalculator;
 import nx3.PPart;
+import nx3.PScore;
 import nx3.QNote.QLyric4;
 import nx3.QNote.QNote2;
 import nx3.QNote.QNote4;
@@ -38,7 +39,7 @@ class TestRenderer
 	{		
 		r.addInteraction( new TestInteractivity());
 		r.addInteraction( new SoundInteractivity());
-		r.renderScore(TestItems.scoreBachSinfonia4(), 10, 100, 300);
+		r.renderScore(new PScore(TestItems.scoreBachSinfonia4()), 10, 100, 300);
 	}
 	
 }

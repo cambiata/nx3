@@ -16,7 +16,6 @@ class Main
 {
 	public function new() 
 	{
-	
 		
 		var original = new NVoice([new NNote([new NHead()])]);		
 		var differ = new Differ(original);
