@@ -18,6 +18,7 @@
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
 	<haxelib name="format" />
+	<haxelib name="thx.core" />
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />

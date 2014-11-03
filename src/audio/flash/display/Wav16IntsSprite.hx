@@ -1,6 +1,7 @@
 package audio.flash.display;
 
 
+import audio.Wav16Ints;
 import cx.flash.ResizeSprite;
 import format.wav.Reader;
 import format.wav.Data;
@@ -17,32 +18,42 @@ import audio.WavTools;
  * WavSprite
  * @author Jonas Nyström
  */
-class WavSprite extends ResizeSprite
+class Wav16IntsSprite extends ResizeSprite
 {
 	var leftInts:Wav16Ints;
 	var rightInts:Wav16Ints;
 	var graphSamplesLeft:Array<Float>;
 	var graphSamplesRight:Array<Float>;
 	var stereo:Bool;
+	var xScaleToWave:Bool;
+	public var scaling(default, set):Float;
 	
-	public function new(wavfile:ByteArray)
-	{		
-		var wavFile:WAVE = new Reader(new BytesInput(ByteArrayTools.toBytes(wavfile))).read();		
-		var wavHeader = wavFile.header;	
-		this.stereo = (wavHeader.channels > 1);				
-
-		if (stereo) {			
-			var ints = WavTools.stereo16bitToInts(wavFile.data);		
-			this.leftInts = ints[0];		
-			this.rightInts = ints[1];
-			this.graphSamplesLeft = WavTools.getWaveformSamples(leftInts, 1000);
-			this.graphSamplesRight = WavTools.getWaveformSamples(rightInts, 1000);
-		} else {
-			this.leftInts = WavTools.mono16bitToInts(wavFile.data);
-			this.graphSamplesLeft = WavTools.getWaveformSamples(leftInts, 1000);
-		}		
-		 super();
+	var _scaling:Float = 100.0;
+	function set_scaling(val:Float) :Float
+	{
+		this._scaling = val;
+		this._width = this.getScaleWidth(this._scaling);
+		this._draw();
+		return this._scaling;
 	}
+	
+	public function new(leftInts:Wav16Ints, rightInts:Wav16Ints=null, xScaleToWave:Bool=false, scaling:Float=100.0)
+	{		
+		this._scaling = scaling;
+		this.init(leftInts, rightInts);
+		var scaleWidth = (xScaleToWave) ? this.getScaleWidth(this._scaling) : 100;
+		 super(100, 100, scaleWidth, 100);
+	}
+	
+	public function init(leftInts:Wav16Ints, rightInts:Wav16Ints)
+	{
+		this.stereo = (rightInts != null);						
+		this.leftInts = leftInts;		
+		this.rightInts = rightInts;		
+		this.graphSamplesLeft = WavTools.getWaveformSamples(leftInts, 1000);
+		if (stereo) this.graphSamplesRight = WavTools.getWaveformSamples(rightInts, 1000);
+	}
+	
 	
 	static var LINEWIDTH:Float = 2;
 	
@@ -102,6 +113,11 @@ class WavSprite extends ResizeSprite
 				incrPos += incr;
 			}			
 		}		
+	}
+	
+	function getScaleWidth(scale:Float = 100.0)
+	{
+		return this.leftInts.length / 100;		
 	}
 	
 	public function getInts():Array<Wav16Ints>

@@ -23,11 +23,10 @@ class WaveEncoder
 	
 		public function encode( samples:ByteArray, channels:Int=2, bits:Int=16, rate:Int=44100 ):ByteArray
 		{
-			var data:ByteArray = create( samples );
+			var data:ByteArray = soundFloatsToShorts( samples );
 			
 			//_bytes.length = 0;
 			_bytes.endian = Endian.LITTLE_ENDIAN;
-			
 			_bytes.writeUTFBytes( WaveEncoder.RIFF );
 			_bytes.writeInt( uint( data.length + 44 ) );
 			_bytes.writeUTFBytes( WaveEncoder.WAVE );
@@ -55,13 +54,73 @@ class WaveEncoder
 			//_buffer.length = 0;
 			bytes.position = 0;
 			
-			while( bytes.bytesAvailable > 0 ) 
-				_buffer.writeShort( Std.int(bytes.readFloat() * (0x7fff * _volume) ));
+			while ( bytes.bytesAvailable > 0 ) {				
+				
+				var float = bytes.readFloat();
+				var short = Std.int(float * 0x7fff);
+				_buffer.writeShort(short);		
+				
+				
+				
+				//_buffer.writeShort( Std.int(bytes.readFloat() * (0x7fff * _volume) ));
+				
+			}
 			return _buffer;
 			
 			
 			
 		}		
 		
+		private function create2( bytes:ByteArray ):ByteArray
+		{
+			_buffer.endian = Endian.LITTLE_ENDIAN;
+			bytes.position = 0;
+			
+			
+			while ( bytes.bytesAvailable > 0 ) {				
+				
+				var float = bytes.readFloat();
+				var short = Std.int(float * 0x7fff);
+				_buffer.writeShort(short);						
+			}
+			return _buffer;
+		}			
+		
+		static public function soundFloatsToShorts(bytes:ByteArray):ByteArray
+		{
+			var _buffer = new ByteArray();
+			_buffer.endian = Endian.LITTLE_ENDIAN;
+			bytes.position = 0;
+			
+			var i = 0;
+			while ( bytes.bytesAvailable > 0 ) {								
+				var float = bytes.readFloat();
+				var short = Std.int(float * 0x7fff);
+				_buffer.writeShort(short);						
+				var float2:Float = short / 0x7fff;
+				
+				if (float > 0.01) {
+					if (i < 100) trace([float, float2, short]);
+					i++;
+				}
+				//_buffer.writeShort( Std.int(bytes.readFloat() * (0x7fff * _volume) ));
+				
+			}
+			return _buffer;
+		}
+		
+		static public function soundShortsToFloats(bytes:ByteArray):ByteArray
+		{
+			var _buffer = new ByteArray();
+			_buffer.endian = Endian.LITTLE_ENDIAN;
+			bytes.position = 0;			
+			
+			while ( bytes.bytesAvailable > 0 ) {								
+				var short = bytes.readShort();
+				var float:Float = short / 0x7fff;
+				_buffer.writeFloat(float);						
+			}
+			return _buffer;			
+		}
 		
 }

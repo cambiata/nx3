@@ -1,4 +1,6 @@
 package audio;
+import cx.ByteArrayTools;
+import flash.utils.ByteArray;
 import format.wav.Data.WAVEHeader;
 import format.wav.Data.WAVE;
 import format.wav.Reader;
@@ -6,19 +8,24 @@ import format.wav.Writer;
 import haxe.io.Bytes;
 #if (sys)
 import sys.io.File;
-import haxe.io.BytesInput;
 #end
+import haxe.io.BytesInput;
 import haxe.io.BytesOutput;
+import thx.core.Arrays;
+import thx.core.Floats;
+import thx.core.Ints;
+
+using cx.ArrayTools;
 /**
  * ...
  * @author 
  */
 class WavTools
 {
-	static public function mono16bitToInts(wavData:Bytes): Array<Int>
+	static public function mono16bitToInts(wavData:Bytes): Wav16Ints
 	{
 		var length = Std.int((wavData.length - (wavData.length % 2)) / 2);
-		var result:Array<Int> = [];
+		var result:Wav16Ints = [];
 		for (i in 0...length) {
 			var pos = i * 2;
 			var left = wavData.get(pos);
@@ -29,11 +36,11 @@ class WavTools
 		return result;
 	}
 	
-	static public function stereo16bitToInts(wavData:Bytes): Array<Array<Int>>
+	static public function stereo16bitToInts(wavData:Bytes): Array<Wav16Ints>
 	{
 		var length = Std.int((wavData.length - (wavData.length % 2)) / 2);
-		var resultLeft:Array<Int> = [];
-		var resultRight:Array<Int> = [];
+		var resultLeft:Wav16Ints = [];
+		var resultRight:Wav16Ints = [];
 		
 		
 		for (i in 0...length) {
@@ -49,32 +56,27 @@ class WavTools
 		return [resultLeft, resultRight];
 	}	
 	
-	static public function stereo16bitToIntsJS(wavData:Bytes): Array<Array<Int>>
+	static public function stereo16bitToIntsJS(wavData:Bytes): Array<Wav16Ints>
 	{
 		var length = Std.int((wavData.length - (wavData.length % 2)) / 2);
-		var resultLeft:Array<Int> = [];
-		var resultRight:Array<Int> = [];
+		var resultLeft:Wav16Ints = [];
+		var resultRight:Wav16Ints = [];
 		
 		for (i in 0...length) {
 			var pos = i * 2;
 			var left = wavData.get(pos);
 			var right = wavData.get(pos + 1);
-			//trace([left, right]);
 			var val = ConversionTools.ucharsToShortJS(right, left);
-			
 			
 			if (i % 2 == 0) 
 				resultLeft.push(val);
 			else
 				resultRight.push(val);
-			
 		}		
-		
-		
 		return [resultLeft, resultRight];
 	}	
 	
-	static public function getWaveformSamples(wavInts:Array<Int>, nrOfSamples:Int, sampleAcc:Int=100): Array<Float>
+	static public function getWaveformSamples(wavInts:Wav16Ints, nrOfSamples:Int, sampleAcc:Int=100): Array<Float>
 	{		
 		
 		var windowSize = Math.floor(wavInts.length / nrOfSamples+1);
@@ -103,7 +105,7 @@ class WavTools
 	
 	
 	
-	static public function intsToMono16Bytes(ints:Array<Int>):Bytes
+	static public function intsToMono16Bytes(ints:Wav16Ints):Bytes
 	{
 		var result:Bytes = Bytes.alloc(ints.length * 2);
 		var pos = 0;
@@ -116,7 +118,9 @@ class WavTools
 		return result;
 	}
 	
-	static public function intsToStero16Bytes(leftInts:Array<Int>, rightInts:Array<Int>):Bytes
+	static public function intsToMono16ByteArray(ints:Wav16Ints):ByteArray return ByteArrayTools.fromBytes(intsToMono16Bytes(ints));
+	
+	static public function intsToStero16Bytes(leftInts:Wav16Ints, rightInts:Wav16Ints):Bytes
 	{
 		if (leftInts.length != rightInts.length) throw "Left and Right ints lengths differ!";
 		var result:Bytes = Bytes.alloc(leftInts.length * 2 * 2);
@@ -137,7 +141,7 @@ class WavTools
 	}	
 	
 	
-	static public function modifyAmplitude(ints:Array<Int>, factor:Float):Array<Int>
+	static public function modifyAmplitude(ints:Wav16Ints, factor:Float):Wav16Ints
 	{
 		var result = [];
 		for (i in ints)
@@ -157,7 +161,65 @@ class WavTools
 		}
 	}
 	
-	#if (sys)
+	//------------------------------------------------------------------------------------------------
+
+	static public function soundFloatsToShorts(bytes:ByteArray):ByteArray
+	{
+		var _buffer = new ByteArray();
+		_buffer.endian = flash.utils.Endian.LITTLE_ENDIAN;
+		bytes.position = 0;		
+		var i = 0;
+		while ( bytes.bytesAvailable > 0 ) {								
+			var float = bytes.readFloat();
+			var short = Std.int(float * 0x7fff);
+			_buffer.writeShort(short);						
+		}
+		return _buffer;
+	}
+	
+	static public function arrayFloatsToShorts(floats:Array<Float>):ByteArray
+	{
+		var _buffer = new ByteArray();
+		_buffer.endian = flash.utils.Endian.LITTLE_ENDIAN;
+		
+		for (float in floats)
+		{
+			var short = Std.int(float * 0x7fff);
+			_buffer.writeShort(short);							
+		}
+		return _buffer;
+	}	
+	
+	
+	static public function soundShortsToFloats(bytes:ByteArray):ByteArray
+	{
+		var _buffer = new ByteArray();
+		_buffer.endian =flash.utils.Endian.LITTLE_ENDIAN;
+		bytes.position = 0;			
+		while ( bytes.bytesAvailable > 0 ) {								
+			var short = bytes.readShort();
+			var float:Float = short / 0x7fff;
+			_buffer.writeFloat(float);						
+		}
+		return _buffer;			
+	}
+
+	//------------------------------------------------------------------------------------------------
+	
+	static public function arrayIntsToByteArrayShorts(leftInts:Wav16Ints, rightInts:Wav16Ints=null):ByteArray
+	{
+		var result:ByteArray = new ByteArray();
+		for (i in 0...leftInts.length)
+		{
+			result.writeShort(leftInts[i]);
+			if (rightInts != null) result.writeShort(rightInts[i]);
+		}
+		return result;
+	}
+	
+
+	
+#if (sys)
 	static public function getData(filename:String)
 	{ 
 	var bytes:Bytes = File.getBytes(filename);
@@ -179,9 +241,9 @@ class WavTools
 	}
 #end
 
-	static public function mixInts(ints1:Array<Int>, ints2:Array<Int>):Array<Int>
+	static public function mixInts(ints1:Wav16Ints, ints2:Wav16Ints):Wav16Ints
 	{
-		var result:Array<Int> = [];
+		var result:Wav16Ints = [];
 		for (pos in 0...ints1.length)
 		{
 			var v1 = ints1[pos];
@@ -192,6 +254,112 @@ class WavTools
 		return result;
 	}
 	
+	static public function dspFadeIn(ints:Wav16Ints, length:Int, startLevel:Float=0.0):Wav16Ints
+	{		
+		var result = new Wav16Ints();
+		var length = Std.int(Math.min(length, ints.length));
+		for (pos in 0...length)
+		{
+			var int = ints[pos];
+			var delta = Floats.interpolate(pos / length, startLevel, 1);
+			var newInt = Std.int(int * delta);
+			result.push(newInt);
+		}
 
+		if (length < ints.length)
+			for (pos in length+1...ints.length)
+			{
+				result.push(ints[pos]);
+			}
+			
+		return result;
+	}
+	
+	static public function dspFadeOut(ints:Wav16Ints, length:Int, endLevel:Float=0.0):Wav16Ints
+	{		
+		var result = new Wav16Ints();
+		var length = Std.int(Math.min(length, ints.length));
+		var startPos = ints.length - length;
+		if (startPos > 0)
+			for (pos in 0...startPos-1)
+			{
+				result.push(ints[pos]);
+			}
+		
+		for (pos in startPos...ints.length)
+		{
+			var int = ints[pos];
+			var delta = Floats.interpolate((pos - startPos) / length, 1, endLevel);
+			var newInt = Std.int(int * delta);
+			result.push(newInt);
+		}
+			
+		return result;
+	}	
+	
+	
+	static public function dspSubset(ints:Wav16Ints, trimStart:Int, trimEnd:Int=0, fadeIn:Int = 0, fadeOut:Int = 0): Wav16Ints
+	{
+		var result = new Wav16Ints();
+		var startpos = trimStart;
+		var endpos = ints.length - trimEnd;
+		for (pos in startpos...endpos)
+		{
+			result.push(ints[pos]);
+		}
+		
+		if (fadeIn > 0) result = dspFadeIn(result, fadeIn);
+		if (fadeOut > 0) result = dspFadeOut(result, fadeOut);
+		
+		return result;
+	}
+	
+	//---------------------
+	
+	static public function getIntsFromWavFile(wav:ByteArray):Array<Wav16Ints>
+	{
+		var result = new Array<Wav16Ints>();
+		
+		var wavFile:WAVE = new Reader(new BytesInput(ByteArrayTools.toBytes(wav))).read();		
+		var wavHeader = wavFile.header;	
+		var stereo = (wavHeader.channels > 1);				
+
+		if (stereo) {			
+			var stereoints = WavTools.stereo16bitToInts(wavFile.data);		
+			return stereoints;
+		} else {
+			var monoints = WavTools.mono16bitToInts(wavFile.data);
+			return [monoints];
+		}			
+		return null;
+		
+	}
+	
+	static public function dspMix(ints1:Wav16Ints, ints2:Wav16Ints, ints2Offset:Int):Wav16Ints
+	{
+		var result = new Wav16Ints();
+		var resultLenght = Std.int(Math.max(ints1.length, ints2Offset + ints2.length ));		
+		trace([ints1.length, ints2.length, resultLenght]);
+		
+		for (pos in 0...resultLenght)
+		{
+			var level1 = ints1.indexOrValue(pos, 0);
+			var level2 = (pos > ints2Offset) ? ints2.indexOrValue(pos - ints2Offset, 0) : 0;
+			var resultlevel = Std.int(level1 + level2);
+			result.push(resultlevel);
+		}
+		return result;
+	}
+
+	static public function dspCrossfade(ints1:Wav16Ints, ints2:Wav16Ints, crossLenght: Int):Wav16Ints
+	{
+		crossLenght =  ArrayTools.intsMin([ints1.length, ints2.length, crossLenght]);
+		trace([ints1.length, ints2.length, crossLenght]);
+		var ints1 = dspFadeOut(ints1, crossLenght);
+		var ints2 = dspFadeIn(ints2, crossLenght);
+		var result = dspMix(ints1, ints2, ints1.length - crossLenght);
+		return result;		
+	}
+	
 
 }

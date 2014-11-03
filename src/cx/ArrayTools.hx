@@ -220,6 +220,18 @@ class ArrayTools
 		else
 			while ((j = start + step * ++i) < stop) range.push(j);
 		return range;
-	}	
+	}
+	
+	
+	public static function intsMin(a:Array<Int>):Int
+	{
+		var r = a[0];
+		for (v in a)
+		{
+			if (v < r) r = v;
+		}
+		return r;
+	}
+	
 	
 }
