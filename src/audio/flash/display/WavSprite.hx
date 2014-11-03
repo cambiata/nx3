@@ -1,6 +1,7 @@
 package audio.flash.display;
 
-import cx.flash.Handlesprite;
+
+import cx.flash.ResizeSprite;
 import format.wav.Reader;
 import format.wav.Data;
 import cx.ByteArrayTools;
@@ -15,7 +16,7 @@ import audio.WavTools;
  * WavSprite
  * @author Jonas Nyström
  */
-class WavSprite extends Handlesprite
+class WavSprite extends ResizeSprite
 {
 	var wavHeader:WAVEHeader;
 	//var wavData:Bytes;
@@ -26,13 +27,10 @@ class WavSprite extends Handlesprite
 	var stereo:Bool;
 	
 	public function new(wavfile:ByteArray)
-	{
-		
-		var wavFile:WAVE = new Reader(new BytesInput(ByteArrayTools.toBytes(wavfile))).read();
-		
+	{		
+		var wavFile:WAVE = new Reader(new BytesInput(ByteArrayTools.toBytes(wavfile))).read();		
 		this.wavHeader = wavFile.header;	
-		this.stereo = !(this.wavHeader.channels == 1);		
-		
+		this.stereo = !(this.wavHeader.channels == 1);				
 		if (stereo) {			
 			var ints = WavTools.stereo16bitToInts(wavFile.data);		
 			this.leftInts = ints[0];		
@@ -42,22 +40,15 @@ class WavSprite extends Handlesprite
 		} else {
 			this.leftInts = WavTools.mono16bitToInts(wavFile.data);
 			this.graphSamplesLeft = WavTools.getWaveformSamples(leftInts, 1000);
-		}
-		
+		}		
 		 super();
-		
-			
 	}
 	
-	override private function _repaint(x:Float, y:Float, width:Float, height:Float, background:Sprite ) {
+	static var LINEWIDTH:Float = 2;
+	
+	override public function draw(width:Float, height:Float, background:Sprite ) {
 		var gr = background.graphics;
 		gr.clear();
-		
-		gr.lineStyle(0, 0);
-		gr.beginFill(0x0000ff, 0.1);
-		//gr.drawRect(x, y, width, height);
-		gr.drawRoundRect(x, y, width , height, 8);
-		
 		
 		var _y =  height / 2;
 		var _x = 0;
@@ -74,7 +65,7 @@ class WavSprite extends Handlesprite
 		var incr:Float =  this.graphSamplesLeft.length / width;		
 		if (stereo)
 		{
-			gr.lineStyle(1, 0x333333);
+			gr.lineStyle(LINEWIDTH, 0x333333);
 			var incrPos:Float = 0;		
 			var _width = Std.int(width);
 			for (_x in 0..._width)
@@ -86,7 +77,7 @@ class WavSprite extends Handlesprite
 				incrPos += incr;
 			}
 			
-			gr.lineStyle(1, 0x000000);
+			gr.lineStyle(LINEWIDTH, 0x000000);
 			var incrPos:Float = 0;
 			for (_x in 0..._width)
 			{
@@ -97,9 +88,8 @@ class WavSprite extends Handlesprite
 				incrPos += incr;
 			}			
 			
-		} else {
-			
-			gr.lineStyle(1, 0x000000);
+		} else {			
+			gr.lineStyle(LINEWIDTH, 0x000000);
 			var incrPos:Float = 0;		
 			var _width = Std.int(width);
 			for (_x in 0..._width)

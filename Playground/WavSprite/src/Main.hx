@@ -18,7 +18,7 @@ class Main  extends Sprite
 	public function new() 
 	{
 		super();
-		var wav:ByteArray = openfl.Assets.getBytes("assets/Komp.wavdata");		
+		var wav:ByteArray = openfl.Assets.getBytes("assets/christ.wavdata");		
 		var ws = new WavSprite(wav);		
 		this.addChild(ws);	
 	}

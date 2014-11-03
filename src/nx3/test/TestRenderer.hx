@@ -1,5 +1,5 @@
 package nx3.test;
-import nx3.action.SoundInteractivity;
+//import nx3.action.SoundInteractivity;
 import nx3.geom.Rectangle;
 import nx3.NBar;
 import nx3.NPart;
@@ -38,7 +38,7 @@ class TestRenderer
 	static public function testRenderP(r:Renderer)
 	{		
 		r.addInteraction( new TestInteractivity());
-		r.addInteraction( new SoundInteractivity());
+		//r.addInteraction( new SoundInteractivity());
 		r.renderScore(new PScore(TestItems.scoreBachSinfonia4()), 10, 100, 300);
 	}
 	
