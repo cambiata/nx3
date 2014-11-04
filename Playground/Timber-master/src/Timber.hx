@@ -5,7 +5,8 @@
   
 import haxe.ds.ObjectMap;
 import haxe.ds.StringMap;
-
+import PitchSample;
+import PitchSample.PitchSamples;
 
 class Timber 
 {
@@ -61,6 +62,8 @@ class Timber
 	public static function main()
 	{
 		init();
+		var pd = new PitchDetector();
+		
 	}
 	
 	public static function debug(message) {
@@ -107,17 +110,6 @@ class Timber
 	}
 
 	public static function getMicFailed() {
-		/*
-		if(callbacks.exists("MIC_FAILED")) {
-			try {
-				flash.external.ExternalInterface.call(callbacks.get("MIC_FAILED"));
-			} catch(e : Dynamic) {
-				debug("ERROR: " + e);
-			}
-		}
-		*/
-		
-		
 		debug("Failed to access a microphone.");
 	}
 
@@ -267,7 +259,7 @@ class Timber
 	}
 		
 	public static function micSampleDataHandler(e) {
-		//trace('mic');
+		trace('mic');
 	
 		var pitchSample:PitchSample = null;
 		e.data.position = 0;
@@ -278,6 +270,9 @@ class Timber
 			var amplitude : Float = 0.0;
 			while(samples < REQUIRED_SAMPLES) {
 				var sample : Float = e.data.readFloat();
+				//if (sample > 0.1) trace(sample);
+				//trace(sample);
+				
 				amplitude += (sample * sample);
 				samples++;
 				flash.Memory.setDouble(samples * DOUBLES, sample);
@@ -301,21 +296,15 @@ class Timber
 				trace('new: ' + pitchSample.note);
 				prevPitchSample.length = pitchSample.time - prevPitchSample.time;
 				pitchSamples.push(pitchSample);
+				
+				for (ps in pitchSamples)
+				{
+					trace(ps);
+				}				
 			}
 		}
-		
-		
-		
 		
 	}
 }
 
-typedef PitchSample = {
-	
-	time:Float,
-	note:Int,
-	freq:Float,
-	?length:Float,
-}
 
-typedef PitchSamples = Array<PitchSample>;

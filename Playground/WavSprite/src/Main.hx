@@ -2,9 +2,11 @@ package;
 
 import audio.flash.display.Wav16IntsSprite;
 import audio.flash.display.WavSprite;
+import audio.pitch.PitchDetector;
 import audio.WavTools;
 import cx.ByteArrayTools;
 import flash.net.URLRequest;
+import openfl.Assets;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.SampleDataEvent;
@@ -24,8 +26,9 @@ class Main  extends Sprite
 	{
 		super();
 
+		/*
 		var christ = WavTools.getIntsFromWavFile(openfl.Assets.getBytes("assets/christ.wavdata"))[0];
-	
+
 		var chri = WavTools.dspSubset(christ, 0, 60000);
 		var wsChri = new Wav16IntsSprite(chri, null, true);
 		this.addChild(wsChri);
@@ -40,13 +43,21 @@ class Main  extends Sprite
 		//var mix = WavTools.dspMix(christ, fyr, 20000);
 		
 		var cross = WavTools.dspCrossfade(chri, st, 1000);
-		
+		*/
+		/*
 		var s:Sound = new Sound();		
-		s.loadPCMFromByteArray(WavTools.intsToMono16ByteArray(cross), cross.length, 'short', false);
-		
+		s.loadPCMFromByteArray(WavTools.intsToMono16ByteArray(cross), cross.length, 'short', false);		
 		var ch = s.play();
 		trace(s.length);		
+		*/
 		
+		
+		var pitchtest = WavTools.getIntsFromWavFile(openfl.Assets.getBytes("assets/pitchtest.wavdata"))[0];
+		//var wav = Assets.getBytes("assets/christ.wavdata");
+		var shorts = WavTools.arrayIntsToByteArrayShorts(pitchtest);
+		var floats = WavTools.soundShortsToFloats(shorts);
+		var pd:PitchDetector = new PitchDetector();
+		pd.execute(floats);
 		
 	}
 	
