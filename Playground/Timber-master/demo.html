@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel=stylesheet href="style.css" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" type="text/javascript"></script>
+    <script src="timber.js" type="text/javascript"></script>
+    <script src="timber-demo.js" type="text/javascript"></script>
+    <title>Timber demo</title>
+  </head>
+  <body>
+    <img src="timber.png">
+    <div style="margin-top:1em; margin-bottom:2em;">
+      <a class="button" href="index.html">home</a>
+      <a class="selected button" href="demo.html">demo</a>
+      <a class="button" href="docs.html">docs</a>
+      <a class="button" href="https://github.com/doctorbill/Timber">source</a>
+    </div>
+    <div id="instructions" style="width:500px; background:#FAFAFA; padding:9px; margin-bottom:1em;">
+      <p>Timber is a library for doing realtime pitch detection in web apps.  This is a live demo of it in action.</p>
+      <p>
+        To start the demo, click "allow" below, and then start making some noise - sing, whistle or play an instrument.
+        If nothing happens, try selecting a different microphone.
+      </p>
+      <p>You need Flash 10.1 and a working microphone to use this demo.</p>
+    </div>
+    <div id="flash-container" style="width:518px; text-align:center"><div id="timber_demo_flash"></div></div>
+    <div id="output" style="display:none">
+      <table style="height:150px; background:#FAFAFA; border:1px solid #CCCCCC;">
+        <tr>
+          <td><div class="bar" id="note-0"></div><div class="caption">C</div></td>
+          <td><div class="bar" id="note-1"></div><div class="caption">C#</div></td>
+          <td><div class="bar" id="note-2"></div><div class="caption">D</div></td>
+          <td><div class="bar" id="note-3"></div><div class="caption">D#</div></td>
+          <td><div class="bar" id="note-4"></div><div class="caption">E</div></td>
+          <td><div class="bar" id="note-5"></div><div class="caption">F</div></td>
+          <td><div class="bar" id="note-6"></div><div class="caption">F#</div></td>
+          <td><div class="bar" id="note-7"></div><div class="caption">G</div></td>
+          <td><div class="bar" id="note-8"></div><div class="caption">G#</div></td>
+          <td><div class="bar" id="note-9"></div><div class="caption">A</div></td>
+          <td><div class="bar" id="note-10"></div><div class="caption">A#</div></td>
+          <td><div class="bar" id="note-11"></div><div class="caption">B</div></td>
+        </tr>
+      </table>
+    </div>
+    <div id="debug" style="display:none; margin-top:1em; width:516px; height:100px; background:#FAFAFA; border:1px solid #CCCCCC; overflow:auto"></div>
+    <div id="debug_toggle" style="display:none; margin-top:5px; width:518px; text-align:center">
+      <a id="debug_toggle_button" href="#" onclick="return toggle_debug();">show debug output</a>
+    </div>
+    <form action="#" onsubmit="return false;" id="mics" style="display:none; margin-top:1em; width:518px; text-align:center">
+      <div>Microphone:
+	<select name="microphone" id="microphone-select" style="margin-left:1em;" onchange="microphone_selected();">
+	  <option value="none">No microphones detected</option>
+	</select>
+      </div>
+    </form>
+    <script type="text/javascript">
+      load_timber("", "timber_demo_flash", "timber_demo_init");
+    </script>
+  </body>
+</html>

@@ -14,6 +14,9 @@ import nx3.NVoice;
 
 class Main 
 {
+	
+	static public function main() new Main();
+	
 	public function new() 
 	{
 		

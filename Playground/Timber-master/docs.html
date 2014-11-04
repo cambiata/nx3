@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel=stylesheet href="style.css" type="text/css">
+    <title>Timber docs</title>
+    <style type="text/css">
+    <!--
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #0000ff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #8b2252;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #a0522d;
+      }
+      .docblock {
+        width:800px; color:#777777; background:#FAFAFA; padding:4px 9px 4px 9px;
+      }
+      .docblock p {
+        padding:0px;
+        margin:0px;
+        border:0px;
+      }
+      .code {
+        margin-left:3em;
+      }
+      h3 {
+        color:#997777;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <img src="timber.png">
+    <div style="margin-top:1em; margin-bottom:2em;">
+      <a class="button" href="index.html">home</a>
+      <a class="button" href="demo.html">demo</a>
+      <a class="selected button" href="docs.html">docs</a>
+      <a class="button" href="https://github.com/doctorbill/Timber">source</a>
+    </div>
+
+    <div class="docblock">
+      <p>Timber is a library for doing realtime pitch detection in web apps.
+	Here's a basic guide on using it in your own projects.</p>
+    </div>
+
+    <div class="docblock">
+      <h3>Prerequisites</h3>
+      <p>To get started, you'll need to download at least <a href="timber.js">timber.js</a> and <a href="Timber.swf">Timber.swf</a>
+	(do not hotlink them - please host the files yourself).</p>
+    </div>
+
+    <div class="docblock">
+      <h3>Using it</h3>
+      <p>Timber uses the <a href="http://code.google.com/p/swfobject/">swfobject</a>
+	library.  You can either host that yourself, or use the Google-hosted copy:</p>
+    </div>
+    <pre class="code">&lt;<span class="function-name">script</span> <span class="variable-name">src</span>=<span class="string">"http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"</span>&gt;&lt;/<span class="function-name">script</span>&gt;</pre>
+    <div class="docblock">
+      <p>You also need to import timber.js - you'll be hosting that yourself:</p>
+    </div>
+    <pre class="code">&lt;<span class="function-name">script</span> <span class="variable-name">src</span>=<span class="string">"http://example.com/timber/timber.js"</span>&gt;&lt;/<span class="function-name">script</span>&gt;</pre>
+    <div class="docblock">
+      Next you need a placeholder DOM element that will hold the Flash part of Timber.  Once the library has
+      access to the user's microphone, this will be invisible.  Until then (but only after you initialize Timber),
+      this will display a request to access a microphone:
+    </div>
+    <pre class="code">&lt;<span class="function-name">div</span> <span class="variable-name">id</span>=<span class="string">"timber"</span>&gt;&lt;/<span class="function-name">div</span>&gt;</pre>
+    <div class="docblock">
+      Now you need to initialize Timber:
+    </div>
+    <pre class="code">&lt;<span class="function-name">script</span>&gt;
+  load_timber(<span class="string">"http://example.com/timber/"</span>, <span class="string">"timber"</span>, <span class="string">"my_init"</span>);
+&lt;/<span class="function-name">script</span>&gt;</pre>
+    <div class="docblock">
+      All three parameters are required.  First you need to tell Timber where you've hosted it, so it can fetch the remaining files it needs to run.
+      Next give it the DOM id of the placeholder you created above.  Finally you specify the name of a javascript function which Timber should
+      call after the library has finished initializing itself.
+    </div>
+
+    <div class="docblock">
+      Once Timber has finished initializing, you can add an event handler that will get called any time a note is detected:
+    </div>
+    <pre class="code">$(<span class="string">"timber"</span>).setCallback(<span class="string">"NOTE_DETECTED"</span>, <span class="string">"got_note"</span>);</pre>
+
+    <div class="docblock">
+      Here's a full list of the callbacks you can add:
+    </div>
+
+    <div class="docblock code" style="background:white; font-size:small; margin-top:7px; margin-bottom:7px">
+      <span class="string">"DEBUG"</span> (one string parameter, a debug message)<br>
+      <span class="string">"MIC_INIT"</span> (one string parameter, the name of the microphone that is being initialized)<br>
+      <span class="string">"MIC_OK"</span> (no parameters)<br>
+      <span class="string">"MIC_FAILED"</span> (no parameters)<br>
+      <span class="string">"NOTE_DETECTED"</span> (two numeric parameters: a note number between 0.0 and 12.0, with 0.0 representing a "C",
+      and an amplitude between 0.0 and 1.0)<br>
+    </div>
+
+    <div class="docblock">
+      There are two more functions you can invoke on Timber: getMicrophoneNames returns a list of the available
+      microphones, and useMicrophone tells Timber to try to use one of them.
+      You don't necessarily need to use these functions - Timber will attempt to use the default microphone as soon
+      as it's initialized.
+    </div>
+
+    <div class="docblock" style="margin-bottom:3em;">
+      <h3>Building it</h3>
+      <p>Download and install <a href="http://haxe.org/">haxe</a>, and then run ./compile.sh in the src directory.</p>
+    </div>
+
+  </body>
+</html>

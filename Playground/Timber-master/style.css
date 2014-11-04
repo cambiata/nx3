@@ -1,0 +1,82 @@
+html, body, div, form, fieldset, legend, label
+{
+ margin: 0;
+ padding: 0; 
+}
+
+table
+{
+ border-collapse: collapse;
+ border-spacing: 0;
+}
+
+td
+{
+text-align:center;
+vertical-align:bottom;
+padding:0px;
+}
+
+.bar {background:blue; width:41px; height:0px;}
+.caption {background:#F5F0FA; width:41px; text-align:center; border:1px solid #CCCCCC; padding-top:2px;}
+
+img { border: 0; }
+
+html {
+font-family:arial,sans-serif;
+margin-left:5em;
+margin-right:5em;
+color:#666666;
+}
+
+a {
+color:#5555CC;
+text-decoration:none;
+}
+
+a:visited {
+color:#5555CC;
+}
+
+a:hover {
+color:#5555CC;
+text-decoration:underline;
+}
+
+.button {
+margin:7px;
+opacity:0.7;
+color:white;
+padding:6px;
+-webkit-border-radius:5px;
+-moz-border-radius:5px;
+border-radius:5px;
+border: 0px solid #ffffff;
+background-color: #1B7A2D;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#2ABD46), to(#1B7A2D));
+background-image: -moz-linear-gradient(90deg,#2ABD46,#1B7A2D);
+/* IE below 8 */
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#2ABD46FF, endColorstr=#1B7A2DFF);
+/* IE 8 */
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#2ABD46FF, endColorstr=#1B7A2DFF)";
+}
+
+.button:hover {
+opacity:1.0;
+color:white;
+text-decoration:none;
+}
+
+.button:visited { 
+color:white;
+}
+
+.selected {
+color:#444444;
+}
+.selected:hover {
+color:#444444;
+}
+.selected:visited {
+color:#444444;
+}
