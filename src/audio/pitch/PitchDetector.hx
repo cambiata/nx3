@@ -1,58 +1,45 @@
 package audio.pitch;
 import flash.utils.ByteArray;
-import audio.pitch.PitchSample;
-import audio.pitch.PitchSample.PitchSamples;
+using cx.ArrayTools;
 /**
  * PitchDetector
  * @author Jonas Nyström
  */
 class PitchDetector 
 {
-	
-	
 	static inline var FLOATS = 4;
 	static inline var DOUBLES = 8;
 	static inline var SEMITONE = 0.0594630943592953;
 	static inline var SECONDS = 1000;
 	static inline var MEMORY_OFFSET_EPS = 65536;
 	static inline var MEMORY_OFFSET_AEPS = 65536 + 1000 * DOUBLES;
-	var byteStore : ByteArray;	
-	var pitchSamples:PitchSamples = [{time:0, note:0, freq:0}];
+	//var byteStore : ByteArray;	
 
-	public function new() 
+	public function new(realtime:Bool=false) 
 	{			
-		byteStore = new ByteArray();
+		var byteStore = new ByteArray();
 		byteStore.length = 128 * 1024;
 		flash.Memory.select(byteStore);		
+		this.realtime = realtime;
 	}
+	
+	var currentTime:Float;
 	
 	public function execute(data:ByteArray)
 	{
 		var position = 0;
-		data.position = position;
-		trace(data.bytesAvailable);
+		data.position = position;		
 		while (data.bytesAvailable > 8000)
 		{
+			currentTime = WavTools.secondsFromByteArrayMono(position);
 			position = detect(data, position);			
-		}
-	
+		}			
 	}
-	
-	
+
 	public function detect(data:ByteArray, position:Int=0)
 	{
-
-		
-		var pitchSample:PitchSample = null;
 		data.position = position;
 		var REQUIRED_SAMPLES = 2000;		
-
-		/*
-		trace(data.length);
-		trace(data.position);
-		trace(data.bytesAvailable);		
-		*/
-		
 		
 		if(Std.int(data.bytesAvailable) > REQUIRED_SAMPLES * FLOATS) {
 			var samples = 0;
@@ -64,13 +51,10 @@ class PitchDetector
 				samples++;
 				flash.Memory.setDouble(samples * DOUBLES, sample);				
 			}
-			
 			amplitude /= samples;
-
 			if(amplitude > 0.01) {
 				var start = Date.now().getTime();
-				pitchSample = processSamples(samples, amplitude);
-
+				processSamples(samples, amplitude);
 				var elapsed = ((Date.now().getTime() - start) / 1000.0);
 				if(elapsed > 0.1) {
 					debug("WARNING: Processing " + samples + " samples took " + elapsed + " seconds.");
@@ -78,24 +62,9 @@ class PitchDetector
 			}
 			else
 			{
-				var currentTime = Date.now().getTime() - startTime;
-				pitchSample = { time: currentTime, note:0, freq:0 };
+				if (realtime) currentTime = Date.now().getTime() - startTime;
+				this.detectFrequency(0, 0,  currentTime);
 			}
-
-			var prevPitchSample =  pitchSamples[pitchSamples.length - 1];
-			
-			
-			if (pitchSample.note != prevPitchSample.note) {
-				trace('new: ' + pitchSample.note);
-				prevPitchSample.length = pitchSample.time - prevPitchSample.time;
-				pitchSamples.push(pitchSample);
-				
-				for (ps in pitchSamples)
-				{
-					trace(ps);
-				}				
-			}
-			
 		}	
 		
 		return data.position;
@@ -105,9 +74,10 @@ class PitchDetector
 	var filterLP = new OnePoleLowPassFilter(0.4);
 	var filterHP = new OnePoleHighPassFilter(0.99);
 	
-	public function processSamples(samples, amplitude : Float):PitchSample
+	public function processSamples(samples, amplitude : Float)
 	{
-		var currentTime = Date.now().getTime() - startTime;
+		//var currentTime = Date.now().getTime() - startTime;
+		if (realtime) currentTime = Date.now().getTime() - startTime;
 		
 		for(index in 0...samples) {
 			var sample = flash.Memory.getDouble(index * DOUBLES);
@@ -119,8 +89,10 @@ class PitchDetector
 			var frequency = Audio.secondsToFrequency(Audio.samplesToSeconds(wavelength));
 			//var noteNumber = Audio.scaleFrequency(frequency);
 			var noteNumber = Math.round(Audio.scaleFrequency(frequency));
+
+			this.detectFrequency(frequency, amplitude, currentTime);
+			
 			//trace([noteNumber, frequency]);
-			return { time:currentTime, note:noteNumber, freq:frequency };
 			
 			/*
 			if(callbacks.exists("NOTE_DETECTED")) {
@@ -134,8 +106,15 @@ class PitchDetector
 			
 			//debug("Detected #" + (Std.int(100 * noteNumber) / 100.0) + " (" + Audio.noteName(noteNumber) + "), with amplitude " + (Std.int(100 * amplitude) / 100.0));
 		}
-		return { time:currentTime, note:0, freq:0 };
+
+		//this.detectFrequency(0, currentTime);
 	}	
+	
+	dynamic public function  detectFrequency(frequency:Float, amplitude:Float, time:Float)
+	{
+		trace([frequency, amplitude, time]);
+	}
+	
 	
 	public  function bestWavelength(samples) {
 		var bestWavelength = 0;
@@ -176,6 +155,7 @@ class PitchDetector
 	}	
 	
 	static var lastDetectedWavelength = 1;	
+	var realtime:Bool;
 	
 	public static function postProcess() {
 		// Cumulative mean normalized difference...
@@ -227,6 +207,8 @@ class PitchDetector
 	public static function debug(message) {
 		trace(message);
 	}	
+	
+	
 	
 }
 

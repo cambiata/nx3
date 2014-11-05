@@ -25,30 +25,20 @@ class Audio {
 	}
 
 	public static function scaleFrequency(f : Float) {
-		// 440 => A
-		// 880 => A
-		while(f < 440) {
-			f *= 2;
-		}
-		while(f >= 880) {
-			f /= 2;
-		}
-		// 440 < f <= 880
-		// We want:  f=440 => 0
-		//           f=880 => 12
 		var scaled = 12 * ((Math.log(f) - Math.log(440)) / Math.log(2));
-		scaled -= 3; // Make C note #0
-		if(scaled < 0) {
-			scaled += 12;
-		}
+		//scaled -= 3; // Make C note #0
 		return scaled;
 	}
+	
+	public inline static function frequencyToNote(f : Float) {
+		return 12 * ((Math.log(f) - Math.log(440)) / Math.log(2));
+		
+	}	
 
-	/*
-	public static function scaleFrequencyAbs(f : Float) {
-		return Math.round(scaleFrequency(f) - 0.5));
+	public inline  static function noteToFrequency(note):Float
+	{
+		return Math.round( 440 *Math.pow( 1.059463094359, note));
 	}
-	*/
 	
 	static var notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 

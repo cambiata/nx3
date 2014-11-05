@@ -22,6 +22,8 @@ using cx.ArrayTools;
  */
 class WavTools
 {
+	static public inline var SAMPLE_RATE:Int = 44100;
+	
 	static public function mono16bitToInts(wavData:Bytes): Wav16Ints
 	{
 		var length = Std.int((wavData.length - (wavData.length % 2)) / 2);
@@ -339,7 +341,6 @@ class WavTools
 	{
 		var result = new Wav16Ints();
 		var resultLenght = Std.int(Math.max(ints1.length, ints2Offset + ints2.length ));		
-		trace([ints1.length, ints2.length, resultLenght]);
 		
 		for (pos in 0...resultLenght)
 		{
@@ -354,12 +355,16 @@ class WavTools
 	static public function dspCrossfade(ints1:Wav16Ints, ints2:Wav16Ints, crossLenght: Int):Wav16Ints
 	{
 		crossLenght =  ArrayTools.intsMin([ints1.length, ints2.length, crossLenght]);
-		trace([ints1.length, ints2.length, crossLenght]);
 		var ints1 = dspFadeOut(ints1, crossLenght);
 		var ints2 = dspFadeIn(ints2, crossLenght);
 		var result = dspMix(ints1, ints2, ints1.length - crossLenght);
 		return result;		
 	}
 	
+	static inline public function secondsFromByteArrayMono(val:Int):Float return val / SAMPLE_RATE / 4;
+	
+	static inline  public function secondsFromInts(val:Int):Float return val / SAMPLE_RATE;
+	
+	static inline public function secondsToInts(secs:Float):Int return Std.int(secs * SAMPLE_RATE);
 
 }
