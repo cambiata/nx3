@@ -66,6 +66,10 @@ class Main extends Sprite
 		*/
 		
 		var nscore:NScore = TestItems.scoreBachSinfonia4();
+		
+		//var nscore:NScore = TestItems.scoreTplChain();
+		//var nscore:NScore = TestItems.scoreTplRow();
+		
 		#if (neko)
 			File.saveContent('bach.xml', ScoreXML.toXml(nscore).toString());
 			Serializer.USE_CACHE = true;

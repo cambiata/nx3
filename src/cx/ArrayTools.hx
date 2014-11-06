@@ -136,6 +136,11 @@ class ArrayTools
 	inline static public function isLast<T>(array:Array<T>, item:T) :Bool {
 		return (array[array.length-1] == item);
 	}	
+	
+	inline static public function secondLast<T>(array:Array<T>): T {
+		return array[array.length-2];
+	}	
+	
 
 	static public function index<T>(array:Array<T>, item:T) {
 		return Lambda.indexOf(array, item);

@@ -302,8 +302,7 @@ class Timber
 					trace(ps);
 				}				
 			}
-		}
-		
+		}		
 	}
 }
 

@@ -83,6 +83,7 @@ class MicDetector
 	
 	public dynamic function detect(data:ByteArray, position:Int = 0):UInt
 	{
+		
 		return 0;
 	}
 	
