@@ -107,6 +107,7 @@ Time: <span id="time">00:00:00.0 | 00:00:00.0</span></td></tr>
 	var bpmOutput = global.document.getElementById('bpm');
 	
 	var acx = new (global.AudioContext || global.webkitAudioContext)();
+	//var acx = new global.webkitAudioContext();
 	
 	var musicfile = "Basement - JJ3.mp3"; //"Luigi_Elettrico-Cento_Dieci_(110).mp3";//"Medivo_remix.mp3";
 	
@@ -120,7 +121,7 @@ Time: <span id="time">00:00:00.0 | 00:00:00.0</span></td></tr>
 	
 	var frameSize = 1024;
 	
-	var jsnode = acx.createJavaScriptNode(1024, 1, 1);
+	var jsnode = acx.createScriptProcessor(1024, 1, 1);
 	jsnode.connect(acx.destination);
 	
 	jsnode.onaudioprocess = function (e) {
@@ -255,7 +256,8 @@ Time: <span id="time">00:00:00.0 | 00:00:00.0</span></td></tr>
 	
 	var stopPlayback = function () {
 		if(source) {
-			source.noteOff(0);
+			//source.noteOff(0);
+			source.stop(0);
 			source.disconnect(0);
 			fft.disconnect(0);
 			//jsnode.disconnect(0);
@@ -276,7 +278,8 @@ Time: <span id="time">00:00:00.0 | 00:00:00.0</span></td></tr>
 			fft.connect(jsnode);
 			//jsnode.connect(acx.destination);
 			source.connect(acx.destination);
-			source.noteGrainOn(0, offset, currentBuffer.duration-offset);
+			//source.noteGrainOn(0, offset, currentBuffer.duration-offset);
+			source.start(0, offset, currentBuffer.duration-offset);
 			startTime = Date.now() - offset*1000;
 		}
 		togglebtn.innerHTML = '&nbsp;▌▌';
