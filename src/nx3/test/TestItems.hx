@@ -585,9 +585,21 @@ class TestItems
 		return nscore;						
 	}	
 	
-	static public function scoreTpl():NScore
+static public function scoreTplRow():NScore
 	{
-		var nbars:NBars = [new NBar([
+		var nbars:NBars = [
+		
+		new NBar([
+		
+			new NPart([	
+				new NVoice([				
+					new NNote(ENoteType.Tpl(0)),
+					new NNote(ENoteType.Tpl(2)),
+					new NNote(ENoteType.Tpl(1)),
+					new NNote(ENoteType.Tpl(-3)),
+					])
+			], EPartType.Tplrow),		
+			
 			new NPart([	
 				new NVoice([				
 					new QNote4(2),
@@ -595,8 +607,71 @@ class TestItems
 					new QNote4(3),
 					new QNote4(-1),
 					])
-			]),
-			
+			]),				
+		] ),
+		
+		new NBar([
+		
+			new NPart([	
+				new NVoice([				
+					new NNote(ENoteType.Tpl(-2)),
+					new NNote(ENoteType.Tpl(-3), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-2), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-1)),
+					new NNote(ENoteType.Tpl(3), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(1), ENoteVal.Nv8),
+					])
+			], EPartType.Tplrow),				
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote8(-1),
+					new QNote8(0),
+					new QNote4(1),
+					new QNote8(5),
+					new QNote8(3),
+					])
+			]),			
+				
+		] ),	
+		
+		new NBar([
+		
+			new NPart([	
+				new NVoice([				
+					new NNote(ENoteType.Tpl(0), ENoteVal.Nv1),
+					])
+			], EPartType.Tplrow),			
+			new NPart([	
+				new NVoice([				
+					new QNote1(2),
+					])
+			]),			
+					
+		] )		
+		
+		
+		];	
+		
+		var nscore = new NScore(nbars);
+		//var score = new PScore(nscore);
+		return nscore;				
+	}		
+	
+	
+	static public function scoreTplChain():NScore
+	{
+		var nbars:NBars = [
+		
+		new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(2),
+					new QNote4(4),
+					new QNote4(3),
+					new QNote4(-1),
+					])
+			]),			
 			new NPart([	
 				new NVoice([				
 					new NNote(ENoteType.Tpl(0)),
@@ -605,7 +680,46 @@ class TestItems
 					new NNote(ENoteType.Tpl(-3)),
 					])
 			], EPartType.Tplchain),						
-		])];	
+		] ),
+		
+		new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote4(0),
+					new QNote8(-1),
+					new QNote8(0),
+					new QNote4(1),
+					new QNote8(5),
+					new QNote8(3),
+					])
+			]),			
+			new NPart([	
+				new NVoice([				
+					new NNote(ENoteType.Tpl(-2)),
+					new NNote(ENoteType.Tpl(-3), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-2), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-1)),
+					new NNote(ENoteType.Tpl(3), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(1), ENoteVal.Nv8),
+					])
+			], EPartType.Tplchain),						
+		] ),	
+		
+		new NBar([
+			new NPart([	
+				new NVoice([				
+					new QNote1(2),
+					])
+			]),			
+			new NPart([	
+				new NVoice([				
+					new NNote(ENoteType.Tpl(0), ENoteVal.Nv1),
+					])
+			], EPartType.Tplchain),						
+		] )		
+		
+		
+		];	
 		
 		var nscore = new NScore(nbars);
 		//var score = new PScore(nscore);
@@ -653,8 +767,8 @@ class TestItems
 				]),				
 				
 			]),
-			
 		]);		
+		
 		var score = new PScore(new NScore([nbar0, nbar1]));		
 		
 		var xmlstr = BarsXML.toXml(score.getNBars()).toString();
