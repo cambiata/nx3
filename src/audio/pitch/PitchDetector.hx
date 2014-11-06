@@ -88,7 +88,7 @@ class PitchDetector
 		if(wavelength > 0) {
 			var frequency = Audio.secondsToFrequency(Audio.samplesToSeconds(wavelength));
 			//var noteNumber = Audio.scaleFrequency(frequency);
-			var noteNumber = Math.round(Audio.scaleFrequency(frequency));
+			//var noteNumber = Math.round(Audio.scaleFrequency(frequency));
 
 			this.detectFrequency(frequency, amplitude, currentTime);
 			
