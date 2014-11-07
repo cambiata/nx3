@@ -40,10 +40,6 @@ class BytesLoader
 	public function loadBytes():Void
 	{
 		var bytes = sys.io.File.getBytes(filename);	
-		//trace(bytes.length);		
-		var str = '';
-		for (i in 0...40) str += bytes.get(i) + ', ';		
-		//trace(str);
 		this.callbck(bytes);
 	}	
 #elseif js	
