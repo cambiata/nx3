@@ -47,7 +47,6 @@ import nx3.PSystembarMeasurements;
 		 }
 		 else
 		 {
-			// trace(amount);
 			 calculator.stretch(amount);
 		 }
 	 }

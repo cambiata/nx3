@@ -20,7 +20,7 @@ class Unittests
 		runner.add(new TestSound());
 		
 		//runner.add(new TestP());
-		//runner.add(new TestPBars());
+		runner.add(new TestPBars());
 	
 		var success = runner.run();	
 	}	

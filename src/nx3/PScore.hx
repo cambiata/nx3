@@ -47,11 +47,14 @@ class PScore
 
 		this.systems = new PScoreSystemsGenerator(this.getBars()).getsSystems([systemwidth]);
 		
-		for (system in this.systems)	system.calculateSystembarXs();
+		for (system in this.systems)	
+		{
+			system.calculateSystembarXs();
+		}
 		
 		for (system in this.systems)		
-		{
-			var ifMoreThan = (system != this.systems.last()) ? 0 : system.getSystemBreakWidth() *.7;
+		{			
+			var ifMoreThan = (system != this.systems.last()) ? 0 : system.getSystemBreakWidth() * .7;			
 			new PScoreSystemStretcher(system).stretchTo(system.getSystemBreakWidth(), ifMoreThan );
 		}
 		return this.systems;

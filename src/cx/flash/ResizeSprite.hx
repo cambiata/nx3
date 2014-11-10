@@ -1,7 +1,7 @@
 package cx.flash;
 
 
-import flash.display.Graphics;
+import openfl.display.Graphics;
 import openfl.display.Sprite;
 import openfl.Lib;
 import openfl.events.MouseEvent;

@@ -65,8 +65,6 @@ class PBarStretchCalculator
 			countIterations++;
 		}
 		
-		//trace(countIterations);
-		
 		 var gain = 0.0;
 		for (column in columns)
 		{
