@@ -66,8 +66,12 @@ class Renderer
 		this.drawSystems(score.getSystems(systemwidth));	
 	}	
 
+	//----------------------------------------------------------------------------------------------------------------------------------------------------------	
+	
+	
 	public function new(target:ITarget, targetX:Float, targetY:Float, interactions:Array<IInteractivity>=null ) 
 	{
+		#if (mtrace > 1) trace('->Renderer()'); #end
 		this.target = target;
 		this.targetX = targetX;
 		this.targetY = targetY;
@@ -79,12 +83,14 @@ class Renderer
 	}
 	
 	public function addInteraction(interaction:IInteractivity)
-	{
+	{		
+		#if (mtrace > 1) trace('->addInteraction()'); #end
 		this.interactions.push(interaction);
 	}
 	
 	public function drawSystems(systems:PSystems)
 	{
+		#if (mtrace > 1) trace('->drawSystems()'); #end
 		var ny = 0.0;
 		for (system in systems)
 		{
@@ -97,6 +103,7 @@ class Renderer
 
 	public function drawSystemExtras(systems:PSystems,system:PSystem, nx:Float = 0, ny:Float = 0)
 	{
+		#if (mtrace > 1) trace('->drawSystemExtras()'); #end
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 		
@@ -224,6 +231,7 @@ class Renderer
 	
 	public function drawSystem(system:PSystem, nx:Float = 0, ny:Float = 0)
 	{
+		#if (mtrace > 1) trace('->drawSystem()'); #end
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 			
@@ -244,7 +252,7 @@ class Renderer
 	
 	private function drawBarlines(systembars:PSystemBars, nx:Float, ny:Float) 
 	{
-		
+		#if (mtrace > 1) trace('->drawBarlines()'); #end
 		
 		//trace([systembar.barWidths.x, systembar.barWidths.width]);
 		//var barX =  systembars.first().getXPosition();
@@ -286,6 +294,7 @@ class Renderer
 	
 	public function drawBarAttributes(systembar:PSystemBar, nx:Float = 0, ny:Float = 0)
 	{
+		#if (mtrace > 1) trace('->drawBarAttributes()'); #end
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;		
 		
@@ -304,6 +313,7 @@ class Renderer
 	
 	public function drawBarAttributeTime(systembar:PSystemBar, part:PPart, nx:Float, ny:Float, timeX:Float=0)
 	{
+		#if (mtrace > 2) trace('- ->drawBarAttributeTime()'); #end
 		var showTime = systembar.barConfig.showTime;
 		if (!showTime) return;		
 		
@@ -336,6 +346,7 @@ class Renderer
 	
 	public function drawBarAttributeKey(systembar:PSystemBar, part:PPart, nx:Float, ny:Float, keyX:Float=0)
 	{	
+		#if (mtrace > 2) trace('- ->drawBarAttributeKey()'); #end
 		var showkey = systembar.barConfig.showKey;
 		if (!showkey) return;	
 
@@ -363,6 +374,7 @@ class Renderer
 	
 	public function drawBarAttributeClef(systembar:PSystemBar, part:PPart, nx:Float, ny:Float,  clefX:Float=0)
 	{
+		#if (mtrace > 2) trace('- ->drawBarAttributeClef()'); #end
 		var showclef = systembar.barConfig.showClef;
 		if (!showclef) return;
 		
@@ -390,15 +402,16 @@ class Renderer
 	
 	public function drawBarContent(systembar:PSystemBar, nx:Float=0, ny:Float=0)
 	{
-		
+		#if (mtrace > 1) trace('->drawBarContent()'); #end
 		var bar = systembar.bar;
 		nx = nx + systembar.getBarMeasurements().getContentXPosition();
 		
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;
 		
+		
 		var contentwidth = bar.getContentwidth();
-		//trace(bar.getContentwidth());
+		trace(bar.getContentwidth());
 		for (part in bar.getParts())
 		{
 			//this.target.testLines(tx , ty + part.getYPosition()*this.scaling.unitY,  contentwidth*this.scaling.unitX);
@@ -432,7 +445,7 @@ class Renderer
 	
 	public function drawNoteHeads(note:PNote, nx:Float=0, ny:Float=0):Void 
 	{
-		
+		#if (mtrace > 2) trace('- ->drawNoteHeads()'); #end
 		//var tx = this.targetX + nx * this.scaling.unitX;
 		//var ty = this.targetY  + ny * this.scaling.unitY;
 		
@@ -488,7 +501,7 @@ class Renderer
 				for (rect in note.getHeadsRects())
 				{
 					
-					var level = note.heads[i].nhead.level;
+					var level = note.getHeads()[i].nhead.level;
 					if (level > 5 || level < -5)
 					{
 						hx1 = Math.min(hx1, x + (rect.x - Constants.LEGER_MARGIN) * scaling.unitX);
@@ -498,7 +511,7 @@ class Renderer
 				}						
 				
 				
-				for (head in note.heads)
+				for (head in note.getHeads())
 				{					
 					var level = head.nhead.level;
 					if (level <  5 && level >-5) continue;					
@@ -518,6 +531,7 @@ class Renderer
 	
 	public function drawComplex(complex:PComplex, nx:Float=0, ny:Float=0)
 	{
+		#if (mtrace > 2) trace('- ->drawComplex()'); #end
 		if (complex == null) return;
 		
 		//var tx = this.targetX + nx * this.scaling.unitX;
@@ -549,6 +563,7 @@ class Renderer
 	
 	public function drawComplexTies(complex:PComplex, nx:Float=0, ny:Float=0) 
 	{		
+		#if (mtrace > 2) trace('- ->drawComplexTies()'); #end
 		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;				
 		var y  = this.targetY + (ny + complex.getPart().getYPosition()) * target.getScaling().unitY;
 
@@ -584,6 +599,7 @@ class Renderer
 	
 	public function drawComplexDots(complex:PComplex, nx:Float=0, ny:Float=0) 
 	{	
+		#if (mtrace > 2) trace('- ->drawComplexDots()'); #end
 		for (r in complex.getDotRects())
 		{			
 			
@@ -605,7 +621,7 @@ class Renderer
 	
 	public function drawComplexSigns(complex:PComplex, nx:Float=0, ny:Float=0) 
 	{
-		
+		#if (mtrace > 2) trace('- ->drawComplexSigns()'); #end
 		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;	
 		var y  = this.targetY + (ny + complex.getPart().getYPosition()) * target.getScaling().unitY;
 		
@@ -630,6 +646,7 @@ class Renderer
 	
 	public function drawBeamgroup(beamgroup:PBeamgroup, nx:Float=0, ny:Float=0)
 	{
+		#if (mtrace > 2) trace('- ->drawBeamgroup()'); #end
 		// TODO : Y
 		//var notesx = beamgroup.getNotesXPositions();
 		
@@ -782,7 +799,7 @@ class Renderer
 	{
 		// TODO : Y
 		//var notesx = beamgroup.getNotesXPositions();
-		
+		#if (mtrace > 2) trace('- ->drawBeamgroupX()'); #end
 		
 		
 		
@@ -932,6 +949,7 @@ class Renderer
 	
 	public function drawTie(x:Float, y:Float, rect:Rectangle, direction:EDirectionUD)
 	{
+		#if (mtrace > 2) trace('- ->drawTie()'); #end
 		var a1:Pnt = null;
 		var c1:Pnt = null;
 		var c2:Pnt = null;
@@ -974,6 +992,7 @@ class Renderer
 	
 	function getSvgNumber(char:String):String
 	{
+		
 		return switch char
 		{
 			case '0': SvgElements.time0;

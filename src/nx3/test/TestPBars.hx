@@ -18,10 +18,12 @@ import nx3.QVoice;
 import thx.core.Floats;
 using cx.ArrayTools;
 using cx.MathTools;
+
 /**
  * ...
  * @author Jonas Nyström
  */
+ 
 class TestPBars extends TestCase
 {
 

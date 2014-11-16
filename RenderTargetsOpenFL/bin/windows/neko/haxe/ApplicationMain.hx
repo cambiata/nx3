@@ -4,6 +4,9 @@ import openfl.Assets;
 #if (!macro && !display && !waxe)
 
 
+@:access(openfl._v2.Assets)
+
+
 class ApplicationMain {
 	
 	
@@ -73,6 +76,10 @@ class ApplicationMain {
 				} catch (e:Dynamic) {}
 				#end
 				
+				
+				
+				openfl.Assets.initialize ();
+				
 				var hasMain = false;
 				
 				for (methodName in Type.getClassFields (Main)) {
@@ -92,7 +99,7 @@ class ApplicationMain {
 					
 				} else {
 					
-					var instance:DocumentClass = Type.createInstance(DocumentClass, []);
+					var instance:DocumentClass = Type.createInstance (DocumentClass, []);
 					
 					if (Std.is (instance, flash.display.DisplayObject)) {
 						
@@ -256,7 +263,7 @@ class DocumentClass {
 		
 		while (searchTypes.superClass != null) {
 			
-			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
+			if (searchTypes.pack.length >= 2 && (searchTypes.pack[1] == "display" || searchTypes.pack[2] == "display") && searchTypes.name == "DisplayObject") {
 				
 				var fields = Context.getBuildFields ();
 				var method = macro { return flash.Lib.current.stage; }

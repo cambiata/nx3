@@ -24,7 +24,7 @@ import sys.FileSystem;
 #end
 
 #if ios
-import openfl.utils.SystemPath;
+import openfl._v2.utils.SystemPath;
 #end
 
 
@@ -53,9 +53,16 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#elseif html5
 		
 		var id;
+		id = "img/dummy.txt";
+		path.set (id, id);
+		type.set (id, AssetType.TEXT);
 		
 		
 		#else
+		
+		
+		
+		
 		
 		#if (windows || mac || linux)
 		
@@ -146,7 +153,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 			
 			#else
 			
-			if (type == BINARY || type == null) {
+			if (type == BINARY || type == null || (assetType == BINARY && type == TEXT)) {
 				
 				return true;
 				
@@ -686,9 +693,21 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
-#elseif (windows || mac || linux)
+#else
+
+#if (windows || mac || linux)
 
 
 
+
+
+
+
+#else
+
+
+
+
+#end
 
 #end

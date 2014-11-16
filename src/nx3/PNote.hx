@@ -11,7 +11,7 @@ using Lambda;
  * @author Jonas Nyström
  */
 @:access(nx3.PHead)
-class PNote implements Lazy
+class PNote /*implements Lazy*/
 {
 	public var nnote:NNote;
 	
@@ -32,7 +32,7 @@ class PNote implements Lazy
 	}
 	
 	
-	/*
+	
 	var heads:PHeads;
 	public function getHeads():PHeads
 	{
@@ -47,15 +47,16 @@ class PNote implements Lazy
 		}
 		return this.heads;
 	}
-	*/
 	
+	
+	/*
 	@lazy public function heads():PHeads	
 	{ 
 		return this.nnote.map(function(nhead) { 
 			var phead = new PHead(nhead); phead.note = this;  return phead; 
 		} ).array(); 
 	}
-	
+	*/
 	
 	
 	//----------------------------------------------------------------------------------
@@ -91,7 +92,7 @@ class PNote implements Lazy
 		return this.complex;
 	}
 	
-	/*
+	
 	var headsRects:Rectangles;
 	public function getHeadsRects():Rectangles
 	{
@@ -101,14 +102,15 @@ class PNote implements Lazy
 		this.headsRects = calculator.getHeadsRects();		
 		return headsRects;
 	}
-	*/
+	
+	/*
 	@lazyGet public function headsRects():Rectangles
 	{
 		return  new PNoteheadsRectsCalculator(this).getHeadsRects();
 	}	
+	*/
 	
 	
-	/*
 	var staveRect:Rectangle;
 	var staveRectChecked:Bool;
 	public function getStaveRect():Rectangle
@@ -119,14 +121,15 @@ class PNote implements Lazy
 		this.staveRectChecked = true;
 		return this.staveRect;
 	}
-	*/
 	
+	
+	/*
 	@lazyGet public function staveRect():Rectangle
 	{
 		return this.getComplex().getStaveRect(this);
 	}	
+	*/
 	
-	/*
 	var staveXPosition:Null<Float>;
 	public function getStaveXPosition():Float
 	{
@@ -139,16 +142,18 @@ class PNote implements Lazy
 		this.staveXPosition = (this.getDirection() == EDirectionUD.Up) ? staverect.width : staverect.x;
 		return this.staveXPosition;
 	}
-	*/
 	
+	
+	/*
 	@lazyGet public function staveXPosition():Float
 	{
 		var staverect = this.getStaveRect();
 		if (staverect == null) return 0;
 		return (this.getDirection() == EDirectionUD.Up) ? staverect.width : staverect.x;
 	}	
+	*/
 	
-	/*
+	
 	var baserect:Rectangle;
 	public function getBaseRect():Rectangle
 	{
@@ -157,14 +162,15 @@ class PNote implements Lazy
 		this.baserect =  new PBaseRectCalculator(this).getBaseRect();		
 		return this.baserect;		
 	}
-	*/
+	
+	/*
 	@lazyGet public function baseRect():Rectangle
 	{
 		return new PBaseRectCalculator(this).getBaseRect();		
 	}	
+	*/
 	
 	
-	/*
 	var xoffset:Null<Float>;
 	public function getXOffset():Float
 	{
@@ -173,7 +179,8 @@ class PNote implements Lazy
 		xoffset = this.getComplex().getNoteXOffset(this);
 		return xoffset;
 	}
-	*/
+	
+	/*
 	@lazyGet public function xOffset():Float
 	{
 		//if (this.voice == null) throw "PNote doesn't have a parent PVoice";		
@@ -181,8 +188,9 @@ class PNote implements Lazy
 		//xoffset = this.getComplex().getNoteXOffset(this);
 		return this.getComplex().getNoteXOffset(this);
 	}	
+	*/
 	
-	/*
+	
 	var xposition:Null<Float>;
 	public function getXPosition():Float
 	{
@@ -191,19 +199,19 @@ class PNote implements Lazy
 		this.xposition = this.getComplex().getXPosition() + this.getXOffset();
 		return this.xposition;		
 	}
-	*/
 	
 	
+	/*
 	@lazyGet public function xPosition():Float
 	{
 		return this.getComplex().getXPosition() + this.getXOffset();
 	}
-	
+	*/
 	
 	
 	public function getTies():ETies return this.nnote.ties;
 	
-	/*
+	
 	var next:PNote;
 	public function getNext():PNote
 	{
@@ -213,16 +221,20 @@ class PNote implements Lazy
 		this.next = ArrayTools.indexOrNull(this.voice.getNotes(), idx + 1);
 		return this.next;
 	}
-	*/
+	
 
+	/*
 	@lazyGet public function next():PNote
 	{
 		var idx = this.voice.getNotes().indexOf(this);
 		return ArrayTools.indexOrNull(this.voice.getNotes(), idx + 1);
 	}	
+	*/
 	
-	
-	@lazyGet public function hasTie():Bool { return !this.nnote.foreach(function(nhead) { return !(nhead.tie != null) ; } ); };
+	public function getHasTie():Bool 
+	{ 
+		return !this.nnote.foreach(function(nhead) { return !(nhead.tie != null) ; } ); 
+	};
 	
 
 	

@@ -23,6 +23,9 @@
 	<icon path="assets/openfl.svg" />
 	<assets path="assets/img" rename="img" />
 	
+	<haxedef name="mtrace" value="2" />
+	<haxedef name="trpscore" value="0" />
+	
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->
 	

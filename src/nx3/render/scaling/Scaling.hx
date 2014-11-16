@@ -63,6 +63,24 @@ class Scaling
 
 	}
 	
+	static public var MINI:TScaling =
+	{
+		linesWidth:			.5,
+		space:					4.0,
+		unitY: 			2.0,
+		noteWidth:			5.0 * 2/3, //8.0,
+		unitX:		2.5* 2/3, // 4.0
+		quarterNoteWidth: 	1.25* 2/3, // 2.0
+		signPosWidth:		7.0* 2/3,
+		svgScale:				.14* 2/3,
+		svgX:					-0,
+		svgY:					-28.5* 2/3,
+		fontScaling:			0.75* 2/3,		
+
+	}	
+	
+	
+	
 	static public var BIG:TScaling =
 	{
 			linesWidth:			1.5,

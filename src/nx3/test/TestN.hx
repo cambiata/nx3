@@ -117,6 +117,7 @@ class TestN extends   TestCase
 		this.assertEquals(xmlStr, xmlStr2);		
 	}
 	
+	/*
 	public function testScoreModifyer()
 	{
 		var score = TestItems.scoreTest1().nscore;
@@ -124,7 +125,7 @@ class TestN extends   TestCase
 		var barScore = m.getBarNrAsScore(1);
 		this.assertEquals(barScore.length, 1);
 	}
-	
+	*/
 	
 	
 

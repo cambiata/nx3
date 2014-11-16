@@ -139,7 +139,7 @@ class TargetSprite  implements ITarget
 	
 	var textfield:TextField;
 	var textformat:TextFormat;
-	var tooltip:Tooltipsprite;
+	//var tooltip:Tooltipsprite;
 	
 	public function textwidth(text:String):Float 
 	{
@@ -288,15 +288,10 @@ class TargetSprite  implements ITarget
 	
 	public function interactiveEllipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int=0x00FF00, cb:EActivityType->Void=null):Void 
 	{
-		var rect = scaleRect(rect, 1, 1.2);
-		var s = new HoverSprite(rect, lineColor, lineWidth);
 		
 		/*
-		s.graphics.beginFill(fillColor);
-		s.graphics.lineStyle(lineWidth*this.scaling.linesWidth, lineColor);
-		s.graphics.drawEllipse(0, 0, rect.width*scaling.unitX, rect.height*scaling.unitY);
-		s.graphics.endFill();	
-		*/
+		var rect = scaleRect(rect, 1, 1.2);
+		var s = new HoverSprite(rect, lineColor, lineWidth);
 		
 		
 		s.x = x;
@@ -315,7 +310,7 @@ class TargetSprite  implements ITarget
 		s.addEventListener(MouseEvent.MOUSE_UP, function(e) {
 			if (cb != null) cb(EActivityType.MouseUp);
 		});
-		
+		*/
 		
 		
 	}
@@ -333,6 +328,8 @@ class TargetSprite  implements ITarget
 	
 	public function tooltipShow(rect:Rectangle, text:String) 
 	{
+		
+		/*
 		if (this.tooltip == null) {
 			
 			this.tooltip = new Tooltipsprite(new Rectangle(10, 10, 140, 40));
@@ -342,15 +339,20 @@ class TargetSprite  implements ITarget
 		this.tooltip.y = rect.y;
 		this.tooltip.alpha = 1;
 		this.tooltip.draw(text, rect);		
+		*/
+		
+		
 	}
 	
 	public function tooltipHide() 
 	{
+		/*
 		if (this.tooltip != null) 
 		{
 			this.tooltip.alpha = 0;
 			this.tooltip.x = -200;
 		}
+		*/
 	}
 	
 }

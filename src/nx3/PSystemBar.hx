@@ -41,6 +41,9 @@ import nx3.PSystembarMeasurements;
 	 {
 		 if (amount == stretchamount) return;		
 		 var calculator = new PBarStretchCalculator(this);
+		 
+		// trace('setBarStretch($amount)');
+		 
 		 if (amount == 0)
 		 {
 			 calculator.resetStretch();

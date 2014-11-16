@@ -1,107 +1,68 @@
-package;
+import lime.Assets;
+#if !macro
 
 
-import openfl.Assets;
-
-
-#if (!macro && !display)
-
-
-import flash.display.Loader;
-import flash.events.Event;
-import flash.events.IOErrorEvent;
-import flash.media.Sound;
-import flash.net.URLLoader;
-import flash.net.URLRequest;
-import haxe.io.Path;
-import js.html.HtmlElement;
-import js.html.Image;
-import flash.Lib;
-
-@:access(flash.Lib) class ApplicationMain {
+class ApplicationMain {
 	
 	
-	public static var images (default, null) = new Map<String, Image> ();
-	public static var urlLoaders = new Map <String, URLLoader> ();
+	public static var config:lime.app.Config;
+	public static var preloader:openfl.display.Preloader;
 	
-	private static var assetsLoaded = 0;
-	private static var preloader:NMEPreloader;
-	private static var total = 0;
-	
-	//public static var loaders:Map <String, Loader>;
-	//public static var urlLoaders:Map <String, URLLoader>;
+	private static var app:lime.app.Application;
 	
 	
-	static function main () {
+	public static function create ():Void {
 		
-		#if munit
-		var element = null;
-		#else
-		var element:HtmlElement = cast js.Browser.document.getElementById ("openfl-embed");
+		app = new openfl.display.Application ();
+		app.create (config);
+		
+		var display = new NMEPreloader ();
+		
+		preloader = new openfl.display.Preloader (display);
+		preloader.onComplete = init;
+		preloader.create (config);
+		
+		#if js
+		var urls = [];
+		var types = [];
+		
+		
+		urls.push ("img/dummy.txt");
+		types.push (AssetType.TEXT);
+		
+		
+		
+		preloader.load (urls, types);
 		#end
 		
-		flash.Lib.create (1400, 1000, element, 16777215);
+		var result = app.exec ();
 		
-		preloader = new NMEPreloader ();
-		Lib.current.addChild (preloader);
-		preloader.onInit ();
+		#if sys
+		Sys.exit (result);
+		#end
 		
-		var sounds = [];
-		var id;
+	}
+	
+	
+	public static function init ():Void {
 		
-		
-		var urlLoader = new URLLoader ();
-		urlLoader.dataFormat = BINARY;
-		urlLoaders.set("img/dummy.txt", urlLoader);
-		total ++;
-		
-		
-		
-		if (total == 0) {
+		var loaded = 0;
+		var total = 0;
+		var library_onLoad = function (_) {
 			
-			start ();
+			loaded++;
 			
-		} else {
-			
-			for (path in urlLoaders.keys ()) {
+			if (loaded == total) {
 				
-				var urlLoader = urlLoaders.get (path);
-				urlLoader.addEventListener ("complete", loader_onComplete);
-				urlLoader.load (new URLRequest (path));
+				start ();
 				
 			}
 			
-			for (soundName in sounds) {
-				
-				var sound = new Sound ();
-				sound.addEventListener (Event.COMPLETE, sound_onComplete);
-				sound.addEventListener (IOErrorEvent.IO_ERROR, sound_onIOError);
-				sound.load (new URLRequest (soundName + ".ogg"));
-				
-			}
-			
-			
-			
 		}
 		
-	}
-	
-	
-	private static function start ():Void {
 		
-		preloader.addEventListener (Event.COMPLETE, preloader_onComplete);
-		preloader.onLoaded ();
 		
-	}
-	
-	
-	private static function image_onLoad (_):Void {
-		
-		assetsLoaded++;
-		
-		preloader.onUpdate (assetsLoaded, total);
-		
-		if (assetsLoaded == total) {
+		if (loaded == total) {
 			
 			start ();
 			
@@ -110,26 +71,41 @@ import flash.Lib;
 	}
 	
 	
-	private static function loader_onComplete (event:Event):Void {
+	public static function main () {
 		
-		assetsLoaded++;
-		
-		preloader.onUpdate (assetsLoaded, total);
-		
-		if (assetsLoaded == total) {
+		config = {
 			
-			start ();
+			antialiasing: Std.int (0),
+			background: Std.int (16777215),
+			borderless: false,
+			depthBuffer: false,
+			fps: Std.int (60),
+			fullscreen: false,
+			height: Std.int (1000),
+			orientation: "",
+			resizable: true,
+			stencilBuffer: false,
+			title: "RenderTargets",
+			vsync: false,
+			width: Std.int (1400),
 			
 		}
+		
+		#if js
+		#if munit
+		flash.Lib.embed (null, 1400, 1000, "FFFFFF");
+		#end
+		#else
+		create ();
+		#end
 		
 	}
 	
 	
-	private static function preloader_onComplete (event:Event):Void {
+	public static function start ():Void {
 		
-		preloader.removeEventListener (Event.COMPLETE, preloader_onComplete);
-		Lib.current.removeChild (preloader);
-		preloader = null;
+		openfl.Lib.current.stage.align = openfl.display.StageAlign.TOP_LEFT;
+		openfl.Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
 		
 		var hasMain = false;
 		
@@ -150,64 +126,42 @@ import flash.Lib;
 			
 		} else {
 			
-			var instance:DocumentClass = Type.createInstance(DocumentClass, []);
+			var instance:DocumentClass = Type.createInstance (DocumentClass, []);
 			
-			if (Std.is (instance, flash.display.DisplayObject)) {
+			if (Std.is (instance, openfl.display.DisplayObject)) {
 				
-				flash.Lib.current.addChild (cast instance);
-				
-			} else {
-				
-				trace ("Error: No entry point found");
-				trace ("If you are using DCE with a static main, you may need to @:keep the function");
+				openfl.Lib.current.addChild (cast instance);
 				
 			}
 			
 		}
 		
-	}
-	
-	
-	private static function sound_onComplete (event:Event):Void {
-		
-		assetsLoaded++;
-		
-		preloader.onUpdate (assetsLoaded, total);
-		
-		if (assetsLoaded == total) {
-			
-			start ();
-			
-		}
+		openfl.Lib.current.stage.dispatchEvent (new openfl.events.Event (openfl.events.Event.RESIZE, false, false));
 		
 	}
 	
 	
-	private static function sound_onIOError (event:IOErrorEvent):Void {
+	#if neko
+	@:noCompletion public static function __init__ () {
 		
-		// if it is actually valid, it will load later when requested
-		
-		assetsLoaded++;
-		
-		preloader.onUpdate (assetsLoaded, total);
-		
-		if (assetsLoaded == total) {
-			
-			start ();
-			
-		}
+		var loader = new neko.vm.Loader (untyped $loader);
+		loader.addPath (haxe.io.Path.directory (Sys.executablePath ()));
+		loader.addPath ("./");
+		loader.addPath ("@executable_path/");
 		
 	}
+	#end
 	
 	
 }
 
 
-@:build(DocumentClass.build())
+#if flash @:build(DocumentClass.buildFlash())
+#else @:build(DocumentClass.build()) #end
 @:keep class DocumentClass extends Main {}
 
 
-#elseif macro
+#else
 
 
 import haxe.macro.Context;
@@ -227,15 +181,17 @@ class DocumentClass {
 			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
 				
 				var fields = Context.getBuildFields ();
+				
 				var method = macro {
 					
 					this.stage = flash.Lib.current.stage;
 					super ();
-					dispatchEvent (new Event (Event.ADDED_TO_STAGE, false, false));
+					dispatchEvent (new openfl.events.Event (openfl.events.Event.ADDED_TO_STAGE, false, false));
 					
 				}
 				
 				fields.push ({ name: "new", access: [ APublic ], kind: FFun({ args: [], expr: method, params: [], ret: macro :Void }), pos: Context.currentPos () });
+				
 				return fields;
 				
 			}
@@ -249,20 +205,30 @@ class DocumentClass {
 	}
 	
 	
-}
-
-
-#else
-
-
-import Main;
-
-class ApplicationMain {
-	
-	
-	public static function main () {
+	macro public static function buildFlash ():Array<Field> {
 		
+		var classType = Context.getLocalClass ().get ();
+		var searchTypes = classType;
 		
+		while (searchTypes.superClass != null) {
+			
+			if (searchTypes.pack.length == 2 && searchTypes.pack[1] == "display" && searchTypes.name == "DisplayObject") {
+				
+				var fields = Context.getBuildFields ();
+				var method = macro {
+					return flash.Lib.current.stage;
+				}
+				
+				fields.push ({ name: "get_stage", access: [ APrivate ], meta: [ { name: ":getter", params: [ macro stage ], pos: Context.currentPos() } ], kind: FFun({ args: [], expr: method, params: [], ret: macro :flash.display.Stage }), pos: Context.currentPos() });
+				return fields;
+				
+			}
+			
+			searchTypes = searchTypes.superClass.t.get ();
+			
+		}
+		
+		return null;
 		
 	}
 	

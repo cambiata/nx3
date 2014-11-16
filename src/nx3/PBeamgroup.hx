@@ -94,8 +94,7 @@ class PBeamgroup
 	 public function toString():String
 	 {
 		 return "PBeamgroup \r" +
-		 Std.string(this.getFrame().beamflags);
-		 
+		 Std.string(this.getFrame().beamflags);		 
 	 }
 	 
  }
