@@ -372,6 +372,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("css/rtf.css", AssetType.TEXT);
 		path.set ("css/rtf.min.css", "css/rtf.min.css");
 		type.set ("css/rtf.min.css", AssetType.TEXT);
+		path.set ("assets/openfl.svg", "assets/openfl.svg");
+		type.set ("assets/openfl.svg", AssetType.TEXT);
 		
 		
 		#elseif html5
@@ -866,6 +868,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "css/rtf.min.css";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
+		id = "assets/openfl.svg";
+		path.set (id, id);
+		type.set (id, AssetType.TEXT);
 		
 		
 		#else
@@ -1036,9 +1041,11 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -1984,6 +1991,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
 #elseif html5
 
 @:keep #if display private #end class __ASSET__assets_fonts_oxygen_bold_ttf extends flash.text.Font { #if (!openfl_html5_dom) public function new () { super (); fontName = "assets/fonts/Oxygen-Bold.ttf"; } #end }
@@ -2120,6 +2128,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 @:keep #if display private #end class __ASSET__fonts_oxygen_bold_ttf extends flash.text.Font { #if (!openfl_html5_dom) public function new () { super (); fontName = "fonts/Oxygen-Bold.ttf"; } #end }
 @:keep #if display private #end class __ASSET__fonts_oxygen_ttf extends flash.text.Font { #if (!openfl_html5_dom) public function new () { super (); fontName = "fonts/Oxygen.ttf"; } #end }
+
 
 
 

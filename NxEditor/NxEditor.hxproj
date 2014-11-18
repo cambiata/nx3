@@ -16,20 +16,20 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="f:\_haxelib\lime\2,0,0-beta" />
-    <class path="f:\_haxelib\haxeui-rich-text\0,1,2" />
-    <class path="f:\_haxelib\actuate\1,7,5" />
-    <class path="f:\_haxelib\openfl\2,1,5" />
-    <class path="f:\_haxelib\hscript\2,0,4" />
-    <class path="f:\_haxelib\haxeui\1,6,10" />
-    <class path="f:\_haxelib\svg\1,0,8" />
-    <class path="f:\_haxelib\msignal\1,2,2" />
-    <class path="f:\_haxelib\thx,core\0,13,1\src" />
+    <class path="F:\haxelib\lime\2,0,0-beta" />
+    <class path="F:\haxelib\haxeui-rich-text\0,1,2" />
+    <class path="F:\haxelib\actuate\1,7,5" />
+    <class path="F:\haxelib\openfl\2,1,5" />
+    <class path="F:\haxelib\hscript\2,0,4" />
+    <class path="F:\haxelib\haxeui\1,6,10" />
+    <class path="F:\haxelib\svg\1,0,8" />
+    <class path="F:\haxelib\msignal\1,2,2" />
+    <class path="F:\haxelib\thx,core\0,13,1\src" />
     <class path="src" />
-    <class path="..\..\nx3\src" />
-    <class path="f:\_haxelib\lime\2,0,0-beta\legacy" />
-    <class path="f:\_haxelib\haxeui-rich-text\0,1,2\assets" />
-    <class path="bin\windows\neko\haxe" />
+    <class path="..\src" />
+    <class path="F:\haxelib\lime\2,0,0-beta\legacy" />
+    <class path="F:\haxelib\haxeui-rich-text\0,1,2\assets" />
+    <class path="bin\windows\cpp\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>

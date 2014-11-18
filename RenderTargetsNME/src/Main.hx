@@ -37,6 +37,10 @@ class Main
 		var target = new TargetSvgXml('test', Scaling.NORMAL);
 		TestRenderer.testRenderP(new Renderer(target, 10, 80));
 		var xml = target.getXml();
-		FileTools.saveContent('test.svg', xml.toString());
+		var xmlString = xml.toString();
+		var html = '<html><body><svg id="small" style="width:1200px;height:600px;background:white;" >$xmlString</svg></body></html>';
+		
+		FileTools.saveContent('test.html', html);
+		FileTools.saveContent('test.svg', xmlString);
 	}
 }

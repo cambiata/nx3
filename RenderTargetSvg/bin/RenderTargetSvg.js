@@ -179,6 +179,11 @@ Main.main = function() {
 	nx3.test.TestRenderer.testRenderP(new nx3.render.Renderer(target1,10,80));
 	var target2 = new nx3.render.TargetSvg("#big",nx3.render.scaling.Scaling.BIG);
 	nx3.test.TestRenderer.testRenderP(new nx3.render.Renderer(target2,10,80));
+	var target3 = new nx3.render.TargetSvgXml("#test",nx3.render.scaling.Scaling.NORMAL);
+	var renderer = new nx3.render.Renderer(target3,10,80);
+	renderer.renderScore(new nx3.PScore(nx3.test.TestItems.scoreTest1().nscore));
+	var xml = target3.getXml();
+	haxe.Log.trace(xml,{ fileName : "Main.hx", lineNumber : 39, className : "Main", methodName : "main"});
 };
 var IMap = function() { };
 IMap.__name__ = ["IMap"];
@@ -8747,6 +8752,102 @@ nx3.render.TargetSvg.prototype = {
 	}
 	,__class__: nx3.render.TargetSvg
 };
+nx3.render.TargetSvgXml = function(svgId,scaling) {
+	this.svg = Xml.createElement("svg");
+	this.svg.set("id",svgId);
+	if(scaling != null) this.scaling = scaling; else this.scaling = nx3.render.scaling.Scaling.NORMAL;
+};
+nx3.render.TargetSvgXml.__name__ = ["nx3","render","TargetSvgXml"];
+nx3.render.TargetSvgXml.__interfaces__ = [nx3.render.ITarget];
+nx3.render.TargetSvgXml.hex = function($int) {
+	if($int == 0) return "#000"; else return "#" + StringTools.hex($int);
+};
+nx3.render.TargetSvgXml.prototype = {
+	svg: null
+	,scaling: null
+	,getXml: function() {
+		return this.svg;
+	}
+	,getScaling: function() {
+		return this.scaling;
+	}
+	,testLines: function(x,y,width) {
+		var _g = -2;
+		while(_g < 3) {
+			var i = _g++;
+			var cy = y + i * this.scaling.space;
+			this.line(x,cy,x + width,cy,this.scaling.linesWidth,0);
+		}
+	}
+	,rect: function(x,y,rect,lineWidth,lineColor) {
+	}
+	,rectangle: function(x,y,rect,lineWidth,lineColor) {
+	}
+	,rectangles: function(x,y,rects,lineWidth,lineColor) {
+	}
+	,filledrectangle: function(x,y,rect,lineWidth,lineColor,fillColor) {
+	}
+	,filledellipse: function(x,y,rect,lineWidth,lineColor,fillColor) {
+	}
+	,line: function(x,y,x2,y2,lineWidth,lineColor) {
+		if(lineColor == null) lineColor = 16711680;
+		if(lineWidth == null) lineWidth = 1;
+		var el = Xml.createElement("line");
+		el.set("x1",x == null?"null":"" + x);
+		el.set("y1",y == null?"null":"" + y);
+		el.set("x2",x2 == null?"null":"" + x2);
+		el.set("y2",y2 == null?"null":"" + y2);
+		el.set("stroke",lineColor == 0?"#000":"#" + StringTools.hex(lineColor));
+		el.set("style","stroke-width:" + lineWidth * this.scaling.linesWidth);
+		this.svg.addChild(el);
+	}
+	,shape: function(x,y,xmlStr,fillColor) {
+	}
+	,text: function(x,y,text) {
+	}
+	,textwidth: function(text) {
+		return 0;
+	}
+	,textheight: function(text) {
+		return 0;
+	}
+	,setFont: function(font) {
+	}
+	,parallellogram: function(x,y,x2,y2,pheight,lineWidth,lineColor,fillColor) {
+		var pathStr = "M " + x + " " + y + " L " + x2 + " " + y2 + "  L " + x2 + " " + (y2 + pheight) + "  L " + x + "  " + (y + pheight) + "  L " + x + " " + y;
+		var el = Xml.createElement("path");
+		el.set("d",pathStr);
+		el.set("fill",fillColor == 0?"#000":"#" + StringTools.hex(fillColor));
+		el.set("stroke",lineColor == 0?"#000":"#" + StringTools.hex(lineColor));
+		el.set("style","stroke-width:" + lineWidth * this.scaling.linesWidth);
+		this.svg.addChild(el);
+	}
+	,clear: function() {
+	}
+	,polyline: function(x,y,coordinates,lineWidth,lineColor) {
+		if(lineColor == null) lineColor = 0;
+		if(lineWidth == null) lineWidth = 1;
+	}
+	,polyfill: function(x,y,coordinates,lineWidth,lineColor,fillColor) {
+		if(fillColor == null) fillColor = 255;
+		if(lineColor == null) lineColor = 0;
+		if(lineWidth == null) lineWidth = 1;
+	}
+	,sline: function(x,y,start,end,lineWidth,lineColor) {
+	}
+	,interactiveEllipse: function(x,y,rect,lineWidth,lineColor,fillColor,cb) {
+	}
+	,scaleRect: function(rect,inflateX,inflateY) {
+		if(inflateY == null) inflateY = 0;
+		if(inflateX == null) inflateX = 0;
+		return null;
+	}
+	,tooltipShow: function(rect,text) {
+	}
+	,tooltipHide: function() {
+	}
+	,__class__: nx3.render.TargetSvgXml
+};
 nx3.render.scaling = {};
 nx3.render.scaling.Scaling = function() { };
 nx3.render.scaling.Scaling.__name__ = ["nx3","render","scaling","Scaling"];
@@ -9184,7 +9285,7 @@ nx3.test.TestRenderer.testRenderer = function(r) {
 };
 nx3.test.TestRenderer.testRenderP = function(r) {
 	r.addInteraction(new nx3.action.TestInteractivity());
-	r.renderScore(new nx3.PScore(nx3.test.TestItems.scoreBachSinfonia4()),10,100,300);
+	r.renderScore(new nx3.PScore(nx3.test.TestItems.scoreTest1().nscore),10,100,300);
 };
 nx3.test.TestSound = function() {
 	haxe.unit.TestCase.call(this);
@@ -10181,5 +10282,3 @@ thx.core.Floats.EPSILON = 10e-10;
 thx.core.Floats.pattern_parse = new EReg("^(\\+|-)?\\d+(\\.\\d+)?(e-?\\d+)?$","");
 Main.main();
 })();
-
-//# sourceMappingURL=RenderTargetSvg.js.map

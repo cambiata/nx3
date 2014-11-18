@@ -342,6 +342,8 @@ class AssetData {
 			type.set ("css/rtf.css", Reflect.field (AssetType, "text".toUpperCase ()));
 			path.set ("css/rtf.min.css", "css/rtf.min.css");
 			type.set ("css/rtf.min.css", Reflect.field (AssetType, "text".toUpperCase ()));
+			path.set ("assets/openfl.svg", "assets/openfl.svg");
+			type.set ("assets/openfl.svg", Reflect.field (AssetType, "text".toUpperCase ()));
 			
 			
 			initialized = true;

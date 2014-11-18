@@ -27,6 +27,7 @@ import nme.display.Shape;
 import nme.display.Sprite;
 import nme.display.Graphics;
 import nme.Lib;
+
 #else
 import nx3.render.el.HoverSprite;
 import cx.flash.Tooltipsprite;

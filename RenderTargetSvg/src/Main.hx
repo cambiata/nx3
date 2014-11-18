@@ -1,10 +1,12 @@
 package ;
 
 import js.Lib;
+import nx3.PScore;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.svg.SvgElements;
 import nx3.render.TargetSvg;
+import nx3.render.TargetSvgXml;
 import nx3.test.TestItems;
 import nx3.test.TestRenderer;
 import nx3.test.Unittests;
@@ -28,5 +30,13 @@ class Main
 
 		var target = new TargetSvg('#big', Scaling.BIG);
 		TestRenderer.testRenderP(new Renderer(target, 10, 80));	
+		
+		var target = new TargetSvgXml('#test', Scaling.NORMAL);
+		var renderer = new Renderer(target, 10, 80);
+		renderer.renderScore(new PScore(TestItems.scoreTest1().nscore));
+		
+		var xml = target.getXml();
+		trace(xml);
+		
 	}	
 }
