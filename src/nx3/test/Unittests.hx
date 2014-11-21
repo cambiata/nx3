@@ -12,15 +12,11 @@ class Unittests
 	{
 		var runner = new TestRunner();
 	
-		//runner.add(new TestIterators());
-		runner.add(new TestN());
-		//runner.add(new TestLazy());
-		//runner.add(new TestEvents());
 		
-		runner.add(new TestSound());
-		
-		//runner.add(new TestP());
-		runner.add(new TestPBars());
+		//runner.add(new TestN());
+		//runner.add(new TestSound());
+		runner.add(new TestP());
+		//runner.add(new TestPBars());
 	
 		var success = runner.run();	
 	}	

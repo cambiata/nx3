@@ -22,6 +22,7 @@ class Main
 	{
 		Unittests.performTests();
 
+		/*
 		var target = new TargetNmeBitmap(Scaling.SMALL);
 		TestRenderer.testRenderP( new Renderer(target, 10, 80));		
 		target.saveBitmap('test-small.png');
@@ -42,5 +43,6 @@ class Main
 		
 		FileTools.saveContent('test.html', html);
 		FileTools.saveContent('test.svg', xmlString);
+		*/
 	}
 }

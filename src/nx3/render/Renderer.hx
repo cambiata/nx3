@@ -71,7 +71,6 @@ class Renderer
 	
 	public function new(target:ITarget, targetX:Float, targetY:Float, interactions:Array<IInteractivity>=null ) 
 	{
-		#if (mtrace > 1) trace('->Renderer()'); #end
 		this.target = target;
 		this.targetX = targetX;
 		this.targetY = targetY;
@@ -84,13 +83,11 @@ class Renderer
 	
 	public function addInteraction(interaction:IInteractivity)
 	{		
-		#if (mtrace > 1) trace('->addInteraction()'); #end
 		this.interactions.push(interaction);
 	}
 	
 	public function drawSystems(systems:PSystems)
 	{
-		#if (mtrace > 1) trace('->drawSystems()'); #end
 		var ny = 0.0;
 		for (system in systems)
 		{
@@ -103,7 +100,6 @@ class Renderer
 
 	public function drawSystemExtras(systems:PSystems,system:PSystem, nx:Float = 0, ny:Float = 0)
 	{
-		#if (mtrace > 1) trace('->drawSystemExtras()'); #end
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 		
@@ -132,7 +128,13 @@ class Renderer
 						var fromBarX = systembar.getXPosition();		
 						//var fromNoteX = systembar.getBarWidths().ackoladeWidth + systembar.getBarWidths().clefWidth + systembar.getBarWidths().keyWidth + systembar.getBarWidths().timeWidth + systembar.getBarWidths().contentLeftMargin +connection.to.getXPosition();
 						var fromNoteX = systembar.getBarMeasurements().getLeftContentMarginXPosition()  +connection.from.getXPosition();
-						var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+						
+						var part = connection.to.getComplex().getPart();
+						var partidx = part.getBar().getParts().indexOf(part);
+						var party = partidx * 20 * this.scaling.unitY;
+						
+						
+						//var party = connection.to.getComplex().getPart()_getYPosition() * this.scaling.unitY;
 						
 						var tielevel = 0;
 						switch connection.tie
@@ -146,7 +148,7 @@ class Renderer
 						
 						var tierect = new Rectangle(fromBarX + fromNoteX + xshift, connection.level + tielevel, tiewidth, 1);
 						
-						this.drawTie(tx, ty + party, tierect, EDirectionUD.Down);
+						this.drawTie(system, tx, ty + party, tierect, EDirectionUD.Down);
 					}
 					// draw stuff like tie to?
 				}
@@ -169,7 +171,11 @@ class Renderer
 					//var toNoteX = nextsystembar.getBarWidths().ackoladeWidth + nextsystembar.getBarWidths().clefWidth + nextsystembar.getBarWidths().keyWidth + nextsystembar.getBarWidths().timeWidth + nextsystembar.getBarWidths().contentLeftMargin +  connection.to.getXPosition();						
 					//trace([fromBarX, fromNoteX, toBarX, toNoteX]);
 					
-					var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+						var part = connection.to.getComplex().getPart();
+						var partidx = part.getBar().getParts().indexOf(part);
+						var party = partidx * 20 * this.scaling.unitY;					
+					
+					//var party = connection.to.getComplex().getPart()_getYPosition() * this.scaling.unitY;
 					//var tieX = tx + fromBarX * this.scaling.unitX;
 						var tielevel = 0;
 						switch connection.tie
@@ -181,7 +187,7 @@ class Renderer
 					var xshift = 2;
 					var tierect = new Rectangle(fromBarX+fromNoteX + xshift, connection.level + tielevel, toBarX - (fromBarX+fromNoteX) ,  2);
 					
-					this.drawTie(tx, ty + party, tierect, EDirectionUD.Down);
+					this.drawTie(system, tx, ty + party, tierect, EDirectionUD.Down);
 					
 				}
 				
@@ -203,7 +209,12 @@ class Renderer
 					var toNoteX = nextsystembar.getBarMeasurements().getLeftContentMarginXPosition() +connection.to.getXPosition();	
 					//trace([fromBarX, fromNoteX, toBarX, toNoteX]);
 					
-					var party = connection.to.getComplex().getPart().getYPosition() * this.scaling.unitY;
+						var part = connection.to.getComplex().getPart();
+						var partidx = part.getBar().getParts().indexOf(part);
+						var party = partidx * 20 * this.scaling.unitY;					
+					
+					
+					//var party = connection.to.getComplex().getPart()_getYPosition() * this.scaling.unitY;
 					//var tieX = tx + fromBarX * this.scaling.unitX;
 					var xshift = 2;
 					
@@ -216,7 +227,7 @@ class Renderer
 					
 					var tierect = new Rectangle(fromBarX+fromNoteX + xshift, connection.level + tielevel, (toBarX+toNoteX) - (fromBarX+fromNoteX) - xshift - xshift, 2);
 					
-					this.drawTie(tx, ty + party, tierect, EDirectionUD.Down);
+					this.drawTie(system, tx, ty + party, tierect, EDirectionUD.Down);
 					
 				}
 				
@@ -231,7 +242,6 @@ class Renderer
 	
 	public function drawSystem(system:PSystem, nx:Float = 0, ny:Float = 0)
 	{
-		#if (mtrace > 1) trace('->drawSystem()'); #end
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 			
@@ -240,20 +250,19 @@ class Renderer
 		for (systembar in system.getSystembars())
 		{
 			var meas = systembar.getBarMeasurements();
-			this.drawBarAttributes(systembar, barx, ny);
-			this.drawBarContent(systembar, barx, ny);
+			this.drawBarAttributes(system, systembar, barx, ny);
+			this.drawBarContent(system, systembar, barx, ny);
+			
 			barx += systembar.getBarMeasurements().getTotalWidth();
 			
 		}
 		
-		this.drawBarlines(system.getSystembars(), nx, ny);
+		this.drawBarlines(system, system.getSystembars(), nx, ny);
 		
 	}
 	
-	private function drawBarlines(systembars:PSystemBars, nx:Float, ny:Float) 
+	private function drawBarlines(system:PSystem, systembars:PSystemBars, nx:Float, ny:Float) 
 	{
-		#if (mtrace > 1) trace('->drawBarlines()'); #end
-		
 		//trace([systembar.barWidths.x, systembar.barWidths.width]);
 		//var barX =  systembars.first().getXPosition();
 		//var barWidth = systembars.first().getBarMeasurements().getTotalWidth();		
@@ -263,7 +272,12 @@ class Renderer
 		
 		//var partidx = 0;		
 		
-		var partFirstY = (systembars.first().bar.getParts().first().getYPosition() - 4) * this.scaling.unitY;		
+		var part = systembars.first().bar.getParts().first();
+		var partidx = part.getBar().getParts().indexOf(part);
+		var party = partidx * 20 * this.scaling.unitY;		
+		
+		
+		var partFirstY = party - 4 * this.scaling.unitY;		
 		var partY = 0.0;
 		
 		var barX = 0.0;
@@ -274,14 +288,18 @@ class Renderer
 			
 			for (part in systembar.bar.getParts())
 			{				
+				
+				var partidx = part.getBar().getParts().indexOf(part);
+				var part_getYPosition = partidx * 20;
+				
 				switch part.npart.type
 				{
 					case EPartType.Normal:
-						var barlineTop = (part.getYPosition()-4) * this.scaling.unitY;
-						var barlineBottom = (part.getYPosition() + 4) * this.scaling.unitY;
+						var barlineTop = (part_getYPosition-4) * this.scaling.unitY;
+						var barlineBottom = (part_getYPosition + 4) * this.scaling.unitY;
 						var barlineX = tx + (barX + barWidth) * this.scaling.unitX;
 						this.target.line(barlineX, ty + barlineTop, barlineX, ty + barlineBottom, 1.4, 0x000000);				
-						partY  = part.getYPosition();
+						partY  = part_getYPosition;
 					default: 
 				}				
 			}
@@ -292,9 +310,8 @@ class Renderer
 		this.target.line(tx, ty + partFirstY, tx, ty + partLastY, 2, 0x000000);	
 	}
 	
-	public function drawBarAttributes(systembar:PSystemBar, nx:Float = 0, ny:Float = 0)
+	public function drawBarAttributes(system:PSystem, systembar:PSystemBar, nx:Float = 0, ny:Float = 0)
 	{
-		#if (mtrace > 1) trace('->drawBarAttributes()'); #end
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;		
 		
@@ -304,16 +321,18 @@ class Renderer
 				
 				var partIdx = systembar.bar.getParts().indexOf(part);
 				
-				this.target.testLines(tx , ty + part.getYPosition() * this.scaling.unitY,  systembar.getBarMeasurements().getTotalWidth()* this.scaling.unitX);				
-				this.drawBarAttributeClef(systembar, part, nx, ny, systembar.getBarMeasurements().getClefXPosition());
-				this.drawBarAttributeKey(systembar, part, nx, ny, systembar.getBarMeasurements().getKeyXPosition());
-				this.drawBarAttributeTime(systembar, part, nx, ny, systembar.getBarMeasurements().getTimeXPosition());
+				var part_getYPosition = partIdx * 20;
+				
+				
+				this.target.testLines(tx , ty + part_getYPosition * this.scaling.unitY,  systembar.getBarMeasurements().getTotalWidth()* this.scaling.unitX);				
+				this.drawBarAttributeClef(system, systembar, part, nx, ny, systembar.getBarMeasurements().getClefXPosition());
+				this.drawBarAttributeKey(system, systembar, part, nx, ny, systembar.getBarMeasurements().getKeyXPosition());
+				this.drawBarAttributeTime(system, systembar, part, nx, ny, systembar.getBarMeasurements().getTimeXPosition());
 			}		
 	}
 	
-	public function drawBarAttributeTime(systembar:PSystemBar, part:PPart, nx:Float, ny:Float, timeX:Float=0)
+	public function drawBarAttributeTime(system:PSystem, systembar:PSystemBar, part:PPart, nx:Float, ny:Float, timeX:Float=0)
 	{
-		#if (mtrace > 2) trace('- ->drawBarAttributeTime()'); #end
 		var showTime = systembar.barConfig.showTime;
 		if (!showTime) return;		
 		
@@ -322,35 +341,40 @@ class Renderer
 		var ty = this.targetY  + ny * this.scaling.unitY;				
 		
 		timeX =  timeX * this.scaling.unitX;
+		
+		var partidx = part.getBar().getParts().indexOf(part);
+		var part_getYPosition = partidx * 20;
+		
 			
 		var timeChars = acttime.toString().split('/');
 		if (timeChars.length == 2)
 		{
 			var upperXmlStr = getSvgNumber(timeChars.first());
 			var timeY = -3 * this.scaling.unitY;					
-			this.target.shape(tx + timeX, ty + timeY +  part.getYPosition() * this.scaling.unitY, upperXmlStr);		
+			this.target.shape(tx + timeX, ty + timeY +  part_getYPosition * this.scaling.unitY, upperXmlStr);		
 			
 			var lowerXmlStr = getSvgNumber(timeChars.second());			
 			var timeY = 1 * this.scaling.unitY;					
-			this.target.shape(tx + timeX, ty + timeY +  part.getYPosition() * this.scaling.unitY, lowerXmlStr);		
+			this.target.shape(tx + timeX, ty + timeY +  part_getYPosition * this.scaling.unitY, lowerXmlStr);		
 		}
 		else
 		{
 			var midXmlStr = getSvgNumber(timeChars.first());
 			var timeY = -1 * this.scaling.unitY;					
-			this.target.shape(tx + timeX, ty + timeY +  part.getYPosition() * this.scaling.unitY, midXmlStr);					
+			this.target.shape(tx + timeX, ty + timeY +  part_getYPosition * this.scaling.unitY, midXmlStr);					
 		}
 		
 		
 	}
 	
-	public function drawBarAttributeKey(systembar:PSystemBar, part:PPart, nx:Float, ny:Float, keyX:Float=0)
+	public function drawBarAttributeKey(system:PSystem, systembar:PSystemBar, part:PPart, nx:Float, ny:Float, keyX:Float=0)
 	{	
-		#if (mtrace > 2) trace('- ->drawBarAttributeKey()'); #end
 		var showkey = systembar.barConfig.showKey;
 		if (!showkey) return;	
 
 		var partidx = systembar.bar.getParts().indexOf(part);
+		var part_getYPosition = partidx * 20;
+		
 		var actkey = systembar.actAttributes.keys[partidx];				
 		
 		var tx = this.targetX + nx * this.scaling.unitX;
@@ -366,19 +390,20 @@ class Renderer
 		for (level in keyLevels)
 		{		
 			var keyY = level * this.scaling.unitY;		
-			this.target.shape(tx + keyX, ty + keyY +  part.getYPosition() * this.scaling.unitY, svgXmlstr);		
+			this.target.shape(tx + keyX, ty + keyY +  part_getYPosition * this.scaling.unitY, svgXmlstr);		
 			keyX += Constants.ATTRIBUTE_SIGN_WIDTH * this.target.getScaling().unitX;
 		}
 		
 	}
 	
-	public function drawBarAttributeClef(systembar:PSystemBar, part:PPart, nx:Float, ny:Float,  clefX:Float=0)
+	public function drawBarAttributeClef(system:PSystem, systembar:PSystemBar, part:PPart, nx:Float, ny:Float,  clefX:Float=0)
 	{
-		#if (mtrace > 2) trace('- ->drawBarAttributeClef()'); #end
 		var showclef = systembar.barConfig.showClef;
 		if (!showclef) return;
 		
 		var partidx = systembar.bar.getParts().indexOf(part);
+		var part_getYPosition = partidx * 20;
+		
 		var actclef = systembar.actAttributes.clefs[partidx];		
 		
 		
@@ -396,13 +421,15 @@ class Renderer
 			case EClef.ClefG: SvgElements.clefG;
 			case EClef.ClefF: SvgElements.clefF;						
 		}
-		this.target.shape(tx + clefX, ty + clefY +  part.getYPosition() * this.scaling.unitY, svgXmlstr);		
+		
+		
+		
+		this.target.shape(tx + clefX, ty + clefY +  part_getYPosition * this.scaling.unitY, svgXmlstr);		
 	}
 	
 	
-	public function drawBarContent(systembar:PSystemBar, nx:Float=0, ny:Float=0)
+	public function drawBarContent(system:PSystem, systembar:PSystemBar, nx:Float=0, ny:Float=0)
 	{
-		#if (mtrace > 1) trace('->drawBarContent()'); #end
 		var bar = systembar.bar;
 		nx = nx + systembar.getBarMeasurements().getContentXPosition();
 		
@@ -411,16 +438,27 @@ class Renderer
 		
 		
 		var contentwidth = bar.getContentwidth();
-		trace(bar.getContentwidth());
+		//trace(bar.getContentwidth());
+		
+		
+		/*
 		for (part in bar.getParts())
 		{
-			//this.target.testLines(tx , ty + part.getYPosition()*this.scaling.unitY,  contentwidth*this.scaling.unitX);
+			var rect = part.getRect();
+			this.target.rectangle(tx, ty, rect, 3, 0xFF0000);			
+		}
+		*/
+		
+		
+		for (part in bar.getParts())
+		{
+			//this.target.testLines(tx , ty + part_getYPosition()*this.scaling.unitY,  contentwidth*this.scaling.unitX);
 			
 			for (voice in part.getVoices())
 			{
 				for (beamgroup in voice.getBeamgroups())
 				{
-					this.drawBeamgroup(beamgroup, nx, ny);					
+					this.drawBeamgroup(system, beamgroup, nx, ny);					
 				}
 				
 				switch voice.nvoice.type
@@ -436,21 +474,24 @@ class Renderer
 			//trace([column.getValue(), column.getValueDelta()]);
 			for (complex in column.getComplexes())
 			{
-				this.drawComplex(complex, nx, ny);
-				this.interactiveComplex(complex, nx, ny);
+				this.drawComplex(system, complex, nx, ny);
+				this.interactiveComplex(system, complex, nx, ny);
 				
 			}			
 		}				
 	}	
 	
-	public function drawNoteHeads(note:PNote, nx:Float=0, ny:Float=0):Void 
+	public function drawNoteHeads(system:PSystem, note:PNote, nx:Float=0, ny:Float=0):Void 
 	{
-		#if (mtrace > 2) trace('- ->drawNoteHeads()'); #end
 		//var tx = this.targetX + nx * this.scaling.unitX;
 		//var ty = this.targetY  + ny * this.scaling.unitY;
 		
+		var part = note.getComplex().getPart();
+		var partidx = part.getBar().getParts().indexOf(part);
+		var part_getYPosition = partidx * 20;
+		
 		var x = this.targetX +  (nx +  note.getComplex().getXPosition()) * target.getScaling().unitX;
-		var y  = this.targetY + (ny + note.getComplex().getPart().getYPosition()) * target.getScaling().unitY;		
+		var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;		
 		
 		switch note.nnote.type
 		{			
@@ -529,27 +570,30 @@ class Renderer
 	}			
 	
 	
-	public function drawComplex(complex:PComplex, nx:Float=0, ny:Float=0)
+	public function drawComplex(system:PSystem, complex:PComplex, nx:Float=0, ny:Float=0)
 	{
-		#if (mtrace > 2) trace('- ->drawComplex()'); #end
 		if (complex == null) return;
 		
 		//var tx = this.targetX + nx * this.scaling.unitX;
 		//var ty = this.targetY  + ny * this.scaling.unitY;		
 		
+		var part = complex.getPart();
+		var partidx = part.getBar().getParts().indexOf(part);
+		var part_getYPosition = partidx * 20;
+		
 		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;
-		var y  =  this.targetY + (ny + complex.getPart().getYPosition()) * target.getScaling().unitY;
+		var y  =  this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
 		//target.rectangle(x, y, complex.getBaseRect(), 1, 0x00FF00);
 		//target.rectangles(x, y, complex.getAllRects(), 1, 0xFF0000);		
 		
 		
 		for (note in complex.getNotes())
 		{
-			this.drawNoteHeads(note, nx, ny);
+			this.drawNoteHeads(system, note, nx, ny);
 		}
-		this.drawComplexSigns(complex, nx, ny);		
-		this.drawComplexDots(complex, nx, ny);
-		this.drawComplexTies(complex, nx, ny);
+		this.drawComplexSigns(system, complex, nx, ny);		
+		this.drawComplexDots(system, complex, nx, ny);
+		this.drawComplexTies(system, complex, nx, ny);
 		
 		
 		
@@ -561,11 +605,16 @@ class Renderer
 
 		
 	
-	public function drawComplexTies(complex:PComplex, nx:Float=0, ny:Float=0) 
+	public function drawComplexTies(system:PSystem, complex:PComplex, nx:Float=0, ny:Float=0) 
 	{		
-		#if (mtrace > 2) trace('- ->drawComplexTies()'); #end
+		
+		var part = complex.getPart();
+		var partidx = part.getBar().getParts().indexOf(part);
+		var part_getYPosition = partidx * 20;
+		
+		
 		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;				
-		var y  = this.targetY + (ny + complex.getPart().getYPosition()) * target.getScaling().unitY;
+		var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
 
 		for (info in complex.getTieinfos())
 		{
@@ -584,7 +633,7 @@ class Renderer
 				var xshift = .5*this.scaling.unitX;
 				
 				rect.width = (targetx -thisx) - 0.5 ;
-				this.drawTie(x+xshift, y, rect, direction);
+				this.drawTie(system, x+xshift, y, rect, direction);
 			}
 			else
 			{				
@@ -597,14 +646,18 @@ class Renderer
 		}
 	}
 	
-	public function drawComplexDots(complex:PComplex, nx:Float=0, ny:Float=0) 
+	public function drawComplexDots(system:PSystem, complex:PComplex, nx:Float=0, ny:Float=0) 
 	{	
-		#if (mtrace > 2) trace('- ->drawComplexDots()'); #end
 		for (r in complex.getDotRects())
 		{			
 			
+			var part = complex.getPart();
+			var partidx = part.getBar().getParts().indexOf(part);
+			var part_getYPosition = partidx * 20;			
+			
+			
 			var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;
-			var y  = this.targetY + (ny + complex.getPart().getYPosition()) * target.getScaling().unitY;
+			var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
 			
 			var crect = r.clone();
 			var ddot =  (crect.width == Constants.DDOT_WIDTH);
@@ -619,11 +672,16 @@ class Renderer
 	}
 	
 	
-	public function drawComplexSigns(complex:PComplex, nx:Float=0, ny:Float=0) 
+	public function drawComplexSigns(system:PSystem, complex:PComplex, nx:Float=0, ny:Float=0) 
 	{
-		#if (mtrace > 2) trace('- ->drawComplexSigns()'); #end
+		
+			var part = complex.getPart();
+			var partidx = part.getBar().getParts().indexOf(part);
+			var part_getYPosition = partidx * 20;	
+		
+		
 		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;	
-		var y  = this.targetY + (ny + complex.getPart().getYPosition()) * target.getScaling().unitY;
+		var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
 		
 		var signs = complex.getVisibleSigns();
 		var rects = complex.getSignsRects();
@@ -644,9 +702,8 @@ class Renderer
 		}
 	}
 	
-	public function drawBeamgroup(beamgroup:PBeamgroup, nx:Float=0, ny:Float=0)
+	public function drawBeamgroup(system:PSystem, beamgroup:PBeamgroup, nx:Float=0, ny:Float=0)
 	{
-		#if (mtrace > 2) trace('- ->drawBeamgroup()'); #end
 		// TODO : Y
 		//var notesx = beamgroup.getNotesXPositions();
 		
@@ -659,10 +716,14 @@ class Renderer
 		var tx = this.targetX + nx * this.scaling.unitX;
 		var ty = this.targetY  + ny * this.scaling.unitY;		
 		
+			var part = beamgroup.getPVoice().getPart();
+			var partidx = part.getBar().getParts().indexOf(part);
+			var part_getYPosition = partidx * 20;			
+		
 		
 		//--------------------------------------------------------------------------------------------------------
 
-		var rightY = ty + beamgroup.getPVoice().getPart().getYPosition() * target.getScaling().unitY;		
+		var rightY = ty + part_getYPosition * target.getScaling().unitY;		
 		var direction = beamgroup.getDirection();
 		
 		var firstnote = beamgroup.pnotes.first();		
@@ -795,11 +856,10 @@ class Renderer
 		
 	}
 	
-	public function drawBeamgroupX(beamgroup:PBeamgroup, nx:Float=0, ny:Float=0)
+	public function drawBeamgroupX(system:PSystem, beamgroup:PBeamgroup, nx:Float=0, ny:Float=0)
 	{
 		// TODO : Y
 		//var notesx = beamgroup.getNotesXPositions();
-		#if (mtrace > 2) trace('- ->drawBeamgroupX()'); #end
 		
 		
 		
@@ -812,7 +872,12 @@ class Renderer
 		
 		//--------------------------------------------------------------------------------------------------------
 
-		var rightY = this.targetY + beamgroup.getPVoice().getPart().getYPosition() * target.getScaling().unitY;		
+			var part = beamgroup.getPVoice().getPart();
+			var partidx = part.getBar().getParts().indexOf(part);
+			var part_getYPosition = partidx * 20;				
+		
+		
+		var rightY = this.targetY + part_getYPosition * target.getScaling().unitY;		
 		var direction = beamgroup.getDirection();
 		
 		var firstnote = beamgroup.pnotes.first();		
@@ -947,9 +1012,8 @@ class Renderer
 	
 	
 	
-	public function drawTie(x:Float, y:Float, rect:Rectangle, direction:EDirectionUD)
+	public function drawTie(system:PSystem, x:Float, y:Float, rect:Rectangle, direction:EDirectionUD)
 	{
-		#if (mtrace > 2) trace('- ->drawTie()'); #end
 		var a1:Pnt = null;
 		var c1:Pnt = null;
 		var c2:Pnt = null;
@@ -1018,22 +1082,32 @@ class Renderer
 	}
 	
 	
-	public function interactiveComplex(complex:PComplex, nx:Float, ny:Float)
+	public function interactiveComplex(system:PSystem, complex:PComplex, nx:Float, ny:Float)
 	{
 		if (complex == null) return;
+		
+			var part = complex.getPart();
+			var partidx = part.getBar().getParts().indexOf(part);
+			var part_getYPosition = partidx * 20;				
+		
 		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;
-		var y  =  this.targetY + (ny + complex.getPart().getYPosition()) * target.getScaling().unitY;
+		var y  =  this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
 		for (note in complex.getNotes())
 		{
-			this.interactiveNote(note, nx, ny);
+			this.interactiveNote(system, note, nx, ny);
 		}		
 		
 	}
 	
-	public function interactiveNote(note:PNote, nx:Float, ny:Float)
+	public function interactiveNote(system:PSystem, note:PNote, nx:Float, ny:Float)
 	{
+		
+		var part = note.getComplex().getPart();
+		var partidx = part.getBar().getParts().indexOf(part);
+		var part_getYPosition = partidx * 20;		
+		
 		var x = this.targetX +  (nx +  note.getComplex().getXPosition()) * target.getScaling().unitX;
-		var y  = this.targetY + (ny + note.getComplex().getPart().getYPosition()) * target.getScaling().unitY;		
+		var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;		
 	
 	}
 		

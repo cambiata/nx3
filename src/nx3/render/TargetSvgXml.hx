@@ -20,6 +20,8 @@ class TargetSvgXml implements ITarget
 	{
 		this.svg = Xml.createElement('svg');
 		this.svg.set('id', svgId);
+		this.svg.set('width', '600');
+		this.svg.set('height', '400');
 		this.scaling = (scaling != null) ? scaling : Scaling.NORMAL;		
 	}
 	

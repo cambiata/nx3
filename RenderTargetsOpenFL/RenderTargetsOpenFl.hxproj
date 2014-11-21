@@ -22,17 +22,16 @@
     <class path="f:\_haxelib\thx,core\0,13,1\src" />
     <class path="..\src" />
     <class path="src" />
-    <class path="f:\_haxelib\lime\2,0,0-beta\legacy" />
-    <class path="bin\windows\neko\haxe" />
+    <class path="bin\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="openfl=2.1.5&#xA;lime=2.0.0-beta&#xA;actuate=1.7.5&#xA;thx_core&#xA;thx.core&#xA;tools=2.0.0-beta&#xA;lime-legacy&#xA;no-compilation&#xA;native&#xA;mtrace=2&#xA;lime-native&#xA;openfl-native&#xA;trpscore=0&#xA;windows&#xA;desktop" />
+    <option directives="openfl=2.1.5&#xA;lime=2.0.0-beta&#xA;actuate=1.7.5&#xA;thx_core&#xA;thx.core&#xA;tools=2.0.0-beta&#xA;no-compilation&#xA;openfl-flash&#xA;mtrace=2&#xA;trpscore=0&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="--remap flash:openfl&#xA;#--macro keep(&quot;Main&quot;)&#xA;-debug " />
+    <option additional="-swf-version 11.2&#xA;-debug " />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

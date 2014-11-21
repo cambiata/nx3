@@ -1,5 +1,6 @@
 package nx3;
 import haxe.ds.IntMap.IntMap;
+import nx3.geom.Rectangle;
 
 /**
  * ...
@@ -73,24 +74,71 @@ class PPart
 	}
 	
 	
+	/*
 	public function getYPosition():Float
 	{
 		return this.getIndex() * 20;
 	}
+	*/
 	
 	var value:Int;
 	public function getValue():Int
 	{
+		
+		
 		if (value != 0) return this.value;
 		for (voice in this.getVoices())
 		{
 			this.value = Std.int(Math.max(this.value, voice.getValue()));
 		}
 		return this.value;
+	}	
+	
+	private var rect:Rectangle = null;
+	public function getRect():Rectangle
+	{
+		if (rect != null) return rect;		
+		var result = new Rectangle(0, 0, 0, 0);		
+		//trace('complexes');
+		for (complex in this.getComplexes())
+		{
+			var cr:Rectangle = complex.getRect();
+			result = result.union(cr);
+		}		
+		//trace('beamframes');
+		for (voice in this.getVoices())
+		{
+			for (beamgroup in voice.getBeamgroups())
+			{
+				var dir:EDirectionUD = beamgroup.getDirection();
+				var frame: PBeamframe = beamgroup.getFrame();
+				if (frame == null) continue;
+			
+				var top = (dir == EDirectionUD.Up) ? Math.min(frame.leftTipY, frame.rightTipY) : 0;
+				var bottom = (dir == EDirectionUD.Up) ? 0 : Math.max(frame.leftTipY, frame.rightTipY);
+				var br:Rectangle = new Rectangle(0, top, 1, bottom - top);
+				result = result.union(br);
+				
+			}			
+		}		
+		//trace('result');
+		this.rect = result;
+		return result;
 	}
 	
-	
-	
 
+	public function getYAbove():Float
+	{
+		var result = 0.0;
+		var index = this.bar.getParts().indexOf(this);
+		
+		if (index == 0)		
+			result = this.getRect().y;
+		else {
+			var prevPart = this.bar.getPart(index - 1);
+			result = prevPart.getRect().bottom + ( -this.getRect().y);
+		}
+		return result;		
+	}
 	
 }

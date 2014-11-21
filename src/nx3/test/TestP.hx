@@ -722,9 +722,40 @@ class TestP extends TestCase
 			return result;
 	}
 	
+	
+	public function testPartRect()
+	{
+		var bar:PBar =  new PBar(new NBar([		
+			
+			new NPart([	
+				new NVoice([				
+					new QNote8(4),
+					new QNote8( -1),
 
-	
-	
+					new QNote8(-4),
+					new QNote8(1),					
+					
+				]),
+			]),
+			
+			new NPart([	
+				new NVoice([				
+					new QNote1(0),
+				]),
+			]),				
+				
+		]));			
+		var part :PPart = bar.getParts().first();
+		var rect0 = part.getRect();
+		trace(rect0);
+		//trace(rect0.bottom);
+		
+		var part :PPart = bar.getParts().second();
+		var rect1 = part.getRect();
+		trace(rect1);
+		//trace(rect0.bottom);		
+		
+	}
 	
 	
 	public function testSystemGeneratorOneBar()
@@ -955,6 +986,7 @@ class TestP extends TestCase
 		this.assertEquals(system.getSystembars().first().actAttributes.time, ETime.Time5_8);
 	}	
 	
+	/*
 	public function testSystemGeneratorContentWidth()
 	{
 		var bars:PBars = [];
@@ -982,7 +1014,8 @@ class TestP extends TestCase
 		this.assertEquals(system.getSystembars().first().getBarMeasurements().getTotalWidth(), 190);
 		this.assertTrue(true);		
 	}
-		
+	*/	
+	
 	public function testSystemGeneratorTwoBars()	
 	{	
 		var bars:PBars = [];		
@@ -1052,7 +1085,7 @@ class TestP extends TestCase
 		//this.assertEquals(barConfToArr( system.bars.fifth().barConfig).toString() , [false, false, false].toString());
 	}
 	
-	
+	/*
 	public function testSystemGeneratorOverflow()
 	{
 		var bars:PBars = [];		
@@ -1094,7 +1127,8 @@ class TestP extends TestCase
 		this.assertEquals(barscopy.length, 1);
 		
 	}
-	
+	*/
+	/*
 	public function testSystemGeneratorCautions()
 	{
 		var bars:PBars = [];		
@@ -1153,7 +1187,9 @@ class TestP extends TestCase
 		this.assertEquals(system.getSystembars().first().barConfig.showCautTime, true);
 		this.assertEquals(system.getSystembars().last().caAttributes.time, ETime.Time2_2);
 	}
+	*/
 	
+	/*
 	public function testSystemGeneratorCautionsTwoParts()
 	{		
 		var bars:PBars = [];		
@@ -1263,6 +1299,7 @@ class TestP extends TestCase
 		this.assertEquals(system.getSystembars().first().caAttributes.time, ETime.Time4_8);
 		this.assertEquals(system.getWidth(), 240);		
 	}
+	*/
 	
 	/*
 	public function testSystemGeneratorCautionsDontFit()
