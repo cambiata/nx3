@@ -1,5 +1,6 @@
 package nx3;
 import nx3.PBars;
+import nx3.PScore;
 using cx.ArrayTools;
 
 /**
@@ -11,10 +12,12 @@ using cx.ArrayTools;
 class PScoreSystemsGenerator
 {
 	var bars:PBars;
+	var score:PScore;
 
-	public function new(bars:PBars) 
+	public function new(?score:PScore, bars:PBars) 
 	{
 		this.bars = bars;
+		this.score = score;
 	}
 	
 	public function getsSystems(systemwidths:Array<Float>):PSystems
@@ -27,7 +30,7 @@ class PScoreSystemsGenerator
 		while (tempbars.length > 0)
 		{
 			var syswidth = systemwidths.indexOrValue(sysidx, systemwidths.first());
-			var generator = new PSystemBarsGenerator(tempbars,  { showFirstClef:true, showFirstKey:true, showFirstTime:(sysidx == 0) }, prevbarAttributes,  syswidth, new PBarWidthCalculator() );
+			var generator = new PSystemBarsGenerator(this.score, tempbars,  { showFirstClef:true, showFirstKey:true, showFirstTime:(sysidx == 0) }, prevbarAttributes,  syswidth, new PBarWidthCalculator() );
 			var system:PSystem = generator.getSystem();								
 			prevbarAttributes = system.getLastBarAttributes();
 			result.push(system);

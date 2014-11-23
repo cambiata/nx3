@@ -98,7 +98,11 @@ class PPart
 	public function getRect():Rectangle
 	{
 		if (rect != null) return rect;		
-		var result = new Rectangle(0, 0, 0, 0);		
+		
+		var result = switch this.npart.type {
+			case _: 	new Rectangle(0, -4, 1, 8);		
+		}
+
 		//trace('complexes');
 		for (complex in this.getComplexes())
 		{

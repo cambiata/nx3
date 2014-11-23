@@ -48,6 +48,8 @@ interface ITarget
 	
 	public function tooltipShow(rect:Rectangle, text:String):Void;
 	public function tooltipHide():Void;
-	
+
+	public var totalWidth:Float;
+	public var totalHeight:Float;
 
 }

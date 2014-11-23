@@ -40,7 +40,7 @@ class TestRenderer
 		r.addInteraction( new TestInteractivity());
 		//r.addInteraction( new SoundInteractivity());
 		//r.renderScore(new PScore(TestItems.scoreTest1().nscore), 10, 100, 300);
-		r.renderScore(new PScore(TestItems.scoreBachSinfonia4()), 10, 100, 300);
+		r.renderScore(new PScore(TestItems.scoreBachSinfonia4()), 0, 0, 300);
 	}
 	
 }

@@ -457,10 +457,19 @@ class TestItems
 	
 	static public function scoreTest1():PScore
 	{
-		var n0 = new NBar([ new NPart([new QVoice(4)], EClef.ClefC, EKey.Flat2)], ETime.Time2_4);	
+		var n0 = new NBar([ 
+			new NPart([new QVoice(1)], EClef.ClefG, EKey.Flat2),
+			new NPart([new QVoice(1, [-8])], EClef.ClefC, EKey.Flat2)
+			], ETime.Time2_4);	
+		var n1 = new NBar([ 
+			new NPart([new QVoice(1, [-8])], EClef.ClefG, EKey.Flat2),
+			new NPart([new QVoice(1, 0)], EClef.ClefC, EKey.Flat2)
+			], ETime.Time2_4);	
+			
+			//var n1 = new NBar([ new NPart([new QVoice(1)], EClef.ClefC, EKey.Flat2)], ETime.Time2_4);	
 		//var n0 = new NBar([ new NPart([new QVoice([.4, 16, 16, 4, 4], '#.b.')], EClef.ClefC, EKey.Flat2)], ETime.Time2_4);	
 		//var n1 =  new NBar([new NPart([new QVoice([4, .4, 8], [2, 3, 4], '.#')])]);		
-		var nscore:NScore = new NScore([n0 /*, n1*/ ]);
+		var nscore:NScore = new NScore([n0, n1 ]);
 		var score = new PScore(nscore);
 		return score;
 	}
@@ -777,11 +786,20 @@ static public function scoreTplRow():NScore
 		var bars2 = BarsXML.fromXmlStr(xmlstr);
 		var xmlstr2 = BarsXML.toXml(bars2).toString();
 		trace(xmlstr);
-		
 		return score;
 		
 	}
 	
-	
+	static public function getSystemYItems():NScore
+	{
+		var bars:nx3.NBars = [];		
+		var n0 = new NPart([new QVoice(1, [7])]);
+		var n1 = new NPart([new QVoice(1, [-4])]);
+		bars.push(new NBar([n0, n1]));
+		var n0 = new NPart([new QVoice(1, [4])]);
+		var n1 = new NPart([new QVoice(1, [5])]);
+		bars.push(new NBar([n0, n1]));
+		return new NScore(bars);
+	}
 	
 }

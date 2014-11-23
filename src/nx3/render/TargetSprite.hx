@@ -53,6 +53,9 @@ class TargetSprite  implements ITarget
 	var scaling:TScaling;
 	var sprite:Sprite;
 
+	public var totalHeight:Float;
+	public var totalWidth:Float;
+	
 	public function new(?target:Sprite, ?scaling:TScaling) 
 	{
 		if (target == null) target = new Sprite();
@@ -62,6 +65,8 @@ class TargetSprite  implements ITarget
 		this.textformat = new TextFormat();
 		this.textfield = new TextField();
 		this.setFont(Constants.FONT_TEXT_DEFAULTFORMAT);
+		this.totalHeight = .0;
+		this.totalWidth = .0;
 	}
 	
 	public function getTargetSprite(x:Float = 0, y:Float = 0):Sprite 

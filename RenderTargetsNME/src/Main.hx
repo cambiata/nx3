@@ -20,9 +20,9 @@ class Main
 {	
 	static function main() 
 	{
-		Unittests.performTests();
+		//Unittests.performTests();
 
-		/*
+		
 		var target = new TargetNmeBitmap(Scaling.SMALL);
 		TestRenderer.testRenderP( new Renderer(target, 10, 80));		
 		target.saveBitmap('test-small.png');
@@ -39,10 +39,10 @@ class Main
 		TestRenderer.testRenderP(new Renderer(target, 10, 80));
 		var xml = target.getXml();
 		var xmlString = xml.toString();
-		var html = '<html><body><svg id="small" style="width:1200px;height:600px;background:white;" >$xmlString</svg></body></html>';
+		var html = '<html><body>$xmlString</body></html>';
 		
 		FileTools.saveContent('test.html', html);
 		FileTools.saveContent('test.svg', xmlString);
-		*/
+		
 	}
 }

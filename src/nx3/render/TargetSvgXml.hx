@@ -16,11 +16,14 @@ class TargetSvgXml implements ITarget
 	var svg:Xml;
 	var scaling:TScaling;
 
+	public var totalHeight:Float;
+	public var totalWidth:Float;	
+	
 	public function new(svgId:String, ?scaling:TScaling) 
 	{
 		this.svg = Xml.createElement('svg');
 		this.svg.set('id', svgId);
-		this.svg.set('width', '600');
+		
 		this.svg.set('height', '400');
 		this.scaling = (scaling != null) ? scaling : Scaling.NORMAL;		
 	}
@@ -28,6 +31,8 @@ class TargetSvgXml implements ITarget
 	/* INTERFACE nx3.render.ITarget */
 	public function getXml():Xml
 	{
+		this.svg.set('width', Std.string(this.totalWidth));
+		this.svg.set('height', Std.string(this.totalHeight));
 		return this.svg;
 	}
 	

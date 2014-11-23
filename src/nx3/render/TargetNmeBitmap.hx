@@ -12,7 +12,7 @@ class TargetNmeBitmap  extends TargetSprite implements ITarget
 {
 	public function saveBitmap(filename:String)
 	{		
-		RenderTools.spriteToPng(this.sprite, filename);
+		RenderTools.spriteToPng(this.sprite, filename, 0, 0);
 	}
 	
 }

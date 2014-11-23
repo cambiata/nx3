@@ -20,7 +20,6 @@ class PScore
 	var bars:PBars;
 	public function getBars():PBars
 	{
-		#if (trpscore > 0) trace('PScore->getBars()'); #end
 		if (this.bars != null) return this.bars;
 		this.bars = [];
 		for (nbar in this.nscore.nbars)
@@ -34,7 +33,6 @@ class PScore
 	
 	public function getNBars():NBars 
 	{
-		#if (trpscore > 0) trace('PScore->getNBars()'); #end
 		var result:NBars = [];
 		for (bar in this.getBars()) result.push(bar.nbar);
 		return result;		
@@ -44,11 +42,10 @@ class PScore
 	var prevSystemwidth:Float = 0;
 	public function getSystems(systemwidth: Float):PSystems
 	{		
-		#if (trpscore > 0) trace('PScore->getSystems()'); #end
 		if (systemwidth != prevSystemwidth) this.systems = null;
 		if (this.systems != null) return this.systems;		
 
-		this.systems = new PScoreSystemsGenerator(this.getBars()).getsSystems([systemwidth]);
+		this.systems = new PScoreSystemsGenerator(this, this.getBars()).getsSystems([systemwidth]);
 		
 		for (system in this.systems)	
 		{
@@ -64,9 +61,37 @@ class PScore
 	}
 	
 	public function getBar(idx:Int):PBar {
-		#if (trpscore > 0) trace('PScore->getBar()'); #end
 		return (idx < 0 || idx > this.getBars().length) ? null : this.getBars()[idx];
 	}
 	
+	public function getSystemY(system:PSystem)
+	{
+		if (this.systems == null) throw "Systems == null";
+		var systemidx = this.systems.indexOf(system);
+		var sysY = .0;
+		for (i in 0...systemidx)
+		{
+			sysY += this.systems[i].getHeight();
+		}
+		return sysY;
+	}
+	
+	public function getHeight():Float
+	{
+		if (this.systems == null) throw "Systems == null";
+		var lastsystem = this.systems.last();
+		return this.getSystemY(lastsystem) + lastsystem.getHeight();
+	}
+	
+	public function getWidth() :Float
+	{
+		if (this.systems == null) throw "Systems == null";
+		var w = .0;
+		for (sys in this.systems)
+		{
+			w = Math.max(w, sys.getBarsWidth());
+		}
+		return w;
+	}
 	
 }

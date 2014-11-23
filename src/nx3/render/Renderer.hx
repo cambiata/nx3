@@ -46,8 +46,6 @@ class Renderer
 	var targetX:Float;
 	var scaling:TScaling;
 	var interactions:Array<IInteractivity>;
-	var partDistance:Int;
-	
 	
 	public function xToUnitX(x:Float):Float return x * (1 / this.scaling.unitX);			
 	public function yToUnitY(y:Float):Float return y * (1 / this.scaling.unitY);		
@@ -64,7 +62,15 @@ class Renderer
 		if (newX != -1) this.targetX = newX;
 		if (newY != -1) this.targetY = newY;	
 		this.drawSystems(score.getSystems(systemwidth));	
+		
+		//this.target.rectangle(0, 0, new Rectangle(0, 0, score.getWidth(), score.getHeight()), 2, 0xFF0000); 
+		
+		this.target.totalWidth = score.getWidth() * this.scaling.unitX;
+		this.target.totalHeight = score.getHeight() * this.scaling.unitY;
+		
 	}	
+	
+	
 
 	//----------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
@@ -78,7 +84,7 @@ class Renderer
 		this.interactions = (interactions != null) ? interactions : [];		
 		
 		// TODO
-		this.partDistance = Std.int(16 * scaling.unitY);
+		//this.partDistance = Std.int(16 * scaling.unitY);
 	}
 	
 	public function addInteraction(interaction:IInteractivity)
@@ -88,13 +94,9 @@ class Renderer
 	
 	public function drawSystems(systems:PSystems)
 	{
-		var ny = 0.0;
 		for (system in systems)
 		{
-			this.drawSystem(system, 0, ny);
-			this.drawSystemExtras(systems, system, 0, ny);
-			
-			ny += 50;
+			this.drawSystem(system);
 		}
 	}
 
@@ -240,58 +242,72 @@ class Renderer
 	
 	
 	
-	public function drawSystem(system:PSystem, nx:Float = 0, ny:Float = 0)
+	public function drawSystem(system:PSystem)
 	{
+		
+		/*
+		var firstsystemy = system.getY() + system.getSpaceAbovePart(0);
+
 		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY  + ny * this.scaling.unitY;				
+		var ty = this.targetY  + (ny + firstsystemy) * this.scaling.unitY;				
 			
+		var ny = 0; // ny + firstsystemy;
+		*/
+		//var ny = firstsystemy;
+		//trace([ny, ty, firstsystemy]);
+		
+		
+		
+		
 		//this.target.rectangle(tx, ty, new Rectangle(0, -10, system.getSystemBreakWidth(), 40), 2, 0x00ff00);
-		var barx = 0.0;
+		this.drawBarlines(system, system.getSystembars()/*, nx, ny*/);
+		//var barx = 0.0;
 		for (systembar in system.getSystembars())
 		{
-			var meas = systembar.getBarMeasurements();
-			this.drawBarAttributes(system, systembar, barx, ny);
-			this.drawBarContent(system, systembar, barx, ny);
-			
-			barx += systembar.getBarMeasurements().getTotalWidth();
-			
+			//var meas = systembar.getBarMeasurements();
+			this.drawBarAttributes(system, systembar/*, barx, ny*/);
+			this.drawBarContent(system, systembar);
+			//barx += systembar.getBarMeasurements().getTotalWidth();
 		}
 		
-		this.drawBarlines(system, system.getSystembars(), nx, ny);
+		//this.target.rectangle(0, 0, new Rectangle(0, system.getY(), system.getBarsWidth(), system.getHeight()), 3, 0x0000FF);
+		
 		
 	}
 	
-	private function drawBarlines(system:PSystem, systembars:PSystemBars, nx:Float, ny:Float) 
+	private function drawBarlines(system:PSystem, systembars:PSystemBars/*, nx:Float, ny:Float*/) 
 	{
 		//trace([systembar.barWidths.x, systembar.barWidths.width]);
 		//var barX =  systembars.first().getXPosition();
 		//var barWidth = systembars.first().getBarMeasurements().getTotalWidth();		
 		
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY  + ny * this.scaling.unitY;				
+		var tx = this.targetX; //*+ nx * this.scaling.unitX;
+		var ty = this.targetY + system.getY() * this.scaling.unitY;				
 		
 		//var partidx = 0;		
 		
 		var part = systembars.first().bar.getParts().first();
 		var partidx = part.getBar().getParts().indexOf(part);
-		var party = partidx * 20 * this.scaling.unitY;		
+		//var party = partidx * 20 * this.scaling.unitY;		
 		
-		
+		var party = system.getPartY(0) * this.scaling.unitY;		
 		var partFirstY = party - 4 * this.scaling.unitY;		
+
+		/*
+		*/
+		
 		var partY = 0.0;
 		
-		var barX = 0.0;
+		//var barX = 0.0;
 		for (systembar in systembars)
 		{
-			
+			var barX = systembar.getX(); // system.getSystembarX(systembar);
 			var barWidth = systembar.getBarMeasurements().getTotalWidth();				
 			
 			for (part in systembar.bar.getParts())
 			{				
-				
 				var partidx = part.getBar().getParts().indexOf(part);
-				var part_getYPosition = partidx * 20;
-				
+				var part_getYPosition = system.getPartY(partidx);
 				switch part.npart.type
 				{
 					case EPartType.Normal:
@@ -303,17 +319,18 @@ class Renderer
 					default: 
 				}				
 			}
-			barX += barWidth;
+			//barX += barWidth;
 			
 		}
 		var partLastY = (partY + 4) * this.scaling.unitY;
 		this.target.line(tx, ty + partFirstY, tx, ty + partLastY, 2, 0x000000);	
 	}
 	
-	public function drawBarAttributes(system:PSystem, systembar:PSystemBar, nx:Float = 0, ny:Float = 0)
+	public function drawBarAttributes(system:PSystem, systembar:PSystemBar/*, nx:Float = 0, ny:Float = 0*/)
 	{
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY  + ny * this.scaling.unitY;		
+		
+		var tx = this.targetX; // + nx * this.scaling.unitX;
+		//var ty = this.targetY + system.getY() * this.scaling.unitY;		
 		
 			for (part in systembar.bar.getParts())
 			{
@@ -321,30 +338,34 @@ class Renderer
 				
 				var partIdx = systembar.bar.getParts().indexOf(part);
 				
-				var part_getYPosition = partIdx * 20;
+				//var part_getYPosition = partIdx * 20;
+				var partX = this.targetX + systembar.getX() * this.scaling.unitX;
+				var partY = this.targetY + (system.getY() + system.getPartY(partIdx)) * this.scaling.unitY;
 				
-				
-				this.target.testLines(tx , ty + part_getYPosition * this.scaling.unitY,  systembar.getBarMeasurements().getTotalWidth()* this.scaling.unitX);				
-				this.drawBarAttributeClef(system, systembar, part, nx, ny, systembar.getBarMeasurements().getClefXPosition());
-				this.drawBarAttributeKey(system, systembar, part, nx, ny, systembar.getBarMeasurements().getKeyXPosition());
-				this.drawBarAttributeTime(system, systembar, part, nx, ny, systembar.getBarMeasurements().getTimeXPosition());
+				this.target.testLines(partX , partY,  systembar.getBarMeasurements().getTotalWidth()* this.scaling.unitX);				
+				this.drawBarAttributeClef(system, systembar, part /*, nx, ny*/  /*, systembar.getBarMeasurements().getClefXPosition()*/);
+				this.drawBarAttributeKey(system, systembar, part /*, nx, ny*/ /*, systembar.getBarMeasurements().getKeyXPosition()*/);
+				this.drawBarAttributeTime(system, systembar, part /*nx, ny*//*, systembar.getBarMeasurements().getTimeXPosition()*/);
 			}		
 	}
 	
-	public function drawBarAttributeTime(system:PSystem, systembar:PSystemBar, part:PPart, nx:Float, ny:Float, timeX:Float=0)
+	public function drawBarAttributeTime(system:PSystem, systembar:PSystemBar, part:PPart /*, nx:Float, ny:Float*//*, timeX:Float=0*/)
 	{
+		
 		var showTime = systembar.barConfig.showTime;
 		if (!showTime) return;		
 		
 		var acttime = systembar.actAttributes.time;	
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY  + ny * this.scaling.unitY;				
+		//var tx = this.targetX + nx * this.scaling.unitX;
+		var tx = this.targetX + systembar.getX() * this.scaling.unitX;
+		//var partidx = systembar.bar.getParts().indexOf(part);
 		
-		timeX =  timeX * this.scaling.unitX;
+		var ty = this.targetY  ;				
+		
+		var timeX =  systembar.getBarMeasurements().getTimeXPosition() * this.scaling.unitX;
 		
 		var partidx = part.getBar().getParts().indexOf(part);
-		var part_getYPosition = partidx * 20;
-		
+		var part_getYPosition = system.getY() + system.getPartY(partidx);
 			
 		var timeChars = acttime.toString().split('/');
 		if (timeChars.length == 2)
@@ -363,22 +384,20 @@ class Renderer
 			var timeY = -1 * this.scaling.unitY;					
 			this.target.shape(tx + timeX, ty + timeY +  part_getYPosition * this.scaling.unitY, midXmlStr);					
 		}
-		
-		
 	}
 	
-	public function drawBarAttributeKey(system:PSystem, systembar:PSystemBar, part:PPart, nx:Float, ny:Float, keyX:Float=0)
+	public function drawBarAttributeKey(system:PSystem, systembar:PSystemBar, part:PPart/*, nx:Float, ny:Float*/ /*, keyX:Float=0*/)
 	{	
 		var showkey = systembar.barConfig.showKey;
 		if (!showkey) return;	
 
 		var partidx = systembar.bar.getParts().indexOf(part);
-		var part_getYPosition = partidx * 20;
+		var part_getYPosition = system.getPartY(partidx);
 		
 		var actkey = systembar.actAttributes.keys[partidx];				
 		
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY  + ny * this.scaling.unitY;						
+		var tx = this.targetX + systembar.getX() * this.scaling.unitX;
+		var ty = this.targetY + system.getY() * this.scaling.unitY;						
 		
 		var keyX = systembar.getBarMeasurements().getKeyXPosition() * this.scaling.unitX;
 		var keyY = 1 * this.scaling.unitY;		
@@ -396,24 +415,21 @@ class Renderer
 		
 	}
 	
-	public function drawBarAttributeClef(system:PSystem, systembar:PSystemBar, part:PPart, nx:Float, ny:Float,  clefX:Float=0)
+	public function drawBarAttributeClef(system:PSystem, systembar:PSystemBar, part:PPart/*, nx:Float, ny:Float *//*,  clefX:Float=0*/)
 	{
 		var showclef = systembar.barConfig.showClef;
 		if (!showclef) return;
 		
 		var partidx = systembar.bar.getParts().indexOf(part);
-		var part_getYPosition = partidx * 20;
+		var part_getYPosition = system.getPartY(partidx);
 		
 		var actclef = systembar.actAttributes.clefs[partidx];		
 		
+		var tx = this.targetX + systembar.getX() * this.scaling.unitX;
+		var ty = this.targetY + system.getY() * this.scaling.unitY;				
 		
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY  + ny * this.scaling.unitY;				
-		
-		var clefX = (systembar.getBarMeasurements().getClefXPosition() * this.scaling.unitX);
+		var clefX = systembar.getBarMeasurements().getClefXPosition() * this.scaling.unitX;
 		var clefY = 1 * this.scaling.unitY;
-		
-		
 		
 		var svgXmlstr = switch actclef
 		{
@@ -422,30 +438,34 @@ class Renderer
 			case EClef.ClefF: SvgElements.clefF;						
 		}
 		
-		
-		
 		this.target.shape(tx + clefX, ty + clefY +  part_getYPosition * this.scaling.unitY, svgXmlstr);		
 	}
 	
 	
-	public function drawBarContent(system:PSystem, systembar:PSystemBar, nx:Float=0, ny:Float=0)
+	public function drawBarContent(system:PSystem, systembar:PSystemBar)
 	{
 		var bar = systembar.bar;
-		nx = nx + systembar.getBarMeasurements().getContentXPosition();
 		
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY  + ny * this.scaling.unitY;
+		var barx = systembar.getX() + systembar.getBarMeasurements().getContentXPosition();
+		
+		var nx = systembar.getBarMeasurements().getContentXPosition();
+		
+		var tx = this.targetX + barx * this.scaling.unitX;
+		var ty = this.targetY;
 		
 		
 		var contentwidth = bar.getContentwidth();
 		//trace(bar.getContentwidth());
 		
-		
 		/*
 		for (part in bar.getParts())
 		{
 			var rect = part.getRect();
-			this.target.rectangle(tx, ty, rect, 3, 0xFF0000);			
+
+			var partidx = part.getBar().getParts().indexOf(part);
+			
+			var py = this.targetY + (system.getY() + system.getPartY(partidx)) * this.scaling.unitY;
+			this.target.rectangle(tx, py, rect, 3, 0x00FF00);
 		}
 		*/
 		
@@ -458,40 +478,46 @@ class Renderer
 			{
 				for (beamgroup in voice.getBeamgroups())
 				{
-					this.drawBeamgroup(system, beamgroup, nx, ny);					
+					this.drawBeamgroup(system, systembar, beamgroup);					
 				}
 				
+				/*
 				switch voice.nvoice.type
 				{
 					case EVoiceType.Normal:
 					case EVoiceType.Barpause(bplevel):						
 				}
+				*/
 				
 			}
 		}		
+		
+		//trace('ny $ny');
+		
 		for (column in bar.getColumns())
 		{			
 			//trace([column.getValue(), column.getValueDelta()]);
 			for (complex in column.getComplexes())
 			{
-				this.drawComplex(system, complex, nx, ny);
-				this.interactiveComplex(system, complex, nx, ny);
+				this.drawComplex(system, systembar, complex);
+				//this.interactiveComplex(system, complex, nx, ny);
 				
 			}			
 		}				
 	}	
 	
-	public function drawNoteHeads(system:PSystem, note:PNote, nx:Float=0, ny:Float=0):Void 
+	public function drawNoteHeads(system:PSystem, systembar:PSystemBar, note:PNote):Void 
 	{
-		//var tx = this.targetX + nx * this.scaling.unitX;
-		//var ty = this.targetY  + ny * this.scaling.unitY;
 		
 		var part = note.getComplex().getPart();
 		var partidx = part.getBar().getParts().indexOf(part);
-		var part_getYPosition = partidx * 20;
+		var part_getYPosition = system.getPartY(partidx); // partidx * 20;
 		
-		var x = this.targetX +  (nx +  note.getComplex().getXPosition()) * target.getScaling().unitX;
-		var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;		
+		var barx = systembar.getX() + systembar.getBarMeasurements().getContentXPosition();
+		//nx = barx; // * this.scaling.unitX;
+		
+		var x = this.targetX +  (barx +  note.getComplex().getXPosition()) * target.getScaling().unitX;
+		var y  = this.targetY + (system.getY() + part_getYPosition) * target.getScaling().unitY;		
 		
 		switch note.nnote.type
 		{			
@@ -569,52 +595,30 @@ class Renderer
 		}		
 	}			
 	
-	
-	public function drawComplex(system:PSystem, complex:PComplex, nx:Float=0, ny:Float=0)
+	public function drawComplex(system:PSystem, systembar:PSystemBar, complex:PComplex)
 	{
-		if (complex == null) return;
-		
-		//var tx = this.targetX + nx * this.scaling.unitX;
-		//var ty = this.targetY  + ny * this.scaling.unitY;		
-		
-		var part = complex.getPart();
-		var partidx = part.getBar().getParts().indexOf(part);
-		var part_getYPosition = partidx * 20;
-		
-		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;
-		var y  =  this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
-		//target.rectangle(x, y, complex.getBaseRect(), 1, 0x00FF00);
-		//target.rectangles(x, y, complex.getAllRects(), 1, 0xFF0000);		
-		
-		
+		if (complex == null) return;		
 		for (note in complex.getNotes())
 		{
-			this.drawNoteHeads(system, note, nx, ny);
+			this.drawNoteHeads(system, systembar, note);
 		}
-		this.drawComplexSigns(system, complex, nx, ny);		
-		this.drawComplexDots(system, complex, nx, ny);
-		this.drawComplexTies(system, complex, nx, ny);
-		
-		
-		
+		this.drawComplexSigns(system, systembar, complex);		
+		this.drawComplexDots(system, systembar, complex);
+		this.drawComplexTies(system, systembar, complex);
 	}
 	
-
-
-	
-
-		
-	
-	public function drawComplexTies(system:PSystem, complex:PComplex, nx:Float=0, ny:Float=0) 
+	public function drawComplexTies(system:PSystem, systembar:PSystemBar, complex:PComplex, nx:Float=0, ny:Float=0) 
 	{		
 		
 		var part = complex.getPart();
 		var partidx = part.getBar().getParts().indexOf(part);
-		var part_getYPosition = partidx * 20;
+		var part_getYPosition = system.getPartY(partidx);
+		
+		var barx = systembar.getX() + systembar.getBarMeasurements().getContentXPosition();
 		
 		
-		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;				
-		var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
+		var x = this.targetX + (barx + complex.getXPosition()) * target.getScaling().unitX;				
+		var y  = this.targetY +  (system.getY() + part_getYPosition) * target.getScaling().unitY;
 
 		for (info in complex.getTieinfos())
 		{
@@ -642,22 +646,20 @@ class Renderer
 				rect.width = 6;
 				//this.drawTie(x, y, rect, direction);
 			}
-			
 		}
 	}
 	
-	public function drawComplexDots(system:PSystem, complex:PComplex, nx:Float=0, ny:Float=0) 
+	public function drawComplexDots(system:PSystem, systembar:PSystemBar, complex:PComplex, nx:Float=0, ny:Float=0) 
 	{	
 		for (r in complex.getDotRects())
 		{			
 			
 			var part = complex.getPart();
 			var partidx = part.getBar().getParts().indexOf(part);
-			var part_getYPosition = partidx * 20;			
-			
+			var part_getYPosition = system.getPartY(partidx);			
 			
 			var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;
-			var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
+			var y  = this.targetY + (system.getY() + part_getYPosition) * target.getScaling().unitY;
 			
 			var crect = r.clone();
 			var ddot =  (crect.width == Constants.DDOT_WIDTH);
@@ -672,16 +674,17 @@ class Renderer
 	}
 	
 	
-	public function drawComplexSigns(system:PSystem, complex:PComplex, nx:Float=0, ny:Float=0) 
+	public function drawComplexSigns(system:PSystem, systembar:PSystemBar, complex:PComplex, nx:Float=0, ny:Float=0) 
 	{
 		
 			var part = complex.getPart();
 			var partidx = part.getBar().getParts().indexOf(part);
-			var part_getYPosition = partidx * 20;	
+			var part_getYPosition = system.getPartY(partidx);
 		
-		
-		var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;	
-		var y  = this.targetY + (ny + part_getYPosition) * target.getScaling().unitY;
+		var barx = systembar.getX() + systembar.getBarMeasurements().getContentXPosition();	
+			
+		var x = this.targetX + (barx + complex.getXPosition()) * target.getScaling().unitX;	
+		var y  = this.targetY + (system.getY() +  part_getYPosition) * target.getScaling().unitY;
 		
 		var signs = complex.getVisibleSigns();
 		var rects = complex.getSignsRects();
@@ -702,7 +705,7 @@ class Renderer
 		}
 	}
 	
-	public function drawBeamgroup(system:PSystem, beamgroup:PBeamgroup, nx:Float=0, ny:Float=0)
+	public function drawBeamgroup(system:PSystem, systembar:PSystemBar, beamgroup:PBeamgroup)
 	{
 		// TODO : Y
 		//var notesx = beamgroup.getNotesXPositions();
@@ -713,14 +716,13 @@ class Renderer
 		var frame = beamgroup.getFrame();
 		if (frame == null) return;
 
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY  + ny * this.scaling.unitY;		
+		var barx = systembar.getX() + systembar.getBarMeasurements().getContentXPosition();
+		var tx = this.targetX + barx * this.scaling.unitX;
+		var ty = this.targetY + system.getY() * this.scaling.unitY;		
 		
 			var part = beamgroup.getPVoice().getPart();
 			var partidx = part.getBar().getParts().indexOf(part);
-			var part_getYPosition = partidx * 20;			
-		
-		
+			var part_getYPosition = system.getPartY(partidx);			
 		//--------------------------------------------------------------------------------------------------------
 
 		var rightY = ty + part_getYPosition * target.getScaling().unitY;		

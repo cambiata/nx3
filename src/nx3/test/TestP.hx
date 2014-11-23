@@ -722,7 +722,7 @@ class TestP extends TestCase
 			return result;
 	}
 	
-	
+		/*
 	public function testPartRect()
 	{
 		var bar:PBar =  new PBar(new NBar([		
@@ -756,7 +756,7 @@ class TestP extends TestCase
 		//trace(rect0.bottom);		
 		
 	}
-	
+	*/
 	
 	public function testSystemGeneratorOneBar()
 	{		
@@ -1039,6 +1039,7 @@ class TestP extends TestCase
 		this.assertEquals(system.getSystembars().first().barConfig.showTime, true);
 		this.assertEquals(system.getSystembars().second().barConfig.showTime, false);				
 	}	
+
 	public function testSystemGeneratorMoreBars()	
 	{	
 		var bars:PBars = [];		
@@ -1425,6 +1426,48 @@ class TestP extends TestCase
 		return [conf.showClef, conf.showKey, conf.showTime];
 	}	
 	
+	
+	public function testSystemPartRects()	
+	{	
+		
+		/*
+		var bars:PBars = [];		
+		var n0 = new NPart([new QVoice(1, [0])]);
+		var n1 = new NPart([new QVoice(1, [0])]);
+		bars.push(new PBar(new NBar([n0, n1])));
+		var n0 = new NPart([new QVoice(1, [0])]);
+		var n1 = new NPart([new QVoice(1, [0])]);
+		bars.push(new PBar(new NBar([n0, n1])));
+*/
+			var bars = [new PBar(TestItems.getSystemYItems().nbars[0]),new PBar(TestItems.getSystemYItems().nbars[1])] ;
+
+		var generator = new PSystemBarsGenerator(bars,  { showFirstClef:true, showFirstKey:true, showFirstTime:true }, null, 400 );
+		var system:PSystem = generator.getSystem();		
+		//this.assertEquals(system.bars.first().width, 120);		
+		this.assertEquals(system.getSystembars().length, 2);
+		
+		this.assertEquals(system.getSpaceAbovePart(0), 4);
+		this.assertEquals(system.getSpaceAbovePart(1), 11);
+
+		this.assertEquals(system.getPartY(0), 4);
+		this.assertEquals(system.getPartY(1), 4 + 11);
+		
+		this.assertEquals(system.getHeight(), 21);
+		
+		/*
+		this.assertEquals(system.getSystembars().first().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.getSystembars().second().actAttributes.clefs.toString(), [EClef.ClefG].toString());
+		this.assertEquals(system.getSystembars().first().actAttributes.keys.toString(), [ EKey.Flat3].toString());
+		this.assertEquals(system.getSystembars().second().actAttributes.keys.toString(), [ EKey.Flat3].toString());		
+		this.assertEquals(system.getSystembars().first().actAttributes.time, ETime.Time3_2);
+		this.assertEquals(system.getSystembars().first().barConfig.showClef, true);
+		this.assertEquals(system.getSystembars().second().barConfig.showClef, false);
+		this.assertEquals(system.getSystembars().first().barConfig.showKey, true);
+		this.assertEquals(system.getSystembars().second().barConfig.showKey, false);		
+		this.assertEquals(system.getSystembars().first().barConfig.showTime, true);
+		this.assertEquals(system.getSystembars().second().barConfig.showTime, false);				
+		*/
+	}	
 	
 	
 	

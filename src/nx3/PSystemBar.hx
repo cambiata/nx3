@@ -1,5 +1,6 @@
 package nx3;
 import nx3.PBar;
+import nx3.PSystem;
 import nx3.PSystembarMeasurements;
 
 /**
@@ -20,8 +21,9 @@ import nx3.PSystembarMeasurements;
  @:access(nx3.PBar)
  class PSystemBar
  {
-	 public function new(bar:PBar, barConfig:PBarConfig, barMeasurements:PSystembarMeasurements, actAttributes:PBarAttributes, caAttributes:PBarAttributes)
+	 public function new(?system:PSystem, bar:PBar, barConfig:PBarConfig, barMeasurements:PSystembarMeasurements, actAttributes:PBarAttributes, caAttributes:PBarAttributes)
 	 {
+		 this.system = system;
 		 this.bar = bar;
 		 this.bar.systembar = this;
 		 this.barConfig = barConfig;
@@ -30,11 +32,15 @@ import nx3.PSystembarMeasurements;
 		 this.caAttributes = caAttributes;
 	 }
 	 
+	 
+	 public var system(default, null):PSystem;
 	 public var bar(default,null):PBar;
 	 public var barConfig(default,null):PBarConfig;
 	 //public var barWidths(default,null):PSystembarMeasurements;
 	 public var actAttributes(default,null):PBarAttributes;
 	 public var caAttributes(default, null):PBarAttributes;
+	 
+	 //public function setSystem(system:PSystem) this.system = system;
 	 
 	 var stretchamount:Float = 0;
 	 public function setBarStretch(amount:Float)
@@ -69,7 +75,11 @@ import nx3.PSystembarMeasurements;
 		 return xposition;
 	 }
 	 
-	 
+	 public function getX():Float
+	 {
+		 if (this.system == null) throw "System == null";
+		 return this.system.getSystembarX(this);
+	 }
 	 
  }
  

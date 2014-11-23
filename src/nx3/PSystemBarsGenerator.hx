@@ -5,6 +5,7 @@ import nx3.EBarlineLeft;
 import nx3.EClefs;
 import nx3.PBar;
 import nx3.geom.Size;
+import nx3.PScore;
 //import nx3.PSystemBarsGenerator.PSimpleBarWidthCalculator;
 using cx.ArrayTools;
 
@@ -29,14 +30,16 @@ class PSystemBarsGenerator
 	var breakSystemwidth:Float;
 	var system:PSystem;
 	var barWidthCalculator:IBarWidthCalculator;
+	var score:PScore;
 
-	public function new(bars:PBars, systemConfig:PSystemConfig, prevBarAttributes:PBarAttributes, breakSystemwidth:Float, barWidthCalculator:IBarWidthCalculator=null) 
+	public function new(?score:PScore, bars:PBars, systemConfig:PSystemConfig, prevBarAttributes:PBarAttributes, breakSystemwidth:Float, barWidthCalculator:IBarWidthCalculator=null) 
 	{
+		this.score = score;
 		this.bars = bars;
 		this.systemConfig = systemConfig;
 		this.prevBarAttributes = prevBarAttributes;
 		this.breakSystemwidth = breakSystemwidth;
-		this.system = new PSystem();
+		this.system = new PSystem(this.score);
 		this.barWidthCalculator = barWidthCalculator;
 	}
 	
@@ -78,6 +81,7 @@ class PSystemBarsGenerator
 			
 			this.system.width += currentMeasurements.getTotalWidth();
 			this.system.getSystembars().push(new PSystemBar(
+				    this.system,
 					currentBar,
 					currentBarConfig, 
 					currentMeasurements,

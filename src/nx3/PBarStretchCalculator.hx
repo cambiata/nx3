@@ -64,15 +64,12 @@ class PBarStretchCalculator
 			}
 			countIterations++;
 		}
-		
 		 var gain = 0.0;
 		for (column in columns)
 		{
-			trace([columns.indexOf(column), gotShared.get(column)]);						
 			column.sposition = column.getAPostion() + gain;
 			gain += gotShared.get(column);
 		}
-		
 	}
 	
 	public function resetStretch()
