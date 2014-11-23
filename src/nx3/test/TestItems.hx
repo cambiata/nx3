@@ -2,6 +2,7 @@ package nx3.test;
 import nx3.EAllotment;
 import nx3.EClef;
 import nx3.EKey;
+import nx3.EKeysTools;
 import nx3.ENoteType;
 import nx3.ENoteVal;
 import nx3.EPartType;
@@ -800,6 +801,50 @@ static public function scoreTplRow():NScore
 		var n1 = new NPart([new QVoice(1, [5])]);
 		bars.push(new NBar([n0, n1]));
 		return new NScore(bars);
+	}
+
+	static public function scoreLyrics():NScore
+	{
+		var bar0 = new NBar([
+			new NPart([
+				new NVoice([
+					new QNote4(), new QNote4(), new QNote4(), new QNote4(), 
+				]),
+			], nx3.EClef.ClefG, nx3.EKey.Flat3),
+			new NPart([
+				new NVoice([
+					new QLyric4('Hej'),new QLyric4('hopp'),new QLyric4('i'),new QLyric4('galopp!'),
+				]),			
+			], nx3.EPartType.Lyrics),
+			new NPart([
+				new NVoice([
+					new QLyric4('Många'),new QLyric4('i'),new QLyric4('den'),new QLyric4('byn,'),
+				]),			
+			], nx3.EPartType.Lyrics),			
+			
+		], ETime.Time3_4);
+		
+		var bar1 = new NBar([
+			new NPart([
+				new NVoice([
+					new QNote4(), new QNote4(), new QNote4(), new QNote4(), 
+				]),
+			]),
+			new NPart([
+				new NVoice([
+					new QLyric4('Hej'),new QLyric4('hopp'),new QLyric4('i'),new QLyric4('galopp!'),
+				]),			
+			], nx3.EPartType.Lyrics),
+			new NPart([
+				new NVoice([
+					new QLyric4('i'),new QLyric4('denna'),new QLyric4('annorlunda'),new QLyric4('byn'),
+				]),			
+			], nx3.EPartType.Lyrics),
+		]);
+		
+		var score = new NScore([bar0, bar1]);
+		return score;
+		
 	}
 	
 }

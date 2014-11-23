@@ -1,4 +1,6 @@
 package nx3.render;
+import nme.text.TextField;
+import nme.text.TextFormat;
 import nx3.geom.Pnt;
 import nx3.geom.Pnts;
 import nx3.geom.Rectangles;
@@ -6,6 +8,14 @@ import nx3.geom.Rectangle;
 import nx3.action.EActivityType;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
+
+#if (js)
+import js.Browser;
+import js.html.CanvasElement;
+import js.html.CanvasRenderingContext2D;
+import js.JQuery;
+import js.Lib;
+#end
 
 /**
  * ...
@@ -23,9 +33,8 @@ class TargetSvgXml implements ITarget
 	{
 		this.svg = Xml.createElement('svg');
 		this.svg.set('id', svgId);
-		
-		this.svg.set('height', '400');
 		this.scaling = (scaling != null) ? scaling : Scaling.NORMAL;		
+		this.font = Constants.FONT_TEXT_DEFAULTFORMAT;
 	}
 	
 	/* INTERFACE nx3.render.ITarget */
@@ -55,9 +64,28 @@ class TargetSvgXml implements ITarget
 		
 	}
 	
-	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int):Void 
+	public function rectangle(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float=1, ?lineColor:Int=0x000000):Void 
 	{
+		var r = Xml.createElement('rect');
 		
+		r.set('x', Std.string(x + rect.x * scaling.unitX));
+		r.set('y', Std.string(y + rect.y * scaling.unitY));
+		r.set('width', Std.string(rect.width * scaling.unitX));
+		r.set('height', Std.string(rect.height * scaling.unitY));
+		r.set('fill', 'none');
+		r.set('stroke', hex(lineColor));
+		r.set('stroke-width', Std.string(lineWidth * scaling.linesWidth));
+		
+		/*
+		var r:SnapElement = this.snap.rect(x + rect.x * scaling.unitX, y + rect.y * scaling.unitY, rect.width * scaling.unitX, rect.height * scaling.unitY);
+		r.attr( {
+				fill: 'none',
+				stroke: hex(lineColor),
+				strokeWidth: lineWidth * scaling.linesWidth,
+			});
+			*/
+		this.svg.addChild(r);	
+			
 	}
 	
 	public function rectangles(x:Float, y:Float, rects:Rectangles, ?lineWidth:Float, ?lineColor:Int):Void 
@@ -130,25 +158,6 @@ class TargetSvgXml implements ITarget
 		
 	}
 	
-	public function text(x:Float, y:Float, text:String):Void 
-	{
-		
-	}
-	
-	public function textwidth(text:String):Float 
-	{
-		return 0;
-	}
-	
-	public function textheight(text:String):Float 
-	{
-		return 0;
-	}
-	
-	public function setFont(font:TFontInfo):Void 
-	{
-		
-	}
 	
 	/* INTERFACE nx3.render.ITarget */
 	
@@ -234,16 +243,87 @@ class TargetSvgXml implements ITarget
 	{
 		
 	}
+		
+	var font:nx3.TFontInfo;
 	
-	/* INTERFACE nx3.render.ITarget */
+	public function setFont(font:TFontInfo):Void 
+	{
+		this.font = font;
+	}
 	
+	public function text(x:Float, y:Float, text:String):Void 
+	{
+		var fontsize = this.font.size * this.scaling.fontScaling;
+		//trace(fontsize);
+		
+		x = x  + Constants.FONT_TEXT_X_ADJUST_SVG * this.scaling.fontScaling; // * this.scaling.svgScale;
+		y = y  + (Constants.FONT_TEXT_Y_ADJUST_SVG + this.font.size) * scaling.fontScaling; // * this.scaling.svgScale;
+		// <text x="-0.4" y="19.2" style="font-size: 40px; font-family: Georgia;">ABC abc 123</text>
+		var txt = Xml.createElement('text');
+		txt.set('x', Std.string(x));
+		txt.set('y', Std.string(y));
+		txt.set('font-size', Std.string(this.font.size));
+		txt.set('font-family', Std.string(this.font.name));
+		
+		var str = Xml.createPCData(text);
+		txt.addChild(str);
+		this.svg.addChild(txt);
+	}
 
-	/* INTERFACE nx3.render.ITarget */
 	
-
+	#if (nme)
+	var textfield:TextField;
+	//var tooltip:Tooltipsprite;
 	
-	/* INTERFACE nx3.render.ITarget */
+	public function getTextfield():TextField
+	{
+		if (this.textfield == null) {
+			this.textfield = new TextField();
+			this.textfield.defaultTextFormat = new TextFormat(this.font.name, this.font.size, this.font.bold, this.font.italic);
+		}
+		return this.textfield;
+	}
 	
+	public function textwidth(text:String):Float 
+	{
+		this.getTextfield().text = text;
+		var width = this.getTextfield().textWidth / this.scaling.unitX;
+		return width;
+	}
+	
+	public function textheight(text:String):Float 
+	{
+			return this.font.size / this.scaling.unitY;
+	}	
+	#end
+	
+	
+	
+	
+	#if (js)
+	var context:CanvasRenderingContext2D;
+	public function textwidthJS(text:String):Float 
+	{
+		if (this.context == null)
+		{
+			var canvas:CanvasElement = cast Browser.document.getElementById(Constants.JS_CANVAS_TEXT_MEASUREMENT);
+			if (canvas == null) Lib.alert('Canvas element ${Constants.JS_CANVAS_TEXT_MEASUREMENT} is missing!');
+			this.context = canvas.getContext2d();
+		}
+		var fontsize = this.font.size * this.scaling.fontScaling;
+		var fontstr = '${fontsize}px ${this.font.name}';
+		this.context.font = fontstr;
+		//trace(fontstr);
+		var measure = context.measureText(text);
+		//trace(measure.width);
+		return measure.width / this.scaling.unitX;
+	}
+	
+	public function textheightJS(text:String):Float 
+	{
+		return this.font.size / 3.8;
+	}
+	#end
 	
 	static inline function hex(int:Int):String	return (int == 0) ? "#000" : "#" + StringTools.hex(int);	
 }

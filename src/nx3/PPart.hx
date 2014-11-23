@@ -100,9 +100,9 @@ class PPart
 		if (rect != null) return rect;		
 		
 		var result = switch this.npart.type {
+			case nx3.EPartType.Normal: new Rectangle(0, -8, 1, 13);
 			case _: 	new Rectangle(0, -4, 1, 8);		
 		}
-
 		//trace('complexes');
 		for (complex in this.getComplexes())
 		{

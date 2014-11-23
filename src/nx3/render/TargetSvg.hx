@@ -29,6 +29,9 @@ class TargetSvg implements ITarget
 	var jsFileName:String;
 	var scaling:TScaling;
 	var snap:Snap;
+	
+	public var totalHeight:Float;
+	public var totalWidth:Float;		
 
 	public function new(?svgId: String, ?scaling:TScaling, jsFileName:String=null) 
 	{

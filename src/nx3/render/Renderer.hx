@@ -68,7 +68,20 @@ class Renderer
 		this.target.totalWidth = score.getWidth() * this.scaling.unitX;
 		this.target.totalHeight = score.getHeight() * this.scaling.unitY;
 		
+		
 	}	
+	
+	public function testText()
+	{
+		this.target.setFont(Constants.FONT_TEXT_DEFAULTFORMAT);
+		
+		var str = 'ABC abc 123';
+		this.target.text(0, 0, str);
+		var w = this.target.textwidth(str);
+		var h = this.target.textheight(str);
+		this.target.rectangle(0, 0, new Rectangle(0, 0, w, h), 1, 0xFF0000);
+		
+	}
 	
 	
 
@@ -457,7 +470,7 @@ class Renderer
 		var contentwidth = bar.getContentwidth();
 		//trace(bar.getContentwidth());
 		
-		/*
+		
 		for (part in bar.getParts())
 		{
 			var rect = part.getRect();
@@ -467,7 +480,7 @@ class Renderer
 			var py = this.targetY + (system.getY() + system.getPartY(partidx)) * this.scaling.unitY;
 			this.target.rectangle(tx, py, rect, 3, 0x00FF00);
 		}
-		*/
+		
 		
 		
 		for (part in bar.getParts())
@@ -521,32 +534,37 @@ class Renderer
 		
 		switch note.nnote.type
 		{			
+			//-----------------------------------------------------------------------------------------------------------------
 			case ENoteType.Lyric(text, o, c, font):
 				var rect = note.getHeadsRects().first();
 				//var rect = vnote.getVHeadsRectanglesDir(direction).first(); 
 				this.target.text(x + rect.x * this.scaling.unitX, y + rect.y * scaling.unitY, text);				
+			
+			//-----------------------------------------------------------------------------------------------------------------	
 			case ENoteType.Tpl(level):
+
 				var rect = note.getHeadsRects().first().clone();
 				rect.inflate( -0.8, -0.8);
+				this.target.filledellipse(x, y, rect, 3, 0x000000, 0xffffff);
+				
 				
 				var textlevel = (((level * -1) + 21) % 7)+1;
 				var text =  Std.string(textlevel);
 				this.target.setFont( { name:'Arial', size: 24, bold:false, italic:false } );
-				var textwidth = this.target.textwidth(text) * this.scaling.unitX;
 				
+				var textwidth = this.target.textwidth(text) * this.scaling.unitX;
 				var textheight = this.target.textheight(text) * this.scaling.unitY;							
 				
-				var ny = (note.getVoice().getPart().npart.type.getName() == 'Tplchain') ? y + (level * 3) * this.scaling.unitY : y;				
-
-				this.target.filledellipse(x, ny, rect, 3, 0x000000, 0xffffff);		
-				var tx = x - textwidth / 2 - 1 * this.scaling.unitX;
+				var ny = (note.getVoice().getPart().npart.type.getName() == 'Tplchain') ? y + (level * 3) * this.scaling.unitY : y;
+				var tx = x - textwidth / 2 - .5 * this.scaling.unitX;
 				#if (js)
 				var ty  = ny - textheight  / 5;
 				#else
 				var ty  = ny - textheight / 2 - 0.4*this.scaling.unitY;
 				#end
-				
 				this.target.text(tx, ty, text);
+				
+			//-----------------------------------------------------------------------------------------------------------------	
 			default:
 				var svginfo = RendererTools.getHeadSvgInfo(note.nnote);						
 				var hx1: Float = x;
@@ -658,7 +676,8 @@ class Renderer
 			var partidx = part.getBar().getParts().indexOf(part);
 			var part_getYPosition = system.getPartY(partidx);			
 			
-			var x = this.targetX + (nx + complex.getXPosition()) * target.getScaling().unitX;
+			var barx = systembar.getX() + systembar.getBarMeasurements().getContentXPosition();
+			var x = this.targetX + (barx + complex.getXPosition()) * target.getScaling().unitX;
 			var y  = this.targetY + (system.getY() + part_getYPosition) * target.getScaling().unitY;
 			
 			var crect = r.clone();

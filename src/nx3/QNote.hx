@@ -1,5 +1,6 @@
 package nx3;
 
+import haxe.Utf8;
 import nx3.ESign;
 import nx3.EHeadType;
 import nx3.ENoteVal;
