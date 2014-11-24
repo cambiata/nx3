@@ -11,9 +11,11 @@ import nx3.render.ITarget;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.TargetSvg;
+import nx3.render.TargetSvgXml;
 import nx3.test.TestItems;
 import nx3.xml.BarsXML;
 import nx3.xml.BarXML;
+import nx3.xml.ScoreXML;
 using cx.ArrayTools;
 /**
  * ...
@@ -33,10 +35,9 @@ class Main
 		var svgelement = codeelement.parent();
 		var svgid = svgelement.attr('id');
 		trace(svgid);
-	
 
-		var target = new TargetSvg('#$svgid', Scaling.BIG);
-		var r = new Renderer(target, 40, 100);
+		var target = new TargetSvgXml('$svgid', Scaling.NORMAL);
+		var r = new Renderer(target, 0, 0);
 					
 
 		render(code, target, r);
@@ -57,10 +58,11 @@ class Main
 		
 	}
 	
-	static function render (code:String, target:ITarget, renderer:Renderer)
+	static function render (code:String, target:TargetSvgXml, renderer:Renderer)
 	{
 				var parser = new QuickSyntaxParser(code);
 				var qsnotes = parser.parseToQSyntaxNotes();
+				trace(qsnotes);
 				var builder = new QuickSyntaxBuilder(qsnotes);
 				var nbars = builder.getNBars();		
 				var pbar = new PBar(nbars.first());
@@ -69,11 +71,12 @@ class Main
 				
 				target.clear();
 				//renderer.renderPBar(pbar);			
-				renderer.renderScore(score);
+				renderer.renderScore(score, 0, 0, 1000 / target.getScaling().unitX);
+				var svgstring = target.getXml().toString();
+				Browser.document.getElementById('big').innerHTML = svgstring;
 				
-				var xmlStr = BarsXML.toXml(score.getNBars()).toString();
-				var xmlelement = new JQuery('#xml');
-				xmlelement.html(xmlStr);
+				var xmlStr = ScoreXML.toXml(score.nscore).toString();
+				Browser.document.getElementById('xml').innerHTML = xmlStr;
 	
 	}
 }

@@ -31,12 +31,14 @@ class TargetSvgXml implements ITarget
 {
 	var svg:Xml;
 	var scaling:TScaling;
+	var svgId:String;
 
 	public var totalHeight:Float;
 	public var totalWidth:Float;	
 	
 	public function new(svgId:String, ?scaling:TScaling) 
 	{
+		this.svgId = svgId;
 		this.svg = Xml.createElement('svg');
 		this.svg.set('id', svgId);
 		this.scaling = (scaling != null) ? scaling : Scaling.NORMAL;		
@@ -106,7 +108,20 @@ class TargetSvgXml implements ITarget
 	
 	public function filledellipse(x:Float, y:Float, rect:Rectangle, ?lineWidth:Float, ?lineColor:Int, ?fillColor:Int):Void 
 	{
+		var r = Xml.createElement('ellipse');
 		
+		//x + (rect.x + rect.width/2) * scaling.unitX, y + (rect.y + rect.height/2) * scaling.unitY, (rect.width/2) * scaling.unitX, (rect.height/2) * scaling.unitY
+		r.set('cx', Std.string(x + (rect.x + rect.width/2) * scaling.unitX));
+		r.set('cy', Std.string(y + (rect.y + rect.height/2) * scaling.unitY));
+		r.set('rx', Std.string((rect.width/2) * scaling.unitX));
+		r.set('ry', Std.string((rect.height/2) * scaling.unitY));
+		r.set('fill', hex(fillColor));
+		r.set('stroke', hex(lineColor));
+		r.set('stroke-width', Std.string(lineWidth * scaling.linesWidth));		
+		
+		r.set('style', 'fill: ${hex(fillColor)}; stroke: ${hex(lineColor)}; stroke-width: ${lineWidth * scaling.linesWidth};');
+		
+		this.svg.addChild(r);
 	}
 	
 	public function line(x:Float, y:Float, x2:Float, y2:Float, ?lineWidth:Float=1, ?lineColor:Int=0xFF0000):Void 
@@ -202,7 +217,8 @@ class TargetSvgXml implements ITarget
 	
 	public function clear():Void 
 	{
-		
+		this.svg = Xml.createElement('svg');
+		this.svg.set('id', svgId);
 	}
 	
 	/* INTERFACE nx3.render.ITarget */
@@ -261,14 +277,22 @@ class TargetSvgXml implements ITarget
 	{
 		var fontsize = this.font.size * this.scaling.fontScaling;
 		//trace(fontsize);
-		
+		#if (js)
 		x = x  + Constants.FONT_TEXT_X_ADJUST_SVG * this.scaling.fontScaling; // * this.scaling.svgScale;
 		y = y  + (Constants.FONT_TEXT_Y_ADJUST_SVG + this.font.size) * scaling.fontScaling; // * this.scaling.svgScale;
+		#end
+		
+		#if (nme)
+		x = x  + Constants.FONT_TEXT_X_ADJUST_FLASH * this.scaling.fontScaling; // * this.scaling.svgScale;
+		y = y  + (Constants.FONT_TEXT_Y_ADJUST_FLASH + this.font.size) * scaling.fontScaling; // * this.scaling.svgScale;
+		#end
+		
+		
 		// <text x="-0.4" y="19.2" style="font-size: 40px; font-family: Georgia;">ABC abc 123</text>
 		var txt = Xml.createElement('text');
 		txt.set('x', Std.string(x));
 		txt.set('y', Std.string(y));
-		txt.set('font-size', Std.string(this.font.size));
+		txt.set('font-size', Std.string(this.font.size * scaling.fontScaling));
 		txt.set('font-family', Std.string(this.font.name));
 		
 		var str = Xml.createPCData(text);
@@ -308,6 +332,7 @@ class TargetSvgXml implements ITarget
 	
 	#if (js)
 	var context:CanvasRenderingContext2D;
+	
 	public function textwidth(text:String):Float 
 	{
 		if (this.context == null)

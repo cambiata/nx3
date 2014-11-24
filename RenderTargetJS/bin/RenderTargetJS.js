@@ -147,21 +147,22 @@ List.prototype = {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
+	var nscore = nx3.test.TestItems.scoreTplChain();
 	var target = new nx3.render.TargetSvgXml("#test",nx3.render.scaling.Scaling.MINI);
 	var renderer = new nx3.render.Renderer(target);
-	renderer.renderScore(new nx3.PScore(nx3.test.TestItems.scoreBachSinfonia4()),0,0,1200 / target.getScaling().unitX);
+	renderer.renderScore(new nx3.PScore(nscore),0,0,1200 / target.getScaling().unitX);
 	target.addToDomElement("mini");
 	var target1 = new nx3.render.TargetSvgXml("#test",nx3.render.scaling.Scaling.SMALL);
 	var renderer1 = new nx3.render.Renderer(target1);
-	renderer1.renderScore(new nx3.PScore(nx3.test.TestItems.scoreBachSinfonia4()),0,0,1200 / target1.getScaling().unitX);
+	renderer1.renderScore(new nx3.PScore(nscore),0,0,1200 / target1.getScaling().unitX);
 	target1.addToDomElement("small");
 	var target2 = new nx3.render.TargetSvgXml("#test",nx3.render.scaling.Scaling.NORMAL);
 	var renderer2 = new nx3.render.Renderer(target2);
-	renderer2.renderScore(new nx3.PScore(nx3.test.TestItems.scoreBachSinfonia4()),0,0,1200 / target2.getScaling().unitX);
+	renderer2.renderScore(new nx3.PScore(nscore),0,0,1200 / target2.getScaling().unitX);
 	target2.addToDomElement("normal");
 	var target3 = new nx3.render.TargetSvgXml("#test",nx3.render.scaling.Scaling.MID);
 	var renderer3 = new nx3.render.Renderer(target3);
-	renderer3.renderScore(new nx3.PScore(nx3.test.TestItems.scoreBachSinfonia4()),0,0,1200 / target3.getScaling().unitX);
+	renderer3.renderScore(new nx3.PScore(nscore),0,0,1200 / target3.getScaling().unitX);
 	target3.addToDomElement("mid");
 };
 var IMap = function() { };
@@ -7811,7 +7812,7 @@ nx3.render.TargetSvg.prototype = {
 	,text: function(x,y,text) {
 		var fontsize = this.font.size * this.scaling.fontScaling;
 		x = x + -0.2 * this.scaling.fontScaling;
-		y = y + -5 * this.scaling.fontScaling;
+		y = y + -13 * this.scaling.fontScaling;
 		var etext = this.snap.text(x,y,text).attr({ fontSize : "" + fontsize + "px ", fontFamily : this.font.name});
 	}
 	,textwidth: function(text) {
@@ -7981,6 +7982,16 @@ nx3.render.TargetSvgXml.prototype = {
 	,filledrectangle: function(x,y,rect,lineWidth,lineColor,fillColor) {
 	}
 	,filledellipse: function(x,y,rect,lineWidth,lineColor,fillColor) {
+		var r = Xml.createElement("ellipse");
+		r.set("cx",Std.string(x + (rect.x + rect.width / 2) * this.scaling.unitX));
+		r.set("cy",Std.string(y + (rect.y + rect.height / 2) * this.scaling.unitY));
+		r.set("rx",Std.string(rect.width / 2 * this.scaling.unitX));
+		r.set("ry",Std.string(rect.height / 2 * this.scaling.unitY));
+		r.set("fill",fillColor == 0?"#000":"#" + StringTools.hex(fillColor));
+		r.set("stroke",lineColor == 0?"#000":"#" + StringTools.hex(lineColor));
+		r.set("stroke-width",Std.string(lineWidth * this.scaling.linesWidth));
+		r.set("style","fill: " + (fillColor == 0?"#000":"#" + StringTools.hex(fillColor)) + "; stroke: " + (lineColor == 0?"#000":"#" + StringTools.hex(lineColor)) + "; stroke-width: " + lineWidth * this.scaling.linesWidth + ";");
+		this.svg.addChild(r);
 	}
 	,line: function(x,y,x2,y2,lineWidth,lineColor) {
 		if(lineColor == null) lineColor = 16711680;
@@ -8060,11 +8071,11 @@ nx3.render.TargetSvgXml.prototype = {
 	,text: function(x,y,text) {
 		var fontsize = this.font.size * this.scaling.fontScaling;
 		x = x + -0.2 * this.scaling.fontScaling;
-		y = y + (-5 + this.font.size) * this.scaling.fontScaling;
+		y = y + (-13 + this.font.size) * this.scaling.fontScaling;
 		var txt = Xml.createElement("text");
 		txt.set("x",x == null?"null":"" + x);
 		txt.set("y",y == null?"null":"" + y);
-		txt.set("font-size",Std.string(this.font.size));
+		txt.set("font-size",Std.string(this.font.size * this.scaling.fontScaling));
 		txt.set("font-family",Std.string(this.font.name));
 		var str = Xml.createPCData(text);
 		txt.addChild(str);
@@ -8772,7 +8783,7 @@ nx3.Constants.FLOAT_QUASI_ZERO = 0.0000001;
 nx3.Constants.FONT_TEXT_DEFAULTFORMAT = { name : "Georgia", size : 20, bold : false, italic : false};
 nx3.Constants.JS_CANVAS_TEXT_MEASUREMENT = "CanvasTextMeasurement";
 nx3.Constants.FONT_TEXT_X_ADJUST_SVG = -0.2;
-nx3.Constants.FONT_TEXT_Y_ADJUST_SVG = -5;
+nx3.Constants.FONT_TEXT_Y_ADJUST_SVG = -13;
 nx3.Constants.FONT_TEXT_Y_ADJUST_FLASH = -1.2;
 nx3.Constants.FONT_TEXT_X_ADJUST_FLASH = -.3;
 nx3.Constants.BEAM_HEIGHT = 0.95;

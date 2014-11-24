@@ -69,6 +69,7 @@ class BarParser extends BaseParser
 		
 		this.functions.set('clef:G', function (token:String) 
 		{
+			trace('CLEF');
 			sendEvent(ParserEvents.SetBarClef(EClef.ClefG));
 			return token.substr(6);
 		});

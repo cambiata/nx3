@@ -2,6 +2,7 @@ package ;
 
 import cx.FileTools;
 import neko.Lib;
+import nx3.PScore;
 import nx3.render.ITarget;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
@@ -21,28 +22,27 @@ class Main
 	static function main() 
 	{
 		//Unittests.performTests();
-
+		var nscore = TestItems.scoreLyrics();
 		
 		var target = new TargetNmeBitmap(Scaling.SMALL);
-		TestRenderer.testRenderP( new Renderer(target, 10, 80));		
+		new Renderer(target).renderScore(new PScore(nscore), 0, 0, 1200/target.getScaling().unitX);
 		target.saveBitmap('test-small.png');
 		
 		var target = new TargetNmeBitmap(Scaling.NORMAL);
-		TestRenderer.testRenderP( new Renderer(target, 10, 80));		
+		new Renderer(target).renderScore(new PScore(nscore), 0, 0, 1200/target.getScaling().unitX);
 		target.saveBitmap('test-normal.png');
 		
 		var target = new TargetNmeBitmap(Scaling.BIG);
-		TestRenderer.testRenderP( new Renderer(target, 10, 80));		
+		new Renderer(target).renderScore(new PScore(nscore), 0, 0, 1200/target.getScaling().unitX);
 		target.saveBitmap('test-big.png');
 		
 		var target = new TargetSvgXml('test', Scaling.NORMAL);
-		TestRenderer.testRenderP(new Renderer(target, 10, 80));
-		var xml = target.getXml();
-		var xmlString = xml.toString();
-		var html = '<html><body>$xmlString</body></html>';
+		new Renderer(target).renderScore(new PScore(nscore), 0, 0, 1200/target.getScaling().unitX);
 		
+		var svgString = target.getXml().toString();
+		FileTools.saveContent('test.svg', svgString);
+		var html = '<html><body>$svgString</body></html>';
 		FileTools.saveContent('test.html', html);
-		FileTools.saveContent('test.svg', xmlString);
 		
 	}
 }

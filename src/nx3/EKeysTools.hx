@@ -15,7 +15,7 @@ class EKeysTools
 		{
 			case EKey.Flat1: [0];
 			case EKey.Flat2: [0, -3];
-			case EKey.Flat3: [0, -3, 1, -2];
+			case EKey.Flat3: [0, -3, 1];
 			case EKey.Flat4: [0, -3, 1, -2];
 			case EKey.Flat5: [0, -3, 1, -2, 2, -1];
 			case EKey.Flat6: [0, -3, 1, -2, 2, -1, 3];
