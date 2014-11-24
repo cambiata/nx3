@@ -1,6 +1,4 @@
 package nx3.render;
-import nme.text.TextField;
-import nme.text.TextFormat;
 import nx3.geom.Pnt;
 import nx3.geom.Pnts;
 import nx3.geom.Rectangles;
@@ -16,6 +14,14 @@ import js.html.CanvasRenderingContext2D;
 import js.JQuery;
 import js.Lib;
 #end
+
+#if (nme)
+import nme.text.TextField;
+import nme.text.TextFormat;
+#end
+
+
+
 
 /**
  * ...
@@ -302,7 +308,7 @@ class TargetSvgXml implements ITarget
 	
 	#if (js)
 	var context:CanvasRenderingContext2D;
-	public function textwidthJS(text:String):Float 
+	public function textwidth(text:String):Float 
 	{
 		if (this.context == null)
 		{
@@ -319,11 +325,19 @@ class TargetSvgXml implements ITarget
 		return measure.width / this.scaling.unitX;
 	}
 	
-	public function textheightJS(text:String):Float 
+	public function textheight(text:String):Float 
 	{
 		return this.font.size / 3.8;
 	}
 	#end
 	
 	static inline function hex(int:Int):String	return (int == 0) ? "#000" : "#" + StringTools.hex(int);	
+	
+	#if (js)
+	public function addToDomElement(elementId:String)
+	{
+		js.Browser.document.getElementById(elementId).innerHTML = this.getXml().toString();
+	}
+	#end
+	
 }

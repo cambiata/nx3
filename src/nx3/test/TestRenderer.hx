@@ -41,7 +41,8 @@ class TestRenderer
 		//r.addInteraction( new SoundInteractivity());
 		//r.renderScore(new PScore(TestItems.scoreTest1().nscore), 10, 100, 300);
 		//r.renderScore(new PScore(TestItems.scoreBachSinfonia4()), 0, 0, 300);
-		r.renderScore(new PScore(TestItems.scoreLyrics()), 0, 0, 300);
+		//r.renderScore(new PScore(TestItems.scoreLyrics()), 0, 0, 300);
+		r.renderScore(new PScore(TestItems.scoreTplChain()), 0, 0, 300);
 		//r.testText();
 	}
 	

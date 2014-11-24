@@ -88,7 +88,7 @@ class Renderer
 	//----------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
 	
-	public function new(target:ITarget, targetX:Float, targetY:Float, interactions:Array<IInteractivity>=null ) 
+	public function new(target:ITarget, targetX:Float=0, targetY:Float=0, interactions:Array<IInteractivity>=null ) 
 	{
 		this.target = target;
 		this.targetX = targetX;
