@@ -18,6 +18,8 @@ class PartXML
 {
 	static public inline var XPART				:String = "part";
 	static public inline var XPART_TYPE			:String = "type";
+	static public inline var XPART_LEVELOFFSET			:String = "leveloffset";
+	static public inline var XPART_PITCHCHAIN			:String = "pitchchain";
 	static public inline var XPART_CLEF			:String = "clef";
 	static public inline var XPART_CLEFDISPLAY	:String = "clefdisplay";
 	static public inline var XPART_KEY			:String = "key";
@@ -39,11 +41,12 @@ class PartXML
 		{
 			case EPartType.Normal:
 				// nothing for Normal
+			case EPartType.PitchChain(leveloffset):
+				xml.set(XPART_TYPE, XPART_PITCHCHAIN);	
+				xml.set(XPART_LEVELOFFSET, Std.string(leveloffset));	
 			default:
 				xml.set(XPART_TYPE, Std.string(part.type));				
 		}
-		
-		
 		
 		// clef		
 		if (part.clef != null)
@@ -111,8 +114,12 @@ class PartXML
 		}
 		
 		// type
+		var type:EPartType = null;
 		var typeStr = xml.get(XPART_TYPE);
-		var type:EPartType = EnumTools.createFromString(EPartType, typeStr);				
+		if (typeStr == XPART_PITCHCHAIN) {
+			var leveloffset = Std.parseInt(xml.get(XPART_LEVELOFFSET));
+			type = EPartType.PitchChain(leveloffset);
+		} else type = EnumTools.createFromString(EPartType, typeStr);				
 		
 		// clef
 		var str = xml.get(XPART_CLEF);

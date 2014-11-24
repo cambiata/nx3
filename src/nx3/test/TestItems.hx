@@ -847,4 +847,16 @@ static public function scoreTplRow():NScore
 		
 	}
 	
+	static public function scorePitchloafChain():NScore {
+		var bar0 = new NBar([
+			new NPart([
+				new NVoice([
+					new NNote(ENoteType.Pitch(0, 60)), new NNote(ENoteType.Pitch(2, 62)),  new NNote(ENoteType.Pitch(-3, 57)), 
+				]),
+			], EPartType.PitchChain(123))
+		]);
+		
+		return new NScore([bar0]);
+	}
+	
 }

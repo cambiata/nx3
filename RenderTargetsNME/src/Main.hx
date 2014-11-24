@@ -11,6 +11,7 @@ import nx3.render.TargetSvgXml;
 import nx3.test.Unittests;
 import nx3.test.TestItems;
 import nx3.test.TestRenderer;
+import nx3.xml.ScoreXML;
 
 /**
  * ...
@@ -22,6 +23,7 @@ class Main
 	static function main() 
 	{
 		//Unittests.performTests();
+	
 		var nscore = TestItems.scoreLyrics();
 		
 		var target = new TargetNmeBitmap(Scaling.SMALL);

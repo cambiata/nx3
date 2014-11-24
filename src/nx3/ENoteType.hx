@@ -13,4 +13,5 @@ enum ENoteType {
 	Lyric(?text:String, ?offset:EPosition, ?continuation:ELyricContinuation, ?font:TFontInfo);
 	Chord;
 	Dynamics;
+	Pitch(level:Int, midinote:Int);
 }

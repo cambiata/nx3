@@ -14,4 +14,6 @@ enum EPartType
 	Chords;
 	Ignore;
 	Hidden;
+	PitchRow;
+	PitchChain(leveloffset:Int);
 }
