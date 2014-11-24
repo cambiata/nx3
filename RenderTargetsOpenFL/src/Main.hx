@@ -47,7 +47,7 @@ class Main extends Sprite
 		//var nscore:NScore = TestItems.scoreTest2().nscore;
 		//var nscore:NScore = TestItems.getSystemYItems();
 		//var nscore = TestItems.scoreTplChain();
-		var nscore = TestItems.scoreLyrics();
+		var nscore = TestItems.scorePitchloafChain();
 		var tss:TestscoreSprite = new TestscoreSprite(nscore, 100, 100, 1500, 800);
 		Lib.current.addChild(tss);
 	}
@@ -85,8 +85,8 @@ class TestscoreSprite extends ResizeSprite
 		while (this.targetHS.getTargetSprite().numChildren > 0) this.targetHS.getTargetSprite().removeChildAt(0);
 		
 		var renderWidth =  Math.max(60, this.rendererHS.xToUnitX(w));
-		//this.rendererHS.renderScore(new PScore(this.nscore), 0, 0, renderWidth);			
-		this.rendererHS.testText();
+		this.rendererHS.renderScore(new PScore(this.nscore), 0, 0, renderWidth);			
+		//this.rendererHS.testText();
 	}
 	
 	override public function draw(w:Float, h:Float, sprite:Sprite) {}

@@ -849,14 +849,35 @@ static public function scoreTplRow():NScore
 	
 	static public function scorePitchloafChain():NScore {
 		var bar0 = new NBar([
+		
 			new NPart([
 				new NVoice([
-					new NNote(ENoteType.Pitch(0, 60)), new NNote(ENoteType.Pitch(2, 62)),  new NNote(ENoteType.Pitch(-3, 57)), 
+					new QNote4(), new QNote4(), new QNote4(), new QNote4(), 
+				]),
+				
+			], EClef.ClefG, EKey.Sharp2),		
+			
+			new NPart([
+				new NVoice([
+					new NNote(ENoteType.Pitch(0, 0), ENoteVal.Nv2), new NNote(ENoteType.Pitch(0, 1)),  new NNote(ENoteType.Pitch(0, -5)), 
 				]),
 			], EPartType.PitchChain(123))
 		]);
+
+			var bar1 = new NBar([
+			new NPart([
+				new NVoice([
+					new QNote4(), new QNote4(), new QNote16(), new QNote16(), new QNote16(), new QNote16(), new QNote4(), 
+				]),
+			], EClef.ClefG, EKey.Sharp2),		
+			new NPart([
+				new NVoice([
+					new NNote(ENoteType.Pitch(0, 0), ENoteVal.Nv4dot), new NNote(ENoteType.Pitch(0, 1),ENoteVal.Nv8), new NNote(ENoteType.Pitch(0, -1),ENoteVal.Nv16), new NNote(ENoteType.Pitch(0, 1),ENoteVal.Nv16),  new NNote(ENoteType.Pitch(0, 1),ENoteVal.Nv8),  new NNote(ENoteType.Pitch(0, -3),ENoteVal.Nv4), 
+				]),
+			], EPartType.PitchChain(123))
+		]);	
 		
-		return new NScore([bar0]);
+		return new NScore([bar0, bar1]);
 	}
 	
 }

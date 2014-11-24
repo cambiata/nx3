@@ -64,11 +64,8 @@ class Renderer
 		this.drawSystems(score.getSystems(systemwidth));	
 		
 		//this.target.rectangle(0, 0, new Rectangle(0, 0, score.getWidth(), score.getHeight()), 2, 0xFF0000); 
-		
 		this.target.totalWidth = score.getWidth() * this.scaling.unitX;
 		this.target.totalHeight = score.getHeight() * this.scaling.unitY;
-		
-		
 	}	
 	
 	public function testText()
@@ -80,7 +77,6 @@ class Renderer
 		var w = this.target.textwidth(str);
 		var h = this.target.textheight(str);
 		this.target.rectangle(0, 0, new Rectangle(0, 0, w, h), 1, 0xFF0000);
-		
 	}
 	
 	
@@ -470,17 +466,15 @@ class Renderer
 		var contentwidth = bar.getContentwidth();
 		//trace(bar.getContentwidth());
 		
-		
+		/*
 		for (part in bar.getParts())
 		{
 			var rect = part.getRect();
-
 			var partidx = part.getBar().getParts().indexOf(part);
-			
 			var py = this.targetY + (system.getY() + system.getPartY(partidx)) * this.scaling.unitY;
 			this.target.rectangle(tx, py, rect, 3, 0x00FF00);
 		}
-		
+		*/
 		
 		
 		for (part in bar.getParts())
@@ -538,8 +532,21 @@ class Renderer
 			case ENoteType.Lyric(text, o, c, font):
 				var rect = note.getHeadsRects().first();
 				//var rect = vnote.getVHeadsRectanglesDir(direction).first(); 
+				this.target.rectangle(x, y, rect, 1, 0x0000FF);
 				this.target.text(x + rect.x * this.scaling.unitX, y + rect.y * scaling.unitY, text);				
 			
+			//-----------------------------------------------------------------------------------------------------------------	
+			case ENoteType.Pitch(level, midinote):
+				var rect = note.getHeadsRects().first();
+				//this.target.rectangle(x, y, rect, 3, 0x00FF00);
+				var nextnote = note.getNext();
+				var width =  (nextnote != null) ? {
+					var nextX = nextnote.getXPosition();
+					nextX - note.getXPosition();
+				} : systembar.getBarMeasurements().getContentWidth() - note.getXPosition();
+			
+				this.target.rectangle(x, y, new Rectangle(rect.x, rect.y, width, rect.height), 3, 0x0000FF);
+				
 			//-----------------------------------------------------------------------------------------------------------------	
 			case ENoteType.Tpl(level):
 

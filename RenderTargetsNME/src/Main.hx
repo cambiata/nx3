@@ -23,7 +23,6 @@ class Main
 	static function main() 
 	{
 		//Unittests.performTests();
-	
 		var nscore = TestItems.scoreLyrics();
 		
 		var target = new TargetNmeBitmap(Scaling.SMALL);
