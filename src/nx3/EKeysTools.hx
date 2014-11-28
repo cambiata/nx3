@@ -66,5 +66,75 @@ class EKeysTools
 		}
 	}
 	
+	static public function getKeyNr(key:EKey): Int
+	{
+		return switch(key) {
+			case EKey.Flat6: -6;
+			case EKey.Flat5: -5;
+			case EKey.Flat4: -4;
+			case EKey.Flat3: -3;
+			case EKey.Flat2: -2;
+			case EKey.Flat1: -1;
+			case EKey.Sharp1: 1;
+			case EKey.Sharp2: 2;
+			case EKey.Sharp3: 3;
+			case EKey.Sharp4: 4;
+			case EKey.Sharp5: 5;
+			case EKey.Sharp6: 6;
+			case _: 0;
+		}
+	}
+
+	static public function getNotenrBaseMap(key:EKey=null): Map<Int, Int>
+	{
+		if (key == null) return [	0 => 11, 1 => 9,	2 => 7,	3 => 5,	4 => 4,	5 => 2,	6 => 0, ];
+		
+		
+		// c = 0!
+		return switch(key) {
+			case EKey.Flat6: 					[	0 => 10, 1 => 8,	2 => 6,	3 => 5,	4 => 3,	5 => 1,	6 => -1];
+			case EKey.Flat5:					[	0 => 10, 1 => 8,	2 => 6,	3 => 5,	4 => 3,	5 => 1,	6 => 0,];
+			case EKey.Flat4:					[	0 => 10, 1 => 8,	2 => 7,	3 => 5,	4 => 3,	5 => 1,	6 => 0,];
+			case EKey.Flat3:					[	0 => 10, 1 => 8,	2 => 7,	3 => 5,	4 => 3,	5 => 2,	6 => 0,];
+			case EKey.Flat2: 					[	0 => 10, 1 => 9,	2 => 7,	3 => 5,	4 => 3,	5 => 2,	6 => 0,];
+			case EKey.Flat1: 					[	0 => 10, 1 => 9,	2 => 7,	3 => 5,	4 => 4,	5 => 2,	6 => 0, ];
+			
+			case EKey.Sharp1:  [	0 => 11, 1 => 9,	2 => 7,	3 => 6,	4 => 4,	5 => 2,	6 => 0,];
+			case EKey.Sharp2:  [	0 => 11, 1 => 9,	2 => 7,	3 => 6,	4 => 4,	5 => 2,	6 => 1,];
+			case EKey.Sharp3:  [	0 => 11, 1 => 9,	2 => 8,	3 => 6,	4 => 4,	5 => 2,	6 => 1,];
+			case EKey.Sharp4:  [	0 => 11, 1 => 9,	2 => 8,	3 => 6,	4 => 4,	5 => 3,	6 => 1,];
+			case EKey.Sharp5:  [	0 => 11, 1 => 10,	2 => 8,	3 => 6,	4 => 4,	5 => 3,	6 => 1,];
+			case EKey.Sharp6:  [	0 => 11, 1 => 10,	2 => 8,	3 => 6,	4 => 5,	5 => 3,	6 => 1, ];
+			
+			case _: [	0 => 11, 1 => 9,	2 => 7,	3 => 5,	4 => 4,	5 => 2,	6 => 0,];
+		}
+	}	
+	
+	//static public var baseLevelNoteMap:Map<Int, Int> = [	0 => 11, 1 => 9,	2 => 7,	3 => 5,	4 => 4,	5 => 2,	6 => 0,];
+
+	static public function getSignsBaseMap(key:EKey=null): Map<Int, ESign>
+	{
+		if (key == null) return [	0 => ESign.Natural, 1 => ESign.Natural,	2 => ESign.Natural,	3 => ESign.Natural,	4 => ESign.Natural,	5 => ESign.Natural,	6 => ESign.Natural, ];
+		
+		// c = 0!
+		return switch(key) {
+			case EKey.Flat6:					[	0 => ESign.Flat, 1 => ESign.Flat,	2 => ESign.Flat,	3 => ESign.Natural,	4 => ESign.Flat,	5 => ESign.Flat,	6 => ESign.Flat, ];
+			case EKey.Flat5:					[	0 => ESign.Flat, 1 => ESign.Flat,	2 => ESign.Flat,	3 => ESign.Natural,	4 => ESign.Flat,	5 => ESign.Flat,	6 => ESign.Natural, ];
+			case EKey.Flat4:					[	0 => ESign.Flat, 1 => ESign.Flat,	2 => ESign.Natural,	3 => ESign.Natural,	4 => ESign.Flat,	5 => ESign.Flat,	6 => ESign.Natural, ];
+			case EKey.Flat3:					[	0 => ESign.Flat, 1 => ESign.Flat,	2 => ESign.Natural,	3 => ESign.Natural,	4 => ESign.Flat,	5 => ESign.Natural,	6 => ESign.Natural, ];
+			case EKey.Flat2: 					[	0 => ESign.Flat, 1 => ESign.Natural,	2 => ESign.Natural,	3 => ESign.Natural,	4 => ESign.Flat,	5 => ESign.Natural,	6 => ESign.Natural, ];
+			case EKey.Flat1: 					[	0 => ESign.Flat, 1 => ESign.Natural,	2 => ESign.Natural,	3 => ESign.Natural,	4 => ESign.Natural,	5 => ESign.Natural,	6 => ESign.Natural, ];
+			
+			case EKey.Sharp1: 				[	0 => ESign.Natural, 1 => ESign.Natural,	2 => ESign.Natural,	3 => ESign.Sharp,	4 => ESign.Natural,	5 => ESign.Natural,	6 => ESign.Natural, ];
+			case EKey.Sharp2: 				[	0 => ESign.Natural, 1 => ESign.Natural,	2 => ESign.Natural,	3 => ESign.Sharp,	4 => ESign.Natural,	5 => ESign.Natural,	6 => ESign.Sharp, ];
+			case EKey.Sharp3: 				[	0 => ESign.Natural, 1 => ESign.Natural,	2 => ESign.Sharp,	3 => ESign.Sharp,	4 => ESign.Natural,	5 => ESign.Natural,	6 => ESign.Sharp, ];
+			case EKey.Sharp4: 				[	0 => ESign.Natural, 1 => ESign.Natural,	2 => ESign.Sharp,	3 => ESign.Sharp,	4 => ESign.Natural,	5 => ESign.Sharp,	6 => ESign.Sharp, ];
+			case EKey.Sharp5: 				[	0 => ESign.Natural, 1 => ESign.Sharp,	2 => ESign.Sharp,	3 => ESign.Sharp,	4 => ESign.Natural,	5 => ESign.Sharp,	6 => ESign.Sharp, ];
+			case EKey.Sharp6: 				[	0 => ESign.Natural, 1 => ESign.Sharp,	2 => ESign.Sharp,	3 => ESign.Sharp,	4 => ESign.Sharp,	5 => ESign.Sharp,	6 => ESign.Sharp, ];
+			
+			case _:  [	0 => ESign.Natural, 1 => ESign.Natural,	2 => ESign.Natural,	3 => ESign.Natural,	4 => ESign.Natural,	5 => ESign.Natural,	6 => ESign.Natural, ];
+		}
+	}		
+	
 	
 }

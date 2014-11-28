@@ -147,7 +147,7 @@ List.prototype = {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	var nscore = nx3.test.TestItems.scoreTplChain();
+	var nscore = nx3.test.TestItems.scoreBachSinfonia4();
 	var target = new nx3.render.TargetSvgXml("#test",nx3.render.scaling.Scaling.MINI);
 	var renderer = new nx3.render.Renderer(target);
 	renderer.renderScore(new nx3.PScore(nscore),0,0,1200 / target.getScaling().unitX);
@@ -176,6 +176,9 @@ Reflect.field = function(o,field) {
 	} catch( e ) {
 		return null;
 	}
+};
+Reflect.setField = function(o,field,value) {
+	o[field] = value;
 };
 Reflect.isFunction = function(f) {
 	return typeof(f) == "function" && !(f.__name__ || f.__ename__);
@@ -346,6 +349,10 @@ Xml.prototype = {
 	,exists: function(att) {
 		if(this.nodeType != Xml.Element) throw "bad nodeType";
 		return this._attributes.exists(att);
+	}
+	,attributes: function() {
+		if(this.nodeType != Xml.Element) throw "bad nodeType";
+		return this._attributes.keys();
 	}
 	,iterator: function() {
 		if(this._children == null) throw "bad nodetype";
@@ -1581,7 +1588,7 @@ nx3.EKeysTools.getLevels = function(key,clef) {
 		result = [0,-3];
 		break;
 	case 9:
-		result = [0,-3,1,-2];
+		result = [0,-3,1];
 		break;
 	case 10:
 		result = [0,-3,1,-2];
@@ -1642,6 +1649,181 @@ nx3.EKeysTools.getSigncode = function(key) {
 		return 0;
 	}
 };
+nx3.EKeysTools.getKeyNr = function(key) {
+	switch(key[1]) {
+	case 12:
+		return -6;
+	case 11:
+		return -5;
+	case 10:
+		return -4;
+	case 9:
+		return -3;
+	case 8:
+		return -2;
+	case 7:
+		return -1;
+	case 5:
+		return 1;
+	case 4:
+		return 2;
+	case 3:
+		return 3;
+	case 2:
+		return 4;
+	case 1:
+		return 5;
+	case 0:
+		return 6;
+	default:
+		return 0;
+	}
+};
+nx3.EKeysTools.getKeyNoteMap = function(key) {
+	if(key == null) {
+		var _g = new haxe.ds.IntMap();
+		_g.set(0,11);
+		_g.set(1,9);
+		_g.set(2,7);
+		_g.set(3,5);
+		_g.set(4,4);
+		_g.set(5,2);
+		_g.set(6,0);
+		return _g;
+	}
+	switch(key[1]) {
+	case 12:
+		var _g1 = new haxe.ds.IntMap();
+		_g1.set(0,10);
+		_g1.set(1,8);
+		_g1.set(2,6);
+		_g1.set(3,5);
+		_g1.set(4,3);
+		_g1.set(5,1);
+		_g1.set(6,-1);
+		return _g1;
+	case 11:
+		var _g11 = new haxe.ds.IntMap();
+		_g11.set(0,10);
+		_g11.set(1,8);
+		_g11.set(2,6);
+		_g11.set(3,5);
+		_g11.set(4,3);
+		_g11.set(5,1);
+		_g11.set(6,0);
+		return _g11;
+	case 10:
+		var _g12 = new haxe.ds.IntMap();
+		_g12.set(0,10);
+		_g12.set(1,8);
+		_g12.set(2,7);
+		_g12.set(3,5);
+		_g12.set(4,3);
+		_g12.set(5,1);
+		_g12.set(6,0);
+		return _g12;
+	case 9:
+		var _g13 = new haxe.ds.IntMap();
+		_g13.set(0,10);
+		_g13.set(1,8);
+		_g13.set(2,7);
+		_g13.set(3,5);
+		_g13.set(4,3);
+		_g13.set(5,2);
+		_g13.set(6,0);
+		return _g13;
+	case 8:
+		var _g14 = new haxe.ds.IntMap();
+		_g14.set(0,10);
+		_g14.set(1,9);
+		_g14.set(2,7);
+		_g14.set(3,5);
+		_g14.set(4,3);
+		_g14.set(5,2);
+		_g14.set(6,0);
+		return _g14;
+	case 7:
+		var _g15 = new haxe.ds.IntMap();
+		_g15.set(0,10);
+		_g15.set(1,9);
+		_g15.set(2,7);
+		_g15.set(3,5);
+		_g15.set(4,4);
+		_g15.set(5,2);
+		_g15.set(6,0);
+		return _g15;
+	case 5:
+		var _g16 = new haxe.ds.IntMap();
+		_g16.set(0,11);
+		_g16.set(1,9);
+		_g16.set(2,7);
+		_g16.set(3,6);
+		_g16.set(4,4);
+		_g16.set(5,2);
+		_g16.set(6,0);
+		return _g16;
+	case 4:
+		var _g17 = new haxe.ds.IntMap();
+		_g17.set(0,11);
+		_g17.set(1,9);
+		_g17.set(2,7);
+		_g17.set(3,6);
+		_g17.set(4,4);
+		_g17.set(5,2);
+		_g17.set(6,1);
+		return _g17;
+	case 3:
+		var _g18 = new haxe.ds.IntMap();
+		_g18.set(0,11);
+		_g18.set(1,9);
+		_g18.set(2,8);
+		_g18.set(3,6);
+		_g18.set(4,4);
+		_g18.set(5,2);
+		_g18.set(6,1);
+		return _g18;
+	case 2:
+		var _g19 = new haxe.ds.IntMap();
+		_g19.set(0,11);
+		_g19.set(1,9);
+		_g19.set(2,8);
+		_g19.set(3,6);
+		_g19.set(4,4);
+		_g19.set(5,3);
+		_g19.set(6,1);
+		return _g19;
+	case 1:
+		var _g110 = new haxe.ds.IntMap();
+		_g110.set(0,11);
+		_g110.set(1,10);
+		_g110.set(2,8);
+		_g110.set(3,6);
+		_g110.set(4,4);
+		_g110.set(5,3);
+		_g110.set(6,1);
+		return _g110;
+	case 0:
+		var _g111 = new haxe.ds.IntMap();
+		_g111.set(0,11);
+		_g111.set(1,10);
+		_g111.set(2,8);
+		_g111.set(3,6);
+		_g111.set(4,5);
+		_g111.set(5,3);
+		_g111.set(6,1);
+		return _g111;
+	default:
+		var _g112 = new haxe.ds.IntMap();
+		_g112.set(0,11);
+		_g112.set(1,9);
+		_g112.set(2,7);
+		_g112.set(3,5);
+		_g112.set(4,4);
+		_g112.set(5,2);
+		_g112.set(6,0);
+		return _g112;
+	}
+};
 nx3.ELyricContinuation = { __ename__ : true, __constructs__ : ["Hyphen","Melisma"] };
 nx3.ELyricContinuation.Hyphen = ["Hyphen",0];
 nx3.ELyricContinuation.Hyphen.toString = $estr;
@@ -1676,7 +1858,7 @@ nx3.ENoteArticulation.Marcato.__enum__ = nx3.ENoteArticulation;
 nx3.ENoteAttributes = { __ename__ : true, __constructs__ : ["Arpeggio","Clef"] };
 nx3.ENoteAttributes.Arpeggio = function(top,bottomY) { var $x = ["Arpeggio",0,top,bottomY]; $x.__enum__ = nx3.ENoteAttributes; $x.toString = $estr; return $x; };
 nx3.ENoteAttributes.Clef = function(variant) { var $x = ["Clef",1,variant]; $x.__enum__ = nx3.ENoteAttributes; $x.toString = $estr; return $x; };
-nx3.ENoteType = { __ename__ : true, __constructs__ : ["Note","Pause","BarPause","Tpl","Lyric","Chord","Dynamics"] };
+nx3.ENoteType = { __ename__ : true, __constructs__ : ["Note","Pause","BarPause","Tpl","Lyric","Chord","Dynamics","Pitch"] };
 nx3.ENoteType.Note = function(heads,variant,articulations,attributes) { var $x = ["Note",0,heads,variant,articulations,attributes]; $x.__enum__ = nx3.ENoteType; $x.toString = $estr; return $x; };
 nx3.ENoteType.Pause = function(level) { var $x = ["Pause",1,level]; $x.__enum__ = nx3.ENoteType; $x.toString = $estr; return $x; };
 nx3.ENoteType.BarPause = ["BarPause",2];
@@ -1690,6 +1872,7 @@ nx3.ENoteType.Chord.__enum__ = nx3.ENoteType;
 nx3.ENoteType.Dynamics = ["Dynamics",6];
 nx3.ENoteType.Dynamics.toString = $estr;
 nx3.ENoteType.Dynamics.__enum__ = nx3.ENoteType;
+nx3.ENoteType.Pitch = function(level,midinote) { var $x = ["Pitch",7,level,midinote]; $x.__enum__ = nx3.ENoteType; $x.toString = $estr; return $x; };
 nx3.ENoteVal = { __ename__ : true, __constructs__ : ["Nv1","Nv1dot","Nv1ddot","Nv1tri","Nv2","Nv2dot","Nv2ddot","Nv2tri","Nv4","Nv4dot","Nv4ddot","Nv4tri","Nv8","Nv8dot","Nv8ddot","Nv8tri","Nv16","Nv16dot","Nv16ddot","Nv16tri","Nv32","Nv32dot","Nv32ddot","Nv32tri"] };
 nx3.ENoteVal.Nv1 = ["Nv1",0];
 nx3.ENoteVal.Nv1.toString = $estr;
@@ -2055,7 +2238,7 @@ nx3.ENoteValTools.fromValString = function(valString) {
 		throw "unhandled note value: " + valString;
 	}
 };
-nx3.EPartType = { __ename__ : true, __constructs__ : ["Normal","Lyrics","Tplrow","Tplchain","Dynamics","Chords","Ignore","Hidden"] };
+nx3.EPartType = { __ename__ : true, __constructs__ : ["Normal","Lyrics","Tplrow","Tplchain","Dynamics","Chords","Ignore","Hidden","PitchRow","PitchChain"] };
 nx3.EPartType.Normal = ["Normal",0];
 nx3.EPartType.Normal.toString = $estr;
 nx3.EPartType.Normal.__enum__ = nx3.EPartType;
@@ -2080,6 +2263,10 @@ nx3.EPartType.Ignore.__enum__ = nx3.EPartType;
 nx3.EPartType.Hidden = ["Hidden",7];
 nx3.EPartType.Hidden.toString = $estr;
 nx3.EPartType.Hidden.__enum__ = nx3.EPartType;
+nx3.EPartType.PitchRow = ["PitchRow",8];
+nx3.EPartType.PitchRow.toString = $estr;
+nx3.EPartType.PitchRow.__enum__ = nx3.EPartType;
+nx3.EPartType.PitchChain = function(leveloffset) { var $x = ["PitchChain",9,leveloffset]; $x.__enum__ = nx3.EPartType; $x.toString = $estr; return $x; };
 nx3.EPosition = { __ename__ : true, __constructs__ : ["X","Y","XY","XYW"] };
 nx3.EPosition.X = function(x) { var $x = ["X",0,x]; $x.__enum__ = nx3.EPosition; $x.toString = $estr; return $x; };
 nx3.EPosition.Y = function(y) { var $x = ["Y",1,y]; $x.__enum__ = nx3.EPosition; $x.toString = $estr; return $x; };
@@ -4202,6 +4389,52 @@ nx3.PNoteHeadsRectsPausesCalculator.prototype = {
 		return rects;
 	}
 };
+nx3.PNoteHeadsRectsPitchCalculator = function(note) {
+	this.note = note;
+	{
+		var _g = note.nnote.type;
+		switch(_g[1]) {
+		case 7:
+			var midinote = _g[3];
+			var level = _g[2];
+			this.level = level;
+			this.midinote = midinote;
+			break;
+		default:
+		}
+	}
+	var part = this.note.getVoice().getPart().npart;
+	{
+		var _g1 = part.type;
+		switch(_g1[1]) {
+		case 9:
+			var l = _g1[2];
+			this.chain = true;
+			break;
+		default:
+			this.chain = false;
+		}
+	}
+	{
+		var _g2 = part.type;
+		switch(_g2[1]) {
+		case 9:
+			var leveloffset = _g2[2];
+			this.partlevel = leveloffset;
+			break;
+		default:
+			this.partlevel = 0;
+		}
+	}
+};
+nx3.PNoteHeadsRectsPitchCalculator.__name__ = true;
+nx3.PNoteHeadsRectsPitchCalculator.prototype = {
+	getHeadsRects: function() {
+		if(!this.chain) return [new nx3.geom.Rectangle(-2,-2,1,4)];
+		var rlevel = this.level + this.midinote;
+		return [new nx3.geom.Rectangle(-2,-2 + rlevel,1,4)];
+	}
+};
 nx3.PNoteOffsetCalculator = function(complex) {
 	this.complex = complex;
 };
@@ -4250,6 +4483,10 @@ nx3.PNoteheadsRectsCalculator.prototype = {
 			case 3:
 				var l1 = _g[2];
 				return new nx3.PNoteHeadsRectTplCalculator(this.note).getHeadsRects();
+			case 7:
+				var m = _g[3];
+				var l2 = _g[2];
+				return new nx3.PNoteHeadsRectsPitchCalculator(this.note).getHeadsRects();
 			default:
 				throw "Non implemented ENoteType: " + this.note.nnote.type[0];
 				return [];
@@ -6232,6 +6469,7 @@ nx3.qs.BarParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 			return HxOverrides.substr(token5,1,null);
 		});
 		this.functions.set("clef:G",function(token6) {
+			console.log("CLEF");
 			_g.sendEvent(nx3.qs.ParserEvents.SetBarClef(nx3.EClef.ClefG));
 			return HxOverrides.substr(token6,6,null);
 		});
@@ -7158,23 +7396,11 @@ nx3.render.Renderer.prototype = {
 		while(_g < _g1.length) {
 			var part = _g1[_g];
 			++_g;
-			var rect = part.getRect();
-			var partidx;
-			var _this = part.getBar().getParts();
-			partidx = HxOverrides.indexOf(_this,part,0);
-			var py = this.targetY + (system.getY() + system.getPartY(partidx)) * this.scaling.unitY;
-			this.target.rectangle(tx,py,rect,3,65280);
-		}
-		var _g2 = 0;
-		var _g11 = bar.getParts();
-		while(_g2 < _g11.length) {
-			var part1 = _g11[_g2];
-			++_g2;
-			var _g21 = 0;
-			var _g3 = part1.getVoices();
-			while(_g21 < _g3.length) {
-				var voice = _g3[_g21];
-				++_g21;
+			var _g2 = 0;
+			var _g3 = part.getVoices();
+			while(_g2 < _g3.length) {
+				var voice = _g3[_g2];
+				++_g2;
 				var _g4 = 0;
 				var _g5 = voice.getBeamgroups();
 				while(_g4 < _g5.length) {
@@ -7185,15 +7411,15 @@ nx3.render.Renderer.prototype = {
 			}
 		}
 		var _g6 = 0;
-		var _g12 = bar.getColumns();
-		while(_g6 < _g12.length) {
-			var column = _g12[_g6];
+		var _g11 = bar.getColumns();
+		while(_g6 < _g11.length) {
+			var column = _g11[_g6];
 			++_g6;
-			var _g22 = 0;
+			var _g21 = 0;
 			var _g31 = column.getComplexes();
-			while(_g22 < _g31.length) {
-				var complex = _g31[_g22];
-				++_g22;
+			while(_g21 < _g31.length) {
+				var complex = _g31[_g21];
+				++_g21;
 				this.drawComplex(system,systembar,complex);
 			}
 		}
@@ -7217,21 +7443,34 @@ nx3.render.Renderer.prototype = {
 				var o = _g[3];
 				var text = _g[2];
 				var rect = cx.ArrayTools.first(note.getHeadsRects());
+				this.target.rectangle(x,y,rect,1,255);
 				this.target.text(x + rect.x * this.scaling.unitX,y + rect.y * this.scaling.unitY,text);
 				break;
-			case 3:
+			case 7:
+				var midinote = _g[3];
 				var level = _g[2];
-				var rect1 = cx.ArrayTools.first(note.getHeadsRects()).clone();
-				rect1.inflate(-0.8,-0.8);
-				this.target.filledellipse(x,y,rect1,3,0,16777215);
-				var textlevel = (level * -1 + 21) % 7 + 1;
+				var rect1 = cx.ArrayTools.first(note.getHeadsRects());
+				var nextnote = note.getNext();
+				var width;
+				if(nextnote != null) {
+					var nextX = nextnote.getXPosition();
+					width = nextX - note.getXPosition();
+				} else width = systembar.getBarMeasurements().getContentWidth() - note.getXPosition();
+				this.target.rectangle(x,y,new nx3.geom.Rectangle(rect1.x,rect1.y,width,rect1.height),3,255);
+				break;
+			case 3:
+				var level1 = _g[2];
+				var rect2 = cx.ArrayTools.first(note.getHeadsRects()).clone();
+				rect2.inflate(-0.8,-0.8);
+				this.target.filledellipse(x,y,rect2,3,0,16777215);
+				var textlevel = (level1 * -1 + 21) % 7 + 1;
 				var text1;
 				if(textlevel == null) text1 = "null"; else text1 = "" + textlevel;
 				this.target.setFont({ name : "Arial", size : 24, bold : false, italic : false});
 				var textwidth = this.target.textwidth(text1) * this.scaling.unitX;
 				var textheight = this.target.textheight(text1) * this.scaling.unitY;
 				var ny;
-				if(note.getVoice().getPart().npart.type[0] == "Tplchain") ny = y + level * 3 * this.scaling.unitY; else ny = y;
+				if(note.getVoice().getPart().npart.type[0] == "Tplchain") ny = y + level1 * 3 * this.scaling.unitY; else ny = y;
 				var tx = x - textwidth / 2 - .5 * this.scaling.unitX;
 				var ty = ny - textheight / 5;
 				this.target.text(tx,ty,text1);
@@ -7243,31 +7482,31 @@ nx3.render.Renderer.prototype = {
 				var _g1 = 0;
 				var _g2 = note.getHeadsRects();
 				while(_g1 < _g2.length) {
-					var rect2 = [_g2[_g1]];
+					var rect3 = [_g2[_g1]];
 					++_g1;
-					this.target.shape(x + rect2[0].x * this.scaling.unitX,y + (rect2[0].y + svginfo.y) * this.scaling.unitY,svginfo.xmlStr);
-					this.target.interactiveEllipse(x,y,rect2[0],5 * this.scaling.linesWidth,3585587,null,(function(rect2) {
+					this.target.shape(x + rect3[0].x * this.scaling.unitX,y + (rect3[0].y + svginfo.y) * this.scaling.unitY,svginfo.xmlStr);
+					this.target.interactiveEllipse(x,y,rect3[0],5 * this.scaling.linesWidth,3585587,null,(function(rect3) {
 						return function(activityType) {
 							var _g4 = 0;
 							var _g5 = _g3.interactions;
 							while(_g4 < _g5.length) {
 								var interaction = _g5[_g4];
 								++_g4;
-								interaction.handleAction(nx3.action.EActionType.NoteAction(activityType,note,nx3.action.EActionInfo.TargetXY(_g3.target,x + rect2[0].x * _g3.scaling.unitX,y + rect2[0].y * _g3.scaling.unitY)));
+								interaction.handleAction(nx3.action.EActionType.NoteAction(activityType,note,nx3.action.EActionInfo.TargetXY(_g3.target,x + rect3[0].x * _g3.scaling.unitX,y + rect3[0].y * _g3.scaling.unitY)));
 							}
 						};
-					})(rect2));
+					})(rect3));
 				}
 				var i = 0;
 				var _g11 = 0;
 				var _g21 = note.getHeadsRects();
 				while(_g11 < _g21.length) {
-					var rect3 = _g21[_g11];
+					var rect4 = _g21[_g11];
 					++_g11;
-					var level1 = note.getHeads()[i].nhead.level;
-					if(level1 > 5 || level1 < -5) {
-						hx1 = Math.min(hx1,x + (rect3.x - 0.6) * this.scaling.unitX);
-						hx2 = Math.max(hx2,x + (rect3.x + rect3.width + 0.6) * this.scaling.unitX);
+					var level2 = note.getHeads()[i].nhead.level;
+					if(level2 > 5 || level2 < -5) {
+						hx1 = Math.min(hx1,x + (rect4.x - 0.6) * this.scaling.unitX);
+						hx2 = Math.max(hx2,x + (rect4.x + rect4.width + 0.6) * this.scaling.unitX);
 					}
 					i++;
 				}
@@ -7276,12 +7515,12 @@ nx3.render.Renderer.prototype = {
 				while(_g12 < _g22.length) {
 					var head = _g22[_g12];
 					++_g12;
-					var level2 = head.nhead.level;
-					if(level2 < 5 && level2 > -5) continue;
+					var level3 = head.nhead.level;
+					if(level3 < 5 && level3 > -5) continue;
 					var lev1;
-					if(level2 < 0) lev1 = level2; else lev1 = 5;
+					if(level3 < 0) lev1 = level3; else lev1 = 5;
 					var lev2;
-					if(level2 < 0) lev2 = -4; else lev2 = level2 + 1;
+					if(level3 < 0) lev2 = -4; else lev2 = level3 + 1;
 					var _g31 = lev1;
 					while(_g31 < lev2) {
 						var l = _g31++;
@@ -7935,6 +8174,7 @@ nx3.render.TargetSvg.prototype = {
 	}
 };
 nx3.render.TargetSvgXml = function(svgId,scaling) {
+	this.svgId = svgId;
 	this.svg = Xml.createElement("svg");
 	this.svg.set("id",svgId);
 	if(scaling != null) this.scaling = scaling; else this.scaling = nx3.render.scaling.Scaling.NORMAL;
@@ -8042,6 +8282,8 @@ nx3.render.TargetSvgXml.prototype = {
 		this.svg.addChild(el);
 	}
 	,clear: function() {
+		this.svg = Xml.createElement("svg");
+		this.svg.set("id",this.svgId);
 	}
 	,polyline: function(x,y,coordinates,lineWidth,lineColor) {
 		if(lineColor == null) lineColor = 0;
@@ -8239,7 +8481,9 @@ nx3.test.TestItems.scoreBachSinfonia4 = function() {
 	var xmlStr = "<bars><bar time=\"C\"><part key=\"Flat1\" clef=\"ClefG\"><voice><pause level=\"-5\" val=\"16\"/><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"8\"><headx level=\"1\"/></note><note val=\"8\"><headx level=\"-4\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"8\"><headx level=\"1\"/></note><note val=\"8\"><headx level=\"-5\" tie=\"true\"/></note></voice><voice><pause level=\"2\" val=\"1\"/></voice></part><part clef=\"ClefF\" key=\"Flat1\"><voice><note val=\"8\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"-1\"/></note><note val=\"8\"><headx level=\"-2\"/></note><note val=\"8\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"-4\"/></note><note val=\"8\"><headx level=\"-5\" sign=\"Natural\"/></note><note val=\"8\"><headx level=\"-6\" sign=\"Sharp\"/></note><note val=\"8\"><headx level=\"-4\"/></note></voice></part></bar><bar><part><voice><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note><headx level=\"-6\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-6\"/></note><note val=\"16\"><headx level=\"-5\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-4\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"8.\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-6\"/></note></voice><voice><pause val=\"16\"/><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"2\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"8\"><headx level=\"4\"/></note><note val=\"8\"><headx level=\"-1\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"4\"/></note><note val=\"8\"><headx level=\"-2\" tie=\"true\"/></note></voice></part><part><voice><note><headx level=\"-7\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-7\"/></note><note val=\"16\"><headx level=\"-6\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-5\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note><headx level=\"-8\"/></note><note><headx level=\"-1\"/></note></voice></part></bar><bar><part><voice><note><headx level=\"-6\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-6\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note><headx level=\"-5\" sign=\"Natural\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-1\"/></note></voice><voice><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note><headx level=\"-4\" tie=\"true\" tielevel=\"4\" /></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note><headx level=\"-3\" tie=\"true\" tielevel=\"5\" /></note></voice></part><part><voice><note><headx level=\"3\"/></note><pause/><pause val=\"2\"/></voice></part></bar><bar><part><voice><note val=\"4.\"><headx level=\"-4\"/></note><note val=\"8\"><headx level=\"-6\"/></note><note><headx level=\"-5\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-4\"/></note></voice><voice><note val=\"8\"><headx level=\"-3\"/></note><note val=\"8\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Natural\"/></note><note val=\"8.\"><headx level=\"0\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note><headx level=\"-1\"/></note></voice></part><part><voice><pause val=\"16\"/><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"3\"/></note><note val=\"8\"><headx level=\"-2\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"8\"><headx level=\"3\"/></note><note val=\"8\"><headx level=\"-3\" tie=\"true\"/></note></voice></part></bar><bar><part><voice><note><headx level=\"-2\"/></note><pause val=\"16\"/><note val=\"16\"><headx level=\"-7\"/></note><note val=\"16\"><headx level=\"-6\"/></note><note val=\"16\"><headx level=\"-7\"/></note><note><headx level=\"-3\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-6\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-6\"/></note></voice><voice><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Sharp\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note><headx level=\"2\" tie=\"true\"/></note><note val=\"16\"><headx level=\"2\"/></note><note val=\"16\"><headx level=\"-1\" sign=\"Natural\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note><headx level=\"3\" tie=\"true\"/></note></voice></part><part><voice><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note><headx level=\"-5\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note><headx level=\"-4\" tie=\"true\"/></note></voice></part></bar><bar><part><voice><note><headx level=\"-2\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note><headx level=\"-5\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-5\"/></note><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"-3\"/></note><note val=\"16\"><headx level=\"-2\"/></note></voice><voice><note val=\"16\"><headx level=\"3\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note><headx level=\"0\" tie=\"true\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"2\"/></note><note val=\"16\"><headx level=\"3\"/></note></voice></part><part><voice><note val=\"16\"><headx level=\"-4\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"8\"><headx level=\"4\"/></note><note val=\"8\"><headx level=\"-2\" tie=\"true\"/></note><note val=\"16\"><headx level=\"-2\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"16\"><headx level=\"0\"/></note><note val=\"16\"><headx level=\"-1\"/></note><note val=\"8\"><headx level=\"1\"/></note><note val=\"8\"><headx level=\"-5\" tie=\"true\"/></note></voice></part></bar></bars>";
 	var nbars = nx3.xml.BarsXML.fromXmlStr(xmlStr);
 	var nscore = new nx3.NScore(nbars);
-	return nscore;
+	var xmlStr1 = "<score>\r\n\t<config test=\"12345\" />\r\n\t<bar time=\"C\">\r\n\t\t<part key=\"Flat1\"\r\n\t\t\t  clef=\"ClefG\">\r\n\t\t\t<voice>\r\n\t\t\t\t<pause level=\"-5\"\r\n\t\t\t\t\t   val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause level=\"2\"\r\n\t\t\t\t\t   val=\"1\" />\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part clef=\"ClefF\"\r\n\t\t\t  key=\"Flat1\">\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8.\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-7\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-8\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\"\r\n\t\t\t\t\t\t   tielevel=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\"\r\n\t\t\t\t\t\t   tielevel=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause />\r\n\t\t\t\t<pause val=\"2\" />\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"4.\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8.\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\r\n\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"2\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"2\">\r\n\t\t\t\t\t<headx level=\"3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-8\"\r\n\t\t\t\t\t\t   sign=\"Flat\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"8\" />\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n</score>\r\n";
+	var nscore1 = nx3.xml.ScoreXML.fromXmlStr(xmlStr1);
+	return nscore1;
 };
 nx3.test.TestItems.scoreTplRow = function() {
 	var nbars = [new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Tpl(0)),new nx3.NNote(nx3.ENoteType.Tpl(2)),new nx3.NNote(nx3.ENoteType.Tpl(1)),new nx3.NNote(nx3.ENoteType.Tpl(-3))])],nx3.EPartType.Tplrow),new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,2),new nx3.QNote4(null,4),new nx3.QNote4(null,3),new nx3.QNote4(null,-1)])])]),new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Tpl(-2)),new nx3.NNote(nx3.ENoteType.Tpl(-3),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Tpl(-2),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Tpl(-1)),new nx3.NNote(nx3.ENoteType.Tpl(3),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Tpl(1),null,nx3.ENoteVal.Nv8)])],nx3.EPartType.Tplrow),new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote8(null,-1),new nx3.QNote8(null,0),new nx3.QNote4(null,1),new nx3.QNote8(null,5),new nx3.QNote8(null,3)])])]),new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Tpl(0),null,nx3.ENoteVal.Nv1)])],nx3.EPartType.Tplrow),new nx3.NPart([new nx3.NVoice([new nx3.QNote1(2)])])])];
@@ -8277,6 +8521,11 @@ nx3.test.TestItems.scoreLyrics = function() {
 	var bar1 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(),new nx3.QNote4(),new nx3.QNote4(),new nx3.QNote4()])]),new nx3.NPart([new nx3.NVoice([new nx3.QLyric4("Hej"),new nx3.QLyric4("hopp"),new nx3.QLyric4("i"),new nx3.QLyric4("galopp!")])],nx3.EPartType.Lyrics),new nx3.NPart([new nx3.NVoice([new nx3.QLyric4("i"),new nx3.QLyric4("denna"),new nx3.QLyric4("annorlunda"),new nx3.QLyric4("byn")])],nx3.EPartType.Lyrics)]);
 	var score = new nx3.NScore([bar0,bar1]);
 	return score;
+};
+nx3.test.TestItems.scorePitchloafChain = function() {
+	var bar0 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(),new nx3.QNote4(),new nx3.QNote4(),new nx3.QNote4()])],null,nx3.EClef.ClefG,null,nx3.EKey.Sharp2),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Pitch(0,0),null,nx3.ENoteVal.Nv2),new nx3.NNote(nx3.ENoteType.Pitch(0,1)),new nx3.NNote(nx3.ENoteType.Pitch(0,-5))])],nx3.EPartType.PitchChain(123))]);
+	var bar1 = new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.QNote4(),new nx3.QNote4(),new nx3.QNote16(),new nx3.QNote16(),new nx3.QNote16(),new nx3.QNote16(),new nx3.QNote4()])],null,nx3.EClef.ClefG,null,nx3.EKey.Sharp2),new nx3.NPart([new nx3.NVoice([new nx3.NNote(nx3.ENoteType.Pitch(0,0),null,nx3.ENoteVal.Nv4dot),new nx3.NNote(nx3.ENoteType.Pitch(0,1),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Pitch(0,-1),null,nx3.ENoteVal.Nv16),new nx3.NNote(nx3.ENoteType.Pitch(0,1),null,nx3.ENoteVal.Nv16),new nx3.NNote(nx3.ENoteType.Pitch(0,1),null,nx3.ENoteVal.Nv8),new nx3.NNote(nx3.ENoteType.Pitch(0,-3),null,nx3.ENoteVal.Nv4)])],nx3.EPartType.PitchChain(123))]);
+	return new nx3.NScore([bar0,bar1]);
 };
 nx3.xml = {};
 nx3.xml.BarXML = function() { };
@@ -8501,6 +8750,13 @@ nx3.xml.NoteXML.toXml = function(note) {
 			if(offset != null) xml.set("offset",Std.string(offset));
 			if(format != null) xml.set("format",Std.string(format));
 			break;
+		case 7:
+			var midinote = _g[3];
+			var level1 = _g[2];
+			xml = Xml.createElement("pitch");
+			if(level1 != 0) xml.set("level",level1 == null?"null":"" + level1);
+			if(midinote != 0) xml.set("midinote",midinote == null?"null":"" + midinote);
+			break;
 		default:
 			xml = Xml.createElement("undefined");
 		}
@@ -8563,6 +8819,15 @@ nx3.xml.NoteXML.fromXmlStr = function(xmlStr) {
 		var continuation = cx.EnumTools.createFromString(nx3.ELyricContinuation,continuationStr);
 		type = nx3.ENoteType.Lyric(text,offset,continuation);
 		break;
+	case "pitch":
+		var levelstr = xml.get("level");
+		var level;
+		if(levelstr != null) level = Std.parseInt(levelstr); else level = 0;
+		var midinotestr = xml.get("midinote");
+		var midinote;
+		if(midinotestr != null) midinote = Std.parseInt(midinotestr); else midinote = 0;
+		type = nx3.ENoteType.Pitch(level,midinote);
+		break;
 	}
 	var valStr = xml.get("val");
 	var value = nx3.ENoteValTools.fromValString(valStr);
@@ -8592,12 +8857,19 @@ nx3.xml.PartXML.toXml = function(part) {
 		var voiceXml = nx3.xml.VoiceXML.toXml(voice);
 		xml.addChild(voiceXml);
 	}
-	var _g2 = part.type;
-	switch(_g2[1]) {
-	case 0:
-		break;
-	default:
-		xml.set("type",Std.string(part.type));
+	{
+		var _g2 = part.type;
+		switch(_g2[1]) {
+		case 0:
+			break;
+		case 9:
+			var leveloffset = _g2[2];
+			xml.set("type","pitchchain");
+			xml.set("leveloffset",leveloffset == null?"null":"" + leveloffset);
+			break;
+		default:
+			xml.set("type",Std.string(part.type));
+		}
 	}
 	if(part.clef != null) {
 		var _g3 = part.clef;
@@ -8642,8 +8914,12 @@ nx3.xml.PartXML.fromXmlStr = function(xmlStr) {
 		var voice = nx3.xml.VoiceXML.fromXmlStr(v.toString());
 		voices.push(voice);
 	}
+	var type = null;
 	var typeStr = xml.get("type");
-	var type = cx.EnumTools.createFromString(nx3.EPartType,typeStr);
+	if(typeStr == "pitchchain") {
+		var leveloffset = Std.parseInt(xml.get("leveloffset"));
+		type = nx3.EPartType.PitchChain(leveloffset);
+	} else type = cx.EnumTools.createFromString(nx3.EPartType,typeStr);
 	var str = xml.get("clef");
 	var clef = null;
 	if(str != null) clef = cx.EnumTools.createFromString(nx3.EClef,str);
@@ -8657,6 +8933,43 @@ nx3.xml.PartXML.fromXmlStr = function(xmlStr) {
 	var keyDisplay;
 	if(keyDisplayStr == null) keyDisplay = nx3.EDisplayALN.Layout; else keyDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,keyDisplayStr);
 	return new nx3.NPart(voices,type,clef,clefDisplay,key,keyDisplay);
+};
+nx3.xml.ScoreXML = function() { };
+nx3.xml.ScoreXML.__name__ = true;
+nx3.xml.ScoreXML.toXml = function(score) {
+	var xml = Xml.createElement("score");
+	var config = Xml.createElement("config");
+	config.set("test","12345");
+	xml.addChild(config);
+	var $it0 = score.iterator();
+	while( $it0.hasNext() ) {
+		var bar = $it0.next();
+		var barXml = nx3.xml.BarXML.toXml(bar);
+		xml.addChild(barXml);
+	}
+	return xml;
+};
+nx3.xml.ScoreXML.fromXmlStr = function(xmlStr) {
+	var xml = Xml.parse(xmlStr).firstElement();
+	var bars = [];
+	var config = xml.elementsNamed("config").next();
+	var configObject = { };
+	if(config != null) {
+		var $it0 = config.attributes();
+		while( $it0.hasNext() ) {
+			var attr = $it0.next();
+			Reflect.setField(configObject,attr,config.get(attr));
+		}
+	}
+	var $it1 = xml.elementsNamed("bar");
+	while( $it1.hasNext() ) {
+		var b = $it1.next();
+		var bar = nx3.xml.BarXML.fromXmlStr(b.toString());
+		bars.push(bar);
+	}
+	var score = new nx3.NScore(bars);
+	score.configuration = configObject;
+	return score;
 };
 nx3.xml.VoiceXML = function() { };
 nx3.xml.VoiceXML.__name__ = true;
@@ -8795,6 +9108,19 @@ nx3.Constants.OBJECT_XMARGIN = 0.6;
 nx3.Constants.ATTRIBUTE_SIGN_WIDTH = 2.4;
 nx3.Constants.SCORE_DEFAULT_COUNTIN = 0;
 nx3.Constants.SCORE_DEFAULT_TEMPO = 80;
+nx3.EKeysTools.baseLevelNoteMap = (function($this) {
+	var $r;
+	var _g = new haxe.ds.IntMap();
+	_g.set(0,11);
+	_g.set(1,9);
+	_g.set(2,7);
+	_g.set(3,5);
+	_g.set(4,4);
+	_g.set(5,2);
+	_g.set(6,0);
+	$r = _g;
+	return $r;
+}(this));
 nx3.ENoteValTools.DOT = 1.5;
 nx3.ENoteValTools.DOTDOT = 1.75;
 nx3.ENoteValTools.TRI = 0.66666666;
@@ -8906,6 +9232,9 @@ nx3.xml.NoteXML.XPAUSE_LEVEL = "level";
 nx3.xml.NoteXML.XLYRIC = "lyric";
 nx3.xml.NoteXML.XLYRIC_TEXT = "text";
 nx3.xml.NoteXML.XUNDEFINED = "undefined";
+nx3.xml.NoteXML.XPITCH = "pitch";
+nx3.xml.NoteXML.XPITCH_LEVEL = "level";
+nx3.xml.NoteXML.XPITCH_MIDINOTE = "midinote";
 nx3.xml.NoteXML.XNOTE_TYPE = "type";
 nx3.xml.NoteXML.XNOTE_TYPE_NOTE = "note";
 nx3.xml.NoteXML.XNOTE_TYPE_NOTATION_VARIANT = "variant";
@@ -8921,10 +9250,14 @@ nx3.xml.NoteXML.XLYRIC_CONTINUATION = "continuation";
 nx3.xml.NoteXML.XLYRIC_FORMAT = "format";
 nx3.xml.PartXML.XPART = "part";
 nx3.xml.PartXML.XPART_TYPE = "type";
+nx3.xml.PartXML.XPART_LEVELOFFSET = "leveloffset";
+nx3.xml.PartXML.XPART_PITCHCHAIN = "pitchchain";
 nx3.xml.PartXML.XPART_CLEF = "clef";
 nx3.xml.PartXML.XPART_CLEFDISPLAY = "clefdisplay";
 nx3.xml.PartXML.XPART_KEY = "key";
 nx3.xml.PartXML.XPART_KEYDISPLAY = "keydisplay";
+nx3.xml.ScoreXML.XSCORE = "score";
+nx3.xml.ScoreXML.XCONFIG = "config";
 nx3.xml.VoiceXML.XVOICE = "voice";
 nx3.xml.VoiceXML.XVOICE_TYPE = "type";
 nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
