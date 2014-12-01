@@ -1,7 +1,7 @@
 package nx3.audio;
 import cx.ArrayTools;
 import haxe.macro.Expr.Position;
-import nx3.audio.NotenrCalculator.PartNotesToNotenrCalculator;
+import nx3.audio.NotenrPartsCalculator.PartNotesToNotenrCalculator;
 import nx3.EKeysTools;
 import nx3.NHead;
 import nx3.NNote;
@@ -23,7 +23,7 @@ using Lambda;
  * NoteMidinrCalculator
  * @author 
  */
-class NotenrCalculator 
+class NotenrPartsCalculator 
 {
 	var parts:NParts;
 	var partvalues:Array<Int>;

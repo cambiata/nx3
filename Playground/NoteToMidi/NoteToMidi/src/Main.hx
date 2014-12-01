@@ -1,7 +1,12 @@
 package;
 
+import audio.LinearAccelerator;
+import audio.pitch.Audio;
 import neko.Lib;
-import nx3.audio.NotenrCalculator;
+import nx3.audio.NotenrBarsCalculator;
+import nx3.audio.NotenrPartsCalculator;
+import nx3.test.TestItems;
+import nx3.utils.VoiceSplitter;
 
 /**
  * ...
@@ -10,14 +15,10 @@ import nx3.audio.NotenrCalculator;
 
 class Main 
 {
-	
 	static function main() 
 	{
-		var items = new NotenrCalculator(NotenrTestItems.testTies()).execute();
-		for (item in items)
-		{
-			trace([item.partposition, item.position, item.noteval, item.notenr]);
-		}
+		audio.LinearAccelerator.Main.main();
+		var partsnotes = new NotenrBarsCalculator(new VoiceSplitter(TestItems.scoreBachSinfonia4()).getVoicesplittedScore()).getPartsNotenrItems();
+		trace(partsnotes.length);
 	}
-	
 }

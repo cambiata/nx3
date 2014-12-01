@@ -7,6 +7,7 @@ package audio.pitch;
 
 class Audio {
 	public static inline var SAMPLE_RATE = 44100;
+	public static inline var DELTA12 = 1.059463094359;
 
 	public static function samplesToSeconds(samples : Int) {
 		return (1.0 * samples) / SAMPLE_RATE;
@@ -26,7 +27,7 @@ class Audio {
 
 	public static function scaleFrequency(f : Float) {
 		var scaled = 12 * ((Math.log(f) - Math.log(440)) / Math.log(2));
-		//scaled -= 3; // Make C note #0
+		//scaled -= 3; // Make C note 
 		return scaled;
 	}
 	
