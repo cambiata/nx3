@@ -1581,7 +1581,7 @@ nx3.EKeysTools.getLevels = function(key,clef) {
 		result = [0,-3];
 		break;
 	case 9:
-		result = [0,-3,1,-2];
+		result = [0,-3,1];
 		break;
 	case 10:
 		result = [0,-3,1,-2];
@@ -2282,7 +2282,7 @@ nx3.NBar = function(parts,type,time,timeDisplay,allotment,spacing) {
 		part.nbar = this;
 	}
 	if(type == null) this.type = nx3.EBarType.Normal; else this.type = type;
-	this.time = time;
+	if(time == null) this.time = nx3.ETime.Time4_4; else this.time = time;
 	if(timeDisplay == null) this.timeDisplay = nx3.EDisplayALN.Layout; else this.timeDisplay = timeDisplay;
 	if(allotment == null) this.allotment = nx3.EAllotment.Logaritmic; else this.allotment = allotment;
 	this.spacing = spacing;
@@ -2417,9 +2417,9 @@ nx3.NPart = function(voices,type,clef,clefDisplay,key,keyDisplay) {
 	}
 	if(this.nvoices.length > 2) throw "For now, NPart can't have more than two voices";
 	if(type == null) this.type = nx3.EPartType.Normal; else this.type = type;
-	this.clef = clef;
+	if(clef == null) this.clef = nx3.EClef.ClefG; else this.clef = clef;
 	if(clefDisplay == null) this.clefDisplay = nx3.EDisplayALN.Layout; else this.clefDisplay = clefDisplay;
-	this.key = key;
+	if(key == null) this.key = nx3.EKey.Natural; else this.key = key;
 	if(keyDisplay == null) this.keyDisplay = nx3.EDisplayALN.Layout; else this.keyDisplay = keyDisplay;
 };
 nx3.NPart.__name__ = true;
@@ -6232,6 +6232,7 @@ nx3.qs.BarParser.prototype = $extend(nx3.qs.BaseParser.prototype,{
 			return HxOverrides.substr(token5,1,null);
 		});
 		this.functions.set("clef:G",function(token6) {
+			console.log("CLEF");
 			_g.sendEvent(nx3.qs.ParserEvents.SetBarClef(nx3.EClef.ClefG));
 			return HxOverrides.substr(token6,6,null);
 		});
@@ -7935,6 +7936,7 @@ nx3.render.TargetSvg.prototype = {
 	}
 };
 nx3.render.TargetSvgXml = function(svgId,scaling) {
+	this.svgId = svgId;
 	this.svg = Xml.createElement("svg");
 	this.svg.set("id",svgId);
 	if(scaling != null) this.scaling = scaling; else this.scaling = nx3.render.scaling.Scaling.NORMAL;
@@ -8042,6 +8044,8 @@ nx3.render.TargetSvgXml.prototype = {
 		this.svg.addChild(el);
 	}
 	,clear: function() {
+		this.svg = Xml.createElement("svg");
+		this.svg.set("id",this.svgId);
 	}
 	,polyline: function(x,y,coordinates,lineWidth,lineColor) {
 		if(lineColor == null) lineColor = 0;

@@ -18,7 +18,7 @@ class SoundFactory
 		
 	}
 	
-	static public function getSound(wav:ByteArray, format:PCMFormat):Void -> Sound
+	static public function getSound(wav:ByteArray, format:PCMFormat, callbck:Sound->Void=null):Void -> Sound
 	{
 		var sound:Sound = null;
 		var swf : SWFFormat = new SWFFormat(format);
@@ -29,7 +29,8 @@ class SoundFactory
 			var loaderInfo:LoaderInfo = cast(e.target, LoaderInfo);        
 			var definition = loaderInfo.applicationDomain.getDefinition(SWFFormat.CLASS_NAME);
 			var instance = Type.createInstance(definition, []);
-			sound = cast instance;							
+			sound = cast instance;										
+			if (callbck != null) callbck(sound);
 		});	   		
 	
 		return function() return sound;

@@ -6,8 +6,12 @@ package audio.pitch;
  */
 
  import flash.utils.ByteArray;
+ 
+
 class MicDetector 
 {
+	
+	
 	var mic : flash.media.Microphone;
 	public function new() 
 	{
@@ -86,6 +90,5 @@ class MicDetector
 		
 		return 0;
 	}
-	
-	
+
 }

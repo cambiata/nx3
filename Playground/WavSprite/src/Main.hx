@@ -4,8 +4,8 @@ import audio.flash.display.Wav16IntsSprite;
 import audio.flash.display.WavSprite;
 import audio.pitch.Audio;
 import audio.pitch.data.FrequencySegments;
-import audio.pitch.MicDetector;
-import audio.pitch.PitchDetector;
+//import audio.pitch.MicDetector;
+//import audio.pitch.PitchDetector;
 import audio.pitch.PitchUtils;
 import audio.pitch.data.ModelSegment;
 import audio.pitch.data.ModelSegments;
@@ -33,7 +33,7 @@ class Main  extends Sprite
 	{
 		super();
 		
-		/*
+		
 		var christ = WavTools.getIntsFromWavFile(openfl.Assets.getBytes("assets/christ.wavdata"))[0];
 
 		var chri = WavTools.dspSubset(christ, 0, 60000);
@@ -56,7 +56,7 @@ class Main  extends Sprite
 		s.loadPCMFromByteArray(WavTools.intsToMono16ByteArray(mix), mix.length, 'short', false);		
 		var ch = s.play();
 		trace(s.length);		
-		*/
+		
 		
 		
 		/*
@@ -89,6 +89,8 @@ class Main  extends Sprite
 		}
 		*/	
 		
+		
+		/*
 		var gr = this.graphics;
 	
 		var modelsgements = new ModelSegments();
@@ -117,7 +119,7 @@ class Main  extends Sprite
 			trace('click');
 			modelsgements.compareFrequencySegments(results);
 		});
-		
+		*/
 		
 	}
 }
