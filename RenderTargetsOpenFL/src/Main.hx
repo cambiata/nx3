@@ -43,11 +43,11 @@ class Main extends Sprite
 		//Unittests.performTests();
 
 		
-		//var nscore:NScore = TestItems.scoreBachSinfonia4();
+		var nscore:NScore = TestItems.scoreBachSinfonia4();
 		//var nscore:NScore = TestItems.scoreTest2().nscore;
 		//var nscore:NScore = TestItems.getSystemYItems();
 		//var nscore = TestItems.scoreTplChain();
-		var nscore = TestItems.scorePitchloafChain();
+		//var nscore = TestItems.scorePitchloafChain();
 		var tss:TestscoreSprite = new TestscoreSprite(nscore, 100, 100, 1500, 800);
 		Lib.current.addChild(tss);
 	}

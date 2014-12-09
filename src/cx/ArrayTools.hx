@@ -29,6 +29,12 @@ class ArrayTools
 		return a[idx - 1];		
 	}	
 	
+	inline static public function reverse<T>(a:Array<T>):Array<T>
+	{
+		var result = [];
+		for (item in a) result.unshift(item);
+		return result;		
+	}
 	
 	
 	inline static public function has<T>(a:Array<T>, item:T)
@@ -39,11 +45,13 @@ class ArrayTools
 	
 	inline static public function indexOrNull<T>(a:Array<T>, idx:Int):Null<T>
 	{
+		if (a == null) return null;
 		return (idx < 0 || idx > a.length-1) ? null : a[idx];
 	}
 	
 	inline static public function indexOrValue<T>(a:Array<T>, idx:Int, fallbackValue:T)
 	{
+		if (a == null) return null;
 		return (indexOrNull(a, idx) != null) ? a[idx] : fallbackValue;
 	}	
 	

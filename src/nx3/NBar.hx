@@ -17,8 +17,8 @@ class NBar
 		
 		this.type = (type == null) ? EBarType.Normal : type;
 		
-		this.time = (time == null) ? ETime.Time4_4 : time;
-		//this.time = time;
+		//this.time = (time == null) ? ETime.Time4_4 : time;
+		this.time = time;
 		this.timeDisplay = (timeDisplay == null) ? EDisplayALN.Layout :  timeDisplay;
 		this.allotment = (allotment == null)? EAllotment.Logaritmic : allotment;
 		this.spacing = spacing;

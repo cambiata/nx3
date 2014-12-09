@@ -18,7 +18,7 @@ class Main
 	
 	static function main() 
 	{
-		var nscore = TestItems.scoreTplChain();
+		var nscore = TestItems.scoreBachSinfonia4();
 		
 		var target = new TargetSvgXml('#test', Scaling.MINI);
 		var renderer = new Renderer(target);
