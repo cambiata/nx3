@@ -26,10 +26,12 @@ class NotenrBarsCalculator
 		}
 		
 		var partslist = this.getPartslist();
+		var partnr = 0;
 		for (parts in partslist)
 		{
-			var partNotenrItems = new NotenrPartsCalculator(parts, barvalues).execute();
+			var partNotenrItems = new NotenrPartsCalculator(parts, partnr,  barvalues).execute();
 			partsNotenerItems.push(partNotenrItems);
+			partnr++;
 		}
 		
 		return partsNotenerItems;

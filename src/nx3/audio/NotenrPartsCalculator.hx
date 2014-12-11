@@ -3,6 +3,7 @@ import cx.ArrayTools;
 import haxe.macro.Expr.Position;
 import nx3.audio.NotenrPartsCalculator.PartNotesToNotenrCalculator;
 import nx3.EKeysTools;
+import nx3.ENoteType;
 import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
@@ -27,10 +28,12 @@ class NotenrPartsCalculator
 {
 	var parts:NParts;
 	var partvalues:Array<Int>;
+	var partnr:Int;
 
-	public function new(rowOfParts:nx3.NParts, partvalues:Array<Int>=null)  {
+	public function new(rowOfParts:nx3.NParts, partnr:Int, partvalues:Array<Int>=null)  {
 		//rowOfParts = NotenrTestItems.testTies();
 		this.parts = rowOfParts;
+		this.partnr = partnr;
 		this.partvalues = partvalues;	
 	}
 	
@@ -43,26 +46,26 @@ class NotenrPartsCalculator
 		var prevnoteitems: Array<NotenrItem> = null;
 		var resultnoteitems: Array<NotenrItem> = [];
 		var partposition = 0;
-		var partidx = 0;
+		var baridx = 0;
 		
 		for (part in this.parts) {
 			if (part.clef != null) currentclef = part.clef;
 			if (part.key != null) currentkey = part.key;
-			var noteitems = new PartNotesToNotenrCalculator(part, currentclef, currentkey).getNotnrItems();
+
+			var partvalue = this.partvalues.indexOrNull(baridx);
+			var noteitems = new PartNotesToNotenrCalculator(part, this.partnr,  baridx, partvalue, currentclef, currentkey).getNotnrItems();
 			
-			var partvalue = this.partvalues.indexOrNull(partidx);
 			if (partvalue == null) {
 				partvalue = 0;
 				Lambda.iter(noteitems, function(item) { partvalue = Std.int(Math.max(partvalue, item.position + item.noteval)); } );
-			}
-			
+			}			
 			var tieditems1 = handleTiesInsidePart(noteitems);
 			var tieditems2 = handleTiesBetweenParts(tieditems1, prevnoteitems);
 			Lambda.iter(tieditems2, function(item) { item.partposition = partposition; } );
 			partposition += partvalue;
 			resultnoteitems = resultnoteitems.concat(tieditems2);
 			prevnoteitems = tieditems2;
-			partidx++;
+			baridx++;
 		}
 		//Lambda.iter(resultnoteitems, function(item) trace(item));
 		return resultnoteitems;
@@ -211,32 +214,22 @@ typedef TieFound = {
 }
 
 
-typedef NotenrItem = {
-	partposition:Int,
-	position:Int, 
-	noteval: Int, 
-	level:Int, 
-	notenr:Int, 
-	midinr:Int, 
-	headsign:ESign,
-	keysign:ESign,
-	notename:String, 
-	tie: Bool ,
-}
-
-
-
-
 class PartNotesToNotenrCalculator {
 	var part:NPart;
 	var signstable:Map<Int, ESign>;
 	var partkey:EKey;
 	var partclef:EClef;
+	var barnr:Int;
+	var barvalue:Int;
+	var partnr:Int;
 	
-	public function new(part:NPart, partclef:nx3.EClef=null, partkey:EKey=null) {
+	public function new(part:NPart, partnr:Int, barnr:Int, barvalue:Int, partclef:nx3.EClef=null, partkey:EKey=null) {
 		this.part = part;
+		this.partnr = partnr;
 		this.partclef = partclef;
 		this.partkey = partkey;
+		this.barnr = barnr;
+		this.barvalue = barvalue;
 	}
 
 	public function getNotnrItems() {
@@ -268,10 +261,9 @@ class PartNotesToNotenrCalculator {
 					var midinr = NotenrTools.getMidinr(notenr);
 					var notename = NotenrTools.getNotename(notenr);
 					var tie = head.tie != null;
-					result.push( { position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , partposition:0} );
-					
-					if (headsign != null && headsign != nx3.ESign.None) this.signstable.set(cleflevel, headsign);
-					
+					var playable = NotenrTools.getPlayable(note);					
+					result.push( { position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , partposition:0, playable:playable, partnr:this.partnr, barnr:this.barnr, barvalue:barvalue/*, soundlength:0, soundposition:0, barsoundlength:0*/ } );					
+					if (headsign != null && headsign != nx3.ESign.None) this.signstable.set(cleflevel, headsign);					
 				}
 			}
 		}
@@ -305,94 +297,7 @@ class TestScores {
 	}
 }
 
-class NotenrTools {
-	var clef:EClef;
-	var key:EKey;
-	var table:Map<Int, Int>;
-	
-	public function new(clef:EClef, key:EKey)
-	{
-		this.clef = clef;
-		this.key = key;
-		this.table = getNotenrTable(key);
-	}
-	
-	public function getNotenr(level:Int):Int
-	{
-		return switch(this.clef)
-		{
-			case EClef.ClefF: this.table.get(level+12) ;
-			case _: this.table.get(level);
-		}
-	}
-	
-	
-	static public  function getNotenrTable(key:EKey=null, levelmin=-30, levelmax=30):Map<Int, Int> {
-		var table = new Map<Int, Int>();
-		for (level in levelmin...levelmax) {
-			var octave = Math.floor(level / 7);
-			var basekey = (level >= 0) ? level % 7 : ((level % 7) + 7) % 7;
-			var notenr = EKeysTools.getNotenrBaseMap(key).get(basekey) - 12*octave;
-			//trace ([level, basekey, octave, midinote]);
-			table.set(level, notenr);
-		}
-		return table;
-	}
-	
-	static public function getSignsTable(key:EKey= null, levelmin = -30, levelmax = 30):Map<Int, ESign> {
-		var table = new Map<Int, ESign>();
-		for (level in levelmin...levelmax) {
-			var octave = Math.floor(level / 7);
-			var basekey = (level >= 0) ? level % 7 : ((level % 7) + 7) % 7;
-			var sign = EKeysTools.getSignsBaseMap(key).get(basekey);
-			//trace ([level, basekey, octave, midinote]);
-			table.set(level, sign);
-		}
-		return table;
-	}
-	
-	
-	static public function getNotename(notenr:Int):String
-	{
-		var base = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];
-		var bnr = (notenr >= 0) ? notenr % 12 : ((notenr % 12)+12) % 12;
-		var octave = (notenr >= 0) ? Math.floor(notenr / 12) : Math.floor(notenr / 12) ;
-		var bname = base[bnr];
-		//trace([notenr, bnr, octave, bname]);
-		return '$bname[$octave]';
-	}
-	
-	static public function getMidinr(notenr:Int) return notenr + 60;
-	
-	static public function clefLevel(level:Int, clef:EClef) {
-		if (clef == null) return level;
-		return switch clef {
-			case EClef.ClefC: level + 6;
-			case EClef.ClefF: level + 12;
-			case _: level;
-		}
-	}
-	
-	static var stemtonestable = NotenrTools.getNotenrTable(EKey.Natural);
-	
-	static public function getSignaffectedNotenr(level:Int, keysign:nx3.ESign, headsign:nx3.ESign):Int
-	{
-		var sign = keysign;
-		if (headsign != null && headsign != keysign && headsign != ESign.None) sign = headsign;
-		//trace([level, keysign, headsign, sign]);
-		var stemtonenr  = stemtonestable.get(level);
-		if (sign == null) return stemtonenr;
-		return switch sign {
-			case ESign.Natural: stemtonenr;
-			case ESign.Flat: stemtonenr - 1;
-			case ESign.DoubleFlat: stemtonenr - 2;
-			case ESign.Sharp: stemtonenr + 1;
-			case ESign.DoubleSharp: stemtonenr + 2;
-			case _: stemtonenr;
-		}
-		
-	}
-}
+
 
 class NotenrTestItems {
 

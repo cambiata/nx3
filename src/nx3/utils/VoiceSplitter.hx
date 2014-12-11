@@ -3,7 +3,6 @@ import nx3.NBar;
 import nx3.NPart;
 import nx3.NScore;
 import nx3.NVoice;
-import nx3.test.TestItems;
 
 /**
  * VoiceSplitter
