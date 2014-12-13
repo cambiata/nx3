@@ -34,6 +34,7 @@ enum ETime
 class ETimeUtils {
 	
 	static public function toString(time:ETime):String {
+		if (time == null) return '';
 		switch(time) {
 			case Time2_2: 	return '2/2';
 			case Time3_2: 	return '3/2';

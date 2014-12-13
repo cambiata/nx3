@@ -49,9 +49,9 @@ class SoundlengthCalculator
 			// TODO
 		} 
 		
-		var soundlength = note.noteval / this.beatvalue * (this.defaulttempo / 60);		
-		var soundposition = note.position / this.beatvalue * (this.defaulttempo / 60);		
-		var barlength = note.barvalue /  this.beatvalue * (this.defaulttempo / 60);		
+		var soundlength = note.noteval / this.beatvalue * (60/ this.defaulttempo);		
+		var soundposition = note.position / this.beatvalue * (60/this.defaulttempo);		
+		var barlength = note.barvalue /  this.beatvalue * (60/this.defaulttempo);		
 		return { length:soundlength, pos:soundposition, barlength:barlength };
 		
 		

@@ -43,23 +43,40 @@ class Main
 		
 		
 		var nscore = new NScore([
-			new NBar([new NPart( [new NVoice([
-				new NNote([new NHead(0)]),
-				new NNote([new NHead(1)]),
-				new NNote([new NHead(2)]),
-				new NNote([new NHead(4)]),
-			])])]),
-			new NBar([new NPart( [new NVoice([
-				new NNote([new NHead(0)]),
-				new NNote([new NHead(1)]),
-				new NNote([new NHead(2)]),
-				new NNote([new NHead(4)]),
-			])])])
+			new NBar([
+				new NPart( [new NVoice([
+					new NNote([new NHead(0)]),
+					//new NNote([new NHead(1)]),
+					//new NNote([new NHead(2)]),
+					//new NNote([new NHead(4)]),
+				])]),
+				new NPart( [new NVoice([
+					new NNote([new NHead(0)]),
+					new NNote([new NHead(1)]),
+					new NNote([new NHead(2)]),
+					new NNote([new NHead(4)]),
+				])]),
+			]),
+			new NBar([
+				new NPart( [new NVoice([
+					new NNote([new NHead(0)]),
+					new NNote([new NHead(1)]),
+					new NNote([new NHead(2)]),
+					new NNote([new NHead(4)]),
+				])]),
+				new NPart( [new NVoice([
+					new NNote([new NHead(0)]),
+					new NNote([new NHead(1)]),
+					new NNote([new NHead(2)]),
+					new NNote([new NHead(4)]),
+				])]),
+			]),
+
 		]);
 		
 		var partsnotes = new NotenrBarsCalculator(new VoiceSplitter(nscore).getVoicesplittedScore()).getPartsNotenrItems();
 		
-		var totalLenght = NotenrTools.getTotalLenght(partsnotes);
+		//var totalLenght = NotenrTools.getTotalLenght(partsnotes);
 		
 		NotenrTools.calculateSoundLengths(partsnotes);
 		graph(partsnotes, Lib.current);
@@ -70,21 +87,26 @@ class Main
 	
 	static public function graph(partsnotes:Array<Array<NotenrItem>>, target:Sprite)
 	{		
-		var xfactor = 0.02;
+		var xfactor = 70;
 		var yfactor = 5;
 		var party =500;
 		
 		var colors = [0x000088, 0x880000, 0x008800, 0x000088, 0x880000, 0x008800, 0x000088, 0x880000, 0x008800, 0x000088, 0x880000, 0x008800];
 		
 		var gr = target.graphics;
-
+		var partxtray = 0;
 		for (part in partsnotes) {
 			var partcolor = colors.shift();			
 			for (note in part) {
-				trace([note.midinr, note.partposition, note.position, note.partnr, note.barnr, note.barvalue]);
-				var nx = (note.partposition + note.position) * xfactor;
-				var ny = party + -(note.midinr * yfactor);
-				var nwidth = note.noteval * xfactor;
+				//trace([note.midinr, note.partposition, note.position, note.partnr, note.barnr, note.barvalue]);				
+				//var nx = (note.partposition + note.position) * xfactor;
+				
+				var nx = note.playpos * xfactor;
+				
+				var ny = party + -(note.midinr * yfactor) + partxtray;
+				//var nwidth = note.noteval * xfactor;
+				var nwidth = note.soundlength * xfactor;
+				
 				var color = (note.playable) ? partcolor : 0xaaaaaa;
 				gr.beginFill(color);
 				gr.lineStyle(2, color);
@@ -93,6 +115,7 @@ class Main
 				gr.moveTo(nx, ny);
 				gr.lineTo(nx + nwidth, ny);
 			}
+			partxtray += 3;
 		}
 	}	
 	

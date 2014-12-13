@@ -104,20 +104,40 @@ class NotenrTools {
 		return 0;
 	}
 	
-	static public function calculateSoundLengths(partsnotes:Array<Array<NotenrItem>>, tempos:Array<TempoInfo>=null, defaulttempo:Int=60) 
+	static public function calculateSoundLengths(partsnotes:Array<Array<NotenrItem>>, tempos:Array<TempoInfo>=null, defaulttempo:Int=120) 
 	{
+		
+		var partidx = 0;
 		for (part in partsnotes) {			
+			
+			var barsoundends:Array<Float> = [];
+			
+			
 			for (note in part) {
+				var barnr = note.barnr;
+				
 				var info = new SoundlengthCalculator(note, tempos, defaulttempo).getSoundposAndDuration();
 				note.soundlength = info.length;
 				note.soundposition = info.pos;
 				note.barsoundlength = info.barlength;
 				
-				trace([note.noteval, note.soundlength, note.position, note.soundposition]);
+				if (barnr == 0) {
+					note.barsoundposition = 0;
+					barsoundends[0] = note.barsoundlength; // note.barsoundlength;
+				} else {
+					note.barsoundposition = barsoundends[barnr - 1];
+					barsoundends[barnr] = note.barsoundposition + note.barsoundlength;
+				}
+				note.playpos = note.barsoundposition + note.soundposition;
+				note.playend = note.playpos + note.soundlength;
+				
+				trace([/*note.noteval, note.soundlength, note.position, note.soundposition, note.soundposition, note.soundlength, */note.partnr, note.barnr,note.barsoundlength,  note.barsoundposition, note.playpos, note.playend]);
 			}	
+			partidx++;
 		}
 	}
 	
+	/*
 	static public function getTotalLenght(partsnotes:Array<Array<NotenrItem>>):Float
 	{
 		for (part in partsnotes)
@@ -126,7 +146,7 @@ class NotenrTools {
 			}
 				
 	}
-	
+	*/
 	
 	
 }

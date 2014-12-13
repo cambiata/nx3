@@ -22,4 +22,7 @@ typedef NotenrItem = {
 	?soundposition:Float,
 	?soundlength:Float,
 	?barsoundlength:Float,
+	?barsoundposition:Float,
+	?playpos:Float,
+	?playend:Float,
 }
