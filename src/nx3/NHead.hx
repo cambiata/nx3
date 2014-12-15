@@ -1,5 +1,5 @@
 package nx3;
-
+using Lambda;
 
 
 /**
@@ -34,7 +34,15 @@ class NHead
 		str +=  (type != EHeadType.Normal) ? ' '  + this.type.getName() : '';
 		str +=  (this.sign != ESign.None) ? ' '  + this.sign.getName() : '' ;
 		return 'NHead($str)' ;
-	}			
+	}		
+	
+	public function getTag():String {
+		var level = Std.string(this.level);
+		var tie = (this.tie != null) ? '_': '';
+		var sign = NTags.headSignTag(this.sign);
+		var type = NTags.headTypetag(this.type);
+		return '&$type$level$sign$tie';			
+	}
 }
 
 

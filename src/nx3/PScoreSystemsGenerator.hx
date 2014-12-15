@@ -29,7 +29,10 @@ class PScoreSystemsGenerator
 		var prevbarAttributes:PBarAttributes = null;	
 		while (tempbars.length > 0)
 		{			
-			var syswidth = systemwidths.indexOrValue(sysidx, systemwidths.first());
+			var systemwidthsFirst:Float = systemwidths.first();
+			trace(systemwidthsFirst);
+			//if (systemwidthsFirst == null) systemwidthsFirst = 0;
+			var syswidth = systemwidths.indexOrValue(sysidx,systemwidthsFirst);
 			var generator = new PSystemBarsGenerator(this.score, tempbars,  { showFirstClef:true, showFirstKey:true, showFirstTime:(sysidx == 0) }, prevbarAttributes,  syswidth, new PBarWidthCalculator() );
 			var system:PSystem = generator.getSystem();								
 			prevbarAttributes = system.getLastBarAttributes();

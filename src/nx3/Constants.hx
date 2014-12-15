@@ -52,6 +52,7 @@ class Constants
 	static public inline var ATTRIBUTE_SIGN_WIDTH:Float = 2.4;
 	static public inline var SCORE_DEFAULT_COUNTIN:Int = 0;
 	static public inline var SCORE_DEFAULT_TEMPO:Int = 80;
+	static public inline var BAR_SPACING_DEFAULT:Int = 8;
 	
 	//static public inline var ASPACING_NORMAL:Float = 8;		
 } 

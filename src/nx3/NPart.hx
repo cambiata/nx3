@@ -1,5 +1,5 @@
 package nx3;
-
+using Lambda;
 /**
  * ...
  * @author Jonas Nyström
@@ -43,5 +43,13 @@ class NPart
 	
 	public function getNVoice(idx:Int):NVoice	return (idx < 0 || idx > this.nvoices.length) ? null : this.nvoices[idx];
 
+	public function getTag():String {
+		var voicestags = '';
+		this.iter(function(nvoice) voicestags += nvoice.getTag());
+		var clef = NTags.clefTag(this.clef) + NTags.displayALNTag(this.clefDisplay);
+		var key = NTags.keyTag(this.key) + NTags.displayALNTag(this.keyDisplay);
+		var type = NTags.npartTypeTag(this.type);		
+		return '!$type$voicestags$clef$key';			
+	}
 	
 }

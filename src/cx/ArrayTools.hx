@@ -51,7 +51,7 @@ class ArrayTools
 	
 	inline static public function indexOrValue<T>(a:Array<T>, idx:Int, fallbackValue:T)
 	{
-		if (a == null) return null;
+		//#if (neko  ) if (a == null) return null; #end
 		return (indexOrNull(a, idx) != null) ? a[idx] : fallbackValue;
 	}	
 	

@@ -2,7 +2,7 @@ package nx3;
 import nx3.NNote;
 import nx3.EDirectionUD;
 import nx3.EVoiceType;
-
+using Lambda;
 /**
  * ...
  * @author 
@@ -43,6 +43,12 @@ class NVoice
 	
 	public function getNNote(idx:Int):NNote return (idx < 0 || idx > this.nnotes.length) ? null : this.nnotes[idx];
 	
-	
+	public function getTag():String {
+		var dir = NTags.directionUADTag(this.direction);
+		var type = NTags.nvoiceTypeTag(this.type);
+		var notestags = '';		
+		this.iter(function(nnote) notestags += nnote.getTag());
+		return '@$type$notestags$dir';		
+	}
 	
 }

@@ -93,6 +93,9 @@ public static function scoreBachSinfonia4():NScore
 			</voice>
 		</part>
 	</bar>
+	
+	
+	
 	<bar>
 		<part>
 			<voice>
@@ -808,12 +811,12 @@ public static function scoreBachSinfonia4():NScore
 				</note>
 			</voice>
 		</part>
-	</bar>
+	</bar>	
 </score>
 ';
-
 		var nscore = ScoreXML.fromXmlStr(xmlStr);		
 		return nscore;						
+		//return null;
 	}	
 	
 }

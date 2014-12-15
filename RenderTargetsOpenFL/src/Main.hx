@@ -22,9 +22,11 @@ import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 import nx3.render.TargetSprite;
+import nx3.test.TestItemsBach;
 import nx3.test.Unittests;
 import nx3.test.TestItems;
 import nx3.test.TestRenderer;
+import nx3.utils.Performance;
 import nx3.xml.ScoreXML;
 
 
@@ -42,14 +44,23 @@ class Main extends Sprite
 		
 		//Unittests.performTests();
 
-		
-		var nscore:NScore = TestItems.scoreBachSinfonia4();
+		var nscore:NScore = TestItemsBach.scoreBachSinfonia4();
 		//var nscore:NScore = TestItems.scoreTest2().nscore;
 		//var nscore:NScore = TestItems.getSystemYItems();
 		//var nscore = TestItems.scoreTplChain();
 		//var nscore = TestItems.scorePitchloafChain();
 		var tss:TestscoreSprite = new TestscoreSprite(nscore, 100, 100, 1500, 800);
 		Lib.current.addChild(tss);
+		
+		var perf = new Performance(10);
+		
+		perf.addFunction('test getTag', function() var tag = nscore.getTag() );
+		perf.addFunction('redraw', function() tss.redraw(1500, 800, tss.scoresprite));
+		
+		
+		perf.run();
+		
+		
 	}
 	
 	public static function main() 
@@ -66,7 +77,7 @@ class TestscoreSprite extends ResizeSprite
 	var targetHS:nx3.render.TargetSprite;
 	var rendererHS:nx3.render.Renderer;
 	//var pscore:PScore;
-	var scoresprite:Sprite;
+	public var scoresprite(default, null):Sprite;
 	var nscore:NScore;
 	
 	public function new(nscore:NScore, x:Float = 100, y:Float = 100, width:Float = 300, height:Float = 100) {
@@ -86,7 +97,6 @@ class TestscoreSprite extends ResizeSprite
 		
 		var renderWidth =  Math.max(60, this.rendererHS.xToUnitX(w));
 		this.rendererHS.renderScore(new PScore(this.nscore), 0, 0, renderWidth);			
-		//this.rendererHS.testText();
 	}
 	
 	override public function draw(w:Float, h:Float, sprite:Sprite) {}

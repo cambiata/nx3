@@ -53,24 +53,6 @@ class SoundlengthCalculator
 		var soundposition = note.position / this.beatvalue * (60/this.defaulttempo);		
 		var barlength = note.barvalue /  this.beatvalue * (60/this.defaulttempo);		
 		return { length:soundlength, pos:soundposition, barlength:barlength };
-		
-		
-		/*
-		var numbeats = note.barvalue / this.beatvalue;
-		trace(numbeats);
-		
-		var startbps = defaulttempo / 60;
-		var endbps = 90 / 60;
-		trace([startbps, endbps]);
-		var acc = new LinearAccelerator(startbps, endbps, numbeats);
-		var starttime = note.position / this.beatvalue;
-		var dur = note.noteval / this.beatvalue;
-		var accdur = acc.acceleratedDuration(starttime, dur);
-		trace([starttime, dur, accdur]);
-		
-		return accdur;
-		*/
-		
 	}
 	
 }

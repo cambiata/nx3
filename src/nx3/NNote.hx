@@ -78,4 +78,12 @@ class NNote implements Lazy
 		return 'NNote($str):$heads';
 	}	
 	
+	public function getTag():String {
+		var headstags = '';
+		this.iter(function(nhead)  headstags += nhead.getTag());				
+		var type = NTags.noteTypeTag(this.type);
+		var val = ENoteValTools.toValString(this.value);
+		return '%l$type$headstags$val';				
+	}
+	
 }

@@ -15,11 +15,13 @@ class NTags
 		
 	}
 	
+	/*
 	static public function nscoreTag(nscore:NScore):String {
 		var bartags = '';
 		nscore.nbars.iter(function(nbar) {
 			var bartag = nbarTag(nbar);
 			bartags += bartag;		
+			trace(bartag.length);
 			trace(bartag);
 		});
 		return '#$bartags';		
@@ -49,14 +51,14 @@ class NTags
 		
 		var dir = directionUADTag(nvoice.direction);
 		var type = nvoiceTypeTag(nvoice.type);
-		var notestags = '';
-		nvoice.iter(function(nnote) notestags += nnoteTag(nnote));
+		var notestags = '';		
+		nvoice.iter(function(nnote) notestags += nnoteTag(nnote) );
 		return '@$type$notestags$dir';
 	}
 	
 	static public function nnoteTag(nnote:NNote) {
 		var headstags = '';
-		nnote.iter(function(nhead)  headstags += nheadTag(nhead) );		
+		nnote.iter(function(nhead)  headstags += nheadTag(nhead));				
 		var type = noteTypeTag(nnote.type);
 		var val = ENoteValTools.toValString(nnote.value);
 		return '%l$type$headstags$val';		
@@ -70,9 +72,12 @@ class NTags
 		return '&$type$level$sign$tie';		
 	}		
 	
+	*/
+	
+	
 	//-----------------------------------------------------------------------------------------------------------
 	
-	static private function nbarAllotmentTag(allotment:EAllotment) 
+	static public function nbarAllotmentTag(allotment:EAllotment) 
 	{
 		if (allotment == null) return '';
 		return switch allotment {
@@ -84,7 +89,7 @@ class NTags
 	}
 	
 	
-	static private function nbarTypeTag(type:EBarType) :String
+	static public function nbarTypeTag(type:EBarType) :String
 	{
 		if (type == null) return '';
 		return switch type {
@@ -96,7 +101,7 @@ class NTags
 	}
 	
 	
-	static private function timeTag(time:ETime) 
+	static public function timeTag(time:ETime) 
 	{
 		if (time == null) return '';
 		return ETimeUtils.toString(time);
@@ -141,8 +146,6 @@ class NTags
 		}		
 	}
 	
-	
-	
 	static public function nvoiceTypeTag(type:EVoiceType):String {
 		if (type == null) return '';
 		return switch type {
@@ -163,13 +166,13 @@ class NTags
 	static public function noteTypeTag(type:ENoteType):String {
 		if (type == null) return '';
 		return switch type {
-			case ENoteType.BarPause: 'tBP';
-			case ENoteType.Chord: 'tCH';
-			case ENoteType.Dynamics: 'tDYP';
-			case ENoteType.Lyric(text, offset, c, f): 'tLY($text:$offset)';
-			case ENoteType.Pause(level): 'tPA($level)';
-			case ENoteType.Pitch(level, midinoter): 'tPT($level:midinote)';
-			case ENoteType.Tpl(level): 'tTP($level)';
+			case ENoteType.BarPause: 'tB';
+			case ENoteType.Chord: 'tC';
+			case ENoteType.Dynamics: 'tD';
+			case ENoteType.Lyric(text, offset, c, f): 'tL$text:$offset';
+			case ENoteType.Pause(level): 'tP$level';
+			case ENoteType.Pitch(level, midinoter): 'tI$level:midinote';
+			case ENoteType.Tpl(level): 'tT$level';
 			case _:'';
 		}
 		

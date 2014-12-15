@@ -1,6 +1,6 @@
 package nx3;
 import nx3.NBars;
-
+using Lambda;
 /**
  * ...
  * @author Jonas Nyström
@@ -29,6 +29,12 @@ class NScore
 	
 	public function iterator() return this.nbars.iterator();
 	public var length (get, null):Int;
-	private function get_length():Int return this.nbars.length;			
+	private function get_length():Int return this.nbars.length;		
+	
+	public function getTag():String {
+		var bartags = '';
+		this.nbars.iter(function(nbar) bartags += nbar.getTag());
+		return '#$bartags';			
+	}
 	
 }

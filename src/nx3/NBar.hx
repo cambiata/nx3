@@ -1,6 +1,6 @@
 package nx3;
 import nx3.EAllotment;
-
+using Lambda;
 /**
  * ...
  * @author Jonas Nyström
@@ -10,7 +10,7 @@ import nx3.EAllotment;
 class NBar
 {
 
-	public function new(parts:Array<NPart> = null, ?type:EBarType, ?time:ETime = null, ?timeDisplay:EDisplayALN = null, ?allotment:EAllotment = null, ?spacing:Float = 8) 
+	public function new(parts:Array<NPart> = null, ?type:EBarType, ?time:ETime = null, ?timeDisplay:EDisplayALN = null, ?allotment:EAllotment = null, ?spacing:Float = 0) 
 	{		
 		this.nparts = parts;
 		for (part in parts) part.nbar = this;
@@ -21,7 +21,7 @@ class NBar
 		this.time = time;
 		this.timeDisplay = (timeDisplay == null) ? EDisplayALN.Layout :  timeDisplay;
 		this.allotment = (allotment == null)? EAllotment.Logaritmic : allotment;
-		this.spacing = spacing;
+		this.spacing = (spacing != 0) ? spacing : Constants.BAR_SPACING_DEFAULT;
 	}
 
 	var nscore:NScore;
@@ -41,6 +41,14 @@ class NBar
 	public var length (get, null):Int;
 	private function get_length():Int return this.nparts.length;		
 	
-	
+	public function getTag():String {
+		var partstags = '';
+		this.nparts.iter(function(npart) partstags += npart.getTag());
+		var time = NTags.timeTag(this.time) + NTags.displayALNTag(this.timeDisplay);
+		var spacing = (this.spacing != 8) ? 'sp:' + this.spacing : '';
+		var type = NTags.nbarTypeTag(this.type );
+		var allot = NTags.nbarAllotmentTag(this.allotment);
+		return '/$type$partstags$time$allot$spacing';			
+	}
 }
 

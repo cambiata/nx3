@@ -61,7 +61,7 @@ class NotenrTools {
 		return '$bname[$octave]';
 	}
 	
-	static public function getMidinr(notenr:Int) return notenr + 60;
+	static public function getMidinr(notenr:Int) return notenr + 72;
 	
 	static public function clefLevel(level:Int, clef:EClef) {
 		if (clef == null) return level;
@@ -135,6 +135,16 @@ class NotenrTools {
 			}	
 			partidx++;
 		}
+	}
+	
+	static public function getTotalLength(partsnotes:Array<Array<NotenrItem>>) 
+	{
+		var lenght = 0.0;
+		for (part in partsnotes) { 
+			var last = part[part.length - 1];
+			lenght = Math.max(lenght, last.barsoundposition +last.barsoundlength); 
+		};		
+		return lenght;
 	}
 	
 	/*
