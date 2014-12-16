@@ -5,12 +5,7 @@ import audiotools.Wav16;
 import audiotools.Wav16DSP;
 import audiotools.Wav16Tools;
 
-#if flash
-import flash.display.Sprite;
-import flash.display.StageAlign;
-import flash.display.StageScaleMode;
-import flash.Lib;
-#end
+
 
 import nx3.audio.NotenrTools;
 import nx3.audio.SoundlengthCalculator;
@@ -28,9 +23,12 @@ import nx3.utils.VoiceSplitter;
 
 using cx.ArrayTools;
 
-/*
-
-*/
+#if flash
+import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
+import flash.Lib;
+#end
 
 
 /**
@@ -101,17 +99,6 @@ class Main
 		var decoders = new Mp3Wav16Decoders(files);
 		decoders.allDecoded = function(data:Map<String,Wav16>) {
 			trace('all decoded');			
-			/*
-			var w49:Wav16  = data.get('piano/49.mp3');						
-			var w50:Wav16  = data.get('piano/50.mp3');						
-			var w56:Wav16  = data.get('piano/56.mp3');						
-			var w = Wav16.create(w49.length * 3, false);
-			Wav16DSP.wspMixInto(w, w49, 0);
-			Wav16DSP.wspMixInto(w, w56, 0);	
-			Wav16DSP.wspMixInto(w, w50, Wav16Tools.toSamples(2));
-			displayWave(w, 0);
-			Wav16Tools.testplay(w);	
-			*/
 			createScoreWave(partsnotes, data);
 		};
 		decoders.decodeAll();		
@@ -119,7 +106,7 @@ class Main
 	
 	static private function createScoreWave(partsnotes:Array<Array<NotenrItem>>, data:Map<String, Wav16>) 
 	{
-		var full = Wav16.createSecs(NotenrTools.getTotalLength(partsnotes) + 1, true);
+		var full = Wav16.createSecs(NotenrTools.getTotalLength(partsnotes) + .1, true);
 		for (part in partsnotes) {
 			for (note in part) {				
 				if (!note.playable) continue;				

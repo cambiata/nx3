@@ -93,6 +93,13 @@ Lambda.foreach = function(it,f) {
 	}
 	return true;
 };
+Lambda.iter = function(it,f) {
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		f(x);
+	}
+};
 Lambda.filter = function(it,f) {
 	var l = new List();
 	var $it0 = $iterator(it)();
@@ -148,7 +155,7 @@ var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
 	var renderwidth = 900;
-	var nscore = nx3.test.TestItems.scoreTplChain();
+	var nscore = nx3.test.TestItemsBach.scoreBachSinfonia4();
 	var target = new nx3.render.TargetSvgXml("#test",nx3.render.scaling.Scaling.MINI);
 	var renderer = new nx3.render.Renderer(target);
 	renderer.renderScore(new nx3.PScore(nscore),0,0,renderwidth / target.getScaling().unitX);
@@ -506,7 +513,6 @@ cx.ArrayTools.indexOrNull = function(a,idx) {
 	if(idx < 0 || idx > a.length - 1) return null; else return a[idx];
 };
 cx.ArrayTools.indexOrValue = function(a,idx,fallbackValue) {
-	if(a == null) return null;
 	if((a == null?null:idx < 0 || idx > a.length - 1?null:a[idx]) != null) return a[idx]; else return fallbackValue;
 };
 cx.ArrayTools.equals = function(a,b) {
@@ -2523,6 +2529,7 @@ nx3.ETime.TimeAllabreve.__enum__ = nx3.ETime;
 nx3.ETimeUtils = function() { };
 nx3.ETimeUtils.__name__ = true;
 nx3.ETimeUtils.toString = function(time) {
+	if(time == null) return "";
 	switch(time[1]) {
 	case 0:
 		return "2/2";
@@ -2619,7 +2626,7 @@ nx3.EVoiceType.Barpause = function(level) { var $x = ["Barpause",1,level]; $x.__
 nx3.IBarWidthCalculator = function() { };
 nx3.IBarWidthCalculator.__name__ = true;
 nx3.NBar = function(parts,type,time,timeDisplay,allotment,spacing) {
-	if(spacing == null) spacing = 8;
+	if(spacing == null) spacing = 0;
 	this.nparts = parts;
 	var _g = 0;
 	while(_g < parts.length) {
@@ -2631,7 +2638,7 @@ nx3.NBar = function(parts,type,time,timeDisplay,allotment,spacing) {
 	this.time = time;
 	if(timeDisplay == null) this.timeDisplay = nx3.EDisplayALN.Layout; else this.timeDisplay = timeDisplay;
 	if(allotment == null) this.allotment = nx3.EAllotment.Logaritmic; else this.allotment = allotment;
-	this.spacing = spacing;
+	if(spacing != 0) this.spacing = spacing; else this.spacing = 8;
 };
 nx3.NBar.__name__ = true;
 nx3.NBar.prototype = {
@@ -2646,6 +2653,18 @@ nx3.NBar.prototype = {
 	}
 	,get_length: function() {
 		return this.nparts.length;
+	}
+	,getTag: function() {
+		var partstags = "";
+		Lambda.iter(this.nparts,function(npart) {
+			partstags += npart.getTag();
+		});
+		var time = nx3.NTags.timeTag(this.time) + nx3.NTags.displayALNTag(this.timeDisplay);
+		var spacing;
+		if(this.spacing != 8) spacing = "sp:" + this.spacing; else spacing = "";
+		var type = nx3.NTags.nbarTypeTag(this.type);
+		var allot = nx3.NTags.nbarAllotmentTag(this.allotment);
+		return "/" + type + partstags + time + allot + spacing;
 	}
 };
 nx3.NHead = function(type,level,sign,tie,tieTo) {
@@ -2663,6 +2682,14 @@ nx3.NHead.prototype = {
 		if(this.type != nx3.EHeadType.Normal) str += " " + this.type[0]; else str += "";
 		if(this.sign != nx3.ESign.None) str += " " + this.sign[0]; else str += "";
 		return "NHead(" + str + ")";
+	}
+	,getTag: function() {
+		var level = Std.string(this.level);
+		var tie;
+		if(this.tie != null) tie = "_"; else tie = "";
+		var sign = nx3.NTags.headSignTag(this.sign);
+		var type = nx3.NTags.headTypetag(this.type);
+		return "&" + type + level + sign + tie;
 	}
 };
 nx3.NNote = function(type,heads,value,direction) {
@@ -2730,6 +2757,15 @@ nx3.NNote.prototype = {
 		}
 		return "NNote(" + str + "):" + heads;
 	}
+	,getTag: function() {
+		var headstags = "";
+		Lambda.iter(this,function(nhead) {
+			headstags += nhead.getTag();
+		});
+		var type = nx3.NTags.noteTypeTag(this.type);
+		var val = nx3.ENoteValTools.toValString(this.value);
+		return "%l" + type + headstags + val;
+	}
 	,get_headLevels: function() {
 		if(this.__lazyheadLevels != null) return this.__lazyheadLevels;
 		return this.__lazyheadLevels = Lambda.array(Lambda.map(this,function(head) {
@@ -2779,6 +2815,16 @@ nx3.NPart.prototype = {
 	,getNVoice: function(idx) {
 		if(idx < 0 || idx > this.nvoices.length) return null; else return this.nvoices[idx];
 	}
+	,getTag: function() {
+		var voicestags = "";
+		Lambda.iter(this,function(nvoice) {
+			voicestags += nvoice.getTag();
+		});
+		var clef = nx3.NTags.clefTag(this.clef) + nx3.NTags.displayALNTag(this.clefDisplay);
+		var key = nx3.NTags.keyTag(this.key) + nx3.NTags.displayALNTag(this.keyDisplay);
+		var type = nx3.NTags.npartTypeTag(this.type);
+		return "!" + type + voicestags + clef + key;
+	}
 };
 nx3.NScore = function(nbars) {
 	this.nbars = nbars;
@@ -2804,6 +2850,176 @@ nx3.NScore.prototype = {
 	}
 	,get_length: function() {
 		return this.nbars.length;
+	}
+	,getTag: function() {
+		var bartags = "";
+		Lambda.iter(this.nbars,function(nbar) {
+			bartags += nbar.getTag();
+		});
+		return "#" + bartags;
+	}
+};
+nx3.NTags = function() {
+};
+nx3.NTags.__name__ = true;
+nx3.NTags.nbarAllotmentTag = function(allotment) {
+	if(allotment == null) return "";
+	switch(allotment[1]) {
+	case 1:
+		return "aEQ";
+	case 0:
+		return "aLA";
+	case 3:
+		return "aLN";
+	case 2:
+		return "";
+	}
+};
+nx3.NTags.nbarTypeTag = function(type) {
+	if(type == null) return "";
+	switch(type[1]) {
+	case 3:
+		return "bFO";
+	case 2:
+		return "bIG";
+	case 1:
+		return "bRP";
+	default:
+		return "";
+	}
+};
+nx3.NTags.timeTag = function(time) {
+	if(time == null) return "";
+	return nx3.ETimeUtils.toString(time);
+};
+nx3.NTags.npartTypeTag = function(type) {
+	if(type == null) return "";
+	switch(type[1]) {
+	case 5:
+		return "pCH";
+	case 4:
+		return "pDY";
+	case 7:
+		return "pHI";
+	case 6:
+		return "pIG";
+	case 1:
+		return "pLY";
+	case 8:
+		return "pPR";
+	case 3:
+		return "pTC";
+	case 2:
+		return "pTR";
+	default:
+		return "";
+	}
+};
+nx3.NTags.keyTag = function(key) {
+	if(key == null) return "";
+	return Std.string(nx3.EKeysTools.getKeyNr(key));
+};
+nx3.NTags.clefTag = function(clef) {
+	if(clef == null) return "";
+	switch(clef[1]) {
+	case 2:
+		return "C";
+	case 1:
+		return "F";
+	case 0:
+		return "G";
+	}
+};
+nx3.NTags.displayALNTag = function(display) {
+	if(display == null) return "";
+	switch(display[1]) {
+	case 0:
+		return "dA";
+	case 2:
+		return "dN";
+	default:
+		return "";
+	}
+};
+nx3.NTags.nvoiceTypeTag = function(type) {
+	if(type == null) return "";
+	switch(type[1]) {
+	case 1:
+		return "vBP";
+	default:
+		return "";
+	}
+};
+nx3.NTags.directionUADTag = function(dir) {
+	if(dir == null) return "";
+	switch(dir[1]) {
+	case 0:
+		return "U";
+	case 2:
+		return "D";
+	default:
+		return "";
+	}
+};
+nx3.NTags.noteTypeTag = function(type) {
+	if(type == null) return "";
+	switch(type[1]) {
+	case 2:
+		return "tB";
+	case 5:
+		return "tC";
+	case 6:
+		return "tD";
+	case 4:
+		var f = type[5];
+		var c = type[4];
+		var offset = type[3];
+		var text = type[2];
+		return "tL" + text + ":" + Std.string(offset);
+	case 1:
+		var level = type[2];
+		return "tP" + level;
+	case 7:
+		var midinoter = type[3];
+		var level1 = type[2];
+		return "tI" + level1 + ":midinote";
+	case 3:
+		var level2 = type[2];
+		return "tT" + level2;
+	default:
+		return "";
+	}
+};
+nx3.NTags.headSignTag = function(sign) {
+	if(sign == null) return "";
+	switch(sign[1]) {
+	case 4:
+		return "bb";
+	case 2:
+		return "b";
+	case 3:
+		return "#";
+	case 5:
+		return "##";
+	case 1:
+		return "N";
+	default:
+		return "";
+	}
+};
+nx3.NTags.headTypetag = function(type) {
+	if(type == null) return "";
+	switch(type[1]) {
+	case 2:
+		return "tC";
+	case 1:
+		return "tR";
+	case 3:
+		return "tP";
+	case 4:
+		return "tO";
+	default:
+		return "";
 	}
 };
 nx3.NVoice = function(notes,type,direction) {
@@ -2832,6 +3048,15 @@ nx3.NVoice.prototype = {
 	}
 	,getNNote: function(idx) {
 		if(idx < 0 || idx > this.nnotes.length) return null; else return this.nnotes[idx];
+	}
+	,getTag: function() {
+		var dir = nx3.NTags.directionUADTag(this.direction);
+		var type = nx3.NTags.nvoiceTypeTag(this.type);
+		var notestags = "";
+		Lambda.iter(this,function(nnote) {
+			notestags += nnote.getTag();
+		});
+		return "@" + type + notestags + dir;
 	}
 };
 nx3.PAttributesRectsCalculator = function() { };
@@ -5031,8 +5256,10 @@ nx3.PScoreSystemsGenerator.prototype = {
 		var sysidx = 0;
 		var prevbarAttributes = null;
 		while(tempbars.length > 0) {
+			var systemwidthsFirst = systemwidths[0];
+			console.log(systemwidthsFirst);
 			var syswidth;
-			if(systemwidths == null) syswidth = null; else if((systemwidths == null?null:sysidx < 0 || sysidx > systemwidths.length - 1?null:systemwidths[sysidx]) != null) syswidth = systemwidths[sysidx]; else syswidth = systemwidths[0];
+			if((systemwidths == null?null:sysidx < 0 || sysidx > systemwidths.length - 1?null:systemwidths[sysidx]) != null) syswidth = systemwidths[sysidx]; else syswidth = systemwidthsFirst;
 			var generator = new nx3.PSystemBarsGenerator(this.score,tempbars,{ showFirstClef : true, showFirstKey : true, showFirstTime : sysidx == 0},prevbarAttributes,syswidth,new nx3.PBarWidthCalculator());
 			var system = generator.getSystem();
 			prevbarAttributes = system.getLastBarAttributes();
@@ -8681,7 +8908,7 @@ nx3.test.TestItems.scorePitchloafChain = function() {
 nx3.test.TestItemsBach = function() { };
 nx3.test.TestItemsBach.__name__ = true;
 nx3.test.TestItemsBach.scoreBachSinfonia4 = function() {
-	var xmlStr = "<score>\r\n\t<config test=\"12345\" />\r\n\t<bar time=\"C\">\r\n\t\t<part key=\"Flat1\"\r\n\t\t\t  clef=\"ClefG\">\r\n\t\t\t<voice>\r\n\t\t\t\t<pause level=\"-5\"\r\n\t\t\t\t\t   val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause level=\"2\"\r\n\t\t\t\t\t   val=\"1\" />\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part clef=\"ClefF\"\r\n\t\t\t  key=\"Flat1\">\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8.\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-7\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-8\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\"\r\n\t\t\t\t\t\t   tielevel=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\"\r\n\t\t\t\t\t\t   tielevel=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause />\r\n\t\t\t\t<pause val=\"2\" />\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"4.\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8.\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\r\n\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"2\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"2\">\r\n\t\t\t\t\t<headx level=\"3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-8\"\r\n\t\t\t\t\t\t   sign=\"Flat\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"8\" />\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n</score>\r\n";
+	var xmlStr = "<score>\r\n\t<config test=\"12345\" />\r\n\t<bar time=\"C\">\r\n\t\t<part key=\"Flat1\"\r\n\t\t\t  clef=\"ClefG\">\r\n\t\t\t<voice>\r\n\t\t\t\t<pause level=\"-5\"\r\n\t\t\t\t\t   val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause level=\"2\"\r\n\t\t\t\t\t   val=\"1\" />\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part clef=\"ClefF\"\r\n\t\t\t  key=\"Flat1\">\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t\r\n\t\r\n\t\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8.\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-7\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-8\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-6\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   sign=\"Natural\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\"\r\n\t\t\t\t\t\t   tielevel=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\"\r\n\t\t\t\t\t\t   tielevel=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause />\r\n\t\t\t\t<pause val=\"2\" />\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"4.\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8.\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Sharp\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   sign=\"Natural\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\r\n\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"2\">\r\n\t\t\t\t\t<headx level=\"-1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"2\">\r\n\t\t\t\t\t<headx level=\"3\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-8\"\r\n\t\t\t\t\t\t   sign=\"Flat\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-7\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\r\n\t<bar>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"2\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"0\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"-1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"8\" />\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-4\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t\t<voice>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note>\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<pause val=\"16\" />\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"16\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\"\r\n\t\t\t\t\t\t   tie=\"true\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t\t<part>\r\n\t\t\t<voice>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"-6\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"1\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"4\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"3\" />\r\n\t\t\t\t</note>\r\n\t\t\t\t<note val=\"8\">\r\n\t\t\t\t\t<headx level=\"5\" />\r\n\t\t\t\t</note>\r\n\t\t\t</voice>\r\n\t\t</part>\r\n\t</bar>\t\r\n</score>\r\n";
 	var nscore = nx3.xml.ScoreXML.fromXmlStr(xmlStr);
 	return nscore;
 };
@@ -9266,6 +9493,7 @@ nx3.Constants.OBJECT_XMARGIN = 0.6;
 nx3.Constants.ATTRIBUTE_SIGN_WIDTH = 2.4;
 nx3.Constants.SCORE_DEFAULT_COUNTIN = 0;
 nx3.Constants.SCORE_DEFAULT_TEMPO = 80;
+nx3.Constants.BAR_SPACING_DEFAULT = 8;
 nx3.ENoteValTools.DOT = 1.5;
 nx3.ENoteValTools.DOTDOT = 1.75;
 nx3.ENoteValTools.TRI = 0.66666666;

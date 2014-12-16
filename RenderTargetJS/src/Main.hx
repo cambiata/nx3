@@ -22,7 +22,8 @@ class Main
 		
 		var renderwidth = 900;
 		
-		var nscore = TestItems.scoreTplChain();
+		//var nscore = TestItems.scoreTplChain();
+		var nscore = TestItemsBach.scoreBachSinfonia4();
 		
 		var target = new TargetSvgXml('#test', Scaling.MINI);
 		var renderer = new Renderer(target);

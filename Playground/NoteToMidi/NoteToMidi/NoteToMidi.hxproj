@@ -17,23 +17,25 @@
   <classpaths>
     <class path="src" />
     <class path="..\..\..\src" />
+    <class path="..\..\..\..\HxAudioTools\src" />
   </classpaths>
   <!-- Build options -->
   <build>
     <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="MainNeko" />
+    <option mainClass="Main" />
     <option enabledebug="False" />
     <option additional="" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
     <library name="thx.core" />
+    <library name="format" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\MainNeko.hx" />
+    <compile path="src\Main.hx" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
