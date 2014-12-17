@@ -41,13 +41,10 @@ class Main
 		renderer.renderScore(new PScore(nscore), 0, 0, renderwidth/target.getScaling().unitX);
 		target.addToDomElement('normal');
 		
-		
 		var target = new TargetSvgXml('#test', Scaling.MID);
 		var renderer = new Renderer(target);
 		renderer.renderScore(new PScore(nscore), 0, 0, renderwidth/target.getScaling().unitX);
 		target.addToDomElement('mid');
-		
-				
 		
 	}
 	

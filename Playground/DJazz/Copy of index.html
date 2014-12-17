@@ -2,37 +2,57 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Analyzer</title>
+	<title>♫ Analyzer ♫</title>
 	<style>
-		body {font-family: sans-serif;}
+	
+	body {
+		margin: 0px;
+		font-family: sans-serif;
+	}
+	body, table {
+		font-size: 13px;
+	}
+	
+	#bpm {
+		
+	}
+	#time {
+		font-family: monospace;
+	}
+	
+	button.control {
+		width: 60px;
+		height: 30px;
+		font-size: 20px;
+	}
+	
 	</style>
 </head>
 <body>
-	
 <table border=0>
-	<tr><td id="sampleSong"><progress id="downloadMeter" style="width: 300px;"></progress></td></tr>
-	<tr><td><input type=file id="customAudio" accept="audio/*"></td></tr>
-	<tr><td>Status: <span id="status"></span><br>
-	<div id="bpm"></div>
-	Time: <span id="time">00:00:00.0 | 00:00:00.0</span></td></tr>
-
-
-
-	<tr><td>
-		<input type=checkbox id="loop"><label for="loop"> Loop</label>
-		<input type=checkbox id="sgrambox" checked><label for="sgrambox"> Spectrogram</label>
-	</td></tr>
-	<tr><td>
-		<button class="control" id="rewind" disabled>Rewind</button>
-		<button class="control" id="toggleplay" disabled>Play</button>
-	</td></tr>
+<tr><td rowspan=7><img src="../../images/analyzer.png" width=170 style="border-radius: 10px;"></td>
+<th>♫ JavaScript Audio Waveform Visualizer and Realtime Spectrum Analyzer ♫</th></tr>
+<tr><td id="sampleSong"><progress id="downloadMeter" style="width: 300px;"></progress></td></tr>
+<tr><td>Powered by the Web Audio API!</td></tr>
+<!--<tr><td><button> ▌&#9668;&#9668;</button><button>&#9658;/▌▌/■</button></td></tr>-->
+<tr><td><input type=file id="customAudio" accept="audio/*"></td></tr>
+<tr><td>Status: <span id="status"></span><br>
+<div id="bpm"></div>
+Time: <span id="time">00:00:00.0 | 00:00:00.0</span></td></tr>
+<tr><td>
+	<input type=checkbox id="loop"><label for="loop"> Loop</label>
+	<input type=checkbox id="sgrambox" checked><label for="sgrambox"> Spectrogram</label>
+</td></tr>
+<tr><td>
+	<button class="control" id="rewind" disabled>|&#9664;&#9664;</button>
+	<button class="control" id="toggleplay" disabled>▶<!--&#9658;--></button>
+</td></tr>
 
 
 </table>
-
 <div id="container" style="position: relative; overflow: auto;">
-	<canvas id="audiodatacanvas" width=1200 height=160 style="background-color: #EEE; display: block;"></canvas>
-	<canvas id="spectrogramcanvas" width=1200 height=256 style="background-color: #000; display: block;"></canvas>
+	<canvas id="audiodatacanvas" width=1 height=160 style="background-color: #EEE; display: block;"></canvas>
+	<canvas id="spectrogramcanvas" width=1 height=256 style="background-color: #000; display: block;"></canvas>
 	<div id="cursor" style="position: absolute; top: 0px; left: -1px; background-color: black; width: 1px; height: 100%; border: 1px solid white; border-top: none; border-bottom: none;"></div>
 </div>
 
@@ -41,17 +61,18 @@
 </div>
 
 
+<script src="beatdetector.js"></script>
 <script>
 (function (global) {
 	'use strict';
 	
-	//var bd = new BeatDetektor(50, 200);
+	var bd = new BeatDetektor(50, 200);
 	
 	var zfs = function (v) {return v > 9 ? v : '0'+v;};
 	var timeStyle = function (t) {return zfs(Math.floor(t/(60*24)))+':'+zfs(Math.floor(t/60) % 60)+':'+zfs(Math.floor(t) % 60)+'.'+Math.floor(Math.floor((t % 1)*10));};
 	
+	var container = global.document.querySelector('#container');
 	
-	var container = global.document.querySelector('#container');	
 	var audiodatacanvas = global.document.querySelector('#audiodatacanvas');
 	var adc = audiodatacanvas.getContext('2d');
 	var sgramcanvas = global.document.querySelector('#spectrogramcanvas');
@@ -88,7 +109,7 @@
 	var acx = new (global.AudioContext || global.webkitAudioContext)();
 	//var acx = new global.webkitAudioContext();
 	
-	var musicfile = "sample.mp3"; //"Luigi_Elettrico-Cento_Dieci_(110).mp3";//"Medivo_remix.mp3";
+	var musicfile = "Basement - JJ3.mp3"; //"Luigi_Elettrico-Cento_Dieci_(110).mp3";//"Medivo_remix.mp3";
 	
 	var timeratio = 30;
 	
@@ -125,13 +146,10 @@
 			timeSpan.textContent = timeStyle(currentTime)+' | '+timeStyle(duration);
 		}
 		var leftChannel = e.inputBuffer.getChannelData(0);
-		
-		
-		//bd.process(acx.currentTime, leftChannel);
-		//bpmOutput.textContent = bd.win_bpm_int/10+ " BPM";
+		bd.process(acx.currentTime, leftChannel);
+		bpmOutput.textContent = bd.win_bpm_int/10+ " BPM";
 		
 	};
-	
 	var updateSpectrum = function () {
 		
 		var ratio = spectrumCanvas.width/fftData.length;
@@ -303,7 +321,6 @@
 	loopBox.addEventListener('change', function (e) {
 		loop = this.checked;
 	}, false);
-	
 	customAudio.addEventListener('change', function (e) {
 		var btn = this;
 		btn.disabled = true;
@@ -322,8 +339,6 @@
 		};
 		fr.readAsArrayBuffer(this.files[0]);
 	}, false);
-	
-	
 	container.addEventListener('mousedown', function (e) {
 		var y = (e.pageY - container.offsetTop);
 		if(y > audiodatacanvas.offsetHeight+sgramcanvas.offsetHeight) return; // On scrollbar
@@ -360,7 +375,6 @@
 	var sgramtimer = null;
 	var workerMessage = function (e) {
 		//sgramtimer = setTimeout(function () {
-		console.log('worker');
 			if(!worker) return;
 			if(e.data.frames) {
 				for(var j=0; j < e.data.frames.length; j++) {
@@ -539,7 +553,6 @@
 	X.send();
 	
 }(window));
-
 </script>
 </body>
 </html>

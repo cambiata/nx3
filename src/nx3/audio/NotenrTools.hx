@@ -1,5 +1,5 @@
 package nx3.audio;
-
+using cx.ArrayTools;
 /**
  * NotenrTools
  * @author Jonas Nyström
@@ -105,8 +105,7 @@ class NotenrTools {
 	}
 	
 	static public function calculateSoundLengths(partsnotes:Array<Array<NotenrItem>>, tempos:Array<TempoInfo>=null, defaulttempo:Int=120) 
-	{
-		
+	{		
 		var partidx = 0;
 		for (part in partsnotes) {			
 			
@@ -131,7 +130,7 @@ class NotenrTools {
 				note.playpos = note.barsoundposition + note.soundposition;
 				note.playend = note.playpos + note.soundlength;
 				
-				trace([/*note.noteval, note.soundlength, note.position, note.soundposition, note.soundposition, note.soundlength, */note.partnr, note.barnr,note.barsoundlength,  note.barsoundposition, note.playpos, note.playend]);
+				//trace([/*note.noteval, note.soundlength, note.position, note.soundposition, note.soundposition, note.soundlength, */note.partnr, note.barnr,note.barsoundlength,  note.barsoundposition, note.playpos, note.playend]);
 			}	
 			partidx++;
 		}
@@ -145,6 +144,66 @@ class NotenrTools {
 			lenght = Math.max(lenght, last.barsoundposition +last.barsoundlength); 
 		};		
 		return lenght;
+	}
+	
+	static public function resolveTies(partsnotes:Array<Array<NotenrItem>>) 
+	{
+		var result = [];
+		
+		for (part in partsnotes) {
+			var newpart:Array<NotenrItem> = [];
+			var note = part.first();
+			
+			var previdx = -1;
+			while (note != null) {
+				newpart.push(note);
+				
+				
+				var noteidx = part.index(note);
+				var foundtie = false;
+				
+				if (note.tie) {
+					var nextpos = note.partposition + note.position + note.noteval;
+					var nextnote = part.nextOrNull(note);
+					while (nextnote != null) {
+						var pos = nextnote.partposition + nextnote.position;												
+						if (pos == nextpos && nextnote.midinr == note.midinr) {
+							var newsoundlength = note.soundlength + nextnote.soundlength;
+							var newvalue = note.noteval + nextnote.noteval;
+							note.soundlength = newsoundlength;
+							note.noteval = newvalue;							
+							part.remove(nextnote);
+							note.tie = nextnote.tie;
+							foundtie = true;
+						}
+						nextnote = (pos == nextpos) ? part.nextOrNull(nextnote) : null;
+					}
+				}
+				
+				if (! foundtie) {
+					//newpart.push(note);
+					note = part.nextOrNull(note);
+				} else {
+					//if (noteidx != previdx) newpart.push(note);
+					newpart.remove(note);
+					previdx = noteidx;
+				}
+			}
+			result.push(newpart);
+		}
+		
+		return result;
+	}
+	
+	static public function debug(partsnotes:Array<Array<NotenrItem>>) 
+	{
+		trace('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
+		for (part in partsnotes) {
+			trace('Part: ');
+			for (note in part) {
+				trace( [note.barnr, note.position, note.midinr, note.noteval]);
+			}
+		}
 	}
 	
 	/*

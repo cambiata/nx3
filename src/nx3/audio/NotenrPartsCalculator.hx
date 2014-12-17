@@ -59,17 +59,22 @@ class NotenrPartsCalculator
 				partvalue = 0;
 				Lambda.iter(noteitems, function(item) { partvalue = Std.int(Math.max(partvalue, item.position + item.noteval)); } );
 			}			
-			var tieditems1 = handleTiesInsidePart(noteitems);
-			var tieditems2 = handleTiesBetweenParts(tieditems1, prevnoteitems);
-			Lambda.iter(tieditems2, function(item) { item.partposition = partposition; } );
+			
+			//var tieditems1 = handleTiesInsidePart(noteitems);			
+			//var tieditems2 = handleTiesBetweenParts(tieditems1, prevnoteitems);
+			//var 
+			
+			Lambda.iter(noteitems, function(item) { item.partposition = partposition; } );
 			partposition += partvalue;
-			resultnoteitems = resultnoteitems.concat(tieditems2);
-			prevnoteitems = tieditems2;
+			resultnoteitems = resultnoteitems.concat(noteitems);
+			prevnoteitems = noteitems;
 			baridx++;
 		}
 		//Lambda.iter(resultnoteitems, function(item) trace(item));
 		return resultnoteitems;
 	}
+	
+	/*	
 	
 	function handleTiesBetweenParts(items:Array<NotenrItem>,previtems:Array<NotenrItem>) 
 	{
@@ -101,6 +106,9 @@ class NotenrPartsCalculator
 		return itemscopy;
 	}
 	
+	
+	
+
 	private function handleTiesInsidePart(items:Array<NotenrItem>)
 	{		
 		var ties:Array<TieFound> = [];
@@ -158,15 +166,7 @@ class NotenrPartsCalculator
 			// ties from previous bar
 			for (tiefound in tiefoundLast)
 			{
-				/*
-				trace('SEARCH FOR ' + tiefound.targetpos + ' ' + tiefound.notenr);
-				for (item in items)
-				{
-					if (item.position == tiefound.targetpos && item.level == tiefound.level) {
-						trace('FOUND pos and level');
-					}
-				}
-				*/
+
 			}
 			tiefoundLast = [];
 			
@@ -198,7 +198,7 @@ class NotenrPartsCalculator
 			tiefoundInside = [];
 		}
 	}
-	
+	*/
 	
 }
 

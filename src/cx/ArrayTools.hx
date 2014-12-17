@@ -42,6 +42,10 @@ class ArrayTools
 		return a.indexOf(item) != -1;
 	}	
 	
+	inline static public function nextOrNull<T>(a:Array<T>, item:T) {
+		return indexOrNull(a, a.indexOf(item)+1);
+		
+	}
 	
 	inline static public function indexOrNull<T>(a:Array<T>, idx:Int):Null<T>
 	{

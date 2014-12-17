@@ -4,6 +4,8 @@ import audiotools.utils.Mp3Wav16Decoders;
 import audiotools.Wav16;
 import audiotools.Wav16DSP;
 import audiotools.Wav16Tools;
+import nx3.EDirectionUAD;
+import nx3.ETie;
 
 
 
@@ -38,9 +40,6 @@ import flash.Lib;
 
 class Main 
 {
-	
-
-	
 	static function main() 
 	{
 		#if flash
@@ -49,49 +48,68 @@ class Main
 		stage.align = StageAlign.TOP_LEFT;
 		#end		
 		
-		var nscore = TestItemsBach.scoreBachSinfonia4();
+		//
 		
-		/*
 		var nscore = new NScore([
 			new NBar([
 				new NPart( [new NVoice([
-					new NNote([new NHead(0)]),
-					new NNote([new NHead(1)]),
-					new NNote([new NHead(2)]),
-					new NNote([new NHead(4)]),
+					new NNote([new NHead(0, ETie.Tie(null, 0))]),
+					new NNote([new NHead(0, ETie.Tie(null, 0))]),
+					//new NNote([new NHead(0)]),
+					//new NNote([new NHead(-2), new NHead(0/*, ETie.Tie(null, 0)*/)]),
 				])]),
+				
 				new NPart( [new NVoice([
-					new NNote([new NHead(-2)]),
-					new NNote([new NHead(-2)]),
-					new NNote([new NHead(-2)]),
-					new NNote([new NHead(-2)]),
+					new NNote([new NHead(3)]),
+					new NNote([new NHead(2, ETie.Tie(null, 0))]),
 				])]),
+				
+			]),
+			
+			new NBar([
+				new NPart( [new NVoice([
+					new NNote([new NHead(0, ETie.Tie(null, 0))]),
+				])]),
+				
+				new NPart( [new NVoice([
+					new NNote([new NHead(2)]),
+				])]),
+				
+			]),
+			
+			new NBar([
+				new NPart( [new NVoice([
+					new NNote([new NHead(0, ETie.Tie(null, 0))]),
+				])]),				
+				
+				new NPart( [new NVoice([
+					new NNote([new NHead(3, ETie.Tie(null, 0))]),
+				])]),
+				
 			]),
 			new NBar([
 				new NPart( [new NVoice([
 					new NNote([new NHead(0)]),
-					new NNote([new NHead(1)]),
-					new NNote([new NHead(2)]),
-					new NNote([new NHead(4)]),
-				])]),
+				])]),				
+				
 				new NPart( [new NVoice([
-					new NNote([new NHead(0)]),
-					new NNote([new NHead(1)]),
-					new NNote([new NHead(2)]),
-					new NNote([new NHead(4)]),
+					new NNote([new NHead(3)]),
 				])]),
-			]),
-
+				
+			]),			
+			
 		]);
-		*/
+		
+		var nscore = TestItemsBach.scoreBachSinfonia4();
 		
 		var partsnotes:Array<Array<NotenrItem>> = new NotenrBarsCalculator(new VoiceSplitter(nscore).getVoicesplittedScore()).getPartsNotenrItems();
+		NotenrTools.calculateSoundLengths(partsnotes, 60);		
+		NotenrTools.debug(partsnotes);		
+		var partsnotes = NotenrTools.resolveTies(partsnotes);		
+		NotenrTools.debug(partsnotes);
 		
-		//var totalLenght = NotenrTools.getTotalLenght(partsnotes);
 		
-		NotenrTools.calculateSoundLengths(partsnotes, 60);
-		NotenrTools.getTotalLength(partsnotes);
-		//graph(partsnotes, Lib.current);
+		graph(partsnotes);
 		
 		var mp3start = 48;
 		var mp3end = 95;		
@@ -102,11 +120,12 @@ class Main
 			createScoreWave(partsnotes, data);
 		};
 		decoders.decodeAll();		
+		
 	}
 	
 	static private function createScoreWave(partsnotes:Array<Array<NotenrItem>>, data:Map<String, Wav16>) 
 	{
-		var full = Wav16.createSecs(NotenrTools.getTotalLength(partsnotes) + .1, true);
+		var full = Wav16.createSecs(NotenrTools.getTotalLength(partsnotes) + 1, true);
 		for (part in partsnotes) {
 			for (note in part) {				
 				if (!note.playable) continue;				
@@ -114,7 +133,7 @@ class Main
 				var w = data.get(key);			
 				if (w != null) {
 					var offset = Wav16Tools.toSamples(note.playpos);
-					var length = Wav16Tools.toSamples(note.soundlength + 0.1);
+					var length = Wav16Tools.toSamples(note.soundlength + 0.1);					
 					Wav16DSP.wspMixInto(full, w, offset, length);	
 				} else {
 					trace('ERROR : $key == null!');
@@ -145,10 +164,10 @@ class Main
 		#end
 	}		
 	
-	
-	/*
-	static public function graph(partsnotes:Array<Array<NotenrItem>>, target:Sprite)
+	static public function graph(partsnotes:Array<Array<NotenrItem>>)
 	{		
+		var target = Lib.current;
+		
 		var xfactor = 70;
 		var yfactor = 5;
 		var party =500;
@@ -157,6 +176,7 @@ class Main
 		
 		var gr = target.graphics;
 		var partxtray = 0;
+		var partidx = 0;
 		for (part in partsnotes) {
 			var partcolor = colors.shift();			
 			for (note in part) {
@@ -173,9 +193,9 @@ class Main
 				gr.moveTo(nx, ny);
 				gr.lineTo(nx + nwidth, ny);
 			}
-			partxtray += 3;
+			partxtray += 3;			
 		}
 	}
-	*/
+	
 	
 }
