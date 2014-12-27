@@ -165,14 +165,6 @@ Lambda.indexOf = function(it,v) {
 	}
 	return -1;
 };
-Lambda.find = function(it,f) {
-	var $it0 = $iterator(it)();
-	while( $it0.hasNext() ) {
-		var v = $it0.next();
-		if(f(v)) return v;
-	}
-	return null;
-};
 var List = function() {
 	this.length = 0;
 };
@@ -209,10 +201,13 @@ List.prototype = {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	var nscore = nx3.test.TestItemsBach.scoreBachSinfonia4();
-	var partsnotes = new nx3.audio.NotenrBarsCalculator(new nx3.utils.VoiceSplitter(nscore).getVoicesplittedScore()).getPartsNotenrItems();
+	var nscore = new nx3.NScore([new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(null,0))]),new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(null,0))])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3)]),new nx3.NNote(null,[new nx3.NHead(null,2,null,nx3.ETie.Tie(null,0))])])])]),new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(null,0))])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,2)])])])]),new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(null,0))])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3,null,nx3.ETie.Tie(null,0))])])])]),new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3)])])])])]);
+	var nscore1 = nx3.test.TestItemsBach.scoreBachSinfonia4();
+	var partsnotes = new nx3.audio.NotenrBarsCalculator(new nx3.utils.VoiceSplitter(nscore1).getVoicesplittedScore()).getPartsNotenrItems();
 	nx3.audio.NotenrTools.calculateSoundLengths(partsnotes,null,60);
-	nx3.audio.NotenrTools.getTotalLength(partsnotes);
+	nx3.audio.NotenrTools.debug(partsnotes);
+	var partsnotes1 = nx3.audio.NotenrTools.resolveTies(partsnotes);
+	nx3.audio.NotenrTools.debug(partsnotes1);
 	var mp3start = 48;
 	var mp3end = 95;
 	var files = ((function($this) {
@@ -231,12 +226,12 @@ Main.main = function() {
 	}(this))).map(function(i1) {
 		return "piano/" + i1 + ".mp3";
 	});
-	var decoders = new audiotools.utils.Mp3Wav16Decoders(files);
-	decoders.allDecoded = function(data) {
+	audiotools.utils.Mp3Wav16Decoders.setContext(audiotools.webaudio.utils.WebAudioTools.getAudioContext());
+	var this1 = audiotools.utils.Mp3Wav16Decoders.decodeAllMap(files);
+	this1(function(data) {
 		console.log("all decoded");
-		Main.createScoreWave(partsnotes,data);
-	};
-	decoders.decodeAll();
+		Main.createScoreWave(partsnotes1,data);
+	});
 };
 Main.createScoreWave = function(partsnotes,data) {
 	var full = audiotools.Wav16.createSecs(nx3.audio.NotenrTools.getTotalLength(partsnotes) + 1,true);
@@ -613,7 +608,7 @@ audiotools.Wav16 = function(channel1,channel2) {
 	this.stereo = false;
 	this.ch1 = channel1;
 	this.ch2 = channel2;
-	if(this.ch2 != null && this.ch2.length != this.ch1.length) throw "Stereo file ints must have same length";
+	if(this.ch2 != null && this.ch2.length != this.ch1.length) throw "Stereo file channels must have same length";
 	this.stereo = this.ch2 != null;
 };
 audiotools.Wav16.__name__ = true;
@@ -689,7 +684,7 @@ audiotools.Wav16DSP.wspMix = function(w1,w2,mixVol,w1vol,w2vol) {
 };
 audiotools.Wav16DSP.wspMixInto = function(w1,w2,offset,w2length,w2Vol) {
 	if(w2Vol == null) w2Vol = 1.0;
-	if(w2length == null) w2length = 1;
+	if(w2length == null) w2length = -1;
 	if(offset == null) offset = 0;
 	if(w1.stereo != w2.stereo) {
 		w1.toStereo();
@@ -724,7 +719,7 @@ audiotools.Wav16DSP.dspMixInto = function(w1,w2,offset,w2length,w2vol,soften) {
 	if(offset == null) offset = 0;
 	var length;
 	if(w2length > 0) length = Std["int"](Math.min(w2.length,w2length)); else length = w2.length;
-	if(offset + length > w1.length) throw "mixinto error";
+	if(offset + length > w1.length) throw "Wav16DSP Error: dspMixInto - ";
 	var softenstart = length - soften;
 	var _g = 0;
 	while(_g < length) {
@@ -972,111 +967,90 @@ audiotools.Wav16Tools.testplay = function(wav16) {
 	return;
 };
 audiotools.utils = {};
-audiotools.utils.Mp3Wav16Decoder = function(mp3Filename) {
-	this.mp3filename = mp3Filename;
-};
+audiotools.utils.Mp3Wav16Decoder = function() { };
 audiotools.utils.Mp3Wav16Decoder.__name__ = true;
-audiotools.utils.Mp3Wav16Decoder.prototype = {
-	decode: function() {
-		this.getWavFile();
-		return this;
+audiotools.utils.Mp3Wav16Decoder.decode = function(filename) {
+	var f = new tink.core.FutureTrigger();
+	if(audiotools.utils.Mp3Wav16Decoder.context == null) {
+		js.Lib.alert("No AudioContext!");
+		f.trigger(tink.core.Outcome.Failure({ filename : filename, message : "No AudioContext!"}));
 	}
-	,setContext: function(context) {
-		this.context = context;
-		return this;
-	}
-	,getWavFile: function() {
-		var _g = this;
-		if(this.context == null) {
-			js.Lib.alert("No AudioContext!");
-			throw "No AudioContext";
-		}
-		new audiotools.webaudio.Mp3ToBuffer(this.mp3filename,this.context).setLoadedHandler(function(buffer,filename) {
-			_g.buffer = buffer;
-			var wavBytes = null;
-			var left = buffer.getChannelData(0);
-			var leftInts;
-			var this1;
-			this1 = new Array(left.length);
-			leftInts = this1;
-			var pos = 0;
-			var _g1 = 0;
-			while(_g1 < left.length) {
-				var n = left[_g1];
-				++_g1;
-				leftInts[pos] = n * 32767 | 0;
-				pos++;
-			}
-			var w16 = null;
-			if(buffer.numberOfChannels > 1) {
-				var right = buffer.getChannelData(1);
-				var rightInts;
-				var this2;
-				this2 = new Array(right.length);
-				rightInts = this2;
-				var pos1 = 0;
-				var _g11 = 0;
-				while(_g11 < right.length) {
-					var n1 = right[_g11];
-					++_g11;
-					rightInts[pos1] = n1 * 32767 | 0;
-					pos1++;
-				}
-				w16 = new audiotools.Wav16(leftInts,rightInts);
-			} else w16 = new audiotools.Wav16(leftInts);
-			_g.converted(w16,_g.mp3filename);
-		}).load();
-	}
-	,converted: function(wav16,mp3Filename) {
-		console.log(wav16.ch1.length);
-		console.log(this.mp3filename);
-	}
-	,setDecodedHandler: function(callbck) {
-		this.converted = callbck;
-		return this;
-	}
-	,__class__: audiotools.utils.Mp3Wav16Decoder
-};
-audiotools.utils.Mp3Wav16Decoders = function(mp3files) {
-	this.decoders = mp3files.map(function(file) {
-		return new audiotools.utils.Mp3Wav16Decoder(file);
-	});
-	if(audiotools.utils.Mp3Wav16Decoders.context == null) audiotools.utils.Mp3Wav16Decoders.context = audiotools.webaudio.utils.WebAudioTools.getAudioContext();
-	Lambda.iter(this.decoders,function(decoder) {
-		decoder.setContext(audiotools.utils.Mp3Wav16Decoders.context);
-	});
-	var _g = 0;
-	var _g1 = this.decoders;
-	while(_g < _g1.length) {
-		var loader = _g1[_g];
-		++_g;
-		loader.converted = $bind(this,this.onDecoded);
-	}
-};
-audiotools.utils.Mp3Wav16Decoders.__name__ = true;
-audiotools.utils.Mp3Wav16Decoders.prototype = {
-	onDecoded: function(wav16,mp3Filename) {
-		this.decodedFiles.set(mp3Filename,wav16);
-		console.log("decoded " + mp3Filename);
-		this.decodedCount++;
-		if(this.decodedCount >= this.decoders.length) this.allDecoded(this.decodedFiles);
-	}
-	,allDecoded: function(convertedFiles) {
-		console.log("ALL DECODED");
-	}
-	,decodeAll: function() {
-		this.decodedCount = 0;
-		this.decodedFiles = new haxe.ds.StringMap();
+	new audiotools.webaudio.Mp3ToBuffer(filename,audiotools.utils.Mp3Wav16Decoder.context).setLoadedHandler(function(buffer,filename1) {
+		var wavBytes = null;
+		var left = buffer.getChannelData(0);
+		var leftInts;
+		var this1;
+		this1 = new Array(left.length);
+		leftInts = this1;
+		var pos = 0;
 		var _g = 0;
-		var _g1 = this.decoders;
-		while(_g < _g1.length) {
-			var decoder = _g1[_g];
+		while(_g < left.length) {
+			var n = left[_g];
 			++_g;
-			decoder.decode();
+			leftInts[pos] = n * 32767 | 0;
+			pos++;
 		}
-		return this;
-	}
-	,__class__: audiotools.utils.Mp3Wav16Decoders
+		var w16 = null;
+		if(buffer.numberOfChannels > 1) {
+			var right = buffer.getChannelData(1);
+			var rightInts;
+			var this2;
+			this2 = new Array(right.length);
+			rightInts = this2;
+			var pos1 = 0;
+			var _g1 = 0;
+			while(_g1 < right.length) {
+				var n1 = right[_g1];
+				++_g1;
+				rightInts[pos1] = n1 * 32767 | 0;
+				pos1++;
+			}
+			w16 = new audiotools.Wav16(leftInts,rightInts);
+		} else w16 = new audiotools.Wav16(leftInts);
+		f.trigger(tink.core.Outcome.Success({ filename : filename1, w16 : w16}));
+	}).load();
+	return f.future;
+};
+audiotools.utils.Mp3Wav16Decoders = function() { };
+audiotools.utils.Mp3Wav16Decoders.__name__ = true;
+audiotools.utils.Mp3Wav16Decoders.setContext = function(context) {
+	audiotools.utils.Mp3Wav16Decoder.context = context;
+};
+audiotools.utils.Mp3Wav16Decoders.decodeAll = function(filenames) {
+	return tink.core._Future.Future_Impl_.fromMany((function($this) {
+		var $r;
+		var _g = [];
+		{
+			var _g1 = 0;
+			while(_g1 < filenames.length) {
+				var filename = filenames[_g1];
+				++_g1;
+				_g.push(audiotools.utils.Mp3Wav16Decoder.decode(filename));
+			}
+		}
+		$r = _g;
+		return $r;
+	}(this)));
+};
+audiotools.utils.Mp3Wav16Decoders.decodeAllMap = function(filenames) {
+	var f = new tink.core.FutureTrigger();
+	var result = new haxe.ds.StringMap();
+	var this1 = audiotools.utils.Mp3Wav16Decoders.decodeAll(filenames);
+	this1(function(items) {
+		Lambda.iter(items,function(item) {
+			switch(item[1]) {
+			case 0:
+				var wav16file = item[2];
+				result.set(wav16file.filename,wav16file.w16);
+				break;
+			case 1:
+				var wav16Error = item[2];
+				break;
+			}
+		});
+		f.trigger(result);
+	});
+	return f.future;
 };
 audiotools.webaudio = {};
 audiotools.webaudio.Mp3ToBuffer = function(url,context) {
@@ -1300,6 +1274,9 @@ cx.ArrayTools.reverse = function(a) {
 };
 cx.ArrayTools.has = function(a,item) {
 	return HxOverrides.indexOf(a,item,0) != -1;
+};
+cx.ArrayTools.nextOrNull = function(a,item) {
+	return cx.ArrayTools.indexOrNull(a,HxOverrides.indexOf(a,item,0) + 1);
 };
 cx.ArrayTools.indexOrNull = function(a,idx) {
 	if(a == null) return null;
@@ -1732,18 +1709,16 @@ format.wav.Reader.prototype = {
 		if(this.i.readString(4) != "RIFF") throw "RIFF header expected";
 		var len = this.i.readInt32();
 		if(this.i.readString(4) != "WAVE") throw "WAVE signature not found";
-		var x = this.i.readString(4);
-		if(x != "fmt ") throw "expected fmt subchunk";
+		if(this.i.readString(4) != "fmt ") throw "expected fmt subchunk";
 		var fmtlen = this.i.readInt32();
-		var x1 = this.i.readUInt16();
 		var format1;
-		switch(x1) {
+		var _g = this.i.readUInt16();
+		switch(_g) {
 		case 1:
 			format1 = format.wav.WAVEFormat.WF_PCM;
 			break;
 		default:
-			console.log("only PCM (uncompressed) WAV files are supported");
-			format1 = format.wav.WAVEFormat.WF_PCM;
+			throw "only PCM (uncompressed) WAV files are supported";
 		}
 		var channels = this.i.readUInt16();
 		var samplingRate = this.i.readInt32();
@@ -1824,6 +1799,11 @@ haxe.ds.IntMap.prototype = {
 	}
 	,__class__: haxe.ds.IntMap
 };
+haxe.ds.Option = { __ename__ : true, __constructs__ : ["Some","None"] };
+haxe.ds.Option.Some = function(v) { var $x = ["Some",0,v]; $x.__enum__ = haxe.ds.Option; $x.toString = $estr; return $x; };
+haxe.ds.Option.None = ["None",1];
+haxe.ds.Option.None.toString = $estr;
+haxe.ds.Option.None.__enum__ = haxe.ds.Option;
 haxe.ds.StringMap = function() {
 	this.h = { };
 };
@@ -4393,131 +4373,17 @@ nx3.audio.NotenrPartsCalculator.prototype = {
 					};
 				})(partvalue));
 			}
-			var tieditems1 = this.handleTiesInsidePart(noteitems);
-			var tieditems2 = this.handleTiesBetweenParts(tieditems1,prevnoteitems);
-			Lambda.iter(tieditems2,(function() {
+			Lambda.iter(noteitems,(function() {
 				return function(item1) {
 					item1.partposition = partposition;
 				};
 			})());
 			partposition += partvalue[0];
-			resultnoteitems = resultnoteitems.concat(tieditems2);
-			prevnoteitems = tieditems2;
+			resultnoteitems = resultnoteitems.concat(noteitems);
+			prevnoteitems = noteitems;
 			baridx++;
 		}
 		return resultnoteitems;
-	}
-	,handleTiesBetweenParts: function(items,previtems) {
-		if(previtems == null) return items;
-		if(previtems.length == 0) return items;
-		var ties = [];
-		var lastvalue = 0;
-		Lambda.iter(previtems,function(item) {
-			lastvalue = Std["int"](Math.max(lastvalue,item.position + item.noteval));
-		});
-		var prevItems = Lambda.filter(previtems,function(item1) {
-			return item1.position + item1.noteval == lastvalue && item1.tie == true;
-		});
-		var firstItems = Lambda.filter(items,function(item2) {
-			return item2.position == 0;
-		});
-		var itemscopy = Lambda.array(items);
-		var validitems = [];
-		var $it0 = prevItems.iterator();
-		while( $it0.hasNext() ) {
-			var previtem = $it0.next();
-			var previtem1 = [previtem];
-			var targetItem = Lambda.find(firstItems,(function(previtem1) {
-				return function(firstitem) {
-					if(firstitem.level == previtem1[0].level && firstitem.headsign == nx3.ESign.None) return true;
-					return false;
-				};
-			})(previtem1));
-			if(targetItem != null) previtem1[0].noteval = previtem1[0].noteval + targetItem.noteval;
-			HxOverrides.remove(itemscopy,targetItem);
-		}
-		return itemscopy;
-	}
-	,handleTiesInsidePart: function(items) {
-		var ties = [];
-		var validTies = [];
-		var _g = 0;
-		while(_g < items.length) {
-			var item = items[_g];
-			++_g;
-			if(item.tie == true) {
-				var tie = { position : item.position, notenr : item.notenr, noteval : item.noteval, targetpos : item.position + item.noteval, level : item.level, item : item, targetItem : null};
-				if(item != items[items.length - 1]) ties.push(tie);
-			}
-		}
-		var _g1 = 0;
-		while(_g1 < ties.length) {
-			var tie1 = [ties[_g1]];
-			++_g1;
-			var targetItem = Lambda.find(items,(function(tie1) {
-				return function(titem) {
-					if(tie1[0].targetpos == titem.position && tie1[0].item.notenr == titem.notenr) return true;
-					return false;
-				};
-			})(tie1));
-			if(targetItem != null) {
-				tie1[0].targetItem = targetItem;
-				validTies.push(tie1[0]);
-			}
-		}
-		validTies.sort(function(a,b) {
-			return Reflect.compare(a.position,b.position);
-		});
-		validTies = cx.ArrayTools.reverse(validTies);
-		var items2 = Lambda.array(items);
-		var _g2 = 0;
-		while(_g2 < validTies.length) {
-			var tie2 = validTies[_g2];
-			++_g2;
-			var item1 = tie2.item;
-			var targetItem1 = tie2.targetItem;
-			item1.noteval = item1.noteval + targetItem1.noteval;
-			HxOverrides.remove(items2,targetItem1);
-		}
-		return items2;
-	}
-	,handleTiesParts: function(partitems) {
-		var tiefoundInside = [];
-		var tiefoundLast = [];
-		var _g = 0;
-		while(_g < partitems.length) {
-			var items = partitems[_g];
-			++_g;
-			var _g1 = 0;
-			while(_g1 < tiefoundLast.length) {
-				var tiefound = tiefoundLast[_g1];
-				++_g1;
-			}
-			tiefoundLast = [];
-			var _g11 = 0;
-			while(_g11 < items.length) {
-				var item = items[_g11];
-				++_g11;
-				if(item.tie == true) {
-					console.log("Found TIE " + Std.string(item));
-					var tiefound1 = { position : item.position, notenr : item.notenr, noteval : item.noteval, targetpos : item.position + item.noteval, level : item.level, item : item, targetItem : null};
-					if(item != items[items.length - 1]) tiefoundInside.push(tiefound1); else tiefoundLast.push(tiefound1);
-				}
-			}
-			var _g12 = 0;
-			while(_g12 < tiefoundInside.length) {
-				var tiefound2 = tiefoundInside[_g12];
-				++_g12;
-				console.log("SEARCH FOR " + tiefound2.targetpos + " " + tiefound2.notenr);
-				var _g2 = 0;
-				while(_g2 < items.length) {
-					var item1 = items[_g2];
-					++_g2;
-					if(item1.position == tiefound2.targetpos && item1.level == tiefound2.level) console.log("FOUND pos and level");
-				}
-			}
-			tiefoundInside = [];
-		}
 	}
 	,__class__: nx3.audio.NotenrPartsCalculator
 };
@@ -4748,7 +4614,6 @@ nx3.audio.NotenrTools.calculateSoundLengths = function(partsnotes,tempos,default
 			}
 			note.playpos = note.barsoundposition + note.soundposition;
 			note.playend = note.playpos + note.soundlength;
-			console.log([note.partnr,note.barnr,note.barsoundlength,note.barsoundposition,note.playpos,note.playend]);
 		}
 		partidx++;
 	}
@@ -4763,6 +4628,60 @@ nx3.audio.NotenrTools.getTotalLength = function(partsnotes) {
 		lenght = Math.max(lenght,last.barsoundposition + last.barsoundlength);
 	}
 	return lenght;
+};
+nx3.audio.NotenrTools.resolveTies = function(partsnotes) {
+	var result = [];
+	var _g = 0;
+	while(_g < partsnotes.length) {
+		var part = partsnotes[_g];
+		++_g;
+		var newpart = [];
+		var note = part[0];
+		var previdx = -1;
+		while(note != null) {
+			newpart.push(note);
+			var noteidx = cx.ArrayTools.index(part,note);
+			var foundtie = false;
+			if(note.tie) {
+				var nextpos = note.partposition + note.position + note.noteval;
+				var nextnote = cx.ArrayTools.indexOrNull(part,HxOverrides.indexOf(part,note,0) + 1);
+				while(nextnote != null) {
+					var pos = nextnote.partposition + nextnote.position;
+					if(pos == nextpos && nextnote.midinr == note.midinr) {
+						var newsoundlength = note.soundlength + nextnote.soundlength;
+						var newvalue = note.noteval + nextnote.noteval;
+						note.soundlength = newsoundlength;
+						note.noteval = newvalue;
+						HxOverrides.remove(part,nextnote);
+						note.tie = nextnote.tie;
+						foundtie = true;
+					}
+					if(pos == nextpos) nextnote = cx.ArrayTools.indexOrNull(part,HxOverrides.indexOf(part,nextnote,0) + 1); else nextnote = null;
+				}
+			}
+			if(!foundtie) note = cx.ArrayTools.indexOrNull(part,HxOverrides.indexOf(part,note,0) + 1); else {
+				HxOverrides.remove(newpart,note);
+				previdx = noteidx;
+			}
+		}
+		result.push(newpart);
+	}
+	return result;
+};
+nx3.audio.NotenrTools.debug = function(partsnotes) {
+	console.log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+	var _g = 0;
+	while(_g < partsnotes.length) {
+		var part = partsnotes[_g];
+		++_g;
+		console.log("Part: ");
+		var _g1 = 0;
+		while(_g1 < part.length) {
+			var note = part[_g1];
+			++_g1;
+			console.log([note.barnr,note.position,note.midinr,note.noteval]);
+		}
+	}
 };
 nx3.audio.NotenrTools.prototype = {
 	getNotenr: function(level) {
@@ -6271,6 +6190,534 @@ thx.core._Tuple.Tuple6_Impl_.dropRight = function(this1) {
 thx.core._Tuple.Tuple6_Impl_.toString = function(this1) {
 	return "Tuple6(" + Std.string(this1._0) + "," + Std.string(this1._1) + "," + Std.string(this1._2) + "," + Std.string(this1._3) + "," + Std.string(this1._4) + "," + Std.string(this1._5) + ")";
 };
+var tink = {};
+tink.core = {};
+tink.core._Callback = {};
+tink.core._Callback.Callback_Impl_ = function() { };
+tink.core._Callback.Callback_Impl_.__name__ = true;
+tink.core._Callback.Callback_Impl_._new = function(f) {
+	return f;
+};
+tink.core._Callback.Callback_Impl_.invoke = function(this1,data) {
+	this1(data);
+};
+tink.core._Callback.Callback_Impl_.fromNiladic = function(f) {
+	return function(r) {
+		f();
+	};
+};
+tink.core._Callback.Callback_Impl_.fromMany = function(callbacks) {
+	return function(v) {
+		var _g = 0;
+		while(_g < callbacks.length) {
+			var callback = callbacks[_g];
+			++_g;
+			callback(v);
+		}
+	};
+};
+tink.core._Callback.CallbackLink_Impl_ = function() { };
+tink.core._Callback.CallbackLink_Impl_.__name__ = true;
+tink.core._Callback.CallbackLink_Impl_._new = function(link) {
+	return link;
+};
+tink.core._Callback.CallbackLink_Impl_.dissolve = function(this1) {
+	if(this1 != null) this1();
+};
+tink.core._Callback.CallbackLink_Impl_.toCallback = function(this1) {
+	var f = this1;
+	return function(r) {
+		f();
+	};
+};
+tink.core._Callback.CallbackLink_Impl_.fromFunction = function(f) {
+	return f;
+};
+tink.core._Callback.CallbackLink_Impl_.fromMany = function(callbacks) {
+	return function() {
+		var _g = 0;
+		while(_g < callbacks.length) {
+			var cb = callbacks[_g];
+			++_g;
+			if(cb != null) cb();
+		}
+	};
+};
+tink.core._Callback.Cell = function() {
+};
+tink.core._Callback.Cell.__name__ = true;
+tink.core._Callback.Cell.get = function() {
+	if(tink.core._Callback.Cell.pool.length > 0) return tink.core._Callback.Cell.pool.pop(); else return new tink.core._Callback.Cell();
+};
+tink.core._Callback.Cell.prototype = {
+	free: function() {
+		this.cb = null;
+		tink.core._Callback.Cell.pool.push(this);
+	}
+	,__class__: tink.core._Callback.Cell
+};
+tink.core._Callback.CallbackList_Impl_ = function() { };
+tink.core._Callback.CallbackList_Impl_.__name__ = true;
+tink.core._Callback.CallbackList_Impl_._new = function() {
+	return [];
+};
+tink.core._Callback.CallbackList_Impl_.get_length = function(this1) {
+	return this1.length;
+};
+tink.core._Callback.CallbackList_Impl_.add = function(this1,cb) {
+	var cell;
+	if(tink.core._Callback.Cell.pool.length > 0) cell = tink.core._Callback.Cell.pool.pop(); else cell = new tink.core._Callback.Cell();
+	cell.cb = cb;
+	this1.push(cell);
+	return function() {
+		if(HxOverrides.remove(this1,cell)) {
+			cell.cb = null;
+			tink.core._Callback.Cell.pool.push(cell);
+		}
+		cell = null;
+	};
+};
+tink.core._Callback.CallbackList_Impl_.invoke = function(this1,data) {
+	var _g = 0;
+	var _g1 = this1.slice();
+	while(_g < _g1.length) {
+		var cell = _g1[_g];
+		++_g;
+		if(cell.cb != null) cell.cb(data);
+	}
+};
+tink.core._Callback.CallbackList_Impl_.clear = function(this1) {
+	var _g = 0;
+	var _g1 = this1.splice(0,this1.length);
+	while(_g < _g1.length) {
+		var cell = _g1[_g];
+		++_g;
+		cell.cb = null;
+		tink.core._Callback.Cell.pool.push(cell);
+	}
+};
+tink.core.Either = { __ename__ : true, __constructs__ : ["Left","Right"] };
+tink.core.Either.Left = function(a) { var $x = ["Left",0,a]; $x.__enum__ = tink.core.Either; $x.toString = $estr; return $x; };
+tink.core.Either.Right = function(b) { var $x = ["Right",1,b]; $x.__enum__ = tink.core.Either; $x.toString = $estr; return $x; };
+tink.core._Error = {};
+tink.core._Error.ErrorCode_Impl_ = function() { };
+tink.core._Error.ErrorCode_Impl_.__name__ = true;
+tink.core.TypedError = function(code,message,pos) {
+	if(code == null) code = 500;
+	this.code = code;
+	this.message = message;
+	this.pos = pos;
+};
+tink.core.TypedError.__name__ = true;
+tink.core.TypedError.withData = function(code,message,data,pos) {
+	if(code == null) code = 500;
+	var ret = new tink.core.TypedError(code,message,pos);
+	ret.data = data;
+	return ret;
+};
+tink.core.TypedError.prototype = {
+	printPos: function() {
+		return this.pos.className + "." + this.pos.methodName + ":" + this.pos.lineNumber;
+	}
+	,toString: function() {
+		var ret = "Error: " + this.message;
+		if(this.pos != null) ret += " " + this.printPos();
+		return ret;
+	}
+	,throwSelf: function() {
+		throw this;
+	}
+	,__class__: tink.core.TypedError
+};
+tink.core._Future = {};
+tink.core._Future.Future_Impl_ = function() { };
+tink.core._Future.Future_Impl_.__name__ = true;
+tink.core._Future.Future_Impl_._new = function(f) {
+	return f;
+};
+tink.core._Future.Future_Impl_.handle = function(this1,callback) {
+	return this1(callback);
+};
+tink.core._Future.Future_Impl_.gather = function(this1) {
+	var op = new tink.core.FutureTrigger();
+	var self = this1;
+	return tink.core._Future.Future_Impl_._new(function(cb) {
+		if(self != null) {
+			this1($bind(op,op.trigger));
+			self = null;
+		}
+		return op.future(cb);
+	});
+};
+tink.core._Future.Future_Impl_.first = function(this1,other) {
+	return tink.core._Future.Future_Impl_.async(function(cb) {
+		this1(cb);
+		other(cb);
+	});
+};
+tink.core._Future.Future_Impl_.map = function(this1,f,gather) {
+	if(gather == null) gather = true;
+	var ret = tink.core._Future.Future_Impl_._new(function(callback) {
+		return this1(function(result) {
+			var data = f(result);
+			callback(data);
+		});
+	});
+	if(gather) return tink.core._Future.Future_Impl_.gather(ret); else return ret;
+};
+tink.core._Future.Future_Impl_.flatMap = function(this1,next,gather) {
+	if(gather == null) gather = true;
+	var ret = tink.core._Future.Future_Impl_.flatten(tink.core._Future.Future_Impl_.map(this1,next,gather));
+	if(gather) return tink.core._Future.Future_Impl_.gather(ret); else return ret;
+};
+tink.core._Future.Future_Impl_.merge = function(this1,other,merger,gather) {
+	if(gather == null) gather = true;
+	return tink.core._Future.Future_Impl_.flatMap(this1,function(t) {
+		return tink.core._Future.Future_Impl_.map(other,function(a) {
+			return merger(t,a);
+		},false);
+	},gather);
+};
+tink.core._Future.Future_Impl_.flatten = function(f) {
+	return tink.core._Future.Future_Impl_._new(function(callback) {
+		var ret = null;
+		ret = f(function(next) {
+			ret = next(function(result) {
+				callback(result);
+			});
+		});
+		return ret;
+	});
+};
+tink.core._Future.Future_Impl_.fromTrigger = function(trigger) {
+	return trigger.future;
+};
+tink.core._Future.Future_Impl_.ofMany = function(futures,gather) {
+	if(gather == null) gather = true;
+	var ret = tink.core._Future.Future_Impl_.sync([]);
+	var _g = 0;
+	while(_g < futures.length) {
+		var f = [futures[_g]];
+		++_g;
+		ret = tink.core._Future.Future_Impl_.flatMap(ret,(function(f) {
+			return function(results) {
+				return tink.core._Future.Future_Impl_.map(f[0],(function() {
+					return function(result) {
+						return results.concat([result]);
+					};
+				})(),false);
+			};
+		})(f),false);
+	}
+	if(gather) return tink.core._Future.Future_Impl_.gather(ret); else return ret;
+};
+tink.core._Future.Future_Impl_.fromMany = function(futures) {
+	return tink.core._Future.Future_Impl_.ofMany(futures);
+};
+tink.core._Future.Future_Impl_.lazy = function(l) {
+	return tink.core._Future.Future_Impl_._new(function(cb) {
+		var data = l();
+		cb(data);
+		return null;
+	});
+};
+tink.core._Future.Future_Impl_.sync = function(v) {
+	return tink.core._Future.Future_Impl_._new(function(callback) {
+		callback(v);
+		return null;
+	});
+};
+tink.core._Future.Future_Impl_.async = function(f,lazy) {
+	if(lazy == null) lazy = false;
+	if(lazy) return tink.core._Future.Future_Impl_.flatten(tink.core._Future.Future_Impl_.lazy(tink.core._Lazy.Lazy_Impl_.ofFunc((function(f1,f2,a1) {
+		return function() {
+			return f1(f2,a1);
+		};
+	})(tink.core._Future.Future_Impl_.async,f,false)))); else {
+		var op = new tink.core.FutureTrigger();
+		f($bind(op,op.trigger));
+		return op.future;
+	}
+};
+tink.core._Future.Future_Impl_.or = function(a,b) {
+	return tink.core._Future.Future_Impl_.first(a,b);
+};
+tink.core._Future.Future_Impl_.either = function(a,b) {
+	return tink.core._Future.Future_Impl_.first(tink.core._Future.Future_Impl_.map(a,tink.core.Either.Left,false),tink.core._Future.Future_Impl_.map(b,tink.core.Either.Right,false));
+};
+tink.core._Future.Future_Impl_.and = function(a,b) {
+	return tink.core._Future.Future_Impl_.merge(a,b,function(a1,b1) {
+		return { a : a1, b : b1};
+	});
+};
+tink.core._Future.Future_Impl_._tryFailingFlatMap = function(f,map) {
+	return tink.core._Future.Future_Impl_.flatMap(f,function(o) {
+		switch(o[1]) {
+		case 0:
+			var d = o[2];
+			return map(d);
+		case 1:
+			var f1 = o[2];
+			return tink.core._Future.Future_Impl_.sync(tink.core.Outcome.Failure(f1));
+		}
+	});
+};
+tink.core._Future.Future_Impl_._tryFlatMap = function(f,map) {
+	return tink.core._Future.Future_Impl_.flatMap(f,function(o) {
+		switch(o[1]) {
+		case 0:
+			var d = o[2];
+			return tink.core._Future.Future_Impl_.map(map(d),tink.core.Outcome.Success);
+		case 1:
+			var f1 = o[2];
+			return tink.core._Future.Future_Impl_.sync(tink.core.Outcome.Failure(f1));
+		}
+	});
+};
+tink.core._Future.Future_Impl_._tryFailingMap = function(f,map) {
+	return tink.core._Future.Future_Impl_.map(f,function(o) {
+		return tink.core.OutcomeTools.flatMap(o,tink.core._Outcome.OutcomeMapper_Impl_.withSameError(map));
+	});
+};
+tink.core._Future.Future_Impl_._tryMap = function(f,map) {
+	return tink.core._Future.Future_Impl_.map(f,function(o) {
+		return tink.core.OutcomeTools.map(o,map);
+	});
+};
+tink.core._Future.Future_Impl_._flatMap = function(f,map) {
+	return tink.core._Future.Future_Impl_.flatMap(f,map);
+};
+tink.core._Future.Future_Impl_._map = function(f,map) {
+	return tink.core._Future.Future_Impl_.map(f,map);
+};
+tink.core._Future.Future_Impl_.trigger = function() {
+	return new tink.core.FutureTrigger();
+};
+tink.core.FutureTrigger = function() {
+	var _g = this;
+	this.list = [];
+	this.future = tink.core._Future.Future_Impl_._new(function(callback) {
+		if(_g.list == null) {
+			callback(_g.result);
+			return null;
+		} else return tink.core._Callback.CallbackList_Impl_.add(_g.list,callback);
+	});
+};
+tink.core.FutureTrigger.__name__ = true;
+tink.core.FutureTrigger.prototype = {
+	asFuture: function() {
+		return this.future;
+	}
+	,trigger: function(result) {
+		if(this.list == null) return false; else {
+			var list = this.list;
+			this.list = null;
+			this.result = result;
+			tink.core._Callback.CallbackList_Impl_.invoke(list,result);
+			tink.core._Callback.CallbackList_Impl_.clear(list);
+			return true;
+		}
+	}
+	,__class__: tink.core.FutureTrigger
+};
+tink.core._Lazy = {};
+tink.core._Lazy.Lazy_Impl_ = function() { };
+tink.core._Lazy.Lazy_Impl_.__name__ = true;
+tink.core._Lazy.Lazy_Impl_._new = function(r) {
+	return r;
+};
+tink.core._Lazy.Lazy_Impl_.get = function(this1) {
+	return this1();
+};
+tink.core._Lazy.Lazy_Impl_.ofFunc = function(f) {
+	var result = null;
+	return function() {
+		if(f != null) {
+			result = f();
+			f = null;
+		}
+		return result;
+	};
+};
+tink.core._Lazy.Lazy_Impl_.map = function(this1,f) {
+	return tink.core._Lazy.Lazy_Impl_.ofFunc(function() {
+		return f(this1());
+	});
+};
+tink.core._Lazy.Lazy_Impl_.flatMap = function(this1,f) {
+	return tink.core._Lazy.Lazy_Impl_.ofFunc(function() {
+		var this2 = f(this1());
+		return this2();
+	});
+};
+tink.core._Lazy.Lazy_Impl_.ofConst = function(c) {
+	return function() {
+		return c;
+	};
+};
+tink.core.Outcome = { __ename__ : true, __constructs__ : ["Success","Failure"] };
+tink.core.Outcome.Success = function(data) { var $x = ["Success",0,data]; $x.__enum__ = tink.core.Outcome; $x.toString = $estr; return $x; };
+tink.core.Outcome.Failure = function(failure) { var $x = ["Failure",1,failure]; $x.__enum__ = tink.core.Outcome; $x.toString = $estr; return $x; };
+tink.core.OutcomeTools = function() { };
+tink.core.OutcomeTools.__name__ = true;
+tink.core.OutcomeTools.sure = function(outcome) {
+	switch(outcome[1]) {
+	case 0:
+		var data = outcome[2];
+		return data;
+	case 1:
+		var failure = outcome[2];
+		if(js.Boot.__instanceof(failure,tink.core.TypedError)) return failure.throwSelf(); else throw failure;
+		break;
+	}
+};
+tink.core.OutcomeTools.toOption = function(outcome) {
+	switch(outcome[1]) {
+	case 0:
+		var data = outcome[2];
+		return haxe.ds.Option.Some(data);
+	case 1:
+		return haxe.ds.Option.None;
+	}
+};
+tink.core.OutcomeTools.toOutcome = function(option,pos) {
+	switch(option[1]) {
+	case 0:
+		var value = option[2];
+		return tink.core.Outcome.Success(value);
+	case 1:
+		return tink.core.Outcome.Failure(new tink.core.TypedError(404,"Some value expected but none found in " + pos.fileName + "@line " + pos.lineNumber,{ fileName : "Outcome.hx", lineNumber : 37, className : "tink.core.OutcomeTools", methodName : "toOutcome"}));
+	}
+};
+tink.core.OutcomeTools.orUse = function(outcome,fallback) {
+	switch(outcome[1]) {
+	case 0:
+		var data = outcome[2];
+		return data;
+	case 1:
+		return fallback();
+	}
+};
+tink.core.OutcomeTools.orTry = function(outcome,fallback) {
+	switch(outcome[1]) {
+	case 0:
+		return outcome;
+	case 1:
+		return fallback();
+	}
+};
+tink.core.OutcomeTools.equals = function(outcome,to) {
+	switch(outcome[1]) {
+	case 0:
+		var data = outcome[2];
+		return data == to;
+	case 1:
+		return false;
+	}
+};
+tink.core.OutcomeTools.map = function(outcome,transform) {
+	switch(outcome[1]) {
+	case 0:
+		var a = outcome[2];
+		return tink.core.Outcome.Success(transform(a));
+	case 1:
+		var f = outcome[2];
+		return tink.core.Outcome.Failure(f);
+	}
+};
+tink.core.OutcomeTools.isSuccess = function(outcome) {
+	switch(outcome[1]) {
+	case 0:
+		return true;
+	default:
+		return false;
+	}
+};
+tink.core.OutcomeTools.flatMap = function(o,mapper) {
+	return tink.core._Outcome.OutcomeMapper_Impl_.apply(mapper,o);
+};
+tink.core._Outcome = {};
+tink.core._Outcome.OutcomeMapper_Impl_ = function() { };
+tink.core._Outcome.OutcomeMapper_Impl_.__name__ = true;
+tink.core._Outcome.OutcomeMapper_Impl_._new = function(f) {
+	return { f : f};
+};
+tink.core._Outcome.OutcomeMapper_Impl_.apply = function(this1,o) {
+	return this1.f(o);
+};
+tink.core._Outcome.OutcomeMapper_Impl_.withSameError = function(f) {
+	return tink.core._Outcome.OutcomeMapper_Impl_._new(function(o) {
+		switch(o[1]) {
+		case 0:
+			var d = o[2];
+			return f(d);
+		case 1:
+			var f1 = o[2];
+			return tink.core.Outcome.Failure(f1);
+		}
+	});
+};
+tink.core._Outcome.OutcomeMapper_Impl_.withEitherError = function(f) {
+	return tink.core._Outcome.OutcomeMapper_Impl_._new(function(o) {
+		switch(o[1]) {
+		case 0:
+			var d = o[2];
+			{
+				var _g = f(d);
+				switch(_g[1]) {
+				case 0:
+					var d1 = _g[2];
+					return tink.core.Outcome.Success(d1);
+				case 1:
+					var f1 = _g[2];
+					return tink.core.Outcome.Failure(tink.core.Either.Right(f1));
+				}
+			}
+			break;
+		case 1:
+			var f2 = o[2];
+			return tink.core.Outcome.Failure(tink.core.Either.Left(f2));
+		}
+	});
+};
+tink.core._Pair = {};
+tink.core._Pair.Pair_Impl_ = function() { };
+tink.core._Pair.Pair_Impl_.__name__ = true;
+tink.core._Pair.Pair_Impl_._new = function(a,b) {
+	return { a : a, b : b};
+};
+tink.core._Pair.Pair_Impl_.get_a = function(this1) {
+	return this1.a;
+};
+tink.core._Pair.Pair_Impl_.get_b = function(this1) {
+	return this1.b;
+};
+tink.core._Pair.Pair_Impl_.toBool = function(this1) {
+	return this1 != null;
+};
+tink.core._Pair.Pair_Impl_.isNil = function(this1) {
+	return this1 == null;
+};
+tink.core._Pair.Pair_Impl_.nil = function() {
+	return null;
+};
+tink.core._Pair.MPair_Impl_ = function() { };
+tink.core._Pair.MPair_Impl_.__name__ = true;
+tink.core._Pair.MPair_Impl_._new = function(a,b) {
+	return { a : a, b : b};
+};
+tink.core._Pair.MPair_Impl_.get_a = function(this1) {
+	return this1.a;
+};
+tink.core._Pair.MPair_Impl_.get_b = function(this1) {
+	return this1.b;
+};
+tink.core._Pair.MPair_Impl_.set_a = function(this1,v) {
+	return this1.a = v;
+};
+tink.core._Pair.MPair_Impl_.set_b = function(this1,v) {
+	return this1.b = v;
+};
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; }
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
@@ -6502,5 +6949,26 @@ thx.core.Strings.DIGITS = new EReg("^[0-9]+$","");
 thx.core.Strings.STRIPTAGS = new EReg("</?[a-z]+[^>]*?/?>","gi");
 thx.core.Strings.WSG = new EReg("\\s+","g");
 thx.core.Strings.SPLIT_LINES = new EReg("\r\n|\n\r|\n|\r","g");
+tink.core._Callback.Cell.pool = [];
+tink.core._Error.ErrorCode_Impl_.BadRequest = 400;
+tink.core._Error.ErrorCode_Impl_.Unauthorized = 401;
+tink.core._Error.ErrorCode_Impl_.PaymentRequired = 402;
+tink.core._Error.ErrorCode_Impl_.Forbidden = 403;
+tink.core._Error.ErrorCode_Impl_.NotFound = 404;
+tink.core._Error.ErrorCode_Impl_.MethodNotAllowed = 405;
+tink.core._Error.ErrorCode_Impl_.Gone = 410;
+tink.core._Error.ErrorCode_Impl_.NotAcceptable = 406;
+tink.core._Error.ErrorCode_Impl_.Timeout = 408;
+tink.core._Error.ErrorCode_Impl_.Conflict = 409;
+tink.core._Error.ErrorCode_Impl_.OutOfRange = 416;
+tink.core._Error.ErrorCode_Impl_.ExpectationFailed = 417;
+tink.core._Error.ErrorCode_Impl_.I_am_a_Teapot = 418;
+tink.core._Error.ErrorCode_Impl_.AuthenticationTimeout = 419;
+tink.core._Error.ErrorCode_Impl_.UnprocessableEntity = 422;
+tink.core._Error.ErrorCode_Impl_.InternalError = 500;
+tink.core._Error.ErrorCode_Impl_.NotImplemented = 501;
+tink.core._Error.ErrorCode_Impl_.ServiceUnavailable = 503;
+tink.core._Error.ErrorCode_Impl_.InsufficientStorage = 507;
+tink.core._Error.ErrorCode_Impl_.BandwidthLimitExceeded = 509;
 Main.main();
 })();

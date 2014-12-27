@@ -1,14 +1,11 @@
 package;
 
-import audiotools.utils.Mp3Wav16Decoders;
+import audiotools.utils.Mp3Wav16Decoder;
 import audiotools.Wav16;
 import audiotools.Wav16DSP;
 import audiotools.Wav16Tools;
 import nx3.EDirectionUAD;
 import nx3.ETie;
-
-
-
 import nx3.audio.NotenrTools;
 import nx3.audio.SoundlengthCalculator;
 import nx3.NBar;
@@ -17,13 +14,15 @@ import nx3.NNote;
 import nx3.NPart;
 import nx3.NScore;
 import nx3.NVoice;
-
 import nx3.test.TestItemsBach;
 import nx3.audio.NotenrBarsCalculator;
 import nx3.audio.NotenrItem;
 import nx3.utils.VoiceSplitter;
-
 using cx.ArrayTools;
+
+#if js
+import audiotools.webaudio.utils.WebAudioTools;
+#end
 
 #if flash
 import flash.display.Sprite;
@@ -107,20 +106,20 @@ class Main
 		NotenrTools.debug(partsnotes);		
 		var partsnotes = NotenrTools.resolveTies(partsnotes);		
 		NotenrTools.debug(partsnotes);
-		
-		
-		graph(partsnotes);
+		#if flash graph(partsnotes); #end
 		
 		var mp3start = 48;
 		var mp3end = 95;		
-		var files = [for (i in mp3start...mp3end+1) i].map(function(i) return 'piano/$i.mp3');
-		var decoders = new Mp3Wav16Decoders(files);
-		decoders.allDecoded = function(data:Map<String,Wav16>) {
+		var files = [for (i in mp3start...mp3end + 1) i].map(function(i) return 'piano/$i.mp3');
+		
+		#if js 
+		Mp3Wav16Decoders.setContext(WebAudioTools.getAudioContext());
+		#end
+		
+		Mp3Wav16Decoders.decodeAllMap(files).handle(function(data) {
 			trace('all decoded');			
 			createScoreWave(partsnotes, data);
-		};
-		decoders.decodeAll();		
-		
+		});
 	}
 	
 	static private function createScoreWave(partsnotes:Array<Array<NotenrItem>>, data:Map<String, Wav16>) 
@@ -131,6 +130,7 @@ class Main
 				if (!note.playable) continue;				
 				var key = 'piano/${note.midinr}.mp3';
 				var w = data.get(key);			
+				
 				if (w != null) {
 					var offset = Wav16Tools.toSamples(note.playpos);
 					var length = Wav16Tools.toSamples(note.soundlength + 0.1);					
@@ -164,6 +164,8 @@ class Main
 		#end
 	}		
 	
+	
+	#if flash
 	static public function graph(partsnotes:Array<Array<NotenrItem>>)
 	{		
 		var target = Lib.current;
@@ -196,6 +198,6 @@ class Main
 			partxtray += 3;			
 		}
 	}
-	
+	#end
 	
 }
