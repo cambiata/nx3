@@ -7,7 +7,8 @@ import nx3.ESign;
 import nx3.NBar;
 import nx3.NNote;
 import nx3.NScore;
-import thx.core.Tuple.Tuple2;
+//import thx.core.Tuple.Tuple2;
+import thx.core.Tuple;
 
 using cx.ArrayTools;
 

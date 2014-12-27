@@ -5,8 +5,8 @@ import haxe.io.Bytes;
 import haxe.io.BytesInput;
 import haxe.macro.Format;
 import nx3.Constants;
-import openfl.Assets;
-import openfl.utils.ByteArray;
+//import openfl.Assets;
+import flash.utils.ByteArray;
 import thx.core.Tuple.Tuple1;
 import thx.core.Tuple.Tuple2;
 

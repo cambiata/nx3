@@ -1,11 +1,11 @@
 package nx3.action;
-import nx3.render.action.EActivityType;
+import nx3.action.EActivityType;
 
 /**
  * ...
  * @author Jonas Nyström
  */
-class ActivityBase implements IActivity
+class ActivityBase /*implements IActivity*/
 {
 	var type:EActivityType;
 

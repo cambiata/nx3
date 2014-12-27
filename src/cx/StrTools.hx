@@ -43,9 +43,9 @@ class StrTools
 		return result;
 	}
 	
-	static public function fill(str:String, toLength:Int = 32, with:String=' ', replaceNull:String='-') {
+	static public function fill(str:String, toLength:Int = 32, fill:String=' ', replaceNull:String='-') {
 		if (str == null) str = replaceNull;
-		do { str += with; } while (str.length < toLength);
+		do { str += fill; } while (str.length < toLength);
 		return str.substr(0, toLength);
 	}	
 	
@@ -67,8 +67,8 @@ class StrTools
 		*/
 	}	
 	
-	static public function replaceNull(str:String, with:String = '-'):String {
-		return (str == null) ? with : str;
+	static public function replaceNull(str:String, fill:String = '-'):String {
+		return (str == null) ? fill : str;
 	}	
 	
 	static public function firstUpperCase(str:String, restToLowercase=true):String {		

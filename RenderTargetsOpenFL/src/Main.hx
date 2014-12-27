@@ -22,6 +22,7 @@ import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 import nx3.render.TargetSprite;
+import nx3.render.TestscoreSprite;
 import nx3.test.TestItemsBach;
 import nx3.test.Unittests;
 import nx3.test.TestItems;
@@ -49,18 +50,16 @@ class Main extends Sprite
 		//var nscore:NScore = TestItems.getSystemYItems();
 		//var nscore = TestItems.scoreTplChain();
 		//var nscore = TestItems.scorePitchloafChain();
-		var tss:TestscoreSprite = new TestscoreSprite(nscore, 100, 100, 1500, 800);
+	
+		var tss:TestscoreSprite = new TestscoreSprite(nscore, 20, 20, 800, 800);
 		Lib.current.addChild(tss);
-		
-		var perf = new Performance(10);
-		
+
+		/*
+		var perf = new Performance(10);		
 		perf.addFunction('test getTag', function() var tag = nscore.getTag() );
 		perf.addFunction('redraw', function() tss.redraw(1500, 800, tss.scoresprite));
-		
-		
 		perf.run();
-		
-		
+		*/		
 	}
 	
 	public static function main() 
@@ -71,7 +70,7 @@ class Main extends Sprite
 	}
 }
 
-
+/*
 class TestscoreSprite extends ResizeSprite
 {
 	var targetHS:nx3.render.TargetSprite;
@@ -101,3 +100,4 @@ class TestscoreSprite extends ResizeSprite
 	
 	override public function draw(w:Float, h:Float, sprite:Sprite) {}
 }
+*/
