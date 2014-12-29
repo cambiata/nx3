@@ -1,14 +1,16 @@
 package
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.Lib;
 	import nx3lib.Nx3Utils;
-	
 	
 	/**
 	 * ...
 	 * @author Jonas Nyström
 	 */
+	
 	public class Main extends Sprite 
 	{
 		
@@ -21,17 +23,16 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
-			trace('As3Application');
+				
+			// Init the haxe solution - this makes core haxe classes work (Arrays/Iterators stuff etc.)
+			haxe.initSwc(new MovieClip());
 			
-			this.stage.addChild(Nx3Utils.getSprite());
-			trace(nx3lib.Nx3Utils.getConstant());
+			// Get a sprite with a rendered score 
+			var scoreSprite:Sprite = Nx3Utils.getScoreSprite();
 			
-			trace(Nx3Utils.getNScore());
-			
-			//this.stage.addChild(Nx3Utils.getScoreSprite());
-			
-			trace(Nx3Utils.testCopy());
+			// Show it
+			scoreSprite.x = scoreSprite.y = 20;
+			this.addChild(scoreSprite);
 		}
 		
 	}

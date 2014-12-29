@@ -53,26 +53,17 @@ class Nx3Utils
 		return a;
 	}		  
 	  
-	  
-	  
 	  public static function getScoreSprite():Sprite {
-		
-		  
-		
-		  
-		 
 		var sprite = new Sprite();
-		var target = new TargetSprite(sprite, Scaling.NORMAL);	
+		var target = new TargetSprite(sprite, Scaling.MINI);	
 		var renderer = new Renderer(target, 0, 0);
-		var nscore = TestItems.scoreTest1().nscore;
+		var nscore = TestItemsBach.scoreBachSinfonia4();
 		var pscore = new PScore(nscore);
 		
-		renderer.renderScore(pscore, 0, 0, 1000);		
-		
-		//renderer.renderSystem(
-		 //return sprite;		  
+		renderer.renderScore(pscore, 0, 0, 500);		
+  
 		 
-		 return getSprite();
+		 return sprite;
 	  }
 	  
 	  
