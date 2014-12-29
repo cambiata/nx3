@@ -45,6 +45,7 @@ class PSystemBarsGenerator
 	
 	public function getSystem():PSystem
 	{
+		
 		this.system.systemBreakWidth = this.breakSystemwidth;
 		
 		var tryAnotherBar = true;		

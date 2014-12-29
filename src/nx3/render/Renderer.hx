@@ -59,13 +59,14 @@ class Renderer
 	
 	public function renderScore(score:PScore, newX:Float=-1, newY:Float=-1, systemwidth:Float=400)
 	{
+		
 		if (newX != -1) this.targetX = newX;
 		if (newY != -1) this.targetY = newY;	
-		this.drawSystems(score.getSystems(systemwidth));	
 		
-		//this.target.rectangle(0, 0, new Rectangle(0, 0, score.getWidth(), score.getHeight()), 2, 0xFF0000); 
+		this.drawSystems(score.getSystems(systemwidth));			
+		
 		this.target.totalWidth = score.getWidth() * this.scaling.unitX;
-		this.target.totalHeight = score.getHeight() * this.scaling.unitY;
+		this.target.totalHeight = score.getHeight() * this.scaling.unitY;		
 	}	
 	
 	public function testText()

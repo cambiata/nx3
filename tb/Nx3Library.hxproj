@@ -2,28 +2,27 @@
 <project version="2">
   <!-- Output SWF options -->
   <output>
-    <movie outputType="Application" />
+    <movie outputType="CustomBuild" />
     <movie input="" />
-    <movie path="bin\TBTestproject.swf" />
+    <movie path="bin\HaxeLibrary.swc" />
     <movie fps="30" />
     <movie width="800" />
     <movie height="600" />
-    <movie version="12" />
+    <movie version="14" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="src" />
-    <class path="..\..\src" />
+    <class path="..\src" />
   </classpaths>
   <!-- Build options -->
   <build>
     <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="Main" />
+    <option mainClass="" />
     <option enabledebug="True" />
     <option additional="" />
   </build>
@@ -44,7 +43,7 @@
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand />
+  <preBuildCommand>haxe -cp ..\src --macro "include('nx3lib')" -swf bin/Nx3Library.swc</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->

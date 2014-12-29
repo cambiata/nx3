@@ -14,6 +14,8 @@ using Lambda;
 class ArrayTools 
 {
 
+
+	
 	inline static function next<T>(a:Array<T>, item:T):Null<T>
 	{
 		var idx = a.indexOf(item);

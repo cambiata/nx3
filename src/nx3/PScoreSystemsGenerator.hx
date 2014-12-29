@@ -22,7 +22,7 @@ class PScoreSystemsGenerator
 	
 	public function getsSystems(systemwidths:Array<Float>):PSystems
 	{
-	
+			
 		var tempbars = this.bars.copy();		
 		var result:PSystems = new PSystems();		
 		var sysidx = 0;

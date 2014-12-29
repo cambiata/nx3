@@ -42,6 +42,7 @@ class PScore
 	var prevSystemwidth:Float = 0;
 	public function getSystems(systemwidth: Float):PSystems
 	{		
+		
 		if (systemwidth != prevSystemwidth) this.systems = null;
 		if (this.systems != null) return this.systems;		
 
