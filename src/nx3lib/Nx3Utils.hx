@@ -1,5 +1,6 @@
 package nx3lib;
 import flash.display.Sprite;
+import flash.text.TextField;
 import nx3.Constants;
 import nx3.PScore;
 import nx3.render.Renderer;
@@ -64,6 +65,18 @@ class Nx3Utils
   
 		 
 		 return sprite;
+	  }
+	  
+	  public static function passArray(a:Array<String>) {
+		  if (textDebug == null) throw "textDebug is null";
+		  textDebug.text = 'Array passed: ' + Std.string(a);
+	  }
+	  
+	  static public var textDebug:TextField = null;
+	  static public function setDebugField(tf:TextField) {
+		  if (tf == null) throw "textDebug is null";
+		  textDebug = tf;
+		  textDebug.text = 'Hello from Haxe!';
 	  }
 	  
 	  
