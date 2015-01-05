@@ -1,35 +1,48 @@
-package
-{
-	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
-	import nx3lib.Nx3Utils;
-	
-	/**
-	 * ...
-	 * @author Jonas Nyström
-	 */
-	
-	public class Main extends Sprite 
-	{
-		public function Main() 
-		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		
-		private function init(e:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			
-			haxe.initSwc(new MovieClip());
+package;
 
-			var y1:Number = 10;
-			var y2:Number = 110;
+import nx3.ENoteType;
+import nx3.ENoteVal;
+import nx3.ESign;
+import nx3.NHead;
+import nx3.NNote;
+import nx3lib.Nx3Utils;
+import openfl.display.Sprite;
+import openfl.Lib;
+
+/**
+ * ...
+ * @author Jonas Nyström
+ */
+
+class Main extends Sprite 
+{
+	public function new() 
+	{
+		super();
+		
+		//var a = ['DsLo', '+', 'CLO', '+'];
+		var a = ['+', 'DsLox', '+', 'CLO'];
+		//var a = ['+','+','+', 'DsLo','+',];
+		var a = ['DsLo','+','+','+'];
+		var a = ['c','d','e','f'];
+		var a = ['c','+','e','f'];
+		var a = ['c','+','ef','a'];
+		
+		//var processor = new nx3lib.abc.ArrayProcessor();
+		//processor.getNx3Notes(a);
+		/*
+		var scoreSprite = Nx3Utils.getScoreSpriteFromArray(a, true, true);
+		scoreSprite.x = 10;
+		scoreSprite.y = 10;
+		this.addChild(scoreSprite);
+		*/
+		
+		var y1:Float = 10;
+			var y2:Float = 110;
 			
-			var x:Number = 10;
+			var x:Float = 10;
+			
+			
 			this.testScoreSprite( ['c', '+', 'ef', 'a'], x, y1, true, true);
 			this.testScoreSprite( ['c', '+', 'ef', 'a'], x, y2, false, true);
 			
@@ -53,8 +66,9 @@ package
 			y2 = 410;			
 			
 			x = 10;
-			this.testScoreSprite( ['a', '+', '+', '+'], x, y1, true, true);						
-			this.testScoreSprite( ['a', '+', '+', '+'], x, y2, false, true);	
+			this.testScoreSprite( ['d', '+', '+', '+'], x, y1, true, true);						
+			this.testScoreSprite( ['d', '+', '+', '+'], x, y2, false, true);	
+			
 			
 			x = 110;
 			this.testScoreSprite( ['+', '+', '+', '+'], x, y1, true, true);						
@@ -74,18 +88,21 @@ package
 
 			x = 510;
 			this.testScoreSprite( ['+', 'd', '+', '+'], x, y1, true, true);						
-			this.testScoreSprite( ['+', 'd', '+', '+'], x, y2, false, true);				
+			this.testScoreSprite( ['+', 'd', '+', '+'], x, y2, false, true);		
+			
+			x = 610;
+			this.testScoreSprite( ['+', 'df', '+', 'gs'], x, y1, true, true);						
+			this.testScoreSprite( ['+', 'df', '+', 'gs'], x, y2, false, true);		
+			
 			
 		}
 		
-		private function testScoreSprite(a:Array, x:Number, y:Number, displayNotelines:Boolean = true, displayFrame:Boolean = true) : void {			
+		private function testScoreSprite(a:Array<String>, x:Float, y:Float, displayNotelines:Bool = true, displayFrame:Bool = true)  {			
 			var scoreSprite:Sprite = Nx3Utils.getScoreSpriteFromArray(a, displayNotelines, displayFrame);						
 			scoreSprite.x = x;  
 			scoreSprite.y = y;
 			this.addChild(scoreSprite);						
 			
 		}
-		
-	}
-	
 }
+

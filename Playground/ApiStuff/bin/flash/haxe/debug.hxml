@@ -1,0 +1,22 @@
+-main ApplicationMain 
+-cp f:/_haxelib/openfl/2,2,1
+-D openfl=2.2.1
+-cp f:/_haxelib/lime/2,0,4
+-D lime=2.0.4
+-cp f:/_haxelib/actuate/1,8,0
+-D actuate=1.8.0
+-cp src
+-cp ../../src
+-D lime-openal
+-D tools=2.0.4
+-D no-compilation
+-D lime-opengl
+-D openfl-flash
+-D lime-curl
+-D fdb
+-D web
+-swf-version 11.2
+-swf bin/flash/bin/ApiStuff.swf
+-swf-header 800:480:60:FFFFFF
+-cp bin/flash/haxe
+-debug

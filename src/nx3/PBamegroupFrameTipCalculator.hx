@@ -34,7 +34,7 @@ class PBamegroupFrameTipCalculator
 		 var leftTip:Float = this.notelevels.first();
 		 var rightTip:Float = this.notelevels.last();
 		
-		 
+		 //trace([leftTip, rightTip]);
 
 		
 		if (this.notelevels.length == 2)
@@ -47,33 +47,47 @@ class PBamegroupFrameTipCalculator
 		}	
 		else
 		{
+			//trace('ONE');
+			
 			var slopevalue = (notelevels.length  * .25);
 			 var inlevels = this.notelevels.copy();
 			 inlevels.shift();
 			 inlevels.pop();
-			 var inmin = intMin(inlevels);
-			
-			if (leftTip >= inmin && rightTip >= inmin)
+			 //trace(inlevels);
+			 var inmin:Null<Int> = intMin(inlevels);
+			if (inlevels.length == 0) inmin = null;
+			 //trace(inmin);
+			 
+			if (inmin != null && leftTip >= inmin && rightTip >= inmin)
 			{
 				leftTip = inmin;
 				rightTip = inmin;
-			}			
+				//trace(11111);
+				//trace([leftTip, rightTip]);
+			}	
 			else if (rightTip < leftTip  && min < leftTip) 
 			{
+				//trace(22222);
 				leftTip = floatMin([min+slopevalue, leftTip]);			
 			}
 			else if (leftTip < rightTip && min < rightTip) 
 			{
+				//trace(33333);
 				rightTip = floatMin([min + slopevalue, rightTip]);
 			}
 		}
 		 
+		//trace([leftTip, rightTip]);
+		
 		leftTip = Std.int(Math.min(stemLength, leftTip));
 		rightTip = Std.int(Math.min(stemLength, rightTip));
 		
 		//rightTip = rightTip + 2;
 		
-		if (this.direction == EDirectionUD.Down) return  {leftTip:-leftTip, rightTip:-rightTip};		
+		if (this.direction == EDirectionUD.Down) return  { leftTip: -leftTip, rightTip: -rightTip };	
+		
+		//trace([leftTip, rightTip]);
+		
 		return {leftTip:leftTip, rightTip:rightTip};
 	 }
 	 

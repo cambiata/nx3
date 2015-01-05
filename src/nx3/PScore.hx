@@ -13,8 +13,7 @@ class PScore
 
 	public function new(nscore:NScore) 
 	{
-		this.nscore = nscore;
-		
+		this.nscore = nscore;		
 	}
 	
 	var bars:PBars;
