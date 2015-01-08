@@ -59,7 +59,7 @@ class Main extends Sprite
 			this.testScoreSprite( ['dhi', 'a', '+', 'chi'], x, y2, false, true);	
 			
 			x = 410;
-			this.testScoreSprite( ['dhi', 'e', '+', 'chi'], x, y1, true, true);						
+			this.testScoreSprite( ['dhi', 'e', '+', 'chi'], x, y1, true, true, 0, -4);						
 			this.testScoreSprite( ['dhi', 'e', '+', 'chi'], x, y2, false, true);				
 			
 			y1 = 310;
@@ -97,8 +97,8 @@ class Main extends Sprite
 			
 		}
 		
-		private function testScoreSprite(a:Array<String>, x:Float, y:Float, displayNotelines:Bool = true, displayFrame:Bool = true)  {			
-			var scoreSprite:Sprite = Nx3Utils.getScoreSpriteFromArray(a, displayNotelines, displayFrame);						
+		private function testScoreSprite(a:Array<String>, x:Float, y:Float, displayNotelines:Bool = true, displayFrame:Bool = true, xOffset=0, yOffset=0)  {			
+			var scoreSprite:Sprite = Nx3Utils.getScoreSpriteFromArray(a, displayNotelines, displayFrame, xOffset, yOffset);						
 			scoreSprite.x = x;  
 			scoreSprite.y = y;
 			this.addChild(scoreSprite);						

@@ -11,6 +11,7 @@ import nx3.NVoice;
 import nx3.PScore;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
+import nx3.render.scaling.TScaling;
 import nx3.render.TargetSprite;
 import nx3.render.TestscoreSprite;
 import nx3.test.TestItems;
@@ -25,9 +26,9 @@ using cx.ArrayTools;
 class Nx3Utils 
 {
 
-	  public static function getHello():String {
+	public static function getHello():String {
 		  return "Hello from Nx3Utils!";		  
-	  }
+	}
 	  
 	  public static function getSprite():Sprite {
 		  var s = new Sprite();
@@ -46,8 +47,7 @@ class Nx3Utils
 		  return TestItemsBach.scoreBachSinfonia4();
 	  }
 	  
-	  static   public function testCopy():Array<Int> {
-		  
+	  static   public function testCopy():Array<Int> {		  
 		  var a = [1, 2, 3];
 		  var b = copyArray(a);
 		  return b;
@@ -71,16 +71,25 @@ class Nx3Utils
 		 return sprite;
 	  }
 	  
-	  public static function  getScoreSpriteFromArray(abcArray:Array<String>, drawBarAttributes:Bool=false, drawBarFrame:Bool=false):Sprite {
+	  public static function  getScoreSpriteFromArray(abcArray:Array<String>,drawBarAttributes:Bool=false, drawBarFrame:Bool=false,  xOffset:Int = 0, yOffset:Int = 0,  rightBarlineX:Int=0, rightBarlineY:Int= 16, scalingPreset=3):Sprite {
 		
+		 var scaling:TScaling = switch scalingPreset {
+			 case  1: Scaling.MINI;
+			 case 2: Scaling.SMALL;
+			 case 3: Scaling.NORMAL;
+			 case 4: Scaling.MID;
+			 case 5: Scaling.PRINT1;	
+			 case _:Scaling.NORMAL;
+		 }
+		  
 		var processor = new ArrayProcessor();
 		var notes = processor.getNx3Notes(abcArray);
 		var nscore = new NScore([ new NBar( [ new NPart ([ new NVoice( 
 			notes
 		) ], EDisplayALN.Never, EDisplayALN.Never) ], EDisplayALN.Never, EAllotment.Logaritmic) ]);
 		
-		var scaling = Scaling.NORMAL;
-		var sprite = new Sprite();
+		//var scaling = Scaling.NORMAL;
+		var sprite = new Sprite();		
 		var target = new TargetSprite(sprite, scaling);	
 		var renderer = new Renderer(target, 0, 0);		
 		var pscore = new PScore(nscore);
@@ -94,11 +103,25 @@ class Nx3Utils
 		
 		var sw = system.getWidth() * scaling.unitX;
 		var sh = system.getHeight() * scaling.unitY;		
+		
+		var resultSprite = new Sprite();
+		sprite.x = xOffset;
+		sprite.y = yOffset;
+		resultSprite.addChild(sprite);		
+		
 		if (drawBarFrame) {
-			sprite.graphics.lineStyle(1, 0xaaaaaa);
-			sprite.graphics.drawRoundRect(0, 0, sw, sh, 6, 6);
-		}
-		return sprite;		
+			resultSprite.graphics.lineStyle(1, 0xaaaaaa);
+			resultSprite.graphics.drawRoundRect(-xOffset, -yOffset, sw, sh, 6, 6);
+		}		
+		
+		if (rightBarlineX > 0) {
+			var barlineHeight = scaling.unitY * 8;
+			resultSprite.graphics.lineStyle(1.5, 0);
+			resultSprite.graphics.moveTo(rightBarlineX, rightBarlineY);
+			resultSprite.graphics.lineTo(rightBarlineX, rightBarlineY + barlineHeight);
+		}		
+		
+		return resultSprite;		
 		  
 	  }
 	  
