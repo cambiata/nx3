@@ -16,7 +16,7 @@ import nx3.QNote.QLyric8;
 import nx3.QNote.QNote2;
 import nx3.QNote.QNote4;
 import nx3.QNote.QNote8;
-import thx.core.Arrays;
+import nx3.audio.NotenrItem;
 
 using cx.ArrayTools;
 using Lambda;
@@ -37,14 +37,14 @@ class NotenrPartsCalculator
 		this.partvalues = partvalues;	
 	}
 	
-	public function execute():Array<NotenrItem> {
+	public function execute():NotenrItems {
 		var partsItems = [];
 		var currentclef:nx3.EClef = null;
 		var currentkey:nx3.EKey = null;
 		
 		var prevpart: NPart = null;
-		var prevnoteitems: Array<NotenrItem> = null;
-		var resultnoteitems: Array<NotenrItem> = [];
+		var prevnoteitems: NotenrItems = null;
+		var resultnoteitems: NotenrItems = [];
 		var partposition = 0;
 		var baridx = 0;
 		
@@ -214,6 +214,7 @@ typedef TieFound = {
 }
 
 
+
 class PartNotesToNotenrCalculator {
 	var part:NPart;
 	var signstable:Map<Int, ESign>;
@@ -241,7 +242,7 @@ class PartNotesToNotenrCalculator {
 	
 	public function partPositionsToNotenr(map:Map < Int, Array<NNote>>, partclef:nx3.EClef=null, partkey:nx3.EKey=null)
 	{
-		var result = new Array<NotenrItem>(); 
+		var result = new NotenrItems(); 
 		var positions = ArrayTools.fromHashKeys(map.keys());
 		positions.sort(function(a, b) return Reflect.compare(a, b));
 		for (position in positions)
@@ -249,7 +250,6 @@ class PartNotesToNotenrCalculator {
 			var notes = map.get(position);
 			for (note in notes)
 			{
-				
 				for (head in note)
 				{
 					var cleflevel = NotenrTools.clefLevel(head.level, partclef);
@@ -262,7 +262,7 @@ class PartNotesToNotenrCalculator {
 					var notename = NotenrTools.getNotename(notenr);
 					var tie = head.tie != null;
 					var playable = NotenrTools.getPlayable(note);					
-					result.push( { position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , partposition:0, playable:playable, partnr:this.partnr, barnr:this.barnr, barvalue:barvalue/*, soundlength:0, soundposition:0, barsoundlength:0*/ } );					
+					result.push( { note:note, position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , partposition:0, playable:playable, partnr:this.partnr, barnr:this.barnr, barvalue:barvalue/*, soundlength:0, soundposition:0, barsoundlength:0*/ } );					
 					if (headsign != null && headsign != nx3.ESign.None) this.signstable.set(cleflevel, headsign);					
 				}
 			}

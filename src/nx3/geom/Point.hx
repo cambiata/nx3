@@ -1,5 +1,8 @@
 package nx3.geom;
 
+#if (openfl)
+typedef Point = flash.geom.Point;
+#else
 
 class Point {
 	
@@ -131,3 +134,4 @@ class Point {
 	
 	
 }
+#end

@@ -1,4 +1,5 @@
 package nx3.audio;
+import nx3.NNote;
 
 /**
  * NotenrItem
@@ -25,4 +26,10 @@ typedef NotenrItem = {
 	?barsoundposition:Float,
 	?playpos:Float,
 	?playend:Float,
+	
+	note:NNote,
 }
+
+typedef NotenrItems = Array<NotenrItem>;
+
+typedef PartsNotenrItems = Array<NotenrItems>;

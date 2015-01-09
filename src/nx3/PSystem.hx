@@ -102,6 +102,15 @@ class PSystem
 		return party;
 	}	
 	
+	public function getTopPartY():Float {
+		return this.getPartY(0);
+	}
+	
+	public function getBottomPartY():Float {
+		var partcount = this.getSystembars()[0].bar.getParts().length - 1;
+		return this.getPartY(partcount);
+	}
+	
 	public function getHeight():Float
 	{
 		var partcount = this.getSystembars()[0].bar.getParts().length - 1;

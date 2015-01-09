@@ -1,0 +1,24 @@
+-main ApplicationMain 
+-cp f:/_haxelib/openfl/2,2,1
+-D openfl=2.2.1
+-cp f:/_haxelib/hxcpp/3,1,48
+-D hxcpp=3.1.48
+-cp f:/_haxelib/actuate/1,8,0
+-D actuate=1.8.0
+-cp src
+-cp ../../src
+-cp f:\_haxelib/lime/2,0,4/legacy
+-D tools=2.0.4
+-D lime-legacy
+-D no-compilation
+-D native
+-D openfl-native
+-D lime-native
+-D fdb
+-D windows
+-D desktop
+--remap flash:openfl
+-cpp bin/windows/cpp/obj
+-cp bin/windows/cpp/haxe
+--macro keep("Main")
+-debug

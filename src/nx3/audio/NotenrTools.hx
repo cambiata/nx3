@@ -1,4 +1,5 @@
 package nx3.audio;
+import nx3.audio.NotenrItem;
 using cx.ArrayTools;
 /**
  * NotenrTools
@@ -100,11 +101,13 @@ class NotenrTools {
 		}
 	}
 	
+	/*
 	static public function calculateSoundLength(n:NotenrItem, barvalue:Int, tempo1:Int=60, tempo2:Null<Int> = null):Float {
 		return 0;
 	}
+	*/
 	
-	static public function calculateSoundLengths(partsnotes:Array<Array<NotenrItem>>, tempos:Array<TempoInfo>=null, defaulttempo:Int=120) 
+	static public function calculateSoundLengths(partsnotes:PartsNotenrItems, tempos:Array<TempoInfo>=null, defaulttempo:Int=120) 
 	{		
 		var partidx = 0;
 		for (part in partsnotes) {			
@@ -136,7 +139,7 @@ class NotenrTools {
 		}
 	}
 	
-	static public function getTotalLength(partsnotes:Array<Array<NotenrItem>>) 
+	static public function getTotalLength(partsnotes:PartsNotenrItems) 
 	{
 		var lenght = 0.0;
 		for (part in partsnotes) { 
@@ -146,7 +149,7 @@ class NotenrTools {
 		return lenght;
 	}
 	
-	static public function resolveTies(partsnotes:Array<Array<NotenrItem>>) 
+	static public function resolveTies(partsnotes:PartsNotenrItems) 
 	{
 		var result = [];
 		
@@ -195,7 +198,7 @@ class NotenrTools {
 		return result;
 	}
 	
-	static public function debug(partsnotes:Array<Array<NotenrItem>>) 
+	static public function debug(partsnotes:PartsNotenrItems) 
 	{
 		trace('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
 		for (part in partsnotes) {
@@ -205,6 +208,18 @@ class NotenrTools {
 			}
 		}
 	}
+	
+	static public function getNotesNotenritems(partsnotes:PartsNotenrItems): Map<NNote, NotenrItem> {
+		var map = new Map<NNote, NotenrItem>();		
+		for (items in partsnotes) {
+			for (item in items) {
+				var note = item.note;
+				map.set(note, item);
+			}
+		}
+		return map;
+	}
+	
 	
 	/*
 	static public function getTotalLenght(partsnotes:Array<Array<NotenrItem>>):Float

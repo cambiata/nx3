@@ -1,6 +1,8 @@
 package nx3.audio;
+import nx3.NBars;
 import nx3.NBarUtils;
 import nx3.NScore;
+import nx3.PSystems;
 
 /**
  * NotenrBarsCalculator
@@ -8,18 +10,27 @@ import nx3.NScore;
  */
 class NotenrBarsCalculator 
 {
-	var score:NScore;
 
+	/*
+	var score:NScore;
 	public function new(score:NScore) 
 	{
 		this.score = score;
 	}
+	*/
+	
+	var nbars:NBars;
+	public function new(nbars:NBars) {
+		this.nbars = nbars;
+	}
 	
 	public function getPartsNotenrItems() {
-		var partsNotenerItems = [];
-		
+		//if (bars == null) bars = this.score.nbars;
+
+		var partsNotenerItems = [];		
 		var barvalues = [];
-		for (bar in this.score)
+		
+		for (bar in this.nbars)		
 		{
 			var barvalue = NBarUtils.getValue(bar);
 			barvalues.push(barvalue);
@@ -38,11 +49,11 @@ class NotenrBarsCalculator
 	}
 	
 	public function getPartslist():Array<nx3.NParts>  {
-		var partcount = this.score.nbars[0].nparts.length;
+		var partcount = this.nbars[0].nparts.length;
 		var result = [];
 		for (partidx in 0...partcount) {
 			var parts = new nx3.NParts();
-			for (bar in this.score) {
+			for (bar in this.nbars) {
 				var barpart = bar.nparts[partidx];
 				parts.push(barpart);
 			}
@@ -51,6 +62,6 @@ class NotenrBarsCalculator
 		return result;
 	}
 	
-	
+
 	
 }

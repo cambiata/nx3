@@ -190,7 +190,6 @@ class PNote /*implements Lazy*/
 	}	
 	*/
 	
-	
 	var xposition:Null<Float>;
 	public function getXPosition():Float
 	{
@@ -200,7 +199,6 @@ class PNote /*implements Lazy*/
 		return this.xposition;		
 	}
 	
-	
 	/*
 	@lazyGet public function xPosition():Float
 	{
@@ -208,9 +206,7 @@ class PNote /*implements Lazy*/
 	}
 	*/
 	
-	
 	public function getTies():ETies return this.nnote.ties;
-	
 	
 	var next:PNote;
 	public function getNext():PNote
@@ -221,7 +217,6 @@ class PNote /*implements Lazy*/
 		this.next = ArrayTools.indexOrNull(this.voice.getNotes(), idx + 1);
 		return this.next;
 	}
-	
 
 	/*
 	@lazyGet public function next():PNote

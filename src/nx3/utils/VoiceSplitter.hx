@@ -1,7 +1,6 @@
 package nx3.utils;
 import nx3.NBar;
 import nx3.NPart;
-import nx3.NScore;
 import nx3.NVoice;
 
 /**
@@ -10,18 +9,18 @@ import nx3.NVoice;
  */
 class VoiceSplitter 
 {
-	var score:NScore;
+	var nbars:NBars;
 
-	public function new(score:NScore) {
-		this.score = score;
-		if (! getScorePatternSplittability(this.score)) throw "Can't split this score - irregular voice pattern";
+	public function new(nbars:NBars) {
+		this.nbars = nbars;
+		if (! canSplit(this.nbars)) throw "Can't split this nbars - irregular voice pattern";
 		//var pattern = this.getPartPattern(this.score.nbars[0]);
-		//var score2 = this.getVoicesplittedScore();
+		//var score2 = this.getVoicesplittedNBars();
 	}
 	
-	public function getVoicesplittedScore():NScore {
+	public function getVoicesplittedNBars():NBars {
 		var newbars = new nx3.NBars();
-		for (bar in this.score) {
+		for (bar in this.nbars) {
 			var newparts = new nx3.NParts();
 			for (part in bar) {
 				for (voice in part) {
@@ -33,13 +32,14 @@ class VoiceSplitter
 			var newbar = new NBar(newparts, bar.type, bar.time, bar.timeDisplay, bar.allotment, bar.spacing);
 			newbars.push(newbar);
 		}
-		var newscore = new NScore(newbars);
-		return newscore;
+		//var newscore = new NNBars(newbars);
+		//return newscore;
+		return newbars;
 	}
 	
-	static private function getScorePatternSplittability(score:NScore) {
-		var firstpattern = getPartPattern(score.nbars[0]);
-		for (bar in score)
+	static public function canSplit(nbars:NBars):Bool {
+		var firstpattern = getPartPattern(nbars[0]);
+		for (bar in nbars)
 		{
 			var barpattern = getPartPattern(bar);
 			if (Std.string(barpattern) != Std.string(firstpattern)) return false;

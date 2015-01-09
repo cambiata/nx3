@@ -6,7 +6,6 @@ package nx3.geom;
  */
 class BezieerTool
 {
-
 	static public function bezieerCoordinates(anchor1:Pnt, control1:Pnt, control2:Pnt, anchor2:Pnt, ?lineWidth:Float=1, ?lineColor:Int=0x000000, ?segments:Int=10):Pnts
 	{
 			var coord:Pnts = [];
@@ -30,6 +29,5 @@ class BezieerTool
 			coord.push(anchor2);							
 			return coord;
 	}
-
 	
 }

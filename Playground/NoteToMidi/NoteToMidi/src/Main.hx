@@ -31,7 +31,6 @@ import flash.display.StageScaleMode;
 import flash.Lib;
 #end
 
-
 /**
  * ...
  * @author Jonas Nyström
@@ -45,10 +44,8 @@ class Main
 		var stage = Lib.current.stage;
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 		stage.align = StageAlign.TOP_LEFT;
-		#end		
-		
-		//
-		
+		#end				
+		//		
 		var nscore = new NScore([
 			new NBar([
 				new NPart( [new NVoice([
@@ -94,17 +91,19 @@ class Main
 				new NPart( [new NVoice([
 					new NNote([new NHead(3)]),
 				])]),
-				
 			]),			
-			
 		]);
 		
 		var nscore = TestItemsBach.scoreBachSinfonia4();
 		
-		var partsnotes:Array<Array<NotenrItem>> = new NotenrBarsCalculator(new VoiceSplitter(nscore).getVoicesplittedScore()).getPartsNotenrItems();
+		var partsnotes:PartsNotenrItems = new NotenrBarsCalculator(new VoiceSplitter(nscore.nbars).getVoicesplittedNBars()).getPartsNotenrItems();
+		
 		NotenrTools.calculateSoundLengths(partsnotes, 60);		
 		NotenrTools.debug(partsnotes);		
-		var partsnotes = NotenrTools.resolveTies(partsnotes);		
+		
+		
+		var partsnotes = NotenrTools.resolveTies(partsnotes);	
+		
 		NotenrTools.debug(partsnotes);
 		#if flash graph(partsnotes); #end
 		
@@ -163,7 +162,6 @@ class Main
 		audiotools.webaudio.utils.Wav16Canvas.drawWave(canvas, wav16, 400, 100);			
 		#end
 	}		
-	
 	
 	#if flash
 	static public function graph(partsnotes:Array<Array<NotenrItem>>)
