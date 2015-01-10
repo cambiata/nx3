@@ -1,7 +1,7 @@
 (function ($hx_exports) { "use strict";
 $hx_exports.audiotools = $hx_exports.audiotools || {};
 $hx_exports.audiotools.sound = $hx_exports.audiotools.sound || {};
-$hx_exports.audiotools.sound.Wab16Webaudio = $hx_exports.audiotools.sound.Wab16Webaudio || {};
+$hx_exports.audiotools.sound.Wav16SoundJS = $hx_exports.audiotools.sound.Wav16SoundJS || {};
 var $estr = function() { return js.Boot.__string_rec(this,''); };
 function $extend(from, fields) {
 	function Inherit() {} Inherit.prototype = from; var proto = new Inherit();
@@ -957,13 +957,13 @@ audiotools.sound.Wav16SoundBase.prototype = {
 	}
 	,__class__: audiotools.sound.Wav16SoundBase
 };
-audiotools.sound.Wab16Webaudio = function(wav16,playCallback,key) {
+audiotools.sound.Wav16SoundJS = function(wav16,playCallback,key) {
 	this.delta = .0;
 	this.lastTime = .0;
 	audiotools.sound.Wav16SoundBase.call(this,wav16,playCallback,key);
 	this.context = audiotools.webaudio.WebAudioTools.getAudioContext();
 	this.buffer = audiotools.webaudio.WebAudioTools.createBufferFromWav16(wav16,this.context,48000);
-	audiotools.sound.Wab16Webaudio.animationCallback = $bind(this,this.onAnimate);
+	audiotools.sound.Wav16SoundJS.animationCallback = $bind(this,this.onAnimate);
 	
 			window.requestAnimFrame = (function() {
 			    return window.requestAnimationFrame ||
@@ -978,12 +978,12 @@ audiotools.sound.Wab16Webaudio = function(wav16,playCallback,key) {
 		 ;
 	this.onAnimate();
 };
-audiotools.sound.Wab16Webaudio.__name__ = true;
-audiotools.sound.Wab16Webaudio.__interfaces__ = [audiotools.sound.Wav16Sound];
-audiotools.sound.Wab16Webaudio.animationCallback = $hx_exports.audiotools.sound.Wab16Webaudio.animationCallback = function() {
+audiotools.sound.Wav16SoundJS.__name__ = true;
+audiotools.sound.Wav16SoundJS.__interfaces__ = [audiotools.sound.Wav16Sound];
+audiotools.sound.Wav16SoundJS.animationCallback = $hx_exports.audiotools.sound.Wav16SoundJS.animationCallback = function() {
 };
-audiotools.sound.Wab16Webaudio.__super__ = audiotools.sound.Wav16SoundBase;
-audiotools.sound.Wab16Webaudio.prototype = $extend(audiotools.sound.Wav16SoundBase.prototype,{
+audiotools.sound.Wav16SoundJS.__super__ = audiotools.sound.Wav16SoundBase;
+audiotools.sound.Wav16SoundJS.prototype = $extend(audiotools.sound.Wav16SoundBase.prototype,{
 	start: function(pos) {
 		this.source = this.context.createBufferSource();
 		this.source.buffer = this.buffer;
@@ -1012,7 +1012,7 @@ audiotools.sound.Wab16Webaudio.prototype = $extend(audiotools.sound.Wav16SoundBa
 		}
 		requestAnimFrame(  audiotools.sound.Wab16Webaudio.animationCallback);;
 	}
-	,__class__: audiotools.sound.Wab16Webaudio
+	,__class__: audiotools.sound.Wav16SoundJS
 });
 audiotools.sound.Wav16SoundManager = function() {
 };
@@ -1031,7 +1031,7 @@ audiotools.sound.Wav16SoundManager.prototype = {
 		this.wav16 = wav16;
 		this.playCallback = playCallback;
 		this.key = key;
-		this.sound = new audiotools.sound.Wab16Webaudio(wav16,playCallback,key);
+		this.sound = new audiotools.sound.Wav16SoundJS(wav16,playCallback,key);
 	}
 	,start: function(pos) {
 		if(this.sound != null) this.sound.start(pos); else console.log("Wav16SoundManager has no sound instance");
