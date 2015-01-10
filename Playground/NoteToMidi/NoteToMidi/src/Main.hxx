@@ -1,16 +1,9 @@
 package;
 
-import audiotools.sound.Wav16Sound;
-import audiotools.sound.Wav16SoundManager;
 import audiotools.utils.Mp3Wav16Decoder;
-import audiotools.utils.Wav16DecoderPool;
-import audiotools.utils.Wav16PartsBuilder;
 import audiotools.Wav16;
 import audiotools.Wav16DSP;
 import audiotools.Wav16Tools;
-
-import nx3.test.TestItems;
-
 import nx3.EDirectionUAD;
 import nx3.ETie;
 import nx3.audio.NotenrTools;
@@ -25,9 +18,7 @@ import nx3.test.TestItemsBach;
 import nx3.audio.NotenrBarsCalculator;
 import nx3.audio.NotenrItem;
 import nx3.utils.VoiceSplitter;
-import tink.core.Future;
 using cx.ArrayTools;
-using Lambda;
 
 #if js
 import audiotools.webaudio.WebAudioTools;
@@ -47,14 +38,7 @@ import flash.Lib;
 
 class Main 
 {
-	var nscore1 :NScore;
-	var nscore2 :NScore;
-	
-	static function main()  {
-		new Main();
-	}
-	
-	public  function new() 
+	static function main() 
 	{
 		#if flash
 		var stage = Lib.current.stage;
@@ -62,7 +46,7 @@ class Main
 		stage.align = StageAlign.TOP_LEFT;
 		#end				
 		//		
-		this.nscore2 = new NScore([
+		var nscore = new NScore([
 			new NBar([
 				new NPart( [new NVoice([
 					new NNote([new NHead(0, ETie.Tie(null, 0))]),
@@ -110,84 +94,33 @@ class Main
 			]),			
 		]);
 		
-		this.nscore1 = TestItemsBach.scoreBachSinfonia4();
+		var nscore = TestItemsBach.scoreBachSinfonia4();
 		
-
-		// -----------------------------------------------------------------------
-		var files = [for (i in 48 ... 95 + 1) i].map(function(i) return 'sounds/piano/$i.mp3');		
-		Wav16PartsBuilder.getInstance().startDecoding = function() { trace('Decoding started...'); }		
-		Wav16PartsBuilder.getInstance().finishedDecoding = function() { 
-			trace('Decoding finshed...'); 		
-			#if neko
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore1, 60);
-				Wav16Tools.testplay(w16);
-				
-			#end
-		};		
-		Wav16PartsBuilder.getInstance().init(files);		
+		var partsnotes:PartsNotenrItems = new NotenrBarsCalculator(new VoiceSplitter(nscore.nbars).getVoicesplittedNBars()).getPartsNotenrItems();
 		
-		setupUI();
+		NotenrTools.calculateSoundLengths(partsnotes, 60);		
+		NotenrTools.debug(partsnotes);		
 		
-	}
-	
-	function setupUI() {
 		
-		#if js
-			js.Browser.document.getElementById('btn1').addEventListener('click', function(_) {
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore1, 60);
-				 Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore1.uuid);
-				 Wav16SoundManager.getInstance().start(0);				
-			});
-			
-			js.Browser.document.getElementById('btn2').addEventListener('click', function(_) {
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore2, 60);	
-				 Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore2.uuid);
-				 Wav16SoundManager.getInstance().start(0);
-			});	
-			
-			js.Browser.document.getElementById('stop').addEventListener('click', function(_) {
-				 Wav16SoundManager.getInstance().stop();
-			});	
+		var partsnotes = NotenrTools.resolveTies(partsnotes);	
+		
+		NotenrTools.debug(partsnotes);
+		#if flash graph(partsnotes); #end
+		
+		var mp3start = 48;
+		var mp3end = 95;		
+		var files = [for (i in mp3start...mp3end + 1) i].map(function(i) return 'sounds/piano/$i.mp3');
+		
+		#if js 
+		Mp3Wav16Decoders.setContext(WebAudioTools.getAudioContext());
 		#end
 		
-		#if flash
-			var b1 = new Sprite();
-			Lib.current.addChild(b1);
-			b1.graphics.beginFill(0x0000FF);
-			b1.graphics.drawRect(10, 10, 70, 30);
-			b1.addEventListener(flash.events.MouseEvent.CLICK, function(e) {
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore1, 60);
-				 Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore1.uuid);
-				 Wav16SoundManager.getInstance().start(0);					
-			});
-
-			var b2 = new Sprite();
-			Lib.current.addChild(b2);
-			b2.graphics.beginFill(0x0000FF);
-			b2.graphics.drawRect(110, 10, 70, 30);
-			b2.addEventListener(flash.events.MouseEvent.CLICK, function(e) {
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore2, 60);	
-				 Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore2.uuid);
-				 Wav16SoundManager.getInstance().start(0);				
-			});
-			
-			var bStop = new Sprite();
-			Lib.current.addChild(bStop);
-			bStop.graphics.beginFill(0x0000FF);
-			bStop.graphics.drawRect(210, 10, 70, 30);
-			bStop.addEventListener(flash.events.MouseEvent.CLICK, function(e) {
-				 Wav16SoundManager.getInstance().stop();				
-			});
-		#end
+		Mp3Wav16Decoders.decodeAllMap(files).handle(function(data) {
+			trace('all decoded');			
+			createScoreWave(partsnotes, data);
+		});
 	}
 	
-	function playCallback(key:String, pos:Float):Void {
-		#if js
-			js.Browser.document.getElementById('label').textContent = Std.string(pos);
-		#end
-	}
-	
-	/*
 	static private function createScoreWave(partsnotes:Array<Array<NotenrItem>>, data:Map<String, Wav16>) 
 	{
 		var full = Wav16.createSecs(NotenrTools.getTotalLength(partsnotes) + 1, true);
@@ -206,11 +139,9 @@ class Main
 				}
 			}
 		}		
-		
 		displayWave(full, 0);		
 		Wav16Tools.testplay(full);	
 	}
-	*/
 	
 	static function displayWave(wav16:Wav16, index:Int, text:String='') {
 		#if flash
@@ -235,7 +166,8 @@ class Main
 	#if flash
 	static public function graph(partsnotes:Array<Array<NotenrItem>>)
 	{		
-		var target = Lib.current;		
+		var target = Lib.current;
+		
 		var xfactor = 70;
 		var yfactor = 5;
 		var party =500;

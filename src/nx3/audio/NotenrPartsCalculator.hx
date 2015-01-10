@@ -20,6 +20,7 @@ import nx3.audio.NotenrItem;
 
 using cx.ArrayTools;
 using Lambda;
+
 /**
  * NoteMidinrCalculator
  * @author 
@@ -73,132 +74,6 @@ class NotenrPartsCalculator
 		//Lambda.iter(resultnoteitems, function(item) trace(item));
 		return resultnoteitems;
 	}
-	
-	/*	
-	
-	function handleTiesBetweenParts(items:Array<NotenrItem>,previtems:Array<NotenrItem>) 
-	{
-		if (previtems == null ) return items;
-		if (previtems.length == 0) return items;
-
-		var ties:Array<TieFound> = [];
-		var lastvalue = 0;
-		Lambda.iter(previtems, function(item) { lastvalue = Std.int(Math.max(lastvalue, item.position + item.noteval)); } );
-		var prevItems = Lambda.filter(previtems, function(item) { return (item.position + item.noteval == lastvalue) && item.tie == true; } );
-		var firstItems = Lambda.filter(items, function(item) { return (item.position == 0); } );
-		
-		var itemscopy = Lambda.array(items);
-		
-		var validitems = [];
-		for (previtem in prevItems) {
-			var targetItem = Lambda.find(firstItems, function(firstitem) { 
-				if (firstitem.level == previtem.level && firstitem.headsign == ESign.None) return true;
-				return false;
-			});
-			
-			if (targetItem != null) {
-				//trace('previtem pre ' + previtem);
-				previtem.noteval = previtem.noteval + targetItem.noteval;
-				//trace('previtem post ' + previtem);
-			}
-			itemscopy.remove(targetItem);
-		}
-		return itemscopy;
-	}
-	
-	
-	
-
-	private function handleTiesInsidePart(items:Array<NotenrItem>)
-	{		
-		var ties:Array<TieFound> = [];
-		var validTies : Array<TieFound> = [];
-		for (item in items)
-		{
-			if (item.tie == true) {
-				var tie:TieFound = { position:item.position, notenr:item.notenr, noteval:item.noteval, targetpos:item.position + item.noteval, level:item.level, item:item, targetItem:null };
-				if (item != items.last()) 
-					ties.push(tie);
-			}
-		}
-		for (tie in ties) {
-			var targetItem = Lambda.find(items, function(titem:NotenrItem) {
-				if (tie.targetpos == titem.position && tie.item.notenr == titem.notenr) {
-					return true;
-				}
-				return false;
-			});
-			if (targetItem != null) {
-				tie.targetItem = targetItem;
-				validTies.push(tie);
-			}
-		}
-		validTies.sort(function(a, b) { return Reflect.compare(a.position, b.position); } );
-		validTies = cx.ArrayTools.reverse(validTies);
-
-		var items2 = Lambda.array(items);
-		for (tie in validTies) {
-			var item:NotenrItem = tie.item;
-			var targetItem = tie.targetItem;
-			item.noteval = item.noteval + targetItem.noteval;
-			items2.remove(targetItem);
-		}
-		
-		return items2;
-	}
-
-	
-	
-	
-	private function handleTiesParts(partitems:Array<Array<NotenrItem>>)
-	{
-
-		var tiefoundInside:Array<TieFound> = [];
-		var tiefoundLast:Array<TieFound> = [];		
-		
-		// find ties
-		for (items in partitems)
-		{
-			
-
-			
-			
-			// ties from previous bar
-			for (tiefound in tiefoundLast)
-			{
-
-			}
-			tiefoundLast = [];
-			
-			
-			
-			for (item in items)
-			{
-				if (item.tie == true) {
-					trace( 'Found TIE ' + item);
-					var tiefound:TieFound = { position:item.position, notenr:item.notenr, noteval:item.noteval, targetpos:item.position + item.noteval, level:item.level, item:item, targetItem:null };
-					if (item != items.last()) 
-						tiefoundInside.push(tiefound);
-					else
-						tiefoundLast.push(tiefound);
-				}
-			}
-		
-			// ties inside
-			for (tiefound in tiefoundInside)
-			{
-				trace('SEARCH FOR ' + tiefound.targetpos + ' ' + tiefound.notenr);
-				for (item in items)
-				{
-					if (item.position == tiefound.targetpos && item.level == tiefound.level) {
-						trace('FOUND pos and level');
-					}
-				}
-			}
-			tiefoundInside = [];
-		}
-	}
-	*/
 	
 }
 
@@ -257,12 +132,18 @@ class PartNotesToNotenrCalculator {
 					//trace([head.level, cleflevel, keysign]);
 					var headsign = head.sign;
 					
+					var playsign:ESign = switch headsign {
+						case ESign.None: keysign;
+						case ESign.Natural: headsign;
+						case _: headsign;
+					}
+					
 					var notenr = NotenrTools.getSignaffectedNotenr(cleflevel, keysign, headsign);
 					var midinr = NotenrTools.getMidinr(notenr);
-					var notename = NotenrTools.getNotename(notenr);
+					var notename = NotenrTools.getNotename(notenr, playsign);
 					var tie = head.tie != null;
 					var playable = NotenrTools.getPlayable(note);					
-					result.push( { note:note, position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , partposition:0, playable:playable, partnr:this.partnr, barnr:this.barnr, barvalue:barvalue/*, soundlength:0, soundposition:0, barsoundlength:0*/ } );					
+					result.push( { note:note, position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , playsign:playsign, partposition:0, playable:playable, partnr:this.partnr, barnr:this.barnr, barvalue:barvalue/*, soundlength:0, soundposition:0, barsoundlength:0*/ } );					
 					if (headsign != null && headsign != nx3.ESign.None) this.signstable.set(cleflevel, headsign);					
 				}
 			}
@@ -343,8 +224,6 @@ class NotenrTestItems {
 		return [p1, p2];
 	}		
 	
-	
-	
 	static public function testTwoVoices():nx3.NParts {
 		var p1 = new NPart(
 			[ 
@@ -361,7 +240,6 @@ class NotenrTestItems {
 		);
 		return [p1];
 	}	
-
 	
 	static public function testParts0():nx3.NParts {
 		var p1 = new NPart(

@@ -1,5 +1,6 @@
 package nx3;
 import nx3.NBars;
+import thx.core.UUID;
 using Lambda;
 /**
  * ...
@@ -9,10 +10,10 @@ using Lambda;
  
 class NScore
 {
+	public var uuid(default, null):String;
 	public var nbars(default, null):NBars;
 
 	public var configuration(default, default): Dynamic;
-	
 	
 	public function new(nbars:NBars) 
 	{
@@ -23,6 +24,7 @@ class NScore
 		this.configuration.rtempo = 80;
 		this.configuration.rlength = 3;		
 		this.configuration.rcountin = 2;		
+		this.uuid = UUID.create();
 	}
 	
 	public function getNBar(idx:Int):NBar return (idx < 0 || idx > this.nbars.length) ? null : this.nbars[idx];

@@ -1,4 +1,5 @@
 package nx3.audio;
+import nx3.ESign;
 import nx3.NNote;
 
 /**
@@ -14,6 +15,7 @@ typedef NotenrItem = {
 	midinr:Int, 
 	headsign:ESign,
 	keysign:ESign,
+	playsign:ESign,
 	notename:String, 
 	tie: Bool ,
 	playable: Bool,
@@ -25,8 +27,7 @@ typedef NotenrItem = {
 	?barsoundlength:Float,
 	?barsoundposition:Float,
 	?playpos:Float,
-	?playend:Float,
-	
+	?playend:Float,	
 	note:NNote,
 }
 

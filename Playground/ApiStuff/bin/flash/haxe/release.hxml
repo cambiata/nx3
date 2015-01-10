@@ -5,6 +5,9 @@
 -D lime=2.0.4
 -cp f:/_haxelib/actuate/1,8,0
 -D actuate=1.8.0
+-D thx_core
+-cp f:/_haxelib/thx,core/0,17,4/src
+-D thx.core
 -cp src
 -cp ../../src
 -D lime-openal

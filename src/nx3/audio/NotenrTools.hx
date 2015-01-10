@@ -1,5 +1,6 @@
 package nx3.audio;
 import nx3.audio.NotenrItem;
+import nx3.ESign;
 using cx.ArrayTools;
 /**
  * NotenrTools
@@ -52,12 +53,23 @@ class NotenrTools {
 	}
 	
 	
-	static public function getNotename(notenr:Int):String
+	static public function getNotename(notenr:Int, sign:ESign=null):String
 	{
-		var base = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];
+		var base = ['c', 'ciss/dess', 'd', 'diss/ess', 'e', 'f', 'fiss/gess', 'g', 'giss/ass', 'a', 'aiss/bess', 'b'];
 		var bnr = (notenr >= 0) ? notenr % 12 : ((notenr % 12)+12) % 12;
 		var octave = (notenr >= 0) ? Math.floor(notenr / 12) : Math.floor(notenr / 12) ;
 		var bname = base[bnr];
+		if (sign != null && sign != ESign.Natural || sign != ESign.None) {
+			if (bname.indexOf('/') > -1) {
+				var bnames = bname.split('/');
+				bname = switch sign {
+					case ESign.Sharp:bnames[0];
+					case ESign.Flat: bnames[1];
+					case _ : bname;
+				}				
+			}
+		}
+		
 		//trace([notenr, bnr, octave, bname]);
 		return '$bname[$octave]';
 	}
@@ -219,6 +231,8 @@ class NotenrTools {
 		}
 		return map;
 	}
+	
+	
 	
 	
 	/*

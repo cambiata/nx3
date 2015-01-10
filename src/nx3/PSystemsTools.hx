@@ -36,18 +36,18 @@ class PSystemsTools
 		return this.columns;		
 	}
 	
-	var sysbarColumns:Map<PColumn, PSystemBar>;
-	public function  getSysbarsColumns(): Map<PColumn, PSystemBar> {
-		if (this.sysbarColumns != null) return this.sysbarColumns;		
-		this.sysbarColumns = new Map<PColumn, PSystemBar>();
+	var columnsSysbars:Map<PColumn, PSystemBar>;
+	public function  getColumnsSysbars(): Map<PColumn, PSystemBar> {
+		if (this.columnsSysbars != null) return this.columnsSysbars;		
+		this.columnsSysbars = new Map<PColumn, PSystemBar>();
 		for (system in this.systems) {
 			for (sysbar in system.getSystembars()) {
 				for (column in sysbar.bar.getColumns()) {
-					this.sysbarColumns.set(column, sysbar);
+					this.columnsSysbars.set(column, sysbar);
 				}			
 			}		
 		}
-		return this.sysbarColumns;		
+		return this.columnsSysbars;		
 	}	
 	
 	var columnsPointH:Map<PColumn, TPointH>;
@@ -56,7 +56,7 @@ class PSystemsTools
 		this.columnsPointH = new Map<PColumn, TPointH>();
 		var ADD_TO_ENDS = 4;		
 		for (column in this.getColumns()) {
-			var sysbar:PSystemBar = this.getSysbarsColumns().get(column);
+			var sysbar:PSystemBar = this.getColumnsSysbars().get(column);
 			
 			var contentX = sysbar.getBarMeasurements().getContentXPosition();
 			var columnX = column.getSPosition();
@@ -72,8 +72,6 @@ class PSystemsTools
 		}
 		return this.columnsPointH;
 	}	
-	
-	
 
 	var pnotes:PNotes;
 	public function getNotes():PNotes {
@@ -118,7 +116,7 @@ class PSystemsTools
 			var columnPointH = this.getColumnsPointH().get(column);
 			var part = this.getNotesParts().get(note);
 			var partIdx = part.getIndex();
-			var sysbar:PSystemBar = this.getSysbarsColumns().get(column);
+			var sysbar:PSystemBar = this.getColumnsSysbars().get(column);
 			var system:PSystem = sysbar.system;			
 			var noteRect = RectangleTools.union( note.getHeadsRects());
 			noteRect.offset(columnPointH.x, system.getY() + system.getPartY(partIdx));
@@ -150,12 +148,42 @@ class PSystemsTools
 	
 	public function getNotesNotenritems(): Map<NNote, NotenrItem> {
 		var nbars = this.getNBarsFromSystems();		
-		trace(nbars.length);
 		if (VoiceSplitter.canSplit(nbars)) nbars = new VoiceSplitter(nbars).getVoicesplittedNBars();
 		var partsnotes:PartsNotenrItems = new NotenrBarsCalculator(nbars).getPartsNotenrItems();
 		var map = NotenrTools.getNotesNotenritems(partsnotes);
 		return map;
+	}
+	
+	var columnsPositions: Map<PColumn, Int>;
+	public function getColumnsPositions():Map<PColumn, Int> {
+		if (this.columnsPositions != null) return this.columnsPositions;
+		this.columnsPositions = new Map<PColumn, Int>();
 		
+		var barpos = 0;
+		for (system in this.systems) {
+			for (sysbar in system.getSystembars()) {
+				for (column in sysbar.bar.getColumns()) {
+					this.columnsPositions.set(column, column.getValueposition() + barpos);					
+				}
+				barpos += sysbar.bar.getValue();
+			}			
+		}		
+		return this.columnsPositions;
+	}	
+	
+	var columnsTime: Map<PColumn, Float>;
+	public function getColumnsTimeFixed(fixedTempoBPM: Int = 60, beatfactor:Float = 1.0): Map<PColumn, Float> {
+		if (columnsTime != null) return columnsTime;
+		this.columnsTime = new Map<PColumn, Float>();
+		
+		var columnsPositions = this.getColumnsPositions();
+		for (column in columnsPositions.keys()) {
+			var position = columnsPositions.get(column);
+			var time = (position / Constants.BASE_NOTE_VALUE) / beatfactor;
+			this.columnsTime.set(column, time);						
+		}		
+		
+		return this.columnsTime;
 	}
 	
 	/*

@@ -41,6 +41,7 @@ using nx3.geom.RectangleTools;
 class Main extends Sprite 
 {
 
+
 	public function new() 
 	{
 		super();
@@ -103,11 +104,17 @@ class Main extends Sprite
 		
 		var notesNotenritems = systools.getNotesNotenritems();
 		
+		var columnsPositions = systools.getColumnsPositions();
+		var columnsTime = systools.getColumnsTimeFixed(60, 0.5);
+		
 		this.stage.addEventListener(flash.events.MouseEvent.MOUSE_DOWN, function(e:MouseEvent) {
 			var note = systools.getNoteFromCoord(scaling.targetX(stage.mouseX), scaling.targetY(stage.mouseY));
-			if (note != null) {
+			if (note != null) {				
+				var column = note.getComplex().getColumn();				
 				var playinfo = notesNotenritems.get(note.nnote);
-				trace(playinfo);
+				trace([playinfo.notename, playinfo.playsign, playinfo.keysign, playinfo.headsign]);
+				trace(columnsPositions.get(column));
+				trace(columnsTime.get(column));
 			}
 		});
 	}
