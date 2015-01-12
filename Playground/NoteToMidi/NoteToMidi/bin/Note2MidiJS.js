@@ -15,8 +15,61 @@ var EReg = function(r,opt) {
 };
 EReg.__name__ = true;
 EReg.prototype = {
-	replace: function(s,by) {
+	match: function(s) {
+		if(this.r.global) this.r.lastIndex = 0;
+		this.r.m = this.r.exec(s);
+		this.r.s = s;
+		return this.r.m != null;
+	}
+	,matched: function(n) {
+		if(this.r.m != null && n >= 0 && n < this.r.m.length) return this.r.m[n]; else throw "EReg::matched";
+	}
+	,matchedPos: function() {
+		if(this.r.m == null) throw "No string matched";
+		return { pos : this.r.m.index, len : this.r.m[0].length};
+	}
+	,matchSub: function(s,pos,len) {
+		if(len == null) len = -1;
+		if(this.r.global) {
+			this.r.lastIndex = pos;
+			this.r.m = this.r.exec(len < 0?s:HxOverrides.substr(s,0,pos + len));
+			var b = this.r.m != null;
+			if(b) this.r.s = s;
+			return b;
+		} else {
+			var b1 = this.match(len < 0?HxOverrides.substr(s,pos,null):HxOverrides.substr(s,pos,len));
+			if(b1) {
+				this.r.s = s;
+				this.r.m.index += pos;
+			}
+			return b1;
+		}
+	}
+	,split: function(s) {
+		var d = "#__delim__#";
+		return s.replace(this.r,d).split(d);
+	}
+	,replace: function(s,by) {
 		return s.replace(this.r,by);
+	}
+	,map: function(s,f) {
+		var offset = 0;
+		var buf = new StringBuf();
+		do {
+			if(offset >= s.length) break; else if(!this.matchSub(s,offset)) {
+				buf.add(HxOverrides.substr(s,offset,null));
+				break;
+			}
+			var p = this.matchedPos();
+			buf.add(HxOverrides.substr(s,offset,p.pos - offset));
+			buf.add(f(this));
+			if(p.len == 0) {
+				buf.add(HxOverrides.substr(s,p.pos,1));
+				offset = p.pos + 1;
+			} else offset = p.pos + p.len;
+		} while(this.r.global);
+		if(!this.r.global && offset > 0 && offset < s.length) buf.add(HxOverrides.substr(s,offset,null));
+		return buf.b;
 	}
 	,__class__: EReg
 };
@@ -159,29 +212,6 @@ List.prototype = {
 var Main = function() {
 	this.nscore2 = new nx3.NScore([new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(null,0))]),new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(null,0))])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3)]),new nx3.NNote(null,[new nx3.NHead(null,2,null,nx3.ETie.Tie(null,0))])])])]),new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(null,0))])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,2)])])])]),new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,null,nx3.ETie.Tie(null,0))])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3,null,nx3.ETie.Tie(null,0))])])])]),new nx3.NBar([new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)])])]),new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,3)])])])])]);
 	this.nscore1 = nx3.test.TestItemsBach.scoreBachSinfonia4();
-	var files = ((function($this) {
-		var $r;
-		var _g = [];
-		{
-			var _g2 = 48;
-			var _g1 = 96;
-			while(_g2 < _g1) {
-				var i = _g2++;
-				_g.push(i);
-			}
-		}
-		$r = _g;
-		return $r;
-	}(this))).map(function(i1) {
-		return "sounds/piano/" + i1 + ".mp3";
-	});
-	(audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).startDecoding = function() {
-		console.log("Decoding started...");
-	};
-	(audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).finishedDecoding = function() {
-		console.log("Decoding finshed...");
-	};
-	(audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).init(files);
 	this.setupUI();
 };
 Main.__name__ = true;
@@ -210,17 +240,26 @@ Main.displayWave = function(wav16,index,text) {
 	audiotools.webaudio.utils.Wav16Canvas.drawWave(canvas,wav16,400,100);
 };
 Main.prototype = {
-	setupUI: function() {
+	startCallback: function(filesToload) {
+		console.log("Start loading " + filesToload + " files...");
+	}
+	,setupUI: function() {
 		var _g = this;
 		window.document.getElementById("btn1").addEventListener("click",function(_) {
-			var w16 = (audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).getScore(_g.nscore1,60);
-			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).initSound(w16,$bind(_g,_g.playCallback),_g.nscore1.uuid);
-			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).start(0);
+			var this1 = (audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).getScoreWav16Async(_g.nscore1,60);
+			this1(function(wav16) {
+				console.log("FINISHED nscore1");
+				(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).initSound(wav16,$bind(_g,_g.playCallback),_g.nscore1.uuid + "60");
+				(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).start(0);
+			});
 		});
 		window.document.getElementById("btn2").addEventListener("click",function(_1) {
-			var w161 = (audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).getScore(_g.nscore2,60);
-			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).initSound(w161,$bind(_g,_g.playCallback),_g.nscore2.uuid);
-			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).start(0);
+			var this2 = (audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).getScoreWav16Async(_g.nscore1,120);
+			this2(function(wav161) {
+				console.log("FINISHED nscore1 120");
+				(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).initSound(wav161,$bind(_g,_g.playCallback),_g.nscore2.uuid + "120");
+				(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).start(0);
+			});
 		});
 		window.document.getElementById("stop").addEventListener("click",function(_2) {
 			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).stop();
@@ -296,6 +335,11 @@ StringTools.htmlEscape = function(s,quotes) {
 };
 StringTools.startsWith = function(s,start) {
 	return s.length >= start.length && HxOverrides.substr(s,0,start.length) == start;
+};
+StringTools.endsWith = function(s,end) {
+	var elen = end.length;
+	var slen = s.length;
+	return slen >= elen && HxOverrides.substr(s,slen - elen,elen) == end;
 };
 StringTools.isSpace = function(s,pos) {
 	var c = HxOverrides.cca(s,pos);
@@ -1010,10 +1054,50 @@ audiotools.sound.Wav16SoundJS.prototype = $extend(audiotools.sound.Wav16SoundBas
 			this.lastTime = this.context.currentTime;
 		} else {
 		}
-		requestAnimFrame(  audiotools.sound.Wab16Webaudio.animationCallback);;
+		requestAnimFrame(  audiotools.sound.Wav16SoundJS.animationCallback);;
 	}
 	,__class__: audiotools.sound.Wav16SoundJS
 });
+audiotools.sound.Wav16SoundLoader = function() {
+	this.cache = new haxe.ds.StringMap();
+};
+audiotools.sound.Wav16SoundLoader.__name__ = true;
+audiotools.sound.Wav16SoundLoader.getInstance = function() {
+	if(audiotools.sound.Wav16SoundLoader.instance == null) return audiotools.sound.Wav16SoundLoader.instance = new audiotools.sound.Wav16SoundLoader(); else return audiotools.sound.Wav16SoundLoader.instance;
+};
+audiotools.sound.Wav16SoundLoader.prototype = {
+	getWav16s: function(mp3files,startCallback) {
+		var _g = this;
+		var f = new tink.core.FutureTrigger();
+		var result = new haxe.ds.StringMap();
+		if(mp3files == null || mp3files.length == 0) f.trigger(result);
+		var cacheKeys = cx.ArrayTools.fromIterator(this.cache.keys());
+		var loadKeys = cx.ArrayTools.hasNot(cacheKeys,mp3files);
+		if(startCallback != null) startCallback(loadKeys.length);
+		var _g1 = 0;
+		while(_g1 < cacheKeys.length) {
+			var mp3file = cacheKeys[_g1];
+			++_g1;
+			var value = this.cache.get(mp3file);
+			result.set(mp3file,value);
+		}
+		if(loadKeys.length == 0) f.trigger(result);
+		var this1 = audiotools.utils.Mp3Wav16Decoders.decodeAllMap(loadKeys);
+		this1(function(soundData) {
+			var $it0 = soundData.keys();
+			while( $it0.hasNext() ) {
+				var mp3file1 = $it0.next();
+				var value1 = soundData.get(mp3file1);
+				_g.cache.set(mp3file1,value1);
+				var value2 = soundData.get(mp3file1);
+				result.set(mp3file1,value2);
+			}
+			f.trigger(result);
+		});
+		return f.future;
+	}
+	,__class__: audiotools.sound.Wav16SoundLoader
+};
 audiotools.sound.Wav16SoundManager = function() {
 };
 audiotools.sound.Wav16SoundManager.__name__ = true;
@@ -1169,78 +1253,78 @@ audiotools.utils.Wav16DecoderPool.prototype = {
 };
 audiotools.utils.Wav16PartsBuilder = function() {
 	this.initialized = false;
+	this.scorecache = new haxe.ds.StringMap();
 };
 audiotools.utils.Wav16PartsBuilder.__name__ = true;
 audiotools.utils.Wav16PartsBuilder.getInstance = function() {
 	if(audiotools.utils.Wav16PartsBuilder.instance == null) return audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder(); else return audiotools.utils.Wav16PartsBuilder.instance;
 };
 audiotools.utils.Wav16PartsBuilder.prototype = {
-	init: function(mp3files) {
+	initAsync: function(mp3files) {
 		var _g = this;
-		audiotools.utils.Mp3Wav16Decoders.setContext(audiotools.webaudio.WebAudioTools.getAudioContext());
-		this.mp3files = mp3files;
-		this.cache = new haxe.ds.StringMap();
-		this.startDecoding();
-		var this1 = audiotools.utils.Mp3Wav16Decoders.decodeAllMap(this.mp3files);
-		this1(function(soundData) {
-			_g.soundData = soundData;
+		var f = new tink.core.FutureTrigger();
+		var result = new haxe.ds.StringMap();
+		var this1 = (audiotools.sound.Wav16SoundLoader.instance == null?audiotools.sound.Wav16SoundLoader.instance = new audiotools.sound.Wav16SoundLoader():audiotools.sound.Wav16SoundLoader.instance).getWav16s(mp3files,null);
+		this1(function(soundmap) {
+			_g.soundmap = soundmap;
 			_g.initialized = true;
 			_g.finishedDecoding();
+			f.trigger(_g.soundmap);
 		});
+		return f.future;
 	}
-	,startDecoding: function() {
+	,startDecoding: function(filesToLoad) {
 	}
 	,finishedDecoding: function() {
 	}
-	,build: function(partsnotes,partsSounds) {
+	,buildSoundmap: function(partsnotes,soundmap) {
 		if(!this.initialized) throw "Wav16PartsBuilder not initialized - sounds not decoded";
-		var result = audiotools.Wav16.createSecs(nx3.audio.NotenrTools.getTotalLength(partsnotes) + 1,true);
-		if(partsSounds == null) partsSounds = ["piano"];
-		while(partsnotes.length > partsSounds.length) partsSounds.push(partsSounds[partsSounds.length - 1]);
-		console.log(partsSounds);
+		var length = nx3.audio.NotenrTools.getTotalLength(partsnotes) + 1;
+		console.log("Length: " + length);
+		var result = audiotools.Wav16.createSecs(length,true);
 		var partidx = 0;
 		var _g = 0;
 		while(_g < partsnotes.length) {
 			var part = partsnotes[_g];
 			++_g;
-			var partSound = partsSounds[partidx];
 			var _g1 = 0;
 			while(_g1 < part.length) {
 				var note = part[_g1];
 				++_g1;
 				if(!note.playable) continue;
-				var key = "sounds/" + partSound + "/" + note.midinr + ".mp3";
-				var w16 = this.soundData.get(key);
+				var key = note.mp3file;
+				var w16 = this.soundmap.get(key);
 				if(w16 != null) {
 					var offset = audiotools.Wav16Tools.toSamples(note.playpos);
-					var length = audiotools.Wav16Tools.toSamples(note.soundlength + 0.1);
-					audiotools.Wav16DSP.wspMixInto(result,w16,offset,length);
+					var length1 = audiotools.Wav16Tools.toSamples(note.soundlength + 0.1);
+					audiotools.Wav16DSP.wspMixInto(result,w16,offset,length1);
 				} else console.log("ERROR : " + key + " == null!");
 			}
 			partidx++;
 		}
 		return result;
 	}
-	,buildScore: function(nscore,tempo,partsSounds) {
+	,getScoreWav16Async: function(nscore,tempo,partsSounds) {
 		if(tempo == null) tempo = 60;
-		var partsnotes = new nx3.audio.NotenrBarsCalculator(nscore.nbars).getPartsNotenrItems();
-		nx3.audio.NotenrTools.calculateSoundLengths(partsnotes,null,60);
-		partsnotes = nx3.audio.NotenrTools.resolveTies(partsnotes);
-		return this.build(partsnotes,partsSounds);
-	}
-	,getScore: function(nscore,tempo,partsSounds,cacheKey) {
-		if(cacheKey == null) cacheKey = "";
-		if(tempo == null) tempo = 60;
+		var _g = this;
+		var f = new tink.core.FutureTrigger();
 		var key = nscore.uuid + (":" + tempo + ":" + Std.string(partsSounds));
-		console.log("getKey:" + key);
-		if(this.cache.exists(key)) {
+		if(this.scorecache.exists(key)) {
 			console.log("Get wav16 from cache");
-			return this.cache.get(key);
+			var wav16 = this.scorecache.get(key);
+			f.trigger(wav16);
+		} else {
+			var partsnotes = nx3.audio.NotenrTools.getPartsnotes(nscore.nbars,tempo);
+			var files = nx3.audio.NotenrTools.getPartsnotesMp3files(partsnotes);
+			var this1 = this.initAsync(files);
+			this1(function(soundmap) {
+				var wav161 = _g.buildSoundmap(partsnotes,soundmap);
+				_g.scorecache.set(key,wav161);
+				console.log("Set wav16 to cache");
+				f.trigger(wav161);
+			});
 		}
-		var wav16 = this.buildScore(nscore,tempo,partsSounds);
-		console.log("Set wav16 to cache");
-		this.cache.set(key,wav16);
-		return wav16;
+		return f.future;
 	}
 	,__class__: audiotools.utils.Wav16PartsBuilder
 };
@@ -1544,6 +1628,16 @@ cx.ArrayTools.diff = function(array1,array2) {
 		var item1 = array2[_g1];
 		++_g1;
 		if(!Lambda.has(array1,item1)) result.push(item1);
+	}
+	return result;
+};
+cx.ArrayTools.hasNot = function(array1,array2) {
+	var result = new Array();
+	var _g = 0;
+	while(_g < array2.length) {
+		var item = array2[_g];
+		++_g;
+		if(!Lambda.has(array1,item)) result.push(item);
 	}
 	return result;
 };
@@ -8341,6 +8435,39 @@ nx3.audio.NotenrTools.getNotesNotenritems = function(partsnotes) {
 	}
 	return map;
 };
+nx3.audio.NotenrTools.getPartsnotesMp3files = function(partsnotes,partsSounds,path,soundFallback) {
+	if(soundFallback == null) soundFallback = "piano";
+	if(path == null) path = "sounds/";
+	var result = [];
+	if(partsSounds == null) partsSounds = [];
+	while(partsSounds.length < partsnotes.length) partsSounds.push(soundFallback);
+	var _g = 0;
+	while(_g < partsnotes.length) {
+		var items = partsnotes[_g];
+		++_g;
+		var sound = partsSounds.shift();
+		var soundPath = "" + path + sound + "/";
+		var _g1 = 0;
+		while(_g1 < items.length) {
+			var item = items[_g1];
+			++_g1;
+			var note = item.note;
+			var midinr = item.midinr;
+			var filename = "" + path + sound + "/" + midinr + ".mp3";
+			item.mp3file = filename;
+			if(!Lambda.has(result,filename)) result.push(filename);
+		}
+	}
+	return result;
+};
+nx3.audio.NotenrTools.getPartsnotes = function(nbars,tempo,resolveTies) {
+	if(resolveTies == null) resolveTies = true;
+	if(tempo == null) tempo = 60;
+	var partsnotes = new nx3.audio.NotenrBarsCalculator(nbars).getPartsNotenrItems();
+	nx3.audio.NotenrTools.calculateSoundLengths(partsnotes,null,tempo);
+	partsnotes = nx3.audio.NotenrTools.resolveTies(partsnotes);
+	return partsnotes;
+};
 nx3.audio.NotenrTools.prototype = {
 	getNotenr: function(level) {
 		var _g = this.clef;
@@ -10360,6 +10487,982 @@ nx3.xml.VoiceXML.test = function(item) {
 };
 var thx = {};
 thx.core = {};
+thx.core.Arrays = function() { };
+thx.core.Arrays.__name__ = true;
+thx.core.Arrays.after = function(array,element) {
+	return array.slice(HxOverrides.indexOf(array,element,0) + 1);
+};
+thx.core.Arrays.all = function(arr,predicate) {
+	var _g = 0;
+	while(_g < arr.length) {
+		var item = arr[_g];
+		++_g;
+		if(!predicate(item)) return false;
+	}
+	return true;
+};
+thx.core.Arrays.any = function(arr,predicate) {
+	var _g = 0;
+	while(_g < arr.length) {
+		var item = arr[_g];
+		++_g;
+		if(predicate(item)) return true;
+	}
+	return false;
+};
+thx.core.Arrays.at = function(arr,indexes) {
+	return indexes.map(function(i) {
+		return arr[i];
+	});
+};
+thx.core.Arrays.before = function(array,element) {
+	return array.slice(0,HxOverrides.indexOf(array,element,0));
+};
+thx.core.Arrays.compact = function(arr) {
+	return arr.filter(function(v) {
+		return null != v;
+	});
+};
+thx.core.Arrays.contains = function(array,element,eq) {
+	if(null == eq) return HxOverrides.indexOf(array,element,0) >= 0; else {
+		var _g1 = 0;
+		var _g = array.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(eq(array[i],element)) return true;
+		}
+		return false;
+	}
+};
+thx.core.Arrays.cross = function(a,b) {
+	var r = [];
+	var _g = 0;
+	while(_g < a.length) {
+		var va = a[_g];
+		++_g;
+		var _g1 = 0;
+		while(_g1 < b.length) {
+			var vb = b[_g1];
+			++_g1;
+			r.push([va,vb]);
+		}
+	}
+	return r;
+};
+thx.core.Arrays.crossMulti = function(array) {
+	var acopy = array.slice();
+	var result = acopy.shift().map(function(v) {
+		return [v];
+	});
+	while(acopy.length > 0) {
+		var array1 = acopy.shift();
+		var tresult = result;
+		result = [];
+		var _g = 0;
+		while(_g < array1.length) {
+			var v1 = array1[_g];
+			++_g;
+			var _g1 = 0;
+			while(_g1 < tresult.length) {
+				var ar = tresult[_g1];
+				++_g1;
+				var t = ar.slice();
+				t.push(v1);
+				result.push(t);
+			}
+		}
+	}
+	return result;
+};
+thx.core.Arrays.eachPair = function(array,callback) {
+	var _g1 = 0;
+	var _g = array.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var _g3 = i;
+		var _g2 = array.length;
+		while(_g3 < _g2) {
+			var j = _g3++;
+			if(!callback(array[i],array[j])) return;
+		}
+	}
+};
+thx.core.Arrays.equals = function(a,b,equality) {
+	if(a == null || b == null || a.length != b.length) return false;
+	if(null == equality) equality = thx.core.Functions.equality;
+	var _g1 = 0;
+	var _g = a.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		if(!equality(a[i],b[i])) return false;
+	}
+	return true;
+};
+thx.core.Arrays.extract = function(a,predicate) {
+	var _g1 = 0;
+	var _g = a.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		if(predicate(a[i])) return a.splice(i,1)[0];
+	}
+	return null;
+};
+thx.core.Arrays.find = function(array,predicate) {
+	var _g = 0;
+	while(_g < array.length) {
+		var item = array[_g];
+		++_g;
+		if(predicate(item)) return item;
+	}
+	return null;
+};
+thx.core.Arrays.findLast = function(array,predicate) {
+	var len = array.length;
+	var j;
+	var _g = 0;
+	while(_g < len) {
+		var i = _g++;
+		j = len - i - 1;
+		if(predicate(array[j])) return array[j];
+	}
+	return null;
+};
+thx.core.Arrays.first = function(array) {
+	return array[0];
+};
+thx.core.Arrays.flatMap = function(array,callback) {
+	return thx.core.Arrays.flatten(array.map(callback));
+};
+thx.core.Arrays.flatten = function(array) {
+	return Array.prototype.concat.apply([],array);
+};
+thx.core.Arrays.from = function(array,element) {
+	return array.slice(HxOverrides.indexOf(array,element,0));
+};
+thx.core.Arrays.head = function(array) {
+	return array[0];
+};
+thx.core.Arrays.ifEmpty = function(value,alt) {
+	if(null != value && 0 != value.length) return value; else return alt;
+};
+thx.core.Arrays.initial = function(array) {
+	return array.slice(0,array.length - 1);
+};
+thx.core.Arrays.isEmpty = function(array) {
+	return array.length == 0;
+};
+thx.core.Arrays.last = function(array) {
+	return array[array.length - 1];
+};
+thx.core.Arrays.mapi = function(array,callback) {
+	var r = [];
+	var _g1 = 0;
+	var _g = array.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		r.push(callback(array[i],i));
+	}
+	return r;
+};
+thx.core.Arrays.mapRight = function(array,callback) {
+	var i = array.length;
+	var result = [];
+	while(--i >= 0) result.push(callback(array[i]));
+	return result;
+};
+thx.core.Arrays.order = function(array,sort) {
+	var n = array.slice();
+	n.sort(sort);
+	return n;
+};
+thx.core.Arrays.pull = function(array,toRemove,equality) {
+	var _g = 0;
+	while(_g < toRemove.length) {
+		var item = toRemove[_g];
+		++_g;
+		thx.core.Arrays.removeAll(array,item,equality);
+	}
+};
+thx.core.Arrays.pushIf = function(array,condition,value) {
+	if(condition) array.push(value);
+	return array;
+};
+thx.core.Arrays.reduce = function(array,callback,initial) {
+	return array.reduce(callback,initial);
+};
+thx.core.Arrays.resize = function(array,length,fill) {
+	while(array.length < length) array.push(fill);
+	array.splice(length,array.length - length);
+	return array;
+};
+thx.core.Arrays.reducei = function(array,callback,initial) {
+	return array.reduce(callback,initial);
+};
+thx.core.Arrays.reduceRight = function(array,callback,initial) {
+	var i = array.length;
+	while(--i >= 0) initial = callback(initial,array[i]);
+	return initial;
+};
+thx.core.Arrays.removeAll = function(array,element,equality) {
+	if(null == equality) equality = thx.core.Functions.equality;
+	var i = array.length;
+	while(--i >= 0) if(equality(array[i],element)) array.splice(i,1);
+};
+thx.core.Arrays.rest = function(array) {
+	return array.slice(1);
+};
+thx.core.Arrays.sample = function(array,n) {
+	n = thx.core.Ints.min(n,array.length);
+	var copy = array.slice();
+	var result = [];
+	var _g = 0;
+	while(_g < n) {
+		var i = _g++;
+		result.push(copy.splice(Std.random(copy.length),1)[0]);
+	}
+	return result;
+};
+thx.core.Arrays.sampleOne = function(array) {
+	return array[Std.random(array.length)];
+};
+thx.core.Arrays.shuffle = function(a) {
+	var t = thx.core.Ints.range(a.length);
+	var array = [];
+	while(t.length > 0) {
+		var pos = Std.random(t.length);
+		var index = t[pos];
+		t.splice(pos,1);
+		array.push(a[index]);
+	}
+	return array;
+};
+thx.core.Arrays.take = function(arr,n) {
+	return arr.slice(0,n);
+};
+thx.core.Arrays.takeLast = function(arr,n) {
+	return arr.slice(arr.length - n);
+};
+thx.core.Arrays.rotate = function(arr) {
+	var result = [];
+	var _g1 = 0;
+	var _g = arr[0].length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var row = [];
+		result.push(row);
+		var _g3 = 0;
+		var _g2 = arr.length;
+		while(_g3 < _g2) {
+			var j = _g3++;
+			row.push(arr[j][i]);
+		}
+	}
+	return result;
+};
+thx.core.Arrays.zip = function(array1,array2) {
+	var length = thx.core.Ints.min(array1.length,array2.length);
+	var array = [];
+	var _g = 0;
+	while(_g < length) {
+		var i = _g++;
+		array.push({ _0 : array1[i], _1 : array2[i]});
+	}
+	return array;
+};
+thx.core.Arrays.zip3 = function(array1,array2,array3) {
+	var length = thx.core.ArrayInts.min([array1.length,array2.length,array3.length]);
+	var array = [];
+	var _g = 0;
+	while(_g < length) {
+		var i = _g++;
+		array.push({ _0 : array1[i], _1 : array2[i], _2 : array3[i]});
+	}
+	return array;
+};
+thx.core.Arrays.zip4 = function(array1,array2,array3,array4) {
+	var length = thx.core.ArrayInts.min([array1.length,array2.length,array3.length,array4.length]);
+	var array = [];
+	var _g = 0;
+	while(_g < length) {
+		var i = _g++;
+		array.push({ _0 : array1[i], _1 : array2[i], _2 : array3[i], _3 : array4[i]});
+	}
+	return array;
+};
+thx.core.Arrays.zip5 = function(array1,array2,array3,array4,array5) {
+	var length = thx.core.ArrayInts.min([array1.length,array2.length,array3.length,array4.length,array5.length]);
+	var array = [];
+	var _g = 0;
+	while(_g < length) {
+		var i = _g++;
+		array.push({ _0 : array1[i], _1 : array2[i], _2 : array3[i], _3 : array4[i], _4 : array5[i]});
+	}
+	return array;
+};
+thx.core.Arrays.unzip = function(array) {
+	var a1 = [];
+	var a2 = [];
+	array.map(function(t) {
+		a1.push(t._0);
+		a2.push(t._1);
+	});
+	return { _0 : a1, _1 : a2};
+};
+thx.core.Arrays.unzip3 = function(array) {
+	var a1 = [];
+	var a2 = [];
+	var a3 = [];
+	array.map(function(t) {
+		a1.push(t._0);
+		a2.push(t._1);
+		a3.push(t._2);
+	});
+	return { _0 : a1, _1 : a2, _2 : a3};
+};
+thx.core.Arrays.unzip4 = function(array) {
+	var a1 = [];
+	var a2 = [];
+	var a3 = [];
+	var a4 = [];
+	array.map(function(t) {
+		a1.push(t._0);
+		a2.push(t._1);
+		a3.push(t._2);
+		a4.push(t._3);
+	});
+	return { _0 : a1, _1 : a2, _2 : a3, _3 : a4};
+};
+thx.core.Arrays.unzip5 = function(array) {
+	var a1 = [];
+	var a2 = [];
+	var a3 = [];
+	var a4 = [];
+	var a5 = [];
+	array.map(function(t) {
+		a1.push(t._0);
+		a2.push(t._1);
+		a3.push(t._2);
+		a4.push(t._3);
+		a5.push(t._4);
+	});
+	return { _0 : a1, _1 : a2, _2 : a3, _3 : a4, _4 : a5};
+};
+thx.core.ArrayFloats = function() { };
+thx.core.ArrayFloats.__name__ = true;
+thx.core.ArrayFloats.average = function(arr) {
+	return thx.core.ArrayFloats.sum(arr) / arr.length;
+};
+thx.core.ArrayFloats.compact = function(arr) {
+	return arr.filter(function(v) {
+		return null != v && Math.isFinite(v);
+	});
+};
+thx.core.ArrayFloats.max = function(arr) {
+	if(arr.length == 0) return null; else return arr.reduce(function(max,v) {
+		if(v > max) return v; else return max;
+	},arr[0]);
+};
+thx.core.ArrayFloats.min = function(arr) {
+	if(arr.length == 0) return null; else return arr.reduce(function(min,v) {
+		if(v < min) return v; else return min;
+	},arr[0]);
+};
+thx.core.ArrayFloats.resize = function(array,length,fill) {
+	if(fill == null) fill = 0.0;
+	while(array.length < length) array.push(fill);
+	array.splice(length,array.length - length);
+	return array;
+};
+thx.core.ArrayFloats.sum = function(arr) {
+	return arr.reduce(function(tot,v) {
+		return tot + v;
+	},0.0);
+};
+thx.core.ArrayInts = function() { };
+thx.core.ArrayInts.__name__ = true;
+thx.core.ArrayInts.average = function(arr) {
+	return thx.core.ArrayInts.sum(arr) / arr.length;
+};
+thx.core.ArrayInts.max = function(arr) {
+	if(arr.length == 0) return null; else return arr.reduce(function(max,v) {
+		if(v > max) return v; else return max;
+	},arr[0]);
+};
+thx.core.ArrayInts.min = function(arr) {
+	if(arr.length == 0) return null; else return arr.reduce(function(min,v) {
+		if(v < min) return v; else return min;
+	},arr[0]);
+};
+thx.core.ArrayInts.resize = function(array,length,fill) {
+	if(fill == null) fill = 0;
+	while(array.length < length) array.push(fill);
+	array.splice(length,array.length - length);
+	return array;
+};
+thx.core.ArrayInts.sum = function(arr) {
+	return arr.reduce(function(tot,v) {
+		return tot + v;
+	},0);
+};
+thx.core.ArrayStrings = function() { };
+thx.core.ArrayStrings.__name__ = true;
+thx.core.ArrayStrings.compact = function(arr) {
+	return arr.filter(function(v) {
+		return !thx.core.Strings.isEmpty(v);
+	});
+};
+thx.core.ArrayStrings.max = function(arr) {
+	if(arr.length == 0) return null; else return arr.reduce(function(max,v) {
+		if(v > max) return v; else return max;
+	},arr[0]);
+};
+thx.core.ArrayStrings.min = function(arr) {
+	if(arr.length == 0) return null; else return arr.reduce(function(min,v) {
+		if(v < min) return v; else return min;
+	},arr[0]);
+};
+thx.core.Functions0 = function() { };
+thx.core.Functions0.__name__ = true;
+thx.core.Functions0.after = function(callback,n) {
+	return function() {
+		if(--n == 0) callback();
+	};
+};
+thx.core.Functions0.join = function(fa,fb) {
+	return function() {
+		fa();
+		fb();
+	};
+};
+thx.core.Functions0.once = function(f) {
+	return function() {
+		var t = f;
+		f = thx.core.Functions.noop;
+		t();
+	};
+};
+thx.core.Functions0.negate = function(callback) {
+	return function() {
+		return !callback();
+	};
+};
+thx.core.Functions0.times = function(n,callback) {
+	return function() {
+		return thx.core.Ints.range(n).map(function(_) {
+			return callback();
+		});
+	};
+};
+thx.core.Functions0.timesi = function(n,callback) {
+	return function() {
+		return thx.core.Ints.range(n).map(function(i) {
+			return callback(i);
+		});
+	};
+};
+thx.core.Functions1 = function() { };
+thx.core.Functions1.__name__ = true;
+thx.core.Functions1.compose = function(fa,fb) {
+	return function(v) {
+		return fa(fb(v));
+	};
+};
+thx.core.Functions1.join = function(fa,fb) {
+	return function(v) {
+		fa(v);
+		fb(v);
+	};
+};
+thx.core.Functions1.memoize = function(callback,resolver) {
+	if(null == resolver) resolver = function(v) {
+		return "" + Std.string(v);
+	};
+	var map = new haxe.ds.StringMap();
+	return function(v1) {
+		var key = resolver(v1);
+		if(map.exists(key)) return map.get(key);
+		var result = callback(v1);
+		map.set(key,result);
+		return result;
+	};
+};
+thx.core.Functions1.negate = function(callback) {
+	return function(v) {
+		return !callback(v);
+	};
+};
+thx.core.Functions1.noop = function(_) {
+};
+thx.core.Functions1.times = function(n,callback) {
+	return function(value) {
+		return thx.core.Ints.range(n).map(function(_) {
+			return callback(value);
+		});
+	};
+};
+thx.core.Functions1.timesi = function(n,callback) {
+	return function(value) {
+		return thx.core.Ints.range(n).map(function(i) {
+			return callback(value,i);
+		});
+	};
+};
+thx.core.Functions1.swapArguments = function(callback) {
+	return function(a2,a1) {
+		return callback(a1,a2);
+	};
+};
+thx.core.Functions2 = function() { };
+thx.core.Functions2.__name__ = true;
+thx.core.Functions2.memoize = function(callback,resolver) {
+	if(null == resolver) resolver = function(v1,v2) {
+		return "" + Std.string(v1) + ":" + Std.string(v2);
+	};
+	var map = new haxe.ds.StringMap();
+	return function(v11,v21) {
+		var key = resolver(v11,v21);
+		if(map.exists(key)) return map.get(key);
+		var result = callback(v11,v21);
+		map.set(key,result);
+		return result;
+	};
+};
+thx.core.Functions2.negate = function(callback) {
+	return function(v1,v2) {
+		return !callback(v1,v2);
+	};
+};
+thx.core.Functions3 = function() { };
+thx.core.Functions3.__name__ = true;
+thx.core.Functions3.memoize = function(callback,resolver) {
+	if(null == resolver) resolver = function(v1,v2,v3) {
+		return "" + Std.string(v1) + ":" + Std.string(v2) + ":" + Std.string(v3);
+	};
+	var map = new haxe.ds.StringMap();
+	return function(v11,v21,v31) {
+		var key = resolver(v11,v21,v31);
+		if(map.exists(key)) return map.get(key);
+		var result = callback(v11,v21,v31);
+		map.set(key,result);
+		return result;
+	};
+};
+thx.core.Functions3.negate = function(callback) {
+	return function(v1,v2,v3) {
+		return !callback(v1,v2,v3);
+	};
+};
+thx.core.Functions = function() { };
+thx.core.Functions.__name__ = true;
+thx.core.Functions.constant = function(v) {
+	return function() {
+		return v;
+	};
+};
+thx.core.Functions.equality = function(a,b) {
+	return a == b;
+};
+thx.core.Functions.identity = function(value) {
+	return value;
+};
+thx.core.Functions.noop = function() {
+};
+thx.core.Ints = function() { };
+thx.core.Ints.__name__ = true;
+thx.core.Ints.abs = function(v) {
+	if(v < 0) return -v; else return v;
+};
+thx.core.Ints.canParse = function(s) {
+	return thx.core.Ints.pattern_parse.match(s);
+};
+thx.core.Ints.clamp = function(v,min,max) {
+	if(v < min) return min; else if(v > max) return max; else return v;
+};
+thx.core.Ints.clampSym = function(v,max) {
+	return thx.core.Ints.clamp(v,-max,max);
+};
+thx.core.Ints.compare = function(a,b) {
+	return a - b;
+};
+thx.core.Ints.interpolate = function(f,a,b) {
+	return Math.round(a + (b - a) * f);
+};
+thx.core.Ints.isEven = function(v) {
+	return v % 2 == 0;
+};
+thx.core.Ints.isOdd = function(v) {
+	return v % 2 != 0;
+};
+thx.core.Ints.max = function(a,b) {
+	if(a > b) return a; else return b;
+};
+thx.core.Ints.min = function(a,b) {
+	if(a < b) return a; else return b;
+};
+thx.core.Ints.parse = function(s,base) {
+	var v = parseInt(s,base);
+	if(Math.isNaN(v)) return null; else return v;
+};
+thx.core.Ints.random = function(min,max) {
+	if(min == null) min = 0;
+	return Std.random(max + 1) + min;
+};
+thx.core.Ints.range = function(start,stop,step) {
+	if(step == null) step = 1;
+	if(null == stop) {
+		stop = start;
+		start = 0;
+	}
+	if((stop - start) / step == Math.POSITIVE_INFINITY) throw "infinite range";
+	var range = [];
+	var i = -1;
+	var j;
+	if(step < 0) while((j = start + step * ++i) > stop) range.push(j); else while((j = start + step * ++i) < stop) range.push(j);
+	return range;
+};
+thx.core.Ints.toString = function(value,base) {
+	return value.toString(base);
+};
+thx.core.Ints.sign = function(value) {
+	if(value < 0) return -1; else return 1;
+};
+thx.core.Ints.wrapCircular = function(v,max) {
+	v = v % max;
+	if(v < 0) v += max;
+	return v;
+};
+thx.core.Nil = { __ename__ : true, __constructs__ : ["nil"] };
+thx.core.Nil.nil = ["nil",0];
+thx.core.Nil.nil.toString = $estr;
+thx.core.Nil.nil.__enum__ = thx.core.Nil;
+thx.core.Strings = function() { };
+thx.core.Strings.__name__ = true;
+thx.core.Strings.after = function(value,searchFor) {
+	var pos = value.indexOf(searchFor);
+	if(pos < 0) return ""; else return value.substring(pos + searchFor.length);
+};
+thx.core.Strings.capitalize = function(s) {
+	return s.substring(0,1).toUpperCase() + s.substring(1);
+};
+thx.core.Strings.capitalizeWords = function(value,whiteSpaceOnly) {
+	if(whiteSpaceOnly == null) whiteSpaceOnly = false;
+	if(whiteSpaceOnly) return thx.core.Strings.UCWORDSWS.map(value.substring(0,1).toUpperCase() + value.substring(1),thx.core.Strings.upperMatch); else return thx.core.Strings.UCWORDS.map(value.substring(0,1).toUpperCase() + value.substring(1),thx.core.Strings.upperMatch);
+};
+thx.core.Strings.collapse = function(value) {
+	return thx.core.Strings.WSG.replace(StringTools.trim(value)," ");
+};
+thx.core.Strings.compare = function(a,b) {
+	if(a < b) return -1; else if(a > b) return 1; else return 0;
+};
+thx.core.Strings.contains = function(s,test) {
+	return s.indexOf(test) >= 0;
+};
+thx.core.Strings.dasherize = function(s) {
+	return StringTools.replace(s,"_","-");
+};
+thx.core.Strings.ellipsis = function(s,maxlen,symbol) {
+	if(symbol == null) symbol = "...";
+	if(maxlen == null) maxlen = 20;
+	if(s.length > maxlen) return s.substring(0,symbol.length > maxlen - symbol.length?symbol.length:maxlen - symbol.length) + symbol; else return s;
+};
+thx.core.Strings.filter = function(s,predicate) {
+	return s.split("").filter(predicate).join("");
+};
+thx.core.Strings.filterCharcode = function(s,predicate) {
+	return thx.core.Strings.toCharcodeArray(s).filter(predicate).map(function(i) {
+		return String.fromCharCode(i);
+	}).join("");
+};
+thx.core.Strings.from = function(value,searchFor) {
+	var pos = value.indexOf(searchFor);
+	if(pos < 0) return ""; else return value.substring(pos);
+};
+thx.core.Strings.humanize = function(s) {
+	return StringTools.replace(thx.core.Strings.underscore(s),"_"," ");
+};
+thx.core.Strings.isAlphaNum = function(value) {
+	return thx.core.Strings.ALPHANUM.match(value);
+};
+thx.core.Strings.isLowerCase = function(value) {
+	return value.toLowerCase() == value;
+};
+thx.core.Strings.isUpperCase = function(value) {
+	return value.toUpperCase() == value;
+};
+thx.core.Strings.ifEmpty = function(value,alt) {
+	if(null != value && "" != value) return value; else return alt;
+};
+thx.core.Strings.isDigitsOnly = function(value) {
+	return thx.core.Strings.DIGITS.match(value);
+};
+thx.core.Strings.isEmpty = function(value) {
+	return value == null || value == "";
+};
+thx.core.Strings.iterator = function(s) {
+	var _this = s.split("");
+	return HxOverrides.iter(_this);
+};
+thx.core.Strings.map = function(value,callback) {
+	return value.split("").map(callback);
+};
+thx.core.Strings.remove = function(value,toremove) {
+	return StringTools.replace(value,toremove,"");
+};
+thx.core.Strings.removeAfter = function(value,toremove) {
+	if(StringTools.endsWith(value,toremove)) return value.substring(0,value.length - toremove.length); else return value;
+};
+thx.core.Strings.removeBefore = function(value,toremove) {
+	if(StringTools.startsWith(value,toremove)) return value.substring(toremove.length); else return value;
+};
+thx.core.Strings.repeat = function(s,times) {
+	return ((function($this) {
+		var $r;
+		var _g = [];
+		{
+			var _g1 = 0;
+			while(_g1 < times) {
+				var i = _g1++;
+				_g.push(s);
+			}
+		}
+		$r = _g;
+		return $r;
+	}(this))).join("");
+};
+thx.core.Strings.reverse = function(s) {
+	var arr = s.split("");
+	arr.reverse();
+	return arr.join("");
+};
+thx.core.Strings.stripTags = function(s) {
+	return thx.core.Strings.STRIPTAGS.replace(s,"");
+};
+thx.core.Strings.surround = function(s,left,right) {
+	return "" + left + s + (null == right?left:right);
+};
+thx.core.Strings.toArray = function(s) {
+	return s.split("");
+};
+thx.core.Strings.toCharcodeArray = function(s) {
+	return thx.core.Strings.map(s,function(s1) {
+		return HxOverrides.cca(s1,0);
+	});
+};
+thx.core.Strings.toChunks = function(s,len) {
+	var chunks = [];
+	while(s.length > 0) {
+		chunks.push(s.substring(0,len));
+		s = s.substring(len);
+	}
+	return chunks;
+};
+thx.core.Strings.trimChars = function(value,charlist) {
+	return thx.core.Strings.trimCharsRight(thx.core.Strings.trimCharsLeft(value,charlist),charlist);
+};
+thx.core.Strings.trimCharsLeft = function(value,charlist) {
+	var pos = 0;
+	var _g1 = 0;
+	var _g = value.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		if(thx.core.Strings.contains(charlist,value.charAt(i))) pos++; else break;
+	}
+	return value.substring(pos);
+};
+thx.core.Strings.trimCharsRight = function(value,charlist) {
+	var len = value.length;
+	var pos = len;
+	var i;
+	var _g = 0;
+	while(_g < len) {
+		var j = _g++;
+		i = len - j - 1;
+		if(thx.core.Strings.contains(charlist,value.charAt(i))) pos = i; else break;
+	}
+	return value.substring(0,pos);
+};
+thx.core.Strings.underscore = function(s) {
+	s = new EReg("::","g").replace(s,"/");
+	s = new EReg("([A-Z]+)([A-Z][a-z])","g").replace(s,"$1_$2");
+	s = new EReg("([a-z\\d])([A-Z])","g").replace(s,"$1_$2");
+	s = new EReg("-","g").replace(s,"_");
+	return s.toLowerCase();
+};
+thx.core.Strings.upTo = function(value,searchFor) {
+	var pos = value.indexOf(searchFor);
+	if(pos < 0) return value; else return value.substring(0,pos);
+};
+thx.core.Strings.wrapColumns = function(s,columns,indent,newline) {
+	if(newline == null) newline = "\n";
+	if(indent == null) indent = "";
+	if(columns == null) columns = 78;
+	return thx.core.Strings.SPLIT_LINES.split(s).map(function(part) {
+		return thx.core.Strings.wrapLine(StringTools.trim(thx.core.Strings.WSG.replace(part," ")),columns,indent,newline);
+	}).join(newline);
+};
+thx.core.Strings.upperMatch = function(re) {
+	return re.matched(0).toUpperCase();
+};
+thx.core.Strings.wrapLine = function(s,columns,indent,newline) {
+	var parts = [];
+	var pos = 0;
+	var len = s.length;
+	var ilen = indent.length;
+	columns -= ilen;
+	while(true) {
+		if(pos + columns >= len - ilen) {
+			parts.push(s.substring(pos));
+			break;
+		}
+		var i = 0;
+		while(!StringTools.isSpace(s,pos + columns - i) && i < columns) i++;
+		if(i == columns) {
+			i = 0;
+			while(!StringTools.isSpace(s,pos + columns + i) && pos + columns + i < len) i++;
+			parts.push(s.substring(pos,pos + columns + i));
+			pos += columns + i + 1;
+		} else {
+			parts.push(s.substring(pos,pos + columns - i));
+			pos += columns - i + 1;
+		}
+	}
+	return indent + parts.join(newline + indent);
+};
+thx.core._Tuple = {};
+thx.core._Tuple.Tuple0_Impl_ = function() { };
+thx.core._Tuple.Tuple0_Impl_.__name__ = true;
+thx.core._Tuple.Tuple0_Impl_._new = function() {
+	return thx.core.Nil.nil;
+};
+thx.core._Tuple.Tuple0_Impl_["with"] = function(this1,v) {
+	return v;
+};
+thx.core._Tuple.Tuple0_Impl_.toString = function(this1) {
+	return "Tuple0()";
+};
+thx.core._Tuple.Tuple0_Impl_.toNil = function(this1) {
+	return this1;
+};
+thx.core._Tuple.Tuple0_Impl_.nilToTuple = function(v) {
+	return thx.core.Nil.nil;
+};
+thx.core._Tuple.Tuple1_Impl_ = function() { };
+thx.core._Tuple.Tuple1_Impl_.__name__ = true;
+thx.core._Tuple.Tuple1_Impl_._new = function(_0) {
+	return _0;
+};
+thx.core._Tuple.Tuple1_Impl_.get__0 = function(this1) {
+	return this1;
+};
+thx.core._Tuple.Tuple1_Impl_["with"] = function(this1,v) {
+	return { _0 : this1, _1 : v};
+};
+thx.core._Tuple.Tuple1_Impl_.toString = function(this1) {
+	return "Tuple1(" + Std.string(this1) + ")";
+};
+thx.core._Tuple.Tuple2_Impl_ = function() { };
+thx.core._Tuple.Tuple2_Impl_.__name__ = true;
+thx.core._Tuple.Tuple2_Impl_._new = function(_0,_1) {
+	return { _0 : _0, _1 : _1};
+};
+thx.core._Tuple.Tuple2_Impl_.get_left = function(this1) {
+	return this1._0;
+};
+thx.core._Tuple.Tuple2_Impl_.get_right = function(this1) {
+	return this1._1;
+};
+thx.core._Tuple.Tuple2_Impl_.flip = function(this1) {
+	return { _0 : this1._1, _1 : this1._0};
+};
+thx.core._Tuple.Tuple2_Impl_.dropLeft = function(this1) {
+	return this1._1;
+};
+thx.core._Tuple.Tuple2_Impl_.dropRight = function(this1) {
+	return this1._0;
+};
+thx.core._Tuple.Tuple2_Impl_["with"] = function(this1,v) {
+	return { _0 : this1._0, _1 : this1._1, _2 : v};
+};
+thx.core._Tuple.Tuple2_Impl_.toString = function(this1) {
+	return "Tuple2(" + Std.string(this1._0) + "," + Std.string(this1._1) + ")";
+};
+thx.core._Tuple.Tuple3_Impl_ = function() { };
+thx.core._Tuple.Tuple3_Impl_.__name__ = true;
+thx.core._Tuple.Tuple3_Impl_._new = function(_0,_1,_2) {
+	return { _0 : _0, _1 : _1, _2 : _2};
+};
+thx.core._Tuple.Tuple3_Impl_.flip = function(this1) {
+	return { _0 : this1._2, _1 : this1._1, _2 : this1._0};
+};
+thx.core._Tuple.Tuple3_Impl_.dropLeft = function(this1) {
+	return { _0 : this1._1, _1 : this1._2};
+};
+thx.core._Tuple.Tuple3_Impl_.dropRight = function(this1) {
+	return { _0 : this1._0, _1 : this1._1};
+};
+thx.core._Tuple.Tuple3_Impl_["with"] = function(this1,v) {
+	return { _0 : this1._0, _1 : this1._1, _2 : this1._2, _3 : v};
+};
+thx.core._Tuple.Tuple3_Impl_.toString = function(this1) {
+	return "Tuple3(" + Std.string(this1._0) + "," + Std.string(this1._1) + "," + Std.string(this1._2) + ")";
+};
+thx.core._Tuple.Tuple4_Impl_ = function() { };
+thx.core._Tuple.Tuple4_Impl_.__name__ = true;
+thx.core._Tuple.Tuple4_Impl_._new = function(_0,_1,_2,_3) {
+	return { _0 : _0, _1 : _1, _2 : _2, _3 : _3};
+};
+thx.core._Tuple.Tuple4_Impl_.flip = function(this1) {
+	return { _0 : this1._3, _1 : this1._2, _2 : this1._1, _3 : this1._0};
+};
+thx.core._Tuple.Tuple4_Impl_.dropLeft = function(this1) {
+	return { _0 : this1._1, _1 : this1._2, _2 : this1._3};
+};
+thx.core._Tuple.Tuple4_Impl_.dropRight = function(this1) {
+	return { _0 : this1._0, _1 : this1._1, _2 : this1._2};
+};
+thx.core._Tuple.Tuple4_Impl_["with"] = function(this1,v) {
+	return { _0 : this1._0, _1 : this1._1, _2 : this1._2, _3 : this1._3, _4 : v};
+};
+thx.core._Tuple.Tuple4_Impl_.toString = function(this1) {
+	return "Tuple4(" + Std.string(this1._0) + "," + Std.string(this1._1) + "," + Std.string(this1._2) + "," + Std.string(this1._3) + ")";
+};
+thx.core._Tuple.Tuple5_Impl_ = function() { };
+thx.core._Tuple.Tuple5_Impl_.__name__ = true;
+thx.core._Tuple.Tuple5_Impl_._new = function(_0,_1,_2,_3,_4) {
+	return { _0 : _0, _1 : _1, _2 : _2, _3 : _3, _4 : _4};
+};
+thx.core._Tuple.Tuple5_Impl_.flip = function(this1) {
+	return { _0 : this1._4, _1 : this1._3, _2 : this1._2, _3 : this1._1, _4 : this1._0};
+};
+thx.core._Tuple.Tuple5_Impl_.dropLeft = function(this1) {
+	return { _0 : this1._1, _1 : this1._2, _2 : this1._3, _3 : this1._4};
+};
+thx.core._Tuple.Tuple5_Impl_.dropRight = function(this1) {
+	return { _0 : this1._0, _1 : this1._1, _2 : this1._2, _3 : this1._3};
+};
+thx.core._Tuple.Tuple5_Impl_["with"] = function(this1,v) {
+	return { _0 : this1._0, _1 : this1._1, _2 : this1._2, _3 : this1._3, _4 : this1._4, _5 : v};
+};
+thx.core._Tuple.Tuple5_Impl_.toString = function(this1) {
+	return "Tuple5(" + Std.string(this1._0) + "," + Std.string(this1._1) + "," + Std.string(this1._2) + "," + Std.string(this1._3) + "," + Std.string(this1._4) + ")";
+};
+thx.core._Tuple.Tuple6_Impl_ = function() { };
+thx.core._Tuple.Tuple6_Impl_.__name__ = true;
+thx.core._Tuple.Tuple6_Impl_._new = function(_0,_1,_2,_3,_4,_5) {
+	return { _0 : _0, _1 : _1, _2 : _2, _3 : _3, _4 : _4, _5 : _5};
+};
+thx.core._Tuple.Tuple6_Impl_.flip = function(this1) {
+	return { _0 : this1._5, _1 : this1._4, _2 : this1._3, _3 : this1._2, _4 : this1._1, _5 : this1._0};
+};
+thx.core._Tuple.Tuple6_Impl_.dropLeft = function(this1) {
+	return { _0 : this1._1, _1 : this1._2, _2 : this1._3, _3 : this1._4, _4 : this1._5};
+};
+thx.core._Tuple.Tuple6_Impl_.dropRight = function(this1) {
+	return { _0 : this1._0, _1 : this1._1, _2 : this1._2, _3 : this1._3, _4 : this1._4};
+};
+thx.core._Tuple.Tuple6_Impl_.toString = function(this1) {
+	return "Tuple6(" + Std.string(this1._0) + "," + Std.string(this1._1) + "," + Std.string(this1._2) + "," + Std.string(this1._3) + "," + Std.string(this1._4) + "," + Std.string(this1._5) + ")";
+};
 thx.core.UUID = function() { };
 thx.core.UUID.__name__ = true;
 thx.core.UUID.random = function() {
@@ -10987,6 +12090,39 @@ Xml.ProcessingInstruction = "processingInstruction";
 Xml.Document = "document";
 var q = window.jQuery;
 js.JQuery = q;
+
+      // Production steps of ECMA-262, Edition 5, 15.4.4.21
+      // Reference: http://es5.github.io/#x15.4.4.21
+      if (!Array.prototype.reduce) {
+        Array.prototype.reduce = function(callback /*, initialValue*/) {
+          'use strict';
+          if (this == null) {
+            throw new TypeError('Array.prototype.reduce called on null or undefined');
+          }
+          if (typeof callback !== 'function') {
+            throw new TypeError(callback + ' is not a function');
+          }
+          var t = Object(this), len = t.length >>> 0, k = 0, value;
+          if (arguments.length == 2) {
+            value = arguments[1];
+          } else {
+            while (k < len && ! k in t) {
+              k++;
+            }
+            if (k >= len) {
+              throw new TypeError('Reduce of empty array with no initial value');
+            }
+            value = t[k++];
+          }
+          for (; k < len; k++) {
+            if (k in t) {
+              value = callback(value, t[k], k, t);
+            }
+          }
+          return value;
+        };
+      }
+    ;
 audiotools.Wav16Tools.SAMPLERATE = 44100;
 haxe.ds.ObjectMap.count = 0;
 haxe.xml.Parser.escapes = (function($this) {
@@ -11183,6 +12319,15 @@ nx3.xml.VoiceXML.XVOICE = "voice";
 nx3.xml.VoiceXML.XVOICE_TYPE = "type";
 nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
 nx3.xml.VoiceXML.XVOICE_DIRECTION = "direction";
+thx.core.Ints.pattern_parse = new EReg("^[+-]?(\\d+|0x[0-9A-F]+)$","i");
+thx.core.Ints.BASE = "0123456789abcdefghijklmnopqrstuvwxyz";
+thx.core.Strings.UCWORDS = new EReg("[^a-zA-Z]([a-z])","g");
+thx.core.Strings.UCWORDSWS = new EReg("\\s[a-z]","g");
+thx.core.Strings.ALPHANUM = new EReg("^[a-z0-9]+$","i");
+thx.core.Strings.DIGITS = new EReg("^[0-9]+$","");
+thx.core.Strings.STRIPTAGS = new EReg("</?[a-z]+[^>]*?/?>","gi");
+thx.core.Strings.WSG = new EReg("\\s+","g");
+thx.core.Strings.SPLIT_LINES = new EReg("\r\n|\n\r|\n|\r","g");
 tink.core._Callback.Cell.pool = [];
 tink.core._Error.ErrorCode_Impl_.BadRequest = 400;
 tink.core._Error.ErrorCode_Impl_.Unauthorized = 401;

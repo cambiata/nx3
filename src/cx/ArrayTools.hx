@@ -13,8 +13,6 @@ package cx;
 using Lambda;
 class ArrayTools 
 {
-
-
 	
 	inline static function next<T>(a:Array<T>, item:T):Null<T>
 	{
@@ -130,6 +128,18 @@ class ArrayTools
 		for (item in array2) {
 			if (! Lambda.has(array1, item)) result.push(item);
 		}
+		return result;
+		
+	}
+	
+	static public function hasNot<T>(array1:Array<T>, array2:Array<T>): Array<T> {
+		
+		var result = new Array<T>();
+		
+		for (item in array2) {
+			if (! Lambda.has(array1, item)) result.push(item);
+		}
+
 		return result;
 		
 	}

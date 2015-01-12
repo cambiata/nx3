@@ -29,6 +29,7 @@ typedef NotenrItem = {
 	?playpos:Float,
 	?playend:Float,	
 	note:NNote,
+	?mp3file:String,
 }
 
 typedef NotenrItems = Array<NotenrItem>;

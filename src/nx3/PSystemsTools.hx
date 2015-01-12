@@ -186,6 +186,32 @@ class PSystemsTools
 		return this.columnsTime;
 	}
 	
+	var timesColumns: Array<{time: Float, column:PColumn}>;
+	public function getTimesColumns(fixedTempoBPM: Int = 60, beatfactor:Float = 1.0) {
+		if (this.timesColumns != null) return this.timesColumns;
+		var columnsTime = this.getColumnsTimeFixed(fixedTempoBPM, beatfactor);
+		
+		
+		//var times = getColumnsTimeFixed(fixedTempoBPM, beatfactor).array();
+		
+		this.timesColumns = [];
+		
+		for (column in columnsTime.keys()) {
+			
+			
+			this.timesColumns.push( { time: columnsTime.get(column), column:column } );
+			
+			
+		}
+		
+		this.timesColumns.sort(function(a, b) return Reflect.compare(a.time, b.time));
+		
+		//times.sort(function(a, b) return Reflect.compare(a, b));
+		//trace(times);
+		return this.timesColumns;
+	}
+	
+	
 	/*
 	public function getNotesPlayinfos(nnote:NNote, partsnotes:PartsNotenrItems) {		
 		for (items in partsnotes) {

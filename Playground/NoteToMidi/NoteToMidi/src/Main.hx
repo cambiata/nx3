@@ -1,6 +1,7 @@
 package;
 
 import audiotools.sound.Wav16Sound;
+import audiotools.sound.Wav16SoundLoader;
 import audiotools.sound.Wav16SoundManager;
 import audiotools.utils.Mp3Wav16Decoder;
 import audiotools.utils.Wav16DecoderPool;
@@ -8,6 +9,7 @@ import audiotools.utils.Wav16PartsBuilder;
 import audiotools.Wav16;
 import audiotools.Wav16DSP;
 import audiotools.Wav16Tools;
+import thx.core.Arrays;
 
 import nx3.test.TestItems;
 
@@ -112,37 +114,30 @@ class Main
 		
 		this.nscore1 = TestItemsBach.scoreBachSinfonia4();
 		
-
-		// -----------------------------------------------------------------------
-		var files = [for (i in 48 ... 95 + 1) i].map(function(i) return 'sounds/piano/$i.mp3');		
-		Wav16PartsBuilder.getInstance().startDecoding = function() { trace('Decoding started...'); }		
-		Wav16PartsBuilder.getInstance().finishedDecoding = function() { 
-			trace('Decoding finshed...'); 		
-			#if neko
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore1, 60);
-				Wav16Tools.testplay(w16);
-				
-			#end
-		};		
-		Wav16PartsBuilder.getInstance().init(files);		
-		
 		setupUI();
-		
+	}
+	
+	function startCallback(filesToload:Int) {
+		trace('Start loading $filesToload files...');
 	}
 	
 	function setupUI() {
 		
 		#if js
 			js.Browser.document.getElementById('btn1').addEventListener('click', function(_) {
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore1, 60);
-				 Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore1.uuid);
-				 Wav16SoundManager.getInstance().start(0);				
+				Wav16PartsBuilder.getInstance().getScoreWav16Async(this.nscore1, 60).handle(function(wav16) {
+					trace('FINISHED nscore1');
+					 Wav16SoundManager.getInstance().initSound(wav16, playCallback, nscore1.uuid + '60');
+					 Wav16SoundManager.getInstance().start(0);										
+				});		 				 
 			});
 			
 			js.Browser.document.getElementById('btn2').addEventListener('click', function(_) {
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore2, 60);	
-				 Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore2.uuid);
-				 Wav16SoundManager.getInstance().start(0);
+				Wav16PartsBuilder.getInstance().getScoreWav16Async(this.nscore1, 120).handle(function(wav16) {
+					trace('FINISHED nscore1 120');
+					 Wav16SoundManager.getInstance().initSound(wav16, playCallback, nscore2.uuid+ '120');
+					 Wav16SoundManager.getInstance().start(0);										
+				});					 
 			});	
 			
 			js.Browser.document.getElementById('stop').addEventListener('click', function(_) {
@@ -156,9 +151,15 @@ class Main
 			b1.graphics.beginFill(0x0000FF);
 			b1.graphics.drawRect(10, 10, 70, 30);
 			b1.addEventListener(flash.events.MouseEvent.CLICK, function(e) {
-				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore1, 60);
-				 Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore1.uuid);
-				 Wav16SoundManager.getInstance().start(0);					
+				//var w16 = Wav16PartsBuilder.getInstance().getScore(nscore1, 60);
+				 //Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore1.uuid);
+				 //Wav16SoundManager.getInstance().start(0);					
+				Wav16PartsBuilder.getInstance().getScoreWav16Async(this.nscore1, 60).handle(function(wav16) {
+					trace('FINISHED nscore1');
+					 Wav16SoundManager.getInstance().initSound(wav16, playCallback, nscore1.uuid + '60');
+					 Wav16SoundManager.getInstance().start(0);										
+				});					 
+				 
 			});
 
 			var b2 = new Sprite();
@@ -166,9 +167,17 @@ class Main
 			b2.graphics.beginFill(0x0000FF);
 			b2.graphics.drawRect(110, 10, 70, 30);
 			b2.addEventListener(flash.events.MouseEvent.CLICK, function(e) {
+				/*
 				var w16 = Wav16PartsBuilder.getInstance().getScore(nscore2, 60);	
 				 Wav16SoundManager.getInstance().initSound(w16, playCallback, nscore2.uuid);
 				 Wav16SoundManager.getInstance().start(0);				
+				 */
+				Wav16PartsBuilder.getInstance().getScoreWav16Async(this.nscore1, 120).handle(function(wav16) {
+					trace('FINISHED nscore1 120');
+					 Wav16SoundManager.getInstance().initSound(wav16, playCallback, nscore2.uuid+ '120');
+					 Wav16SoundManager.getInstance().start(0);										
+				});					 
+				 
 			});
 			
 			var bStop = new Sprite();

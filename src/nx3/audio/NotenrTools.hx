@@ -1,7 +1,9 @@
 package nx3.audio;
 import nx3.audio.NotenrItem;
 import nx3.ESign;
+import nx3.NScore;
 using cx.ArrayTools;
+using Lambda;
 /**
  * NotenrTools
  * @author Jonas Nyström
@@ -232,8 +234,31 @@ class NotenrTools {
 		return map;
 	}
 	
+	static public function getPartsnotesMp3files(partsnotes:PartsNotenrItems, partsSounds:Array<String>= null, path='sounds/', soundFallback='piano'): Array<String> {
+		var result = [];
+		if (partsSounds == null) partsSounds = [];	
+		while (partsSounds.length < partsnotes.length) partsSounds.push(soundFallback);
+		for (items in partsnotes) {
+			var sound = partsSounds.shift();
+			var soundPath = '$path$sound/';
+			
+			for (item in items) {
+				var note = item.note;
+				var midinr = item.midinr;
+				var filename = '$path$sound/$midinr.mp3';
+				item.mp3file = filename;
+				if (! result.has(filename)) result.push(filename);				
+			}
+		}				
+		return result;
+	}
 	
-	
+	static public function getPartsnotes(nbars:NBars, tempo:Int = 60, resolveTies:Bool = true) : PartsNotenrItems {
+		var partsnotes:PartsNotenrItems = new NotenrBarsCalculator(nbars).getPartsNotenrItems();
+		NotenrTools.calculateSoundLengths(partsnotes, tempo);				
+		partsnotes = NotenrTools.resolveTies(partsnotes);	
+		return partsnotes;				
+	}
 	
 	/*
 	static public function getTotalLenght(partsnotes:Array<Array<NotenrItem>>):Float
@@ -244,7 +269,6 @@ class NotenrTools {
 			}
 				
 	}
-	*/
-	
+	*/	
 	
 }

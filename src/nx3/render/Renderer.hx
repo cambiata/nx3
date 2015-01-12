@@ -13,6 +13,7 @@ import nx3.geom.Rectangle;
 import nx3.EDirectionUD;
 import nx3.ENoteType;
 import nx3.geom.Rectangles;
+import nx3.geom.Size;
 import nx3.PBar;
 import nx3.PBeamgroup;
 import nx3.PComplex;
@@ -67,6 +68,7 @@ class Renderer
 		
 		this.target.totalWidth = score.getWidth() * this.scaling.unitX;
 		this.target.totalHeight = score.getHeight() * this.scaling.unitY;		
+		return { width:score.getWidth() * this.scaling.unitX, height:score.getHeight() * this.scaling.unitY };
 	}	
 	
 	public function testText()
