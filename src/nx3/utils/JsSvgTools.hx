@@ -42,7 +42,6 @@ class JsSvgTools
 		canvas.style.position = "absolute";
 		canvas.style.border = "1px solid red";
 		
-		
 		div.appendChild(canvas);		
 		
 		return div;

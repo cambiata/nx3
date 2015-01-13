@@ -43,6 +43,7 @@ class ScoreDrawingTools
 		this.scaling = scaling;
 		this.width = width;		
 		this.tempo = tempo;
+		trace('tempo' + tempo);
 		this.systools = new PSystemsTools(this.score.getSystems(this.width));
 		
 		this.scoreWidth = this.score.getWidth() * this.scaling.unitX;
@@ -51,7 +52,7 @@ class ScoreDrawingTools
 		this.columnsPos = systools.getColumnsPointH();
 		this.columns = systools.getColumns();	
 		this.columnsPositions = systools.getColumnsPositions();
-		this.columnsTime = systools.getColumnsTimeFixed(tempo, 1);
+		this.columnsTime = systools.getColumnsTimeFixed(this.tempo, 1);
 		this.timesColumns = this.systools.getTimesColumns(this.tempo).copy();
 	}
 	

@@ -35,7 +35,7 @@ import nx3.test.TestItems;
 import nx3.test.TestItemsBach;
 import nx3.TPointH;
 
-import nx3.utils.ScoreDrawingTools;
+
 
 import audiotools.utils.Wav16PartsBuilder;
 import audiotools.sound.Wav16SoundManager;
@@ -129,7 +129,6 @@ class Main #if flash extends flash.display.Sprite #end
 			trace(canvas.id);
 			var ctx = canvas.getContext2d();
 			
-			drawingTools = new ScoreDrawingTools(pscore1, width, scaling, 60,  ctx);		
 			
 			canvas.addEventListener("mousemove", function(e: js.html.MouseEvent) {			
 				var rect = canvas.getBoundingClientRect();

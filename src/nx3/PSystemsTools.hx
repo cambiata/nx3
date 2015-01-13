@@ -179,7 +179,7 @@ class PSystemsTools
 		var columnsPositions = this.getColumnsPositions();
 		for (column in columnsPositions.keys()) {
 			var position = columnsPositions.get(column);
-			var time = (position / Constants.BASE_NOTE_VALUE) / beatfactor;
+			var time = (position / Constants.BASE_NOTE_VALUE) / (fixedTempoBPM / 60) / beatfactor;
 			this.columnsTime.set(column, time);						
 		}		
 		

@@ -1921,18 +1921,16 @@ format.wav.Reader.prototype = {
 		if(this.i.readString(4) != "RIFF") throw "RIFF header expected";
 		var len = this.i.readInt32();
 		if(this.i.readString(4) != "WAVE") throw "WAVE signature not found";
-		var x = this.i.readString(4);
-		if(x != "fmt ") throw "expected fmt subchunk";
+		if(this.i.readString(4) != "fmt ") throw "expected fmt subchunk";
 		var fmtlen = this.i.readInt32();
-		var x1 = this.i.readUInt16();
 		var format1;
-		switch(x1) {
+		var _g = this.i.readUInt16();
+		switch(_g) {
 		case 1:
 			format1 = format.wav.WAVEFormat.WF_PCM;
 			break;
 		default:
-			console.log("only PCM (uncompressed) WAV files are supported");
-			format1 = format.wav.WAVEFormat.WF_PCM;
+			throw "only PCM (uncompressed) WAV files are supported";
 		}
 		var channels = this.i.readUInt16();
 		var samplingRate = this.i.readInt32();

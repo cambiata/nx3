@@ -44,11 +44,311 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
+		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
+		type.set ("assets/openfl.svg", AssetType.TEXT);
+		className.set ("assets/sounds/piano/48.mp3", __ASSET__assets_sounds_piano_48_mp3);
+		type.set ("assets/sounds/piano/48.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/49.mp3", __ASSET__assets_sounds_piano_49_mp3);
+		type.set ("assets/sounds/piano/49.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/50.mp3", __ASSET__assets_sounds_piano_50_mp3);
+		type.set ("assets/sounds/piano/50.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/51.mp3", __ASSET__assets_sounds_piano_51_mp3);
+		type.set ("assets/sounds/piano/51.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/52.mp3", __ASSET__assets_sounds_piano_52_mp3);
+		type.set ("assets/sounds/piano/52.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/53.mp3", __ASSET__assets_sounds_piano_53_mp3);
+		type.set ("assets/sounds/piano/53.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/54.mp3", __ASSET__assets_sounds_piano_54_mp3);
+		type.set ("assets/sounds/piano/54.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/55.mp3", __ASSET__assets_sounds_piano_55_mp3);
+		type.set ("assets/sounds/piano/55.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/56.mp3", __ASSET__assets_sounds_piano_56_mp3);
+		type.set ("assets/sounds/piano/56.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/57.mp3", __ASSET__assets_sounds_piano_57_mp3);
+		type.set ("assets/sounds/piano/57.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/58.mp3", __ASSET__assets_sounds_piano_58_mp3);
+		type.set ("assets/sounds/piano/58.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/59.mp3", __ASSET__assets_sounds_piano_59_mp3);
+		type.set ("assets/sounds/piano/59.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/60.mp3", __ASSET__assets_sounds_piano_60_mp3);
+		type.set ("assets/sounds/piano/60.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/61.mp3", __ASSET__assets_sounds_piano_61_mp3);
+		type.set ("assets/sounds/piano/61.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/62.mp3", __ASSET__assets_sounds_piano_62_mp3);
+		type.set ("assets/sounds/piano/62.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/63.mp3", __ASSET__assets_sounds_piano_63_mp3);
+		type.set ("assets/sounds/piano/63.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/64.mp3", __ASSET__assets_sounds_piano_64_mp3);
+		type.set ("assets/sounds/piano/64.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/65.mp3", __ASSET__assets_sounds_piano_65_mp3);
+		type.set ("assets/sounds/piano/65.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/66.mp3", __ASSET__assets_sounds_piano_66_mp3);
+		type.set ("assets/sounds/piano/66.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/67.mp3", __ASSET__assets_sounds_piano_67_mp3);
+		type.set ("assets/sounds/piano/67.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/68.mp3", __ASSET__assets_sounds_piano_68_mp3);
+		type.set ("assets/sounds/piano/68.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/69.mp3", __ASSET__assets_sounds_piano_69_mp3);
+		type.set ("assets/sounds/piano/69.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/70.mp3", __ASSET__assets_sounds_piano_70_mp3);
+		type.set ("assets/sounds/piano/70.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/71.mp3", __ASSET__assets_sounds_piano_71_mp3);
+		type.set ("assets/sounds/piano/71.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/72.mp3", __ASSET__assets_sounds_piano_72_mp3);
+		type.set ("assets/sounds/piano/72.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/73.mp3", __ASSET__assets_sounds_piano_73_mp3);
+		type.set ("assets/sounds/piano/73.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/74.mp3", __ASSET__assets_sounds_piano_74_mp3);
+		type.set ("assets/sounds/piano/74.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/75.mp3", __ASSET__assets_sounds_piano_75_mp3);
+		type.set ("assets/sounds/piano/75.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/76.mp3", __ASSET__assets_sounds_piano_76_mp3);
+		type.set ("assets/sounds/piano/76.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/77.mp3", __ASSET__assets_sounds_piano_77_mp3);
+		type.set ("assets/sounds/piano/77.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/78.mp3", __ASSET__assets_sounds_piano_78_mp3);
+		type.set ("assets/sounds/piano/78.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/79.mp3", __ASSET__assets_sounds_piano_79_mp3);
+		type.set ("assets/sounds/piano/79.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/80.mp3", __ASSET__assets_sounds_piano_80_mp3);
+		type.set ("assets/sounds/piano/80.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/81.mp3", __ASSET__assets_sounds_piano_81_mp3);
+		type.set ("assets/sounds/piano/81.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/82.mp3", __ASSET__assets_sounds_piano_82_mp3);
+		type.set ("assets/sounds/piano/82.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/83.mp3", __ASSET__assets_sounds_piano_83_mp3);
+		type.set ("assets/sounds/piano/83.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/84.mp3", __ASSET__assets_sounds_piano_84_mp3);
+		type.set ("assets/sounds/piano/84.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/85.mp3", __ASSET__assets_sounds_piano_85_mp3);
+		type.set ("assets/sounds/piano/85.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/86.mp3", __ASSET__assets_sounds_piano_86_mp3);
+		type.set ("assets/sounds/piano/86.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/87.mp3", __ASSET__assets_sounds_piano_87_mp3);
+		type.set ("assets/sounds/piano/87.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/88.mp3", __ASSET__assets_sounds_piano_88_mp3);
+		type.set ("assets/sounds/piano/88.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/89.mp3", __ASSET__assets_sounds_piano_89_mp3);
+		type.set ("assets/sounds/piano/89.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/90.mp3", __ASSET__assets_sounds_piano_90_mp3);
+		type.set ("assets/sounds/piano/90.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/91.mp3", __ASSET__assets_sounds_piano_91_mp3);
+		type.set ("assets/sounds/piano/91.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/92.mp3", __ASSET__assets_sounds_piano_92_mp3);
+		type.set ("assets/sounds/piano/92.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/93.mp3", __ASSET__assets_sounds_piano_93_mp3);
+		type.set ("assets/sounds/piano/93.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/94.mp3", __ASSET__assets_sounds_piano_94_mp3);
+		type.set ("assets/sounds/piano/94.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/95.mp3", __ASSET__assets_sounds_piano_95_mp3);
+		type.set ("assets/sounds/piano/95.mp3", AssetType.MUSIC);
+		className.set ("assets/sounds/piano/96.mp3", __ASSET__assets_sounds_piano_96_mp3);
+		type.set ("assets/sounds/piano/96.mp3", AssetType.MUSIC);
 		
 		
 		#elseif html5
 		
 		var id;
+		id = "assets/openfl.svg";
+		path.set (id, id);
+		
+		type.set (id, AssetType.TEXT);
+		id = "assets/sounds/piano/48.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/49.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/50.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/51.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/52.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/53.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/54.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/55.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/56.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/57.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/58.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/59.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/60.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/61.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/62.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/63.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/64.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/65.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/66.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/67.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/68.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/69.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/70.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/71.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/72.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/73.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/74.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/75.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/76.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/77.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/78.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/79.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/80.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/81.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/82.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/83.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/84.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/85.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/86.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/87.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/88.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/89.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/90.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/91.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/92.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/93.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/94.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/95.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
+		id = "assets/sounds/piano/96.mp3";
+		path.set (id, id);
+		
+		type.set (id, AssetType.MUSIC);
 		
 		
 		#else
@@ -56,11 +356,211 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if openfl
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		#end
 		
 		#if (windows || mac || linux)
 		
 		/*var useManifest = false;
+		
+		className.set ("assets/openfl.svg", __ASSET__assets_openfl_svg);
+		type.set ("assets/openfl.svg", AssetType.TEXT);
+		
+		className.set ("assets/sounds/piano/48.mp3", __ASSET__assets_sounds_piano_48_mp3);
+		type.set ("assets/sounds/piano/48.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/49.mp3", __ASSET__assets_sounds_piano_49_mp3);
+		type.set ("assets/sounds/piano/49.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/50.mp3", __ASSET__assets_sounds_piano_50_mp3);
+		type.set ("assets/sounds/piano/50.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/51.mp3", __ASSET__assets_sounds_piano_51_mp3);
+		type.set ("assets/sounds/piano/51.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/52.mp3", __ASSET__assets_sounds_piano_52_mp3);
+		type.set ("assets/sounds/piano/52.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/53.mp3", __ASSET__assets_sounds_piano_53_mp3);
+		type.set ("assets/sounds/piano/53.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/54.mp3", __ASSET__assets_sounds_piano_54_mp3);
+		type.set ("assets/sounds/piano/54.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/55.mp3", __ASSET__assets_sounds_piano_55_mp3);
+		type.set ("assets/sounds/piano/55.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/56.mp3", __ASSET__assets_sounds_piano_56_mp3);
+		type.set ("assets/sounds/piano/56.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/57.mp3", __ASSET__assets_sounds_piano_57_mp3);
+		type.set ("assets/sounds/piano/57.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/58.mp3", __ASSET__assets_sounds_piano_58_mp3);
+		type.set ("assets/sounds/piano/58.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/59.mp3", __ASSET__assets_sounds_piano_59_mp3);
+		type.set ("assets/sounds/piano/59.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/60.mp3", __ASSET__assets_sounds_piano_60_mp3);
+		type.set ("assets/sounds/piano/60.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/61.mp3", __ASSET__assets_sounds_piano_61_mp3);
+		type.set ("assets/sounds/piano/61.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/62.mp3", __ASSET__assets_sounds_piano_62_mp3);
+		type.set ("assets/sounds/piano/62.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/63.mp3", __ASSET__assets_sounds_piano_63_mp3);
+		type.set ("assets/sounds/piano/63.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/64.mp3", __ASSET__assets_sounds_piano_64_mp3);
+		type.set ("assets/sounds/piano/64.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/65.mp3", __ASSET__assets_sounds_piano_65_mp3);
+		type.set ("assets/sounds/piano/65.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/66.mp3", __ASSET__assets_sounds_piano_66_mp3);
+		type.set ("assets/sounds/piano/66.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/67.mp3", __ASSET__assets_sounds_piano_67_mp3);
+		type.set ("assets/sounds/piano/67.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/68.mp3", __ASSET__assets_sounds_piano_68_mp3);
+		type.set ("assets/sounds/piano/68.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/69.mp3", __ASSET__assets_sounds_piano_69_mp3);
+		type.set ("assets/sounds/piano/69.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/70.mp3", __ASSET__assets_sounds_piano_70_mp3);
+		type.set ("assets/sounds/piano/70.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/71.mp3", __ASSET__assets_sounds_piano_71_mp3);
+		type.set ("assets/sounds/piano/71.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/72.mp3", __ASSET__assets_sounds_piano_72_mp3);
+		type.set ("assets/sounds/piano/72.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/73.mp3", __ASSET__assets_sounds_piano_73_mp3);
+		type.set ("assets/sounds/piano/73.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/74.mp3", __ASSET__assets_sounds_piano_74_mp3);
+		type.set ("assets/sounds/piano/74.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/75.mp3", __ASSET__assets_sounds_piano_75_mp3);
+		type.set ("assets/sounds/piano/75.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/76.mp3", __ASSET__assets_sounds_piano_76_mp3);
+		type.set ("assets/sounds/piano/76.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/77.mp3", __ASSET__assets_sounds_piano_77_mp3);
+		type.set ("assets/sounds/piano/77.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/78.mp3", __ASSET__assets_sounds_piano_78_mp3);
+		type.set ("assets/sounds/piano/78.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/79.mp3", __ASSET__assets_sounds_piano_79_mp3);
+		type.set ("assets/sounds/piano/79.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/80.mp3", __ASSET__assets_sounds_piano_80_mp3);
+		type.set ("assets/sounds/piano/80.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/81.mp3", __ASSET__assets_sounds_piano_81_mp3);
+		type.set ("assets/sounds/piano/81.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/82.mp3", __ASSET__assets_sounds_piano_82_mp3);
+		type.set ("assets/sounds/piano/82.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/83.mp3", __ASSET__assets_sounds_piano_83_mp3);
+		type.set ("assets/sounds/piano/83.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/84.mp3", __ASSET__assets_sounds_piano_84_mp3);
+		type.set ("assets/sounds/piano/84.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/85.mp3", __ASSET__assets_sounds_piano_85_mp3);
+		type.set ("assets/sounds/piano/85.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/86.mp3", __ASSET__assets_sounds_piano_86_mp3);
+		type.set ("assets/sounds/piano/86.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/87.mp3", __ASSET__assets_sounds_piano_87_mp3);
+		type.set ("assets/sounds/piano/87.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/88.mp3", __ASSET__assets_sounds_piano_88_mp3);
+		type.set ("assets/sounds/piano/88.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/89.mp3", __ASSET__assets_sounds_piano_89_mp3);
+		type.set ("assets/sounds/piano/89.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/90.mp3", __ASSET__assets_sounds_piano_90_mp3);
+		type.set ("assets/sounds/piano/90.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/91.mp3", __ASSET__assets_sounds_piano_91_mp3);
+		type.set ("assets/sounds/piano/91.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/92.mp3", __ASSET__assets_sounds_piano_92_mp3);
+		type.set ("assets/sounds/piano/92.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/93.mp3", __ASSET__assets_sounds_piano_93_mp3);
+		type.set ("assets/sounds/piano/93.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/94.mp3", __ASSET__assets_sounds_piano_94_mp3);
+		type.set ("assets/sounds/piano/94.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/95.mp3", __ASSET__assets_sounds_piano_95_mp3);
+		type.set ("assets/sounds/piano/95.mp3", AssetType.MUSIC);
+		
+		className.set ("assets/sounds/piano/96.mp3", __ASSET__assets_sounds_piano_96_mp3);
+		type.set ("assets/sounds/piano/96.mp3", AssetType.MUSIC);
 		*/
 		var useManifest = true;
 		
@@ -508,8 +1008,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 			var bytes = ByteArray.readFile ("../res/manifest");
 			#elseif emscripten
 			var bytes = ByteArray.readFile ("assets/manifest");
-			#elseif (mac && java)
-			var bytes = ByteArray.readFile ("../Resources/manifest");
 			#else
 			var bytes = ByteArray.readFile ("manifest");
 			#end
@@ -635,11 +1133,111 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if !display
 #if flash
 
+@:keep @:bind #if display private #end class __ASSET__assets_openfl_svg extends flash.utils.ByteArray { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_48_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_49_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_50_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_51_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_52_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_53_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_54_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_55_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_56_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_57_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_58_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_59_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_60_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_61_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_62_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_63_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_64_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_65_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_66_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_67_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_68_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_69_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_70_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_71_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_72_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_73_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_74_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_75_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_76_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_77_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_78_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_79_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_80_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_81_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_82_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_83_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_84_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_85_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_86_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_87_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_88_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_89_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_90_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_91_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_92_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_93_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_94_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_95_mp3 extends flash.media.Sound { }
+@:keep @:bind #if display private #end class __ASSET__assets_sounds_piano_96_mp3 extends flash.media.Sound { }
 
 
 #elseif html5
 
 #if openfl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #end
 
@@ -652,6 +1250,56 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if (windows || mac || linux)
 
 //
+//@:file("assets/openfl.svg") class __ASSET__assets_openfl_svg extends lime.utils.ByteArray {}
+//@:sound("assets/sounds/piano/48.mp3") class __ASSET__assets_sounds_piano_48_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/49.mp3") class __ASSET__assets_sounds_piano_49_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/50.mp3") class __ASSET__assets_sounds_piano_50_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/51.mp3") class __ASSET__assets_sounds_piano_51_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/52.mp3") class __ASSET__assets_sounds_piano_52_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/53.mp3") class __ASSET__assets_sounds_piano_53_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/54.mp3") class __ASSET__assets_sounds_piano_54_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/55.mp3") class __ASSET__assets_sounds_piano_55_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/56.mp3") class __ASSET__assets_sounds_piano_56_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/57.mp3") class __ASSET__assets_sounds_piano_57_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/58.mp3") class __ASSET__assets_sounds_piano_58_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/59.mp3") class __ASSET__assets_sounds_piano_59_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/60.mp3") class __ASSET__assets_sounds_piano_60_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/61.mp3") class __ASSET__assets_sounds_piano_61_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/62.mp3") class __ASSET__assets_sounds_piano_62_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/63.mp3") class __ASSET__assets_sounds_piano_63_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/64.mp3") class __ASSET__assets_sounds_piano_64_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/65.mp3") class __ASSET__assets_sounds_piano_65_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/66.mp3") class __ASSET__assets_sounds_piano_66_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/67.mp3") class __ASSET__assets_sounds_piano_67_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/68.mp3") class __ASSET__assets_sounds_piano_68_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/69.mp3") class __ASSET__assets_sounds_piano_69_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/70.mp3") class __ASSET__assets_sounds_piano_70_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/71.mp3") class __ASSET__assets_sounds_piano_71_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/72.mp3") class __ASSET__assets_sounds_piano_72_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/73.mp3") class __ASSET__assets_sounds_piano_73_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/74.mp3") class __ASSET__assets_sounds_piano_74_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/75.mp3") class __ASSET__assets_sounds_piano_75_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/76.mp3") class __ASSET__assets_sounds_piano_76_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/77.mp3") class __ASSET__assets_sounds_piano_77_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/78.mp3") class __ASSET__assets_sounds_piano_78_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/79.mp3") class __ASSET__assets_sounds_piano_79_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/80.mp3") class __ASSET__assets_sounds_piano_80_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/81.mp3") class __ASSET__assets_sounds_piano_81_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/82.mp3") class __ASSET__assets_sounds_piano_82_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/83.mp3") class __ASSET__assets_sounds_piano_83_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/84.mp3") class __ASSET__assets_sounds_piano_84_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/85.mp3") class __ASSET__assets_sounds_piano_85_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/86.mp3") class __ASSET__assets_sounds_piano_86_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/87.mp3") class __ASSET__assets_sounds_piano_87_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/88.mp3") class __ASSET__assets_sounds_piano_88_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/89.mp3") class __ASSET__assets_sounds_piano_89_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/90.mp3") class __ASSET__assets_sounds_piano_90_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/91.mp3") class __ASSET__assets_sounds_piano_91_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/92.mp3") class __ASSET__assets_sounds_piano_92_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/93.mp3") class __ASSET__assets_sounds_piano_93_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/94.mp3") class __ASSET__assets_sounds_piano_94_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/95.mp3") class __ASSET__assets_sounds_piano_95_mp3 extends openfl.media.Sound {}
+//@:sound("assets/sounds/piano/96.mp3") class __ASSET__assets_sounds_piano_96_mp3 extends openfl.media.Sound {}
 //
 //
 
