@@ -43,7 +43,7 @@ class ScoreDrawingTools
 		this.scaling = scaling;
 		this.width = width;		
 		this.tempo = tempo;
-		trace('tempo' + tempo);
+		//trace('tempo' + tempo);
 		this.systools = new PSystemsTools(this.score.getSystems(this.width));
 		
 		this.scoreWidth = this.score.getWidth() * this.scaling.unitX;

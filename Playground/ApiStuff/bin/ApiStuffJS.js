@@ -172,7 +172,6 @@ var Main = function() {
 	var canvas = div.children[1];
 	console.log(canvas.id);
 	var ctx = canvas.getContext("2d");
-	this.drawingTools = new nx3.utils.ScoreDrawingTools(pscore1,width,scaling,60,ctx);
 	canvas.addEventListener("mousemove",function(e) {
 		var rect = canvas.getBoundingClientRect();
 		var x = e.clientX - rect.left;
@@ -916,7 +915,7 @@ audiotools.Wav16Tools.copyChannel = function(ints) {
 	return result;
 };
 audiotools.Wav16Tools.testplay = function(wav16) {
-	audiotools.webaudio.WebAudioTools.testplay(wav16);
+	audiotools.webaudio.WATools.testplay(wav16);
 	return;
 };
 audiotools.sound = {};
@@ -946,8 +945,8 @@ audiotools.sound.Wav16SoundJS = function(wav16,playCallback,key) {
 	this.delta = .0;
 	this.lastTime = .0;
 	audiotools.sound.Wav16SoundBase.call(this,wav16,playCallback,key);
-	this.context = audiotools.webaudio.WebAudioTools.getAudioContext();
-	this.buffer = audiotools.webaudio.WebAudioTools.createBufferFromWav16(wav16,this.context,48000);
+	this.context = (audiotools.webaudio.Context.instance == null?audiotools.webaudio.Context.instance = new audiotools.webaudio.Context():audiotools.webaudio.Context.instance).getContext();
+	this.buffer = audiotools.webaudio.WATools.createBufferFromWav16(wav16,this.context,48000);
 	audiotools.sound.Wav16SoundJS.animationCallback = $bind(this,this.onAnimate);
 	
 			window.requestAnimFrame = (function() {
@@ -1071,7 +1070,7 @@ audiotools.utils.Mp3Wav16Decoder = function() { };
 audiotools.utils.Mp3Wav16Decoder.__name__ = true;
 audiotools.utils.Mp3Wav16Decoder.decode = function(filename) {
 	var f = new tink.core.FutureTrigger();
-	if(audiotools.utils.Mp3Wav16Decoder.context == null) audiotools.utils.Mp3Wav16Decoder.context = audiotools.webaudio.WebAudioTools.getAudioContext();
+	if(audiotools.utils.Mp3Wav16Decoder.context == null) audiotools.utils.Mp3Wav16Decoder.context = audiotools.webaudio.WATools.getAudioContext();
 	new audiotools.webaudio.Mp3ToBuffer(filename,audiotools.utils.Mp3Wav16Decoder.context).setLoadedHandler(function(buffer,filename1) {
 		var wavBytes = null;
 		var left = buffer.getChannelData(0);
@@ -1271,6 +1270,35 @@ audiotools.utils.Wav16PartsBuilder.prototype = {
 	,__class__: audiotools.utils.Wav16PartsBuilder
 };
 audiotools.webaudio = {};
+audiotools.webaudio.Context = function() {
+	this.context = audiotools.webaudio.Context.createAudioContext();
+};
+audiotools.webaudio.Context.__name__ = true;
+audiotools.webaudio.Context.getInstance = function() {
+	if(audiotools.webaudio.Context.instance == null) return audiotools.webaudio.Context.instance = new audiotools.webaudio.Context(); else return audiotools.webaudio.Context.instance;
+};
+audiotools.webaudio.Context.createAudioContext = function() {
+	var context = null;
+	
+			if (typeof AudioContext == "function") {
+				context = new AudioContext();
+				console.log("USING STANDARD WEB AUDIO API");
+			} else if ((typeof webkitAudioContext == "function") || (typeof webkitAudioContext == "object")) {
+				context = new webkitAudioContext();
+				console.log("USING WEBKIT AUDIO API");
+			} else {
+				alert("AudioContext is not supported.");
+				throw new Error("AudioContext is not supported. :(");
+			}
+		;
+	return context;
+};
+audiotools.webaudio.Context.prototype = {
+	getContext: function() {
+		return this.context;
+	}
+	,__class__: audiotools.webaudio.Context
+};
 audiotools.webaudio.Mp3ToBuffer = function(url,context) {
 	this.url = url;
 	this.context = context;
@@ -1316,9 +1344,9 @@ audiotools.webaudio.Mp3ToBuffer.prototype = {
 	}
 	,__class__: audiotools.webaudio.Mp3ToBuffer
 };
-audiotools.webaudio.WebAudioTools = function() { };
-audiotools.webaudio.WebAudioTools.__name__ = true;
-audiotools.webaudio.WebAudioTools.createBufferFromWav16 = function(wav16,context,samplerate) {
+audiotools.webaudio.WATools = function() { };
+audiotools.webaudio.WATools.__name__ = true;
+audiotools.webaudio.WATools.createBufferFromWav16 = function(wav16,context,samplerate) {
 	if(samplerate == null) samplerate = 44100;
 	var stereo = wav16.stereo;
 	var length = wav16.ch1.length;
@@ -1356,18 +1384,18 @@ audiotools.webaudio.WebAudioTools.createBufferFromWav16 = function(wav16,context
 	}
 	return newbuffer;
 };
-audiotools.webaudio.WebAudioTools.testplay = function(w,context) {
-	if(context == null) context = audiotools.webaudio.WebAudioTools.getAudioContext();
+audiotools.webaudio.WATools.testplay = function(w,context) {
+	if(context == null) context = audiotools.webaudio.WATools.getAudioContext();
 	var source = context.createBufferSource();
-	source.buffer = audiotools.webaudio.WebAudioTools.createBufferFromWav16(w,context,48000);
+	source.buffer = audiotools.webaudio.WATools.createBufferFromWav16(w,context,48000);
 	source.connect(context.destination,0,0);
 	source.start(0);
 };
-audiotools.webaudio.WebAudioTools.getAudioContext = function() {
-	if(audiotools.webaudio.WebAudioTools._context == null) audiotools.webaudio.WebAudioTools._context = audiotools.webaudio.WebAudioTools.createAudioContext();
-	return audiotools.webaudio.WebAudioTools._context;
+audiotools.webaudio.WATools.getAudioContext = function() {
+	if(audiotools.webaudio.WATools._context == null) audiotools.webaudio.WATools._context = audiotools.webaudio.WATools.createAudioContext();
+	return audiotools.webaudio.WATools._context;
 };
-audiotools.webaudio.WebAudioTools.createAudioContext = function() {
+audiotools.webaudio.WATools.createAudioContext = function() {
 	var context = null;
 	
 			if (typeof AudioContext == "function") {
@@ -1921,16 +1949,18 @@ format.wav.Reader.prototype = {
 		if(this.i.readString(4) != "RIFF") throw "RIFF header expected";
 		var len = this.i.readInt32();
 		if(this.i.readString(4) != "WAVE") throw "WAVE signature not found";
-		if(this.i.readString(4) != "fmt ") throw "expected fmt subchunk";
+		var x = this.i.readString(4);
+		if(x != "fmt ") throw "expected fmt subchunk";
 		var fmtlen = this.i.readInt32();
+		var x1 = this.i.readUInt16();
 		var format1;
-		var _g = this.i.readUInt16();
-		switch(_g) {
+		switch(x1) {
 		case 1:
 			format1 = format.wav.WAVEFormat.WF_PCM;
 			break;
 		default:
-			throw "only PCM (uncompressed) WAV files are supported";
+			console.log("only PCM (uncompressed) WAV files are supported");
+			format1 = format.wav.WAVEFormat.WF_PCM;
 		}
 		var channels = this.i.readUInt16();
 		var samplingRate = this.i.readInt32();
@@ -7638,7 +7668,7 @@ nx3.PSystemsTools.prototype = {
 		while( $it0.hasNext() ) {
 			var column = $it0.next();
 			var position = columnsPositions.h[column.__id__];
-			var time = position / 3024 / beatfactor;
+			var time = position / 3024 / (fixedTempoBPM / 60) / beatfactor;
 			this.columnsTime.set(column,time);
 		}
 		return this.columnsTime;
@@ -11101,6 +11131,27 @@ nx3.render.scaling.ScalingTools.targetX = function(scaling,x) {
 nx3.render.scaling.ScalingTools.targetY = function(scaling,y) {
 	return y / scaling.unitY;
 };
+nx3.render.scaling.ScalingTools.fromString = function(scl) {
+	if(scl == null) return nx3.render.scaling.Scaling.NORMAL;
+	if(scl == "") return nx3.render.scaling.Scaling.NORMAL;
+	scl = scl.toLowerCase();
+	switch(scl) {
+	case "mini":case "1":
+		return nx3.render.scaling.Scaling.MINI;
+	case "small":case "2":
+		return nx3.render.scaling.Scaling.SMALL;
+	case "normal":case "3":
+		return nx3.render.scaling.Scaling.NORMAL;
+	case "mid":case "4":
+		return nx3.render.scaling.Scaling.MID;
+	case "big":case "5":
+		return nx3.render.scaling.Scaling.BIG;
+	case "print1":case "6":
+		return nx3.render.scaling.Scaling.PRINT1;
+	default:
+		return nx3.render.scaling.Scaling.NORMAL;
+	}
+};
 nx3.render.svg = {};
 nx3.render.svg.SvgElements = function() { };
 nx3.render.svg.SvgElements.__name__ = true;
@@ -11344,13 +11395,14 @@ nx3.utils.ScoreDrawingTools = function(score,width,scaling,tempo,context) {
 	this.scaling = scaling;
 	this.width = width;
 	this.tempo = tempo;
+	console.log("tempo" + tempo);
 	this.systools = new nx3.PSystemsTools(this.score.getSystems(this.width));
 	this.scoreWidth = this.score.getWidth() * this.scaling.unitX;
 	this.scoreHeight = this.score.getHeight() * this.scaling.unitY;
 	this.columnsPos = this.systools.getColumnsPointH();
 	this.columns = this.systools.getColumns();
 	this.columnsPositions = this.systools.getColumnsPositions();
-	this.columnsTime = this.systools.getColumnsTimeFixed(tempo,1);
+	this.columnsTime = this.systools.getColumnsTimeFixed(this.tempo,1);
 	var _this = this.systools.getTimesColumns(this.tempo);
 	this.timesColumns = _this.slice();
 };

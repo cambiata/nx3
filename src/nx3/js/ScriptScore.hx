@@ -5,6 +5,7 @@ import js.html.CanvasRenderingContext2D;
 import js.html.Element;
 import js.html.ScriptElement;
 import js.html.svg.SVGElement;
+import js.Lib;
 import nx3.NScore;
 import nx3.PScore;
 import nx3.render.Renderer;
@@ -23,6 +24,10 @@ using StringTools;
 class ScriptScore 
 {
 	var toolbar:js.html.DivElement;
+	
+	public var autoWidth(default, null): Bool;
+	public var fixedWidth(default, null): Int;
+	
 	public var scaling(default, null):TScaling;
 	public var drawingtools(default, null):ScoreDrawingTools;
 	public var labelTime(default, null):js.html.SpanElement;
@@ -36,10 +41,13 @@ class ScriptScore
 	public var id(default, null):String;
 	public var nscore(default, null):NScore;
 	public var parent(default, null):Element;
+	public var parentWrapper(default, null): Element;
 
 	public function new(scriptElement:ScriptElement) 
 	{
 		this.parent = scriptElement.parentElement;
+		this.parentWrapper = this.parent.parentElement;
+		
 		this.parent.className = 'nx-parent';
 		var xmlStr = scriptElement.innerHTML;
 		this.nscore = ScoreXML.fromXmlStr(xmlStr);	
@@ -51,8 +59,29 @@ class ScriptScore
 		this.sounds = (snds != null )  ? snds.split(',').map(function(s) return s.trim()) : [];
 
 		 var scl:String = scriptElement.getAttribute('data-scaling');
-		 this.scaling = ScalingTools.fromString(scl);
-		trace(this.scaling);
+		 this.scaling = ScalingTools.fromString(scl);		
+		
+		var fxw = scriptElement.getAttribute('data-width');
+		if (fxw != null) {
+			if (fxw.toLowerCase() == 'auto') {
+				this.autoWidth = true;
+				this.fixedWidth = -1;
+			} else {
+				var w = Std.parseInt(fxw);
+				if (w != null) 
+					w = Std.int(Math.max(MIN_SCORE_WIDTH, w));
+				else  {
+					Lib.alert('Score data-width error: $fxw');
+					w = 500;
+				}
+				this.fixedWidth = w;	
+				this.autoWidth = false;
+			}
+		} else {
+			this.fixedWidth = SCORE_DEFAULT_WIDTH;
+			this.autoWidth = false;
+		}
+		//trace('autoWidth ${this.autoWidth} fixedWidth ${this.fixedWidth}');
 		
 		this.toolbar = Browser.document.createDivElement();
 		this.toolbar.className = 'nx-control toolbar';
@@ -71,9 +100,40 @@ class ScriptScore
 		this.toolbar.appendChild(btnStop);
 		this.toolbar.appendChild(labelTime);
 		this.parent.appendChild(toolbar);
+		
 	}
 	
-	public function render(width:Int=700, scl:TScaling = null) {
+	public function render() {
+		
+		if (this.autoWidth) 
+			this._autorender(scaling)
+		else 
+			this._render(this.fixedWidth, scaling);
+	}
+	
+	static var MIN_SCORE_WIDTH:Int = 400;
+	
+	function _autorender(scaling:TScaling = null) {
+		function whenUserIdle() {
+			var parentwrapperWidth = this.parentWrapper.clientWidth - SCORE_RIGHT_MARGIN;
+			var width = Std.int(Math.max(MIN_SCORE_WIDTH, parentwrapperWidth));
+			this.clear(false);
+			this._render(width, scaling);			
+		}		
+		  var idleTimer = null;
+		  function resetTimer(){
+			   Browser.window.clearTimeout(idleTimer);
+			    idleTimer = Browser.window.setTimeout(whenUserIdle, 500);
+		  }				  
+		Browser.window.addEventListener('resize', function(e) { resetTimer();  } );		
+		whenUserIdle();		
+	}
+	
+	static var SCORE_RIGHT_MARGIN:Int = 40;
+	static var SCORE_DEFAULT_WIDTH:Int = 800;
+	
+	function _render(width:Int = 700, scl:TScaling = null) {				
+		
 		if (scl != null) this.scaling = scl;
 		var target = new TargetSvgXml(this.id, scaling);
 		var render = new Renderer(target);			
@@ -107,6 +167,25 @@ class ScriptScore
 		this.context = this.canvas.getContext2d();
 		
 		this.drawingtools = new ScoreDrawingTools(pscore, width / this.scaling.unitX, scaling, this.tempo,  this.context);		
+	}
+	
+	public function clear(clearHeight: Bool=true) {
+		
+		if (this.svg != null) {
+			this.parent.removeChild(this.svg);
+			this.svg = null;
+		}
+		
+		if (this.canvas != null) {
+			this.parent.removeChild(this.canvas);
+			this.canvas = null;
+		}
+		
+		if (clearHeight) parent.style.height = this.toolbar.clientHeight+ 'px';
+	}
+	
+	public function setLabel(text:String) {
+		this.labelTime.textContent = text;
 	}
 	
 	

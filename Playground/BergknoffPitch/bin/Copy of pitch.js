@@ -1,5 +1,16 @@
 // Define the set of test frequencies that we'll use to analyze microphone data.
-
+var C2 = 65.41; // C2 note, in Hz.
+var notes = [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ];
+var test_frequencies = [];
+for (var i = 0; i < 30; i++)
+{
+	var note_frequency = C2 * Math.pow(2, i / 12);
+	var note_name = notes[i % 12];
+	var note = { "frequency": note_frequency, "name": note_name };
+	var just_above = { "frequency": note_frequency * Math.pow(2, 1 / 48), "name": note_name + " (a bit sharp)" };
+	var just_below = { "frequency": note_frequency * Math.pow(2, -1 / 48), "name": note_name + " (a bit flat)" };
+	test_frequencies = test_frequencies.concat([ just_below, note, just_above ]);
+}
 
 window.addEventListener("load", initialize);
 
@@ -14,7 +25,7 @@ function initialize()
 	get_user_media = get_user_media || navigator.mozGetUserMedia;
 	get_user_media.call(navigator, { "audio": true }, use_stream, function() {});
 
-	
+	document.getElementById("play-note").addEventListener("click", toggle_playing_note);
 }
 
 function use_stream(stream)
@@ -36,13 +47,9 @@ function use_stream(stream)
 	// http://lists.w3.org/Archives/Public/public-audio/2013JanMar/0304.html
 	window.capture_audio = function(event)
 	{
-		console.log('recording');
-		
 		if (!recording)
 			return;
-		
-		//console.log(event.inputBuffer.getChannelData(0));
-			
+
 		buffer = buffer.concat(Array.prototype.slice.call(event.inputBuffer.getChannelData(0)));
 
 		// Stop recording after sample_length_milliseconds.
@@ -69,7 +76,6 @@ function use_stream(stream)
 
 function interpret_correlation_result(event)
 {
-	//console.log('interpret_correlation_result');
 	var timeseries = event.data.timeseries;
 	var frequency_amplitudes = event.data.frequency_amplitudes;
 
@@ -103,18 +109,22 @@ function interpret_correlation_result(event)
 	}
 }
 
+// Unnecessary addition of button to play an E note.
+var note_context = new AudioContext();
+var note_node = note_context.createOscillator();
+var gain_node = note_context.createGain();
+note_node.frequency = C2 * Math.pow(2, 4 / 12); // E, ~82.41 Hz.
+gain_node.gain.value = 0;
+note_node.connect(gain_node);
+gain_node.connect(note_context.destination);
+note_node.start();
 
-var C2 = 65.41; // C2 note, in Hz.
-var notes = [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ];
-var test_frequencies = [];
-for (var i = 0; i < 30; i++)
+var playing = false;
+function toggle_playing_note()
 {
-	var note_frequency = C2 * Math.pow(2, i / 12);
-	var note_name = notes[i % 12];
-	var note = { "frequency": note_frequency, "name": note_name };
-	var just_above = { "frequency": note_frequency * Math.pow(2, 1 / 48), "name": note_name + " (a bit sharp)" };
-	var just_below = { "frequency": note_frequency * Math.pow(2, -1 / 48), "name": note_name + " (a bit flat)" };
-	test_frequencies = test_frequencies.concat([ just_below, note, just_above ]);
+	playing = !playing;
+	if (playing)
+		gain_node.gain.value = 0.1;
+	else
+		gain_node.gain.value = 0;
 }
-
-

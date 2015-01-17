@@ -148,8 +148,20 @@ List.prototype = {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	(nx3.js.ScriptScores.instance == null?nx3.js.ScriptScores.instance = new nx3.js.ScriptScores():nx3.js.ScriptScores.instance).init();
-	(nx3.js.ScriptScores.instance == null?nx3.js.ScriptScores.instance = new nx3.js.ScriptScores():nx3.js.ScriptScores.instance).render(800);
+	window.document.getElementById("btnScores").onmousedown = function(e) {
+		(nx3.js.ScriptScores.instance == null?nx3.js.ScriptScores.instance = new nx3.js.ScriptScores():nx3.js.ScriptScores.instance).init();
+		(nx3.js.ScriptScores.instance == null?nx3.js.ScriptScores.instance = new nx3.js.ScriptScores():nx3.js.ScriptScores.instance).render();
+	};
+	window.document.getElementById("btnClear").onmousedown = function(e1) {
+		(nx3.js.ScriptScores.instance == null?nx3.js.ScriptScores.instance = new nx3.js.ScriptScores():nx3.js.ScriptScores.instance).init();
+		(nx3.js.ScriptScores.instance == null?nx3.js.ScriptScores.instance = new nx3.js.ScriptScores():nx3.js.ScriptScores.instance).clearAll();
+	};
+	window.document.getElementById("btnPitch").onmousedown = function(e2) {
+		if(audiotools.webaudio.pitch.PitchRecognizer.instance == null) audiotools.webaudio.pitch.PitchRecognizer.instance = new audiotools.webaudio.pitch.PitchRecognizer(null); else audiotools.webaudio.pitch.PitchRecognizer.instance;
+		(audiotools.webaudio.pitch.PitchRecognizer.instance == null?audiotools.webaudio.pitch.PitchRecognizer.instance = new audiotools.webaudio.pitch.PitchRecognizer(null):audiotools.webaudio.pitch.PitchRecognizer.instance).onPitch = function(currentFreq,closestIndex,maxVolume) {
+			window.document.getElementById("lblPitch").textContent = "" + currentFreq;
+		};
+	};
 };
 var IMap = function() { };
 IMap.__name__ = true;
@@ -848,7 +860,7 @@ audiotools.Wav16Tools.copyChannel = function(ints) {
 	return result;
 };
 audiotools.Wav16Tools.testplay = function(wav16) {
-	audiotools.webaudio.WebAudioTools.testplay(wav16);
+	audiotools.webaudio.WATools.testplay(wav16);
 	return;
 };
 audiotools.sound = {};
@@ -878,8 +890,8 @@ audiotools.sound.Wav16SoundJS = function(wav16,playCallback,key) {
 	this.delta = .0;
 	this.lastTime = .0;
 	audiotools.sound.Wav16SoundBase.call(this,wav16,playCallback,key);
-	this.context = audiotools.webaudio.WebAudioTools.getAudioContext();
-	this.buffer = audiotools.webaudio.WebAudioTools.createBufferFromWav16(wav16,this.context,48000);
+	this.context = (audiotools.webaudio.Context.instance == null?audiotools.webaudio.Context.instance = new audiotools.webaudio.Context():audiotools.webaudio.Context.instance).getContext();
+	this.buffer = audiotools.webaudio.WATools.createBufferFromWav16(wav16,this.context,48000);
 	audiotools.sound.Wav16SoundJS.animationCallback = $bind(this,this.onAnimate);
 	
 			window.requestAnimFrame = (function() {
@@ -1003,7 +1015,7 @@ audiotools.utils.Mp3Wav16Decoder = function() { };
 audiotools.utils.Mp3Wav16Decoder.__name__ = true;
 audiotools.utils.Mp3Wav16Decoder.decode = function(filename) {
 	var f = new tink.core.FutureTrigger();
-	if(audiotools.utils.Mp3Wav16Decoder.context == null) audiotools.utils.Mp3Wav16Decoder.context = audiotools.webaudio.WebAudioTools.getAudioContext();
+	if(audiotools.utils.Mp3Wav16Decoder.context == null) audiotools.utils.Mp3Wav16Decoder.context = audiotools.webaudio.WATools.getAudioContext();
 	new audiotools.webaudio.Mp3ToBuffer(filename,audiotools.utils.Mp3Wav16Decoder.context).setLoadedHandler(function(buffer,filename1) {
 		var wavBytes = null;
 		var left = buffer.getChannelData(0);
@@ -1200,9 +1212,46 @@ audiotools.utils.Wav16PartsBuilder.prototype = {
 		}
 		return f.future;
 	}
+	,removeScoreFromCache: function(nscore,tempo,partsSounds) {
+		if(tempo == null) tempo = 60;
+		var key = nscore.uuid + (":" + tempo + ":" + Std.string(partsSounds));
+		if(this.scorecache.exists(key)) {
+			this.scorecache.remove(key);
+			console.log("remove key " + key);
+		} else console.log("can not find key " + key + " to remove");
+	}
 	,__class__: audiotools.utils.Wav16PartsBuilder
 };
 audiotools.webaudio = {};
+audiotools.webaudio.Context = function() {
+	this.context = audiotools.webaudio.Context.createAudioContext();
+};
+audiotools.webaudio.Context.__name__ = true;
+audiotools.webaudio.Context.getInstance = function() {
+	if(audiotools.webaudio.Context.instance == null) return audiotools.webaudio.Context.instance = new audiotools.webaudio.Context(); else return audiotools.webaudio.Context.instance;
+};
+audiotools.webaudio.Context.createAudioContext = function() {
+	var context = null;
+	
+			if (typeof AudioContext == "function") {
+				context = new AudioContext();
+				console.log("USING STANDARD WEB AUDIO API");
+			} else if ((typeof webkitAudioContext == "function") || (typeof webkitAudioContext == "object")) {
+				context = new webkitAudioContext();
+				console.log("USING WEBKIT AUDIO API");
+			} else {
+				alert("AudioContext is not supported.");
+				throw new Error("AudioContext is not supported. :(");
+			}
+		;
+	return context;
+};
+audiotools.webaudio.Context.prototype = {
+	getContext: function() {
+		return this.context;
+	}
+	,__class__: audiotools.webaudio.Context
+};
 audiotools.webaudio.Mp3ToBuffer = function(url,context) {
 	this.url = url;
 	this.context = context;
@@ -1248,9 +1297,9 @@ audiotools.webaudio.Mp3ToBuffer.prototype = {
 	}
 	,__class__: audiotools.webaudio.Mp3ToBuffer
 };
-audiotools.webaudio.WebAudioTools = function() { };
-audiotools.webaudio.WebAudioTools.__name__ = true;
-audiotools.webaudio.WebAudioTools.createBufferFromWav16 = function(wav16,context,samplerate) {
+audiotools.webaudio.WATools = function() { };
+audiotools.webaudio.WATools.__name__ = true;
+audiotools.webaudio.WATools.createBufferFromWav16 = function(wav16,context,samplerate) {
 	if(samplerate == null) samplerate = 44100;
 	var stereo = wav16.stereo;
 	var length = wav16.ch1.length;
@@ -1288,18 +1337,18 @@ audiotools.webaudio.WebAudioTools.createBufferFromWav16 = function(wav16,context
 	}
 	return newbuffer;
 };
-audiotools.webaudio.WebAudioTools.testplay = function(w,context) {
-	if(context == null) context = audiotools.webaudio.WebAudioTools.getAudioContext();
+audiotools.webaudio.WATools.testplay = function(w,context) {
+	if(context == null) context = audiotools.webaudio.WATools.getAudioContext();
 	var source = context.createBufferSource();
-	source.buffer = audiotools.webaudio.WebAudioTools.createBufferFromWav16(w,context,48000);
+	source.buffer = audiotools.webaudio.WATools.createBufferFromWav16(w,context,48000);
 	source.connect(context.destination,0,0);
 	source.start(0);
 };
-audiotools.webaudio.WebAudioTools.getAudioContext = function() {
-	if(audiotools.webaudio.WebAudioTools._context == null) audiotools.webaudio.WebAudioTools._context = audiotools.webaudio.WebAudioTools.createAudioContext();
-	return audiotools.webaudio.WebAudioTools._context;
+audiotools.webaudio.WATools.getAudioContext = function() {
+	if(audiotools.webaudio.WATools._context == null) audiotools.webaudio.WATools._context = audiotools.webaudio.WATools.createAudioContext();
+	return audiotools.webaudio.WATools._context;
 };
-audiotools.webaudio.WebAudioTools.createAudioContext = function() {
+audiotools.webaudio.WATools.createAudioContext = function() {
 	var context = null;
 	
 			if (typeof AudioContext == "function") {
@@ -1316,6 +1365,326 @@ audiotools.webaudio.WebAudioTools.createAudioContext = function() {
 			}
 		;
 	return context;
+};
+audiotools.webaudio.pitch = {};
+audiotools.webaudio.pitch.PitchRecognizer = function(audioContext) {
+	this.init($bind(this,this.onPitchHandler),audioContext);
+};
+audiotools.webaudio.pitch.PitchRecognizer.__name__ = true;
+audiotools.webaudio.pitch.PitchRecognizer.getInstance = function(audioContext) {
+	if(audiotools.webaudio.pitch.PitchRecognizer.instance == null) return audiotools.webaudio.pitch.PitchRecognizer.instance = new audiotools.webaudio.pitch.PitchRecognizer(audioContext); else return audiotools.webaudio.pitch.PitchRecognizer.instance;
+};
+audiotools.webaudio.pitch.PitchRecognizer.prototype = {
+	onPitchHandler: function(currentFreq,closestIndex,maxVolume) {
+		if(this.onPitch != null) this.onPitch(currentFreq,closestIndex,maxVolume); else console.log([currentFreq,closestIndex,maxVolume]);
+	}
+	,init: function(cbk,audioContext) {
+		var audioContext1 = (audiotools.webaudio.Context.instance == null?audiotools.webaudio.Context.instance = new audiotools.webaudio.Context():audiotools.webaudio.Context.instance).getContext();
+		var windowAudioContext =  window.AudioContext;
+		windowAudioContext = audioContext1;
+			
+			
+			console.log(window.AudioContext);
+			
+			/* Internal parameters */
+			var volumeThreshold = 134; // Amplitude threshold for detecting sound/silence [0-255], 128 = silence
+			var nPitchValues = 5; // Number of pitches for pitch averaging logic
+
+			/* Web Audio API variables */
+			//var audioContext = null;
+			var analyserNode = null;
+			var processNode = null;
+			var microphoneNode = null;
+			var gainNode = null;
+			var lowPassFilter1 = null;
+			var lowPassFilter2 = null;
+			var highPassFilter1 = null;
+			var highPassFilter2 = null;
+
+			/* Configurable parameters */
+			var lowestFreq = 30; // Minimum tune = 44100/1024 = 43.07Hz
+			var highestFreq = 4200; // Maximum tune C8 (4186.02 Hz)
+
+			/* Tune variables */
+			var twelfthRootOfTwo = 1.05946309435929526456182529; // 2^(1/12)
+			var otthRootOfTwo = 1.0005777895; // 2^(1/1200)
+			var refNoteLabels = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+			var refFreq = 440;
+			var refNoteIndex = 0;
+			var noteFrequencies = [];
+			var noteLabels = [];
+			var pitchHistory = [];
+
+			/* GUI variables */
+			var pixelsPerCent = 3;
+			var silenceTimeout = null;
+			var minUpdateDelay = 100; // Pitch/GUI maximum update rate in milliseconds
+				
+			 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+			  //window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext;
+			 
+			  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+			  
+			  if (/*window.requestAnimationFrame && */ window.AudioContext && navigator.getUserMedia) {
+			    try {
+			      navigator.getUserMedia({audio: true}, gotStream, function(err) {
+			        console.log("DEBUG: Error getting microphone input: " + err);
+			      });
+			    } catch (e) {
+			      console.log("DEBUG: Couldnt get microphone input: " + e);
+			    }
+			  }
+			  else {
+			    console.log("DEBUG: Web Audio API is not supported");
+			  }
+
+			  function gotStream(stream) {
+				  
+			    audioContext = new AudioContext();
+			    if (audioContext == null) alert("No AudioContext!");
+			    
+			    microphoneNode = audioContext.createMediaStreamSource(stream);
+			    analyserNode = audioContext.createAnalyser();
+			    analyserNode.fftSize = 2048;
+			    analyserNode.smoothingTimeConstant = 0.8;
+			    gainNode = audioContext.createGain();
+			    gainNode.gain.value = 1.5; // Set mic volume to 150% by default
+			    lowPassFilter1 = audioContext.createBiquadFilter();
+			    lowPassFilter2 = audioContext.createBiquadFilter();
+			    highPassFilter1 = audioContext.createBiquadFilter();
+			    highPassFilter2 = audioContext.createBiquadFilter();
+			    lowPassFilter1.Q.value = 0;
+			    lowPassFilter1.frequency.value = highestFreq;
+			    lowPassFilter1.type = "lowpass";
+			    lowPassFilter2.Q.value = 0;
+			    lowPassFilter2.frequency.value = highestFreq;
+			    lowPassFilter2.type = "lowpass";
+			    highPassFilter1.Q.value = 0;
+			    highPassFilter1.frequency.value = lowestFreq;
+			    highPassFilter1.type = "highpass";
+			    highPassFilter2.Q.value = 0;
+			    highPassFilter2.frequency.value = lowestFreq;
+			    highPassFilter2.type = "highpass";
+			    microphoneNode.connect(lowPassFilter1);
+			    lowPassFilter1.connect(lowPassFilter2);
+			    lowPassFilter2.connect(highPassFilter1);
+			    highPassFilter1.connect(highPassFilter2);
+			    highPassFilter2.connect(gainNode);
+			    gainNode.connect(analyserNode);
+			    
+			    initGui();
+			  }
+
+			  function initGui() {
+			    defineNoteFrequencies();
+			    updatePitch();
+			  }
+
+			  function updatePitch(time) {
+			    var pitchInHz = 0.0;
+			    var volumeCheck = false;
+			    var maxVolume = 128;
+			    var inputBuffer = new Uint8Array(analyserNode.fftSize);
+			    //console.log(inputBuffer);
+			    analyserNode.getByteTimeDomainData(inputBuffer);
+
+			    // Check for volume on the first buffer quarter
+			    for (var i=0; i<inputBuffer.length/4; i++) {
+			      if (maxVolume < inputBuffer[i]) maxVolume = inputBuffer[i];
+			       
+			      if (!volumeCheck && inputBuffer[i] > volumeThreshold) {
+			        volumeCheck = true;
+			      }
+			    }
+
+			    if (volumeCheck) {
+			      pitchInHz = Yin_pitchEstimation(inputBuffer, audioContext.sampleRate);
+			    }
+
+			    
+			    
+			   
+			    
+			    // Pitch smoothing logic
+			    var allowedHzDifference = 5;
+			    if (pitchInHz != 0) {
+			      clearTimeout(silenceTimeout);
+			      silenceTimeout = null;
+			      if (pitchHistory.length >= nPitchValues) pitchHistory.shift();
+			      // Octave jumping fix: if current pitch is around twice the previous detected pitch, halve its value
+			      if (pitchHistory.length && Math.abs((pitchInHz/2.0)-pitchHistory[pitchHistory.length-1]) < allowedHzDifference) pitchInHz = pitchInHz/2.0;
+			      pitchInHz = Math.round(pitchInHz*10)/10;
+			      pitchHistory.push(pitchInHz);
+			      // Take the pitch history median as the current pitch
+			      var sortedPitchHistory = pitchHistory.slice(0).sort(function(a,b) {return a-b});
+			      pitchInHz = sortedPitchHistory[Math.floor((sortedPitchHistory.length-1)/2)];
+
+
+			      updateGui(pitchInHz, getClosestNoteIndex(pitchInHz), (maxVolume-128) / 128);
+			      
+			      
+			      if (pitchHistory.length < nPitchValues) 
+				window.requestAnimationFrame(updatePitch);
+				//updatePitch();
+			      else {
+			        setTimeout(function() {
+			          window.requestAnimationFrame(updatePitch);
+			          //updatePitch();
+			        }, minUpdateDelay);
+			      }
+			    }
+			    else {
+			      if (silenceTimeout === null) {
+			        silenceTimeout = setTimeout(function() {
+			          pitchHistory = [];
+			          updateGui(0.0, -1, 0);
+			        }, 500);
+			      }
+			      window.requestAnimationFrame(updatePitch);
+			     // updatePitch();
+			      
+			      
+			    }
+			    
+			  }
+
+			  function updateGui(currentFreq, closestIndex, maxVolume) {
+				  
+				  if (cbk != null) {
+					  cbk(currentFreq, closestIndex, maxVolume);
+				  } else {
+					console.log(currentFreq, closestIndex, maxVolume);  
+				  }
+			  }
+
+			  function findRefNoteIndex(noteLabel) {
+			    for (var i=0; i<refNoteLabels.length; i++) {
+			      if (refNoteLabels[i] == noteLabel) return i;
+			    }
+			    return false;
+			  }
+
+			  function getClosestNoteIndex(f) {
+			    if (f == 0.0) return false;
+			    for (var i=0; i<noteFrequencies.length; i++) {
+			      if (f < noteFrequencies[i]) {
+			        if (i > 0 && (noteFrequencies[i]-f > f-noteFrequencies[i-1])) return i-1;
+			        else return i;
+			      }
+			    }
+			    return false;
+			  }
+
+			  function getCentDiff(fCurrent, fRef) {
+			    return 1200*Math.log(fCurrent/fRef)/Math.log(2);
+			  }
+
+			  function getSemituneDiff(fCurrent, fRef) {
+			    return 12*Math.log(fCurrent/fRef)/Math.log(2);
+			  }
+
+			  function defineNoteFrequencies() {
+				  
+			    var noteFreq = 0.0;
+			    var greaterNoteFrequencies = [];
+			    var greaterNoteLabels = [];
+			    var lowerNoteFrequencies = [];
+			    var lowerNoteLabels = [];
+			    var octave = 4;
+
+			    for (var i=0;;i++) {
+			      if ((i+9)%12 == 0) octave++;
+			      noteFreq = refFreq*Math.pow(twelfthRootOfTwo, i);
+			      // maximum note tune C8 (4186.02 Hz)
+			      if (noteFreq > 4187) break;
+			      greaterNoteFrequencies.push(noteFreq);
+			      greaterNoteLabels.push(octave + refNoteLabels[(refNoteIndex+i)%refNoteLabels.length]);
+			    }
+			    //console.log(i);
+
+			    octave = 4;
+			    for (var i=-1;;i--) {
+			      if ((Math.abs(i)+2)%12 == 0) octave--;
+			      noteFreq = refFreq*Math.pow(twelfthRootOfTwo, i);
+			      // minimum note tune A0 (28Hz)
+			      if (noteFreq < 28) break;
+			      lowerNoteFrequencies.push(noteFreq);
+			      var relativeIndex = (refNoteIndex+i)%refNoteLabels.length;
+			      relativeIndex = (relativeIndex == 0) ? 0 : relativeIndex+(refNoteLabels.length);
+			      lowerNoteLabels.push(octave + refNoteLabels[relativeIndex]);
+			    }
+			    //console.log(i);
+
+			    lowerNoteFrequencies.reverse();
+			    lowerNoteLabels.reverse();
+			    noteFrequencies = lowerNoteFrequencies.concat(greaterNoteFrequencies);
+			    noteLabels = lowerNoteLabels.concat(greaterNoteLabels);
+
+			  }
+			 
+			  //==================================================================================================
+			  
+			// Yin Pitch Tracking Algorithm implemented by Alejandro PÃ©rez (2014)
+			// (http://recherche.ircam.fr/equipes/pcm/cheveign/ps/2002_JASA_YIN_proof.pdf)			  
+			  
+			// PARAMETERS
+			var yinThreshold = 0.15; // allowed uncertainty (e.g 0.05 will return a pitch with ~95% probability)
+			var yinProbability = 0.0; // READONLY: contains the certainty of the note found as a decimal (i.e 0.3 is 30%)
+
+			function Yin_pitchEstimation(inputBuffer, sampleRate) {
+			  var yinBuffer = new Float32Array(Math.floor(inputBuffer.length/2));
+			  yinBuffer[0] = 1;
+			  var runningSum = 0;
+			  var pitchInHz = 0.0;
+			  var foundTau = false;
+			  var minTauValue;
+			  var minTau = 0;
+
+			  for (var tau=1; tau<Math.floor(inputBuffer.length/2); tau++) {
+			    // Step 1: Calculates the squared difference of the signal with a shifted version of itself.
+			    yinBuffer[tau] = 0;
+			    for (var i=0; i<Math.floor(inputBuffer.length/2); i++) {
+			      yinBuffer[tau] += Math.pow(((inputBuffer[i]-128)/128)-((inputBuffer[i+tau]-128)/128),2);
+			    }
+			    // Step 2: Calculate the cumulative mean on the normalised difference calculated in step 1.
+			    runningSum += yinBuffer[tau];
+			    yinBuffer[tau] = yinBuffer[tau]*(tau/runningSum);
+
+			    // Step 3: Check if the current normalised cumulative mean is over the threshold.
+			    if (tau > 1) {
+			      if (foundTau) {
+			        if (yinBuffer[tau] < minTauValue) {
+			          minTauValue = yinBuffer[tau];
+			          minTau = tau;
+			        }
+			        else break;
+			      }
+			      else if (yinBuffer[tau] < yinThreshold) {
+			        foundTau = true;
+			        minTau = tau;
+			        minTauValue = yinBuffer[tau];
+			      }
+			    }
+			  }
+
+			  if (minTau == 0) {
+			    yinProbability = 0;
+			    pitchInHz = 0.0;
+			  }
+			  else {
+			    // Step 4: Interpolate the shift value (tau) to improve the pitch estimate.
+			    minTau += (yinBuffer[minTau+1]-yinBuffer[minTau-1])/(2*((2*yinBuffer[minTau])-yinBuffer[minTau-1]-yinBuffer[minTau+1]));
+			    pitchInHz = sampleRate/minTau;
+			    yinProbability = 1-minTauValue;
+			  }
+
+			  return pitchInHz;
+			}
+		
+		
+		;
+	}
+	,__class__: audiotools.webaudio.pitch.PitchRecognizer
 };
 var cx = {};
 cx.ArrayTools = function() { };
@@ -1853,16 +2222,18 @@ format.wav.Reader.prototype = {
 		if(this.i.readString(4) != "RIFF") throw "RIFF header expected";
 		var len = this.i.readInt32();
 		if(this.i.readString(4) != "WAVE") throw "WAVE signature not found";
-		if(this.i.readString(4) != "fmt ") throw "expected fmt subchunk";
+		var x = this.i.readString(4);
+		if(x != "fmt ") throw "expected fmt subchunk";
 		var fmtlen = this.i.readInt32();
+		var x1 = this.i.readUInt16();
 		var format1;
-		var _g = this.i.readUInt16();
-		switch(_g) {
+		switch(x1) {
 		case 1:
 			format1 = format.wav.WAVEFormat.WF_PCM;
 			break;
 		default:
-			throw "only PCM (uncompressed) WAV files are supported";
+			console.log("only PCM (uncompressed) WAV files are supported");
+			format1 = format.wav.WAVEFormat.WF_PCM;
 		}
 		var channels = this.i.readUInt16();
 		var samplingRate = this.i.readInt32();
@@ -1986,6 +2357,12 @@ haxe.ds.StringMap.prototype = {
 	}
 	,exists: function(key) {
 		return this.h.hasOwnProperty("$" + key);
+	}
+	,remove: function(key) {
+		key = "$" + key;
+		if(!this.h.hasOwnProperty(key)) return false;
+		delete(this.h[key]);
+		return true;
 	}
 	,keys: function() {
 		var a = [];
@@ -8810,6 +9187,7 @@ nx3.geom.RectanglesTools.concat = function(rectsA,rectsB) {
 nx3.js = {};
 nx3.js.ScriptScore = function(scriptElement) {
 	this.parent = scriptElement.parentElement;
+	this.parentWrapper = this.parent.parentElement;
 	this.parent.className = "nx-parent";
 	var xmlStr = scriptElement.innerHTML;
 	this.nscore = nx3.xml.ScoreXML.fromXmlStr(xmlStr);
@@ -8822,7 +9200,24 @@ nx3.js.ScriptScore = function(scriptElement) {
 	}); else this.sounds = [];
 	var scl = scriptElement.getAttribute("data-scaling");
 	this.scaling = nx3.render.scaling.ScalingTools.fromString(scl);
-	console.log(this.scaling);
+	var fxw = scriptElement.getAttribute("data-width");
+	if(fxw != null) {
+		if(fxw.toLowerCase() == "auto") {
+			this.autoWidth = true;
+			this.fixedWidth = -1;
+		} else {
+			var w = Std.parseInt(fxw);
+			if(w != null) w = Std["int"](Math.max(nx3.js.ScriptScore.MIN_SCORE_WIDTH,w)); else {
+				js.Lib.alert("Score data-width error: " + fxw);
+				w = 500;
+			}
+			this.fixedWidth = w;
+			this.autoWidth = false;
+		}
+	} else {
+		this.fixedWidth = nx3.js.ScriptScore.SCORE_DEFAULT_WIDTH;
+		this.autoWidth = false;
+	}
 	var _this = window.document;
 	this.toolbar = _this.createElement("div");
 	this.toolbar.className = "nx-control toolbar";
@@ -8845,7 +9240,28 @@ nx3.js.ScriptScore = function(scriptElement) {
 };
 nx3.js.ScriptScore.__name__ = true;
 nx3.js.ScriptScore.prototype = {
-	render: function(width,scl) {
+	render: function() {
+		if(this.autoWidth) this._autorender(this.scaling); else this._render(this.fixedWidth,this.scaling);
+	}
+	,_autorender: function(scaling) {
+		var _g = this;
+		var whenUserIdle = function() {
+			var parentwrapperWidth = _g.parentWrapper.clientWidth - nx3.js.ScriptScore.SCORE_RIGHT_MARGIN;
+			var width = Std["int"](Math.max(nx3.js.ScriptScore.MIN_SCORE_WIDTH,parentwrapperWidth));
+			_g.clear(false);
+			_g._render(width,scaling);
+		};
+		var idleTimer = null;
+		var resetTimer = function() {
+			window.clearTimeout(idleTimer);
+			idleTimer = window.setTimeout(whenUserIdle,500);
+		};
+		window.addEventListener("resize",function(e) {
+			resetTimer();
+		});
+		whenUserIdle();
+	}
+	,_render: function(width,scl) {
 		if(width == null) width = 700;
 		if(scl != null) this.scaling = scl;
 		var target = new nx3.render.TargetSvgXml(this.id,this.scaling);
@@ -8876,11 +9292,27 @@ nx3.js.ScriptScore.prototype = {
 		this.context = this.canvas.getContext("2d");
 		this.drawingtools = new nx3.utils.ScoreDrawingTools(pscore,width / this.scaling.unitX,this.scaling,this.tempo,this.context);
 	}
+	,clear: function(clearHeight) {
+		if(clearHeight == null) clearHeight = true;
+		if(this.svg != null) {
+			this.parent.removeChild(this.svg);
+			this.svg = null;
+		}
+		if(this.canvas != null) {
+			this.parent.removeChild(this.canvas);
+			this.canvas = null;
+		}
+		if(clearHeight) this.parent.style.height = this.toolbar.clientHeight + "px";
+	}
+	,setLabel: function(text) {
+		this.labelTime.textContent = text;
+	}
 	,__class__: nx3.js.ScriptScore
 };
 nx3.js.ScriptScores = function() {
 	this.activeScriptScore = null;
 	this.scScores = new haxe.ds.StringMap();
+	this.cache = new haxe.ds.StringMap();
 };
 nx3.js.ScriptScores.__name__ = true;
 nx3.js.ScriptScores.getInstance = function() {
@@ -8899,30 +9331,27 @@ nx3.js.ScriptScores.prototype = {
 			if(!this.scScores.exists(id)) {
 				var scriptScore = [new nx3.js.ScriptScore(scriptElement)];
 				this.scScores.set(id,scriptScore[0]);
-				scriptScore[0].btnPlay.addEventListener("click",(function(scriptScore) {
+				scriptScore[0].btnPlay.addEventListener("mousedown",(function(scriptScore) {
 					return function(e) {
-						console.log("click");
 						_g1.play(scriptScore[0]);
 						e.stopPropagation();
 					};
 				})(scriptScore));
-				scriptScore[0].btnStop.addEventListener("click",(function(scriptScore) {
+				scriptScore[0].btnStop.addEventListener("mousedown",(function(scriptScore) {
 					return function(e1) {
-						console.log("click");
 						_g1.stop(scriptScore[0]);
 						e1.stopPropagation();
 					};
 				})(scriptScore));
-				scriptScore[0].parent.addEventListener("click",(function(scriptScore) {
+				scriptScore[0].parent.addEventListener("mousedown",(function(scriptScore) {
 					return function(e2) {
 						_g1.activate(scriptScore[0]);
 						e2.stopPropagation();
 					};
 				})(scriptScore));
-				window.document.body.addEventListener("click",(function() {
+				window.document.body.addEventListener("mousedown",(function() {
 					return function(e3) {
 						_g1.activate(null);
-						console.log("body");
 					};
 				})());
 			} else console.log("script score " + id + " is already in cache");
@@ -8943,11 +9372,15 @@ nx3.js.ScriptScores.prototype = {
 			var scScore = $it0.next();
 			var scScore1 = [scScore];
 			if(scScore1[0] == this.activeScriptScore) {
-				scScore1[0].parent.classList.add("nx-active");
+				scScore1[0].setLabel("Activating...");
+				scScore1[0].parent.classList.add("nx-activating");
 				var this1 = (audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).getScoreWav16Async(scScore1[0].nscore,scScore1[0].tempo,scScore1[0].sounds);
 				this1((function(scScore1) {
 					return function(wav16) {
 						(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).initSound(wav16,$bind(_g,_g.playCallback),scriptScore.id + scScore1[0].tempo + Std.string(scScore1[0].sounds));
+						scScore1[0].setLabel("0");
+						scScore1[0].parent.classList.remove("nx-activating");
+						scScore1[0].parent.classList.add("nx-active");
 					};
 				})(scScore1));
 			} else scScore1[0].parent.classList.remove("nx-active");
@@ -8955,23 +9388,45 @@ nx3.js.ScriptScores.prototype = {
 	}
 	,play: function(scScore) {
 		var _g = this;
+		var startPlayack = function(pos) {
+			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).start(0);
+			scScore.parent.classList.remove("nx-activating");
+			scScore.parent.classList.add("nx-active");
+		};
 		this.activate(scScore);
-		console.log("play " + scScore.id);
+		scScore.parent.classList.add("nx-activating");
+		var timeStart = new Date().getTime();
 		var nscore = scScore.nscore;
 		var tempo = scScore.tempo;
 		var sounds = scScore.sounds;
 		var this1 = (audiotools.utils.Wav16PartsBuilder.instance == null?audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder():audiotools.utils.Wav16PartsBuilder.instance).getScoreWav16Async(scScore.nscore,scScore.tempo,scScore.sounds);
 		this1(function(wav16) {
-			console.log("FINISHED nscore1");
 			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).initSound(wav16,$bind(_g,_g.playCallback),scScore.id + scScore.tempo + Std.string(scScore.sounds));
-			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).start(0);
+			var timeBuild = new Date().getTime() - timeStart;
+			console.log("time to build: " + timeBuild);
+			if(timeBuild > 500) {
+				console.log("ACTIVATING DELAY");
+				window.setTimeout(function() {
+					startPlayack(0);
+				},1000);
+			} else startPlayack(0);
 		});
 	}
-	,render: function(width) {
+	,render: function() {
 		var $it0 = this.scScores.iterator();
 		while( $it0.hasNext() ) {
 			var scScore = $it0.next();
-			scScore.render(width);
+			if(!this.cache.exists(scScore.id)) {
+				scScore.render();
+				this.cache.set(scScore.id,true);
+			} else console.log("score " + scScore.id + " is already in cache");
+		}
+	}
+	,clearAll: function() {
+		var $it0 = this.scScores.iterator();
+		while( $it0.hasNext() ) {
+			var scScore = $it0.next();
+			scScore.clear();
 		}
 	}
 	,playCallback: function(key,pos) {
@@ -10350,7 +10805,6 @@ nx3.utils.ScoreDrawingTools = function(score,width,scaling,tempo,context) {
 	this.scaling = scaling;
 	this.width = width;
 	this.tempo = tempo;
-	console.log("tempo" + tempo);
 	this.systools = new nx3.PSystemsTools(this.score.getSystems(this.width));
 	this.scoreWidth = this.score.getWidth() * this.scaling.unitX;
 	this.scoreHeight = this.score.getHeight() * this.scaling.unitY;
@@ -11541,6 +11995,8 @@ Math.isNaN = function(i1) {
 String.prototype.__class__ = String;
 String.__name__ = true;
 Array.__name__ = true;
+Date.prototype.__class__ = Date;
+Date.__name__ = ["Date"];
 var Int = { __name__ : ["Int"]};
 var Dynamic = { __name__ : ["Dynamic"]};
 var Float = Number;
@@ -11675,6 +12131,9 @@ nx3.PSystemBarsGenerator.defaultClef = nx3.EClef.ClefF;
 nx3.PSystemBarsGenerator.defaultKey = nx3.EKey.Flat2;
 nx3.PSystemBarsGenerator.defaultTime = nx3.ETime.Time6_4;
 nx3.audio.NotenrTools.stemtonestable = nx3.audio.NotenrTools.getNotenrTable(nx3.EKey.Natural);
+nx3.js.ScriptScore.MIN_SCORE_WIDTH = 400;
+nx3.js.ScriptScore.SCORE_RIGHT_MARGIN = 40;
+nx3.js.ScriptScore.SCORE_DEFAULT_WIDTH = 800;
 nx3.render.scaling.Scaling.MID = { linesWidth : 0.8, space : 12.0, unitY : 6.0, noteWidth : 10, unitX : 5, quarterNoteWidth : 2.5, signPosWidth : 14.0, svgScale : .27, svgX : 0, svgY : -55.0, fontScaling : 1.5};
 nx3.render.scaling.Scaling.NORMAL = { linesWidth : .5, space : 8.0, unitY : 4.0, noteWidth : 7.0, unitX : 3.5, quarterNoteWidth : 1.75, signPosWidth : 9.5, svgScale : .175, svgX : 0, svgY : -36.0, fontScaling : 1.0};
 nx3.render.scaling.Scaling.SMALL = { linesWidth : .5, space : 6.0, unitY : 3.0, noteWidth : 5.0, unitX : 2.5, quarterNoteWidth : 1.25, signPosWidth : 7.0, svgScale : .14, svgX : 0, svgY : -28.5, fontScaling : 0.75};

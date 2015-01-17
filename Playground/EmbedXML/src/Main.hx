@@ -1,5 +1,6 @@
 package;
 
+import audiotools.webaudio.pitch.PitchRecognizer;
 import js.Browser;
 import js.html.Element;
 import js.html.ScriptElement;
@@ -39,8 +40,24 @@ class Main
 		}
 		*/
 		
-		ScriptScores.getInstance().init();
-		ScriptScores.getInstance().render(800);
+		Browser.document.getElementById('btnScores').onmousedown = function(e) {
+			ScriptScores.getInstance().init();
+			ScriptScores.getInstance().render();			
+		}
+
+		Browser.document.getElementById('btnClear').onmousedown = function(e) {
+			ScriptScores.getInstance().init();
+			ScriptScores.getInstance().clearAll();
+		}		
+		
+		Browser.document.getElementById('btnPitch').onmousedown = function(e) {
+			PitchRecognizer.getInstance();
+			PitchRecognizer.getInstance().onPitch = function(currentFreq:Float, closestIndex:Int, maxVolume:Float) {
+				Browser.document.getElementById('lblPitch').textContent = '$currentFreq';
+			}
+			
+			
+		}
 		
 	}
 	

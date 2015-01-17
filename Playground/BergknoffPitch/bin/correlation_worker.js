@@ -1,9 +1,20 @@
 self.onmessage = function(event)
 {
+	
+	
 	var timeseries = event.data.timeseries;
+	//console.log('timeseries length:' + timeseries.length);
+	
 	var test_frequencies = event.data.test_frequencies;
+	//console.log('test_frequencies:' + test_frequencies);
+	
+	
 	var sample_rate = event.data.sample_rate;
+	//console.log('sample_rate:' + sample_rate);
+	
 	var amplitudes = compute_correlations(timeseries, test_frequencies, sample_rate);
+	
+	//console.log(amplitudes);
 	self.postMessage({ "timeseries": timeseries, "frequency_amplitudes": amplitudes });
 };
 

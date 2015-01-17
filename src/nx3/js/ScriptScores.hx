@@ -30,6 +30,7 @@ class ScriptScores
 	
 	function new() { 	
 		this.scScores = new Map<String,ScriptScore>();
+		this.cache = new Map<String, Bool>();
 	}
 
 	var scScores:Map<String, ScriptScore>;
@@ -44,26 +45,23 @@ class ScriptScores
 				
 				this.scScores.set(id, scriptScore);
 				
-				scriptScore.btnPlay.addEventListener('click', function(e:MouseEvent) {
-					trace('click');
+				scriptScore.btnPlay.addEventListener('mousedown', function(e:MouseEvent) {
 					this.play(scriptScore);
 					e.stopPropagation();
 				});
 
-				scriptScore.btnStop.addEventListener('click', function(e:MouseEvent) {
-					trace('click');
+				scriptScore.btnStop.addEventListener('mousedown', function(e:MouseEvent) {
 					this.stop(scriptScore);
 					e.stopPropagation();
 				});				
 				
-				scriptScore.parent.addEventListener('click', function(e:MouseEvent) {
+				scriptScore.parent.addEventListener('mousedown', function(e:MouseEvent) {
 					this.activate(scriptScore);
 					e.stopPropagation();
 				});
 				
-				Browser.document.body.addEventListener('click', function(e:MouseEvent) {
+				Browser.document.body.addEventListener('mousedown', function(e:MouseEvent) {
 					this.activate(null);
-					trace('body');
 				});
 				
 			 } else {
@@ -82,19 +80,19 @@ class ScriptScores
 	var activeScriptScore:ScriptScore = null;
 	
 	function activate(scriptScore:ScriptScore) 
-	{
+	{		
 		if (this.activeScriptScore != null && scriptScore == this.activeScriptScore) return;
-		
 		Wav16SoundManager.getInstance().stop();
-		
-		
 		this.activeScriptScore = scriptScore;
 		for (scScore in this.scScores) {
 			if (scScore == activeScriptScore) {
-				scScore.parent.classList.add('nx-active');
-				
-				Wav16PartsBuilder.getInstance().getScoreWav16Async(scScore.nscore, scScore.tempo, scScore.sounds).handle(function(wav16) {
-					 Wav16SoundManager.getInstance().initSound(wav16, playCallback, scriptScore.id + scScore.tempo + Std.string(scScore.sounds));
+				scScore.setLabel('Activating...');
+				scScore.parent.classList.add('nx-activating');				
+				Wav16PartsBuilder.getInstance().getScoreWav16Async(scScore.nscore, scScore.tempo, scScore.sounds).handle(function(wav16) {				
+					Wav16SoundManager.getInstance().initSound(wav16, playCallback, scriptScore.id + scScore.tempo + Std.string(scScore.sounds));
+					scScore.setLabel('0');
+					scScore.parent.classList.remove('nx-activating');				
+					scScore.parent.classList.add('nx-active');	
 				});
 				
 			} else {
@@ -104,25 +102,56 @@ class ScriptScores
 	}
 	
 	function play(scScore:ScriptScore) {
+
+		function startPlayack(pos:Float) {
+			Wav16SoundManager.getInstance().start(0);		
+			scScore.parent.classList.remove('nx-activating');				
+			scScore.parent.classList.add('nx-active');										
+		}		
+		
 		this.activate(scScore);
-		trace('play ' + scScore.id);
 		
-				var nscore:NScore = scScore.nscore;
-				var tempo:Int = scScore.tempo;
-				var sounds:Array<String> = scScore.sounds;
-		
-				Wav16PartsBuilder.getInstance().getScoreWav16Async(scScore.nscore, scScore.tempo, scScore.sounds).handle(function(wav16) {
-					trace('FINISHED nscore1');
-					 Wav16SoundManager.getInstance().initSound(wav16, playCallback, scScore.id + scScore.tempo + Std.string(scScore.sounds));
-					 //this.drawingTools.drawColumnFromTime(0);
-					 Wav16SoundManager.getInstance().start(0);										
-				});				
+		scScore.parent.classList.add('nx-activating');			
+		var timeStart = Date.now().getTime();
+		var nscore:NScore = scScore.nscore;
+		var tempo:Int = scScore.tempo;
+		var sounds:Array<String> = scScore.sounds;
+
+		Wav16PartsBuilder.getInstance().getScoreWav16Async(scScore.nscore, scScore.tempo, scScore.sounds).handle(function(wav16) {
+			//trace('FINISHED nscore1');			
+			 Wav16SoundManager.getInstance().initSound(wav16, playCallback, scScore.id + scScore.tempo + Std.string(scScore.sounds));
+			 //this.drawingTools.drawColumnFromTime(0);
+			 var timeBuild = Date.now().getTime() - timeStart;
+			 trace('time to build: ' + timeBuild);
+			 
+			 if (timeBuild > 500) {
+				 trace('ACTIVATING DELAY');
+				 Browser.window.setTimeout( function() { startPlayack(0); }, 1000);
+			 } else {
+				 startPlayack(0);
+			 }
+		});	
+				
+
 	}
 	
-	public function render(width:Int) {
-		for (scScore in this.scScores) {
-			scScore.render(width);
+	var cache:Map<String, Bool>;
+	
+	public function render() {
+		for (scScore in this.scScores) {			
+			if (! this.cache.exists(scScore.id)) {
+				scScore.render();	
+				this.cache.set(scScore.id, true);
+			} else {
+				trace('score ${scScore.id} is already in cache');				
+			}
 		}
+	}
+	
+	public function clearAll() {
+		for (scScore in this.scScores) {
+			scScore.clear();
+		}		
 	}
 	
 	function playCallback(key:String, pos:Float):Void {
