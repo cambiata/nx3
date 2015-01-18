@@ -53,11 +53,20 @@ class Main
 		Browser.document.getElementById('btnPitch').onmousedown = function(e) {
 			PitchRecognizer.getInstance();
 			PitchRecognizer.getInstance().onPitch = function(currentFreq:Float, closestIndex:Int, maxVolume:Float) {
-				Browser.document.getElementById('lblPitch').textContent = '$currentFreq';
+				var semitone = (currentFreq > 0) ? PitchRecognizer.getSemitoneDiff(currentFreq) : 0;
+				var roundSemitone = Math.round(semitone);
+				Browser.document.getElementById('lblPitch').textContent = '$currentFreq : $roundSemitone / $semitone';
 			}
-			
-			
 		}
+		
+		Browser.document.getElementById('btnPitchStart').onmousedown = function(e) {
+			PitchRecognizer.getInstance().startAnalyzing();
+		}
+
+		Browser.document.getElementById('btnPitchStop').onmousedown = function(e) {
+			PitchRecognizer.getInstance().stopAnalyzing();
+		}
+		
 		
 	}
 	

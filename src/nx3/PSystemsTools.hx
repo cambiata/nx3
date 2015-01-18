@@ -146,12 +146,15 @@ class PSystemsTools
 		return this.nbars;
 	}	
 	
+	var notesNotenritems:Map<NNote, NotenrItem> ;
 	public function getNotesNotenritems(): Map<NNote, NotenrItem> {
+		if (notesNotenritems != null) return this.notesNotenritems;
+		this.notesNotenritems = new Map<NNote, NotenrItem> ();
 		var nbars = this.getNBarsFromSystems();		
 		if (VoiceSplitter.canSplit(nbars)) nbars = new VoiceSplitter(nbars).getVoicesplittedNBars();
 		var partsnotes:PartsNotenrItems = new NotenrBarsCalculator(nbars).getPartsNotenrItems();
-		var map = NotenrTools.getNotesNotenritems(partsnotes);
-		return map;
+		this.notesNotenritems = NotenrTools.getNotesNotenritems(partsnotes);
+		return this.notesNotenritems;
 	}
 	
 	var columnsPositions: Map<PColumn, Int>;

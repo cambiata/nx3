@@ -3,9 +3,12 @@ import js.Browser;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
 import js.html.Element;
+import js.html.MouseEvent;
 import js.html.ScriptElement;
 import js.html.svg.SVGElement;
 import js.Lib;
+import nx3.audio.NotenrItem;
+import nx3.geom.Point;
 import nx3.NScore;
 import nx3.PScore;
 import nx3.render.Renderer;
@@ -17,6 +20,7 @@ import nx3.render.scaling.TScaling;
 import nx3.utils.ScoreDrawingTools;
 
 using StringTools;
+using nx3.render.scaling.ScalingTools;
 /**
  * NxScriptElement
  * @author 
@@ -100,11 +104,9 @@ class ScriptScore
 		this.toolbar.appendChild(btnStop);
 		this.toolbar.appendChild(labelTime);
 		this.parent.appendChild(toolbar);
-		
 	}
 	
 	public function render() {
-		
 		if (this.autoWidth) 
 			this._autorender(scaling)
 		else 
@@ -167,6 +169,65 @@ class ScriptScore
 		this.context = this.canvas.getContext2d();
 		
 		this.drawingtools = new ScoreDrawingTools(pscore, width / this.scaling.unitX, scaling, this.tempo,  this.context);		
+		
+		//this.drawingtools.drawNotesRects(0xff0000);
+
+		
+		//--------------------------------------------------------------------------------------------------------------------------------
+		
+		var notesrects = this.drawingtools.getNotesRects();
+		
+		var canvasClientX: Float = 0;
+		var canvasClientY: Float = 0;
+		
+		function findNote() : {note:PNote, noteinfo:NotenrItem} {
+			var rect = canvas.getBoundingClientRect();
+			var x = canvasClientX - rect.left;
+			var y = canvasClientY - rect.top;
+			var point = new Point(this.scaling.targetX(x), this.scaling.targetY(y));
+			//trace('canvas Idle $x/$y $point');
+			for (note in notesrects.keys()) {
+				var rect = notesrects.get(note);
+				//trace(rect);
+				if (rect.containsPoint(point)) {
+					//trace('Found note!');
+					var noteinfo = this.drawingtools.getNotesNotenritems().get(note.nnote);
+					return { note:note, noteinfo:noteinfo };
+					break;
+				}
+			}
+			return null;
+		}
+
+		var canvasTimer = null;
+		function resetCanvasTimer(){
+			Browser.window.clearTimeout(canvasTimer);
+			canvasTimer = Browser.window.setTimeout(function() { 
+				var foundnote = findNote(); 
+				if (foundnote == null) return;
+				trace(foundnote);
+			}, 500);
+		}	
+		
+		canvas.addEventListener('mousemove', function(e:MouseEvent) {
+			canvasClientX = e.clientX;
+			canvasClientY = e.clientY;
+			resetCanvasTimer();
+		});
+		
+		canvas.addEventListener('mousedown', function(e:MouseEvent) {
+			trace('mousedown');
+			canvasClientX = e.clientX;
+			canvasClientY = e.clientY;
+			var foundnote = findNote();
+			if (foundnote == null) return;
+			trace(foundnote);
+		});
+		
+		canvas.addEventListener('mouseup', function(e:MouseEvent) {
+			trace('mouseup');
+		});
+		
 	}
 	
 	public function clear(clearHeight: Bool=true) {

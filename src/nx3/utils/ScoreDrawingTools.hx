@@ -86,6 +86,14 @@ class ScoreDrawingTools
 		}				
 	}
 	
+	public function getNotesRects() {
+		return systools.getNotesRects();			
+	}
+	
+	public function getNotesNotenritems() {
+		return systools.getNotesNotenritems();
+	}
+	
 	public function drawColumns(color:Int = 0xFF0000) {		
 		var columnsPos:Map<PColumn, TPointH> = systools.getColumnsPointH();
 		

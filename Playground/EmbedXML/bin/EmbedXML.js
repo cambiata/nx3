@@ -61,15 +61,6 @@ Lambda.array = function(it) {
 	}
 	return a;
 };
-Lambda.map = function(it,f) {
-	var l = new List();
-	var $it0 = $iterator(it)();
-	while( $it0.hasNext() ) {
-		var x = $it0.next();
-		l.add(f(x));
-	}
-	return l;
-};
 Lambda.has = function(it,elt) {
 	var $it0 = $iterator(it)();
 	while( $it0.hasNext() ) {
@@ -77,14 +68,6 @@ Lambda.has = function(it,elt) {
 		if(x == elt) return true;
 	}
 	return false;
-};
-Lambda.foreach = function(it,f) {
-	var $it0 = $iterator(it)();
-	while( $it0.hasNext() ) {
-		var x = $it0.next();
-		if(!f(x)) return false;
-	}
-	return true;
 };
 Lambda.iter = function(it,f) {
 	var $it0 = $iterator(it)();
@@ -143,7 +126,6 @@ List.prototype = {
 		}
 		return b;
 	}
-	,__class__: List
 };
 var Main = function() { };
 Main.__name__ = true;
@@ -159,15 +141,21 @@ Main.main = function() {
 	window.document.getElementById("btnPitch").onmousedown = function(e2) {
 		if(audiotools.webaudio.pitch.PitchRecognizer.instance == null) audiotools.webaudio.pitch.PitchRecognizer.instance = new audiotools.webaudio.pitch.PitchRecognizer(null); else audiotools.webaudio.pitch.PitchRecognizer.instance;
 		(audiotools.webaudio.pitch.PitchRecognizer.instance == null?audiotools.webaudio.pitch.PitchRecognizer.instance = new audiotools.webaudio.pitch.PitchRecognizer(null):audiotools.webaudio.pitch.PitchRecognizer.instance).onPitch = function(currentFreq,closestIndex,maxVolume) {
-			window.document.getElementById("lblPitch").textContent = "" + currentFreq;
+			var semitone;
+			if(currentFreq > 0) semitone = audiotools.webaudio.pitch.PitchRecognizer.getSemitoneDiff(currentFreq); else semitone = 0;
+			var roundSemitone = Math.round(semitone);
+			window.document.getElementById("lblPitch").textContent = "" + currentFreq + " : " + roundSemitone + " / " + semitone;
 		};
+	};
+	window.document.getElementById("btnPitchStart").onmousedown = function(e3) {
+		(audiotools.webaudio.pitch.PitchRecognizer.instance == null?audiotools.webaudio.pitch.PitchRecognizer.instance = new audiotools.webaudio.pitch.PitchRecognizer(null):audiotools.webaudio.pitch.PitchRecognizer.instance).startAnalyzing();
+	};
+	window.document.getElementById("btnPitchStop").onmousedown = function(e4) {
+		(audiotools.webaudio.pitch.PitchRecognizer.instance == null?audiotools.webaudio.pitch.PitchRecognizer.instance = new audiotools.webaudio.pitch.PitchRecognizer(null):audiotools.webaudio.pitch.PitchRecognizer.instance).stopAnalyzing();
 	};
 };
 var IMap = function() { };
 IMap.__name__ = true;
-IMap.prototype = {
-	__class__: IMap
-};
 Math.__name__ = true;
 var Reflect = function() { };
 Reflect.__name__ = true;
@@ -204,9 +192,6 @@ Std.parseInt = function(x) {
 Std.parseFloat = function(x) {
 	return parseFloat(x);
 };
-Std.random = function(x) {
-	if(x <= 0) return 0; else return Math.floor(Math.random() * x);
-};
 var StringBuf = function() {
 	this.b = "";
 };
@@ -218,7 +203,6 @@ StringBuf.prototype = {
 	,addSub: function(s,pos,len) {
 		if(len == null) this.b += HxOverrides.substr(s,pos,null); else this.b += HxOverrides.substr(s,pos,len);
 	}
-	,__class__: StringBuf
 };
 var StringTools = function() { };
 StringTools.__name__ = true;
@@ -470,30 +454,6 @@ Xml.prototype = {
 		}
 		return s.b;
 	}
-	,__class__: Xml
-};
-var audio = {};
-audio.LinearAccelerator = function(startTempo,endTempo,numBeats) {
-	this.startTempo = startTempo;
-	this.deltaTempo = endTempo - startTempo;
-	this.numBeats = numBeats;
-};
-audio.LinearAccelerator.__name__ = true;
-audio.LinearAccelerator.test = function() {
-	console.log(new audio.LinearAccelerator(1,2,4).acceleratedDuration(0,4));
-	console.log(new audio.LinearAccelerator(1,1,4).acceleratedDuration(0,4));
-};
-audio.LinearAccelerator.prototype = {
-	evaluate: function(time) {
-		return this.numBeats * Math.log(this.numBeats + this.deltaTempo) * time;
-	}
-	,acceleratedDuration: function(startTime,dur) {
-		var s = this.evaluate(startTime);
-		var d = this.evaluate(dur);
-		console.log("starttime " + startTime + " " + s + " " + d);
-		return this.evaluate(startTime + dur) - this.evaluate(startTime);
-	}
-	,__class__: audio.LinearAccelerator
 };
 var audiotools = {};
 audiotools.Wav16 = function(channel1,channel2) {
@@ -504,20 +464,6 @@ audiotools.Wav16 = function(channel1,channel2) {
 	this.stereo = this.ch2 != null;
 };
 audiotools.Wav16.__name__ = true;
-audiotools.Wav16.fromFileBytes = function(wavfileBytes) {
-	var wave = new format.wav.Reader(new haxe.io.BytesInput(wavfileBytes)).read();
-	var stereo = wave.header.channels == 2;
-	var data = wave.data;
-	var w16 = null;
-	if(stereo) {
-		var aInts = audiotools.Wav16Tools.stereoToInts(data,false);
-		w16 = new audiotools.Wav16(aInts[0],aInts[1]);
-	} else {
-		var ints = audiotools.Wav16Tools.monoBytesToInts(data,false);
-		w16 = new audiotools.Wav16(ints);
-	}
-	return w16;
-};
 audiotools.Wav16.create = function(lengthSamples,stereo,prefill) {
 	if(prefill == null) prefill = true;
 	if(stereo == null) stereo = false;
@@ -543,10 +489,7 @@ audiotools.Wav16.createSecs = function(lengthSecs,stereo,prefill) {
 	return audiotools.Wav16.create(audiotools.Wav16Tools.toSamples(lengthSecs),stereo,prefill);
 };
 audiotools.Wav16.prototype = {
-	get_length: function() {
-		return this.ch1.length;
-	}
-	,toStereo: function() {
+	toStereo: function() {
 		if(this.stereo) return;
 		var this1;
 		this1 = new Array(this.ch1.length);
@@ -558,22 +501,9 @@ audiotools.Wav16.prototype = {
 			this.ch2[i] = this.ch1[i];
 		}
 	}
-	,__class__: audiotools.Wav16
 };
 audiotools.Wav16DSP = function() { };
 audiotools.Wav16DSP.__name__ = true;
-audiotools.Wav16DSP.wspMix = function(w1,w2,mixVol,w1vol,w2vol) {
-	if(w2vol == null) w2vol = 1.0;
-	if(w1vol == null) w1vol = 1.0;
-	if(mixVol == null) mixVol = 1.0;
-	var stereo = w1.stereo || w2.stereo;
-	if(stereo && !w1.stereo) w1.toStereo();
-	if(stereo && !w2.stereo) w2.toStereo();
-	var resultCh1 = audiotools.Wav16DSP.dspMix(w1.ch1,w2.ch1,mixVol,w1vol,w2vol);
-	var resultCh2 = null;
-	if(stereo) resultCh2 = audiotools.Wav16DSP.dspMix(w1.ch2,w2.ch2,mixVol,w1vol,w2vol);
-	return new audiotools.Wav16(resultCh1,resultCh2);
-};
 audiotools.Wav16DSP.wspMixInto = function(w1,w2,offset,w2length,w2Vol) {
 	if(w2Vol == null) w2Vol = 1.0;
 	if(w2length == null) w2length = -1;
@@ -584,25 +514,6 @@ audiotools.Wav16DSP.wspMixInto = function(w1,w2,offset,w2length,w2Vol) {
 	}
 	audiotools.Wav16DSP.dspMixInto(w1.ch1,w2.ch1,offset,w2length,w2Vol);
 	if(w1.stereo) audiotools.Wav16DSP.dspMixInto(w1.ch2,w2.ch2,offset,w2length,w2Vol);
-};
-audiotools.Wav16DSP.dspMix = function(w1,w2,mixVol,w1vol,w2vol) {
-	if(w2vol == null) w2vol = 1.0;
-	if(w1vol == null) w1vol = 1.0;
-	if(mixVol == null) mixVol = 1.0;
-	var result;
-	var this1;
-	this1 = new Array(w1.length);
-	result = this1;
-	var _g1 = 0;
-	var _g = w1.length;
-	while(_g1 < _g) {
-		var pos = _g1++;
-		var v1 = w1[pos] * w1vol;
-		var v2 = w2[pos] * w2vol;
-		var v3 = Math.floor((v1 + v2) / mixVol);
-		result[pos] = v3;
-	}
-	return result;
 };
 audiotools.Wav16DSP.dspMixInto = function(w1,w2,offset,w2length,w2vol,soften) {
 	if(soften == null) soften = 500;
@@ -631,244 +542,14 @@ audiotools.Wav16DSP.dspMixInto = function(w1,w2,offset,w2length,w2vol,soften) {
 		w1[offset + i] = val3;
 	}
 };
-audiotools.Wav16DSP.dspFadeIn = function(ints,length,startLevel) {
-	if(startLevel == null) startLevel = 0.0;
-	var result;
-	var this1;
-	this1 = new Array(ints.length);
-	result = this1;
-	var length1 = Std["int"](Math.min(length,ints.length));
-	var _g = 0;
-	while(_g < length1) {
-		var pos = _g++;
-		var $int = ints[pos];
-		var delta = (1 - startLevel) * (pos / length1) + startLevel;
-		var newInt = $int * delta | 0;
-		result[pos] = newInt;
-	}
-	if(length1 < ints.length) {
-		var _g1 = length1 + 1;
-		var _g2 = ints.length;
-		while(_g1 < _g2) {
-			var pos1 = _g1++;
-			result[pos1] = ints[pos1];
-		}
-	}
-	return result;
-};
-audiotools.Wav16DSP.dspFadeOut = function(ints,length,endLevel) {
-	if(endLevel == null) endLevel = 0.0;
-	var result;
-	var this1;
-	this1 = new Array(ints.length);
-	result = this1;
-	var length1 = Std["int"](Math.min(length,ints.length));
-	var startPos = ints.length - length1;
-	if(startPos > 0) {
-		var _g1 = 0;
-		var _g = startPos - 1;
-		while(_g1 < _g) {
-			var pos = _g1++;
-			result[pos] = ints[pos];
-		}
-	}
-	var _g11 = startPos;
-	var _g2 = ints.length;
-	while(_g11 < _g2) {
-		var pos1 = _g11++;
-		var $int = ints[pos1];
-		var delta = (endLevel - 1) * ((pos1 - startPos) / length1) + 1;
-		var newInt = $int * delta | 0;
-		result[pos1] = newInt;
-	}
-	return result;
-};
-audiotools.Wav16DSP.dspReverse = function(ints) {
-	var result;
-	var this1;
-	this1 = new Array(ints.length);
-	result = this1;
-	var len = ints.length - 1;
-	var _g1 = 0;
-	var _g = ints.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		result[i] = ints[len - i];
-	}
-	return result;
-};
-audiotools.Wav16DSP.interpolate = function(f,a,b) {
-	return (b - a) * f + a;
-};
 audiotools.Wav16Tools = function() { };
 audiotools.Wav16Tools.__name__ = true;
-audiotools.Wav16Tools.inRange = function(val,min,max) {
-	return val >= min && val <= max;
-};
-audiotools.Wav16Tools.monoBytesToInts = function(wavData,stripWavfileHeader) {
-	if(stripWavfileHeader == null) stripWavfileHeader = true;
-	var start;
-	if(stripWavfileHeader) start = 44; else start = 0;
-	var length = ((wavData.length - wavData.length % 2) / 2 | 0) - start;
-	var result;
-	var this1;
-	this1 = new Array(length);
-	result = this1;
-	var _g = 0;
-	while(_g < length) {
-		var i = _g++;
-		var pos = i * 2;
-		var left = wavData.b[pos + start];
-		var right = wavData.b[pos + start + 1];
-		var val = audiotools.Wav16Tools.ucharsToShort(right,left);
-		result[i] = val;
-	}
-	return result;
-};
-audiotools.Wav16Tools.stereoToInts = function(wavData,stripWavfileHeader) {
-	if(stripWavfileHeader == null) stripWavfileHeader = true;
-	var start;
-	if(stripWavfileHeader) start = 44; else start = 0;
-	var wavDataLength = wavData.length - start;
-	var length = (wavDataLength - wavDataLength % 2) / 4 | 0;
-	var resultLeft;
-	var this1;
-	this1 = new Array(length);
-	resultLeft = this1;
-	var resultRight;
-	var this2;
-	this2 = new Array(length);
-	resultRight = this2;
-	var setpos = 0;
-	var _g1 = 0;
-	var _g = length * 2;
-	while(_g1 < _g) {
-		var i = _g1++;
-		var pos = i * 2;
-		var left = wavData.b[pos + start];
-		var right = wavData.b[pos + start + 1];
-		var val = audiotools.Wav16Tools.ucharsToShort(right,left);
-		if(i % 2 == 0) resultLeft[setpos] = val; else {
-			resultRight[setpos] = val;
-			setpos++;
-		}
-	}
-	return [resultLeft,resultRight];
-};
-audiotools.Wav16Tools.intsToMono16Bytes = function(ints) {
-	var result = haxe.io.Bytes.alloc(ints.length * 2);
-	var pos = 0;
-	var _g = 0;
-	while(_g < ints.length) {
-		var v = ints[_g];
-		++_g;
-		var a = audiotools.Wav16Tools.shortToUChars(v);
-		result.set(pos++,a[1]);
-		result.set(pos++,a[0]);
-	}
-	return result;
-};
-audiotools.Wav16Tools.intsToStero16Bytes = function(leftInts,rightInts) {
-	if(leftInts.length != rightInts.length) throw "Left and Right ints lengths differ!";
-	var result = haxe.io.Bytes.alloc(leftInts.length * 2 * 2);
-	var pos = 0;
-	var _g1 = 0;
-	var _g = leftInts.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		var v = leftInts[i];
-		var a = audiotools.Wav16Tools.shortToUChars(v);
-		result.set(pos++,a[1]);
-		result.set(pos++,a[0]);
-		var v1 = rightInts[i];
-		var a1 = audiotools.Wav16Tools.shortToUChars(v1);
-		result.set(pos++,a1[1]);
-		result.set(pos++,a1[0]);
-	}
-	return result;
-};
-audiotools.Wav16Tools.ucharsToShort = function(ucharLeft,ucharRight) {
-	if(ucharLeft < 0) ucharLeft += 256;
-	if(ucharRight < 0) ucharLeft += 256;
-	if(!(ucharLeft >= 0 && ucharLeft <= 255)) throw "Range error  ucharLeft: " + ucharLeft;
-	if(!(ucharRight >= 0 && ucharRight <= 255)) throw "Range error ucharRight: " + ucharRight;
-	var negative = (ucharLeft & 128) == 128;
-	var result;
-	if(!negative) result = (ucharLeft << 8) + ucharRight; else result = -32768 + ((ucharLeft - 128 << 8) + ucharRight);
-	return result;
-};
-audiotools.Wav16Tools.shortToUChars = function($short) {
-	if(!($short >= -32767 && $short <= 32767)) {
-		console.log("Range error: " + $short);
-		return [0,0];
-	}
-	var result = [0,0];
-	if($short >= 0) result = [($short ^ 255) >> 8,$short & 255]; else {
-		var i2 = 32768 + $short;
-		result = [i2 >> 8 | 128,i2 & 255];
-	}
-	return result;
-};
-audiotools.Wav16Tools.createHeader = function(stereo,samplingRate,bitsPerSample) {
-	if(bitsPerSample == null) bitsPerSample = 16;
-	if(samplingRate == null) samplingRate = 44100;
-	if(stereo == null) stereo = false;
-	var channels;
-	if(stereo) channels = 2; else channels = 1;
-	return { format : format.wav.WAVEFormat.WF_PCM, channels : channels, samplingRate : samplingRate, byteRate : samplingRate * channels * bitsPerSample / 8 | 0, blockAlign : channels * bitsPerSample / 8 | 0, bitsPerSample : bitsPerSample};
-};
-audiotools.Wav16Tools.getWaveformSamples = function(ints,nrOfSamples,sampleAcc) {
-	if(sampleAcc == null) sampleAcc = 100;
-	var windowSize = Math.floor(ints.length / nrOfSamples + 1);
-	var result = [];
-	var _g = 0;
-	while(_g < nrOfSamples) {
-		var i = _g++;
-		var start = i * windowSize;
-		var end = Std["int"](Math.min(start + sampleAcc,ints.length - 1));
-		var maxlevel = 0.0;
-		var _g1 = start;
-		while(_g1 < end) {
-			var j = _g1++;
-			var level = Math.abs(ints[j]) / 32767;
-			if(level < 0.0001) level = 0;
-			if(j > ints.length) level = 0;
-			maxlevel = Math.max(level,maxlevel);
-		}
-		var sqr = Math.sqrt(maxlevel);
-		result.push(sqr);
-	}
-	return result;
-};
-audiotools.Wav16Tools.toSecs = function(samples) {
-	return samples / audiotools.Wav16Tools.SAMPLERATE;
-};
 audiotools.Wav16Tools.toSamples = function(secs) {
 	return secs * audiotools.Wav16Tools.SAMPLERATE | 0;
-};
-audiotools.Wav16Tools.copyChannel = function(ints) {
-	var result;
-	var this1;
-	this1 = new Array(ints.length);
-	result = this1;
-	var _g1 = 0;
-	var _g = ints.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		result[i] = ints[i];
-	}
-	return result;
-};
-audiotools.Wav16Tools.testplay = function(wav16) {
-	audiotools.webaudio.WATools.testplay(wav16);
-	return;
 };
 audiotools.sound = {};
 audiotools.sound.Wav16Sound = function() { };
 audiotools.sound.Wav16Sound.__name__ = true;
-audiotools.sound.Wav16Sound.prototype = {
-	__class__: audiotools.sound.Wav16Sound
-};
 audiotools.sound.Wav16SoundBase = function(wav16,playCallback,key) {
 	this.playing = false;
 	this.key = key;
@@ -884,10 +565,8 @@ audiotools.sound.Wav16SoundBase.prototype = {
 	,stop: function() {
 		console.log("should be overridden");
 	}
-	,__class__: audiotools.sound.Wav16SoundBase
 };
 audiotools.sound.Wav16SoundJS = function(wav16,playCallback,key) {
-	this.delta = .0;
 	this.lastTime = .0;
 	audiotools.sound.Wav16SoundBase.call(this,wav16,playCallback,key);
 	this.context = (audiotools.webaudio.Context.instance == null?audiotools.webaudio.Context.instance = new audiotools.webaudio.Context():audiotools.webaudio.Context.instance).getContext();
@@ -941,15 +620,11 @@ audiotools.sound.Wav16SoundJS.prototype = $extend(audiotools.sound.Wav16SoundBas
 		}
 		requestAnimFrame(  audiotools.sound.Wav16SoundJS.animationCallback);;
 	}
-	,__class__: audiotools.sound.Wav16SoundJS
 });
 audiotools.sound.Wav16SoundLoader = function() {
 	this.cache = new haxe.ds.StringMap();
 };
 audiotools.sound.Wav16SoundLoader.__name__ = true;
-audiotools.sound.Wav16SoundLoader.getInstance = function() {
-	if(audiotools.sound.Wav16SoundLoader.instance == null) return audiotools.sound.Wav16SoundLoader.instance = new audiotools.sound.Wav16SoundLoader(); else return audiotools.sound.Wav16SoundLoader.instance;
-};
 audiotools.sound.Wav16SoundLoader.prototype = {
 	getWav16s: function(mp3files,startCallback) {
 		var _g = this;
@@ -981,15 +656,11 @@ audiotools.sound.Wav16SoundLoader.prototype = {
 		});
 		return f.future;
 	}
-	,__class__: audiotools.sound.Wav16SoundLoader
 };
 audiotools.sound.Wav16SoundManager = function() {
 };
 audiotools.sound.Wav16SoundManager.__name__ = true;
 audiotools.sound.Wav16SoundManager.__interfaces__ = [audiotools.sound.Wav16Sound];
-audiotools.sound.Wav16SoundManager.getInstance = function() {
-	if(audiotools.sound.Wav16SoundManager.instance == null) return audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager(); else return audiotools.sound.Wav16SoundManager.instance;
-};
 audiotools.sound.Wav16SoundManager.prototype = {
 	initSound: function(wav16,playCallback,key) {
 		if(this.sound != null) this.sound.stop();
@@ -1008,7 +679,6 @@ audiotools.sound.Wav16SoundManager.prototype = {
 	,stop: function() {
 		if(this.sound != null) this.sound.stop(); else console.log("Wav16SoundManager has no sound instance");
 	}
-	,__class__: audiotools.sound.Wav16SoundManager
 };
 audiotools.utils = {};
 audiotools.utils.Mp3Wav16Decoder = function() { };
@@ -1054,9 +724,6 @@ audiotools.utils.Mp3Wav16Decoder.decode = function(filename) {
 };
 audiotools.utils.Mp3Wav16Decoders = function() { };
 audiotools.utils.Mp3Wav16Decoders.__name__ = true;
-audiotools.utils.Mp3Wav16Decoders.setContext = function(context) {
-	audiotools.utils.Mp3Wav16Decoder.context = context;
-};
 audiotools.utils.Mp3Wav16Decoders.decodeAll = function(filenames) {
 	return tink.core._Future.Future_Impl_.fromMany((function($this) {
 		var $r;
@@ -1093,57 +760,11 @@ audiotools.utils.Mp3Wav16Decoders.decodeAllMap = function(filenames) {
 	});
 	return f.future;
 };
-audiotools.utils.Wav16DecoderPool = function() {
-	this.files = new haxe.ds.StringMap();
-};
-audiotools.utils.Wav16DecoderPool.__name__ = true;
-audiotools.utils.Wav16DecoderPool.prototype = {
-	getFiles: function() {
-		return this.files;
-	}
-	,requestFile: function(sound,midinr,version) {
-		if(version == null) version = "";
-		var _g = this;
-		var f = new tink.core.FutureTrigger();
-		console.log(this.files.toString());
-		var filetag = "" + sound + "/" + midinr + version + ".mp3";
-		console.log(filetag);
-		if(this.files.exists(filetag)) {
-			console.log("get from cache");
-			f.trigger(tink.core.Outcome.Success(this.files.get(filetag)));
-		} else {
-			var this1 = audiotools.utils.Mp3Wav16Decoder.decode(filetag);
-			this1(function(outcome) {
-				switch(outcome[1]) {
-				case 0:
-					var wav16file = outcome[2];
-					_g.files.set(filetag,wav16file.w16);
-					console.log("set to cache " + filetag);
-					console.log(_g.files.toString());
-					console.log(wav16file);
-					f.trigger(tink.core.Outcome.Success(wav16file.w16));
-					break;
-				case 1:
-					var wav16error = outcome[2];
-					console.log(wav16error);
-					f.trigger(tink.core.Outcome.Failure(wav16error.message));
-					break;
-				}
-			});
-		}
-		console.log(this.files.toString());
-		return f.future;
-	}
-	,__class__: audiotools.utils.Wav16DecoderPool
-};
 audiotools.utils.Wav16PartsBuilder = function() {
 	this.initialized = false;
 	this.scorecache = new haxe.ds.StringMap();
 };
 audiotools.utils.Wav16PartsBuilder.__name__ = true;
-audiotools.utils.Wav16PartsBuilder.getInstance = function() {
-	if(audiotools.utils.Wav16PartsBuilder.instance == null) return audiotools.utils.Wav16PartsBuilder.instance = new audiotools.utils.Wav16PartsBuilder(); else return audiotools.utils.Wav16PartsBuilder.instance;
-};
 audiotools.utils.Wav16PartsBuilder.prototype = {
 	initAsync: function(mp3files) {
 		var _g = this;
@@ -1157,8 +778,6 @@ audiotools.utils.Wav16PartsBuilder.prototype = {
 			f.trigger(_g.soundmap);
 		});
 		return f.future;
-	}
-	,startDecoding: function(filesToLoad) {
 	}
 	,finishedDecoding: function() {
 	}
@@ -1212,24 +831,12 @@ audiotools.utils.Wav16PartsBuilder.prototype = {
 		}
 		return f.future;
 	}
-	,removeScoreFromCache: function(nscore,tempo,partsSounds) {
-		if(tempo == null) tempo = 60;
-		var key = nscore.uuid + (":" + tempo + ":" + Std.string(partsSounds));
-		if(this.scorecache.exists(key)) {
-			this.scorecache.remove(key);
-			console.log("remove key " + key);
-		} else console.log("can not find key " + key + " to remove");
-	}
-	,__class__: audiotools.utils.Wav16PartsBuilder
 };
 audiotools.webaudio = {};
 audiotools.webaudio.Context = function() {
 	this.context = audiotools.webaudio.Context.createAudioContext();
 };
 audiotools.webaudio.Context.__name__ = true;
-audiotools.webaudio.Context.getInstance = function() {
-	if(audiotools.webaudio.Context.instance == null) return audiotools.webaudio.Context.instance = new audiotools.webaudio.Context(); else return audiotools.webaudio.Context.instance;
-};
 audiotools.webaudio.Context.createAudioContext = function() {
 	var context = null;
 	
@@ -1250,7 +857,6 @@ audiotools.webaudio.Context.prototype = {
 	getContext: function() {
 		return this.context;
 	}
-	,__class__: audiotools.webaudio.Context
 };
 audiotools.webaudio.Mp3ToBuffer = function(url,context) {
 	this.url = url;
@@ -1295,7 +901,6 @@ audiotools.webaudio.Mp3ToBuffer.prototype = {
 		this.onLoaded = callbck;
 		return this;
 	}
-	,__class__: audiotools.webaudio.Mp3ToBuffer
 };
 audiotools.webaudio.WATools = function() { };
 audiotools.webaudio.WATools.__name__ = true;
@@ -1337,13 +942,6 @@ audiotools.webaudio.WATools.createBufferFromWav16 = function(wav16,context,sampl
 	}
 	return newbuffer;
 };
-audiotools.webaudio.WATools.testplay = function(w,context) {
-	if(context == null) context = audiotools.webaudio.WATools.getAudioContext();
-	var source = context.createBufferSource();
-	source.buffer = audiotools.webaudio.WATools.createBufferFromWav16(w,context,48000);
-	source.connect(context.destination,0,0);
-	source.start(0);
-};
 audiotools.webaudio.WATools.getAudioContext = function() {
 	if(audiotools.webaudio.WATools._context == null) audiotools.webaudio.WATools._context = audiotools.webaudio.WATools.createAudioContext();
 	return audiotools.webaudio.WATools._context;
@@ -1368,323 +966,349 @@ audiotools.webaudio.WATools.createAudioContext = function() {
 };
 audiotools.webaudio.pitch = {};
 audiotools.webaudio.pitch.PitchRecognizer = function(audioContext) {
+	this.initialized = false;
 	this.init($bind(this,this.onPitchHandler),audioContext);
 };
 audiotools.webaudio.pitch.PitchRecognizer.__name__ = true;
-audiotools.webaudio.pitch.PitchRecognizer.getInstance = function(audioContext) {
-	if(audiotools.webaudio.pitch.PitchRecognizer.instance == null) return audiotools.webaudio.pitch.PitchRecognizer.instance = new audiotools.webaudio.pitch.PitchRecognizer(audioContext); else return audiotools.webaudio.pitch.PitchRecognizer.instance;
+audiotools.webaudio.pitch.PitchRecognizer.getSemitoneDiff = function(fCurrent,fRef) {
+	if(fRef == null) fRef = 440;
+	return 12 * Math.log(fCurrent / fRef) / Math.log(2);
 };
 audiotools.webaudio.pitch.PitchRecognizer.prototype = {
 	onPitchHandler: function(currentFreq,closestIndex,maxVolume) {
 		if(this.onPitch != null) this.onPitch(currentFreq,closestIndex,maxVolume); else console.log([currentFreq,closestIndex,maxVolume]);
 	}
+	,startAnalyzing: function() {
+		audiotools.webaudio.pitch.PitchRecognizer.analyzePitch = true;
+	}
+	,stopAnalyzing: function() {
+		audiotools.webaudio.pitch.PitchRecognizer.analyzePitch = false;
+	}
 	,init: function(cbk,audioContext) {
+		if(this.initialized) {
+			js.Lib.alert("PitchRecognizer already initialized");
+			return;
+		}
+		this.initialized = true;
 		var audioContext1 = (audiotools.webaudio.Context.instance == null?audiotools.webaudio.Context.instance = new audiotools.webaudio.Context():audiotools.webaudio.Context.instance).getContext();
 		var windowAudioContext =  window.AudioContext;
 		windowAudioContext = audioContext1;
 			
-			
-			console.log(window.AudioContext);
-			
-			/* Internal parameters */
-			var volumeThreshold = 134; // Amplitude threshold for detecting sound/silence [0-255], 128 = silence
-			var nPitchValues = 5; // Number of pitches for pitch averaging logic
 
-			/* Web Audio API variables */
-			//var audioContext = null;
-			var analyserNode = null;
-			var processNode = null;
-			var microphoneNode = null;
-			var gainNode = null;
-			var lowPassFilter1 = null;
-			var lowPassFilter2 = null;
-			var highPassFilter1 = null;
-			var highPassFilter2 = null;
+		console.log(window.AudioContext);
+		console.log(audiotools.webaudio.pitch.PitchRecognizer.analyzePitch);
 
-			/* Configurable parameters */
-			var lowestFreq = 30; // Minimum tune = 44100/1024 = 43.07Hz
-			var highestFreq = 4200; // Maximum tune C8 (4186.02 Hz)
+		//==================================================================================================
+		/* Copyright 2014 Alejandro Pérez González de Martos
 
-			/* Tune variables */
-			var twelfthRootOfTwo = 1.05946309435929526456182529; // 2^(1/12)
-			var otthRootOfTwo = 1.0005777895; // 2^(1/1200)
-			var refNoteLabels = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
-			var refFreq = 440;
-			var refNoteIndex = 0;
-			var noteFrequencies = [];
-			var noteLabels = [];
-			var pitchHistory = [];
+		   Licensed under the Apache License, Version 2.0 (the "License");
+		   you may not use this file except in compliance with the License.
+		   You may obtain a copy of the License at
 
-			/* GUI variables */
-			var pixelsPerCent = 3;
-			var silenceTimeout = null;
-			var minUpdateDelay = 100; // Pitch/GUI maximum update rate in milliseconds
-				
-			 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-			  //window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext;
-			 
-			  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-			  
-			  if (/*window.requestAnimationFrame && */ window.AudioContext && navigator.getUserMedia) {
-			    try {
-			      navigator.getUserMedia({audio: true}, gotStream, function(err) {
-			        console.log("DEBUG: Error getting microphone input: " + err);
-			      });
-			    } catch (e) {
-			      console.log("DEBUG: Couldnt get microphone input: " + e);
-			    }
-			  }
-			  else {
-			    console.log("DEBUG: Web Audio API is not supported");
-			  }
+			 http://www.apache.org/licenses/LICENSE-2.0
 
-			  function gotStream(stream) {
-				  
-			    audioContext = new AudioContext();
-			    if (audioContext == null) alert("No AudioContext!");
-			    
-			    microphoneNode = audioContext.createMediaStreamSource(stream);
-			    analyserNode = audioContext.createAnalyser();
-			    analyserNode.fftSize = 2048;
-			    analyserNode.smoothingTimeConstant = 0.8;
-			    gainNode = audioContext.createGain();
-			    gainNode.gain.value = 1.5; // Set mic volume to 150% by default
-			    lowPassFilter1 = audioContext.createBiquadFilter();
-			    lowPassFilter2 = audioContext.createBiquadFilter();
-			    highPassFilter1 = audioContext.createBiquadFilter();
-			    highPassFilter2 = audioContext.createBiquadFilter();
-			    lowPassFilter1.Q.value = 0;
-			    lowPassFilter1.frequency.value = highestFreq;
-			    lowPassFilter1.type = "lowpass";
-			    lowPassFilter2.Q.value = 0;
-			    lowPassFilter2.frequency.value = highestFreq;
-			    lowPassFilter2.type = "lowpass";
-			    highPassFilter1.Q.value = 0;
-			    highPassFilter1.frequency.value = lowestFreq;
-			    highPassFilter1.type = "highpass";
-			    highPassFilter2.Q.value = 0;
-			    highPassFilter2.frequency.value = lowestFreq;
-			    highPassFilter2.type = "highpass";
-			    microphoneNode.connect(lowPassFilter1);
-			    lowPassFilter1.connect(lowPassFilter2);
-			    lowPassFilter2.connect(highPassFilter1);
-			    highPassFilter1.connect(highPassFilter2);
-			    highPassFilter2.connect(gainNode);
-			    gainNode.connect(analyserNode);
-			    
-			    initGui();
-			  }
-
-			  function initGui() {
-			    defineNoteFrequencies();
-			    updatePitch();
-			  }
-
-			  function updatePitch(time) {
-			    var pitchInHz = 0.0;
-			    var volumeCheck = false;
-			    var maxVolume = 128;
-			    var inputBuffer = new Uint8Array(analyserNode.fftSize);
-			    //console.log(inputBuffer);
-			    analyserNode.getByteTimeDomainData(inputBuffer);
-
-			    // Check for volume on the first buffer quarter
-			    for (var i=0; i<inputBuffer.length/4; i++) {
-			      if (maxVolume < inputBuffer[i]) maxVolume = inputBuffer[i];
-			       
-			      if (!volumeCheck && inputBuffer[i] > volumeThreshold) {
-			        volumeCheck = true;
-			      }
-			    }
-
-			    if (volumeCheck) {
-			      pitchInHz = Yin_pitchEstimation(inputBuffer, audioContext.sampleRate);
-			    }
-
-			    
-			    
-			   
-			    
-			    // Pitch smoothing logic
-			    var allowedHzDifference = 5;
-			    if (pitchInHz != 0) {
-			      clearTimeout(silenceTimeout);
-			      silenceTimeout = null;
-			      if (pitchHistory.length >= nPitchValues) pitchHistory.shift();
-			      // Octave jumping fix: if current pitch is around twice the previous detected pitch, halve its value
-			      if (pitchHistory.length && Math.abs((pitchInHz/2.0)-pitchHistory[pitchHistory.length-1]) < allowedHzDifference) pitchInHz = pitchInHz/2.0;
-			      pitchInHz = Math.round(pitchInHz*10)/10;
-			      pitchHistory.push(pitchInHz);
-			      // Take the pitch history median as the current pitch
-			      var sortedPitchHistory = pitchHistory.slice(0).sort(function(a,b) {return a-b});
-			      pitchInHz = sortedPitchHistory[Math.floor((sortedPitchHistory.length-1)/2)];
+		   Unless required by applicable law or agreed to in writing, software
+		   distributed under the License is distributed on an "AS IS" BASIS,
+		   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		   See the License for the specific language governing permissions and
+		   limitations under the License.
+		*/
 
 
-			      updateGui(pitchInHz, getClosestNoteIndex(pitchInHz), (maxVolume-128) / 128);
-			      
-			      
-			      if (pitchHistory.length < nPitchValues) 
-				window.requestAnimationFrame(updatePitch);
-				//updatePitch();
-			      else {
-			        setTimeout(function() {
-			          window.requestAnimationFrame(updatePitch);
-			          //updatePitch();
-			        }, minUpdateDelay);
-			      }
-			    }
-			    else {
-			      if (silenceTimeout === null) {
-			        silenceTimeout = setTimeout(function() {
-			          pitchHistory = [];
-			          updateGui(0.0, -1, 0);
-			        }, 500);
-			      }
-			      window.requestAnimationFrame(updatePitch);
-			     // updatePitch();
-			      
-			      
-			    }
-			    
-			  }
+		/* Internal parameters */
+		var volumeThreshold = 134; // Amplitude threshold for detecting sound/silence [0-255], 128 = silence
+		var nPitchValues = 5; // Number of pitches for pitch averaging logic
 
-			  function updateGui(currentFreq, closestIndex, maxVolume) {
-				  
-				  if (cbk != null) {
-					  cbk(currentFreq, closestIndex, maxVolume);
-				  } else {
-					console.log(currentFreq, closestIndex, maxVolume);  
-				  }
-			  }
+		/* Web Audio API variables */
+		//var audioContext = null;
+		var analyserNode = null;
+		var processNode = null;
+		var microphoneNode = null;
+		var gainNode = null;
+		var lowPassFilter1 = null;
+		var lowPassFilter2 = null;
+		var highPassFilter1 = null;
+		var highPassFilter2 = null;
 
-			  function findRefNoteIndex(noteLabel) {
-			    for (var i=0; i<refNoteLabels.length; i++) {
-			      if (refNoteLabels[i] == noteLabel) return i;
-			    }
-			    return false;
-			  }
+		/* Configurable parameters */
+		var lowestFreq = 30; // Minimum tune = 44100/1024 = 43.07Hz
+		var highestFreq = 4200; // Maximum tune C8 (4186.02 Hz)
 
-			  function getClosestNoteIndex(f) {
-			    if (f == 0.0) return false;
-			    for (var i=0; i<noteFrequencies.length; i++) {
-			      if (f < noteFrequencies[i]) {
-			        if (i > 0 && (noteFrequencies[i]-f > f-noteFrequencies[i-1])) return i-1;
-			        else return i;
-			      }
-			    }
-			    return false;
-			  }
+		/* Tune variables */
+		var twelfthRootOfTwo = 1.05946309435929526456182529; // 2^(1/12)
+		var otthRootOfTwo = 1.0005777895; // 2^(1/1200)
+		var refNoteLabels = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+		var refFreq = 440;
+		var refNoteIndex = 0;
+		var noteFrequencies = [];
+		var noteLabels = [];
+		var pitchHistory = [];
 
-			  function getCentDiff(fCurrent, fRef) {
-			    return 1200*Math.log(fCurrent/fRef)/Math.log(2);
-			  }
+		/* GUI variables */
+		var pixelsPerCent = 3;
+		var silenceTimeout = null;
+		var minUpdateDelay = 100; // Pitch/GUI maximum update rate in milliseconds
 
-			  function getSemituneDiff(fCurrent, fRef) {
-			    return 12*Math.log(fCurrent/fRef)/Math.log(2);
-			  }
+		window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+		//window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext;
 
-			  function defineNoteFrequencies() {
-				  
-			    var noteFreq = 0.0;
-			    var greaterNoteFrequencies = [];
-			    var greaterNoteLabels = [];
-			    var lowerNoteFrequencies = [];
-			    var lowerNoteLabels = [];
-			    var octave = 4;
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-			    for (var i=0;;i++) {
-			      if ((i+9)%12 == 0) octave++;
-			      noteFreq = refFreq*Math.pow(twelfthRootOfTwo, i);
-			      // maximum note tune C8 (4186.02 Hz)
-			      if (noteFreq > 4187) break;
-			      greaterNoteFrequencies.push(noteFreq);
-			      greaterNoteLabels.push(octave + refNoteLabels[(refNoteIndex+i)%refNoteLabels.length]);
-			    }
-			    //console.log(i);
-
-			    octave = 4;
-			    for (var i=-1;;i--) {
-			      if ((Math.abs(i)+2)%12 == 0) octave--;
-			      noteFreq = refFreq*Math.pow(twelfthRootOfTwo, i);
-			      // minimum note tune A0 (28Hz)
-			      if (noteFreq < 28) break;
-			      lowerNoteFrequencies.push(noteFreq);
-			      var relativeIndex = (refNoteIndex+i)%refNoteLabels.length;
-			      relativeIndex = (relativeIndex == 0) ? 0 : relativeIndex+(refNoteLabels.length);
-			      lowerNoteLabels.push(octave + refNoteLabels[relativeIndex]);
-			    }
-			    //console.log(i);
-
-			    lowerNoteFrequencies.reverse();
-			    lowerNoteLabels.reverse();
-			    noteFrequencies = lowerNoteFrequencies.concat(greaterNoteFrequencies);
-			    noteLabels = lowerNoteLabels.concat(greaterNoteLabels);
-
-			  }
-			 
-			  //==================================================================================================
-			  
-			// Yin Pitch Tracking Algorithm implemented by Alejandro PÃ©rez (2014)
-			// (http://recherche.ircam.fr/equipes/pcm/cheveign/ps/2002_JASA_YIN_proof.pdf)			  
-			  
-			// PARAMETERS
-			var yinThreshold = 0.15; // allowed uncertainty (e.g 0.05 will return a pitch with ~95% probability)
-			var yinProbability = 0.0; // READONLY: contains the certainty of the note found as a decimal (i.e 0.3 is 30%)
-
-			function Yin_pitchEstimation(inputBuffer, sampleRate) {
-			  var yinBuffer = new Float32Array(Math.floor(inputBuffer.length/2));
-			  yinBuffer[0] = 1;
-			  var runningSum = 0;
-			  var pitchInHz = 0.0;
-			  var foundTau = false;
-			  var minTauValue;
-			  var minTau = 0;
-
-			  for (var tau=1; tau<Math.floor(inputBuffer.length/2); tau++) {
-			    // Step 1: Calculates the squared difference of the signal with a shifted version of itself.
-			    yinBuffer[tau] = 0;
-			    for (var i=0; i<Math.floor(inputBuffer.length/2); i++) {
-			      yinBuffer[tau] += Math.pow(((inputBuffer[i]-128)/128)-((inputBuffer[i+tau]-128)/128),2);
-			    }
-			    // Step 2: Calculate the cumulative mean on the normalised difference calculated in step 1.
-			    runningSum += yinBuffer[tau];
-			    yinBuffer[tau] = yinBuffer[tau]*(tau/runningSum);
-
-			    // Step 3: Check if the current normalised cumulative mean is over the threshold.
-			    if (tau > 1) {
-			      if (foundTau) {
-			        if (yinBuffer[tau] < minTauValue) {
-			          minTauValue = yinBuffer[tau];
-			          minTau = tau;
-			        }
-			        else break;
-			      }
-			      else if (yinBuffer[tau] < yinThreshold) {
-			        foundTau = true;
-			        minTau = tau;
-			        minTauValue = yinBuffer[tau];
-			      }
-			    }
-			  }
-
-			  if (minTau == 0) {
-			    yinProbability = 0;
-			    pitchInHz = 0.0;
-			  }
-			  else {
-			    // Step 4: Interpolate the shift value (tau) to improve the pitch estimate.
-			    minTau += (yinBuffer[minTau+1]-yinBuffer[minTau-1])/(2*((2*yinBuffer[minTau])-yinBuffer[minTau-1]-yinBuffer[minTau+1]));
-			    pitchInHz = sampleRate/minTau;
-			    yinProbability = 1-minTauValue;
-			  }
-
-			  return pitchInHz;
+		if (/*window.requestAnimationFrame && */ window.AudioContext && navigator.getUserMedia) {
+			try {
+				navigator.getUserMedia({audio: true}, gotStream, function(err) {
+				console.log("DEBUG: Error getting microphone input: " + err);
+				});
+			} catch (e) {
+				console.log("DEBUG: Couldnt get microphone input: " + e);
 			}
-		
-		
+		} else {
+			console.log("DEBUG: Web Audio API is not supported");
+		}
+
+		function gotStream(stream) {
+			audioContext = new AudioContext();
+			if (audioContext == null) alert("No AudioContext!");
+
+			microphoneNode = audioContext.createMediaStreamSource(stream);
+			analyserNode = audioContext.createAnalyser();
+			analyserNode.fftSize = 2048;
+			analyserNode.smoothingTimeConstant = 0.8;
+			gainNode = audioContext.createGain();
+			gainNode.gain.value = 1.5; // Set mic volume to 150% by default
+			lowPassFilter1 = audioContext.createBiquadFilter();
+			lowPassFilter2 = audioContext.createBiquadFilter();
+			highPassFilter1 = audioContext.createBiquadFilter();
+			highPassFilter2 = audioContext.createBiquadFilter();
+			lowPassFilter1.Q.value = 0;
+			lowPassFilter1.frequency.value = highestFreq;
+			lowPassFilter1.type = "lowpass";
+			lowPassFilter2.Q.value = 0;
+			lowPassFilter2.frequency.value = highestFreq;
+			lowPassFilter2.type = "lowpass";
+			highPassFilter1.Q.value = 0;
+			highPassFilter1.frequency.value = lowestFreq;
+			highPassFilter1.type = "highpass";
+			highPassFilter2.Q.value = 0;
+			highPassFilter2.frequency.value = lowestFreq;
+			highPassFilter2.type = "highpass";
+			microphoneNode.connect(lowPassFilter1);
+			lowPassFilter1.connect(lowPassFilter2);
+			lowPassFilter2.connect(highPassFilter1);
+			highPassFilter1.connect(highPassFilter2);
+			highPassFilter2.connect(gainNode);
+			gainNode.connect(analyserNode);
+
+			initGui();
+		}
+
+		function initGui() {
+			defineNoteFrequencies();
+			updatePitch();
+		}
+
+		function updatePitch(time) {
+
+			//console.log("updatePitch loop");
+
+			if (audiotools.webaudio.pitch.PitchRecognizer.analyzePitch == false) {
+				window.requestAnimationFrame(updatePitch);
+				return;
+			}
+
+			//console.log("analyze pitch");
+
+
+			var pitchInHz = 0.0;
+			var volumeCheck = false;
+			var maxVolume = 128;
+			var inputBuffer = new Uint8Array(analyserNode.fftSize);
+			//console.log(inputBuffer);
+			analyserNode.getByteTimeDomainData(inputBuffer);
+
+			// Check for volume on the first buffer quarter
+			for (var i=0; i<inputBuffer.length/4; i++) {
+				if (maxVolume < inputBuffer[i]) maxVolume = inputBuffer[i];
+
+				if (!volumeCheck && inputBuffer[i] > volumeThreshold) {
+					volumeCheck = true;
+				}
+			}
+
+
+			if (volumeCheck) {
+				pitchInHz = Yin_pitchEstimation(inputBuffer, audioContext.sampleRate);
+			}
+
+			// Pitch smoothing logic
+			var allowedHzDifference = 5;
+			if (pitchInHz != 0) {
+				clearTimeout(silenceTimeout);
+				silenceTimeout = null;
+				if (pitchHistory.length >= nPitchValues) pitchHistory.shift();
+				
+				// Octave jumping fix: if current pitch is around twice the previous detected pitch, halve its value
+				if (pitchHistory.length && Math.abs((pitchInHz/2.0)-pitchHistory[pitchHistory.length-1]) < allowedHzDifference) pitchInHz = pitchInHz/2.0;
+				pitchInHz = Math.round(pitchInHz*10)/10;
+				pitchHistory.push(pitchInHz);
+				// Take the pitch history median as the current pitch
+				var sortedPitchHistory = pitchHistory.slice(0).sort(function(a,b) {return a-b});
+				pitchInHz = sortedPitchHistory[Math.floor((sortedPitchHistory.length-1)/2)];
+
+				updateGui(pitchInHz, getClosestNoteIndex(pitchInHz), (maxVolume-128) / 128);
+
+				if (pitchHistory.length < nPitchValues) {
+					window.requestAnimationFrame(updatePitch);
+				} else {
+					setTimeout(function() {
+						window.requestAnimationFrame(updatePitch);
+					}, minUpdateDelay);
+				}
+			} else {
+				if (silenceTimeout === null) {
+					silenceTimeout = setTimeout(function() {
+						pitchHistory = [];
+						updateGui(0.0, -1, 0);
+					}, 500);
+				}
+				window.requestAnimationFrame(updatePitch);
+			}
+		}
+
+		function updateGui(currentFreq, closestIndex, maxVolume) {
+
+			if (cbk != null) {
+				cbk(currentFreq, closestIndex, maxVolume);
+			} else {
+				console.log(currentFreq, closestIndex, maxVolume);  
+			}
+		}
+
+		function findRefNoteIndex(noteLabel) {
+			for (var i=0; i<refNoteLabels.length; i++) {
+				if (refNoteLabels[i] == noteLabel) return i;
+			}
+			return false;
+		}
+
+		function getClosestNoteIndex(f) {
+			if (f == 0.0) return false;
+			for (var i=0; i<noteFrequencies.length; i++) {
+				if (f < noteFrequencies[i]) {
+					if (i > 0 && (noteFrequencies[i]-f > f-noteFrequencies[i-1])) 
+						return i-1;
+					else 
+						return i;
+				}
+			}
+			return false;
+		}
+
+		function getCentDiff(fCurrent, fRef) {
+			return 1200*Math.log(fCurrent/fRef)/Math.log(2);
+		}
+
+		function getSemituneDiff(fCurrent, fRef) {
+			return 12*Math.log(fCurrent/fRef)/Math.log(2);
+		}
+
+		function defineNoteFrequencies() {
+
+			var noteFreq = 0.0;
+			var greaterNoteFrequencies = [];
+			var greaterNoteLabels = [];
+			var lowerNoteFrequencies = [];
+			var lowerNoteLabels = [];
+			var octave = 4;
+
+			for (var i=0;;i++) {
+				if ((i+9)%12 == 0) octave++;
+				noteFreq = refFreq*Math.pow(twelfthRootOfTwo, i);
+				// maximum note tune C8 (4186.02 Hz)
+				if (noteFreq > 4187) break;
+				greaterNoteFrequencies.push(noteFreq);
+				greaterNoteLabels.push(octave + refNoteLabels[(refNoteIndex+i)%refNoteLabels.length]);
+			}
+
+			octave = 4;
+			for (var i=-1;;i--) {
+				if ((Math.abs(i)+2)%12 == 0) octave--;
+				noteFreq = refFreq*Math.pow(twelfthRootOfTwo, i);
+				// minimum note tune A0 (28Hz)
+				if (noteFreq < 28) break;
+				lowerNoteFrequencies.push(noteFreq);
+				var relativeIndex = (refNoteIndex+i)%refNoteLabels.length;
+				relativeIndex = (relativeIndex == 0) ? 0 : relativeIndex+(refNoteLabels.length);
+				lowerNoteLabels.push(octave + refNoteLabels[relativeIndex]);
+			}
+
+			lowerNoteFrequencies.reverse();
+			lowerNoteLabels.reverse();
+			noteFrequencies = lowerNoteFrequencies.concat(greaterNoteFrequencies);
+			noteLabels = lowerNoteLabels.concat(greaterNoteLabels);
+
+		}
+
+		//==================================================================================================
+
+		// Yin Pitch Tracking Algorithm implemented by Alejandro PÃ©rez (2014)
+		// (http://recherche.ircam.fr/equipes/pcm/cheveign/ps/2002_JASA_YIN_proof.pdf)			  
+
+		// PARAMETERS
+		var yinThreshold = 0.15; // allowed uncertainty (e.g 0.05 will return a pitch with ~95% probability)
+		var yinProbability = 0.0; // READONLY: contains the certainty of the note found as a decimal (i.e 0.3 is 30%)
+
+		function Yin_pitchEstimation(inputBuffer, sampleRate) {
+			var yinBuffer = new Float32Array(Math.floor(inputBuffer.length/2));
+			yinBuffer[0] = 1;
+			var runningSum = 0;
+			var pitchInHz = 0.0;
+			var foundTau = false;
+			var minTauValue;
+			var minTau = 0;
+
+			for (var tau=1; tau<Math.floor(inputBuffer.length/2); tau++) {
+				// Step 1: Calculates the squared difference of the signal with a shifted version of itself.
+				yinBuffer[tau] = 0;
+				for (var i=0; i<Math.floor(inputBuffer.length/2); i++) {
+					yinBuffer[tau] += Math.pow(((inputBuffer[i]-128)/128)-((inputBuffer[i+tau]-128)/128),2);
+				}
+				// Step 2: Calculate the cumulative mean on the normalised difference calculated in step 1.
+				runningSum += yinBuffer[tau];
+				yinBuffer[tau] = yinBuffer[tau]*(tau/runningSum);
+
+				// Step 3: Check if the current normalised cumulative mean is over the threshold.
+				if (tau > 1) {
+					if (foundTau) {
+						if (yinBuffer[tau] < minTauValue) {
+							minTauValue = yinBuffer[tau];
+							minTau = tau;
+						}
+						else break;
+					}
+					else if (yinBuffer[tau] < yinThreshold) {
+						foundTau = true;
+						minTau = tau;
+						minTauValue = yinBuffer[tau];
+					}
+				}
+			}
+
+			if (minTau == 0) {
+				yinProbability = 0;
+				pitchInHz = 0.0;
+			} else {
+				// Step 4: Interpolate the shift value (tau) to improve the pitch estimate.
+				minTau += (yinBuffer[minTau+1]-yinBuffer[minTau-1])/(2*((2*yinBuffer[minTau])-yinBuffer[minTau-1]-yinBuffer[minTau+1]));
+				pitchInHz = sampleRate/minTau;
+				yinProbability = 1-minTauValue;
+			}
+
+			return pitchInHz;
+		}
+		//==================================================================================================
 		;
 	}
-	,__class__: audiotools.webaudio.pitch.PitchRecognizer
 };
 var cx = {};
 cx.ArrayTools = function() { };
@@ -1700,44 +1324,9 @@ cx.ArrayTools.prev = function(a,item) {
 	if(idx <= 0) return null;
 	return a[idx - 1];
 };
-cx.ArrayTools.reverse = function(a) {
-	var result = [];
-	var _g = 0;
-	while(_g < a.length) {
-		var item = a[_g];
-		++_g;
-		result.unshift(item);
-	}
-	return result;
-};
-cx.ArrayTools.has = function(a,item) {
-	return HxOverrides.indexOf(a,item,0) != -1;
-};
-cx.ArrayTools.nextOrNull = function(a,item) {
-	return cx.ArrayTools.indexOrNull(a,HxOverrides.indexOf(a,item,0) + 1);
-};
 cx.ArrayTools.indexOrNull = function(a,idx) {
 	if(a == null) return null;
 	if(idx < 0 || idx > a.length - 1) return null; else return a[idx];
-};
-cx.ArrayTools.indexOrValue = function(a,idx,fallbackValue) {
-	if((a == null?null:idx < 0 || idx > a.length - 1?null:a[idx]) != null) return a[idx]; else return fallbackValue;
-};
-cx.ArrayTools.equals = function(a,b) {
-	return a.toString() == b.toString();
-};
-cx.ArrayTools.unique = function(arr) {
-	var result = new Array();
-	var _g = 0;
-	while(_g < arr.length) {
-		var item = arr[_g];
-		++_g;
-		if(!Lambda.has(result,item)) result.push(item);
-	}
-	result.sort(function(a,b) {
-		return Reflect.compare(a,b);
-	});
-	return result;
 };
 cx.ArrayTools.fromIterator = function(it) {
 	var result = [];
@@ -1746,9 +1335,6 @@ cx.ArrayTools.fromIterator = function(it) {
 		result.push(v);
 	}
 	return result;
-};
-cx.ArrayTools.fromIterables = function(it) {
-	return cx.ArrayTools.fromIterator($iterator(it)());
 };
 cx.ArrayTools.fromHashKeys = function(it) {
 	return cx.ArrayTools.fromIterator(it);
@@ -1761,37 +1347,6 @@ cx.ArrayTools.allNull = function(it) {
 		if(v != null) return false;
 	}
 	return true;
-};
-cx.ArrayTools.doOverlap = function(array1,array2) {
-	var _g = 0;
-	while(_g < array1.length) {
-		var item = array1[_g];
-		++_g;
-		if(Lambda.has(array2,item)) return true;
-	}
-	return false;
-};
-cx.ArrayTools.overlap = function(array1,array2) {
-	return Lambda.array(array1.filter(function(value1) {
-		var ret = Lambda.has(array2,value1);
-		return ret;
-	}));
-};
-cx.ArrayTools.diff = function(array1,array2) {
-	var result = new Array();
-	var _g = 0;
-	while(_g < array1.length) {
-		var item = array1[_g];
-		++_g;
-		if(!Lambda.has(array2,item)) result.push(item);
-	}
-	var _g1 = 0;
-	while(_g1 < array2.length) {
-		var item1 = array2[_g1];
-		++_g1;
-		if(!Lambda.has(array1,item1)) result.push(item1);
-	}
-	return result;
 };
 cx.ArrayTools.hasNot = function(array1,array2) {
 	var result = new Array();
@@ -1806,94 +1361,14 @@ cx.ArrayTools.hasNot = function(array1,array2) {
 cx.ArrayTools.first = function(array) {
 	return array[0];
 };
-cx.ArrayTools.isFirst = function(array,item) {
-	return array[0] == item;
-};
 cx.ArrayTools.last = function(array) {
 	return array[array.length - 1];
-};
-cx.ArrayTools.isLast = function(array,item) {
-	return array[array.length - 1] == item;
-};
-cx.ArrayTools.secondLast = function(array) {
-	return array[array.length - 2];
 };
 cx.ArrayTools.index = function(array,item) {
 	return Lambda.indexOf(array,item);
 };
 cx.ArrayTools.second = function(array) {
 	return array[1];
-};
-cx.ArrayTools.third = function(array) {
-	return array[2];
-};
-cx.ArrayTools.fourth = function(array) {
-	return array[3];
-};
-cx.ArrayTools.fifth = function(array) {
-	return array[4];
-};
-cx.ArrayTools.sixth = function(array) {
-	return array[5];
-};
-cx.ArrayTools.seventh = function(array) {
-	return array[6];
-};
-cx.ArrayTools.eighth = function(array) {
-	return array[7];
-};
-cx.ArrayTools.nineth = function(array) {
-	return array[8];
-};
-cx.ArrayTools.shuffle = function(a) {
-	var t = cx.ArrayTools.range(a.length);
-	var arr = [];
-	while(t.length > 0) {
-		var pos = Std.random(t.length);
-		var index = t[pos];
-		t.splice(pos,1);
-		arr.push(a[index]);
-	}
-	return arr;
-};
-cx.ArrayTools.countItem = function(a,item) {
-	var cnt = 0;
-	var _g = 0;
-	while(_g < a.length) {
-		var ai = a[_g];
-		++_g;
-		if(ai == item) cnt++;
-	}
-	return cnt;
-};
-cx.ArrayTools.sorta = function(a) {
-	a.sort(function(a1,b) {
-		return Reflect.compare(a1,b);
-	});
-	return a;
-};
-cx.ArrayTools.range = function(start,stop,step) {
-	if(step == null) step = 1;
-	if(null == stop) {
-		stop = start;
-		start = 0;
-	}
-	if((stop - start) / step == Math.POSITIVE_INFINITY) throw "infinite range";
-	var range = [];
-	var i = -1;
-	var j;
-	if(step < 0) while((j = start + step * ++i) > stop) range.push(j); else while((j = start + step * ++i) < stop) range.push(j);
-	return range;
-};
-cx.ArrayTools.intsMin = function(a) {
-	var r = a[0];
-	var _g = 0;
-	while(_g < a.length) {
-		var v = a[_g];
-		++_g;
-		if(v < r) r = v;
-	}
-	return r;
 };
 cx.EnumTools = function() { };
 cx.EnumTools.__name__ = true;
@@ -1929,366 +1404,18 @@ cx.MapTools.sortarray = function(a) {
 };
 cx.MathTools = function() { };
 cx.MathTools.__name__ = true;
-cx.MathTools.floatFromString = function(str,comma) {
-	if(comma == null) comma = ",";
-	str = StringTools.replace(str,",",".");
-	return Std.parseFloat(str);
-};
-cx.MathTools.floatToString = function(val,comma) {
-	if(comma == null) comma = ",";
-	var result;
-	if(val == null) result = "null"; else result = "" + val;
-	if(comma != ".") result = StringTools.replace(result,".",comma);
-	return result;
-};
-cx.MathTools.floatEquals = function(a,b) {
-	return Math.abs(a - b) <= 0.00001;
-};
-cx.MathTools.inRange = function(min,value,max) {
-	if(value < min) return false;
-	if(value > max) return false;
-	return true;
-};
-cx.MathTools.floatRange = function(min,value,max) {
-	if(value < min) return min;
-	if(value > max) return max;
-	return value;
-};
 cx.MathTools.round2 = function(number,precision) {
 	if(precision == null) precision = 6;
 	number = number * Math.pow(10,precision);
 	number = Math.round(number) / Math.pow(10,precision);
 	return number;
 };
-cx.MathTools.intRange = function(min,value,max) {
-	if(value < min) return min;
-	if(value > max) return max;
-	return value;
-};
-cx.MathTools.intMin = function(a,b) {
-	if(a < b) return a;
-	return b;
-};
-cx.MathTools.intMax = function(a,b) {
-	if(a > b) return a;
-	return b;
-};
-cx.MathTools.ipol = function(a,b,delta) {
-	return delta * (b - a) + a;
-};
 cx.StrTools = function() { };
 cx.StrTools.__name__ = true;
-cx.StrTools.countSub = function(str,lookForStr) {
-	return str.split(lookForStr).length - 1;
-};
-cx.StrTools.until = function(str,untilStr,includeUntilStr) {
-	if(includeUntilStr == null) includeUntilStr = false;
-	var pos = str.indexOf(untilStr);
-	if(includeUntilStr) pos++;
-	return str.substring(0,pos);
-};
-cx.StrTools.untilLast = function(str,untilStr,includeUntilStr) {
-	if(includeUntilStr == null) includeUntilStr = false;
-	var pos = str.lastIndexOf(untilStr);
-	if(includeUntilStr) pos++;
-	return str.substring(0,pos);
-};
-cx.StrTools.tab = function(str) {
-	return str + "\t";
-};
-cx.StrTools.newline = function(str) {
-	return str + "\n";
-};
-cx.StrTools.repeat = function(repeatString,count) {
-	var result = "";
-	var _g = 0;
-	while(_g < count) {
-		var i = _g++;
-		result += repeatString;
-	}
-	return result;
-};
-cx.StrTools.fill = function(str,toLength,fill,replaceNull) {
-	if(replaceNull == null) replaceNull = "-";
-	if(fill == null) fill = " ";
-	if(toLength == null) toLength = 32;
-	if(str == null) str = replaceNull;
-	do str += fill; while(str.length < toLength);
-	return HxOverrides.substr(str,0,toLength);
-};
-cx.StrTools.splitTrim = function(str,delimiter) {
-	if(delimiter == null) delimiter = ",";
-	if(str == null) return [];
-	var a = str.split(delimiter);
-	var a2 = new Array();
-	var _g = 0;
-	while(_g < a.length) {
-		var part = a[_g];
-		++_g;
-		var part2 = StringTools.trim(part);
-		if(part2.length > 0) a2.push(part2);
-	}
-	return a2;
-};
-cx.StrTools.replaceNull = function(str,fill) {
-	if(fill == null) fill = "-";
-	if(str == null) return fill; else return str;
-};
-cx.StrTools.firstUpperCase = function(str,restToLowercase) {
-	if(restToLowercase == null) restToLowercase = true;
-	var rest;
-	if(restToLowercase) rest = HxOverrides.substr(str,1,null).toLowerCase(); else rest = HxOverrides.substr(str,1,null);
-	return HxOverrides.substr(str,0,1).toUpperCase() + rest;
-};
-cx.StrTools.afterLast = function(str,$char,includeChar) {
-	if(includeChar == null) includeChar = false;
-	var idx = str.lastIndexOf($char);
-	if(idx == -1) return str;
-	if(!includeChar) idx += $char.length;
-	return HxOverrides.substr(str,idx,null);
-};
-cx.StrTools.similarityCaseIgnore = function(strA,strB) {
-	return cx.StrTools.similarity(strA.toLowerCase(),strB.toLowerCase());
-};
-cx.StrTools.similarityCaseBalance = function(strA,strB) {
-	return (cx.StrTools.similarity(strA,strB) + cx.StrTools.similarity(strA.toLowerCase(),strB.toLowerCase())) / 2;
-};
-cx.StrTools.similarity = function(strA,strB) {
-	if(strA == strB) return 1;
-	if(strA.length > strB.length) {
-		var strC = strA;
-		strA = strB;
-		strB = strC;
-	}
-	return cx.StrTools._similarity(strA,strB);
-};
-cx.StrTools.similarityAssymetric = function(strShorter,strLonger) {
-	if(strShorter == strLonger) return 1;
-	return cx.StrTools._similarity(strShorter,strShorter);
-};
-cx.StrTools._similarity = function(strA,strB) {
-	var lengthA = strA.length;
-	var lengthB = strB.length;
-	var i = 0;
-	var segmentCount = 0;
-	var segmentsInfos = new Array();
-	var segment = "";
-	while(i < lengthA) {
-		var $char = strA.charAt(i);
-		if(strB.indexOf($char) > -1) {
-			segment += $char;
-			if(strB.indexOf(segment) > -1) {
-				var segmentPosA = i - segment.length + 1;
-				var segmentPosB = strB.indexOf(segment);
-				var positionDiff = Math.abs(segmentPosA - segmentPosB);
-				var posFactor = (lengthA - positionDiff) / lengthB;
-				var lengthFactor = segment.length / lengthA;
-				segmentsInfos[segmentCount] = { segment : segment, score : posFactor * lengthFactor};
-			} else {
-				segment = "";
-				segmentCount++;
-				i--;
-			}
-		} else {
-			segment = "";
-			segmentCount++;
-		}
-		i++;
-	}
-	var usedSegmentsCount = -2;
-	var totalScore = 0.0;
-	var _g = 0;
-	while(_g < segmentsInfos.length) {
-		var si = segmentsInfos[_g];
-		++_g;
-		if(si != null) {
-			totalScore += si.score;
-			usedSegmentsCount++;
-		}
-	}
-	totalScore = totalScore - Math.max(usedSegmentsCount,0) * 0.02;
-	return Math.max(0,Math.min(totalScore,1));
-};
 cx.StrTools.has = function(str,substr) {
 	return str.indexOf(substr) > -1;
 };
-cx.StrTools.reverse = function(string) {
-	var result = "";
-	var _g1 = 0;
-	var _g = string.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		result = string.charAt(i) + result;
-	}
-	return result;
-};
-cx.StrTools.intToChar = function($int,offset) {
-	if(offset == null) offset = 65;
-	if($int > 9) throw "int to char error";
-	if($int < 0) throw "int to char error";
-	var c = $int + offset;
-	var $char = String.fromCharCode(c);
-	return $char;
-};
-cx.StrTools.charToInt = function($char,offset) {
-	if(offset == null) offset = 65;
-	if($char.length > 1) throw "char to int error";
-	return HxOverrides.cca($char,0) - offset;
-};
-cx.StrTools.numToStr = function(numStr,offset) {
-	if(offset == null) offset = 65;
-	var testParse = Std.parseInt(numStr);
-	var result = "";
-	var _g1 = 0;
-	var _g = numStr.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		var $int = Std.parseInt(numStr.charAt(i));
-		var $char = cx.StrTools.intToChar($int,offset);
-		result += $char;
-	}
-	return result;
-};
-cx.StrTools.strToNum = function(str,offset) {
-	if(offset == null) offset = 65;
-	var result = "";
-	var _g1 = 0;
-	var _g = str.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		var $char = str.charAt(i);
-		var $int = cx.StrTools.charToInt($char,offset);
-		if($int == null) result += "null"; else result += "" + $int;
-	}
-	return result;
-};
-cx.StrTools.rotate = function(str,positions) {
-	if(positions == null) positions = 1;
-	var result = str;
-	var _g = 0;
-	while(_g < positions) {
-		var i = _g++;
-		result = HxOverrides.substr(result,1,result.length) + HxOverrides.substr(result,0,1);
-	}
-	return result;
-};
-cx.StrTools.rotateBack = function(str,positions) {
-	if(positions == null) positions = 1;
-	var result = str;
-	var _g = 0;
-	while(_g < positions) {
-		var i = _g++;
-		result = HxOverrides.substr(result,-1,null) + HxOverrides.substr(result,0,result.length - 1);
-	}
-	return result;
-};
-cx.StrTools.toLatin1 = function(str) {
-	return haxe.Utf8.decode(str);
-	return str;
-};
-cx.StrTools.lastIdxOf = function(str,search,lastPos) {
-	if(lastPos == null) lastPos = 0;
-	if(lastPos == 0) return str.lastIndexOf(search);
-	var _g = 0;
-	while(_g < lastPos) {
-		var i = _g++;
-		var len = str.lastIndexOf(search);
-		str = HxOverrides.substr(str,0,len);
-	}
-	return str.lastIndexOf(search);
-};
-cx.StrTools.toInt = function(str) {
-	return Std.parseInt(str);
-};
-cx.StrTools.toFloat = function(str) {
-	return Std.parseFloat(str);
-};
-var format = {};
-format.wav = {};
-format.wav.WAVEFormat = { __ename__ : true, __constructs__ : ["WF_PCM"] };
-format.wav.WAVEFormat.WF_PCM = ["WF_PCM",0];
-format.wav.WAVEFormat.WF_PCM.toString = $estr;
-format.wav.WAVEFormat.WF_PCM.__enum__ = format.wav.WAVEFormat;
-format.wav.Reader = function(i) {
-	this.i = i;
-	i.set_bigEndian(false);
-};
-format.wav.Reader.__name__ = true;
-format.wav.Reader.prototype = {
-	readInt: function() {
-		return this.i.readInt32();
-	}
-	,read: function() {
-		if(this.i.readString(4) != "RIFF") throw "RIFF header expected";
-		var len = this.i.readInt32();
-		if(this.i.readString(4) != "WAVE") throw "WAVE signature not found";
-		var x = this.i.readString(4);
-		if(x != "fmt ") throw "expected fmt subchunk";
-		var fmtlen = this.i.readInt32();
-		var x1 = this.i.readUInt16();
-		var format1;
-		switch(x1) {
-		case 1:
-			format1 = format.wav.WAVEFormat.WF_PCM;
-			break;
-		default:
-			console.log("only PCM (uncompressed) WAV files are supported");
-			format1 = format.wav.WAVEFormat.WF_PCM;
-		}
-		var channels = this.i.readUInt16();
-		var samplingRate = this.i.readInt32();
-		var byteRate = this.i.readInt32();
-		var blockAlign = this.i.readUInt16();
-		var bitsPerSample = this.i.readUInt16();
-		if(fmtlen > 16) this.i.read(fmtlen - 16);
-		var nextChunk = this.i.readString(4);
-		while(nextChunk != "data") {
-			this.i.read(this.i.readInt32());
-			nextChunk = this.i.readString(4);
-		}
-		if(nextChunk != "data") throw "expected data subchunk";
-		var datalen = this.i.readInt32();
-		var data = this.i.readAll();
-		if(data.length > datalen) data = data.sub(0,datalen);
-		return { header : { format : format1, channels : channels, samplingRate : samplingRate, byteRate : byteRate, blockAlign : blockAlign, bitsPerSample : bitsPerSample}, data : data};
-	}
-	,__class__: format.wav.Reader
-};
-format.wav.Writer = function(output) {
-	this.o = output;
-	this.o.set_bigEndian(false);
-};
-format.wav.Writer.__name__ = true;
-format.wav.Writer.prototype = {
-	write: function(wav) {
-		var hdr = wav.header;
-		this.o.writeString("RIFF");
-		this.o.writeInt32(36 + wav.data.length);
-		this.o.writeString("WAVE");
-		this.o.writeString("fmt ");
-		this.o.writeInt32(16);
-		this.o.writeUInt16(1);
-		this.o.writeUInt16(hdr.channels);
-		this.o.writeInt32(hdr.samplingRate);
-		this.o.writeInt32(hdr.byteRate);
-		this.o.writeUInt16(hdr.blockAlign);
-		this.o.writeUInt16(hdr.bitsPerSample);
-		this.o.writeString("data");
-		this.o.writeInt32(wav.data.length);
-		this.o.write(wav.data);
-	}
-	,writeInt: function(v) {
-		this.o.writeInt32(v);
-	}
-	,__class__: format.wav.Writer
-};
 var haxe = {};
-haxe.Utf8 = function() { };
-haxe.Utf8.__name__ = true;
-haxe.Utf8.decode = function(s) {
-	throw "Not implemented";
-	return s;
-};
 haxe.ds = {};
 haxe.ds.IntMap = function() {
 	this.h = { };
@@ -2312,7 +1439,6 @@ haxe.ds.IntMap.prototype = {
 		}
 		return HxOverrides.iter(a);
 	}
-	,__class__: haxe.ds.IntMap
 };
 haxe.ds.ObjectMap = function() {
 	this.h = { };
@@ -2336,13 +1462,7 @@ haxe.ds.ObjectMap.prototype = {
 		}
 		return HxOverrides.iter(a);
 	}
-	,__class__: haxe.ds.ObjectMap
 };
-haxe.ds.Option = { __ename__ : true, __constructs__ : ["Some","None"] };
-haxe.ds.Option.Some = function(v) { var $x = ["Some",0,v]; $x.__enum__ = haxe.ds.Option; $x.toString = $estr; return $x; };
-haxe.ds.Option.None = ["None",1];
-haxe.ds.Option.None.toString = $estr;
-haxe.ds.Option.None.__enum__ = haxe.ds.Option;
 haxe.ds.StringMap = function() {
 	this.h = { };
 };
@@ -2357,12 +1477,6 @@ haxe.ds.StringMap.prototype = {
 	}
 	,exists: function(key) {
 		return this.h.hasOwnProperty("$" + key);
-	}
-	,remove: function(key) {
-		key = "$" + key;
-		if(!this.h.hasOwnProperty(key)) return false;
-		delete(this.h[key]);
-		return true;
 	}
 	,keys: function() {
 		var a = [];
@@ -2379,315 +1493,17 @@ haxe.ds.StringMap.prototype = {
 			return this.ref["$" + i];
 		}};
 	}
-	,toString: function() {
-		var s = new StringBuf();
-		s.b += "{";
-		var it = this.keys();
-		while( it.hasNext() ) {
-			var i = it.next();
-			if(i == null) s.b += "null"; else s.b += "" + i;
-			s.b += " => ";
-			s.add(Std.string(this.get(i)));
-			if(it.hasNext()) s.b += ", ";
-		}
-		s.b += "}";
-		return s.b;
-	}
-	,__class__: haxe.ds.StringMap
 };
 haxe.io = {};
-haxe.io.Bytes = function(length,b) {
-	this.length = length;
-	this.b = b;
-};
+haxe.io.Bytes = function() { };
 haxe.io.Bytes.__name__ = true;
-haxe.io.Bytes.alloc = function(length) {
-	var a = new Array();
-	var _g = 0;
-	while(_g < length) {
-		var i = _g++;
-		a.push(0);
-	}
-	return new haxe.io.Bytes(length,a);
-};
-haxe.io.Bytes.ofString = function(s) {
-	var a = new Array();
-	var i = 0;
-	while(i < s.length) {
-		var c = StringTools.fastCodeAt(s,i++);
-		if(55296 <= c && c <= 56319) c = c - 55232 << 10 | StringTools.fastCodeAt(s,i++) & 1023;
-		if(c <= 127) a.push(c); else if(c <= 2047) {
-			a.push(192 | c >> 6);
-			a.push(128 | c & 63);
-		} else if(c <= 65535) {
-			a.push(224 | c >> 12);
-			a.push(128 | c >> 6 & 63);
-			a.push(128 | c & 63);
-		} else {
-			a.push(240 | c >> 18);
-			a.push(128 | c >> 12 & 63);
-			a.push(128 | c >> 6 & 63);
-			a.push(128 | c & 63);
-		}
-	}
-	return new haxe.io.Bytes(a.length,a);
-};
-haxe.io.Bytes.prototype = {
-	set: function(pos,v) {
-		this.b[pos] = v & 255;
-	}
-	,sub: function(pos,len) {
-		if(pos < 0 || len < 0 || pos + len > this.length) throw haxe.io.Error.OutsideBounds;
-		return new haxe.io.Bytes(len,this.b.slice(pos,pos + len));
-	}
-	,getString: function(pos,len) {
-		if(pos < 0 || len < 0 || pos + len > this.length) throw haxe.io.Error.OutsideBounds;
-		var s = "";
-		var b = this.b;
-		var fcc = String.fromCharCode;
-		var i = pos;
-		var max = pos + len;
-		while(i < max) {
-			var c = b[i++];
-			if(c < 128) {
-				if(c == 0) break;
-				s += fcc(c);
-			} else if(c < 224) s += fcc((c & 63) << 6 | b[i++] & 127); else if(c < 240) {
-				var c2 = b[i++];
-				s += fcc((c & 31) << 12 | (c2 & 127) << 6 | b[i++] & 127);
-			} else {
-				var c21 = b[i++];
-				var c3 = b[i++];
-				var u = (c & 15) << 18 | (c21 & 127) << 12 | (c3 & 127) << 6 | b[i++] & 127;
-				s += fcc((u >> 10) + 55232);
-				s += fcc(u & 1023 | 56320);
-			}
-		}
-		return s;
-	}
-	,toString: function() {
-		return this.getString(0,this.length);
-	}
-	,__class__: haxe.io.Bytes
-};
-haxe.io.BytesBuffer = function() {
-	this.b = new Array();
-};
-haxe.io.BytesBuffer.__name__ = true;
-haxe.io.BytesBuffer.prototype = {
-	addBytes: function(src,pos,len) {
-		if(pos < 0 || len < 0 || pos + len > src.length) throw haxe.io.Error.OutsideBounds;
-		var b1 = this.b;
-		var b2 = src.b;
-		var _g1 = pos;
-		var _g = pos + len;
-		while(_g1 < _g) {
-			var i = _g1++;
-			this.b.push(b2[i]);
-		}
-	}
-	,getBytes: function() {
-		var bytes = new haxe.io.Bytes(this.b.length,this.b);
-		this.b = null;
-		return bytes;
-	}
-	,__class__: haxe.io.BytesBuffer
-};
-haxe.io.Input = function() { };
-haxe.io.Input.__name__ = true;
-haxe.io.Input.prototype = {
-	readByte: function() {
-		throw "Not implemented";
-	}
-	,readBytes: function(s,pos,len) {
-		var k = len;
-		var b = s.b;
-		if(pos < 0 || len < 0 || pos + len > s.length) throw haxe.io.Error.OutsideBounds;
-		while(k > 0) {
-			b[pos] = this.readByte();
-			pos++;
-			k--;
-		}
-		return len;
-	}
-	,set_bigEndian: function(b) {
-		this.bigEndian = b;
-		return b;
-	}
-	,readAll: function(bufsize) {
-		if(bufsize == null) bufsize = 16384;
-		var buf = haxe.io.Bytes.alloc(bufsize);
-		var total = new haxe.io.BytesBuffer();
-		try {
-			while(true) {
-				var len = this.readBytes(buf,0,bufsize);
-				if(len == 0) throw haxe.io.Error.Blocked;
-				total.addBytes(buf,0,len);
-			}
-		} catch( e ) {
-			if( js.Boot.__instanceof(e,haxe.io.Eof) ) {
-			} else throw(e);
-		}
-		return total.getBytes();
-	}
-	,readFullBytes: function(s,pos,len) {
-		while(len > 0) {
-			var k = this.readBytes(s,pos,len);
-			pos += k;
-			len -= k;
-		}
-	}
-	,read: function(nbytes) {
-		var s = haxe.io.Bytes.alloc(nbytes);
-		var p = 0;
-		while(nbytes > 0) {
-			var k = this.readBytes(s,p,nbytes);
-			if(k == 0) throw haxe.io.Error.Blocked;
-			p += k;
-			nbytes -= k;
-		}
-		return s;
-	}
-	,readUInt16: function() {
-		var ch1 = this.readByte();
-		var ch2 = this.readByte();
-		if(this.bigEndian) return ch2 | ch1 << 8; else return ch1 | ch2 << 8;
-	}
-	,readInt32: function() {
-		var ch1 = this.readByte();
-		var ch2 = this.readByte();
-		var ch3 = this.readByte();
-		var ch4 = this.readByte();
-		if(this.bigEndian) return ch4 | ch3 << 8 | ch2 << 16 | ch1 << 24; else return ch1 | ch2 << 8 | ch3 << 16 | ch4 << 24;
-	}
-	,readString: function(len) {
-		var b = haxe.io.Bytes.alloc(len);
-		this.readFullBytes(b,0,len);
-		return b.toString();
-	}
-	,__class__: haxe.io.Input
-};
-haxe.io.BytesInput = function(b,pos,len) {
-	if(pos == null) pos = 0;
-	if(len == null) len = b.length - pos;
-	if(pos < 0 || len < 0 || pos + len > b.length) throw haxe.io.Error.OutsideBounds;
-	this.b = b.b;
-	this.pos = pos;
-	this.len = len;
-	this.totlen = len;
-};
-haxe.io.BytesInput.__name__ = true;
-haxe.io.BytesInput.__super__ = haxe.io.Input;
-haxe.io.BytesInput.prototype = $extend(haxe.io.Input.prototype,{
-	readByte: function() {
-		if(this.len == 0) throw new haxe.io.Eof();
-		this.len--;
-		return this.b[this.pos++];
-	}
-	,readBytes: function(buf,pos,len) {
-		if(pos < 0 || len < 0 || pos + len > buf.length) throw haxe.io.Error.OutsideBounds;
-		if(this.len == 0 && len > 0) throw new haxe.io.Eof();
-		if(this.len < len) len = this.len;
-		var b1 = this.b;
-		var b2 = buf.b;
-		var _g = 0;
-		while(_g < len) {
-			var i = _g++;
-			b2[pos + i] = b1[this.pos + i];
-		}
-		this.pos += len;
-		this.len -= len;
-		return len;
-	}
-	,__class__: haxe.io.BytesInput
-});
-haxe.io.Output = function() { };
-haxe.io.Output.__name__ = true;
-haxe.io.Output.prototype = {
-	writeByte: function(c) {
-		throw "Not implemented";
-	}
-	,writeBytes: function(s,pos,len) {
-		var k = len;
-		var b = s.b;
-		if(pos < 0 || len < 0 || pos + len > s.length) throw haxe.io.Error.OutsideBounds;
-		while(k > 0) {
-			this.writeByte(b[pos]);
-			pos++;
-			k--;
-		}
-		return len;
-	}
-	,set_bigEndian: function(b) {
-		this.bigEndian = b;
-		return b;
-	}
-	,write: function(s) {
-		var l = s.length;
-		var p = 0;
-		while(l > 0) {
-			var k = this.writeBytes(s,p,l);
-			if(k == 0) throw haxe.io.Error.Blocked;
-			p += k;
-			l -= k;
-		}
-	}
-	,writeFullBytes: function(s,pos,len) {
-		while(len > 0) {
-			var k = this.writeBytes(s,pos,len);
-			pos += k;
-			len -= k;
-		}
-	}
-	,writeUInt16: function(x) {
-		if(x < 0 || x >= 65536) throw haxe.io.Error.Overflow;
-		if(this.bigEndian) {
-			this.writeByte(x >> 8);
-			this.writeByte(x & 255);
-		} else {
-			this.writeByte(x & 255);
-			this.writeByte(x >> 8);
-		}
-	}
-	,writeInt32: function(x) {
-		if(this.bigEndian) {
-			this.writeByte(x >>> 24);
-			this.writeByte(x >> 16 & 255);
-			this.writeByte(x >> 8 & 255);
-			this.writeByte(x & 255);
-		} else {
-			this.writeByte(x & 255);
-			this.writeByte(x >> 8 & 255);
-			this.writeByte(x >> 16 & 255);
-			this.writeByte(x >>> 24);
-		}
-	}
-	,writeString: function(s) {
-		var b = haxe.io.Bytes.ofString(s);
-		this.writeFullBytes(b,0,b.length);
-	}
-	,__class__: haxe.io.Output
-};
-haxe.io.Eof = function() {
-};
+haxe.io.Eof = function() { };
 haxe.io.Eof.__name__ = true;
 haxe.io.Eof.prototype = {
 	toString: function() {
 		return "Eof";
 	}
-	,__class__: haxe.io.Eof
 };
-haxe.io.Error = { __ename__ : true, __constructs__ : ["Blocked","Overflow","OutsideBounds","Custom"] };
-haxe.io.Error.Blocked = ["Blocked",0];
-haxe.io.Error.Blocked.toString = $estr;
-haxe.io.Error.Blocked.__enum__ = haxe.io.Error;
-haxe.io.Error.Overflow = ["Overflow",1];
-haxe.io.Error.Overflow.toString = $estr;
-haxe.io.Error.Overflow.__enum__ = haxe.io.Error;
-haxe.io.Error.OutsideBounds = ["OutsideBounds",2];
-haxe.io.Error.OutsideBounds.toString = $estr;
-haxe.io.Error.OutsideBounds.__enum__ = haxe.io.Error;
-haxe.io.Error.Custom = function(e) { var $x = ["Custom",3,e]; $x.__enum__ = haxe.io.Error; $x.toString = $estr; return $x; };
 haxe.xml = {};
 haxe.xml.Parser = function() { };
 haxe.xml.Parser.__name__ = true;
@@ -2941,9 +1757,6 @@ hxlazy.Lazy.__name__ = true;
 var js = {};
 js.Boot = function() { };
 js.Boot.__name__ = true;
-js.Boot.getClass = function(o) {
-	if((o instanceof Array) && o.__enum__ == null) return Array; else return o.__class__;
-};
 js.Boot.__string_rec = function(o,s) {
 	if(o == null) return "null";
 	if(s.length >= 5) return "<...>";
@@ -3009,48 +1822,6 @@ js.Boot.__string_rec = function(o,s) {
 		return o;
 	default:
 		return String(o);
-	}
-};
-js.Boot.__interfLoop = function(cc,cl) {
-	if(cc == null) return false;
-	if(cc == cl) return true;
-	var intf = cc.__interfaces__;
-	if(intf != null) {
-		var _g1 = 0;
-		var _g = intf.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var i1 = intf[i];
-			if(i1 == cl || js.Boot.__interfLoop(i1,cl)) return true;
-		}
-	}
-	return js.Boot.__interfLoop(cc.__super__,cl);
-};
-js.Boot.__instanceof = function(o,cl) {
-	if(cl == null) return false;
-	switch(cl) {
-	case Int:
-		return (o|0) === o;
-	case Float:
-		return typeof(o) == "number";
-	case Bool:
-		return typeof(o) == "boolean";
-	case String:
-		return typeof(o) == "string";
-	case Array:
-		return (o instanceof Array) && o.__enum__ == null;
-	case Dynamic:
-		return true;
-	default:
-		if(o != null) {
-			if(typeof(cl) == "function") {
-				if(o instanceof cl) return true;
-				if(js.Boot.__interfLoop(js.Boot.getClass(o),cl)) return true;
-			}
-		} else return false;
-		if(cl == Class && o.__name__ != null) return true;
-		if(cl == Enum && o.__ename__ != null) return true;
-		return o.__enum__ == cl;
 	}
 };
 js.Lib = function() { };
@@ -3164,18 +1935,6 @@ nx3.EDirectionUAD.Auto.__enum__ = nx3.EDirectionUAD;
 nx3.EDirectionUAD.Down = ["Down",2];
 nx3.EDirectionUAD.Down.toString = $estr;
 nx3.EDirectionUAD.Down.__enum__ = nx3.EDirectionUAD;
-nx3.EDirectionUADTools = function() { };
-nx3.EDirectionUADTools.__name__ = true;
-nx3.EDirectionUADTools.toUD = function(direction) {
-	switch(direction[1]) {
-	case 0:
-		return nx3.EDirectionUD.Up;
-	case 2:
-		return nx3.EDirectionUD.Down;
-	default:
-		return nx3.EDirectionUD.Down;
-	}
-};
 nx3.EDirectionUD = { __ename__ : true, __constructs__ : ["Up","Down"] };
 nx3.EDirectionUD.Up = ["Up",0];
 nx3.EDirectionUD.Up.toString = $estr;
@@ -3183,11 +1942,6 @@ nx3.EDirectionUD.Up.__enum__ = nx3.EDirectionUD;
 nx3.EDirectionUD.Down = ["Down",1];
 nx3.EDirectionUD.Down.toString = $estr;
 nx3.EDirectionUD.Down.__enum__ = nx3.EDirectionUD;
-nx3.EDirectionUDTools = function() { };
-nx3.EDirectionUDTools.__name__ = true;
-nx3.EDirectionUDTools.toUAD = function(direction) {
-	if(direction == nx3.EDirectionUD.Up) return nx3.EDirectionUAD.Up; else return nx3.EDirectionUAD.Down;
-};
 nx3.EDisplayALN = { __ename__ : true, __constructs__ : ["Always","Layout","Never"] };
 nx3.EDisplayALN.Always = ["Always",0];
 nx3.EDisplayALN.Always.toString = $estr;
@@ -3343,36 +2097,6 @@ nx3.EKeysTools.getSigncode = function(key) {
 		return -1;
 	case 5:case 4:case 3:case 2:case 1:case 0:
 		return 1;
-	default:
-		return 0;
-	}
-};
-nx3.EKeysTools.getKeyNr = function(key) {
-	switch(key[1]) {
-	case 12:
-		return -6;
-	case 11:
-		return -5;
-	case 10:
-		return -4;
-	case 9:
-		return -3;
-	case 8:
-		return -2;
-	case 7:
-		return -1;
-	case 5:
-		return 1;
-	case 4:
-		return 2;
-	case 3:
-		return 3;
-	case 2:
-		return 4;
-	case 1:
-		return 5;
-	case 0:
-		return 6;
 	default:
 		return 0;
 	}
@@ -3919,112 +2643,6 @@ nx3.ENoteValTools.value = function(noteval) {
 		return 251;
 	}
 };
-nx3.ENoteValTools.getFromValue = function(value) {
-	switch(value) {
-	case 12096:
-		return nx3.ENoteVal.Nv1;
-	case 18144:
-		return nx3.ENoteVal.Nv1dot;
-	case 21168:
-		return nx3.ENoteVal.Nv1ddot;
-	case 8063:
-		return nx3.ENoteVal.Nv1tri;
-	case 6048:
-		return nx3.ENoteVal.Nv2;
-	case 9072:
-		return nx3.ENoteVal.Nv2dot;
-	case 10584:
-		return nx3.ENoteVal.Nv2ddot;
-	case 4031:
-		return nx3.ENoteVal.Nv2tri;
-	case 3024:
-		return nx3.ENoteVal.Nv4;
-	case 4536:
-		return nx3.ENoteVal.Nv4dot;
-	case 5292:
-		return nx3.ENoteVal.Nv4ddot;
-	case 2015:
-		return nx3.ENoteVal.Nv4tri;
-	case 1512:
-		return nx3.ENoteVal.Nv8;
-	case 2268:
-		return nx3.ENoteVal.Nv8dot;
-	case 2646:
-		return nx3.ENoteVal.Nv8ddot;
-	case 1007:
-		return nx3.ENoteVal.Nv8tri;
-	case 756:
-		return nx3.ENoteVal.Nv16;
-	case 1134:
-		return nx3.ENoteVal.Nv16dot;
-	case 1323:
-		return nx3.ENoteVal.Nv16ddot;
-	case 503:
-		return nx3.ENoteVal.Nv16tri;
-	case 378:
-		return nx3.ENoteVal.Nv32;
-	case 567:
-		return nx3.ENoteVal.Nv32dot;
-	case 661:
-		return nx3.ENoteVal.Nv32ddot;
-	case 251:
-		return nx3.ENoteVal.Nv32tri;
-	default:
-		return null;
-	}
-};
-nx3.ENoteValTools.toValString = function(val) {
-	switch(val[1]) {
-	case 0:
-		return "1";
-	case 1:
-		return "1.";
-	case 2:
-		return "1..";
-	case 3:
-		return "1-3";
-	case 4:
-		return "2";
-	case 5:
-		return "2.";
-	case 6:
-		return "2..";
-	case 7:
-		return "2-3";
-	case 8:
-		return "4";
-	case 9:
-		return "4.";
-	case 10:
-		return "4..";
-	case 11:
-		return "4-3";
-	case 12:
-		return "8";
-	case 13:
-		return "8.";
-	case 14:
-		return "8..";
-	case 15:
-		return "8-3";
-	case 16:
-		return "16";
-	case 17:
-		return "16.";
-	case 18:
-		return "16..";
-	case 19:
-		return "16-3";
-	case 20:
-		return "32";
-	case 21:
-		return "32.";
-	case 22:
-		return "32..";
-	case 23:
-		return "32-3";
-	}
-};
 nx3.ENoteValTools.fromValString = function(valString) {
 	if(valString == null) return nx3.ENoteVal.Nv4; else switch(valString) {
 	case "":
@@ -4303,9 +2921,6 @@ nx3.EVoiceType.Normal.__enum__ = nx3.EVoiceType;
 nx3.EVoiceType.Barpause = function(level) { var $x = ["Barpause",1,level]; $x.__enum__ = nx3.EVoiceType; $x.toString = $estr; return $x; };
 nx3.IBarWidthCalculator = function() { };
 nx3.IBarWidthCalculator.__name__ = true;
-nx3.IBarWidthCalculator.prototype = {
-	__class__: nx3.IBarWidthCalculator
-};
 nx3.NBar = function(parts,type,time,timeDisplay,allotment,spacing) {
 	if(spacing == null) spacing = 0;
 	this.nparts = parts;
@@ -4323,31 +2938,9 @@ nx3.NBar = function(parts,type,time,timeDisplay,allotment,spacing) {
 };
 nx3.NBar.__name__ = true;
 nx3.NBar.prototype = {
-	getNNote: function(partIdx,voiceIdx,noteIdx) {
-		return this.getNPart(partIdx).getNVoice(voiceIdx).getNNote(noteIdx);
-	}
-	,getNPart: function(idx) {
-		if(idx < 0 || idx > this.nparts.length) return null; else return this.nparts[idx];
-	}
-	,iterator: function() {
+	iterator: function() {
 		return HxOverrides.iter(this.nparts);
 	}
-	,get_length: function() {
-		return this.nparts.length;
-	}
-	,getTag: function() {
-		var partstags = "";
-		Lambda.iter(this.nparts,function(npart) {
-			partstags += npart.getTag();
-		});
-		var time = nx3.NTags.timeTag(this.time) + nx3.NTags.displayALNTag(this.timeDisplay);
-		var spacing;
-		if(this.spacing != 8) spacing = "sp:" + this.spacing; else spacing = "";
-		var type = nx3.NTags.nbarTypeTag(this.type);
-		var allot = nx3.NTags.nbarAllotmentTag(this.allotment);
-		return "/" + type + partstags + time + allot + spacing;
-	}
-	,__class__: nx3.NBar
 };
 nx3.NBarUtils = function() { };
 nx3.NBarUtils.__name__ = true;
@@ -4379,23 +2972,6 @@ nx3.NHead = function(type,level,sign,tie,tieTo) {
 	this.level = level;
 };
 nx3.NHead.__name__ = true;
-nx3.NHead.prototype = {
-	toString: function() {
-		var str = "" + this.level;
-		if(this.type != nx3.EHeadType.Normal) str += " " + this.type[0]; else str += "";
-		if(this.sign != nx3.ESign.None) str += " " + this.sign[0]; else str += "";
-		return "NHead(" + str + ")";
-	}
-	,getTag: function() {
-		var level = Std.string(this.level);
-		var tie;
-		if(this.tie != null) tie = "_"; else tie = "";
-		var sign = nx3.NTags.headSignTag(this.sign);
-		var type = nx3.NTags.headTypetag(this.type);
-		return "&" + type + level + sign + tie;
-	}
-	,__class__: nx3.NHead
-};
 nx3.NNote = function(type,heads,value,direction) {
 	if(type == null) if(heads != null) type = nx3.ENoteType.Note(heads); else type = nx3.ENoteType.Note([new nx3.NHead()]);
 	if(heads != null) {
@@ -4416,9 +2992,6 @@ nx3.NNote.prototype = {
 	iterator: function() {
 		var _this = this.get_nheads();
 		return HxOverrides.iter(_this);
-	}
-	,get_length: function() {
-		return this.get_nheads().length;
 	}
 	,get_nheads: function() {
 		if(this.nheads_ != null) return this.nheads_;
@@ -4445,37 +3018,6 @@ nx3.NNote.prototype = {
 		}
 		return this.nheads_;
 	}
-	,getNHead: function(idx) {
-		if(idx < 0 || idx > this.get_nheads().length) return null; else return this.get_nheads()[idx];
-	}
-	,toString: function() {
-		var str = "";
-		if(this.type[0] != "Note") str += " " + this.type[0]; else str += "";
-		var heads = "";
-		var _g = 0;
-		var _g1 = this.get_nheads();
-		while(_g < _g1.length) {
-			var head = _g1[_g];
-			++_g;
-			heads += head.toString();
-		}
-		return "NNote(" + str + "):" + heads;
-	}
-	,getTag: function() {
-		var headstags = "";
-		Lambda.iter(this,function(nhead) {
-			headstags += nhead.getTag();
-		});
-		var type = nx3.NTags.noteTypeTag(this.type);
-		var val = nx3.ENoteValTools.toValString(this.value);
-		return "%l" + type + headstags + val;
-	}
-	,get_headLevels: function() {
-		if(this.__lazyheadLevels != null) return this.__lazyheadLevels;
-		return this.__lazyheadLevels = Lambda.array(Lambda.map(this,function(head) {
-			return head.level;
-		}));
-	}
 	,get_topLevel: function() {
 		if(this.__lazytopLevel != null) return this.__lazytopLevel;
 		return this.__lazytopLevel = this.get_nheads()[0].level;
@@ -4492,7 +3034,6 @@ nx3.NNote.prototype = {
 			return head1.tie;
 		}));
 	}
-	,__class__: nx3.NNote
 };
 nx3.NPart = function(voices,type,clef,clefDisplay,key,keyDisplay) {
 	this.nvoices = voices;
@@ -4517,20 +3058,6 @@ nx3.NPart.prototype = {
 	,get_length: function() {
 		return this.nvoices.length;
 	}
-	,getNVoice: function(idx) {
-		if(idx < 0 || idx > this.nvoices.length) return null; else return this.nvoices[idx];
-	}
-	,getTag: function() {
-		var voicestags = "";
-		Lambda.iter(this,function(nvoice) {
-			voicestags += nvoice.getTag();
-		});
-		var clef = nx3.NTags.clefTag(this.clef) + nx3.NTags.displayALNTag(this.clefDisplay);
-		var key = nx3.NTags.keyTag(this.key) + nx3.NTags.displayALNTag(this.keyDisplay);
-		var type = nx3.NTags.npartTypeTag(this.type);
-		return "!" + type + voicestags + clef + key;
-	}
-	,__class__: nx3.NPart
 };
 nx3.NScore = function(nbars) {
 	this.nbars = nbars;
@@ -4548,191 +3075,6 @@ nx3.NScore = function(nbars) {
 	this.uuid = thx.core.UUID.create();
 };
 nx3.NScore.__name__ = true;
-nx3.NScore.prototype = {
-	getNBar: function(idx) {
-		if(idx < 0 || idx > this.nbars.length) return null; else return this.nbars[idx];
-	}
-	,iterator: function() {
-		return HxOverrides.iter(this.nbars);
-	}
-	,get_length: function() {
-		return this.nbars.length;
-	}
-	,getTag: function() {
-		var bartags = "";
-		Lambda.iter(this.nbars,function(nbar) {
-			bartags += nbar.getTag();
-		});
-		return "#" + bartags;
-	}
-	,__class__: nx3.NScore
-};
-nx3.NTags = function() {
-};
-nx3.NTags.__name__ = true;
-nx3.NTags.nbarAllotmentTag = function(allotment) {
-	if(allotment == null) return "";
-	switch(allotment[1]) {
-	case 1:
-		return "aEQ";
-	case 0:
-		return "aLA";
-	case 3:
-		return "aLN";
-	case 2:
-		return "";
-	}
-};
-nx3.NTags.nbarTypeTag = function(type) {
-	if(type == null) return "";
-	switch(type[1]) {
-	case 3:
-		return "bFO";
-	case 2:
-		return "bIG";
-	case 1:
-		return "bRP";
-	default:
-		return "";
-	}
-};
-nx3.NTags.timeTag = function(time) {
-	if(time == null) return "";
-	return nx3.ETimeUtils.toString(time);
-};
-nx3.NTags.npartTypeTag = function(type) {
-	if(type == null) return "";
-	switch(type[1]) {
-	case 5:
-		return "pCH";
-	case 4:
-		return "pDY";
-	case 7:
-		return "pHI";
-	case 6:
-		return "pIG";
-	case 1:
-		return "pLY";
-	case 8:
-		return "pPR";
-	case 3:
-		return "pTC";
-	case 2:
-		return "pTR";
-	default:
-		return "";
-	}
-};
-nx3.NTags.keyTag = function(key) {
-	if(key == null) return "";
-	return Std.string(nx3.EKeysTools.getKeyNr(key));
-};
-nx3.NTags.clefTag = function(clef) {
-	if(clef == null) return "";
-	switch(clef[1]) {
-	case 2:
-		return "C";
-	case 1:
-		return "F";
-	case 0:
-		return "G";
-	}
-};
-nx3.NTags.displayALNTag = function(display) {
-	if(display == null) return "";
-	switch(display[1]) {
-	case 0:
-		return "dA";
-	case 2:
-		return "dN";
-	default:
-		return "";
-	}
-};
-nx3.NTags.nvoiceTypeTag = function(type) {
-	if(type == null) return "";
-	switch(type[1]) {
-	case 1:
-		return "vBP";
-	default:
-		return "";
-	}
-};
-nx3.NTags.directionUADTag = function(dir) {
-	if(dir == null) return "";
-	switch(dir[1]) {
-	case 0:
-		return "U";
-	case 2:
-		return "D";
-	default:
-		return "";
-	}
-};
-nx3.NTags.noteTypeTag = function(type) {
-	if(type == null) return "";
-	switch(type[1]) {
-	case 2:
-		return "tB";
-	case 5:
-		return "tC";
-	case 6:
-		return "tD";
-	case 4:
-		var f = type[5];
-		var c = type[4];
-		var offset = type[3];
-		var text = type[2];
-		return "tL" + text + ":" + Std.string(offset);
-	case 1:
-		var level = type[2];
-		return "tP" + level;
-	case 7:
-		var midinoter = type[3];
-		var level1 = type[2];
-		return "tI" + level1 + ":midinote";
-	case 3:
-		var level2 = type[2];
-		return "tT" + level2;
-	default:
-		return "";
-	}
-};
-nx3.NTags.headSignTag = function(sign) {
-	if(sign == null) return "";
-	switch(sign[1]) {
-	case 4:
-		return "bb";
-	case 2:
-		return "b";
-	case 3:
-		return "#";
-	case 5:
-		return "##";
-	case 1:
-		return "N";
-	default:
-		return "";
-	}
-};
-nx3.NTags.headTypetag = function(type) {
-	if(type == null) return "";
-	switch(type[1]) {
-	case 2:
-		return "tC";
-	case 1:
-		return "tR";
-	case 3:
-		return "tP";
-	case 4:
-		return "tO";
-	default:
-		return "";
-	}
-};
-nx3.NTags.prototype = {
-	__class__: nx3.NTags
-};
 nx3.NVoice = function(notes,type,direction) {
 	if(notes == null || notes.length == 0) {
 		this.nnotes = [];
@@ -4754,22 +3096,6 @@ nx3.NVoice.prototype = {
 	iterator: function() {
 		return HxOverrides.iter(this.nnotes);
 	}
-	,get_length: function() {
-		return this.nnotes.length;
-	}
-	,getNNote: function(idx) {
-		if(idx < 0 || idx > this.nnotes.length) return null; else return this.nnotes[idx];
-	}
-	,getTag: function() {
-		var dir = nx3.NTags.directionUADTag(this.direction);
-		var type = nx3.NTags.nvoiceTypeTag(this.type);
-		var notestags = "";
-		Lambda.iter(this,function(nnote) {
-			notestags += nnote.getTag();
-		});
-		return "@" + type + notestags + dir;
-	}
-	,__class__: nx3.NVoice
 };
 nx3.PAttributesRectsCalculator = function() { };
 nx3.PAttributesRectsCalculator.__name__ = true;
@@ -4847,17 +3173,6 @@ nx3.PBamegroupFrameTipCalculator.intMin = function(levels) {
 	}
 	return result;
 };
-nx3.PBamegroupFrameTipCalculator.intMax = function(levels) {
-	var result = levels[0];
-	if(levels.length == 1) return result;
-	var _g = 0;
-	while(_g < levels.length) {
-		var level = levels[_g];
-		++_g;
-		result = Std["int"](Math.max(result,level));
-	}
-	return result;
-};
 nx3.PBamegroupFrameTipCalculator.prototype = {
 	getTips: function() {
 		var stemLength = 7;
@@ -4885,10 +3200,8 @@ nx3.PBamegroupFrameTipCalculator.prototype = {
 		if(this.direction == nx3.EDirectionUD.Down) return { leftTip : -leftTip, rightTip : -rightTip};
 		return { leftTip : leftTip, rightTip : rightTip};
 	}
-	,__class__: nx3.PBamegroupFrameTipCalculator
 };
 nx3.PBar = function(nbar) {
-	this.stretchwidth = 0;
 	this._keys = null;
 	this._clefs = null;
 	this.nbar = nbar;
@@ -4899,15 +3212,6 @@ nx3.PBar.prototype = {
 	iterator: function() {
 		var _this = this.getParts();
 		return HxOverrides.iter(_this);
-	}
-	,get_length: function() {
-		return this.getParts().length;
-	}
-	,getScore: function() {
-		return this.score;
-	}
-	,getSystembar: function() {
-		return this.systembar;
 	}
 	,get_clefs: function() {
 		if(this._clefs != null) return this._clefs;
@@ -4997,10 +3301,6 @@ nx3.PBar.prototype = {
 		this.calculateMDistances();
 		return this.columns;
 	}
-	,getIndex: function() {
-		var _this = this.getScore().getBars();
-		return HxOverrides.indexOf(_this,this,0);
-	}
 	,calculateMDistances: function() {
 		if(this.columns == null) this.getColumns();
 		new nx3.PColumnsDistancesCalculator(this).calculate();
@@ -5035,60 +3335,6 @@ nx3.PBar.prototype = {
 		this.getContentwidth();
 		return this.allottedDistanceSum;
 	}
-	,getStretchWidth: function() {
-		return this.stretchwidth;
-	}
-	,getTieConnections: function() {
-		if(this.tieconnections != null) return this.tieconnections;
-		this.tieconnections = [];
-		var nextBar = cx.ArrayTools.indexOrNull(this.score.getBars(),this.getIndex() + 1);
-		if(nextBar == null) return this.tieconnections;
-		var _g = 0;
-		var _g1 = this.getParts();
-		while(_g < _g1.length) {
-			var part = _g1[_g];
-			++_g;
-			var nextPart = cx.ArrayTools.indexOrNull(nextBar.getParts(),part.getIndex());
-			var _g2 = 0;
-			var _g3 = part.getVoices();
-			while(_g2 < _g3.length) {
-				var voice = _g3[_g2];
-				++_g2;
-				var lastnote = cx.ArrayTools.last(voice.getNotes());
-				if(!lastnote.getHasTie()) continue;
-				var _g4 = 0;
-				var _g5 = lastnote.nnote.get_nheads();
-				while(_g4 < _g5.length) {
-					var nhead = _g5[_g4];
-					++_g4;
-					if(nhead.tie != null) {
-						var level = nhead.level;
-						var nextPart1 = cx.ArrayTools.indexOrNull(nextBar.getParts(),part.getIndex());
-						if(nextPart1 == null) break;
-						var _g6 = 0;
-						var _g7 = nextPart1.getVoices();
-						while(_g6 < _g7.length) {
-							var voice1 = _g7[_g6];
-							++_g6;
-							var nextnote = cx.ArrayTools.first(voice1.getNotes());
-							var _g8 = 0;
-							var _g9 = nextnote.nnote.get_nheads();
-							while(_g8 < _g9.length) {
-								var nnhead = _g9[_g8];
-								++_g8;
-								if(nnhead.level == nhead.level) {
-									this.tieconnections.push({ from : lastnote, to : nextnote, level : nhead.level, tie : nhead.tie});
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return this.tieconnections;
-	}
-	,__class__: nx3.PBar
 };
 nx3.PBarConfig = function(showClef,showKey,showTime,showCautClef,showCautKey,showCautTime) {
 	if(showCautTime == null) showCautTime = false;
@@ -5105,9 +3351,6 @@ nx3.PBarConfig = function(showClef,showKey,showTime,showCautClef,showCautKey,sho
 	this.showCautTime = showCautTime;
 };
 nx3.PBarConfig.__name__ = true;
-nx3.PBarConfig.prototype = {
-	__class__: nx3.PBarConfig
-};
 nx3.PBarStretchCalculator = function(systembar) {
 	this.systembar = systembar;
 };
@@ -5171,20 +3414,13 @@ nx3.PBarStretchCalculator.prototype = {
 			column.sposition = null;
 		}
 	}
-	,__class__: nx3.PBarStretchCalculator
 };
 nx3.PBarWidthCalculator = function() {
 };
 nx3.PBarWidthCalculator.__name__ = true;
 nx3.PBarWidthCalculator.__interfaces__ = [nx3.IBarWidthCalculator];
 nx3.PBarWidthCalculator.prototype = {
-	getClefWidth: function(clef) {
-		return nx3.PAttributesRectsCalculator.getClefRect(clef).width;
-	}
-	,getKeyWidth: function(key) {
-		return nx3.PAttributesRectsCalculator.getKeyRect(key).width;
-	}
-	,getTimeWidth: function(time) {
+	getTimeWidth: function(time) {
 		return nx3.PAttributesRectsCalculator.getTimeRect(time).width;
 	}
 	,getContentLeftMarginWidth: function(bar) {
@@ -5221,7 +3457,6 @@ nx3.PBarWidthCalculator.prototype = {
 		}
 		return result;
 	}
-	,__class__: nx3.PBarWidthCalculator
 };
 nx3.PBaseRectCalculator = function(note) {
 	this.note = note;
@@ -5256,7 +3491,6 @@ nx3.PBaseRectCalculator.prototype = {
 			}
 		}
 	}
-	,__class__: nx3.PBaseRectCalculator
 };
 nx3.PBeamflagCalculator = function(beamgroup) {
 	this.beamgroup = beamgroup;
@@ -5301,7 +3535,6 @@ nx3.PBeamflagCalculator.prototype = {
 		}
 		return result;
 	}
-	,__class__: nx3.PBeamflagCalculator
 };
 nx3.PBeamgroup = function(pnotes) {
 	this.value = null;
@@ -5365,10 +3598,6 @@ nx3.PBeamgroup.prototype = {
 		this.frame = calculator.getFrame();
 		return this.frame;
 	}
-	,toString: function() {
-		return "PBeamgroup \r";
-	}
-	,__class__: nx3.PBeamgroup
 };
 nx3.PBeamgroupDirectionCalculator = function(beamgroup) {
 	this.beamgroup = beamgroup;
@@ -5405,7 +3634,6 @@ nx3.PBeamgroupDirectionCalculator.prototype = {
 		}
 		return bottomLevel;
 	}
-	,__class__: nx3.PBeamgroupDirectionCalculator
 };
 nx3.PBeamgroupFrameCalculator = function(beamgroup) {
 	this.beamgroup = beamgroup;
@@ -5467,7 +3695,6 @@ nx3.PBeamgroupFrameCalculator.prototype = {
 		if(direction == nx3.EDirectionUD.Up) tips.rightTip = tips.rightTip - stemLenght; else tips.rightTip = tips.rightTip + stemLenght;
 		return tips;
 	}
-	,__class__: nx3.PBeamgroupFrameCalculator
 };
 nx3.PColumn = function(bar,complexes,valueposition,value) {
 	this.allottedDistance = 0;
@@ -5493,11 +3720,6 @@ nx3.PColumn.prototype = {
 	,getMDistance: function() {
 		if(this.mdistance == null) throw "mdistance shouldnt be null";
 		return this.mdistance;
-	}
-	,getMDistanceBenefit: function() {
-		if(this.mdistanceBenefit != null) return this.mdistanceBenefit;
-		this.mdistanceBenefit = Math.max(0,this.getMDistance() - 3.2);
-		return this.mdistanceBenefit;
 	}
 	,getDistanceDelta: function() {
 		if(this.distancedelta != null) return this.distancedelta;
@@ -5549,31 +3771,6 @@ nx3.PColumn.prototype = {
 		}
 		return this.leftX;
 	}
-	,getNextComplex: function(complex) {
-		if(this == cx.ArrayTools.last(this.bar.getColumns())) return null;
-		var partIndex;
-		var _this = this.getComplexes();
-		partIndex = HxOverrides.indexOf(_this,complex,0);
-		var nextColumnIdx;
-		nextColumnIdx = (function($this) {
-			var $r;
-			var _this1 = $this.bar.getColumns();
-			$r = HxOverrides.indexOf(_this1,$this,0);
-			return $r;
-		}(this)) + 1;
-		var _g1 = nextColumnIdx;
-		var _g = this.bar.getColumns().length;
-		while(_g1 < _g) {
-			var ci = _g1++;
-			var complex1 = this.bar.getColumns()[ci].getComplexes()[partIndex];
-			if(complex1 != null) return complex1;
-		}
-		return null;
-	}
-	,toString: function() {
-		return "PColumn";
-	}
-	,__class__: nx3.PColumn
 };
 nx3.PColumnsAllotmentCalculator = function(bar) {
 	this.bar = bar;
@@ -5614,7 +3811,6 @@ nx3.PColumnsAllotmentCalculator.prototype = {
 			return val / 3024 * this.spacing;
 		}
 	}
-	,__class__: nx3.PColumnsAllotmentCalculator
 };
 nx3.PColumnsDistancesCalculator = function(bar) {
 	this.bar = bar;
@@ -5691,7 +3887,6 @@ nx3.PColumnsDistancesCalculator.prototype = {
 		this.prevLeftComplex.set(complexIdx,{ leftComplex : leftComplex, columnIdx : leftColumnIdx1});
 		return distance1;
 	}
-	,__class__: nx3.PColumnsDistancesCalculator
 };
 nx3.PColumnsGenerator = function(bar) {
 	this.bar = bar;
@@ -5762,7 +3957,6 @@ nx3.PColumnsGenerator.prototype = {
 		});
 		return positions;
 	}
-	,__class__: nx3.PColumnsGenerator
 };
 nx3.PComplex = function(part,notes,valueposition) {
 	this.part = part;
@@ -5817,11 +4011,6 @@ nx3.PComplex.prototype = {
 		if(this.secondoffset != null) return this.secondoffset;
 		this.secondoffset = new nx3.PNoteOffsetCalculator(this).getNoteOffset(cx.ArrayTools.second(this.getNotes()));
 		return this.secondoffset;
-	}
-	,getSigns: function() {
-		if(this.signs != null) return this.signs;
-		this.signs = new nx3.PSignsCalculator(this.getNotes()).getSigns();
-		return this.signs;
 	}
 	,getVisibleSigns: function() {
 		if(this.visiblesigns != null) return this.visiblesigns;
@@ -5894,10 +4083,6 @@ nx3.PComplex.prototype = {
 		this.xposition = this.getColumn().getSPosition();
 		return this.xposition;
 	}
-	,getIndex: function() {
-		var _this = this.part.getComplexes();
-		return HxOverrides.indexOf(_this,this,0);
-	}
 	,getLeftX: function() {
 		if(this.leftX != null) return this.leftX;
 		this.leftX = this.getRect().x;
@@ -5908,11 +4093,6 @@ nx3.PComplex.prototype = {
 		this.rightX = this.getRect().x + this.getRect().width;
 		return this.rightX;
 	}
-	,getNext: function() {
-		if(this.next != null) return this.next;
-		this.next = this.getColumn().getNextComplex(this);
-		return this.next;
-	}
 	,setTieinfos: function(val) {
 		this.tieinfos = val;
 	}
@@ -5922,62 +4102,6 @@ nx3.PComplex.prototype = {
 		this.tieinfos = new nx3.PComplexTieTargetCalculator(this.tieinfos).findTargetHeads();
 		return this.tieinfos;
 	}
-	,getHeads: function() {
-		var result = [];
-		var _g = 0;
-		var _g1 = this.getNotes();
-		while(_g < _g1.length) {
-			var note = _g1[_g];
-			++_g;
-			result = result.concat(note.heads);
-		}
-		return result;
-	}
-	,getHasTie: function() {
-		if(this.hasTie != null) return this.hasTie;
-		var _g = 0;
-		var _g1 = this.getNotes();
-		while(_g < _g1.length) {
-			var note = _g1[_g];
-			++_g;
-			if(note.getHasTie() == true) {
-				this.hasTie = true;
-				return this.hasTie;
-			}
-		}
-		this.hasTie = false;
-		return this.hasTie;
-	}
-	,getHeadLevels: function() {
-		if(this.headlevels != null) return this.headlevels;
-		this.headlevels = [];
-		var _g = 0;
-		var _g1 = this.getNotes();
-		while(_g < _g1.length) {
-			var note = _g1[_g];
-			++_g;
-			var _g2 = 0;
-			var _g3 = note.nnote.get_nheads();
-			while(_g2 < _g3.length) {
-				var nhead = _g3[_g2];
-				++_g2;
-				this.headlevels.push(nhead.level);
-			}
-		}
-		return this.headlevels;
-	}
-	,toString: function() {
-		var str = "PComplex: \r";
-		var _g = 0;
-		var _g1 = this.getNotes();
-		while(_g < _g1.length) {
-			var note = _g1[_g];
-			++_g;
-			str += "- Note: " + Std.string(note.nnote) + "\r";
-		}
-		return str;
-	}
-	,__class__: nx3.PComplex
 };
 nx3.PComplexDistancesCalculator = function() {
 };
@@ -5993,14 +4117,6 @@ nx3.PComplexDistancesCalculator.prototype = {
 		var objDistanceMargin = objDistance + 0.6;
 		return Math.max(minDistance,objDistanceMargin);
 	}
-	,getRects: function(complex) {
-		var rects = [];
-		rects.concat(complex.getHeadsRects());
-		rects.concat(complex.getStavesRects());
-		rects.concat(complex.getSignsRects());
-		return rects;
-	}
-	,__class__: nx3.PComplexDistancesCalculator
 };
 nx3.PComplexDotsrectsCalculator = function(complex) {
 	this.complex = complex;
@@ -6047,7 +4163,6 @@ nx3.PComplexDotsrectsCalculator.prototype = {
 		}
 		return rects;
 	}
-	,__class__: nx3.PComplexDotsrectsCalculator
 };
 nx3.PComplexTieTargetCalculator = function(tieinfos) {
 	this.tieinfos = tieinfos;
@@ -6077,7 +4192,6 @@ nx3.PComplexTieTargetCalculator.prototype = {
 		}
 		return this.tieinfos;
 	}
-	,__class__: nx3.PComplexTieTargetCalculator
 };
 nx3.PComplexTierectsCalculator = function(complex) {
 	this.complex = complex;
@@ -6176,9 +4290,6 @@ nx3.PComplexTierectsCalculator.prototype = {
 		this.complex.setTieinfos(tieinfos);
 		return rects;
 	}
-	,getNoteTies: function(note) {
-	}
-	,__class__: nx3.PComplexTierectsCalculator
 };
 nx3.PHead = function(nhead) {
 	this.nhead = nhead;
@@ -6188,10 +4299,6 @@ nx3.PHead.prototype = {
 	getNote: function() {
 		return this.note;
 	}
-	,toString: function() {
-		return "PHead  \r" + Std.string(this.nhead);
-	}
-	,__class__: nx3.PHead
 };
 nx3.PHeadPlacementsCalculator = function(vheads,direction) {
 	this.vheads = vheads;
@@ -6247,7 +4354,6 @@ nx3.PHeadPlacementsCalculator.prototype = {
 		}
 		return placements;
 	}
-	,__class__: nx3.PHeadPlacementsCalculator
 };
 nx3.PHeadsRectsCalculator = function(note,direction) {
 	if(direction != null) this.direction = direction; else this.direction = note.getDirection();
@@ -6325,20 +4431,13 @@ nx3.PHeadsRectsCalculator.prototype = {
 		}
 		return new nx3.geom.Rectangle(-2,-2,4,4);
 	}
-	,__class__: nx3.PHeadsRectsCalculator
 };
 nx3.PNote = function(nnote) {
 	this.nnote = nnote;
 };
 nx3.PNote.__name__ = true;
 nx3.PNote.prototype = {
-	iterator: function() {
-		return HxOverrides.iter(this.heads);
-	}
-	,get_length: function() {
-		return this.heads.length;
-	}
-	,getVoice: function() {
+	getVoice: function() {
 		return this.voice;
 	}
 	,getHeads: function() {
@@ -6422,12 +4521,6 @@ nx3.PNote.prototype = {
 		this.next = cx.ArrayTools.indexOrNull(this.voice.getNotes(),idx + 1);
 		return this.next;
 	}
-	,getHasTie: function() {
-		return !Lambda.foreach(this.nnote,function(nhead) {
-			return !(nhead.tie != null);
-		});
-	}
-	,__class__: nx3.PNote
 };
 nx3.PNoteHeadsRectTplCalculator = function(note) {
 	this.note = note;
@@ -6461,7 +4554,6 @@ nx3.PNoteHeadsRectTplCalculator.prototype = {
 	getHeadsRects: function() {
 		return [new nx3.geom.Rectangle(-5.5,-5.3 + this.level,10,8.8)];
 	}
-	,__class__: nx3.PNoteHeadsRectTplCalculator
 };
 nx3.PNoteHeadsRectsLyricsCalculator = function(note,text,font) {
 	this.note = note;
@@ -6478,7 +4570,6 @@ nx3.PNoteHeadsRectsLyricsCalculator.prototype = {
 		return [new nx3.geom.Rectangle(-width / 2,-height / 2,width,height)];
 		return null;
 	}
-	,__class__: nx3.PNoteHeadsRectsLyricsCalculator
 };
 nx3.PNoteHeadsRectsPausesCalculator = function(vnote) {
 	this.vnote = vnote;
@@ -6512,7 +4603,6 @@ nx3.PNoteHeadsRectsPausesCalculator.prototype = {
 		rects[0].offset(0,level);
 		return rects;
 	}
-	,__class__: nx3.PNoteHeadsRectsPausesCalculator
 };
 nx3.PNoteHeadsRectsPitchCalculator = function(note) {
 	this.note = note;
@@ -6559,7 +4649,6 @@ nx3.PNoteHeadsRectsPitchCalculator.prototype = {
 		var rlevel = this.level + this.midinote;
 		return [new nx3.geom.Rectangle(-2,-2 + rlevel,1,4)];
 	}
-	,__class__: nx3.PNoteHeadsRectsPitchCalculator
 };
 nx3.PNoteOffsetCalculator = function(complex) {
 	this.complex = complex;
@@ -6581,7 +4670,6 @@ nx3.PNoteOffsetCalculator.prototype = {
 		}
 		return secondoffset;
 	}
-	,__class__: nx3.PNoteOffsetCalculator
 };
 nx3.PNoteheadsRectsCalculator = function(note) {
 	this.note = note;
@@ -6620,7 +4708,6 @@ nx3.PNoteheadsRectsCalculator.prototype = {
 			}
 		}
 	}
-	,__class__: nx3.PNoteheadsRectsCalculator
 };
 nx3.PPart = function(npart) {
 	this.rect = null;
@@ -6632,9 +4719,6 @@ nx3.PPart.prototype = {
 	iterator: function() {
 		var _this = this.getVoices();
 		return HxOverrides.iter(_this);
-	}
-	,get_length: function() {
-		return this.getVoices().length;
 	}
 	,getBar: function() {
 		return this.bar;
@@ -6652,9 +4736,6 @@ nx3.PPart.prototype = {
 			this.voices.push(voice);
 		}
 		return this.voices;
-	}
-	,getVoice: function(idx) {
-		if(idx < 0 || idx > this.getVoices().length) return null; else return this.getVoices()[idx];
 	}
 	,getComplexes: function() {
 		if(this.complexes != null) return this.complexes;
@@ -6732,18 +4813,6 @@ nx3.PPart.prototype = {
 		this.rect = result;
 		return result;
 	}
-	,getYAbove: function() {
-		var result = 0.0;
-		var index;
-		var _this = this.bar.getParts();
-		index = HxOverrides.indexOf(_this,this,0);
-		if(index == 0) result = this.getRect().y; else {
-			var prevPart = this.bar.getPart(index - 1);
-			result = prevPart.getRect().get_bottom() + -this.getRect().y;
-		}
-		return result;
-	}
-	,__class__: nx3.PPart
 };
 nx3.PPartComplexesGenerator = function(part) {
 	this.part = part;
@@ -6791,7 +4860,6 @@ nx3.PPartComplexesGenerator.prototype = {
 		}
 		return positionsMap;
 	}
-	,__class__: nx3.PPartComplexesGenerator
 };
 nx3.PPartbeamgroupsDirectionCalculator = function(ppart) {
 	this.ppart = ppart;
@@ -6880,7 +4948,6 @@ nx3.PPartbeamgroupsDirectionCalculator.prototype = {
 			}
 		} else throw "SHOULDN'T HAPPEN";
 	}
-	,__class__: nx3.PPartbeamgroupsDirectionCalculator
 };
 nx3.PScore = function(nscore) {
 	this.prevSystemwidth = 0;
@@ -6901,17 +4968,6 @@ nx3.PScore.prototype = {
 			this.bars.push(bar);
 		}
 		return this.bars;
-	}
-	,getNBars: function() {
-		var result = [];
-		var _g = 0;
-		var _g1 = this.getBars();
-		while(_g < _g1.length) {
-			var bar = _g1[_g];
-			++_g;
-			result.push(bar.nbar);
-		}
-		return result;
 	}
 	,getSystems: function(systemwidth) {
 		if(systemwidth != this.prevSystemwidth) this.systems = null;
@@ -6934,9 +4990,6 @@ nx3.PScore.prototype = {
 			new nx3.PScoreSystemStretcher(system1).stretchTo(system1.getSystemBreakWidth(),ifMoreThan);
 		}
 		return this.systems;
-	}
-	,getBar: function(idx) {
-		if(idx < 0 || idx > this.getBars().length) return null; else return this.getBars()[idx];
 	}
 	,getSystemY: function(system) {
 		if(this.systems == null) throw "Systems == null";
@@ -6966,7 +5019,6 @@ nx3.PScore.prototype = {
 		}
 		return w;
 	}
-	,__class__: nx3.PScore
 };
 nx3.PScoreSystemStretcher = function(system) {
 	this.system = system;
@@ -6991,7 +5043,6 @@ nx3.PScoreSystemStretcher.prototype = {
 		this.system.calculateSystembarXs();
 		return false;
 	}
-	,__class__: nx3.PScoreSystemStretcher
 };
 nx3.PScoreSystemsGenerator = function(score,bars) {
 	this.bars = bars;
@@ -7016,7 +5067,6 @@ nx3.PScoreSystemsGenerator.prototype = {
 		}
 		return result;
 	}
-	,__class__: nx3.PScoreSystemsGenerator
 };
 nx3.PSignsCalculator = function(notes) {
 	this.notes = notes;
@@ -7066,7 +5116,6 @@ nx3.PSignsCalculator.prototype = {
 		});
 		return PSigns;
 	}
-	,__class__: nx3.PSignsCalculator
 };
 nx3.PSignsRectsCalculator = function(signs) {
 	this.signs = signs;
@@ -7126,7 +5175,6 @@ nx3.PSignsRectsCalculator.prototype = {
 		throw "This shouldn't happen!";
 		return null;
 	}
-	,__class__: nx3.PSignsRectsCalculator
 };
 nx3.PStaveRectCalculator = function(note) {
 	this.note = note;
@@ -7173,7 +5221,6 @@ nx3.PStaveRectCalculator.prototype = {
 		}
 		return null;
 	}
-	,__class__: nx3.PStaveRectCalculator
 };
 nx3.PSystem = function(score) {
 	this.systemBreakWidth = 0;
@@ -7183,10 +5230,7 @@ nx3.PSystem = function(score) {
 };
 nx3.PSystem.__name__ = true;
 nx3.PSystem.prototype = {
-	getStatus: function() {
-		return this.status;
-	}
-	,getWidth: function() {
+	getWidth: function() {
 		return this.width;
 	}
 	,getSystembars: function() {
@@ -7304,7 +5348,6 @@ nx3.PSystem.prototype = {
 		}
 		return this.score.getSystemY(this);
 	}
-	,__class__: nx3.PSystem
 };
 nx3.PSystemBar = function(system,bar,barConfig,barMeasurements,actAttributes,caAttributes) {
 	this.stretchamount = 0;
@@ -7335,7 +5378,6 @@ nx3.PSystemBar.prototype = {
 		if(this.system == null) throw "System == null";
 		return this.system.getSystembarX(this);
 	}
-	,__class__: nx3.PSystemBar
 };
 nx3.PSystemBarsGenerator = function(score,bars,systemConfig,prevBarAttributes,breakSystemwidth,barWidthCalculator) {
 	this.score = score;
@@ -7571,7 +5613,6 @@ nx3.PSystemBarsGenerator.prototype = {
 		if(itemB == null) return false;
 		return itemB != itemA;
 	}
-	,__class__: nx3.PSystemBarsGenerator
 };
 nx3.PSystemStatus = { __ename__ : true, __constructs__ : ["Ok","Problem"] };
 nx3.PSystemStatus.Ok = ["Ok",0];
@@ -7608,9 +5649,6 @@ nx3.PSystembarMeasurements.prototype = {
 	}
 	,getLeftContentMarginXPosition: function() {
 		return this.getTimeXPosition() + this.timeWidth;
-	}
-	,getContentXZero: function() {
-		return this.contentXZero;
 	}
 	,getContentXPosition: function() {
 		return this.getLeftContentMarginXPosition() + this.leftContentMarginWidth;
@@ -7651,7 +5689,6 @@ nx3.PSystembarMeasurements.prototype = {
 		this.barlineWidth = calculator.getBarlineWidth(nx3.EBarline.Normal);
 		return this;
 	}
-	,__class__: nx3.PSystembarMeasurements
 };
 nx3.PSystemsTools = function(systems) {
 	this.systems = systems;
@@ -7813,20 +5850,6 @@ nx3.PSystemsTools.prototype = {
 		}
 		return this.pnotesRects;
 	}
-	,getNoteFromCoord: function(x,y) {
-		var point = new nx3.geom.Point(x,y);
-		var _g = 0;
-		var _g1 = this.getNotes();
-		while(_g < _g1.length) {
-			var note = _g1[_g];
-			++_g;
-			var rect;
-			var this1 = this.getNotesRects();
-			rect = this1.get(note);
-			if(rect.containsPoint(point)) return note;
-		}
-		return null;
-	}
 	,getNBarsFromSystems: function() {
 		if(this.nbars != null) return this.nbars; else this.nbars = [];
 		var _g = 0;
@@ -7846,11 +5869,13 @@ nx3.PSystemsTools.prototype = {
 		return this.nbars;
 	}
 	,getNotesNotenritems: function() {
+		if(this.notesNotenritems != null) return this.notesNotenritems;
+		this.notesNotenritems = new haxe.ds.ObjectMap();
 		var nbars = this.getNBarsFromSystems();
 		if(nx3.utils.VoiceSplitter.canSplit(nbars)) nbars = new nx3.utils.VoiceSplitter(nbars).getVoicesplittedNBars();
 		var partsnotes = new nx3.audio.NotenrBarsCalculator(nbars).getPartsNotenrItems();
-		var map = nx3.audio.NotenrTools.getNotesNotenritems(partsnotes);
-		return map;
+		this.notesNotenritems = nx3.audio.NotenrTools.getNotesNotenritems(partsnotes);
+		return this.notesNotenritems;
 	}
 	,getColumnsPositions: function() {
 		if(this.columnsPositions != null) return this.columnsPositions;
@@ -7910,7 +5935,6 @@ nx3.PSystemsTools.prototype = {
 		});
 		return this.timesColumns;
 	}
-	,__class__: nx3.PSystemsTools
 };
 nx3.PVoice = function(nvoice) {
 	this.nvoice = nvoice;
@@ -7920,9 +5944,6 @@ nx3.PVoice.prototype = {
 	iterator: function() {
 		var _this = this.getNotes();
 		return HxOverrides.iter(_this);
-	}
-	,get_length: function() {
-		return this.getNotes().length;
 	}
 	,getPart: function() {
 		return this.part;
@@ -7940,9 +5961,6 @@ nx3.PVoice.prototype = {
 			this.notes.push(pnote);
 		}
 		return this.notes;
-	}
-	,getNote: function(idx) {
-		if(idx < 0 || idx > this.getNotes().length) return null; else return this.getNotes()[idx];
 	}
 	,getValue: function() {
 		if(this.value != null) return this.value;
@@ -7981,7 +5999,6 @@ nx3.PVoice.prototype = {
 		}
 		return this.pnotePositions;
 	}
-	,__class__: nx3.PVoice
 };
 nx3.PVoiceBeamgroupsGenerator = function(pnotes,pattern) {
 	if(pattern == null) pattern = [nx3.ENoteVal.Nv4];
@@ -8139,171 +6156,7 @@ nx3.PVoiceBeamgroupsGenerator.prototype = {
 			patternValue *= 2;
 		}
 	}
-	,__class__: nx3.PVoiceBeamgroupsGenerator
 };
-nx3.QNote = function(headLevel,headLevels,head,heads,value,signs,direction) {
-	if(signs == null) signs = "";
-	signs += "...........";
-	var aSigns = signs.split("");
-	if(headLevel != null) headLevels = [headLevel];
-	if(headLevels != null) {
-		heads = [];
-		var i = 0;
-		var _g = 0;
-		while(_g < headLevels.length) {
-			var level = headLevels[_g];
-			++_g;
-			heads.push(new nx3.NHead(null,level,this.getSign(aSigns[i++])));
-		}
-	}
-	if(head != null) heads = [head];
-	if(heads == null) heads = [new nx3.NHead(null,0)];
-	if(value == null) value = nx3.ENoteVal.Nv4;
-	nx3.NNote.call(this,null,heads,value,direction);
-};
-nx3.QNote.__name__ = true;
-nx3.QNote.__super__ = nx3.NNote;
-nx3.QNote.prototype = $extend(nx3.NNote.prototype,{
-	getSign: function(val) {
-		switch(val) {
-		case "#":
-			return nx3.ESign.Sharp;
-		case "b":
-			return nx3.ESign.Flat;
-		case "N":case "n":
-			return nx3.ESign.Natural;
-		default:
-			return null;
-		}
-	}
-	,__class__: nx3.QNote
-});
-nx3.QPause16 = function(level) {
-	if(level == null) level = 0;
-	nx3.NNote.call(this,nx3.ENoteType.Pause(level),null,nx3.ENoteVal.Nv16);
-};
-nx3.QPause16.__name__ = true;
-nx3.QPause16.__super__ = nx3.NNote;
-nx3.QPause16.prototype = $extend(nx3.NNote.prototype,{
-	__class__: nx3.QPause16
-});
-nx3.QPause8 = function(level) {
-	if(level == null) level = 0;
-	nx3.NNote.call(this,nx3.ENoteType.Pause(level),null,nx3.ENoteVal.Nv8);
-};
-nx3.QPause8.__name__ = true;
-nx3.QPause8.__super__ = nx3.NNote;
-nx3.QPause8.prototype = $extend(nx3.NNote.prototype,{
-	__class__: nx3.QPause8
-});
-nx3.QPause4 = function(level) {
-	if(level == null) level = 0;
-	nx3.NNote.call(this,nx3.ENoteType.Pause(level),null,nx3.ENoteVal.Nv4);
-};
-nx3.QPause4.__name__ = true;
-nx3.QPause4.__super__ = nx3.NNote;
-nx3.QPause4.prototype = $extend(nx3.NNote.prototype,{
-	__class__: nx3.QPause4
-});
-nx3.QPause2 = function(level) {
-	if(level == null) level = 0;
-	nx3.NNote.call(this,nx3.ENoteType.Pause(level),null,nx3.ENoteVal.Nv2);
-};
-nx3.QPause2.__name__ = true;
-nx3.QPause2.__super__ = nx3.NNote;
-nx3.QPause2.prototype = $extend(nx3.NNote.prototype,{
-	__class__: nx3.QPause2
-});
-nx3.QPause1 = function(level) {
-	if(level == null) level = 0;
-	nx3.NNote.call(this,nx3.ENoteType.Pause(level),null,nx3.ENoteVal.Nv1);
-};
-nx3.QPause1.__name__ = true;
-nx3.QPause1.__super__ = nx3.NNote;
-nx3.QPause1.prototype = $extend(nx3.NNote.prototype,{
-	__class__: nx3.QPause1
-});
-nx3.QLyric8 = function(text) {
-	if(text == null) text = "QLyric4";
-	nx3.NNote.call(this,nx3.ENoteType.Lyric(text),null,nx3.ENoteVal.Nv8);
-};
-nx3.QLyric8.__name__ = true;
-nx3.QLyric8.__super__ = nx3.NNote;
-nx3.QLyric8.prototype = $extend(nx3.NNote.prototype,{
-	__class__: nx3.QLyric8
-});
-nx3.QLyric4 = function(text) {
-	if(text == null) text = "QLyric4";
-	nx3.NNote.call(this,nx3.ENoteType.Lyric(text),null,nx3.ENoteVal.Nv4);
-};
-nx3.QLyric4.__name__ = true;
-nx3.QLyric4.__super__ = nx3.NNote;
-nx3.QLyric4.prototype = $extend(nx3.NNote.prototype,{
-	__class__: nx3.QLyric4
-});
-nx3.QLyric2 = function(text) {
-	if(text == null) text = "QLyric4";
-	nx3.NNote.call(this,nx3.ENoteType.Lyric(text),null,nx3.ENoteVal.Nv2);
-};
-nx3.QLyric2.__name__ = true;
-nx3.QLyric2.__super__ = nx3.NNote;
-nx3.QLyric2.prototype = $extend(nx3.NNote.prototype,{
-	__class__: nx3.QLyric2
-});
-nx3.QNote4 = function(dot,headLevel,headLevels,signs) {
-	if(signs == null) signs = "";
-	if(dot == null) dot = false;
-	var val;
-	if(dot) val = nx3.ENoteVal.Nv4dot; else val = nx3.ENoteVal.Nv4;
-	nx3.QNote.call(this,headLevel,headLevels,null,null,val,signs);
-};
-nx3.QNote4.__name__ = true;
-nx3.QNote4.__super__ = nx3.QNote;
-nx3.QNote4.prototype = $extend(nx3.QNote.prototype,{
-	__class__: nx3.QNote4
-});
-nx3.QNote8 = function(dot,headLevel,headLevels,signs) {
-	if(signs == null) signs = "";
-	if(dot == null) dot = false;
-	var val;
-	if(dot) val = nx3.ENoteVal.Nv8dot; else val = nx3.ENoteVal.Nv8;
-	nx3.QNote.call(this,headLevel,headLevels,null,null,val,signs);
-};
-nx3.QNote8.__name__ = true;
-nx3.QNote8.__super__ = nx3.QNote;
-nx3.QNote8.prototype = $extend(nx3.QNote.prototype,{
-	__class__: nx3.QNote8
-});
-nx3.QNote16 = function(headLevel,headLevels,signs) {
-	if(signs == null) signs = "";
-	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv16,signs);
-};
-nx3.QNote16.__name__ = true;
-nx3.QNote16.__super__ = nx3.QNote;
-nx3.QNote16.prototype = $extend(nx3.QNote.prototype,{
-	__class__: nx3.QNote16
-});
-nx3.QNote2 = function(dot,headLevel,headLevels,signs) {
-	if(signs == null) signs = "";
-	if(dot == null) dot = false;
-	var val;
-	if(dot) val = nx3.ENoteVal.Nv2dot; else val = nx3.ENoteVal.Nv2;
-	nx3.QNote.call(this,headLevel,headLevels,null,null,val,signs);
-};
-nx3.QNote2.__name__ = true;
-nx3.QNote2.__super__ = nx3.QNote;
-nx3.QNote2.prototype = $extend(nx3.QNote.prototype,{
-	__class__: nx3.QNote2
-});
-nx3.QNote1 = function(headLevel,headLevels,signs) {
-	if(signs == null) signs = "";
-	nx3.QNote.call(this,headLevel,headLevels,null,null,nx3.ENoteVal.Nv1,signs);
-};
-nx3.QNote1.__name__ = true;
-nx3.QNote1.__super__ = nx3.QNote;
-nx3.QNote1.prototype = $extend(nx3.QNote.prototype,{
-	__class__: nx3.QNote1
-});
 nx3.action = {};
 nx3.action.EActionInfo = { __ename__ : true, __constructs__ : ["TargetXY"] };
 nx3.action.EActionInfo.TargetXY = function(target,x,y) { var $x = ["TargetXY",0,target,x,y]; $x.__enum__ = nx3.action.EActionInfo; $x.toString = $estr; return $x; };
@@ -8325,9 +6178,6 @@ nx3.action.EActivityType.MouseOut.toString = $estr;
 nx3.action.EActivityType.MouseOut.__enum__ = nx3.action.EActivityType;
 nx3.action.IInteractivity = function() { };
 nx3.action.IInteractivity.__name__ = true;
-nx3.action.IInteractivity.prototype = {
-	__class__: nx3.action.IInteractivity
-};
 nx3.audio = {};
 nx3.audio.NotenrBarsCalculator = function(nbars) {
 	this.nbars = nbars;
@@ -8376,7 +6226,6 @@ nx3.audio.NotenrBarsCalculator.prototype = {
 		}
 		return result;
 	}
-	,__class__: nx3.audio.NotenrBarsCalculator
 };
 nx3.audio.NotenrPartsCalculator = function(rowOfParts,partnr,partvalues) {
 	this.parts = rowOfParts;
@@ -8423,7 +6272,6 @@ nx3.audio.NotenrPartsCalculator.prototype = {
 		}
 		return resultnoteitems;
 	}
-	,__class__: nx3.audio.NotenrPartsCalculator
 };
 nx3.audio.PartNotesToNotenrCalculator = function(part,partnr,barnr,barvalue,partclef,partkey) {
 	this.part = part;
@@ -8501,43 +6349,8 @@ nx3.audio.PartNotesToNotenrCalculator.prototype = {
 		}
 		return result;
 	}
-	,__class__: nx3.audio.PartNotesToNotenrCalculator
 };
-nx3.audio.TestScores = function() { };
-nx3.audio.TestScores.__name__ = true;
-nx3.audio.TestScores.score1 = function() {
-	return null;
-};
-nx3.audio.NotenrTestItems = function() { };
-nx3.audio.NotenrTestItems.__name__ = true;
-nx3.audio.NotenrTestItems.testTies = function() {
-	var p1 = new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.None)]),new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.None)])]),new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.None,nx3.ETie.Tie(nx3.EDirectionUAD.Auto,0))],nx3.ENoteVal.Nv2)])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat2);
-	var p2 = new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.None)]),new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.None)])])]);
-	return [p1,p2];
-};
-nx3.audio.NotenrTestItems.testTwoVoices = function() {
-	var p1 = new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.Flat)]),new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.None)])]),new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.Sharp)])])],null,nx3.EClef.ClefG,null,nx3.EKey.Natural);
-	return [p1];
-};
-nx3.audio.NotenrTestItems.testParts0 = function() {
-	var p1 = new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.None)]),new nx3.NNote(null,[new nx3.NHead(null,3,nx3.ESign.Natural)]),new nx3.NNote(null,[new nx3.NHead(null,0,nx3.ESign.None)]),new nx3.NNote(null,[new nx3.NHead(null,1,nx3.ESign.None)]),new nx3.NNote(null,[new nx3.NHead(null,1,nx3.ESign.None)]),new nx3.NNote(null,[new nx3.NHead(null,2,nx3.ESign.None)]),new nx3.NNote(null,[new nx3.NHead(null,2,nx3.ESign.None)]),new nx3.NNote(null,[new nx3.NHead(null,3,nx3.ESign.None)])])],null,nx3.EClef.ClefG,null,nx3.EKey.Sharp3);
-	return [p1];
-};
-nx3.audio.NotenrTestItems.testParts1 = function() {
-	var p1 = new nx3.NPart([new nx3.NVoice([new nx3.NNote(null,[new nx3.NHead(null,0)]),new nx3.NNote(null,[new nx3.NHead(null,1)]),new nx3.QNote4(null,2),new nx3.QNote4(null,3),new nx3.QNote4(null,4),new nx3.QNote4(null,5),new nx3.QNote4(null,6)])],null,nx3.EClef.ClefG,null,nx3.EKey.Flat1);
-	var p2 = new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,1),new nx3.QNote4(null,2),new nx3.QNote4(null,3),new nx3.QNote4(null,4),new nx3.QNote4(null,5),new nx3.QNote4(null,6)])],null,null);
-	return [p1,p2];
-};
-nx3.audio.NotenrTestItems.testParts2 = function() {
-	var p1 = new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0)]),new nx3.NVoice([new nx3.QNote2(null,2),new nx3.QNote4(true,2),new nx3.QNote8(null,2)])]);
-	var p2 = new nx3.NPart([new nx3.NVoice([new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0),new nx3.QNote4(null,0)]),new nx3.NVoice([new nx3.QNote2(null,2),new nx3.QNote4(true,2),new nx3.QNote8(null,2)])]);
-	return [p1,p2];
-};
-nx3.audio.NotenrTools = function(clef,key) {
-	this.clef = clef;
-	this.key = key;
-	this.table = nx3.audio.NotenrTools.getNotenrTable(key);
-};
+nx3.audio.NotenrTools = function() { };
 nx3.audio.NotenrTools.__name__ = true;
 nx3.audio.NotenrTools.getNotenrTable = function(key,levelmin,levelmax) {
 	if(levelmax == null) levelmax = 30;
@@ -8728,21 +6541,6 @@ nx3.audio.NotenrTools.resolveTies = function(partsnotes) {
 	}
 	return result;
 };
-nx3.audio.NotenrTools.debug = function(partsnotes) {
-	console.log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-	var _g = 0;
-	while(_g < partsnotes.length) {
-		var part = partsnotes[_g];
-		++_g;
-		console.log("Part: ");
-		var _g1 = 0;
-		while(_g1 < part.length) {
-			var note = part[_g1];
-			++_g1;
-			console.log([note.barnr,note.position,note.midinr,note.noteval]);
-		}
-	}
-};
 nx3.audio.NotenrTools.getNotesNotenritems = function(partsnotes) {
 	var map = new haxe.ds.ObjectMap();
 	var _g = 0;
@@ -8792,18 +6590,6 @@ nx3.audio.NotenrTools.getPartsnotes = function(nbars,tempo,resolveTies) {
 	partsnotes = nx3.audio.NotenrTools.resolveTies(partsnotes);
 	return partsnotes;
 };
-nx3.audio.NotenrTools.prototype = {
-	getNotenr: function(level) {
-		var _g = this.clef;
-		switch(_g[1]) {
-		case 1:
-			return this.table.get(level + 12);
-		default:
-			return this.table.get(level);
-		}
-	}
-	,__class__: nx3.audio.NotenrTools
-};
 nx3.audio.SoundlengthCalculator = function(n,tempos,defaulttempo,pulseval) {
 	if(defaulttempo == null) defaulttempo = 60;
 	if(pulseval == null) this.beatvalue = nx3.ENoteValTools.value(nx3.ENoteVal.Nv4); else this.beatvalue = nx3.ENoteValTools.value(pulseval);
@@ -8837,7 +6623,6 @@ nx3.audio.SoundlengthCalculator.prototype = {
 		var barlength = note.barvalue / this.beatvalue * (60 / this.defaulttempo);
 		return { length : soundlength, pos : soundposition, barlength : barlength};
 	}
-	,__class__: nx3.audio.SoundlengthCalculator
 };
 nx3.geom = {};
 nx3.geom.BezieerTool = function() { };
@@ -8868,57 +6653,6 @@ nx3.geom.Point = function(x,y) {
 	this.y = y;
 };
 nx3.geom.Point.__name__ = true;
-nx3.geom.Point.distance = function(pt1,pt2) {
-	var dx = pt1.x - pt2.x;
-	var dy = pt1.y - pt2.y;
-	return Math.sqrt(dx * dx + dy * dy);
-};
-nx3.geom.Point.interpolate = function(pt1,pt2,f) {
-	return new nx3.geom.Point(pt2.x + f * (pt1.x - pt2.x),pt2.y + f * (pt1.y - pt2.y));
-};
-nx3.geom.Point.polar = function(len,angle) {
-	return new nx3.geom.Point(len * Math.cos(angle),len * Math.sin(angle));
-};
-nx3.geom.Point.prototype = {
-	add: function(v) {
-		return new nx3.geom.Point(v.x + this.x,v.y + this.y);
-	}
-	,clone: function() {
-		return new nx3.geom.Point(this.x,this.y);
-	}
-	,copyFrom: function(sourcePoint) {
-		this.x = sourcePoint.x;
-		this.y = sourcePoint.y;
-	}
-	,equals: function(toCompare) {
-		return toCompare.x == this.x && toCompare.y == this.y;
-	}
-	,normalize: function(thickness) {
-		if(this.x == 0 && this.y == 0) return; else {
-			var norm = thickness / Math.sqrt(this.x * this.x + this.y * this.y);
-			this.x *= norm;
-			this.y *= norm;
-		}
-	}
-	,offset: function(dx,dy) {
-		this.x += dx;
-		this.y += dy;
-	}
-	,setTo: function(x,y) {
-		this.x = x;
-		this.y = y;
-	}
-	,subtract: function(v) {
-		return new nx3.geom.Point(this.x - v.x,this.y - v.y);
-	}
-	,toString: function() {
-		return "(" + this.x + ", " + this.y + ")";
-	}
-	,get_length: function() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
-	}
-	,__class__: nx3.geom.Point
-};
 nx3.geom.Rectangle = function(x,y,width,height) {
 	if(height == null) height = 0;
 	if(width == null) width = 0;
@@ -8940,40 +6674,11 @@ nx3.geom.Rectangle.prototype = {
 	,containsPoint: function(point) {
 		return this.contains(point.x,point.y);
 	}
-	,containsRect: function(rect) {
-		if(rect.width <= 0 || rect.height <= 0) return rect.x > this.x && rect.y > this.y && rect.get_right() < this.get_right() && rect.get_bottom() < this.get_bottom(); else return rect.x >= this.x && rect.y >= this.y && rect.get_right() <= this.get_right() && rect.get_bottom() <= this.get_bottom();
-	}
-	,copyFrom: function(sourceRect) {
-		this.x = sourceRect.x;
-		this.y = sourceRect.y;
-		this.width = sourceRect.width;
-		this.height = sourceRect.height;
-	}
-	,equals: function(toCompare) {
-		return this.x == toCompare.x && this.y == toCompare.y && this.width == toCompare.width && this.height == toCompare.height;
-	}
-	,extendBounds: function(r) {
-		var dx = this.x - r.x;
-		if(dx > 0) {
-			this.x -= dx;
-			this.width += dx;
-		}
-		var dy = this.y - r.y;
-		if(dy > 0) {
-			this.y -= dy;
-			this.height += dy;
-		}
-		if(r.get_right() > this.get_right()) this.set_right(r.get_right());
-		if(r.get_bottom() > this.get_bottom()) this.set_bottom(r.get_bottom());
-	}
 	,inflate: function(dx,dy) {
 		this.x -= dx;
 		this.y -= dy;
 		this.width += dx * 2;
 		this.height += dy * 2;
-	}
-	,inflatePoint: function(point) {
-		this.inflate(point.x,point.y);
 	}
 	,intersection: function(toIntersect) {
 		var x0;
@@ -8988,37 +6693,9 @@ nx3.geom.Rectangle.prototype = {
 		if(y1 <= y0) return new nx3.geom.Rectangle();
 		return new nx3.geom.Rectangle(x0,y0,cx.MathTools.round2(x1 - x0,null),cx.MathTools.round2(y1 - y0,null));
 	}
-	,intersects: function(toIntersect) {
-		var x0;
-		if(this.x < toIntersect.x) x0 = toIntersect.x; else x0 = this.x;
-		var x1;
-		if(this.get_right() > toIntersect.get_right()) x1 = toIntersect.get_right(); else x1 = this.get_right();
-		if(x1 <= x0) return false;
-		var y0;
-		if(this.y < toIntersect.y) y0 = toIntersect.y; else y0 = this.y;
-		var y1;
-		if(this.get_bottom() > toIntersect.get_bottom()) y1 = toIntersect.get_bottom(); else y1 = this.get_bottom();
-		return y1 > y0;
-	}
-	,isEmpty: function() {
-		return this.width <= 0 || this.height <= 0;
-	}
 	,offset: function(dx,dy) {
 		this.x = cx.MathTools.round2(this.x + dx,null);
 		this.y = cx.MathTools.round2(this.y + dy,null);
-	}
-	,offsetPoint: function(point) {
-		this.x += point.x;
-		this.y += point.y;
-	}
-	,setEmpty: function() {
-		this.x = 0;
-		this.y = 0;
-		this.width = 0;
-		this.height = 0;
-	}
-	,toString: function() {
-		return "(x=" + this.x + ", y=" + this.y + ", width=" + this.width + ", height=" + this.height + ")";
 	}
 	,union: function(toUnion) {
 		var x0;
@@ -9034,58 +6711,12 @@ nx3.geom.Rectangle.prototype = {
 	,get_bottom: function() {
 		return this.y + this.height;
 	}
-	,set_bottom: function(value) {
-		this.height = value - this.y;
-		return value;
-	}
-	,get_bottomRight: function() {
-		return new nx3.geom.Point(this.x + this.width,this.y + this.height);
-	}
-	,set_bottomRight: function(value) {
-		this.width = value.x - this.x;
-		this.height = value.y - this.y;
-		return value.clone();
-	}
-	,get_left: function() {
-		return this.x;
-	}
-	,set_left: function(value) {
-		this.width -= value - this.x;
-		this.x = value;
-		return value;
-	}
 	,get_right: function() {
 		return this.x + this.width;
-	}
-	,set_right: function(value) {
-		this.width = value - this.x;
-		return value;
-	}
-	,get_size: function() {
-		return new nx3.geom.Point(this.width,this.height);
-	}
-	,set_size: function(value) {
-		this.width = value.x;
-		this.height = value.y;
-		return value.clone();
 	}
 	,get_top: function() {
 		return this.y;
 	}
-	,set_top: function(value) {
-		this.height -= value - this.y;
-		this.y = value;
-		return value;
-	}
-	,get_topLeft: function() {
-		return new nx3.geom.Point(this.x,this.y);
-	}
-	,set_topLeft: function(value) {
-		this.x = value.x;
-		this.y = value.y;
-		return value.clone();
-	}
-	,__class__: nx3.geom.Rectangle
 };
 nx3.geom.RectangleTools = function() { };
 nx3.geom.RectangleTools.__name__ = true;
@@ -9099,10 +6730,6 @@ nx3.geom.RectangleTools.union = function(rectangles) {
 		result = result.union(rectangles[i]);
 	}
 	return result;
-};
-nx3.geom.RectangleTools.draw = function(ctx,rect,enlarge) {
-	if(enlarge == null) enlarge = 0;
-	ctx.strokeRect(rect.x - enlarge,rect.y - enlarge,rect.width + enlarge * 2,rect.height + enlarge * 2);
 };
 nx3.geom.RectanglesTools = function() { };
 nx3.geom.RectanglesTools.__name__ = true;
@@ -9143,17 +6770,6 @@ nx3.geom.RectanglesTools.getXIntersection = function(rectsA,rectsB) {
 		moveX = check();
 	}
 	return x;
-};
-nx3.geom.RectanglesTools.clone = function(rects) {
-	if(rects == null) return null;
-	var result = new Array();
-	var _g = 0;
-	while(_g < rects.length) {
-		var r = rects[_g];
-		++_g;
-		result.push(r);
-	}
-	return result;
 };
 nx3.geom.RectanglesTools.offset = function(rects,x,y) {
 	var _g = 0;
@@ -9263,6 +6879,7 @@ nx3.js.ScriptScore.prototype = {
 	}
 	,_render: function(width,scl) {
 		if(width == null) width = 700;
+		var _g = this;
 		if(scl != null) this.scaling = scl;
 		var target = new nx3.render.TargetSvgXml(this.id,this.scaling);
 		var render = new nx3.render.Renderer(target);
@@ -9291,6 +6908,53 @@ nx3.js.ScriptScore.prototype = {
 		this.parent.appendChild(this.canvas);
 		this.context = this.canvas.getContext("2d");
 		this.drawingtools = new nx3.utils.ScoreDrawingTools(pscore,width / this.scaling.unitX,this.scaling,this.tempo,this.context);
+		var notesrects = this.drawingtools.getNotesRects();
+		var canvasClientX = 0;
+		var canvasClientY = 0;
+		var findNote = function() {
+			var rect = _g.canvas.getBoundingClientRect();
+			var x = canvasClientX - rect.left;
+			var y = canvasClientY - rect.top;
+			var point = new nx3.geom.Point(x / _g.scaling.unitX,y / _g.scaling.unitY);
+			var $it0 = notesrects.keys();
+			while( $it0.hasNext() ) {
+				var note = $it0.next();
+				var rect1 = notesrects.h[note.__id__];
+				if(rect1.containsPoint(point)) {
+					var noteinfo;
+					var this1 = _g.drawingtools.getNotesNotenritems();
+					noteinfo = this1.get(note.nnote);
+					return { note : note, noteinfo : noteinfo};
+					break;
+				}
+			}
+			return null;
+		};
+		var canvasTimer = null;
+		var resetCanvasTimer = function() {
+			window.clearTimeout(canvasTimer);
+			canvasTimer = window.setTimeout(function() {
+				var foundnote = findNote();
+				if(foundnote == null) return;
+				console.log(foundnote);
+			},500);
+		};
+		this.canvas.addEventListener("mousemove",function(e) {
+			canvasClientX = e.clientX;
+			canvasClientY = e.clientY;
+			resetCanvasTimer();
+		});
+		this.canvas.addEventListener("mousedown",function(e1) {
+			console.log("mousedown");
+			canvasClientX = e1.clientX;
+			canvasClientY = e1.clientY;
+			var foundnote1 = findNote();
+			if(foundnote1 == null) return;
+			console.log(foundnote1);
+		});
+		this.canvas.addEventListener("mouseup",function(e2) {
+			console.log("mouseup");
+		});
 	}
 	,clear: function(clearHeight) {
 		if(clearHeight == null) clearHeight = true;
@@ -9307,7 +6971,6 @@ nx3.js.ScriptScore.prototype = {
 	,setLabel: function(text) {
 		this.labelTime.textContent = text;
 	}
-	,__class__: nx3.js.ScriptScore
 };
 nx3.js.ScriptScores = function() {
 	this.activeScriptScore = null;
@@ -9315,9 +6978,6 @@ nx3.js.ScriptScores = function() {
 	this.cache = new haxe.ds.StringMap();
 };
 nx3.js.ScriptScores.__name__ = true;
-nx3.js.ScriptScores.getInstance = function() {
-	if(nx3.js.ScriptScores.instance == null) return nx3.js.ScriptScores.instance = new nx3.js.ScriptScores(); else return nx3.js.ScriptScores.instance;
-};
 nx3.js.ScriptScores.prototype = {
 	init: function() {
 		var _g1 = this;
@@ -9437,14 +7097,10 @@ nx3.js.ScriptScores.prototype = {
 		if(pos == null) _this = "null"; else _this = "" + pos;
 		label.textContent = HxOverrides.substr(_this,0,5);
 	}
-	,__class__: nx3.js.ScriptScores
 };
 nx3.render = {};
 nx3.render.ITarget = function() { };
 nx3.render.ITarget.__name__ = true;
-nx3.render.ITarget.prototype = {
-	__class__: nx3.render.ITarget
-};
 nx3.render.Renderer = function(target,targetX,targetY,interactions) {
 	if(targetY == null) targetY = 0;
 	if(targetX == null) targetX = 0;
@@ -9456,20 +7112,7 @@ nx3.render.Renderer = function(target,targetX,targetY,interactions) {
 };
 nx3.render.Renderer.__name__ = true;
 nx3.render.Renderer.prototype = {
-	xToUnitX: function(x) {
-		return x * (1 / this.scaling.unitX);
-	}
-	,yToUnitY: function(y) {
-		return y * (1 / this.scaling.unitY);
-	}
-	,renderSystem: function(system,newX,newY) {
-		if(newY == null) newY = -1;
-		if(newX == null) newX = -1;
-		if(newX != -1) this.targetX = newX;
-		if(newY != -1) this.targetY = newY;
-		this.drawSystem(system);
-	}
-	,renderScore: function(score,newX,newY,systemwidth) {
+	renderScore: function(score,newX,newY,systemwidth) {
 		if(systemwidth == null) systemwidth = 400;
 		if(newY == null) newY = -1;
 		if(newX == null) newX = -1;
@@ -9480,133 +7123,12 @@ nx3.render.Renderer.prototype = {
 		this.target.totalHeight = score.getHeight() * this.scaling.unitY;
 		return { width : score.getWidth() * this.scaling.unitX, height : score.getHeight() * this.scaling.unitY};
 	}
-	,testText: function() {
-		this.target.setFont(nx3.Constants.FONT_TEXT_DEFAULTFORMAT);
-		var str = "ABC abc 123";
-		this.target.text(0,0,str);
-		var w = this.target.textwidth(str);
-		var h = this.target.textheight(str);
-		this.target.rectangle(0,0,new nx3.geom.Rectangle(0,0,w,h),1,16711680);
-	}
-	,addInteraction: function(interaction) {
-		this.interactions.push(interaction);
-	}
 	,drawSystems: function(systems) {
 		var _g = 0;
 		while(_g < systems.length) {
 			var system = systems[_g];
 			++_g;
 			this.drawSystem(system);
-		}
-	}
-	,drawSystemExtras: function(systems,system,nx,ny) {
-		if(ny == null) ny = 0;
-		if(nx == null) nx = 0;
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY + ny * this.scaling.unitY;
-		var _g = 0;
-		var _g1 = system.getSystembars();
-		while(_g < _g1.length) {
-			var systembar = _g1[_g];
-			++_g;
-			if(systembar == cx.ArrayTools.first(system.getSystembars())) {
-				if(system != systems[0]) {
-					var prevSystem = cx.ArrayTools.prev(systems,system);
-					var prevSystembar = cx.ArrayTools.last(prevSystem.getSystembars());
-					var tieconnections = prevSystembar.bar.getTieConnections();
-					var _g2 = 0;
-					while(_g2 < tieconnections.length) {
-						var connection = tieconnections[_g2];
-						++_g2;
-						var fromBarX = systembar.getXPosition();
-						var fromNoteX = systembar.getBarMeasurements().getLeftContentMarginXPosition() + connection.from.getXPosition();
-						var part = connection.to.getComplex().getPart();
-						var partidx;
-						var _this = part.getBar().getParts();
-						partidx = HxOverrides.indexOf(_this,part,0);
-						var party = partidx * 20 * this.scaling.unitY;
-						var tielevel = 0;
-						{
-							var _g3 = connection.tie;
-							switch(_g3[1]) {
-							case 0:
-								var tlevel = _g3[3];
-								var tdir = _g3[2];
-								tielevel = tlevel;
-								break;
-							default:
-							}
-						}
-						var xshift = -5;
-						var tiewidth = 3;
-						var tierect = new nx3.geom.Rectangle(fromBarX + fromNoteX + xshift,connection.level + tielevel,tiewidth,1);
-						this.drawTie(system,tx,ty + party,tierect,nx3.EDirectionUD.Down);
-					}
-				}
-			}
-			if(systembar == cx.ArrayTools.last(system.getSystembars())) {
-				var tieconnections1 = systembar.bar.getTieConnections();
-				var _g21 = 0;
-				while(_g21 < tieconnections1.length) {
-					var connection1 = tieconnections1[_g21];
-					++_g21;
-					var fromBarX1 = systembar.getXPosition();
-					var fromNoteX1 = systembar.getBarMeasurements().getLeftContentMarginXPosition() + connection1.from.getXPosition();
-					var toBarX = systembar.getXPosition() + systembar.getBarMeasurements().getTotalWidth();
-					var part1 = connection1.to.getComplex().getPart();
-					var partidx1;
-					var _this1 = part1.getBar().getParts();
-					partidx1 = HxOverrides.indexOf(_this1,part1,0);
-					var party1 = partidx1 * 20 * this.scaling.unitY;
-					var tielevel1 = 0;
-					{
-						var _g31 = connection1.tie;
-						switch(_g31[1]) {
-						case 0:
-							var tlevel1 = _g31[3];
-							var tdir1 = _g31[2];
-							tielevel1 = tlevel1;
-							break;
-						default:
-						}
-					}
-					var xshift1 = 2;
-					var tierect1 = new nx3.geom.Rectangle(fromBarX1 + fromNoteX1 + xshift1,connection1.level + tielevel1,toBarX - (fromBarX1 + fromNoteX1),2);
-					this.drawTie(system,tx,ty + party1,tierect1,nx3.EDirectionUD.Down);
-				}
-			} else {
-				var tieconnections2 = systembar.bar.getTieConnections();
-				var _g22 = 0;
-				while(_g22 < tieconnections2.length) {
-					var connection2 = tieconnections2[_g22];
-					++_g22;
-					var fromBarX2 = systembar.getXPosition();
-					var nextsystembar = connection2.to.getComplex().getPart().getBar().getSystembar();
-					var toBarX1 = nextsystembar.getXPosition();
-					var fromNoteX2 = systembar.getBarMeasurements().getLeftContentMarginXPosition() + connection2.from.getXPosition();
-					var toNoteX = nextsystembar.getBarMeasurements().getLeftContentMarginXPosition() + connection2.to.getXPosition();
-					var part2 = connection2.to.getComplex().getPart();
-					var partidx2;
-					var _this2 = part2.getBar().getParts();
-					partidx2 = HxOverrides.indexOf(_this2,part2,0);
-					var party2 = partidx2 * 20 * this.scaling.unitY;
-					var xshift2 = 2;
-					var tielevel2 = 0;
-					{
-						var _g32 = connection2.tie;
-						switch(_g32[1]) {
-						case 0:
-							var tlevel2 = _g32[3];
-							var tdir2 = _g32[2];
-							tielevel2 = tlevel2;
-							break;
-						default:
-						}
-					}
-					var tierect2 = new nx3.geom.Rectangle(fromBarX2 + fromNoteX2 + xshift2,connection2.level + tielevel2,toBarX1 + toNoteX - (fromBarX2 + fromNoteX2) - xshift2 - xshift2,2);
-					this.drawTie(system,tx,ty + party2,tierect2,nx3.EDirectionUD.Down);
-				}
-			}
 		}
 	}
 	,drawSystem: function(system) {
@@ -10108,105 +7630,6 @@ nx3.render.Renderer.prototype = {
 			idx++;
 		}
 	}
-	,drawBeamgroupX: function(system,beamgroup,nx,ny) {
-		if(ny == null) ny = 0;
-		if(nx == null) nx = 0;
-		var frame = beamgroup.getFrame();
-		if(frame == null) return;
-		var tx = this.targetX + nx * this.scaling.unitX;
-		var ty = this.targetY + ny * this.scaling.unitY;
-		var part = beamgroup.getPVoice().getPart();
-		var partidx;
-		var _this = part.getBar().getParts();
-		partidx = HxOverrides.indexOf(_this,part,0);
-		var part_getYPosition = partidx * 20;
-		var rightY = this.targetY + part_getYPosition * this.target.getScaling().unitY;
-		var direction = beamgroup.getDirection();
-		var firstnote = beamgroup.pnotes[0];
-		var leftX = cx.ArrayTools.first(beamgroup.getNotesStemXPositions()) * this.scaling.unitX;
-		var leftOuterY = frame.leftOuterY * this.scaling.unitY;
-		var leftInnerY = frame.leftInnerY * this.scaling.unitY;
-		var leftTipY = frame.leftTipY * this.scaling.unitY;
-		this.target.line(this.targetX + leftX,rightY + leftInnerY,this.targetX + leftX,rightY + leftTipY,1,0);
-		if(beamgroup.pnotes.length == 1) {
-			if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) > 0) {
-				if(beamgroup.getDirection() == nx3.EDirectionUD.Up) {
-					var adjustX = 0.6 * this.scaling.unitX;
-					var adjustY = this.scaling.unitY;
-					var flag;
-					if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) == 2) flag = nx3.render.svg.SvgElements.flagUp16; else flag = nx3.render.svg.SvgElements.flagUp8;
-					this.target.shape(this.targetX + leftX - adjustX,rightY + adjustY + leftTipY,flag,0);
-				} else {
-					var adjustX1 = 0.6 * this.scaling.unitX;
-					var adjustY1 = -3 * this.scaling.unitY;
-					var flag1;
-					if(nx3.ENoteValTools.beaminglevel(firstnote.nnote.value) == 2) flag1 = nx3.render.svg.SvgElements.flagDown16; else flag1 = nx3.render.svg.SvgElements.flagDown8;
-					this.target.shape(this.targetX + leftX - adjustX1,rightY + adjustY1 + leftTipY,flag1,0);
-				}
-			}
-		}
-		if(beamgroup.pnotes.length < 2) return;
-		var storeY = [rightY + leftTipY];
-		var storeX = [this.targetX + leftX];
-		var lastnote = cx.ArrayTools.last(beamgroup.pnotes);
-		var rightX = cx.ArrayTools.last(beamgroup.getNotesStemXPositions()) * this.scaling.unitX;
-		var rightOuterY = frame.rightOuterY * this.scaling.unitY;
-		var rightInnerY = frame.rightInnerY * this.scaling.unitY;
-		var rightTipY = frame.rightTipY * this.scaling.unitY;
-		this.target.line(this.targetX + rightX,rightY + rightInnerY,this.targetX + rightX,rightY + rightTipY,1,0);
-		var beamh = 0.95 * this.scaling.unitY;
-		if(beamgroup.getDirection() == nx3.EDirectionUD.Up) beamh = -beamh; else beamh = beamh;
-		this.target.parallellogram(this.targetX + leftX,rightY + leftTipY - beamh,this.targetX + rightX,rightY + rightTipY - beamh,beamh,0,0,0);
-		if(beamgroup.pnotes.length > 2) {
-			var _g1 = 1;
-			var _g = frame.outerLevels.length - 1;
-			while(_g1 < _g) {
-				var i = _g1++;
-				var midX = beamgroup.getNotesStemXPositions()[i] * this.scaling.unitX;
-				var midInnerY = frame.innerLevels[i] * this.scaling.unitY;
-				var delta = (midX - leftX) / (rightX - leftX);
-				var midTipY = leftTipY + (rightTipY - leftTipY) * delta;
-				this.target.line(this.targetX + midX,rightY + midInnerY,this.targetX + midX,rightY + midTipY,1,0);
-				storeY.push(rightY + midTipY);
-				storeX.push(this.targetX + midX);
-			}
-		}
-		storeY.push(rightY + rightTipY);
-		storeX.push(this.targetX + rightX);
-		var idx = 0;
-		var beamh1 = 0.95 * this.scaling.unitY;
-		var _g2 = 0;
-		var _g11 = beamgroup.getFrame().beamflags;
-		while(_g2 < _g11.length) {
-			var flagtype = _g11[_g2];
-			++_g2;
-			var adjustY2;
-			if(beamgroup.getDirection() == nx3.EDirectionUD.Up) adjustY2 = 2.1; else adjustY2 = -2.1;
-			adjustY2 *= this.scaling.unitY;
-			var currX = storeX[idx];
-			var currY = storeY[idx] + adjustY2;
-			var nextX = storeX[idx + 1];
-			var nextY = storeY[idx + 1] + adjustY2;
-			var factor = 2.2 * this.scaling.unitX;
-			switch(flagtype[1]) {
-			case 3:
-				this.target.parallellogram(currX,currY - beamh1 / 2,nextX,nextY - beamh1 / 2,beamh1,0,0,0);
-				break;
-			case 1:
-				var endX = currX + factor;
-				var endY = factor / (nextX - currX) * (nextY - currY) + currY;
-				this.target.parallellogram(currX,currY - beamh1 / 2,endX,endY - beamh1 / 2,beamh1,0,0,0);
-				break;
-			case 2:
-				var startX = nextX - factor;
-				var startY = -((nextX - startX) / (nextX - currX)) * (nextY - currY) + nextY;
-				this.target.parallellogram(startX,startY - beamh1 / 2,nextX,nextY - beamh1 / 2,beamh1,0,0,0);
-				break;
-			default:
-			}
-			idx++;
-		}
-	}
 	,drawTie: function(system,x,y,rect,direction) {
 		var a1 = null;
 		var c1 = null;
@@ -10267,36 +7690,6 @@ nx3.render.Renderer.prototype = {
 			return "";
 		}
 	}
-	,getTarget: function() {
-		return this.target;
-	}
-	,interactiveComplex: function(system,complex,nx,ny) {
-		if(complex == null) return;
-		var part = complex.getPart();
-		var partidx;
-		var _this = part.getBar().getParts();
-		partidx = HxOverrides.indexOf(_this,part,0);
-		var part_getYPosition = partidx * 20;
-		var x = this.targetX + (nx + complex.getXPosition()) * this.target.getScaling().unitX;
-		var y = this.targetY + (ny + part_getYPosition) * this.target.getScaling().unitY;
-		var _g = 0;
-		var _g1 = complex.getNotes();
-		while(_g < _g1.length) {
-			var note = _g1[_g];
-			++_g;
-			this.interactiveNote(system,note,nx,ny);
-		}
-	}
-	,interactiveNote: function(system,note,nx,ny) {
-		var part = note.getComplex().getPart();
-		var partidx;
-		var _this = part.getBar().getParts();
-		partidx = HxOverrides.indexOf(_this,part,0);
-		var part_getYPosition = partidx * 20;
-		var x = this.targetX + (nx + note.getComplex().getXPosition()) * this.target.getScaling().unitX;
-		var y = this.targetY + (ny + part_getYPosition) * this.target.getScaling().unitY;
-	}
-	,__class__: nx3.render.Renderer
 };
 nx3.render.RendererTools = function() { };
 nx3.render.RendererTools.__name__ = true;
@@ -10358,9 +7751,6 @@ nx3.render.TargetSvg = function(svgId,scaling,jsFileName) {
 };
 nx3.render.TargetSvg.__name__ = true;
 nx3.render.TargetSvg.__interfaces__ = [nx3.render.ITarget];
-nx3.render.TargetSvg.hex = function($int) {
-	if($int == 0) return "#000"; else return "#" + StringTools.hex($int);
-};
 nx3.render.TargetSvg.prototype = {
 	testLines: function(x,y,width) {
 		var _g = -2;
@@ -10374,25 +7764,11 @@ nx3.render.TargetSvg.prototype = {
 	,getScaling: function() {
 		return this.scaling;
 	}
-	,rect: function(x,y,rect,lineWidth,lineColor) {
-		if(lineColor == null) lineColor = 0;
-		var r = this.snap.rect(x + rect.x,y + rect.y,rect.width,rect.height);
-		r.attr({ fill : "none", stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth});
-	}
 	,rectangle: function(x,y,rect,lineWidth,lineColor) {
 		if(lineColor == null) lineColor = 0;
 		if(lineWidth == null) lineWidth = 1;
 		var r = this.snap.rect(x + rect.x * this.scaling.unitX,y + rect.y * this.scaling.unitY,rect.width * this.scaling.unitX,rect.height * this.scaling.unitY);
 		r.attr({ fill : "none", stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
-	}
-	,rectangles: function(x,y,rects,lineWidth,lineColor) {
-		if(lineColor == null) lineColor = 0;
-		var _g = 0;
-		while(_g < rects.length) {
-			var rect = rects[_g];
-			++_g;
-			this.rectangle(x,y,rect,lineWidth,lineColor);
-		}
 	}
 	,line: function(x,y,x2,y2,lineWidth,lineColor) {
 		if(lineColor == null) lineColor = 0;
@@ -10445,8 +7821,6 @@ nx3.render.TargetSvg.prototype = {
 	,setFont: function(font) {
 		this.font = font;
 	}
-	,filledrectangle: function(x,y,rect,lineWidth,lineColor,fillColor) {
-	}
 	,filledellipse: function(x,y,rect,lineWidth,lineColor,fillColor) {
 		if(fillColor == null) fillColor = 65280;
 		if(lineColor == null) lineColor = 16711680;
@@ -10461,17 +7835,6 @@ nx3.render.TargetSvg.prototype = {
 		var pathStr = "M " + x + " " + y + " L " + x2 + " " + y2 + "  L " + x2 + " " + (y2 + pheight) + "  L " + x + "  " + (y + pheight) + "  L " + x + " " + y;
 		var el = this.snap.path(pathStr);
 		el.attr({ fill : fillColor == 0?"#000":"#" + StringTools.hex(fillColor), stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
-	}
-	,clear: function() {
-		var svgElement = new js.JQuery(this.svgId);
-		svgElement.empty();
-	}
-	,polyline: function(x,y,coordinates,lineWidth,lineColor) {
-		if(lineColor == null) lineColor = 0;
-		if(lineWidth == null) lineWidth = 1;
-		var pathStr = this.getPathString(x,y,coordinates);
-		var el = this.snap.path(pathStr);
-		el.attr({ stroke : lineColor == 0?"#000":"#" + StringTools.hex(lineColor), strokeWidth : lineWidth * this.scaling.linesWidth});
 	}
 	,polyfill: function(x,y,coordinates,lineWidth,lineColor,fillColor) {
 		if(fillColor == null) fillColor = 0;
@@ -10509,26 +7872,6 @@ nx3.render.TargetSvg.prototype = {
 		if(inflateX != 0 || inflateY != 0) result.inflate(inflateX * this.scaling.unitX,inflateY * this.scaling.unitY);
 		return result;
 	}
-	,tooltipShow: function(rect,text) {
-		if(this.tooltip == null) this.createTooltip(rect,text);
-		if(this.tooltip != null) {
-			this.tooltip.attr({ x : Math.round(rect.x), y : Math.round(rect.y), visibility : "visible"});
-			this.toolText.node.textContent = text;
-		}
-	}
-	,tooltipHide: function() {
-		if(this.tooltip != null) this.tooltip.attr({ visibility : "hidden"});
-	}
-	,createTooltip: function(rect,text) {
-		this.tooltip = this.snap.el("svg",{ x : rect.x, y : rect.y});
-		var toolBackground = this.snap.rect(0,0,rect.width,rect.height);
-		toolBackground.attr({ fill : "#fff2ca", stroke : "#666666", rx : 4, ry : 4, strokeWidth : 1});
-		this.tooltip.append(toolBackground);
-		this.toolText = this.snap.text(8,19,"");
-		this.toolText.attr({ fontSize : "13px ", fontFamily : "Open Sans"});
-		this.tooltip.append(this.toolText);
-		this.tooltip.attr({ visibility : "hidden"});
-	}
 	,getPathString: function(x,y,coordinates) {
 		var pathStr = "";
 		var first = coordinates.shift();
@@ -10545,7 +7888,6 @@ nx3.render.TargetSvg.prototype = {
 		}
 		return pathStr;
 	}
-	,__class__: nx3.render.TargetSvg
 };
 nx3.render.TargetSvgXml = function(svgId,scaling) {
 	this.svgId = svgId;
@@ -10556,9 +7898,6 @@ nx3.render.TargetSvgXml = function(svgId,scaling) {
 };
 nx3.render.TargetSvgXml.__name__ = true;
 nx3.render.TargetSvgXml.__interfaces__ = [nx3.render.ITarget];
-nx3.render.TargetSvgXml.hex = function($int) {
-	if($int == 0) return "#000"; else return "#" + StringTools.hex($int);
-};
 nx3.render.TargetSvgXml.prototype = {
 	getXml: function() {
 		this.svg.set("width",Std.string(this.totalWidth));
@@ -10576,8 +7915,6 @@ nx3.render.TargetSvgXml.prototype = {
 			this.line(x,cy,x + width,cy,this.scaling.linesWidth,0);
 		}
 	}
-	,rect: function(x,y,rect,lineWidth,lineColor) {
-	}
 	,rectangle: function(x,y,rect,lineWidth,lineColor) {
 		if(lineColor == null) lineColor = 0;
 		if(lineWidth == null) lineWidth = 1;
@@ -10590,10 +7927,6 @@ nx3.render.TargetSvgXml.prototype = {
 		r.set("stroke",lineColor == 0?"#000":"#" + StringTools.hex(lineColor));
 		r.set("stroke-width",Std.string(lineWidth * this.scaling.linesWidth));
 		this.svg.addChild(r);
-	}
-	,rectangles: function(x,y,rects,lineWidth,lineColor) {
-	}
-	,filledrectangle: function(x,y,rect,lineWidth,lineColor,fillColor) {
 	}
 	,filledellipse: function(x,y,rect,lineWidth,lineColor,fillColor) {
 		var r = Xml.createElement("ellipse");
@@ -10655,31 +7988,12 @@ nx3.render.TargetSvgXml.prototype = {
 		el.set("style","stroke-width:" + lineWidth * this.scaling.linesWidth);
 		this.svg.addChild(el);
 	}
-	,clear: function() {
-		this.svg = Xml.createElement("svg");
-		this.svg.set("id",this.svgId);
-	}
-	,polyline: function(x,y,coordinates,lineWidth,lineColor) {
-		if(lineColor == null) lineColor = 0;
-		if(lineWidth == null) lineWidth = 1;
-	}
 	,polyfill: function(x,y,coordinates,lineWidth,lineColor,fillColor) {
 		if(fillColor == null) fillColor = 255;
 		if(lineColor == null) lineColor = 0;
 		if(lineWidth == null) lineWidth = 1;
 	}
-	,sline: function(x,y,start,end,lineWidth,lineColor) {
-	}
 	,interactiveEllipse: function(x,y,rect,lineWidth,lineColor,fillColor,cb) {
-	}
-	,scaleRect: function(rect,inflateX,inflateY) {
-		if(inflateY == null) inflateY = 0;
-		if(inflateX == null) inflateX = 0;
-		return null;
-	}
-	,tooltipShow: function(rect,text) {
-	}
-	,tooltipHide: function() {
 	}
 	,setFont: function(font) {
 		this.font = font;
@@ -10712,43 +8026,12 @@ nx3.render.TargetSvgXml.prototype = {
 	,textheight: function(text) {
 		return this.font.size / 3.8;
 	}
-	,addToDomElement: function(elementId) {
-		window.document.getElementById(elementId).innerHTML = this.getXml().toString();
-	}
-	,__class__: nx3.render.TargetSvgXml
 };
 nx3.render.scaling = {};
 nx3.render.scaling.Scaling = function() { };
 nx3.render.scaling.Scaling.__name__ = true;
-nx3.render.scaling.Scaling.scaleRect = function(scaling,rect) {
-	return new nx3.geom.Rectangle(rect.x * scaling.unitX,rect.y * scaling.unitY,rect.width * scaling.unitX,rect.height * scaling.unitY);
-};
 nx3.render.scaling.ScalingTools = function() { };
 nx3.render.scaling.ScalingTools.__name__ = true;
-nx3.render.scaling.ScalingTools.scaleRect = function(scaling,rect) {
-	return new nx3.geom.Rectangle(rect.x * scaling.unitX,rect.y * scaling.unitY,rect.width * scaling.unitX,rect.height * scaling.unitY);
-};
-nx3.render.scaling.ScalingTools.targetRect = function(scaling,rect) {
-	return new nx3.geom.Rectangle(rect.x / scaling.unitX,rect.y / scaling.unitY,rect.width / scaling.unitX,rect.height / scaling.unitY);
-};
-nx3.render.scaling.ScalingTools.scalePoint = function(scaling,x,y) {
-	return { x : x * scaling.unitX, y : y * scaling.unitY};
-};
-nx3.render.scaling.ScalingTools.targetPoint = function(scaling,x,y) {
-	return { x : x / scaling.unitX, y : y / scaling.unitY};
-};
-nx3.render.scaling.ScalingTools.scaleX = function(scaling,x) {
-	return x * scaling.unitX;
-};
-nx3.render.scaling.ScalingTools.scaleY = function(scaling,y) {
-	return y * scaling.unitY;
-};
-nx3.render.scaling.ScalingTools.targetX = function(scaling,x) {
-	return x / scaling.unitX;
-};
-nx3.render.scaling.ScalingTools.targetY = function(scaling,y) {
-	return y / scaling.unitY;
-};
 nx3.render.scaling.ScalingTools.fromString = function(scl) {
 	if(scl == null) return nx3.render.scaling.Scaling.NORMAL;
 	if(scl == "") return nx3.render.scaling.Scaling.NORMAL;
@@ -10776,10 +8059,6 @@ nx3.render.svg.SvgElements.__name__ = true;
 nx3.utils = {};
 nx3.utils.DrawTools = function() { };
 nx3.utils.DrawTools.__name__ = true;
-nx3.utils.DrawTools.draw = function(ctx,rect,enlarge) {
-	if(enlarge == null) enlarge = 0;
-	ctx.strokeRect(rect.x - enlarge,rect.y - enlarge,rect.width + enlarge * 2,rect.height + enlarge * 2);
-};
 nx3.utils.DrawTools.setLineStyle = function(ctx,color,width) {
 	if(width == null) width = 1;
 	var strokestyle = "#" + StringTools.hex(color,6);
@@ -10820,35 +8099,11 @@ nx3.utils.ScoreDrawingTools.prototype = {
 	clean: function() {
 		nx3.utils.DrawTools.clean(this.context,this.scoreWidth,this.scoreHeight);
 	}
-	,drawNotesRects: function(color) {
-		if(color == null) color = 255;
-		var notes = this.systools.getNotes();
-		var notesRects = this.systools.getNotesRects();
-		nx3.utils.DrawTools.setLineStyle(this.context,color);
-		var _g = 0;
-		while(_g < notes.length) {
-			var note = notes[_g];
-			++_g;
-			var noteRect = notesRects.h[note.__id__];
-			var scaledRect = nx3.render.scaling.ScalingTools.scaleRect(this.scaling,noteRect);
-			nx3.utils.DrawTools.draw(this.context,scaledRect);
-		}
+	,getNotesRects: function() {
+		return this.systools.getNotesRects();
 	}
-	,drawColumns: function(color) {
-		if(color == null) color = 16711680;
-		var columnsPos = this.systools.getColumnsPointH();
-		nx3.utils.DrawTools.setLineStyle(this.context,color);
-		var _g = 0;
-		var _g1 = this.columns;
-		while(_g < _g1.length) {
-			var column = _g1[_g];
-			++_g;
-			var columnPosH = columnsPos.h[column.__id__];
-			var x = columnPosH.x * this.scaling.unitX;
-			var y = columnPosH.y * this.scaling.unitY;
-			var h = columnPosH.height * this.scaling.unitY;
-			nx3.utils.DrawTools.drawLine(this.context,x,y,x,y + h);
-		}
+	,getNotesNotenritems: function() {
+		return this.systools.getNotesNotenritems();
 	}
 	,drawColumnFromTime: function(time,color,width) {
 		if(width == null) width = 3;
@@ -10878,11 +8133,6 @@ nx3.utils.ScoreDrawingTools.prototype = {
 		this.lastTime = time;
 		this.lastTimeIdx = timeIdx;
 	}
-	,setLineStyle: function(color,width) {
-		if(width == null) width = 1;
-		nx3.utils.DrawTools.setLineStyle(this.context,width | 0,color);
-	}
-	,__class__: nx3.utils.ScoreDrawingTools
 };
 nx3.utils.VoiceSplitter = function(nbars) {
 	this.nbars = nbars;
@@ -10934,46 +8184,10 @@ nx3.utils.VoiceSplitter.prototype = {
 		}
 		return newbars;
 	}
-	,__class__: nx3.utils.VoiceSplitter
 };
 nx3.xml = {};
 nx3.xml.BarXML = function() { };
 nx3.xml.BarXML.__name__ = true;
-nx3.xml.BarXML.toXml = function(bar) {
-	var xml = Xml.createElement("bar");
-	var _g = 0;
-	var _g1 = bar.nparts;
-	while(_g < _g1.length) {
-		var part = _g1[_g];
-		++_g;
-		var partXml = nx3.xml.PartXML.toXml(part);
-		xml.addChild(partXml);
-	}
-	var _g2 = bar.type;
-	switch(_g2[1]) {
-	case 0:
-		break;
-	default:
-		xml.set("type",Std.string(bar.type));
-	}
-	if(bar.time != null) {
-		var _g3 = bar.time;
-		switch(_g3[1]) {
-		case 5:
-			break;
-		default:
-			xml.set("time",Std.string(nx3.ETimeUtils.toString(bar.time)));
-		}
-	}
-	var _g4 = bar.timeDisplay;
-	switch(_g4[1]) {
-	case 1:
-		break;
-	default:
-		xml.set("timedisplay",Std.string(bar.timeDisplay));
-	}
-	return xml;
-};
 nx3.xml.BarXML.fromXmlStr = function(xmlStr) {
 	var xml = Xml.parse(xmlStr).firstElement();
 	var parts = [];
@@ -10994,64 +8208,8 @@ nx3.xml.BarXML.fromXmlStr = function(xmlStr) {
 	if(timeDisplayStr == null) timeDisplay = nx3.EDisplayALN.Layout; else timeDisplay = cx.EnumTools.createFromString(nx3.EDisplayALN,timeDisplayStr);
 	return new nx3.NBar(parts,type,time,timeDisplay);
 };
-nx3.xml.BarXML.test = function(item) {
-	var str = nx3.xml.BarXML.toXml(item).toString();
-	var item2 = nx3.xml.BarXML.fromXmlStr(str);
-	var str2 = nx3.xml.BarXML.toXml(item2).toString();
-	console.log(str);
-	console.log(str2);
-	return str == str2;
-	return false;
-};
 nx3.xml.HeadXML = function() { };
 nx3.xml.HeadXML.__name__ = true;
-nx3.xml.HeadXML.toXml = function(head) {
-	var xml = Xml.createElement(nx3.xml.HeadXML.XHEAD);
-	var _g = head.type;
-	switch(_g[1]) {
-	case 2:case 1:
-		xml.set(nx3.xml.HeadXML.XHEAD_TYPE,Std.string(head.type));
-		break;
-	default:
-	}
-	xml.set(nx3.xml.HeadXML.XHEAD_LEVEL,head.level == null?"null":"" + head.level);
-	if(head.sign != nx3.ESign.None) xml.set(nx3.xml.HeadXML.XHEAD_SIGN,Std.string(head.sign));
-	if(head.tie != null) {
-		var _g1 = head.tie;
-		switch(_g1[1]) {
-		case 0:
-			var level = _g1[3];
-			var direction = _g1[2];
-			xml.set(nx3.xml.HeadXML.XHEAD_TIE,"true");
-			if(level != 0) xml.set(nx3.xml.HeadXML.XHEAD_TIE_LEVEL,level == null?"null":"" + level);
-			if(direction != nx3.EDirectionUAD.Auto) xml.set(nx3.xml.HeadXML.XHEAD_TIE_DIRECTION,Std.string(direction[0]));
-			break;
-		case 1:
-			var levelRight = _g1[4];
-			var levelLeft = _g1[3];
-			var direction1 = _g1[2];
-			xml.set(nx3.xml.HeadXML.XHEAD_TIE,levelLeft == null?"null":"" + levelLeft);
-			break;
-		}
-	}
-	if(head.tieTo != null) {
-		var _g2 = head.tieTo;
-		switch(_g2[1]) {
-		case 0:
-			var level1 = _g2[3];
-			var direction2 = _g2[2];
-			xml.set(nx3.xml.HeadXML.XHEAD_TIETO,Std.string(head.tieTo));
-			break;
-		case 1:
-			var levelRight1 = _g2[4];
-			var levelLeft1 = _g2[3];
-			var direction3 = _g2[2];
-			xml.set(nx3.xml.HeadXML.XHEAD_TIETO,Std.string(head.tieTo));
-			break;
-		}
-	}
-	return xml;
-};
 nx3.xml.HeadXML.fromXmlStr = function(xmlStr) {
 	var xml = Xml.parse(xmlStr).firstElement();
 	var typeStr = xml.get(nx3.xml.HeadXML.XHEAD_TYPE);
@@ -11069,87 +8227,8 @@ nx3.xml.HeadXML.fromXmlStr = function(xmlStr) {
 	var tieTo = cx.EnumTools.createFromString(nx3.ETie,xml.get(nx3.xml.HeadXML.XHEAD_TIETO));
 	return new nx3.NHead(type,level,sign,tie,tieTo);
 };
-nx3.xml.HeadXML.test = function(item) {
-	var str = nx3.xml.HeadXML.toXml(item).toString();
-	var item2 = nx3.xml.HeadXML.fromXmlStr(str);
-	var str2 = nx3.xml.HeadXML.toXml(item2).toString();
-	console.log(str);
-	console.log(str2);
-	return str == str2;
-};
 nx3.xml.NoteXML = function() { };
 nx3.xml.NoteXML.__name__ = true;
-nx3.xml.NoteXML.toXml = function(note) {
-	var xml = null;
-	{
-		var _g = note.type;
-		switch(_g[1]) {
-		case 0:
-			var attributes = _g[5];
-			var articulations = _g[4];
-			var variant = _g[3];
-			var heads = _g[2];
-			xml = Xml.createElement("note");
-			var _g1 = 0;
-			while(_g1 < heads.length) {
-				var head = heads[_g1];
-				++_g1;
-				var headXml = nx3.xml.HeadXML.toXml(head);
-				xml.addChild(headXml);
-			}
-			if(variant != null) xml.set("variant",Std.string(variant));
-			if(articulations != null) {
-				var articulationStrings = [];
-				var _g11 = 0;
-				while(_g11 < articulations.length) {
-					var articulation = articulations[_g11];
-					++_g11;
-					articulationStrings.push(Std.string(articulation));
-				}
-				xml.set("articulations",articulationStrings.join(";"));
-			}
-			if(attributes != null) {
-				var attributesStrings = [];
-				var _g12 = 0;
-				while(_g12 < attributes.length) {
-					var attribute = attributes[_g12];
-					++_g12;
-					attributesStrings.push(Std.string(attribute));
-				}
-				xml.set("attributes",attributesStrings.join(";"));
-			}
-			break;
-		case 1:
-			var level = _g[2];
-			xml = Xml.createElement("pause");
-			if(level != 0) xml.set("level",level == null?"null":"" + level);
-			break;
-		case 4:
-			var format = _g[5];
-			var continuation = _g[4];
-			var offset = _g[3];
-			var text = _g[2];
-			xml = Xml.createElement("lyric");
-			xml.set("text",text);
-			if(continuation != null) xml.set("continuation",Std.string(continuation));
-			if(offset != null) xml.set("offset",Std.string(offset));
-			if(format != null) xml.set("format",Std.string(format));
-			break;
-		case 7:
-			var midinote = _g[3];
-			var level1 = _g[2];
-			xml = Xml.createElement("pitch");
-			if(level1 != 0) xml.set("level",level1 == null?"null":"" + level1);
-			if(midinote != 0) xml.set("midinote",midinote == null?"null":"" + midinote);
-			break;
-		default:
-			xml = Xml.createElement("undefined");
-		}
-	}
-	if(nx3.ENoteValTools.value(note.value) != nx3.ENoteValTools.value(nx3.ENoteVal.Nv4)) xml.set("val",Std.string(nx3.ENoteValTools.toValString(note.value)));
-	if(note.direction != nx3.EDirectionUAD.Auto) xml.set("direction",Std.string(note.direction));
-	return xml;
-};
 nx3.xml.NoteXML.fromXmlStr = function(xmlStr) {
 	var xml = Xml.parse(xmlStr).firstElement();
 	var xmlType = xml.get_nodeName();
@@ -11219,77 +8298,8 @@ nx3.xml.NoteXML.fromXmlStr = function(xmlStr) {
 	var direction = cx.EnumTools.createFromString(nx3.EDirectionUAD,xml.get("direction"));
 	return new nx3.NNote(type,null,value,direction);
 };
-nx3.xml.NoteXML.test = function(item) {
-	var str = nx3.xml.NoteXML.toXml(item).toString();
-	var item2 = nx3.xml.NoteXML.fromXmlStr(str);
-	var str2 = nx3.xml.NoteXML.toXml(item2).toString();
-	console.log(str);
-	console.log(str2);
-	return str == str2;
-};
-nx3.xml.NoteXML.clone = function(nnote) {
-	return nx3.xml.NoteXML.fromXmlStr(nx3.xml.NoteXML.toXml(nnote).toString());
-};
 nx3.xml.PartXML = function() { };
 nx3.xml.PartXML.__name__ = true;
-nx3.xml.PartXML.toXml = function(part) {
-	var xml = Xml.createElement("part");
-	var _g = 0;
-	var _g1 = part.nvoices;
-	while(_g < _g1.length) {
-		var voice = _g1[_g];
-		++_g;
-		var voiceXml = nx3.xml.VoiceXML.toXml(voice);
-		xml.addChild(voiceXml);
-	}
-	{
-		var _g2 = part.type;
-		switch(_g2[1]) {
-		case 0:
-			break;
-		case 9:
-			var leveloffset = _g2[2];
-			xml.set("type","pitchchain");
-			xml.set("leveloffset",leveloffset == null?"null":"" + leveloffset);
-			break;
-		default:
-			xml.set("type",Std.string(part.type));
-		}
-	}
-	if(part.clef != null) {
-		var _g3 = part.clef;
-		switch(_g3[1]) {
-		case 0:
-			break;
-		default:
-			xml.set("clef",Std.string(part.clef));
-		}
-	}
-	if(part.key != null) {
-		var _g4 = part.key;
-		switch(_g4[1]) {
-		case 6:
-			break;
-		default:
-			xml.set("key",Std.string(part.key));
-		}
-	}
-	var _g5 = part.clefDisplay;
-	switch(_g5[1]) {
-	case 1:
-		break;
-	default:
-		xml.set("clefdisplay",Std.string(part.clefDisplay));
-	}
-	var _g6 = part.keyDisplay;
-	switch(_g6[1]) {
-	case 1:
-		break;
-	default:
-		xml.set("keydisplay",Std.string(part.keyDisplay));
-	}
-	return xml;
-};
 nx3.xml.PartXML.fromXmlStr = function(xmlStr) {
 	var xml = Xml.parse(xmlStr).firstElement();
 	var voices = [];
@@ -11321,19 +8331,6 @@ nx3.xml.PartXML.fromXmlStr = function(xmlStr) {
 };
 nx3.xml.ScoreXML = function() { };
 nx3.xml.ScoreXML.__name__ = true;
-nx3.xml.ScoreXML.toXml = function(score) {
-	var xml = Xml.createElement("score");
-	var config = Xml.createElement("config");
-	config.set("test","12345");
-	xml.addChild(config);
-	var $it0 = score.iterator();
-	while( $it0.hasNext() ) {
-		var bar = $it0.next();
-		var barXml = nx3.xml.BarXML.toXml(bar);
-		xml.addChild(barXml);
-	}
-	return xml;
-};
 nx3.xml.ScoreXML.fromXmlStr = function(xmlStr) {
 	var xml = Xml.parse(xmlStr).firstElement();
 	var bars = [];
@@ -11358,28 +8355,6 @@ nx3.xml.ScoreXML.fromXmlStr = function(xmlStr) {
 };
 nx3.xml.VoiceXML = function() { };
 nx3.xml.VoiceXML.__name__ = true;
-nx3.xml.VoiceXML.toXml = function(voice) {
-	var xml = Xml.createElement("voice");
-	var _g = voice.type;
-	switch(_g[1]) {
-	case 1:
-		xml.set("type",Std.string(voice.type));
-		break;
-	default:
-	}
-	if(voice.direction != nx3.EDirectionUAD.Auto) xml.set("direction",Std.string(voice.direction));
-	if(voice.nnotes != null) {
-		var _g1 = 0;
-		var _g11 = voice.nnotes;
-		while(_g1 < _g11.length) {
-			var note = _g11[_g1];
-			++_g1;
-			var noteXml = nx3.xml.NoteXML.toXml(note);
-			xml.addChild(noteXml);
-		}
-	}
-	return xml;
-};
 nx3.xml.VoiceXML.fromXmlStr = function(xmlStr) {
 	var xml = Xml.parse(xmlStr).firstElement();
 	var typeStr = xml.get("type");
@@ -11396,24 +8371,10 @@ nx3.xml.VoiceXML.fromXmlStr = function(xmlStr) {
 	}
 	return new nx3.NVoice(notes,type,direction);
 };
-nx3.xml.VoiceXML.test = function(item) {
-	var str = nx3.xml.VoiceXML.toXml(item).toString();
-	var item2 = nx3.xml.VoiceXML.fromXmlStr(str);
-	var str2 = nx3.xml.VoiceXML.toXml(item2).toString();
-	console.log(str);
-	console.log(str2);
-	return str == str2;
-};
 var thx = {};
 thx.core = {};
 thx.core.UUID = function() { };
 thx.core.UUID.__name__ = true;
-thx.core.UUID.random = function() {
-	return Math.floor(Math.random() * 16);
-};
-thx.core.UUID.srandom = function() {
-	return "" + Math.floor(Math.random() * 16);
-};
 thx.core.UUID.create = function() {
 	var s = [];
 	var _g = 0;
@@ -11452,77 +8413,11 @@ thx.core.UUID.create = function() {
 var tink = {};
 tink.core = {};
 tink.core._Callback = {};
-tink.core._Callback.Callback_Impl_ = function() { };
-tink.core._Callback.Callback_Impl_.__name__ = true;
-tink.core._Callback.Callback_Impl_._new = function(f) {
-	return f;
-};
-tink.core._Callback.Callback_Impl_.invoke = function(this1,data) {
-	this1(data);
-};
-tink.core._Callback.Callback_Impl_.fromNiladic = function(f) {
-	return function(r) {
-		f();
-	};
-};
-tink.core._Callback.Callback_Impl_.fromMany = function(callbacks) {
-	return function(v) {
-		var _g = 0;
-		while(_g < callbacks.length) {
-			var callback = callbacks[_g];
-			++_g;
-			callback(v);
-		}
-	};
-};
-tink.core._Callback.CallbackLink_Impl_ = function() { };
-tink.core._Callback.CallbackLink_Impl_.__name__ = true;
-tink.core._Callback.CallbackLink_Impl_._new = function(link) {
-	return link;
-};
-tink.core._Callback.CallbackLink_Impl_.dissolve = function(this1) {
-	if(this1 != null) this1();
-};
-tink.core._Callback.CallbackLink_Impl_.toCallback = function(this1) {
-	var f = this1;
-	return function(r) {
-		f();
-	};
-};
-tink.core._Callback.CallbackLink_Impl_.fromFunction = function(f) {
-	return f;
-};
-tink.core._Callback.CallbackLink_Impl_.fromMany = function(callbacks) {
-	return function() {
-		var _g = 0;
-		while(_g < callbacks.length) {
-			var cb = callbacks[_g];
-			++_g;
-			if(cb != null) cb();
-		}
-	};
-};
 tink.core._Callback.Cell = function() {
 };
 tink.core._Callback.Cell.__name__ = true;
-tink.core._Callback.Cell.get = function() {
-	if(tink.core._Callback.Cell.pool.length > 0) return tink.core._Callback.Cell.pool.pop(); else return new tink.core._Callback.Cell();
-};
-tink.core._Callback.Cell.prototype = {
-	free: function() {
-		this.cb = null;
-		tink.core._Callback.Cell.pool.push(this);
-	}
-	,__class__: tink.core._Callback.Cell
-};
 tink.core._Callback.CallbackList_Impl_ = function() { };
 tink.core._Callback.CallbackList_Impl_.__name__ = true;
-tink.core._Callback.CallbackList_Impl_._new = function() {
-	return [];
-};
-tink.core._Callback.CallbackList_Impl_.get_length = function(this1) {
-	return this1.length;
-};
 tink.core._Callback.CallbackList_Impl_.add = function(this1,cb) {
 	var cell;
 	if(tink.core._Callback.Cell.pool.length > 0) cell = tink.core._Callback.Cell.pool.pop(); else cell = new tink.core._Callback.Cell();
@@ -11555,25 +8450,8 @@ tink.core._Callback.CallbackList_Impl_.clear = function(this1) {
 		tink.core._Callback.Cell.pool.push(cell);
 	}
 };
-tink.core.Either = { __ename__ : true, __constructs__ : ["Left","Right"] };
-tink.core.Either.Left = function(a) { var $x = ["Left",0,a]; $x.__enum__ = tink.core.Either; $x.toString = $estr; return $x; };
-tink.core.Either.Right = function(b) { var $x = ["Right",1,b]; $x.__enum__ = tink.core.Either; $x.toString = $estr; return $x; };
-tink.core._Error = {};
-tink.core._Error.ErrorCode_Impl_ = function() { };
-tink.core._Error.ErrorCode_Impl_.__name__ = true;
-tink.core.TypedError = function(code,message,pos) {
-	if(code == null) code = 500;
-	this.code = code;
-	this.message = message;
-	this.pos = pos;
-};
+tink.core.TypedError = function() { };
 tink.core.TypedError.__name__ = true;
-tink.core.TypedError.withData = function(code,message,data,pos) {
-	if(code == null) code = 500;
-	var ret = new tink.core.TypedError(code,message,pos);
-	ret.data = data;
-	return ret;
-};
 tink.core.TypedError.prototype = {
 	printPos: function() {
 		return this.pos.className + "." + this.pos.methodName + ":" + this.pos.lineNumber;
@@ -11586,16 +8464,12 @@ tink.core.TypedError.prototype = {
 	,throwSelf: function() {
 		throw this;
 	}
-	,__class__: tink.core.TypedError
 };
 tink.core._Future = {};
 tink.core._Future.Future_Impl_ = function() { };
 tink.core._Future.Future_Impl_.__name__ = true;
 tink.core._Future.Future_Impl_._new = function(f) {
 	return f;
-};
-tink.core._Future.Future_Impl_.handle = function(this1,callback) {
-	return this1(callback);
 };
 tink.core._Future.Future_Impl_.gather = function(this1) {
 	var op = new tink.core.FutureTrigger();
@@ -11606,12 +8480,6 @@ tink.core._Future.Future_Impl_.gather = function(this1) {
 			self = null;
 		}
 		return op.future(cb);
-	});
-};
-tink.core._Future.Future_Impl_.first = function(this1,other) {
-	return tink.core._Future.Future_Impl_.async(function(cb) {
-		this1(cb);
-		other(cb);
 	});
 };
 tink.core._Future.Future_Impl_.map = function(this1,f,gather) {
@@ -11629,14 +8497,6 @@ tink.core._Future.Future_Impl_.flatMap = function(this1,next,gather) {
 	var ret = tink.core._Future.Future_Impl_.flatten(tink.core._Future.Future_Impl_.map(this1,next,gather));
 	if(gather) return tink.core._Future.Future_Impl_.gather(ret); else return ret;
 };
-tink.core._Future.Future_Impl_.merge = function(this1,other,merger,gather) {
-	if(gather == null) gather = true;
-	return tink.core._Future.Future_Impl_.flatMap(this1,function(t) {
-		return tink.core._Future.Future_Impl_.map(other,function(a) {
-			return merger(t,a);
-		},false);
-	},gather);
-};
 tink.core._Future.Future_Impl_.flatten = function(f) {
 	return tink.core._Future.Future_Impl_._new(function(callback) {
 		var ret = null;
@@ -11647,9 +8507,6 @@ tink.core._Future.Future_Impl_.flatten = function(f) {
 		});
 		return ret;
 	});
-};
-tink.core._Future.Future_Impl_.fromTrigger = function(trigger) {
-	return trigger.future;
 };
 tink.core._Future.Future_Impl_.ofMany = function(futures,gather) {
 	if(gather == null) gather = true;
@@ -11673,84 +8530,11 @@ tink.core._Future.Future_Impl_.ofMany = function(futures,gather) {
 tink.core._Future.Future_Impl_.fromMany = function(futures) {
 	return tink.core._Future.Future_Impl_.ofMany(futures);
 };
-tink.core._Future.Future_Impl_.lazy = function(l) {
-	return tink.core._Future.Future_Impl_._new(function(cb) {
-		var data = l();
-		cb(data);
-		return null;
-	});
-};
 tink.core._Future.Future_Impl_.sync = function(v) {
 	return tink.core._Future.Future_Impl_._new(function(callback) {
 		callback(v);
 		return null;
 	});
-};
-tink.core._Future.Future_Impl_.async = function(f,lazy) {
-	if(lazy == null) lazy = false;
-	if(lazy) return tink.core._Future.Future_Impl_.flatten(tink.core._Future.Future_Impl_.lazy(tink.core._Lazy.Lazy_Impl_.ofFunc((function(f1,f2,a1) {
-		return function() {
-			return f1(f2,a1);
-		};
-	})(tink.core._Future.Future_Impl_.async,f,false)))); else {
-		var op = new tink.core.FutureTrigger();
-		f($bind(op,op.trigger));
-		return op.future;
-	}
-};
-tink.core._Future.Future_Impl_.or = function(a,b) {
-	return tink.core._Future.Future_Impl_.first(a,b);
-};
-tink.core._Future.Future_Impl_.either = function(a,b) {
-	return tink.core._Future.Future_Impl_.first(tink.core._Future.Future_Impl_.map(a,tink.core.Either.Left,false),tink.core._Future.Future_Impl_.map(b,tink.core.Either.Right,false));
-};
-tink.core._Future.Future_Impl_.and = function(a,b) {
-	return tink.core._Future.Future_Impl_.merge(a,b,function(a1,b1) {
-		return { a : a1, b : b1};
-	});
-};
-tink.core._Future.Future_Impl_._tryFailingFlatMap = function(f,map) {
-	return tink.core._Future.Future_Impl_.flatMap(f,function(o) {
-		switch(o[1]) {
-		case 0:
-			var d = o[2];
-			return map(d);
-		case 1:
-			var f1 = o[2];
-			return tink.core._Future.Future_Impl_.sync(tink.core.Outcome.Failure(f1));
-		}
-	});
-};
-tink.core._Future.Future_Impl_._tryFlatMap = function(f,map) {
-	return tink.core._Future.Future_Impl_.flatMap(f,function(o) {
-		switch(o[1]) {
-		case 0:
-			var d = o[2];
-			return tink.core._Future.Future_Impl_.map(map(d),tink.core.Outcome.Success);
-		case 1:
-			var f1 = o[2];
-			return tink.core._Future.Future_Impl_.sync(tink.core.Outcome.Failure(f1));
-		}
-	});
-};
-tink.core._Future.Future_Impl_._tryFailingMap = function(f,map) {
-	return tink.core._Future.Future_Impl_.map(f,function(o) {
-		return tink.core.OutcomeTools.flatMap(o,tink.core._Outcome.OutcomeMapper_Impl_.withSameError(map));
-	});
-};
-tink.core._Future.Future_Impl_._tryMap = function(f,map) {
-	return tink.core._Future.Future_Impl_.map(f,function(o) {
-		return tink.core.OutcomeTools.map(o,map);
-	});
-};
-tink.core._Future.Future_Impl_._flatMap = function(f,map) {
-	return tink.core._Future.Future_Impl_.flatMap(f,map);
-};
-tink.core._Future.Future_Impl_._map = function(f,map) {
-	return tink.core._Future.Future_Impl_.map(f,map);
-};
-tink.core._Future.Future_Impl_.trigger = function() {
-	return new tink.core.FutureTrigger();
 };
 tink.core.FutureTrigger = function() {
 	var _g = this;
@@ -11764,10 +8548,7 @@ tink.core.FutureTrigger = function() {
 };
 tink.core.FutureTrigger.__name__ = true;
 tink.core.FutureTrigger.prototype = {
-	asFuture: function() {
-		return this.future;
-	}
-	,trigger: function(result) {
+	trigger: function(result) {
 		if(this.list == null) return false; else {
 			var list = this.list;
 			this.list = null;
@@ -11777,206 +8558,10 @@ tink.core.FutureTrigger.prototype = {
 			return true;
 		}
 	}
-	,__class__: tink.core.FutureTrigger
-};
-tink.core._Lazy = {};
-tink.core._Lazy.Lazy_Impl_ = function() { };
-tink.core._Lazy.Lazy_Impl_.__name__ = true;
-tink.core._Lazy.Lazy_Impl_._new = function(r) {
-	return r;
-};
-tink.core._Lazy.Lazy_Impl_.get = function(this1) {
-	return this1();
-};
-tink.core._Lazy.Lazy_Impl_.ofFunc = function(f) {
-	var result = null;
-	return function() {
-		if(f != null) {
-			result = f();
-			f = null;
-		}
-		return result;
-	};
-};
-tink.core._Lazy.Lazy_Impl_.map = function(this1,f) {
-	return tink.core._Lazy.Lazy_Impl_.ofFunc(function() {
-		return f(this1());
-	});
-};
-tink.core._Lazy.Lazy_Impl_.flatMap = function(this1,f) {
-	return tink.core._Lazy.Lazy_Impl_.ofFunc(function() {
-		var this2 = f(this1());
-		return this2();
-	});
-};
-tink.core._Lazy.Lazy_Impl_.ofConst = function(c) {
-	return function() {
-		return c;
-	};
 };
 tink.core.Outcome = { __ename__ : true, __constructs__ : ["Success","Failure"] };
 tink.core.Outcome.Success = function(data) { var $x = ["Success",0,data]; $x.__enum__ = tink.core.Outcome; $x.toString = $estr; return $x; };
 tink.core.Outcome.Failure = function(failure) { var $x = ["Failure",1,failure]; $x.__enum__ = tink.core.Outcome; $x.toString = $estr; return $x; };
-tink.core.OutcomeTools = function() { };
-tink.core.OutcomeTools.__name__ = true;
-tink.core.OutcomeTools.sure = function(outcome) {
-	switch(outcome[1]) {
-	case 0:
-		var data = outcome[2];
-		return data;
-	case 1:
-		var failure = outcome[2];
-		if(js.Boot.__instanceof(failure,tink.core.TypedError)) return failure.throwSelf(); else throw failure;
-		break;
-	}
-};
-tink.core.OutcomeTools.toOption = function(outcome) {
-	switch(outcome[1]) {
-	case 0:
-		var data = outcome[2];
-		return haxe.ds.Option.Some(data);
-	case 1:
-		return haxe.ds.Option.None;
-	}
-};
-tink.core.OutcomeTools.toOutcome = function(option,pos) {
-	switch(option[1]) {
-	case 0:
-		var value = option[2];
-		return tink.core.Outcome.Success(value);
-	case 1:
-		return tink.core.Outcome.Failure(new tink.core.TypedError(404,"Some value expected but none found in " + pos.fileName + "@line " + pos.lineNumber,{ fileName : "Outcome.hx", lineNumber : 37, className : "tink.core.OutcomeTools", methodName : "toOutcome"}));
-	}
-};
-tink.core.OutcomeTools.orUse = function(outcome,fallback) {
-	switch(outcome[1]) {
-	case 0:
-		var data = outcome[2];
-		return data;
-	case 1:
-		return fallback();
-	}
-};
-tink.core.OutcomeTools.orTry = function(outcome,fallback) {
-	switch(outcome[1]) {
-	case 0:
-		return outcome;
-	case 1:
-		return fallback();
-	}
-};
-tink.core.OutcomeTools.equals = function(outcome,to) {
-	switch(outcome[1]) {
-	case 0:
-		var data = outcome[2];
-		return data == to;
-	case 1:
-		return false;
-	}
-};
-tink.core.OutcomeTools.map = function(outcome,transform) {
-	switch(outcome[1]) {
-	case 0:
-		var a = outcome[2];
-		return tink.core.Outcome.Success(transform(a));
-	case 1:
-		var f = outcome[2];
-		return tink.core.Outcome.Failure(f);
-	}
-};
-tink.core.OutcomeTools.isSuccess = function(outcome) {
-	switch(outcome[1]) {
-	case 0:
-		return true;
-	default:
-		return false;
-	}
-};
-tink.core.OutcomeTools.flatMap = function(o,mapper) {
-	return tink.core._Outcome.OutcomeMapper_Impl_.apply(mapper,o);
-};
-tink.core._Outcome = {};
-tink.core._Outcome.OutcomeMapper_Impl_ = function() { };
-tink.core._Outcome.OutcomeMapper_Impl_.__name__ = true;
-tink.core._Outcome.OutcomeMapper_Impl_._new = function(f) {
-	return { f : f};
-};
-tink.core._Outcome.OutcomeMapper_Impl_.apply = function(this1,o) {
-	return this1.f(o);
-};
-tink.core._Outcome.OutcomeMapper_Impl_.withSameError = function(f) {
-	return tink.core._Outcome.OutcomeMapper_Impl_._new(function(o) {
-		switch(o[1]) {
-		case 0:
-			var d = o[2];
-			return f(d);
-		case 1:
-			var f1 = o[2];
-			return tink.core.Outcome.Failure(f1);
-		}
-	});
-};
-tink.core._Outcome.OutcomeMapper_Impl_.withEitherError = function(f) {
-	return tink.core._Outcome.OutcomeMapper_Impl_._new(function(o) {
-		switch(o[1]) {
-		case 0:
-			var d = o[2];
-			{
-				var _g = f(d);
-				switch(_g[1]) {
-				case 0:
-					var d1 = _g[2];
-					return tink.core.Outcome.Success(d1);
-				case 1:
-					var f1 = _g[2];
-					return tink.core.Outcome.Failure(tink.core.Either.Right(f1));
-				}
-			}
-			break;
-		case 1:
-			var f2 = o[2];
-			return tink.core.Outcome.Failure(tink.core.Either.Left(f2));
-		}
-	});
-};
-tink.core._Pair = {};
-tink.core._Pair.Pair_Impl_ = function() { };
-tink.core._Pair.Pair_Impl_.__name__ = true;
-tink.core._Pair.Pair_Impl_._new = function(a,b) {
-	return { a : a, b : b};
-};
-tink.core._Pair.Pair_Impl_.get_a = function(this1) {
-	return this1.a;
-};
-tink.core._Pair.Pair_Impl_.get_b = function(this1) {
-	return this1.b;
-};
-tink.core._Pair.Pair_Impl_.toBool = function(this1) {
-	return this1 != null;
-};
-tink.core._Pair.Pair_Impl_.isNil = function(this1) {
-	return this1 == null;
-};
-tink.core._Pair.Pair_Impl_.nil = function() {
-	return null;
-};
-tink.core._Pair.MPair_Impl_ = function() { };
-tink.core._Pair.MPair_Impl_.__name__ = true;
-tink.core._Pair.MPair_Impl_._new = function(a,b) {
-	return { a : a, b : b};
-};
-tink.core._Pair.MPair_Impl_.get_a = function(this1) {
-	return this1.a;
-};
-tink.core._Pair.MPair_Impl_.get_b = function(this1) {
-	return this1.b;
-};
-tink.core._Pair.MPair_Impl_.set_a = function(this1,v) {
-	return this1.a = v;
-};
-tink.core._Pair.MPair_Impl_.set_b = function(this1,v) {
-	return this1.b = v;
-};
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; }
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
@@ -11992,19 +8577,9 @@ Math.isFinite = function(i) {
 Math.isNaN = function(i1) {
 	return isNaN(i1);
 };
-String.prototype.__class__ = String;
 String.__name__ = true;
 Array.__name__ = true;
-Date.prototype.__class__ = Date;
 Date.__name__ = ["Date"];
-var Int = { __name__ : ["Int"]};
-var Dynamic = { __name__ : ["Dynamic"]};
-var Float = Number;
-Float.__name__ = ["Float"];
-var Bool = Boolean;
-Bool.__ename__ = ["Bool"];
-var Class = { __name__ : ["Class"]};
-var Enum = { };
 if(Array.prototype.map == null) Array.prototype.map = function(f) {
 	var a = [];
 	var _g1 = 0;
@@ -12014,17 +8589,6 @@ if(Array.prototype.map == null) Array.prototype.map = function(f) {
 		a[i] = f(this[i]);
 	}
 	return a;
-};
-if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
-	var a1 = [];
-	var _g11 = 0;
-	var _g2 = this.length;
-	while(_g11 < _g2) {
-		var i1 = _g11++;
-		var e = this[i1];
-		if(f1(e)) a1.push(e);
-	}
-	return a1;
 };
 Xml.Element = "element";
 Xml.PCData = "pcdata";
@@ -12036,6 +8600,7 @@ Xml.Document = "document";
 var q = window.jQuery;
 js.JQuery = q;
 audiotools.Wav16Tools.SAMPLERATE = 48000;
+audiotools.webaudio.pitch.PitchRecognizer.analyzePitch = false;
 haxe.ds.ObjectMap.count = 0;
 haxe.xml.Parser.escapes = (function($this) {
 	var $r;
@@ -12049,84 +8614,7 @@ haxe.xml.Parser.escapes = (function($this) {
 	$r = h;
 	return $r;
 }(this));
-nx3.Constants.BASE_NOTE_VALUE = 3024;
-nx3.Constants.STAVE_LENGTH = 6.8;
-nx3.Constants.STAVE_BASIC_LENGTH = 7;
-nx3.Constants.SIGN_TO_NOTE_DISTANCE = 0.8;
-nx3.Constants.COMPLEX_COLLISION_OVERLAP_XTRA = 0.6;
-nx3.Constants.SIGN_NORMAL_WIDTH = 2.6;
-nx3.Constants.SIGN_PARENTHESIS_WIDTH = 4.4;
-nx3.Constants.HEAD_ADJUST_X = 0;
-nx3.Constants.COMPLEX_COLLISION_ADJUST_SAMELINE = 3.0;
-nx3.Constants.COMPLEX_COLLISION_ADJUST_NEXTLINE = 2.2;
-nx3.Constants.COMPLEX_COLLISION_ADJUST_SAMELINE_WHOLE = 4.3;
-nx3.Constants.COMPLEX_COLLISION_ADJUST_NEXTLINE_WHOLE = 4;
-nx3.Constants.NOTE_STEM_X_NORMAL = 1.6;
-nx3.Constants.HEAD_WIDTH_NORMAL = 3.2;
-nx3.Constants.HEAD_HALFWIDTH_NORMAL = 1.6;
-nx3.Constants.HEAD_HALFWIDTH_WIDE = 2.2;
-nx3.Constants.COMPLEX_COLLISION_CHORD_INTERSECTION = 0.8;
-nx3.Constants.COMPLEX_COLLISION_NEXTLINEDELTA = 0.7;
-nx3.Constants.COMPLEX_COLLISION_NEXTLINEDELTA_H1 = 0.9;
-nx3.Constants.DOT_WIDTH = 2.0;
-nx3.Constants.DDOT_WIDTH = 3.0;
-nx3.Constants.FLAG_HEIGHT = 4.8;
-nx3.Constants.FLAG_WIDTH = 2.6;
-nx3.Constants.FLOAT_QUASI_ZERO = 0.0000001;
 nx3.Constants.FONT_TEXT_DEFAULTFORMAT = { name : "Georgia", size : 20, bold : false, italic : false};
-nx3.Constants.JS_CANVAS_TEXT_MEASUREMENT = "CanvasTextMeasurement";
-nx3.Constants.FONT_TEXT_X_ADJUST_SVG = -0.2;
-nx3.Constants.FONT_TEXT_Y_ADJUST_SVG = -13;
-nx3.Constants.FONT_TEXT_Y_ADJUST_FLASH = -1.2;
-nx3.Constants.FONT_TEXT_X_ADJUST_FLASH = -.3;
-nx3.Constants.BEAM_HEIGHT = 0.95;
-nx3.Constants.TIE_WIDTH_CHORD = 3.2;
-nx3.Constants.TIE_WIDTH_SINGLE = 3;
-nx3.Constants.TIE_HEIGHT = 1.6;
-nx3.Constants.LEGER_MARGIN = 0.6;
-nx3.Constants.OBJECT_XMARGIN = 0.6;
-nx3.Constants.ATTRIBUTE_SIGN_WIDTH = 2.4;
-nx3.Constants.SCORE_DEFAULT_COUNTIN = 0;
-nx3.Constants.SCORE_DEFAULT_TEMPO = 80;
-nx3.Constants.BAR_SPACING_DEFAULT = 8;
-nx3.ENoteValTools.DOT = 1.5;
-nx3.ENoteValTools.DOTDOT = 1.75;
-nx3.ENoteValTools.TRI = 0.66666666;
-nx3.ENoteValTools.N1 = 4;
-nx3.ENoteValTools.N2 = 2;
-nx3.ENoteValTools.N4 = 1;
-nx3.ENoteValTools.N8 = .5;
-nx3.ENoteValTools.N16 = .25;
-nx3.ENoteValTools.N32 = .125;
-nx3.ENoteValTools.valNv1 = 12096;
-nx3.ENoteValTools.valNv1dot = 18144;
-nx3.ENoteValTools.valNv1ddot = 21168;
-nx3.ENoteValTools.valNv1tri = 8063;
-nx3.ENoteValTools.valNv2 = 6048;
-nx3.ENoteValTools.valNv2dot = 9072;
-nx3.ENoteValTools.valNv2ddot = 10584;
-nx3.ENoteValTools.valNv2tri = 4031;
-nx3.ENoteValTools.valNv4 = 3024;
-nx3.ENoteValTools.valNv4dot = 4536;
-nx3.ENoteValTools.valNv4ddot = 5292;
-nx3.ENoteValTools.valNv4tri = 2015;
-nx3.ENoteValTools.valNv8 = 1512;
-nx3.ENoteValTools.valNv8dot = 2268;
-nx3.ENoteValTools.valNv8ddot = 2646;
-nx3.ENoteValTools.valNv8tri = 1007;
-nx3.ENoteValTools.valNv16 = 756;
-nx3.ENoteValTools.valNv16dot = 1134;
-nx3.ENoteValTools.valNv16ddot = 1323;
-nx3.ENoteValTools.valNv16tri = 503;
-nx3.ENoteValTools.valNv32 = 378;
-nx3.ENoteValTools.valNv32dot = 567;
-nx3.ENoteValTools.valNv32ddot = 661;
-nx3.ENoteValTools.valNv32tri = 251;
-nx3.PBaseRectCalculator.BASERECT_HEIGHT = 3;
-nx3.PBaseRectCalculator.BASERECT_HEIGHT_X_2 = 3 * 2;
-nx3.PBaseRectCalculator.BASERECT_MARGIN = 0.6;
-nx3.PBaseRectCalculator.BASERECT_MARGIN_X_2 = 1.2;
-nx3.PColumnsAllotmentCalculator.delta = 0.5;
 nx3.PSystemBarsGenerator.defaultClef = nx3.EClef.ClefF;
 nx3.PSystemBarsGenerator.defaultKey = nx3.EKey.Flat2;
 nx3.PSystemBarsGenerator.defaultTime = nx3.ETime.Time6_4;
@@ -12145,11 +8633,8 @@ nx3.render.svg.SvgElements.pauseNv1 = "<svg><g><rect height=\"26\" width=\"50\" 
 nx3.render.svg.SvgElements.clefG = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\"\r\n\t\t\td=\"m 95.72971,266.7949 c -5.57504,2.79274 -12.48498,4.1891 -20.72511,4.1891 -9.69981,0 -18.99938,-1.66998 -27.91049,-5.00757 -8.90876,-3.33996 -16.75807,-7.86163 -23.54558,-13.56975 -6.78751,-5.70339 -12.24248,-12.38094 -16.36254,-20.03029 -4.12007,-7.64934 -6.1801,-15.78458 -6.1801,-24.40572 0,-29.26234 20.72746,-61.31506 62.18472,-96.1605 -1.3349,-5.34251 -2.33313,-10.74399 -2.99941,-16.209153 -0.66627,-5.460449 -1.00058,-11.107236 -1.00058,-16.938007 0,-8.010226 0.66392,-15.871864 1.99646,-23.582532 1.3302,-7.710668 3.23955,-14.935434 5.72336,-21.674325 2.48617,-6.738864 5.54208,-12.869193 9.17715,-18.393316 3.63272,-5.5265031 7.814,-10.1708424 12.53677,-13.9306366 16.47555,22.8253826 24.71097,44.6247216 24.71097,65.3862176 0,13.480109 -3.18069,26.321 -9.54442,38.522682 -6.36138,12.20404 -16.32959,24.07079 -29.90225,35.60967 l 7.99763,38.42834 c 4.36256,-0.35616 6.78751,-0.53307 7.2725,-0.53307 6.05767,0 11.72453,1.09209 16.99586,3.27863 5.27368,2.18418 9.88109,5.18919 13.82693,9.01269 3.94349,3.82349 7.07003,8.34517 9.37727,13.56502 2.30488,5.21986 3.4585,10.86193 3.46085,16.93329 -0.002,4.36836 -0.78869,8.68011 -2.36374,12.92581 -1.57504,4.25042 -3.814,8.28856 -6.72159,12.10969 -2.90994,3.82586 -6.36373,7.34272 -10.36137,10.55766 -3.99764,3.21965 -8.42141,5.98172 -13.26896,8.28856 0,-0.24294 0.18129,0.45523 0.54385,2.09218 0.36492,1.63932 0.8193,3.79048 1.36315,6.46291 0.5462,2.67008 1.18187,5.64443 1.90935,8.92306 0.72749,3.27626 1.36316,6.43224 1.90936,9.46556 0.5462,3.03568 1.02884,5.73878 1.45497,8.10222 0.42378,2.37052 0.63567,3.97681 0.63567,4.82595 0,5.70576 -1.21248,10.92561 -3.63508,15.65957 -2.42495,4.73396 -5.69746,8.80041 -9.81988,12.19933 -4.12006,3.39656 -8.90875,6.03833 -14.36136,7.9206 -5.45497,1.88226 -11.21364,2.82339 -17.27602,2.82339 -4.60506,0 -8.90641,-0.72885 -12.90875,-2.18654 -4,-1.45769 -7.515,-3.52157 -10.54502,-6.18929 -3.02765,-2.67244 -5.422,-5.91568 -7.18068,-9.73918 -1.75632,-3.82113 -2.63449,-8.03853 -2.63449,-12.64984 0,-3.27862 0.54621,-6.37563 1.63626,-9.2863 1.09005,-2.91066 2.60623,-5.39912 4.54384,-7.463 1.93996,-2.06389 4.3037,-3.7032 7.09122,-4.91323 2.78987,-1.21474 5.81989,-1.82329 9.09004,-1.82329 2.90994,0 5.63625,0.66988 8.18127,2.00492 2.54502,1.33503 4.72748,3.06634 6.54502,5.18919 1.81754,2.12521 3.27251,4.5547 4.36491,7.2861 1.09005,2.72905 1.63626,5.49111 1.63626,8.28384 0,6.31431 -2.33314,11.4752 -7.00176,15.48267 -4.66627,4.00512 -10.51205,6.37328 -17.54441,7.09976 5.57504,2.79509 11.329,4.19146 17.2666,4.1891 4.8452,0.002 9.57268,-0.87745 14.17773,-2.64177 4.6027,-1.75961 8.62859,-4.12777 12.08474,-7.10212 3.45379,-2.97436 6.24131,-6.43932 8.3602,-10.38547 2.11889,-3.94614 3.18069,-8.16354 3.18069,-12.65692 0,-1.70299 -0.18365,-3.58526 -0.54385,-5.64914 L 95.72971,266.7949 z M 95.18821,27.488123 c -1.21483,-0.243068 -2.30724,-0.365597 -3.27486,-0.365597 -3.75986,0 -7.24661,1.912917 -10.46026,5.738777 -3.21365,3.823478 -6.00352,8.80275 -8.36726,14.933079 -2.36374,6.132684 -4.21188,13.022518 -5.54914,20.671856 -1.33254,7.649365 -2.00117,15.298698 -2.00117,22.948042 0,3.158334 0.12478,6.194011 0.36492,9.10704 0.24485,2.91538 0.67333,5.70811 1.2831,8.37819 24.73216,-21.976242 37.09942,-41.768292 37.09942,-59.373819 0,-8.378205 -3.03237,-15.723276 -9.09475,-22.037568 z m 3.814,231.850857 c 5.94467,-4.37072 10.46026,-9.16837 13.55619,-14.39058 3.09123,-5.21986 4.63802,-10.86429 4.63802,-16.93801 0,-3.76216 -0.63802,-7.4347 -1.91171,-11.01996 -1.27134,-3.57818 -3.08887,-6.76718 -5.45497,-9.56227 -2.36609,-2.78801 -5.18657,-5.03588 -8.46143,-6.7318 -3.27486,-1.69828 -6.85108,-2.54506 -10.72865,-2.54506 -0.24249,0 -0.72749,0.0307 -1.45497,0.0873 -0.72513,0.0613 -1.75633,0.15097 -3.08887,0.2689 l 12.90639,60.83151 z M 81.56374,199.26225 c -3.75749,0.48354 -7.2725,1.42468 -10.545,2.82104 -3.27251,1.39637 -6.08828,3.12767 -8.45202,5.19155 -2.36374,2.06389 -4.24249,4.43205 -5.63625,7.10212 -1.39376,2.67244 -2.09064,5.58546 -2.09064,8.7438 0,9.34762 4.96527,17.11962 14.88874,23.31127 -8.24013,-1.33503 -14.84636,-4.52167 -19.81634,-9.56227 -4.96997,-5.03823 -7.45378,-11.38084 -7.45378,-19.03255 0,-4.49101 0.93937,-8.83106 2.81812,-13.02016 1.87875,-4.18909 4.39317,-7.95598 7.54325,-11.30065 3.15479,-3.34703 6.85108,-6.23647 11.09121,-8.66595 4.24249,-2.43421 8.72748,-4.13721 13.45261,-5.10664 l -7.63507,-36.42579 c -17.08768,12.86684 -30.02468,25.49546 -38.81101,37.88112 -8.78633,12.38567 -13.1795,24.64868 -13.1795,36.79139 0,6.67755 1.48322,12.99421 4.45438,18.94292 2.97115,5.95106 6.9735,11.14026 12.00469,15.5723 5.03119,4.4344 10.85107,7.92531 17.45966,10.47274 6.60623,2.55214 13.60563,3.82821 20.9982,3.82821 4.24249,0 8.18127,-0.39627 11.81634,-1.18408 3.63743,-0.79017 7.03001,-2.03558 10.1801,-3.73386 L 81.56374,199.26225 z\" />\r\n\t\t</g></svg>";
 nx3.render.svg.SvgElements.clefC = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\"\r\n\t\t\td=\"M 90,276 C 86,276 81,275 77,274 73,273 70,271 67,268 64,266 61,263 60,260 58,256 57,253 57,249 57,247 57,245 58,243 59,241 60,239 61,238 63,236 64,235 66,234 68,233 70,232 72,232 74,232 76,233 77,233 79,234 81,236 82,237 84,238 85,240 86,242 87,244 87,246 87,248 87,250 86,252 85,253 84,255 82,256 80,258 79,259 77,260 76,261 75,262 74,262 74,263 74,267 79,269 88,269 92,269 96,268 98,267 101,266 103,264 105,261 107,258 108,255 109,250 110,245 110,239 110,232 110,228 110,224 109,220 108,216 107,212 105,210 104,207 102,204 100,203 98,201 96,200 93,200 84,200 76,207 67,222 66,217 65,213 64,209 63,205 62,201 60,199 59,196 57,193 55,192 53,190 52,189 49,189 48,189 47,189 46,190 L 46,275 39,275 39,93 46,93 46,179 C 46,179 47,179 47,179 48,180 48,180 49,180 51,180 53,179 55,177 57,175 59,173 60,170 62,167 63,163 64,159 65,155 66,151 67,147 77,160 86,166 92,166 94,166 97,165 99,164 101,162 103,160 104,157 106,155 107,151 108,148 109,144 109,140 109,135 109,128 109,122 108,117 107,113 106,109 104,107 102,104 99,102 96,101 93,100 89,100 84,100 75,100 71,102 71,105 71,106 73,107 75,108 80,110 83,112 85,114 86,116 87,118 87,121 87,123 87,124 86,126 85,128 84,130 83,131 81,133 80,134 78,135 76,136 74,137 72,137 68,137 64,135 61,132 58,129 56,125 56,120 56,114 58,108 62,102 66,98 70,95 74,94 79,93 83,92 88,92 95,92 101,93 106,95 112,96 116,99 120,102 124,105 127,110 129,114 131,119 132,125 132,131 132,136 131,142 129,147 128,152 125,157 122,161 119,165 116,168 112,170 108,173 103,174 98,174 89,174 81,172 76,169 L 76,169 C 74,169 72,170 71,173 70,175 69,178 69,182 69,184 69,186 69,188 70,191 70,193 71,194 72,196 72,197 73,198 74,199 75,200 76,200 79,197 82,194 86,193 89,191 93,190 97,190 102,190 107,191 111,194 116,196 120,200 123,204 126,209 129,214 130,219 132,225 133,231 133,237 133,250 129,259 122,266 114,273 104,276 90,276 Z M 27,93 L 27,275 4,275 4,93 27,93 Z\"/>\r\n\t\t</g></svg>";
 nx3.render.svg.SvgElements.clefF = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\"\r\n\t\t\td=\"M 8,240 C 21,236 32,230 39,224 45,218 51,211 57,204 62,197 67,190 70,183 74,176 77,168 79,161 81,153 82,146 82,139 82,133 81,127 80,122 78,118 76,113 73,110 70,106 66,103 62,101 58,99 53,98 48,98 44,98 41,99 37,100 33,101 30,103 27,106 24,108 22,111 20,114 18,117 17,120 17,123 17,125 17,126 18,126 18,126 18,126 19,125 20,125 20,124 22,123 23,123 24,122 26,122 27,121 29,121 31,121 33,121 35,121 36,122 38,123 40,124 41,126 42,127 43,129 44,131 45,133 45,135 45,137 45,143 43,147 40,151 36,155 32,157 26,157 23,157 20,156 18,155 16,154 14,152 12,149 10,147 9,144 8,141 7,138 7,134 7,131 7,126 8,121 11,116 13,111 16,107 21,104 25,101 29,98 35,96 40,94 46,93 52,93 62,93 71,95 78,98 85,101 91,105 95,111 99,116 102,122 104,128 105,134 106,140 106,147 106,150 106,154 105,157 105,161 104,164 102,168 101,172 99,176 97,180 94,185 91,190 88,195 84,202 78,209 71,215 64,221 57,226 50,230 43,235 36,238 29,240 23,243 18,244 14,244 10,244 8,243 8,240 Z M 121,116 C 121,113 122,111 124,110 125,108 127,107 130,107 133,107 135,108 136,110 138,111 139,113 139,116 139,119 138,121 136,122 135,124 133,125 130,125 127,125 125,124 124,122 122,121 121,119 121,116 Z M 121,162 C 121,159 122,157 124,156 125,154 127,153 130,153 133,153 135,154 136,156 138,157 139,159 139,162 139,165 138,167 136,168 135,170 133,171 130,171 127,171 125,170 124,168 122,167 121,165 121,162 Z\"/>\r\n\t\t</g></svg>";
-nx3.render.svg.SvgElements.HVT4 = nx3.render.svg.SvgElements.noteBlack;
 nx3.render.svg.SvgElements.noteBlack = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\"\r\n\t\t\td = \"m 20.557649,250.57631 c -5.81753,-0.002 -10.6650905,-1.36806 -14.5450105,-4.0971 -3.87756,-2.73612 -5.81516995,-6.6516 -5.81516995,-11.74881 0,-4.12777 1.30193995,-8.10458 3.90816995,-11.92807 2.60387,-3.82585 5.9069905,-7.19411 9.9070005,-10.1095 3.99998,-2.91302 8.452014,-5.24816 13.360774,-7.01013 4.90876,-1.7596 9.66448,-2.63941 14.2719,-2.63941 6.1801,0 11.17834,1.42467 14.99703,4.27637 3.81636,2.85406 5.72572,6.70821 5.72572,11.56483 0,4.00747 -1.30195,7.92295 -3.90817,11.7488 -2.60623,3.8235 -5.93761,7.19412 -9.99882,10.10714 -4.05885,2.91303 -8.54382,5.27883 -13.45258,7.10448 -4.90878,1.81858 -9.72573,2.72905 -14.450844,2.7314 z\" />\r\n\t\t</g></svg>";
-nx3.render.svg.SvgElements.HVT2 = nx3.render.svg.SvgElements.noteWhite;
 nx3.render.svg.SvgElements.noteWhite = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\"\r\n\t\t\td=\"m -0.01820308,235.29885 c 0,-4.12777 1.15125988,-8.19421 3.45376988,-12.20168 2.30253,-4.00747 5.3325496,-7.55735 9.0900592,-10.65436 3.7575,-3.09701 7.96936,-5.58546 12.63565,-7.46772 4.66627,-1.88227 9.30428,-2.8234 13.90934,-2.8234 7.63741,0 13.69743,1.60865 18.18243,4.82831 4.48262,3.2173 6.72393,7.73898 6.72863,13.56739 -0.005,4.25042 -1.21482,8.25553 -3.63977,12.02006 -2.4226,3.76452 -5.57504,7.04315 -9.4526,9.83588 -3.87756,2.79037 -8.30134,5.00522 -13.27367,6.64689 -4.96763,1.63695 -10.06001,2.45779 -15.27249,2.46015 -6.18245,-0.002 -11.45615,-1.42939 -15.8186992,-4.28109 -4.36254,-2.85641 -6.54264988,-6.83322 -6.54264988,-11.93043 z M 49.439026,207.62158 c -1.93759,0 -4.39551,0.48589 -7.3643,1.45769 -2.97117,0.96944 -6.15186,2.2455 -9.54915,3.82113 -3.39257,1.57799 -6.75924,3.39893 -10.09297,5.46517 -3.33606,2.06388 -6.36843,4.18438 -9.09475,6.37091 -2.731,2.18182 -4.9417295,4.39902 -6.6391792,6.64453 -1.69512,2.24787 -2.54502,4.28109 -2.54738,6.10202 0.002,5.7034 3.4561299,8.55746 10.3684392,8.55746 3.27486,0 7.45849,-1.06143 12.55087,-3.18664 5.09241,-2.12285 10.0624,-4.73396 14.91464,-7.82861 4.84756,-3.097 9.03119,-6.34497 12.54619,-9.74153 3.51735,-3.40128 5.27603,-6.4346 5.27603,-9.10468 0,-5.7034 -3.45377,-8.55745 -10.36844,-8.55745 z\" />\r\n\t\t</g></svg>";
-nx3.render.svg.SvgElements.HVT1 = nx3.render.svg.SvgElements.noteWhole;
 nx3.render.svg.SvgElements.noteWhole = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\"\r\n\t\t\td=\"m 0.14197458,226.9183 c 0,-3.64187 1.21011002,-6.97946 3.63271012,-10.01514 2.4226,-3.03568 5.66217,-5.64679 9.7233503,-7.83569 4.0565,-2.18182 8.692204,-3.85179 13.899944,-5.00757 5.21012,-1.15106 10.54031,-1.72894 15.99057,-1.7313 5.09006,0.002 10.08827,0.64157 14.99232,1.91292 4.9064,1.27843 9.32782,3.00738 13.26661,5.19156 3.93643,2.18653 7.11712,4.76698 9.54208,7.74133 2.42025,2.97671 3.63271,6.22468 3.63271,9.74389 0,3.88718 -1.0312,7.34743 -3.08885,10.38311 -2.06004,3.03568 -4.99825,5.58546 -8.81461,7.64935 -3.81636,2.06388 -8.38843,3.67253 -13.71862,4.8283 -5.33019,1.15106 -11.26544,1.72895 -17.8081,1.73131 -5.81517,-0.002 -11.23482,-0.58025 -16.26603,-1.73131 -5.026479,-1.15577 -9.389044,-2.79508 -13.082984,-4.9203 -3.6962903,-2.12521 -6.6015203,-4.70565 -8.7204103,-7.73897 -2.1212401,-3.03568 -3.18069012,-6.43696 -3.18069012,-10.20149 z m 65.06407442,9.28158 c 0,-4.00511 -1.39376,-8.80276 -4.18363,-14.38822 -1.33254,-2.67007 -2.75691,-5.00757 -4.27074,-7.01248 -1.51618,-2.00256 -3.18305,-3.61121 -5.00057,-4.82595 -1.81754,-1.21239 -3.90817,-2.12522 -6.27193,-2.73141 -2.36373,-0.60619 -5.06179,-0.91047 -8.09181,-0.91047 -11.63506,0 -17.452602,4.675 -17.452602,14.02498 0,3.51922 0.696896,6.88984 2.090662,10.10714 1.39376,3.2173 3.24189,6.10202 5.54443,8.6518 2.30253,2.54978 4.84756,4.583 7.63508,6.09966 2.78751,1.51902 5.63859,2.27853 8.54853,2.27853 2.6651,0 5.17951,-0.12266 7.54324,-0.3656 2.36376,-0.24296 4.485,-0.72885 6.36375,-1.45769 1.8811,-0.72649 3.48674,-1.8516 4.81694,-3.36826 1.33489,-1.51666 2.24367,-3.55224 2.72865,-6.10203 z\" />\r\n\t\t</g></svg>";
 nx3.render.svg.SvgElements.signNatural = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;display:inline\"\r\n\t\t\td=\"m 27.763524,289.1105 0,-36.43051 -27.82574358,9.65191 0,-97.8116 4.52499988,0 0.0183,36.60977 27.8092637,-9.83589 0,97.81632 -4.52736,0 z m -23.3007437,-42.80378 23.3007437,-8.38055 -0.0157,-30.60209 -23.2842537,8.55981 0,30.42283 z\" />\t\r\n\t\t</g></svg>";
 nx3.render.svg.SvgElements.signSharp = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;display:inline\"\r\n\t\t\td=\"m 31.526296,208.23455 -17.48556,5.8284 0.0157,31.51021 17.46908,-5.82841 0,-31.5102 z m 4.52736,-43.89588 0.0131,26.0474 9.44083,-3.09464 0,16.5724 -9.4526,3.097 0,31.50785 9.4526,-3.09701 0,16.57476 -9.4526,3.09701 0,28.59482 -4.52736,0 0,-27.32111 -17.48556,5.82841 0,27.31875 -4.52736,0 0,-26.04268 -9.4526,3.09464 0,-16.57239 9.4526,-3.09701 -0.0131,-31.50785 -9.43847,3.09465 0,-16.5724 9.4526,-3.09701 0,-28.59482 4.52736,0 0.0157,27.32111 17.46908,-5.82841 0,-27.32347 4.52736,0 z\" />\t\r\n\t\t</g></svg>";
@@ -12173,22 +8658,6 @@ nx3.render.svg.SvgElements.time8 = "<svg><g><path style=\"fill:#000000;fill-opac
 nx3.render.svg.SvgElements.time9 = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\" \r\n\t\t\td=\"M 4,212 C 4,202 7,195 13,190 20,185 28,183 39,183 50,183 58,187 64,195 70,203 73,213 73,227 73,233 72,238 70,244 68,249 66,253 63,257 59,261 55,264 51,267 46,269 41,270 36,270 32,270 29,270 25,269 22,268 19,267 16,265 14,263 11,262 10,259 8,257 7,255 7,252 7,249 8,246 11,244 13,241 15,240 19,240 23,240 26,241 28,244 30,246 31,249 31,253 31,254 31,255 30,257 30,259 29,260 29,261 29,264 31,265 35,265 45,265 50,254 50,232 L 50,229 C 42,233 35,235 29,235 21,235 15,233 11,229 6,225 4,219 4,212 Z M 38,189 C 34,189 30,191 28,195 25,198 24,203 24,209 24,214 25,218 27,222 29,225 32,227 36,227 45,227 50,221 50,209 50,203 49,199 47,195 45,191 42,189 38,189 Z\"/>\r\n\t\t</g></svg>";
 nx3.render.svg.SvgElements.timeCommon = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\" \r\n\t\t\td=\"M 78,247 C 77,250 76,253 74,255 72,258 70,261 67,263 64,265 61,267 58,268 55,269 52,270 49,270 43,270 37,269 32,267 27,264 23,261 19,257 16,253 13,248 11,243 9,238 8,232 8,226 8,220 9,214 11,209 13,204 15,199 19,196 22,192 26,189 31,187 36,185 42,184 48,184 51,184 55,184 59,185 62,186 66,187 68,189 71,190 73,192 75,194 76,197 77,199 77,202 77,205 76,208 73,210 71,212 68,213 65,213 62,213 59,212 56,210 53,208 52,205 52,202 52,198 54,193 59,189 56,189 54,189 52,189 48,189 45,190 42,192 39,193 36,196 34,199 32,202 31,205 30,210 29,214 28,218 28,224 28,229 29,234 30,239 31,244 33,248 35,252 37,256 39,259 42,261 45,264 48,265 52,265 60,265 69,259 78,247 Z\"/>\r\n\t\t</g></svg>";
 nx3.render.svg.SvgElements.timeAllabreve = "<svg><g><path style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none\" \r\n\t\t\td=\"M 39,191 C 30,197 26,207 26,223 26,227 26,230 27,234 28,238 29,241 30,245 31,248 32,251 34,254 35,257 37,259 39,261 L 39,191 Z M 74,247 C 73,250 72,253 70,256 68,259 66,261 63,263 61,265 58,267 55,268 52,270 49,270 46,270 L 45,270 45,284 39,284 39,270 C 34,269 29,267 25,264 21,262 18,259 15,255 12,251 10,246 8,241 7,236 6,231 6,225 6,220 7,215 8,210 10,205 12,201 15,198 18,194 21,191 25,188 29,186 34,185 39,184 L 39,171 45,171 45,184 C 49,184 52,184 56,185 59,186 63,187 65,189 68,191 70,192 72,195 73,197 74,199 74,202 74,205 73,207 70,210 68,212 65,213 62,213 59,213 56,212 53,210 50,208 49,205 49,202 49,198 51,193 56,189 55,189 54,189 52,189 51,188 50,188 49,188 48,188 48,188 47,188 46,188 46,188 45,189 L 45,265 C 46,265 48,265 49,265 57,265 66,259 74,247 Z\"/>\r\n\t\t</g></svg>";
-nx3.render.svg.SvgElements.tplCircle = "<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#FFFFFFF\"><path d=\"M 93,253 C 78,253 66,250 53,242 41,235 32,226 25,214 17,201 14,189 14,175 14,160 17,148 25,135 32,123 41,114 53,107 66,99 78,96 92,96 107,96 119,99 132,107 144,114 153,123 160,135 168,148 171,160 171,174 171,189 168,201 160,214 153,226 144,235 132,242 119,250 107,253 93,253 L 93,253 Z\"/></g><g style=\"stroke:#000000;fill:none\"><path style=\"fill:none\" d=\"M 93,253 C 78,253 66,250 53,242 41,235 32,226 25,214 17,201 14,189 14,175 14,160 17,148 25,135 32,123 41,114 53,107 66,99 78,96 92,96 107,96 119,99 132,107 144,114 153,123 160,135 168,148 171,160 171,174 171,189 168,201 160,214 153,226 144,235 132,242 119,250 107,253 93,253\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 71,256 C 64,254 57,252 50,248 44,244 38,239 33,234 28,229 23,223 19,217 15,210 13,203 11,196 9,189 8,182 8,175 8,167 9,160 11,153 13,146 15,139 19,132 23,126 28,120 33,115 38,110 44,105 50,101 57,97 64,95 71,93 78,91 85,90 92,90 100,90 107,91 114,93 121,95 128,97 135,101 141,105 147,110 152,115 157,120 162,126 166,132 170,139 172,146 174,153 176,160 177,167 177,174 177,182 176,189 174,196 172,203 170,210 166,217 162,223 157,229 152,234 147,239 141,244 135,248 128,252 121,254 114,256 107,258 100,259 93,259 85,259 78,258 71,256 Z M 130,239 C 136,236 141,232 145,227 150,223 154,218 157,212 160,206 163,200 165,194 166,188 167,181 167,174 167,168 166,161 165,155 163,149 160,143 157,137 154,131 150,126 145,122 141,117 136,113 130,110 124,107 118,104 112,102 106,101 99,100 92,100 86,100 79,101 73,102 67,104 61,107 55,110 49,113 44,117 40,122 35,126 31,131 28,137 25,143 22,149 20,155 19,161 18,168 18,175 18,181 19,188 20,194 22,200 25,206 28,212 31,218 35,223 40,227 44,232 49,236 55,239 61,242 67,245 73,247 79,248 86,249 93,249 99,249 106,248 112,247 118,245 124,242 130,239 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"8\" y=\"89\" width=\"170\" height=\"171\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"854\" height=\"964\"/></g><g/></g></g></g></svg>";
-nx3.render.svg.SvgElements.tplCircleUp = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 71,256 C 64,254 57,252 50,248 44,244 38,239 33,234 28,229 23,223 19,217 15,210 13,203 11,196 9,189 8,182 8,175 8,167 9,160 11,153 13,146 15,139 19,132 23,126 28,120 33,115 38,110 44,105 50,101 57,97 64,95 71,93 78,91 85,90 92,90 100,90 107,91 114,93 121,95 128,97 135,101 141,105 147,110 152,115 157,120 162,126 166,132 170,139 172,146 174,153 176,160 177,167 177,174 177,182 176,189 174,196 172,203 170,210 166,217 162,223 157,229 152,234 147,239 141,244 135,248 128,252 121,254 114,256 107,258 100,259 93,259 85,259 78,258 71,256 Z M 130,239 C 136,236 141,232 145,227 150,223 154,218 157,212 160,206 163,200 165,194 166,188 167,181 167,174 167,168 166,161 165,155 163,149 160,143 157,137 154,131 150,126 145,122 141,117 136,113 130,110 124,107 118,104 112,102 106,101 99,100 92,100 86,100 79,101 73,102 67,104 61,107 55,110 49,113 44,117 40,122 35,126 31,131 28,137 25,143 22,149 20,155 19,161 18,168 18,175 18,181 19,188 20,194 22,200 25,206 28,212 31,218 35,223 40,227 44,232 49,236 55,239 61,242 67,245 73,247 79,248 86,249 93,249 99,249 106,248 112,247 118,245 124,242 130,239 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"8\" y=\"89\" width=\"170\" height=\"171\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"854\" height=\"964\"/></g><g/></g></g><g><desc>Group</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 70,52 L 92,10 114,52 70,52 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"70\" y=\"10\" width=\"45\" height=\"44\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 92,95 L 84,95 84,43 100,43 100,95 92,95 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"84\" y=\"43\" width=\"17\" height=\"53\"/></g><g/></g></g></g></g></svg>\r\n\t";
-nx3.render.svg.SvgElements.tplArrowDown = "\t\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"854\" height=\"964\"/></g><g/></g></g><g><desc>Group</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 69,298 L 92,344 115,298 69,298 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"69\" y=\"298\" width=\"47\" height=\"47\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 92,252 L 100,252 100,309 84,309 84,252 92,252 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"83\" y=\"252\" width=\"18\" height=\"59\"/></g><g/></g></g></g></g></svg>\t\r\n\t";
-nx3.render.svg.SvgElements.tplArrowUp = "\t\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"854\" height=\"964\"/></g><g/></g></g><g><desc>Group</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 70,52 L 92,10 114,52 70,52 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"70\" y=\"10\" width=\"45\" height=\"44\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 92,95 L 84,95 84,43 100,43 100,95 92,95 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"84\" y=\"43\" width=\"17\" height=\"53\"/></g><g/></g></g></g></g></svg>\r\n\t";
-nx3.render.svg.SvgElements.tpl1 = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 106,225 L 93,225 93,146 C 90,149 86,152 82,155 77,158 73,160 69,161 L 69,149 C 76,146 82,142 87,137 92,133 96,128 98,124 L 106,124 106,225 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"69\" y=\"124\" width=\"38\" height=\"103\"/></g><g/></g></g></g></svg>\t\r\n\t";
-nx3.render.svg.SvgElements.tpl2 = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 124,212 L 124,225 58,225 C 58,222 58,219 59,216 61,211 64,207 67,202 71,197 76,192 83,187 93,178 101,171 104,166 108,161 110,157 110,152 110,148 108,144 105,141 102,138 97,136 92,136 86,136 82,138 78,141 75,144 73,148 73,154 L 60,152 C 61,143 64,136 70,131 75,126 83,124 92,124 102,124 109,127 115,132 120,137 123,144 123,152 123,156 122,160 121,164 119,168 117,172 113,176 109,180 103,186 95,193 87,199 83,203 80,206 78,208 77,210 75,212 L 124,212 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"57\" y=\"124\" width=\"68\" height=\"103\"/></g><g/></g></g></g></svg>\t\r\n\t";
-nx3.render.svg.SvgElements.tpl3 = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 60,198 L 73,196 C 74,202 77,207 80,210 83,213 87,214 92,214 99,214 104,212 107,208 111,204 113,200 113,194 113,189 111,184 108,181 104,177 99,176 94,176 91,176 88,176 85,177 L 86,165 C 87,165 88,165 88,165 93,165 98,164 102,161 106,159 108,155 108,150 108,146 106,143 103,140 100,137 97,136 92,136 87,136 83,137 80,140 77,143 75,147 74,152 L 61,150 C 63,142 66,135 71,131 77,126 83,124 91,124 97,124 102,125 107,127 111,130 115,133 117,137 120,141 121,145 121,150 121,154 120,158 117,161 115,165 112,167 107,169 113,171 118,174 121,178 124,182 126,188 126,194 126,203 123,211 116,217 110,223 102,226 92,226 83,226 76,223 70,218 64,213 61,206 60,198 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"60\" y=\"124\" width=\"67\" height=\"104\"/></g><g/></g></g></g></svg>\t\r\n\t";
-nx3.render.svg.SvgElements.tpl4 = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 101,225 L 101,201 56,201 56,188 104,125 114,125 114,188 126,188 126,201 114,201 114,225 101,225 Z M 101,188 L 101,145 69,188 101,188 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"55\" y=\"125\" width=\"72\" height=\"101\"/></g><g/></g></g></g></svg>\t\r\n\t";
-nx3.render.svg.SvgElements.tpl5 = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 60,198 L 73,197 C 74,203 76,207 79,210 83,213 87,214 92,214 98,214 103,212 107,208 111,204 113,198 113,191 113,185 111,179 108,176 104,172 99,170 93,170 88,170 85,171 82,173 79,174 77,176 75,179 L 62,177 72,125 121,125 121,138 83,138 78,165 C 84,160 90,158 96,158 104,158 112,161 117,167 123,173 126,181 126,190 126,199 123,207 118,214 112,222 103,226 92,226 83,226 76,223 70,218 64,213 61,206 60,198 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"60\" y=\"125\" width=\"67\" height=\"103\"/></g><g/></g></g></g></svg>\t\r\n\t";
-nx3.render.svg.SvgElements.tpl6x = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 124,150 L 111,151 C 110,146 108,143 106,141 103,138 99,136 94,136 90,136 86,137 83,139 80,142 77,145 74,150 72,155 71,162 71,172 74,168 78,165 82,162 86,160 91,159 96,159 104,159 111,162 117,168 123,174 126,182 126,192 126,198 125,204 122,209 119,215 115,219 110,222 105,225 100,226 94,226 83,226 75,222 68,215 61,207 58,195 58,178 58,158 62,144 69,135 75,128 84,124 95,124 103,124 110,126 115,131 120,136 123,142 124,150 Z M 71,191 C 71,195 72,199 74,203 76,206 78,209 82,211 85,213 89,214 93,214 99,214 103,212 107,208 111,204 113,199 113,192 113,186 111,180 107,177 104,173 99,171 92,171 86,171 81,173 77,177 73,180 71,185 71,191 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"58\" y=\"124\" width=\"69\" height=\"104\"/></g><g/></g></g></g></svg>\t\r\n\t";
-nx3.render.svg.SvgElements.tpl6 = "\r\n<svg ><g style=\"stroke:none;fill:#000000\"><path d=\"M 124,150 L 111,151 C 110,146 108,143 106,141 103,138 99,136 94,136 90,136 86,137 83,139 80,142 77,145 74,150 72,155 71,162 71,172 74,168 78,165 82,162 86,160 91,159 96,159 104,159 111,162 117,168 123,174 126,182 126,192 126,198 125,204 122,209 119,215 115,219 110,222 105,225 100,226 94,226 83,226 75,222 68,215 61,207 58,195 58,178 58,158 62,144 69,135 75,128 84,124 95,124 103,124 110,126 115,131 120,136 123,142 124,150 Z M 71,191 C 71,195 72,199 74,203 76,206 78,209 82,211 85,213 89,214 93,214 99,214 103,212 107,208 111,204 113,199 113,192 113,186 111,180 107,177 104,173 99,171 92,171 86,171 81,173 77,177 73,180 71,185 71,191 Z\"/></g></svg>\t\r\n\t";
-nx3.render.svg.SvgElements.tpl7 = "\r\n<svg ><g visibility=\"visible\" id=\"page1\"><desc>Slide</desc><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:none\"><rect x=\"0\" y=\"464\" width=\"503\" height=\"1205\"/></g><g/></g></g><g><desc>Drawing</desc><g><g style=\"stroke:none;fill:#000000\"><path d=\"M 61,138 L 61,125 126,125 126,136 C 120,142 114,152 108,163 102,174 97,186 94,197 91,206 90,215 89,225 L 76,225 C 76,217 78,208 81,196 83,185 87,175 93,164 98,154 104,145 110,138 L 61,138 Z\"/></g><g style=\"stroke:none;fill:none\"><rect x=\"61\" y=\"125\" width=\"67\" height=\"101\"/></g><g/></g></g></g></svg>\t\r\n\t";
-nx3.xml.BarXML.XBAR = "bar";
-nx3.xml.BarXML.XBAR_TYPE = "type";
-nx3.xml.BarXML.XBAR_TIME = "time";
-nx3.xml.BarXML.XBAR_TIMEDISPLAY = "timedisplay";
 nx3.xml.HeadXML.XHEAD = "headx";
 nx3.xml.HeadXML.XHEAD_TYPE = "type";
 nx3.xml.HeadXML.XHEAD_LEVEL = "level";
@@ -12197,62 +8666,6 @@ nx3.xml.HeadXML.XHEAD_TIE = "tie";
 nx3.xml.HeadXML.XHEAD_TIETO = "tieto";
 nx3.xml.HeadXML.XHEAD_TIE_DIRECTION = "tiedirection";
 nx3.xml.HeadXML.XHEAD_TIE_LEVEL = "tielevel";
-nx3.xml.NoteXML.XNOTE = "note";
-nx3.xml.NoteXML.XPAUSE = "pause";
-nx3.xml.NoteXML.XPAUSE_LEVEL = "level";
-nx3.xml.NoteXML.XLYRIC = "lyric";
-nx3.xml.NoteXML.XLYRIC_TEXT = "text";
-nx3.xml.NoteXML.XUNDEFINED = "undefined";
-nx3.xml.NoteXML.XPITCH = "pitch";
-nx3.xml.NoteXML.XPITCH_LEVEL = "level";
-nx3.xml.NoteXML.XPITCH_MIDINOTE = "midinote";
-nx3.xml.NoteXML.XNOTE_TYPE = "type";
-nx3.xml.NoteXML.XNOTE_TYPE_NOTE = "note";
-nx3.xml.NoteXML.XNOTE_TYPE_NOTATION_VARIANT = "variant";
-nx3.xml.NoteXML.XNOTE_VALUE = "value";
-nx3.xml.NoteXML.XNOTE_VAL = "val";
-nx3.xml.NoteXML.XNOTE_DIRECTION = "direction";
-nx3.xml.NoteXML.XNOTE_TYPE_PAUSE = "pause";
-nx3.xml.NoteXML.XNOTE_TYPE_NOTE_ARTICULATIONS = "articulations";
-nx3.xml.NoteXML.LIST_DELIMITER = ";";
-nx3.xml.NoteXML.XNOTE_TYPE_NOTE_ATTRIBUTES = "attributes";
-nx3.xml.NoteXML.XOFFSET = "offset";
-nx3.xml.NoteXML.XLYRIC_CONTINUATION = "continuation";
-nx3.xml.NoteXML.XLYRIC_FORMAT = "format";
-nx3.xml.PartXML.XPART = "part";
-nx3.xml.PartXML.XPART_TYPE = "type";
-nx3.xml.PartXML.XPART_LEVELOFFSET = "leveloffset";
-nx3.xml.PartXML.XPART_PITCHCHAIN = "pitchchain";
-nx3.xml.PartXML.XPART_CLEF = "clef";
-nx3.xml.PartXML.XPART_CLEFDISPLAY = "clefdisplay";
-nx3.xml.PartXML.XPART_KEY = "key";
-nx3.xml.PartXML.XPART_KEYDISPLAY = "keydisplay";
-nx3.xml.ScoreXML.XSCORE = "score";
-nx3.xml.ScoreXML.XCONFIG = "config";
-nx3.xml.VoiceXML.XVOICE = "voice";
-nx3.xml.VoiceXML.XVOICE_TYPE = "type";
-nx3.xml.VoiceXML.XVOICE_BARPAUSE = "barpause";
-nx3.xml.VoiceXML.XVOICE_DIRECTION = "direction";
 tink.core._Callback.Cell.pool = [];
-tink.core._Error.ErrorCode_Impl_.BadRequest = 400;
-tink.core._Error.ErrorCode_Impl_.Unauthorized = 401;
-tink.core._Error.ErrorCode_Impl_.PaymentRequired = 402;
-tink.core._Error.ErrorCode_Impl_.Forbidden = 403;
-tink.core._Error.ErrorCode_Impl_.NotFound = 404;
-tink.core._Error.ErrorCode_Impl_.MethodNotAllowed = 405;
-tink.core._Error.ErrorCode_Impl_.Gone = 410;
-tink.core._Error.ErrorCode_Impl_.NotAcceptable = 406;
-tink.core._Error.ErrorCode_Impl_.Timeout = 408;
-tink.core._Error.ErrorCode_Impl_.Conflict = 409;
-tink.core._Error.ErrorCode_Impl_.OutOfRange = 416;
-tink.core._Error.ErrorCode_Impl_.ExpectationFailed = 417;
-tink.core._Error.ErrorCode_Impl_.I_am_a_Teapot = 418;
-tink.core._Error.ErrorCode_Impl_.AuthenticationTimeout = 419;
-tink.core._Error.ErrorCode_Impl_.UnprocessableEntity = 422;
-tink.core._Error.ErrorCode_Impl_.InternalError = 500;
-tink.core._Error.ErrorCode_Impl_.NotImplemented = 501;
-tink.core._Error.ErrorCode_Impl_.ServiceUnavailable = 503;
-tink.core._Error.ErrorCode_Impl_.InsufficientStorage = 507;
-tink.core._Error.ErrorCode_Impl_.BandwidthLimitExceeded = 509;
 Main.main();
 })(typeof window != "undefined" ? window : exports);
