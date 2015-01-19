@@ -5,19 +5,76 @@
 	<title>EmbedXML</title>
 	<meta name="description" content="" />
 	<style type="text/css">
+	
+		body {
+			color: #707478;
+			font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+			font-size: 12px;		
+		}
+		
 		.nx-parent {
 			margin-top: 8px;
 			border: 3px solid #eeeeee;
+			border-radius: 5px;
 			margin-bottom: 8px;
 			padding: 4px;
 		}
+		
 		.nx-active {
-			border: 3px solid #00cc00;
+			border: 3px solid #00acac;
+			border-radius: 5px;
 		}
 		
 		.nx-activating {
-			border: 3px solid #cc0000;
+			border: 3px solid #ff5b57;
+			border-radius: 5px;
 		}
+		
+		
+		.nx-button {
+			border: none;
+			cursor: pointer;
+			display: inline-block;			
+			border-radius: 3px;
+			font-weight: 300;
+			line-height: 1.42857;
+			margin-bottom: 0;
+			/*padding: 1px 3px;*/
+			margin-right: 3px;
+			text-align: center;
+			vertical-align: middle;
+			white-space: nowrap;
+		}
+
+		.nx-green {
+		    background: none repeat scroll 0 0 #00acac;
+		    border-color: #00acac;
+		    color: #fff;
+		}
+		.nx-green:hover {
+		    background: none repeat scroll 0 0 #008a8a;
+		    border-color: #008a8a;  
+		}
+		
+		.nx-red {
+		    background: none repeat scroll 0 0 #ff5b57;
+		    border-color: #ff5b57;
+		    color: #fff;
+		}
+		.nx-red:hover {
+		    background: none repeat scroll 0 0 #cc4946;
+		    border-color: #008a8a;  
+		}	
+		
+		.nx-blue {
+		    background: none repeat scroll 0 0 #348fe2;
+		    border-color: #348fe2;
+		    color: #fff;
+		}		
+		.nx-blue:hover {
+		    background: none repeat scroll 0 0 #2a72b5;
+		    border-color: #2a72b5;  
+		}		
 		
 		
 	
@@ -26,11 +83,11 @@
 </head>
 <body>
 	<div>
-		<button id="btnScores">Scores</button>
-		<button id="btnClear">Clear scores</button>
-		<button id="btnPitch">Pitch</button>
-		<button id="btnPitchStart">Start</button>
-		<button id="btnPitchStop">Stop</button>
+		<button id="btnScores" class="nx-button nx-blue">Scores</button>
+		<button id="btnClear" class="nx-button nx-blue">Clear scores</button>
+		<button id="btnPitch" class="nx-button nx-blue">Pitch</button>
+		<button id="btnPitchStart" class="nx-button nx-blue">Start</button>
+		<button id="btnPitchStop" class="nx-button nx-blue">Stop</button>
 		<span id="lblPitch">0</span>
 		
 		

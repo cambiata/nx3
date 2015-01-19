@@ -784,7 +784,6 @@ audiotools.utils.Wav16PartsBuilder.prototype = {
 	,buildSoundmap: function(partsnotes,soundmap) {
 		if(!this.initialized) throw "Wav16PartsBuilder not initialized - sounds not decoded";
 		var length = nx3.audio.NotenrTools.getTotalLength(partsnotes) + 1;
-		console.log("Length: " + length);
 		var result = audiotools.Wav16.createSecs(length,true);
 		var partidx = 0;
 		var _g = 0;
@@ -799,7 +798,6 @@ audiotools.utils.Wav16PartsBuilder.prototype = {
 				var key = note.mp3file;
 				var w16 = this.soundmap.get(key);
 				if(w16 != null) {
-					console.log(note.playpos);
 					var offset = audiotools.Wav16Tools.toSamples(note.playpos);
 					var length1 = audiotools.Wav16Tools.toSamples(note.soundlength + 0.1);
 					audiotools.Wav16DSP.wspMixInto(result,w16,offset,length1);
@@ -6801,6 +6799,11 @@ nx3.geom.RectanglesTools.concat = function(rectsA,rectsB) {
 	return rectsA;
 };
 nx3.js = {};
+nx3.js.MouseInteraction = { __ename__ : true, __constructs__ : ["PlayNote","StopNote","ShowTooltip","HideTooltip"] };
+nx3.js.MouseInteraction.PlayNote = function(scoreId,note,noteinfo,sound) { var $x = ["PlayNote",0,scoreId,note,noteinfo,sound]; $x.__enum__ = nx3.js.MouseInteraction; $x.toString = $estr; return $x; };
+nx3.js.MouseInteraction.StopNote = function(scoreId) { var $x = ["StopNote",1,scoreId]; $x.__enum__ = nx3.js.MouseInteraction; $x.toString = $estr; return $x; };
+nx3.js.MouseInteraction.ShowTooltip = function(scoreId,note,noteinfo,type) { var $x = ["ShowTooltip",2,scoreId,note,noteinfo,type]; $x.__enum__ = nx3.js.MouseInteraction; $x.toString = $estr; return $x; };
+nx3.js.MouseInteraction.HideTooltip = function(scoreId) { var $x = ["HideTooltip",3,scoreId]; $x.__enum__ = nx3.js.MouseInteraction; $x.toString = $estr; return $x; };
 nx3.js.ScriptScore = function(scriptElement) {
 	this.parent = scriptElement.parentElement;
 	this.parentWrapper = this.parent.parentElement;
@@ -6839,11 +6842,11 @@ nx3.js.ScriptScore = function(scriptElement) {
 	this.toolbar.className = "nx-control toolbar";
 	var _this1 = window.document;
 	this.btnPlay = _this1.createElement("button");
-	this.btnPlay.className = "nx-control play";
+	this.btnPlay.className = "nx-button nx-green";
 	this.btnPlay.textContent = "Play";
 	var _this2 = window.document;
 	this.btnStop = _this2.createElement("button");
-	this.btnStop.className = "nx-control stop";
+	this.btnStop.className = "nx-button nx-red";
 	this.btnStop.textContent = "Stop";
 	var _this3 = window.document;
 	this.labelTime = _this3.createElement("span");
@@ -6935,8 +6938,9 @@ nx3.js.ScriptScore.prototype = {
 			window.clearTimeout(canvasTimer);
 			canvasTimer = window.setTimeout(function() {
 				var foundnote = findNote();
-				if(foundnote == null) return;
-				console.log(foundnote);
+				if(foundnote == null) {
+					if(_g.onMouseMove != null) _g.onMouseMove(nx3.js.MouseInteraction.HideTooltip(_g.id));
+				} else if(_g.onMouseMove != null) _g.onMouseMove(nx3.js.MouseInteraction.ShowTooltip(_g.id,foundnote.note,foundnote.noteinfo,"TESSSSST"));
 			},500);
 		};
 		this.canvas.addEventListener("mousemove",function(e) {
@@ -6945,15 +6949,14 @@ nx3.js.ScriptScore.prototype = {
 			resetCanvasTimer();
 		});
 		this.canvas.addEventListener("mousedown",function(e1) {
-			console.log("mousedown");
 			canvasClientX = e1.clientX;
 			canvasClientY = e1.clientY;
 			var foundnote1 = findNote();
 			if(foundnote1 == null) return;
-			console.log(foundnote1);
+			if(_g.onMouseDown != null) _g.onMouseDown(nx3.js.MouseInteraction.PlayNote(_g.id,foundnote1.note,foundnote1.noteinfo,"piano"));
 		});
 		this.canvas.addEventListener("mouseup",function(e2) {
-			console.log("mouseup");
+			if(_g.onMouseDown != null) _g.onMouseDown(nx3.js.MouseInteraction.StopNote(_g.id));
 		});
 	}
 	,clear: function(clearHeight) {
@@ -7014,6 +7017,8 @@ nx3.js.ScriptScores.prototype = {
 						_g1.activate(null);
 					};
 				})());
+				scriptScore[0].onMouseDown = $bind(this,this.onMouseDown);
+				scriptScore[0].onMouseMove = $bind(this,this.onMouseMove);
 			} else console.log("script score " + id + " is already in cache");
 		}
 		this.activate(null);
@@ -7096,6 +7101,33 @@ nx3.js.ScriptScores.prototype = {
 		var _this;
 		if(pos == null) _this = "null"; else _this = "" + pos;
 		label.textContent = HxOverrides.substr(_this,0,5);
+	}
+	,onMouseDown: function(interact) {
+		switch(interact[1]) {
+		case 0:
+			var sound = interact[5];
+			var noteinfo = interact[4];
+			var note = interact[3];
+			var scoreId = interact[2];
+			var midinr = noteinfo.midinr;
+			var filename = "sounds/piano/" + midinr + ".mp3";
+			var this1 = (audiotools.sound.Wav16SoundLoader.instance == null?audiotools.sound.Wav16SoundLoader.instance = new audiotools.sound.Wav16SoundLoader():audiotools.sound.Wav16SoundLoader.instance).getWav16s([filename],function(val) {
+			});
+			this1(function(map) {
+				var wav16 = map.get(filename);
+				(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).initSound(wav16,function(key,pos) {
+				},scoreId + "PLAY");
+				(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).start(0);
+			});
+			break;
+		case 1:
+			var scoreId1 = interact[2];
+			(audiotools.sound.Wav16SoundManager.instance == null?audiotools.sound.Wav16SoundManager.instance = new audiotools.sound.Wav16SoundManager():audiotools.sound.Wav16SoundManager.instance).stop();
+			break;
+		default:
+		}
+	}
+	,onMouseMove: function(interact) {
 	}
 };
 nx3.render = {};

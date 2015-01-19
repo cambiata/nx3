@@ -1,6 +1,6 @@
 package nx3.audio;
 import haxe.ds.ObjectMap;
-import nx3.Constants;
+import nx3.app.Constants;
 import nx3.geom.Point;
 import nx3.PScore;
 import nx3.PSystem;

@@ -18,7 +18,6 @@ import nx3.render.svg.ShapeTools;
 import nx3.TFontInfo;
 import nx3.TPoints;
 
-
 #if (nme)
 import nme.text.TextFieldAutoSize;
 import nme.text.TextFormat;

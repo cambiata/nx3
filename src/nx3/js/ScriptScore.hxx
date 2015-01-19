@@ -10,6 +10,7 @@ import js.Lib;
 import nx3.audio.NotenrItem;
 import nx3.geom.Point;
 import nx3.NScore;
+import nx3.PNote;
 import nx3.PScore;
 import nx3.render.Renderer;
 import nx3.render.scaling.Scaling;
@@ -49,13 +50,15 @@ class ScriptScore
 
 	public function new(scriptElement:ScriptElement) 
 	{
+		var xmlStr = scriptElement.innerHTML;
+		this.nscore = ScoreXML.fromXmlStr(xmlStr);	
+		this.id = scriptElement.id;
+
 		this.parent = scriptElement.parentElement;
 		this.parentWrapper = this.parent.parentElement;
 		
 		this.parent.className = 'nx-parent';
-		var xmlStr = scriptElement.innerHTML;
-		this.nscore = ScoreXML.fromXmlStr(xmlStr);	
-		this.id = scriptElement.id;
+		this.parent.id = 'nx-parent-' + this.id;
 		
 		var tmpo:Int = Std.parseInt(scriptElement.getAttribute('data-tempo'));
 		this.tempo = (tmpo == null) ? 60 : tmpo;
@@ -90,10 +93,10 @@ class ScriptScore
 		this.toolbar = Browser.document.createDivElement();
 		this.toolbar.className = 'nx-control toolbar';
 		this.btnPlay = Browser.document.createButtonElement();
-		this.btnPlay.className = 'nx-control play';
+		this.btnPlay.className = 'nx-button nx-green';
 		this.btnPlay.textContent = 'Play';
 		this.btnStop = Browser.document.createButtonElement();
-		this.btnStop.className = 'nx-control stop';
+		this.btnStop.className = 'nx-button nx-red';
 		this.btnStop.textContent = 'Stop';
 		
 		this.labelTime = Browser.document.createSpanElement();
@@ -122,8 +125,9 @@ class ScriptScore
 			this.clear(false);
 			this._render(width, scaling);			
 		}		
-		  var idleTimer = null;
-		  function resetTimer(){
+		
+		var idleTimer = null;		
+		function resetTimer(){
 			   Browser.window.clearTimeout(idleTimer);
 			    idleTimer = Browser.window.setTimeout(whenUserIdle, 500);
 		  }				  
@@ -137,38 +141,47 @@ class ScriptScore
 	function _render(width:Int = 700, scl:TScaling = null) {				
 		
 		if (scl != null) this.scaling = scl;
-		var target = new TargetSvgXml(this.id, scaling);
-		var render = new Renderer(target);			
-		var scaledWidth = width / this.scaling.unitX;
-		var pscore:PScore = new PScore(this.nscore);
-		var size = render.renderScore(pscore, 0, 0, scaledWidth);
-		var svgXml = target.getXml().toString();
-
-		parent.style.width = size.width + 'px';
-		parent.style.height = size.height + toolbar.clientHeight+ 'px';				
-		//parent.style.border = "1px solid green";		
-		//parent.style.margin = "4px";
 		
-		var wrapper = Browser.document.createDivElement();
-		wrapper.innerHTML = svgXml;
-		this.svg = cast wrapper.firstChild;
-		svg.style.position = 'absolute';
-		this.parent.appendChild(svg);
+		var svgId = this.id + '-svg';
 		
-		this.canvas = Browser.document.createCanvasElement();
-		canvas.id = this.id + '-canvas';
-		canvas.width = Std.int(size.width);
-		canvas.height = Std.int(size.height);
-		canvas.style.width = size.width + 'px';
-		canvas.style.height =  size.height + 'px';
-		canvas.style.zIndex = '8';
-		canvas.style.position = "absolute";
-		//canvas.style.border = "1px solid red";
-		parent.appendChild(canvas);				
-		
-		this.context = this.canvas.getContext2d();
-		
-		this.drawingtools = new ScoreDrawingTools(pscore, width / this.scaling.unitX, scaling, this.tempo,  this.context);		
+		if (js.Browser.document.getElementById(svgId) == null) {
+			
+			
+			var target = new TargetSvgXml(svgId, scaling);
+			var render = new Renderer(target);			
+			var scaledWidth = width / this.scaling.unitX;
+			var pscore:PScore = new PScore(this.nscore);
+			var size = render.renderScore(pscore, 0, 0, scaledWidth);
+			var svgXml = target.getXml().toString();
+	
+			parent.style.width = size.width + 'px';
+			parent.style.height = size.height + toolbar.clientHeight+ 'px';				
+			//parent.style.border = "1px solid green";		
+			//parent.style.margin = "4px";
+			
+			var wrapper = Browser.document.createDivElement();
+			wrapper.innerHTML = svgXml;
+			this.svg = cast wrapper.firstChild;
+			svg.style.position = 'absolute';
+			this.parent.appendChild(svg);
+			
+			this.canvas = Browser.document.createCanvasElement();
+			canvas.id = this.id + '-canvas';
+			canvas.width = Std.int(size.width);
+			canvas.height = Std.int(size.height);
+			canvas.style.width = size.width + 'px';
+			canvas.style.height =  size.height + 'px';
+			canvas.style.zIndex = '8';
+			canvas.style.position = "absolute";
+			//canvas.style.border = "1px solid red";
+			parent.appendChild(canvas);				
+			
+			this.context = this.canvas.getContext2d();
+			
+			this.drawingtools = new ScoreDrawingTools(pscore, width / this.scaling.unitX, scaling, this.tempo,  this.context);		
+		} else {
+			Lib.alert(svgId + ' exists');
+		}
 		
 		//this.drawingtools.drawNotesRects(0xff0000);
 
@@ -204,8 +217,12 @@ class ScriptScore
 			Browser.window.clearTimeout(canvasTimer);
 			canvasTimer = Browser.window.setTimeout(function() { 
 				var foundnote = findNote(); 
-				if (foundnote == null) return;
-				trace(foundnote);
+				if (foundnote == null) {
+					if (this.onMouseMove != null) this.onMouseMove(MouseInteraction.HideTooltip(this.id));	
+				} else {					
+					if (this.onMouseMove != null) this.onMouseMove(ShowTooltip(this.id, foundnote.note, foundnote.noteinfo, 'TESSSSST'));
+				}
+				//trace(foundnote);
 			}, 500);
 		}	
 		
@@ -216,16 +233,18 @@ class ScriptScore
 		});
 		
 		canvas.addEventListener('mousedown', function(e:MouseEvent) {
-			trace('mousedown');
+			//trace('mousedown');
 			canvasClientX = e.clientX;
 			canvasClientY = e.clientY;
 			var foundnote = findNote();
 			if (foundnote == null) return;
-			trace(foundnote);
+			if (this.onMouseDown != null) this.onMouseDown(PlayNote(this.id, foundnote.note, foundnote.noteinfo, 'piano'));			
+			//trace(foundnote);
 		});
 		
 		canvas.addEventListener('mouseup', function(e:MouseEvent) {
-			trace('mouseup');
+			//trace('mouseup');
+			if (this.onMouseDown != null) this.onMouseDown(StopNote(this.id));
 		});
 		
 	}
@@ -249,5 +268,8 @@ class ScriptScore
 		this.labelTime.textContent = text;
 	}
 	
-	
+	public var onMouseDown: MouseInteraction -> Void;
+	public var onMouseMove: MouseInteraction -> Void;
 }
+
+

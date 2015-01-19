@@ -1,9 +1,13 @@
 package nx3.js;
 
+import audiotools.sound.Wav16SoundLoader;
+import audiotools.Wav16;
 import js.Browser;
 import js.html.Element;
 import js.html.MouseEvent;
 import js.html.ScriptElement;
+import js.Lib;
+import nx3.audio.NotenrItem.PartsNotenrItems;
 import nx3.js.ScriptScore;
 import nx3.NScore;
 
@@ -36,14 +40,25 @@ class ScriptScores
 	var scScores:Map<String, ScriptScore>;
 	
 	public function init() {
+		
 		var scripts = Browser.document.getElementsByClassName('nx-score');
+		
 		for (script in scripts) {
 			var scriptElement:ScriptElement = cast script;
 			 var id = scriptElement.id;
-			 if (! this.scScores.exists(id)) {
-				 var scriptScore = new ScriptScore(scriptElement);
+			// if (! this.scScores.exists(id)) {
+			
+			var parentId = 'nx-parent-' + id;
+			var parentEl = Browser.document.getElementById(parentId);
+			//js.Lib.alert('PARENT ' + parentId + ' ' + parentEl);
+			//var scriptScore:ScriptScore = null;
+			//if (parentEl == null) {
+			
+			var	 scriptScore = new ScriptScore(scriptElement);
 				
+				if (this.scScores.exists(id)) this.scScores.remove(id);
 				this.scScores.set(id, scriptScore);
+				scriptScore.render();
 				
 				scriptScore.btnPlay.addEventListener('mousedown', function(e:MouseEvent) {
 					this.play(scriptScore);
@@ -64,9 +79,19 @@ class ScriptScores
 					this.activate(null);
 				});
 				
-			 } else {
-				 trace('script score $id is already in cache');
-			 }
+				scriptScore.onMouseDown = this.onMouseDown;
+				scriptScore.onMouseMove = this.onMouseMove;				
+				
+			//} else {
+			//	 scriptScore = this.scScores.get(id);
+			//}
+			
+
+			
+		
+			// else {
+			//	 trace('script score $id is already in cache');
+			// }
 		}		
 		this.activate(null);
 	}
@@ -117,6 +142,7 @@ class ScriptScores
 		var tempo:Int = scScore.tempo;
 		var sounds:Array<String> = scScore.sounds;
 
+		
 		Wav16PartsBuilder.getInstance().getScoreWav16Async(scScore.nscore, scScore.tempo, scScore.sounds).handle(function(wav16) {
 			//trace('FINISHED nscore1');			
 			 Wav16SoundManager.getInstance().initSound(wav16, playCallback, scScore.id + scScore.tempo + Std.string(scScore.sounds));
@@ -130,9 +156,7 @@ class ScriptScores
 			 } else {
 				 startPlayack(0);
 			 }
-		});	
-				
-
+		});					
 	}
 	
 	var cache:Map<String, Bool>;
@@ -143,7 +167,13 @@ class ScriptScores
 				scScore.render();	
 				this.cache.set(scScore.id, true);
 			} else {
-				trace('score ${scScore.id} is already in cache');				
+				var parentId = 'nx-parent-' + scScore.id;
+				var el = Browser.document.getElementById(parentId);	
+				if (el == null) {
+					scScore.render();
+				} else {
+					trace('score ${scScore.id} is already in cache');
+				}				
 			}
 		}
 	}
@@ -160,9 +190,34 @@ class ScriptScores
 		this.activeScriptScore.drawingtools.drawColumnFromTime(pos);	
 		
 		var label = this.activeScriptScore.labelTime;
-		label.textContent = Std.string(pos).substr(0, 5);
-		
+		label.textContent = Std.string(pos).substr(0, 5);		
 	}		
+	
+	dynamic public function onMouseDown(interact:MouseInteraction):Void {
+		switch interact {
+			case MouseInteraction.PlayNote(scoreId, note, noteinfo, sound):
+				var midinr = noteinfo.midinr;
+				var filename = 'sounds/piano/$midinr.mp3';
+				Wav16SoundLoader.getInstance().getWav16s([filename], function(val) {
+					//trace('get sound $filename');
+				}).handle(function(map) {
+					var wav16 = map.get(filename);
+					Wav16SoundManager.getInstance().initSound(wav16,  function(key, pos) { }, scoreId + 'PLAY' );
+					Wav16SoundManager.getInstance().start(0);
+				});
+			case MouseInteraction.StopNote(scoreId):
+				Wav16SoundManager.getInstance().stop();
+			case _:
+			
+		}
+		
+		
+		
+	}
+	
+	dynamic public function onMouseMove(interact:MouseInteraction):Void {
+		//trace(interact);
+	}	
 	
 	
 	

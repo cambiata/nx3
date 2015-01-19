@@ -36,7 +36,7 @@ class DrawTools
 		
 	static public function setLineStyle(ctx:js.html.CanvasRenderingContext2D, color:Int, width:Float=1) {
 		var strokestyle =  '#' + StringTools.hex(color, 6);
-		trace(strokestyle);
+		//trace(strokestyle);
 		ctx.lineWidth = width;
 		ctx.strokeStyle = strokestyle;
 	}

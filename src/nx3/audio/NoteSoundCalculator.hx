@@ -1,5 +1,5 @@
 package nx3.audio;
-import nx3.Constants;
+import nx3.app.Constants;
 import nx3.EClef;
 import nx3.EKey;
 import nx3.ENoteType;

@@ -1,7 +1,7 @@
 package nx3lib;
 import flash.display.Sprite;
 import flash.text.TextField;
-import nx3.Constants;
+import nx3.app.Constants;
 import nx3.EAllotment;
 import nx3.EDisplayALN;
 import nx3.NBar;
