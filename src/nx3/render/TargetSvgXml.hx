@@ -45,11 +45,13 @@ class TargetSvgXml implements ITarget
 		this.font = Constants.FONT_TEXT_DEFAULTFORMAT;
 	}
 	
+	
+	static var SVG_EXTRA_HEIGHT:Int = 5;
 	/* INTERFACE nx3.render.ITarget */
 	public function getXml():Xml
 	{
 		this.svg.set('width', Std.string(this.totalWidth));
-		this.svg.set('height', Std.string(this.totalHeight));
+		this.svg.set('height', Std.string(this.totalHeight + SVG_EXTRA_HEIGHT));
 		return this.svg;
 	}
 	

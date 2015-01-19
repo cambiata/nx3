@@ -1,0 +1,77 @@
+<score>
+	<config test="12345" />
+	<bar>
+		<part>
+			<voice>
+				<note>
+					<headx level="2" />
+				</note>
+				<note>
+					<headx level="4" />
+				</note>
+				<note>
+					<headx level="3" />
+				</note>
+				<note>
+					<headx level="-1" />
+				</note>
+			</voice>
+		</part>
+		<part type="Tplchain">
+			<voice>
+				<undefined />
+				<undefined />
+				<undefined />
+				<undefined />
+			</voice>
+		</part>
+	</bar>
+	<bar>
+		<part>
+			<voice>
+				<note>
+					<headx level="0" />
+				</note>
+				<note val="8">
+					<headx level="-1" />
+				</note>
+				<note val="8">
+					<headx level="0" />
+				</note>
+				<note>
+					<headx level="1" />
+				</note>
+				<note val="8">
+					<headx level="5" />
+				</note>
+				<note val="8">
+					<headx level="3" />
+				</note>
+			</voice>
+		</part>
+		<part type="Tplchain">
+			<voice>
+				<undefined />
+				<undefined val="8" />
+				<undefined val="8" />
+				<undefined />
+				<undefined val="8" />
+				<undefined val="8" />
+			</voice>
+		</part>
+	</bar>
+	<bar>
+		<part>
+			<voice>
+				<note val="1">
+					<headx level="2" />
+				</note>
+			</voice>
+		</part>
+		<part type="Tplchain">
+			<voice>
+				<undefined val="1" />
+			</voice>
+		</part>
+	</bar>
+</score>

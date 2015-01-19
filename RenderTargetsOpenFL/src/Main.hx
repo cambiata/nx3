@@ -45,15 +45,18 @@ class Main extends Sprite
 		
 		//Unittests.performTests();
 
-		var nscore:NScore = TestItemsBach.scoreBachSinfonia4();
+		//var nscore:NScore = TestItemsBach.scoreBachSinfonia4();
 		//var nscore:NScore = TestItems.scoreTest2().nscore;
 		//var nscore:NScore = TestItems.getSystemYItems();
-		//var nscore = TestItems.scoreTplChain();
+		var nscore = TestItems.scoreTplChain();
 		//var nscore = TestItems.scorePitchloafChain();
 	
 		var tss:TestscoreSprite = new TestscoreSprite(nscore, 20, 20, 800, 800);
 		Lib.current.addChild(tss);
 
+		var xml = ScoreXML.toXml(nscore).toString();
+		trace(xml);
+		
 		/*
 		var perf = new Performance(10);		
 		perf.addFunction('test getTag', function() var tag = nscore.getTag() );
