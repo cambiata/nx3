@@ -19,6 +19,7 @@ import nx3.geom.Point;
 using StringTools;
 using nx3.render.scaling.ScalingTools;
  using Detox;
+ using cx.ArrayTools;
  
 class ScriptScoreX {
 
@@ -333,6 +334,7 @@ class ScriptScoreX {
 					canvasClientY = e.clientY;
 					var foundnote = findNote();
 					if (foundnote == null) return;
+					
 					ScriptScoresXInteraction.getInstance().onInteract(this, MouseInteraction.PlayNote(this.id, foundnote.note, foundnote.noteinfo, 'piano'));							
 					e.stopPropagation();
 				};					

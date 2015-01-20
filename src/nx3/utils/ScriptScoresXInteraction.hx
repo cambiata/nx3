@@ -43,11 +43,16 @@ class ScriptScoresXInteraction {
 	// i
 	public function onInteract(scriptScore:ScriptScoreX, interaction:MouseInteraction) {
 		trace('interact ' + scriptScore.id + ' : ' + interaction);		
+	
+		if (onInteractExternal != null) {
+			onInteractExternal(scriptScore, interaction);
+			return;
+		}
 		
 		switch interaction {
 			case MouseInteraction.PlayNote(scoreId, note, noteinfo, sound):
 				var midinr = noteinfo.midinr;
-				var filename = '/sounds/piano/$midinr.mp3';
+				var filename = '/sounds/$sound/$midinr.mp3';
 				
 				Wav16SoundLoader.getInstance().getWav16s([filename], function(val) {
 					//trace('get sound $filename');
@@ -60,12 +65,10 @@ class ScriptScoresXInteraction {
 				Wav16SoundManager.getInstance().stop();
 			case _:
 		}	
-		if (onInteractExternal != null) onInteractExternal(scriptScore, interaction);
-	}
-	
-	dynamic public  function onInteractExternal(scriptScore:ScriptScoreX, interaction:MouseInteraction) {
 		
 	}
+	
+	public  var onInteractExternal: ScriptScoreX -> MouseInteraction -> Void;
 	
 	
 	var currentActive:ScriptScoreX = null;
@@ -98,7 +101,7 @@ class ScriptScoresXInteraction {
 		var tempo:Int = scriptScore.tempo;
 		var sounds:Array<String> = scriptScore.sounds;
 		
-		Wav16PartsBuilder.getInstance().getScoreWav16Async(scriptScore.nscore, scriptScore.tempo, scriptScore.sounds).handle(function(wav16) {
+		Wav16PartsBuilder.getInstance().getScoreWav16Async(scriptScore.nscore, scriptScore.tempo, ['piano', 'silent']).handle(function(wav16) {
 			//trace('FINISHED nscore1');			
 			 Wav16SoundManager.getInstance().initSound(wav16, playCallback, scriptScore.id + scriptScore.tempo + Std.string(scriptScore.sounds));
 			 //this.drawingTools.drawColumnFromTime(0);

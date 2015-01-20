@@ -39,11 +39,11 @@ class Constants
 	static public inline var FLOAT_QUASI_ZERO:Float = 0.0000001;
 	static public  var FONT_TEXT_DEFAULTFORMAT:TFontInfo = { name:'Georgia', size:20, bold:false, italic:false };
 	static public inline var JS_CANVAS_TEXT_MEASUREMENT:String = "CanvasTextMeasurement";
-	static public inline var FONT_TEXT_X_ADJUST_SVG:Float = -0.2;
+	static public inline var FONT_TEXT_X_ADJUST_SVG:Float = -2.2;
 	static public inline var FONT_TEXT_Y_ADJUST_SVG:Float = -13;
 	static public inline var FONT_TEXT_Y_ADJUST_FLASH:Float = -1.2;
 	static public inline var FONT_TEXT_X_ADJUST_FLASH:Float = -.3;
-	static public inline var FONT_TEXT_X_ADJUST_SYS:Float = -2;
+	static public inline var FONT_TEXT_X_ADJUST_SYS:Float = 0;
 	static public inline var FONT_TEXT_Y_ADJUST_SYS:Float = -6;
 	static public inline var BEAM_HEIGHT:Float = 0.95;
 	static public inline var TIE_WIDTH_CHORD:Float = 3.2;
