@@ -31,7 +31,7 @@ class ScriptScoresXInteraction {
 	}
 	
 	public function onPlay(scriptScore:ScriptScoreX) {
-		//trace('play ' + scriptScore.id);	
+		trace('play ' + scriptScore.id);	
 		this.play(scriptScore);
 	}
 
@@ -42,12 +42,12 @@ class ScriptScoresXInteraction {
 	
 	// i
 	public function onInteract(scriptScore:ScriptScoreX, interaction:MouseInteraction) {
-		//trace('interact ' + scriptScore.id + ' : ' + interaction.getName());		
+		trace('interact ' + scriptScore.id + ' : ' + interaction);		
 		
 		switch interaction {
 			case MouseInteraction.PlayNote(scoreId, note, noteinfo, sound):
 				var midinr = noteinfo.midinr;
-				var filename = 'sounds/piano/$midinr.mp3';
+				var filename = '/sounds/piano/$midinr.mp3';
 				
 				Wav16SoundLoader.getInstance().getWav16s([filename], function(val) {
 					//trace('get sound $filename');

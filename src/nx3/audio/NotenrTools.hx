@@ -234,7 +234,7 @@ class NotenrTools {
 		return map;
 	}
 	
-	static public function getPartsnotesMp3files(partsnotes:PartsNotenrItems, partsSounds:Array<String>= null, path='sounds/', soundFallback='piano'): Array<String> {
+	static public function getPartsnotesMp3files(partsnotes:PartsNotenrItems, partsSounds:Array<String>= null, path='/sounds/', soundFallback='piano'): Array<String> {
 		var result = [];
 		if (partsSounds == null) partsSounds = [];	
 		while (partsSounds.length < partsnotes.length) partsSounds.push(soundFallback);

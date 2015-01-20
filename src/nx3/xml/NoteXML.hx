@@ -33,6 +33,10 @@ class NoteXML
 	static public inline var XPITCH_LEVEL							:String = "level";
 	static public inline var XPITCH_MIDINOTE							:String = "midinote";
 	
+	static public inline var XTPL							:String = "tpl";
+	static public inline var XTPL_LEVEL							:String = "level";
+
+	
 	
 	
 	static public inline var XNOTE_TYPE							:String = "type";
@@ -99,11 +103,14 @@ class NoteXML
 				if (continuation != null) xml.set(XLYRIC_CONTINUATION, Std.string(continuation));
 				if (offset != null) xml.set(XOFFSET, Std.string(offset));
 				if (format != null) xml.set(XLYRIC_FORMAT, Std.string(format));
+				
 			case (ENoteType.Pitch(level, midinote)):
 				xml = Xml.createElement(XPITCH);
 				if (level != 0) xml.set(XPITCH_LEVEL, Std.string(level));
 				if (midinote != 0) xml.set(XPITCH_MIDINOTE, Std.string(midinote));
-				
+			case (ENoteType.Tpl(level)): 
+				xml = Xml.createElement(XTPL);
+				xml.set(XTPL_LEVEL, Std.string(level));
 			default:
 				xml = Xml.createElement(XUNDEFINED);	
 		}
@@ -194,6 +201,12 @@ class NoteXML
 				var midinotestr = xml.get(XPITCH_MIDINOTE);
 				var midinote = (midinotestr != null) ? Std.parseInt(midinotestr) : 0;
 				type = ENoteType.Pitch(level, midinote);
+				
+			case XTPL:
+				var levelstr = xml.get(XTPL_LEVEL);
+				var level = (levelstr != null) ? Std.parseInt(levelstr) : 0;
+				type = ENoteType.Tpl(level);
+				
 		}
 		
 		// value

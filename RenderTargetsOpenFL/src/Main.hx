@@ -51,11 +51,20 @@ class Main extends Sprite
 		var nscore = TestItems.scoreTplChain();
 		//var nscore = TestItems.scorePitchloafChain();
 	
-		var tss:TestscoreSprite = new TestscoreSprite(nscore, 20, 20, 800, 800);
+		var tss:TestscoreSprite = new TestscoreSprite(nscore, 20, 20, 800, 300);
 		Lib.current.addChild(tss);
 
 		var xml = ScoreXML.toXml(nscore).toString();
 		trace(xml);
+
+		
+		var nscore2 = ScoreXML.fromXmlStr(xml);
+		var xml2 = ScoreXML.toXml(nscore2).toString();
+		#if neko
+			sys.io.File.saveContent('tpl.xml', xml);
+			sys.io.File.saveContent('tpl2.xml', xml2);
+		#end
+		trace(xml == xml2);
 		
 		/*
 		var perf = new Performance(10);		

@@ -284,10 +284,16 @@ class TargetSvgXml implements ITarget
 		y = y  + (Constants.FONT_TEXT_Y_ADJUST_SVG + this.font.size) * scaling.fontScaling; // * this.scaling.svgScale;
 		#end
 		
-		#if (nme)
+		#if (flash)
 		x = x  + Constants.FONT_TEXT_X_ADJUST_FLASH * this.scaling.fontScaling; // * this.scaling.svgScale;
 		y = y  + (Constants.FONT_TEXT_Y_ADJUST_FLASH + this.font.size) * scaling.fontScaling; // * this.scaling.svgScale;
 		#end
+		
+		#if (sys)
+		x = x  + Constants.FONT_TEXT_X_ADJUST_SYS * this.scaling.fontScaling; // * this.scaling.svgScale;
+		y = y  + (Constants.FONT_TEXT_Y_ADJUST_SYS + this.font.size) * scaling.fontScaling; // * this.scaling.svgScale;
+		#end
+		
 		
 		
 		// <text x="-0.4" y="19.2" style="font-size: 40px; font-family: Georgia;">ABC abc 123</text>

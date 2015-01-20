@@ -19,11 +19,13 @@ class PartXML
 	static public inline var XPART				:String = "part";
 	static public inline var XPART_TYPE			:String = "type";
 	static public inline var XPART_LEVELOFFSET			:String = "leveloffset";
-	static public inline var XPART_PITCHCHAIN			:String = "pitchchain";
 	static public inline var XPART_CLEF			:String = "clef";
 	static public inline var XPART_CLEFDISPLAY	:String = "clefdisplay";
 	static public inline var XPART_KEY			:String = "key";
 	static public inline var XPART_KEYDISPLAY	:String = "keydisplay";
+
+	static public inline var XPART_PITCHCHAIN			:String = "pitchchain";
+	static public inline var XPART_TYPE_TPLCHAIN			:String = "tplchain";
 	
 	static public function toXml(part:NPart): Xml
 	{
@@ -41,6 +43,9 @@ class PartXML
 		{
 			case EPartType.Normal:
 				// nothing for Normal
+				
+			case EPartType.Tplchain:
+				xml.set(XPART_TYPE, XPART_TYPE_TPLCHAIN);
 			case EPartType.PitchChain(leveloffset):
 				xml.set(XPART_TYPE, XPART_PITCHCHAIN);	
 				xml.set(XPART_LEVELOFFSET, Std.string(leveloffset));	
@@ -119,6 +124,8 @@ class PartXML
 		if (typeStr == XPART_PITCHCHAIN) {
 			var leveloffset = Std.parseInt(xml.get(XPART_LEVELOFFSET));
 			type = EPartType.PitchChain(leveloffset);
+		} else if (typeStr == XPART_TYPE_TPLCHAIN) { 
+			type = EPartType.Tplchain;
 		} else type = EnumTools.createFromString(EPartType, typeStr);				
 		
 		// clef
