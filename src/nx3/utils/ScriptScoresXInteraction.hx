@@ -60,8 +60,13 @@ class ScriptScoresXInteraction {
 				Wav16SoundManager.getInstance().stop();
 			case _:
 		}	
+		if (onInteractExternal != null) onInteractExternal(scriptScore, interaction);
+	}
+	
+	dynamic public  function onInteractExternal(scriptScore:ScriptScoreX, interaction:MouseInteraction) {
 		
 	}
+	
 	
 	var currentActive:ScriptScoreX = null;
 	

@@ -1,5 +1,7 @@
 package ;
 
+import audiotools.sound.Wav16SoundManager;
+import audiotools.utils.Wav16PartsBuilder;
 import cx.flash.HandlespriteDelayed;
 import cx.flash.ResizeSprite;
 import flash.display.Sprite;
@@ -28,6 +30,9 @@ import nx3.test.Unittests;
 import nx3.test.TestItems;
 import nx3.test.TestRenderer;
 import nx3.utils.Performance;
+import nx3.utils.PartFilter;
+import nx3.utils.RandomBuilder;
+import nx3.utils.VoiceSplitter;
 import nx3.xml.ScoreXML;
 
 
@@ -46,9 +51,10 @@ class Main extends Sprite
 		//Unittests.performTests();
 
 		//var nscore:NScore = TestItemsBach.scoreBachSinfonia4();
+		var nscore:NScore = TestItemsBach.scoreTplEssDur();
 		//var nscore:NScore = TestItems.scoreTest2().nscore;
 		//var nscore:NScore = TestItems.getSystemYItems();
-		var nscore = TestItems.scoreTplChain();
+		//var nscore = TestItems.scoreTplChain();
 		//var nscore = TestItems.scorePitchloafChain();
 	
 		var tss:TestscoreSprite = new TestscoreSprite(nscore, 20, 20, 800, 300);
@@ -66,12 +72,33 @@ class Main extends Sprite
 		#end
 		trace(xml == xml2);
 		
+		var nscoreFiltered = new NScore(new PartFilter(nscore.nbars).getPart(0));
+		
+		var nscoreRandom = new NScore(new RandomBuilder(nscoreFiltered.nbars).getRandomNotes(5));
+		
+		var tss2:TestscoreSprite = new TestscoreSprite(nscoreRandom, 20, 220, 800, 300);
+		Lib.current.addChild(tss2);		
+		
+		
+		
+		Wav16PartsBuilder.getInstance().getScoreWav16Async(nscoreRandom, 60).handle(function(wav16) {
+			trace('FINISHED nscore1');
+			 Wav16SoundManager.getInstance().initSound(wav16, this.playCallback, nscore.uuid + '60');
+			 //this.drawingTools.drawColumnFromTime(0);
+			 Wav16SoundManager.getInstance().start(0);										
+		});			
+		
+		
 		/*
 		var perf = new Performance(10);		
 		perf.addFunction('test getTag', function() var tag = nscore.getTag() );
 		perf.addFunction('redraw', function() tss.redraw(1500, 800, tss.scoresprite));
 		perf.run();
 		*/		
+	}
+	
+	public function playCallback(id:String, pos:Float) {
+	
 	}
 	
 	public static function main() 

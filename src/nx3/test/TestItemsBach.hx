@@ -9,6 +9,43 @@ import nx3.xml.ScoreXML;
 class TestItemsBach 
 {
 
+public static function scoreTplEssDur():NScore {
+	var xmlStr = '
+		<score>
+			<config test="12345"/>
+			<bar time="C">
+			
+			<part clef="ClefG" key="Flat3"><voice>
+				<note><headx level="4"/></note>
+				<note><headx level="3"/></note>
+				<note><headx level="2"/></note>
+				<note><headx level="1"/></note>
+				<note><headx level="0"/></note>
+				<note><headx level="-1"/></note>
+				<note><headx level="-2"/></note>				
+				<note><headx level="-3"/></note>				
+			</voice></part>
+			
+			<part clef="ClefG" key="Flat3" type="tplchain"><voice>
+				<tpl level="0" />
+				<tpl level="-1" />
+				<tpl level="-2" />
+				<tpl level="-3" />
+				<tpl level="-4" />
+				<tpl level="-5" />
+				<tpl level="-6" />
+				<tpl level="-7" />
+			</voice></part>
+			
+			</bar>
+		</score>
+		';
+		var nscore = ScoreXML.fromXmlStr(xmlStr);		
+		return nscore;			
+	
+}
+	
+	
 public static function scoreBachSinfonia4():NScore
 	{		
 		var xmlStr = '<score>
