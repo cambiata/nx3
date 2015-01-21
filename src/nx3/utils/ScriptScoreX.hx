@@ -298,7 +298,8 @@ class ScriptScoreX {
 					var point = new Point(this.scaling.targetX(x), this.scaling.targetY(y));
 					//trace('canvas Idle $x/$y $point');
 					for (note in notesrects.keys()) {
-						var rect = notesrects.get(note);
+						var rect = notesrects.get(note).clone();
+						rect.inflate(2, 1);
 						//trace(rect);
 						if (rect.containsPoint(point)) {
 							//trace('Found note!');
