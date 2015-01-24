@@ -24,6 +24,7 @@ class ScriptScoresX {
 		var parsed = Detox.parse(xmlString.trim());		
 		var html = '';
 		for (node in parsed.collection) {
+			
 			switch Std.string(node.nodeType) {
 				case 'element': {				
 					Detox.setDocument(node);					
@@ -39,6 +40,10 @@ class ScriptScoresX {
 	public function invokeScriptScores(node:DOMNode) {
 		var scripts = node.find('.nx-score');
 		for (script in scripts) {
+			
+			// do not display scores with data-invoke="false" :
+			if (script.attr('data-invoke') == 'false') continue;			
+			
 			var scriptScore = new ScriptScoreX(script);
 		}			
 	}
