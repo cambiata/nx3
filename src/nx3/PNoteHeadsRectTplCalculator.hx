@@ -14,7 +14,7 @@ class PNoteHeadsRectTplCalculator
 	{
 		this.note = note;
 		var level = switch note.nnote.type {
-			case nx3.ENoteType.Tpl(level): level;
+			case nx3.ENoteType.Tpl(level, sign, pause): level;
 			case _: 0;
 		}
 		

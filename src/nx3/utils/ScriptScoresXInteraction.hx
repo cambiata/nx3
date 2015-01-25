@@ -1,4 +1,5 @@
 package nx3.utils;
+import js.Browser;
 import nx3.js.MouseInteraction;
 import dtx.DOMCollection;
 import audiotools.sound.Wav16SoundManager;
@@ -40,9 +41,13 @@ class ScriptScoresXInteraction {
 		this.stop();
 	}
 	
+	var startPlayAt:Float = 0;
+	var started:Bool = false;
+	var MINIMUM_MOUSEDOWN_PLAY_TIME: Int = 700;
+	
 	// i
 	public function onInteract(scriptScore:ScriptScoreX, interaction:MouseInteraction) {
-		trace('interact ' + scriptScore.id + ' : ' + interaction);		
+		//trace('interact ' + scriptScore.id + ' : ' + interaction);		
 	
 		if (onInteractExternal != null) {
 			onInteractExternal(scriptScore, interaction);
@@ -53,7 +58,8 @@ class ScriptScoresXInteraction {
 			case MouseInteraction.PlayNote(scoreId, note, noteinfo, sound):
 				var midinr = noteinfo.midinr;
 				var filename = '/sounds/$sound/$midinr.mp3';
-				
+				startPlayAt = Date.now().getTime();
+				started = true;
 				Wav16SoundLoader.getInstance().getWav16s([filename], function(val) {
 					//trace('get sound $filename');
 				}).handle(function(map) {
@@ -61,8 +67,14 @@ class ScriptScoresXInteraction {
 					Wav16SoundManager.getInstance().initSound(wav16,  function(key, pos) { }, scoreId + 'PLAY' );
 					Wav16SoundManager.getInstance().start(0);
 				});
-			case MouseInteraction.StopNote(scoreId):
-				Wav16SoundManager.getInstance().stop();
+			case MouseInteraction.StopNote(scoreId):				
+				var playtime = Std.int(Date.now().getTime() - startPlayAt);
+				var stoptime = Std.int(Math.max(MINIMUM_MOUSEDOWN_PLAY_TIME-playtime, 0));		
+				Browser.window.setTimeout(function() { 
+					if (started) return;
+					Wav16SoundManager.getInstance().stop();
+					started = false;
+				}, stoptime);
 			case _:
 		}	
 		
@@ -87,21 +99,22 @@ class ScriptScoresXInteraction {
 	
 	
 	function play(scriptScore:ScriptScoreX) {
-		//this.activate(scScore);
 
 		function startPlayack(pos:Float) {
 			Wav16SoundManager.getInstance().start(0);		
 			scriptScore.parent.removeClass('nx-activating');				
 			scriptScore.parent.addClass('nx-active');										
 		}		
+		
 		scriptScore.labelTime.textContent = 'Laddar...';
 		scriptScore.parent.addClass('nx-activating');			
 		var timeStart = Date.now().getTime();
 		var nscore:NScore = scriptScore.nscore;
 		var tempo:Int = scriptScore.tempo;
-		var sounds:Array<String> = scriptScore.sounds;
+		var sounds:Array<String> = scriptScore.sounds.copy();
+		//trace('ScriptScoresXInteraction 103: ' + sounds);
 		
-		Wav16PartsBuilder.getInstance().getScoreWav16Async(scriptScore.nscore, scriptScore.tempo, ['piano', 'silent']).handle(function(wav16) {
+		Wav16PartsBuilder.getInstance().getScoreWav16Async(scriptScore.nscore, scriptScore.tempo, sounds).handle(function(wav16) {
 			//trace('FINISHED nscore1');			
 			 Wav16SoundManager.getInstance().initSound(wav16, playCallback, scriptScore.id + scriptScore.tempo + Std.string(scriptScore.sounds));
 			 //this.drawingTools.drawColumnFromTime(0);

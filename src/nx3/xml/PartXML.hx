@@ -4,6 +4,8 @@ import nx3.EClef;
 import nx3.EDisplayALN;
 import nx3.EKey;
 import nx3.EKey.EKey;
+import nx3.EModus;
+import nx3.EOctave;
 import nx3.EPartType;
 import nx3.NPart;
 import nx3.NVoice;
@@ -26,6 +28,11 @@ class PartXML
 
 	static public inline var XPART_PITCHCHAIN			:String = "pitchchain";
 	static public inline var XPART_TYPE_TPLCHAIN			:String = "tplchain";
+	static public inline var XPART_TYPE_TPLROW			:String = "tplrow";
+	
+	static public inline var XPART_MODUS			:String = "modus";
+	static public inline var XPART_OCTAVE			:String = "octave";
+	
 	
 	static public function toXml(part:NPart): Xml
 	{
@@ -44,8 +51,22 @@ class PartXML
 			case EPartType.Normal:
 				// nothing for Normal
 				
-			case EPartType.Tplchain:
+			case EPartType.Tplchain(modus, octave):
 				xml.set(XPART_TYPE, XPART_TYPE_TPLCHAIN);
+				if (modus != null) if (modus != EModus.Major) xml.set(XPART_MODUS, Std.string(modus));		
+				if (octave != null) if (octave != EOctave.Normal || octave != null ) xml.set(XPART_OCTAVE, Std.string(octave));		
+				
+			case EPartType.Tplrow(modus, octave):
+				xml.set(XPART_TYPE, XPART_TYPE_TPLCHAIN);
+				if (modus != null) if (modus != EModus.Major) xml.set(XPART_MODUS, Std.string(modus));		
+				if (octave != null) if (octave != EOctave.Normal || octave != null ) xml.set(XPART_OCTAVE, Std.string(octave));		
+			/*
+			case EPartType.Tplrow(modus, octave):
+				xml.set(XPART_TYPE, XPART_TYPE_TPLROW);
+				if (modus != EModus.Major) xml.set(XPART_MODUS, Std.string(modus));		
+				if (octave != EOctave.NOR) xml.set(XPART_OCTAVE, Std.string(octave));						
+			*/	
+				
 			case EPartType.PitchChain(leveloffset):
 				xml.set(XPART_TYPE, XPART_PITCHCHAIN);	
 				xml.set(XPART_LEVELOFFSET, Std.string(leveloffset));	
@@ -124,8 +145,20 @@ class PartXML
 		if (typeStr == XPART_PITCHCHAIN) {
 			var leveloffset = Std.parseInt(xml.get(XPART_LEVELOFFSET));
 			type = EPartType.PitchChain(leveloffset);
-		} else if (typeStr == XPART_TYPE_TPLCHAIN) { 
-			type = EPartType.Tplchain;
+			
+		} else if (typeStr == XPART_TYPE_TPLCHAIN || typeStr == XPART_TYPE_TPLROW) { 			
+			
+			var oct = xml.get(XPART_OCTAVE);
+			var octave:EOctave = null;
+			if (oct != null) octave = EnumTools.createFromString(EOctave, oct);
+
+			var mod = xml.get(XPART_MODUS);
+			var modus:EModus = null;
+			if (mod != null) modus = EnumTools.createFromString(EModus, mod);
+			
+			type = EPartType.Tplchain(modus, octave);
+			
+			
 		} else type = EnumTools.createFromString(EPartType, typeStr);				
 		
 		// clef

@@ -121,7 +121,7 @@ class TargetSvgXml implements ITarget
 		r.set('stroke', hex(lineColor));
 		r.set('stroke-width', Std.string(lineWidth * scaling.linesWidth));		
 		
-		r.set('style', 'fill: ${hex(fillColor)}; stroke: ${hex(lineColor)}; stroke-width: ${lineWidth * scaling.linesWidth};');
+		r.set('style', 'fill: ${hex(fillColor)}; stroke: ${hex(lineColor)}; stroke-width: ${lineWidth * scaling.linesWidth}; cursor:pointer;');
 		
 		this.svg.addChild(r);
 	}
@@ -346,7 +346,12 @@ class TargetSvgXml implements ITarget
 		if (this.context == null)
 		{
 			var canvas:CanvasElement = cast Browser.document.getElementById(Constants.JS_CANVAS_TEXT_MEASUREMENT);
-			if (canvas == null) Lib.alert('Canvas element ${Constants.JS_CANVAS_TEXT_MEASUREMENT} is missing!');
+			if (canvas == null) {				
+				//Lib.alert('Canvas element ${Constants.JS_CANVAS_TEXT_MEASUREMENT} is missing!');
+				trace('creating a canvas for text measurement');
+				canvas = Browser.document.createCanvasElement();				
+				canvas.id = Constants.JS_CANVAS_TEXT_MEASUREMENT;
+			}
 			this.context = canvas.getContext2d();
 		}
 		var fontsize = this.font.size * this.scaling.fontScaling;

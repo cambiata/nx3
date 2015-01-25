@@ -28,12 +28,13 @@ import nx3.action.EActionInfo;
 import nx3.action.EActionType;
 import nx3.action.EActivityType;
 import nx3.action.IInteractivity;
+import nx3.render.scaling.Scaling;
 import nx3.render.scaling.TScaling;
 import nx3.render.svg.SvgElements;
 using cx.ArrayTools;
 using nx3.ENoteValTools;
 using nx3.ETime.ETimeUtils;
-
+using StringTools;
 
 /**
  * ...
@@ -551,13 +552,51 @@ class Renderer
 				this.target.rectangle(x, y, new Rectangle(rect.x, rect.y, width, rect.height), 3, 0x0000FF);
 				
 			//-----------------------------------------------------------------------------------------------------------------	
-			case ENoteType.Tpl(level):
+			case ENoteType.Tpl(level, sign, pause):
 
 				var rect = note.getHeadsRects().first().clone();
 				rect.inflate( -0.8, -0.8);
-				this.target.filledellipse(x, y, rect, 3, 0x000000, 0xffffff);
+				
+				var color = (pause) ? 0xAAAAAA: 0x000000;
+				//var backcolor = (pause) ? 0xEEEEEE: 0xffffff;
+				this.target.filledellipse(x, y, rect, this.scaling.linesWidth*5, color, 0xffffff);
+				
+				var levelmod = ( -level + 21) % 7;
+				
+				var numSvgStr = switch levelmod {
+					case 0: SvgElements.tpl1;
+					case 1: SvgElements.tpl2;
+					case 2: SvgElements.tpl3;
+					case 3: SvgElements.tpl4;
+					case 4: SvgElements.tpl5;
+					case 5: SvgElements.tpl6;
+					case 6: SvgElements.tpl7;		
+					default: SvgElements.tpl1;
+				}
+				
+				if (pause) {
+					numSvgStr = numSvgStr.replace('fill:#000000', 'fill:#AAAAAA');
+					trace(numSvgStr);
+				}
 				
 				
+				var tx = (this.scaling == Scaling.NORMAL) ? x -this.scaling.unitX * 5 : x - this.scaling.unitX * 5.5;
+				var ty = (note.getVoice().getPart().npart.type.getName() == 'Tplchain') ? y + (level * 3) * this.scaling.unitY : y;
+				ty +=  this.scaling.unitY * .4;
+				this.target.shape(tx, ty, numSvgStr, color);
+				
+				var signSvgStr = (sign != null) ? switch sign {
+					case ESign.Flat:  SvgElements.tplArrowDown;
+					case ESign.Sharp: SvgElements.tplArrowUp;
+					case _:SvgElements.tplArrowUp;					
+				} : '';
+				
+				if (signSvgStr != '') {
+					this.target.shape(tx, ty, signSvgStr, color);
+				}
+				
+				
+				/*
 				var textlevel = (((level * -1) + 21) % 7)+1;
 				var text =  Std.string(textlevel);
 				this.target.setFont( { name:'Arial', size: 24, bold:false, italic:false } );
@@ -565,14 +604,18 @@ class Renderer
 				var textwidth = this.target.textwidth(text) * this.scaling.unitX;
 				var textheight = this.target.textheight(text) * this.scaling.unitY;							
 				
-				var ny = (note.getVoice().getPart().npart.type.getName() == 'Tplchain') ? y + (level * 3) * this.scaling.unitY : y;
 				var tx = x - textwidth / 2 - .5 * this.scaling.unitX;
+				
+				
+				
 				#if (js)
 				var ty  = ny - textheight  / 5;
 				#else
 				var ty  = ny - textheight / 2 - 0.4*this.scaling.unitY;
 				#end
 				this.target.text(tx, ty, text);
+				*/
+				
 				
 			//-----------------------------------------------------------------------------------------------------------------	
 			default:

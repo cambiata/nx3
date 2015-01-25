@@ -8,8 +8,8 @@ enum EPartType
 {
 	Normal;
 	Lyrics;
-	Tplrow;
-	Tplchain;
+	Tplrow (modus:EModus, octave:EOctave);
+	Tplchain(modus:EModus, octave:EOctave);
 	Dynamics;
 	Chords;
 	Ignore;

@@ -1,5 +1,8 @@
 package nx3.audio;
 import nx3.audio.NotenrItem;
+import nx3.EKey;
+import nx3.EModus;
+import nx3.EOctave;
 import nx3.ESign;
 import nx3.NScore;
 using cx.ArrayTools;
@@ -258,6 +261,12 @@ class NotenrTools {
 		NotenrTools.calculateSoundLengths(partsnotes, tempo);				
 		partsnotes = NotenrTools.resolveTies(partsnotes);	
 		return partsnotes;				
+	}
+	
+	static public function tplToNotenritem(partkey:EKey, partmodus:EModus, partoctave:EOctave, level:Int, sign:ESign):NotenrItem {
+		
+		
+		return null;
 	}
 	
 	/*

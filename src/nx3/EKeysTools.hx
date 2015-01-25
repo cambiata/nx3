@@ -136,5 +136,26 @@ class EKeysTools
 		}
 	}		
 	
+	static public function getKeyRootShift(key:EKey):Int {
+		
+		return switch key {			
+			case EKey.Flat6:	4;
+			case EKey.Flat5:	1;
+			case EKey.Flat4:	8;
+			case EKey.Flat3:	3;
+			case EKey.Flat2:	10;
+			case EKey.Flat1:	5;
+			case EKey.Natural:	0;
+			case EKey.Sharp1:	7;
+			case EKey.Sharp2:	2;
+			case EKey.Sharp3:	9;
+			case EKey.Sharp4:	4;
+			case EKey.Sharp5:	11;
+			case EKey.Sharp6:	6;
+		}
+		
+		return 0;
+		
+	}
 	
 }

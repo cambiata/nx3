@@ -3,7 +3,9 @@ import cx.ArrayTools;
 import haxe.macro.Expr.Position;
 import nx3.audio.NotenrPartsCalculator.PartNotesToNotenrCalculator;
 import nx3.EKeysTools;
+import nx3.EModus;
 import nx3.ENoteType;
+import nx3.EOctave;
 import nx3.NHead;
 import nx3.NNote;
 import nx3.NPart;
@@ -42,6 +44,10 @@ class NotenrPartsCalculator
 		var partsItems = [];
 		var currentclef:nx3.EClef = null;
 		var currentkey:nx3.EKey = null;
+		var currentsound:String = '';
+		var currentmodus:EModus = null;
+		var currentoctave:EOctave = null;
+		
 		
 		var prevpart: NPart = null;
 		var prevnoteitems: NotenrItems = null;
@@ -52,9 +58,17 @@ class NotenrPartsCalculator
 		for (part in this.parts) {
 			if (part.clef != null) currentclef = part.clef;
 			if (part.key != null) currentkey = part.key;
+			if (part.sound != '') currentsound = part.sound;			
+
+			switch part.type {				
+				case EPartType.Tplchain(m, o), EPartType.Tplrow(m, o):
+					if (m != null) currentmodus = m;
+					if (o != null) currentoctave = o;				
+				case _:
+			}
 
 			var partvalue = this.partvalues.indexOrNull(baridx);
-			var noteitems = new PartNotesToNotenrCalculator(part, this.partnr,  baridx, partvalue, currentclef, currentkey).getNotnrItems();
+			var noteitems = new PartNotesToNotenrCalculator(part, this.partnr,  baridx, partvalue, currentclef, currentkey, currentsound, currentmodus, currentoctave).getNotnrItems();
 			
 			if (partvalue == null) {
 				partvalue = 0;
@@ -98,12 +112,19 @@ class PartNotesToNotenrCalculator {
 	var barnr:Int;
 	var barvalue:Int;
 	var partnr:Int;
+	var partmodus:EModus;
+	var partoctave:EOctave;
+	var partsound:String;
 	
-	public function new(part:NPart, partnr:Int, barnr:Int, barvalue:Int, partclef:nx3.EClef=null, partkey:EKey=null) {
+	public function new(part:NPart, partnr:Int, barnr:Int, barvalue:Int, partclef:nx3.EClef=null, partkey:EKey=null, partsound:String='', partmodus:EModus=null, partoctave:EOctave=null) {
 		this.part = part;
 		this.partnr = partnr;
 		this.partclef = partclef;
 		this.partkey = partkey;
+		this.partmodus = partmodus;
+		this.partoctave = partoctave;
+		this.partsound = partsound;
+		
 		this.barnr = barnr;
 		this.barvalue = barvalue;
 	}
@@ -125,27 +146,72 @@ class PartNotesToNotenrCalculator {
 			var notes = map.get(position);
 			for (note in notes)
 			{
-				for (head in note)
-				{
-					var cleflevel = NotenrTools.clefLevel(head.level, partclef);
-					var keysign = signstable.get(cleflevel);
-					//trace([head.level, cleflevel, keysign]);
-					var headsign = head.sign;
+				switch note.type {
+						
+					case ENoteType.Note(h, v, a, at):
 					
-					var playsign:ESign = switch headsign {
-						case ESign.None: keysign;
-						case ESign.Natural: headsign;
-						case _: headsign;
-					}
-					
-					var notenr = NotenrTools.getSignaffectedNotenr(cleflevel, keysign, headsign);
-					var midinr = NotenrTools.getMidinr(notenr);
-					var notename = NotenrTools.getNotename(notenr, playsign);
-					var tie = head.tie != null;
-					var playable = NotenrTools.getPlayable(note);					
-					result.push( { note:note, position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , playsign:playsign, partposition:0, playable:playable, partnr:this.partnr, barnr:this.barnr, barvalue:barvalue/*, soundlength:0, soundposition:0, barsoundlength:0*/ } );					
-					if (headsign != null && headsign != nx3.ESign.None) this.signstable.set(cleflevel, headsign);					
+						for (head in note)
+						{
+							var cleflevel = NotenrTools.clefLevel(head.level, partclef);
+							var keysign = signstable.get(cleflevel);
+							//trace([head.level, cleflevel, keysign]);
+							var headsign = head.sign;
+							
+							var playsign:ESign = switch headsign {
+								case ESign.None: keysign;
+								case ESign.Natural: headsign;
+								case _: headsign;
+							}
+							
+							var notenr = NotenrTools.getSignaffectedNotenr(cleflevel, keysign, headsign);
+							var midinr = NotenrTools.getMidinr(notenr);
+							var notename = NotenrTools.getNotename(notenr, playsign);
+							var tie = head.tie != null;
+							var playable = NotenrTools.getPlayable(note);					
+							result.push( { note:note, position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , playsign:playsign, partposition:0, playable:playable, partnr:this.partnr, barnr:this.barnr, barvalue:barvalue/*, soundlength:0, soundposition:0, barsoundlength:0*/ } );					
+							if (headsign != null && headsign != nx3.ESign.None) this.signstable.set(cleflevel, headsign);					
+						}
+						
+					case ENoteType.Tpl(level, sign, pause):
+						
+						//var notenritem:NotenrItem = NotenrTools.tplToNotenritem(this.partkey, this.partmodus, this.partoctave, level, sign);
+						var levelmap = (this.partmodus == EModus.Minor) ? [0, 2, 3, 5, 7, 8, 10] : [ 0, 2, 4, 5, 7, 9, 11];						
+						var levelmod = ( -level + 21) % 7;
+						
+						var keyRootShift = EKeysTools.getKeyRootShift(this.partkey);
+						
+						var mappedlevel = levelmap[levelmod];
+						var clevel = 60 - level;
+						//trace('levelmod $levelmod ${-level+21} $mappedlevel $keyRootShift');
+						//trace('level $level sign $sign key ${this.partkey} modus ${this.partmodus} octave ${this.partoctave}');
+						var leveloctave = 0;
+						if (level < -6) leveloctave = 12;
+						if (level > 0) leveloctave = -12;
+						var minorshift = (this.partmodus == EModus.Minor) ? -3 : 0;
+						
+						var signshift = (sign != null) ? switch sign {
+							case ESign.Sharp: 1;
+							case ESign.Flat: -1;
+							case _: 0;
+						} : 0;
+						
+						var midinr = 60 + mappedlevel + leveloctave + keyRootShift + minorshift + signshift;
+						var notenr = 0;
+						var notename = '';
+						var tie = false;
+						var headsign = sign;
+						var playsign = sign;
+						var playable = (!pause);
+						var cleflevel = 0;
+						var keysign = sign;
+						
+						result.push( { note:note, position:position, noteval: ENoteValTools.value(note.value), level:cleflevel, notenr:notenr, midinr:midinr, notename:notename, tie: tie, headsign:headsign, keysign:keysign , playsign:playsign, partposition:0, playable:playable, partnr:this.partnr, barnr:this.barnr, barvalue:barvalue/*, soundlength:0, soundposition:0, barsoundlength:0*/ } );					
+						
+					case _:
+						
 				}
+				
+				
 			}
 		}
 		

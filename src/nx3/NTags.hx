@@ -172,7 +172,7 @@ class NTags
 			case ENoteType.Lyric(text, offset, c, f): 'tL$text:$offset';
 			case ENoteType.Pause(level): 'tP$level';
 			case ENoteType.Pitch(level, midinoter): 'tI$level:midinote';
-			case ENoteType.Tpl(level): 'tT$level';
+			case ENoteType.Tpl(level, sign, pause): 'tT$level:$sign:$pause';
 			case _:'';
 		}
 		

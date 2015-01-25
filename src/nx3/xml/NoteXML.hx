@@ -35,6 +35,7 @@ class NoteXML
 	
 	static public inline var XTPL							:String = "tpl";
 	static public inline var XTPL_LEVEL							:String = "level";
+	static public inline var XTPL_SIGN							:String = "sign";
 
 	
 	
@@ -52,6 +53,7 @@ class NoteXML
 	static public inline var XOFFSET							:String = "offset";
 	static public inline var XLYRIC_CONTINUATION				:String = "continuation";
 	static public inline var XLYRIC_FORMAT						:String = "format";
+	static public inline var XTPL_PAUSE						:String = "pause";
 
 	static public function toXml(note:NNote):Xml
 	{
@@ -108,9 +110,14 @@ class NoteXML
 				xml = Xml.createElement(XPITCH);
 				if (level != 0) xml.set(XPITCH_LEVEL, Std.string(level));
 				if (midinote != 0) xml.set(XPITCH_MIDINOTE, Std.string(midinote));
-			case (ENoteType.Tpl(level)): 
+			
+			case (ENoteType.Tpl(level, sign, pause)): 
 				xml = Xml.createElement(XTPL);
 				xml.set(XTPL_LEVEL, Std.string(level));
+				// sign		
+				if (sign != ESign.None) xml.set(XTPL_SIGN, Std.string(sign));						
+				if (pause == true) xml.set(XTPL_PAUSE, 'true');
+				
 			default:
 				xml = Xml.createElement(XUNDEFINED);	
 		}
@@ -205,7 +212,11 @@ class NoteXML
 			case XTPL:
 				var levelstr = xml.get(XTPL_LEVEL);
 				var level = (levelstr != null) ? Std.parseInt(levelstr) : 0;
-				type = ENoteType.Tpl(level);
+				var sign:ESign = EnumTools.createFromString(ESign, xml.get(XTPL_SIGN));
+				var pausestr = xml.get(XTPL_PAUSE);
+				var pause:Bool = (pausestr != null && pausestr.toLowerCase() == 'true');
+				
+				type = ENoteType.Tpl(level, sign, pause);
 				
 		}
 		

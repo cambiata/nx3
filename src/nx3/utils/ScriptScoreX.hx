@@ -58,11 +58,15 @@ class ScriptScoreX {
 			this.script = StringTools.htmlUnescape(scriptElement.innerHTML());
 			this.nscore = ScoreXML.fromXmlStr(this.script);
 			
+			trace(ScoreXML.toXml(this.nscore).toString());
+			
+			
 			var tmpo:Int = Std.parseInt(scriptElement.attr('data-tempo'));
 			this.tempo = (tmpo == null) ? 60 : tmpo;
 
 			var snds:String = scriptElement.attr('data-sounds');
 			this.sounds = (snds != null )  ? snds.split(',').map(function(s) return s.trim()) : [];
+			trace(this.sounds);
 
 			 var scl:String = scriptElement.attr('data-scaling');
 			 this.scaling = ScalingTools.fromString(scl);		
@@ -299,7 +303,13 @@ class ScriptScoreX {
 					//trace('canvas Idle $x/$y $point');
 					for (note in notesrects.keys()) {
 						var rect = notesrects.get(note).clone();
-						rect.inflate(2, 1);
+						
+						switch note.nnote.type {
+							case ENoteType.Tpl(l, s, p):  // no inflate
+							case ENoteType.Note(h, v, a, at): rect.inflate(2, 1);
+							case _:  // no inflate
+						}
+						
 						//trace(rect);
 						if (rect.containsPoint(point)) {
 							//trace('Found note!');
@@ -336,7 +346,12 @@ class ScriptScoreX {
 					var foundnote = findNote();
 					if (foundnote == null) return;
 					
-					ScriptScoresXInteraction.getInstance().onInteract(this, MouseInteraction.PlayNote(this.id, foundnote.note, foundnote.noteinfo, 'piano'));							
+					var noteinfo:NotenrItem = foundnote.noteinfo;
+					
+					var sound = ArrayTools.indexOrValue(this.sounds, noteinfo.partnr, 'silent');
+					trace(sound);
+					
+					ScriptScoresXInteraction.getInstance().onInteract(this, MouseInteraction.PlayNote(this.id, foundnote.note, foundnote.noteinfo, sound));							
 					e.stopPropagation();
 				};					
 				
