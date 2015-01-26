@@ -280,4 +280,28 @@ class NotenrTools {
 	}
 	*/	
 	
+	static public function createNotenrItem(partpos:Int, pos:Int, noteval:Int, level:Int, notenr:Int, midinr:Int, headsign:ESign, keysign:ESign, playsign:ESign, notename:String, tie:Bool, playable:Bool, partnr:Int, barnr:Int, barvalue:Int, note:NNote):NotenrItem
+	{
+		var item:NotenrItem = {		
+			partposition:partpos,
+			position:pos, 
+			noteval: noteval, 
+			level:level, 
+			notenr:notenr, 
+			midinr:midinr, 
+			headsign:headsign,
+			keysign:keysign,
+			playsign:playsign,
+			notename:notename, 
+			tie: tie ,
+			playable: playable,
+			partnr:partnr,
+			barnr: barnr,
+			barvalue:barvalue,
+			note:note,
+		}
+		return item;
+		
+	}
+	
 }
