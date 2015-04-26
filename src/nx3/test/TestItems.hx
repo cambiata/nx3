@@ -597,12 +597,12 @@ static public function scoreTplRow():NScore
 		
 			new NPart([	
 				new NVoice([				
-					new NNote(ENoteType.Tpl(0)),
-					new NNote(ENoteType.Tpl(2)),
-					new NNote(ENoteType.Tpl(1)),
-					new NNote(ENoteType.Tpl(-3)),
+					new NNote(ENoteType.Tpl(0, ESign.Natural, false)),
+					new NNote(ENoteType.Tpl(2, ESign.Natural, false)),
+					new NNote(ENoteType.Tpl(1, ESign.Natural, false)),
+					new NNote(ENoteType.Tpl(-3, ESign.Natural, false)),
 					])
-			], EPartType.Tplrow),		
+			], EPartType.Tplrow(EModus.Major, EOctave.Normal)),		
 			
 			new NPart([	
 				new NVoice([				
@@ -611,21 +611,21 @@ static public function scoreTplRow():NScore
 					new QNote4(3),
 					new QNote4(-1),
 					])
-			]),				
-		] ),
+			])
+		]),
 		
 		new NBar([
 		
 			new NPart([	
 				new NVoice([				
-					new NNote(ENoteType.Tpl(-2)),
-					new NNote(ENoteType.Tpl(-3), ENoteVal.Nv8),
-					new NNote(ENoteType.Tpl(-2), ENoteVal.Nv8),
-					new NNote(ENoteType.Tpl(-1)),
-					new NNote(ENoteType.Tpl(3), ENoteVal.Nv8),
-					new NNote(ENoteType.Tpl(1), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-2, ESign.None, false)),
+					new NNote(ENoteType.Tpl(-3, ESign.None, false), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-2, ESign.None, false), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-1, ESign.None, false)),
+					new NNote(ENoteType.Tpl(3, ESign.None, false), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(1, ESign.None, false), ENoteVal.Nv8),
 					])
-			], EPartType.Tplrow),				
+			], EPartType.Tplrow(EModus.Major, EOctave.Normal)),				
 			new NPart([	
 				new NVoice([				
 					new QNote4(0),
@@ -643,9 +643,9 @@ static public function scoreTplRow():NScore
 		
 			new NPart([	
 				new NVoice([				
-					new NNote(ENoteType.Tpl(0), ENoteVal.Nv1),
+					new NNote(ENoteType.Tpl(0, ESign.None, false), ENoteVal.Nv1),
 					])
-			], EPartType.Tplrow),			
+			], EPartType.Tplrow(EModus.Major, EOctave.Normal)),			
 			new NPart([	
 				new NVoice([				
 					new QNote1(2),
@@ -678,12 +678,12 @@ static public function scoreTplRow():NScore
 			]),			
 			new NPart([	
 				new NVoice([				
-					new NNote(ENoteType.Tpl(0)),
-					new NNote(ENoteType.Tpl(2)),
-					new NNote(ENoteType.Tpl(1)),
-					new NNote(ENoteType.Tpl(-3)),
+					new NNote(ENoteType.Tpl(0, ESign.None, false)),
+					new NNote(ENoteType.Tpl(2, ESign.None, false)),
+					new NNote(ENoteType.Tpl(1, ESign.None, false)),
+					new NNote(ENoteType.Tpl(-3, ESign.None, false)),
 					])
-			], EPartType.Tplchain),						
+			], EPartType.Tplchain(EModus.Major, EOctave.Normal)),						
 		] ),
 		
 		new NBar([
@@ -699,14 +699,14 @@ static public function scoreTplRow():NScore
 			]),			
 			new NPart([	
 				new NVoice([				
-					new NNote(ENoteType.Tpl(-2)),
-					new NNote(ENoteType.Tpl(-3), ENoteVal.Nv8),
-					new NNote(ENoteType.Tpl(-2), ENoteVal.Nv8),
-					new NNote(ENoteType.Tpl(-1)),
-					new NNote(ENoteType.Tpl(3), ENoteVal.Nv8),
-					new NNote(ENoteType.Tpl(1), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-2, ESign.None, false)),
+					new NNote(ENoteType.Tpl(-3, ESign.None, false), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-2, ESign.None, false), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(-1, ESign.None, false)),
+					new NNote(ENoteType.Tpl(3, ESign.None, false), ENoteVal.Nv8),
+					new NNote(ENoteType.Tpl(1, ESign.None, false), ENoteVal.Nv8),
 					])
-			], EPartType.Tplchain),						
+			], EPartType.Tplchain(EModus.Major, EOctave.Normal)),						
 		] ),	
 		
 		new NBar([
@@ -717,9 +717,9 @@ static public function scoreTplRow():NScore
 			]),			
 			new NPart([	
 				new NVoice([				
-					new NNote(ENoteType.Tpl(0), ENoteVal.Nv1),
+					new NNote(ENoteType.Tpl(0, ESign.None, false), ENoteVal.Nv1),
 					])
-			], EPartType.Tplchain),						
+			], EPartType.Tplchain(EModus.Major, EOctave.Normal)),						
 		] )		
 		
 		

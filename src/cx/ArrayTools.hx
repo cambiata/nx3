@@ -14,7 +14,7 @@ using Lambda;
 class ArrayTools 
 {
 	
-	inline static function next<T>(a:Array<T>, item:T):Null<T>
+	public inline static function next<T>(a:Array<T>, item:T):Null<T>
 	{
 		var idx = a.indexOf(item);
 		if (idx == -1) return null;
@@ -22,7 +22,7 @@ class ArrayTools
 		return a[idx + 1];		
 	}
 	
-	inline static function prev<T>(a:Array<T>, item:T):Null<T>
+	public inline static function prev<T>(a:Array<T>, item:T):Null<T>
 	{
 		var idx = a.indexOf(item);
 		if (idx <= 0) return null;

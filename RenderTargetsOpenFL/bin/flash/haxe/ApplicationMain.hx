@@ -1,5 +1,7 @@
-import lime.Assets;
 #if !macro
+
+
+@:access(lime.Assets)
 
 
 class ApplicationMain {
@@ -8,13 +10,18 @@ class ApplicationMain {
 	public static var config:lime.app.Config;
 	public static var preloader:openfl.display.Preloader;
 	
-	private static var app:lime.app.Application;
-	
 	
 	public static function create ():Void {
 		
-		app = new openfl.display.Application ();
+		var app = new lime.app.Application ();
 		app.create (config);
+		openfl.Lib.application = app;
+		
+		#if !flash
+		var stage = new openfl.display.Stage (app.window.width, app.window.height, config.background);
+		stage.addChild (openfl.Lib.current);
+		app.addModule (stage);
+		#end
 		
 		var display = new NMEPreloader ();
 		
@@ -22,22 +29,36 @@ class ApplicationMain {
 		preloader.onComplete = init;
 		preloader.create (config);
 		
-		#if js
+		#if (js && html5)
 		var urls = [];
 		var types = [];
 		
 		
 		urls.push ("img/dummy.txt");
-		types.push (AssetType.TEXT);
+		types.push (lime.Assets.AssetType.TEXT);
 		
 		
+		
+		if (config.assetsPrefix != null) {
+			
+			for (i in 0...urls.length) {
+				
+				if (types[i] != lime.Assets.AssetType.FONT) {
+					
+					urls[i] = config.assetsPrefix + urls[i];
+					
+				}
+				
+			}
+			
+		}
 		
 		preloader.load (urls, types);
 		#end
 		
 		var result = app.exec ();
 		
-		#if sys
+		#if (sys && !nodejs && !emscripten)
 		Sys.exit (result);
 		#end
 		
@@ -80,22 +101,26 @@ class ApplicationMain {
 			antialiasing: Std.int (0),
 			background: Std.int (16777215),
 			borderless: false,
+			company: "Jonas Nyström",
 			depthBuffer: false,
+			file: "RenderTargets",
 			fps: Std.int (60),
 			fullscreen: false,
 			height: Std.int (1000),
 			orientation: "",
+			packageName: "RenderTargets",
 			resizable: true,
-			stencilBuffer: false,
+			stencilBuffer: true,
 			title: "RenderTargets",
+			version: "1.0.0",
 			vsync: false,
 			width: Std.int (1400),
 			
 		}
 		
-		#if js
-		#if munit
-		flash.Lib.embed (null, 1400, 1000, "FFFFFF");
+		#if (js && html5)
+		#if (munit || utest)
+		openfl.Lib.embed (null, 1400, 1000, "FFFFFF");
 		#end
 		#else
 		create ();
@@ -106,12 +131,10 @@ class ApplicationMain {
 	
 	public static function start ():Void {
 		
-		openfl.Lib.current.stage.align = openfl.display.StageAlign.TOP_LEFT;
-		openfl.Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
-		
 		var hasMain = false;
+		var entryPoint = Type.resolveClass ("Main");
 		
-		for (methodName in Type.getClassFields (Main)) {
+		for (methodName in Type.getClassFields (entryPoint)) {
 			
 			if (methodName == "main") {
 				
@@ -122,9 +145,11 @@ class ApplicationMain {
 			
 		}
 		
+		lime.Assets.initialize ();
+		
 		if (hasMain) {
 			
-			Reflect.callMethod (Main, Reflect.field (Main, "main"), []);
+			Reflect.callMethod (entryPoint, Reflect.field (entryPoint, "main"), []);
 			
 		} else {
 			

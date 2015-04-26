@@ -16,12 +16,12 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="f:\_haxelib\openfl\2,2,1" />
-    <class path="f:\_haxelib\lime\2,0,4" />
-    <class path="f:\_haxelib\actuate\1,8,0" />
-    <class path="f:\_haxelib\thx,core\0,17,4\src" />
-    <class path="f:\_haxelib\tink_core\1,0,0-rc,7\src" />
-    <class path="f:\_haxelib\format\3,1,2" />
+    <class path="F:\_lib\openfl\3,0,1" />
+    <class path="F:\_lib\lime\2,3,2" />
+    <class path="F:\_lib\actuate\1,8,3" />
+    <class path="F:\_lib\thx,core\0,19,0\src" />
+    <class path="F:\_lib\tink_core\1,0,0-rc,8\src" />
+    <class path="F:\_lib\format\3,1,2" />
     <class path="..\src" />
     <class path="..\..\HxAudioTools\src" />
     <class path="src" />
@@ -29,7 +29,7 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="openfl=2.2.1&#xA;lime=2.0.4&#xA;actuate=1.8.0&#xA;thx_core&#xA;thx.core&#xA;tink_core&#xA;format=3.1.2&#xA;tools=2.0.4&#xA;no-compilation&#xA;openfl-flash&#xA;mtrace=2&#xA;trpscore=0&#xA;web" />
+    <option directives="openfl=3.0.1&#xA;lime=2.3.2&#xA;actuate=1.8.3&#xA;thx_core&#xA;thx.core=0.19.0&#xA;tink_core=1.0.0-rc.8&#xA;format=3.1.2&#xA;openfl-next&#xA;tools=2.3.2&#xA;no-compilation&#xA;openfl-flash&#xA;mtrace=2&#xA;trpscore=0&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />

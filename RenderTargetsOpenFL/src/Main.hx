@@ -27,7 +27,7 @@ import nx3.render.TargetSprite;
 import nx3.render.TestscoreSprite;
 import nx3.test.TestItemsBach;
 import nx3.test.Unittests;
-import nx3.test.TestItems;
+//import nx3.test.TestItems;
 import nx3.test.TestRenderer;
 import nx3.utils.Performance;
 import nx3.utils.PartFilter;

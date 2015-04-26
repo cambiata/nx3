@@ -54,6 +54,7 @@ class PBeamflagCalculator
 		 var result :Array<EBeamflagType> = [];
 		 for (r in firstpass)
 		 {
+			 
 			 var rnext = firstpass.next(r);
 			 var rprev = firstpass.prev(r);
 			 if (rnext  == EBeamflagType.Full16 && r == EBeamflagType.End16)

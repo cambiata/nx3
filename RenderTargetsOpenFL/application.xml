@@ -6,7 +6,7 @@
 	<meta title="RenderTargets" package="RenderTargets" version="1.0.0" company="Jonas Nyström" />
 	
 	<!-- output -->
-	<app main="Main" file="RenderTargets" path="bin" />
+	<app main="Main" file="RenderTargets" path="bin" /> 
 	
 	<window background="#ffffff" fps="60" />
 	<window width="1400" height="1000" unless="mobile" />
