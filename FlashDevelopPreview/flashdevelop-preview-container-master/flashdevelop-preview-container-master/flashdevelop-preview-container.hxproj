@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!-- Output SWF options -->
+  <output>
+    <movie outputType="CustomBuild" />
+    <movie input="" />
+    <movie path="application.xml" />
+    <movie fps="60" />
+    <movie width="800" />
+    <movie height="600" />
+    <movie version="1" />
+    <movie minorVersion="0" />
+    <movie platform="Lime" />
+    <movie background="FFFFFF" />
+  </output>
+  <!-- Other classes to be compiled into your SWF -->
+  <classpaths>
+    <class path="F:\_lib\haxeui\1,7,11" />
+    <class path="F:\_lib\hscript\2,0,4" />
+    <class path="F:\_lib\svg\1,0,8" />
+    <class path="F:\_lib\lime\2,3,2" />
+    <class path="F:\_lib\actuate\1,8,3" />
+    <class path="F:\_lib\yagp\1,1,4" />
+    <class path="F:\_lib\openfl\3,0,1" />
+    <class path="F:\_lib\thx,core\0,19,0\src" />
+    <class path="src" />
+    <class path="F:\nx3\src" />
+    <class path="assets" />
+    <class path="bin\flash\haxe" />
+  </classpaths>
+  <!-- Build options -->
+  <build>
+    <option directives="haxeui=1.7.11&#xA;hscript=2.0.4&#xA;svg=1.0.8&#xA;lime=2.3.2&#xA;actuate=1.8.3&#xA;yagp=1.1.4&#xA;openfl=3.0.1&#xA;thx_core&#xA;thx.core=0.19.0&#xA;openfl-next&#xA;tools=2.3.2&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
+    <option flashStrict="False" />
+    <option noInlineOnDebug="False" />
+    <option mainClass="ApplicationMain" />
+    <option enabledebug="True" />
+    <option additional="-swf-version 11.2" />
+  </build>
+  <!-- haxelib libraries -->
+  <haxelib>
+    <!-- example: <library name="..." /> -->
+  </haxelib>
+  <!-- Class files to compile (other referenced classes will automatically be included) -->
+  <compileTargets>
+    <compile path="src\haxeui\flashdevelop\preview\Main.hx" />
+  </compileTargets>
+  <!-- Paths to exclude from the Project Explorer tree -->
+  <hiddenPaths>
+    <hidden path="obj" />
+  </hiddenPaths>
+  <!-- Executed before build -->
+  <preBuildCommand>"$(CompilerPath)/haxelib" run lime build "$(OutputFile)" $(TargetBuild) -$(BuildConfig) -Dfdb</preBuildCommand>
+  <!-- Executed after build -->
+  <postBuildCommand alwaysRun="False" />
+  <!-- Other project options -->
+  <options>
+    <option showHiddenPaths="False" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="" />
+  </options>
+  <!-- Plugin storage -->
+  <storage />
+</project>

@@ -1,0 +1,16 @@
+<score>
+	<config test="12345" />
+	<bar time="C">
+		<part key="Flat1"
+			  clef="ClefG">
+			<voice>
+				<note val="4"><headx level="0"></headx></note>
+				<note val="4"><headx level="0"></headx></note>
+				<note val="4"><headx level="2"></headx></note>
+				<note val="8"><headx level="4"></headx></note>
+				<note val="8"><headx level="5" sign="Sharp"></headx></note>
+			</voice>
+		</part>
+	</bar>
+	
+</score>

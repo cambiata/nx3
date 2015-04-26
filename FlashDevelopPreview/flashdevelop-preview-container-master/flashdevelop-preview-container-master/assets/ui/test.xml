@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vbox width="100%" height="100%">
+	<button text="Top" width="100%" height="20%" />
+	<hbox width="100%" height="60%">
+		<button text="Left" width="20%" height="100%"/>
+		<button text="Middle" width="60%" height="100%"/>
+		<button text="Right" width="20%" height="100%"/>
+	</hbox>
+	<button text="Bottom" width="100%" height="20%" />
+</vbox>
