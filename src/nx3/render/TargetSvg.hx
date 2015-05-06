@@ -253,7 +253,7 @@ class TargetSvg implements ITarget
 		if (this.context == null)
 		{
 			var canvas:CanvasElement = cast Browser.document.getElementById(Constants.JS_CANVAS_TEXT_MEASUREMENT);
-			if (canvas == null) Browser.alert('Canvas element ${Constants.JS_CANVAS_TEXT_MEASUREMENT} is missing!');
+			if (canvas == null) Lib.alert('Canvas element ${Constants.JS_CANVAS_TEXT_MEASUREMENT} is missing!');
 			this.context = canvas.getContext2d();
 		}
 		var fontsize = this.font.size * this.scaling.fontScaling;
