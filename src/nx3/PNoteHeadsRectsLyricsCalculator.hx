@@ -45,10 +45,10 @@ class PNoteHeadsRectsLyricsCalculator
 			return [new Rectangle( -width / 2, -height / 2, width, height)];			
 		#else
 			trace('non possible!');
+			return null;
 		#end
 		
 		
-		return null;		
 	}
 	
 }

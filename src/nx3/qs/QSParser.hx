@@ -11,7 +11,7 @@ import nx3.NNote;
 import nx3.NPart;
 import nx3.qs.QSParser.QSBars;
 import nx3.xml.ScoreXML;
-import thx.core.Arrays;
+import thx.Arrays;
 using StringTools;
 using QSParser.StrTools;
 using QSParser.ArrTools;

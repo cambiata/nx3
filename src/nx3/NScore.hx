@@ -1,6 +1,6 @@
 package nx3;
 import nx3.NBars;
-import thx.core.UUID;
+import thx.Uuid;
 using Lambda;
 /**
  * ...
@@ -24,7 +24,7 @@ class NScore
 		this.configuration.rtempo = 80;
 		this.configuration.rlength = 3;		
 		this.configuration.rcountin = 2;		
-		this.uuid = UUID.create();
+		this.uuid = Uuid.create();
 	}
 	
 	public function getNBar(idx:Int):NBar return (idx < 0 || idx > this.nbars.length) ? null : this.nbars[idx];

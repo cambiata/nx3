@@ -97,10 +97,7 @@ class BarXML
 		var str = toXml(item).toString();		
 		var item2 = fromXmlStr(str);
 		var str2 = toXml(item2).toString();
-		trace(str);
-		trace(str2);
 		return (str == str2);		
-		return false;
 	}
 		
 	

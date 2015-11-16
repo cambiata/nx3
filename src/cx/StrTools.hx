@@ -244,8 +244,6 @@ class StrTools
 		*/
 		return Utf8.decode(str);
 		
-		
-		return str;
 	}	
 	
 	static public function lastIdxOf(str:String, search:String, lastPos:Int=0) {
@@ -259,7 +257,38 @@ class StrTools
 	static public function toInt(str:String):Int return Std.parseInt(str);
 	static public function toFloat(str:String):Float return Std.parseFloat(str);		
 	
+	static public function capitalizeFirst(str:String):String {
+		return str.substr(0, 1).toUpperCase() + str.substr(1);
+	}
 	
+	static public function toSwedish(str:String) : String {
+		str = str.replace('oe', 'ö');
+		str = str.replace('ae', 'ä');
+		str = str.replace('au', 'å');
+		str = str.replace('OE', 'Ö');
+		str = str.replace('AE', 'Ä');
+		str = str.replace('AU', 'Å');
+		return str;
+	}	
+	
+	static public function fromSwedish(str:String) : String {
+		str = str.replace('ö', 'oe');
+		str = str.replace('ä', 'ae');
+		str = str.replace('å', 'au');
+		str = str.replace('Ö', 'OE');
+		str = str.replace('Ä', 'AE');
+		str = str.replace('Å', 'AU');			
+		return str;
+	}
+	
+	static public function fromBlanks(str:String, replace = '-'):String {		
+		if (!has(str, ' ')) return str;
+		return str.replace(' ', replace);
+	}
+	
+	static public function  toUrlParameter(str:String):String {
+		return fromBlanks(fromSwedish(str)).toLowerCase();
+	}	
 	
 	
 }

@@ -11,6 +11,8 @@ package cx;
  */
 
 using Lambda;
+using StringTools;
+
 class ArrayTools 
 {
 	
@@ -261,6 +263,10 @@ class ArrayTools
 		}
 		return r;
 	}
+	
+	public static function trimStrings(a:Array<String>):Array<String> {
+		return a.map(function(s) return s.trim());
+	}	
 	
 	
 }

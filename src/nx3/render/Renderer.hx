@@ -269,9 +269,6 @@ class Renderer
 		//var ny = firstsystemy;
 		//trace([ny, ty, firstsystemy]);
 		
-		
-		
-		
 		//this.target.rectangle(tx, ty, new Rectangle(0, -10, system.getSystemBreakWidth(), 40), 2, 0x00ff00);
 		this.drawBarlines(system, system.getSystembars()/*, nx, ny*/);
 		//var barx = 0.0;
